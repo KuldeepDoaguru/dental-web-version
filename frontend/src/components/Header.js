@@ -7,18 +7,26 @@ import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <Wrapper>
-      <div className="container-fluid" style={{ backgroundColor: "#004aad" }}>
+      <div>
         <nav className="navbar navbar-expand-lg ">
           <div className="container-fluid">
             <Link to="/">
               <img
-                src={dental_logo}
+                src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1707404036/dental%20guru/dentalguru_v1g7k0.png"
                 alt="Logo"
                 width="75"
-                height="50"
-                style={{ marginLeft: "-1.3rem" }}
+                height="60"
+                // style={{ marginLeft: "-1.3rem" }}
               />
             </Link>
+            <li style={{ listStyle: "none" }}>
+              <Link
+                className="nav-link active text-white mt-2 mx-2 fs-5"
+                to="/"
+              >
+                Dental Guru
+              </Link>
+            </li>
             <button
               className="navbar-toggler"
               type="button"
@@ -34,18 +42,7 @@ const Header = () => {
               className="collapse navbar-collapse"
               id="navbarSupportedContent"
             >
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                  <a
-                    className="nav-link active text-white mt-2  fs-5"
-                    aria-current="page"
-                    href="/"
-                  >
-                    Dental Guru
-                  </a>
-                </li>
-              </ul>
-              <ul className="d-lg-flex d-sm-column">
+              <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li className="nav-item dropdown" id="userid">
                   <a
                     className="nav-link dropdown-toggle"
@@ -54,9 +51,9 @@ const Header = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    <FaUserAlt />
+                    <FaUserAlt className="icon" />
                   </a>
-                  <ul className="dropdown-menu" style={{ marginLeft: "-2rem" }}>
+                  <ul className="dropdown-menu second-dropdown">
                     <li>
                       <a className="dropdown-item" href="/">
                         View Profile
@@ -72,8 +69,9 @@ const Header = () => {
                     </li>
                   </ul>
                 </li>
+
                 <li className="nav-item" id="bell">
-                  <AiFillBell />
+                  <AiFillBell className="icon" />
                 </li>
               </ul>
             </div>
@@ -87,7 +85,7 @@ const Header = () => {
 export default Header;
 const Wrapper = styled.div`
   #userid {
-    margin-left: -10rem;
+    /* margin-left: -10rem; */
     list-style-type: none;
     @media screen and (max-width: 768px) {
       margin-left: 0rem;
@@ -95,11 +93,39 @@ const Wrapper = styled.div`
     }
   }
   #bell {
-    margin-left: 5rem;
+    //margin-left: 5rem;
     list-style-type: none;
     @media screen and (max-width: 768px) {
       margin-left: 0rem;
       margin-top: 1rem;
+    }
+  }
+
+  .nav-link {
+    display: inline;
+    list-style-type: none;
+  }
+
+  .second-dropdown {
+    margin-left: -5rem;
+    width: fit-content;
+    @media screen and (max-width: 500px) {
+      margin-left: 0rem;
+    }
+  }
+
+  .icon {
+    color: white;
+    font-size: 1.5rem;
+  }
+  .navbar {
+    background-color: #004aad;
+    box-shadow: 1px 1px 6px black;
+  }
+
+  ul {
+    li {
+      list-style: none !important;
     }
   }
 `;

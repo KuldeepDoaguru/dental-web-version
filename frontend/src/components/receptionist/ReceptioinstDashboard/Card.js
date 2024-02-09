@@ -130,7 +130,7 @@ const Wrapper = styled.div`
     @media screen and (min-width: 768px) and (max-width: 1020px) {
       width: 41rem;
     }
-    @media screen and (min-width: 1020px) and (max-width: 1600px) {
+    @media screen and (min-width: 1020px) and (max-width: 1700px) {
     width: 13rem;
   }
   }
@@ -147,7 +147,7 @@ const Wrapper = styled.div`
     @media screen and (min-width: 768px) and (max-width: 1020px) {
       width: 41rem;
     }
-    @media screen and (min-width: 1020px) and (max-width: 1600px) {
+    @media screen and (min-width: 1020px) and (max-width: 1700px) {
     width: 13rem;
   }
   }
@@ -163,7 +163,7 @@ const Wrapper = styled.div`
     @media screen and (min-width: 768px) and (max-width: 1020px) {
       width: 41rem;
     }
-    @media screen and (min-width: 1020px) and (max-width: 1600px) {
+    @media screen and (min-width: 1020px) and (max-width: 1700px) {
     width: 13rem;
   }
   }
@@ -180,7 +180,7 @@ const Wrapper = styled.div`
     @media screen and (min-width: 768px) and (max-width: 1020px) {
       width: 41rem;
     }
-    @media screen and (min-width: 1020px) and (max-width: 1600px) {
+    @media screen and (min-width: 1020px) and (max-width: 1700px) {
     width: 13rem;
   }
   }

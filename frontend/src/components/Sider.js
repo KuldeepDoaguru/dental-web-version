@@ -133,6 +133,7 @@ function Sider() {
 
 export default Sider
 const Wrapper=styled.div`
+
  
   #navleft1{
     font-size: 12px;

@@ -94,11 +94,12 @@ const Wrapper = styled.div`
   @media screen and (min-width: 768px) and (max-width: 1020px)  {
       width: 41rem;
     }
-  @media screen and (min-width: 1020px) and (max-width: 1600px) {
+  @media screen and (min-width: 1020px) and (max-width: 1700px) {
    height: 26rem;
   }
 }
 .widget-title{
+  font-size: 25px;
   @media screen and (max-width: 768px)  {
    margin-top: 15px;
    font-size: 20px;

@@ -58,14 +58,14 @@ const Wrapper=styled.div`
 @media screen and (max-width: 768px) {
   margin-left: 1.5rem;
 }
-  @media screen and (min-width: 1020px) and (max-width: 1600px) {
+  @media screen and (min-width: 1020px) and (max-width: 1700px) {
     margin-left: -1.9rem;
   }
 }
 
 #sider{
   height: 62rem;
-  
+ 
 
 }
 `

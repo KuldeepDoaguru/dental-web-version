@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 function Form() {
+  
+  
+  const [data,setData] = useState({
+    date:"",
+  }) 
+  // const [age, setAge] = useState(null);
+
+  // useEffect(()=>{
+  //   const calculateAge = (date) => {
+  //     const dob = new Date(date);
+  //     const now = new Date();
+  //     let years = now.getFullYear() - dob.getFullYear();
+      
+  //     // Adjust for leap years
+  //     const dobThisYear = new Date(now.getFullYear(), dob.getMonth(), dob.getDate());
+  //     if (now < dobThisYear) {
+  //       years--;
+  //     }
+      
+  //     setAge(years);
+  //   };
+  //   calculateAge(data.date);
+  // },[data.date])
+  
+
+  
+ 
+ 
+  
   return (
     <Wrapper>
       <div className="">
         <div className="row  mx-1 p-1 border rounded" id="section3">
-        
           <ul className="nav nav-tabs" id="myTab" role="tablist">
             <li className="nav-item" role="presentation">
               <button
@@ -36,7 +64,6 @@ function Form() {
                 Book Appointment
               </button>
             </li>
-            
 
             <div className="tab-content" id="myTabContent">
               <div
@@ -51,7 +78,6 @@ function Form() {
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-outline" id="form1">
-                          
                           <label className="form-label" for="form6Example1">
                             Patient name
                           </label>
@@ -60,55 +86,45 @@ function Form() {
                             id="form6Example1"
                             className="form-control"
                           />
-
                         </div>
                       </div>
                       <div className="col-sm-6 ">
                         <div className="form-outline">
-                            <label className="form-label" for="form6Example2">
+                          <label className="form-label" for="form6Example2">
                             Gender
-                          </label> 
-                          
-                           <input
+                          </label>
+
+                          <input
                             type="text"
                             id="form6Example2"
                             className="form-control"
-                          
                           />
-                      
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-outline">
-                           <label className="form-label" for="form6Example1">
+                          <label className="form-label" for="form6Example1">
                             Moblie
                           </label>
-                      <input
-                        required
-                   
-                        type="text"
-                        className="form-control"
-                        placeholder=""
-                       
-                        maxLength={10}
-                        
-                      />
-                           
-                        
-                        
+                          <input
+                            required
+                            type="text"
+                            className="form-control"
+                            placeholder=""
+                            maxLength={10}
+                          />
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-outline" id="form1">
-                         <label className="form-label" for="form6Example2">
+                          <label className="form-label" for="form6Example2">
                             City
                           </label>
-                           <input
+                          <input
                             type="text"
                             id="form6Example2"
                             className="form-control"
                           />
-                          
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -116,86 +132,80 @@ function Form() {
                           <label className="form-label" for="form6Example1">
                             Address
                           </label>
-                           <input
+                          <input
                             type="text"
                             id="form6Example1"
                             className="form-control"
                           />
-                         
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-outline">
-                            <label className="form-label" for="form6Example2">
+                          <label className="form-label" for="form6Example2">
                             Contact Person
-                          </label> 
-                          <input
-                            type="text"
-                            id="form6Example2"
-                            className="form-control"
-                          />
-                       
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-outline">
-                           <label className="form-label" for="form6Example1">
-                            Blood Group
-                          </label> 
-                          <input
-                            type="text"
-                            id="form6Example1"
-                            className="form-control"
-                          />
-                        
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-outline">
-                         <label className="form-label" for="form6Example2">
-                            Contact Person Name
                           </label>
-                           <input
+                          <input
                             type="text"
                             id="form6Example2"
                             className="form-control"
                           />
-                          
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-outline">
                           <label className="form-label" for="form6Example1">
-                            Date of Birth
-                          </label> 
+                            Blood Group
+                          </label>
                           <input
                             type="text"
                             id="form6Example1"
                             className="form-control"
                           />
-                         
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-outline">
-                              <label className="form-label" for="form6Example2">
-                            Age
-                          </label> 
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
-                          
+                          <label className="form-label" for="form6Example2">
+                            Contact Person Name
+                          </label>
                           <input
                             type="text"
                             id="form6Example2"
                             className="form-control"
                           />
-                     
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-outline">
+                          <label
+                            className="form-label"
+                            for="form6Example1"
+                            
+                          >
+                            Date of Birth
+                          </label>
+                          <input
+                            type="date"
+                            id="form6Example1"
+                            className="form-control"
+                            value={data.date}
+                            onChange={(e) => {
+                              setData(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-outline">
+                          <label className="form-label" for="form6Example2">
+                            Age
+                          </label>
+
+                          <input
+                            type="text"
+                            id="form6Example2"
+                            className="form-control"
+                          />
                         </div>
                       </div>
                       <div className="formbtn">
@@ -216,74 +226,86 @@ function Form() {
                 tabindex="0"
               >
                 <ul className="list-group">
-                  <input class="form-control mr-sm-2 mt-3 mb-2 w-50 m-auto" type="search" placeholder="Search" aria-label="Search"/>
+                  <input
+                    class="form-control mr-sm-2 mt-3 mb-2 w-50 m-auto"
+                    type="search"
+                    placeholder="Search"
+                    aria-label="Search"
+                  />
                   <li className="list-group-item">
-
                     <div className="row">
-                      <div className="col-sm-12">
+                      <div className="col-sm-6">
                         <div className="form-outline" id="form1">
-                          <input
-                            type="text"
-                            id="form6Example1"
-                            className="form-control"
-                          />
-
-                          <label className="form-label" for="form6Example1">
+                        <label className="form-label" for="form6Example1">
                             Patient name
                           </label>
-                        </div>
-                      </div>
-                      <div className="col-sm-12 ">
-                        <div className="form-outline">
                           <input
                             type="text"
-                            id="form6Example2"
+                            id="form6Example1"
                             className="form-control"
                           />
-                          <label className="form-label" for="form6Example2">
+
+                         
+                        </div>
+                      </div>
+                      <div className="col-sm-6 ">
+                        <div className="form-outline">
+                        <label className="form-label" for="form6Example2">
                             Date&Time
                           </label>
-                        </div>
-                      </div>
-                      <div className="col-sm-12">
-                        <div className="form-outline">
-                          <input
-                            type="text"
-                            id="form6Example1"
-                            className="form-control"
-                          />
-                          <label className="form-label" for="form6Example1">
-                            Doctor
-                          </label>
-                        </div>
-                      </div>
-                      <div className="col-sm-12">
-                        <div className="form-outline" id="form1">
                           <input
                             type="text"
                             id="form6Example2"
                             className="form-control"
                           />
-                          <label className="form-label" for="form6Example2">
-                            Add Treatment
-                          </label>
+                         
                         </div>
                       </div>
-                      <div className="col-sm-12">
+                      <div className="col-sm-6">
                         <div className="form-outline">
+                        <label className="form-label" for="form6Example1">
+                            Doctor
+                          </label>
                           <input
                             type="text"
                             id="form6Example1"
                             className="form-control"
                           />
-                          <label className="form-label" for="form6Example1">
-                            Notes
-                          </label>
+                          
                         </div>
                       </div>
+                      <div className="col-sm-6">
+                        <div className="form-outline" id="form1">
+                        <label className="form-label" for="form6Example2">
+                            Add Treatment
+                          </label>
+                          <input
+                            type="text"
+                            id="form6Example2"
+                            className="form-control"
+                          />
+                          
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-outline">
+                        <label className="form-label" for="form6Example1">
+                            Notes
+                          </label>
+                          <input
+                            type="text"
+                            id="form6Example1"
+                            className="form-control"
+                          />
+                         
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        
+                      </div>
+
                       <div className="col-sm-3">
                         <div className="form-outline">
-                          
                           <label className="form-label" for="form6Example1">
                             Doctor :
                           </label>
@@ -321,10 +343,9 @@ function Form() {
                           </label>
                         </div>
                       </div>
-                    
+
                       <div className="col-sm-3">
                         <div className="form-outline">
-                          
                           <label className="form-label" for="form6Example1">
                             Patient :
                           </label>
@@ -373,8 +394,6 @@ function Form() {
                   </li>
                 </ul>
               </div>
-           
-              
             </div>
           </ul>
         </div>

@@ -74,7 +74,21 @@ const AppointTable = () => {
               <td>{country.mobile}</td>
               <td>{country.timing}</td>
               <td>{country.status}</td>
-              <td>{country.action}</td>
+              <td><div className="dropdown">
+  <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Action
+  </button>
+  <ul className="dropdown-menu">
+  <li><a className="dropdown-item mx-0" href="#">Checked-In</a></li>
+  <li><a className="dropdown-item mx-0" href="#">Checked-Out</a></li>
+  <li><a className="dropdown-item mx-0" href="#">Complete</a></li>
+  <li><a className="dropdown-item mx-0" href="#">Edit Appointment</a></li>
+    <li><a className="dropdown-item mx-0" href="#">Cancle Appointment</a></li>
+  
+    <li><a className="dropdown-item mx-0" href="#"></a></li>
+ 
+  </ul>
+</div></td>
             </tr>
           ))}
         </tbody>

@@ -126,15 +126,15 @@ function BillSection() {
            <td>1800</td>
            <td>Paid</td>
            <td>
-           <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+           <div className="dropdown">
+  <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action
   </button>
-  <ul class="dropdown-menu">
-  <li><a class="dropdown-item mx-0" href="#"><Detail/></a></li>
-    <li><a class="dropdown-item mx-0 " href="#"><Editbill/></a></li>
+  <ul className="dropdown-menu">
+  <li><a className="dropdown-item mx-0" href="#"><Detail/></a></li>
+    <li><a className="dropdown-item mx-0 " href="#"><Editbill/></a></li>
   
-    <li><a class="dropdown-item mx-0" href="#"><Makepayment/></a></li>
+    <li><a className="dropdown-item mx-0" href="#"><Makepayment/></a></li>
   
   </ul>
 </div>
@@ -154,15 +154,15 @@ function BillSection() {
            <td>0</td>
            <td>1800</td>
            <td>Paid</td>
-           <td>      <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+           <td>      <div className="dropdown">
+  <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action
   </button>
-  <ul class="dropdown-menu">
-  <li><a class="dropdown-item mx-0" href="#"><Detail/></a></li>
-    <li><a class="dropdown-item mx-4 " href="#"><Editbill/></a></li>
+  <ul className="dropdown-menu">
+  <li><a className="dropdown-item mx-0" href="#"><Detail/></a></li>
+    <li><a className="dropdown-item mx-4 " href="#"><Editbill/></a></li>
   
-    <li><a class="dropdown-item mx-0" href="#"><Makepayment/></a></li>
+    <li><a className="dropdown-item mx-0" href="#"><Makepayment/></a></li>
  
   </ul>
 </div></td>
@@ -182,15 +182,15 @@ function BillSection() {
            <td>0</td>
            <td>1800</td>
            <td>Paid</td>
-           <td>      <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+           <td>      <div className="dropdown">
+  <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action
   </button>
-  <ul class="dropdown-menu">
-  <li><a class="dropdown-item mx-0" href="#"><Detail/></a></li>
-    <li><a class="dropdown-item mx-2 " href="#"><Editbill/></a></li>
+  <ul className="dropdown-menu">
+  <li><a className="dropdown-item mx-0" href="#"><Detail/></a></li>
+    <li><a className="dropdown-item mx-2 " href="#"><Editbill/></a></li>
   
-    <li><a class="dropdown-item mx-0" href="#"><Makepayment/></a></li>
+    <li><a className="dropdown-item mx-0" href="#"><Makepayment/></a></li>
     
   </ul>
 </div></td>

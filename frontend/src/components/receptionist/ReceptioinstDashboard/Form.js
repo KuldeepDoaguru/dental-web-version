@@ -34,7 +34,7 @@ function Form() {
   return (
     <Wrapper>
       <div className="">
-        <div className="row  mx-1 p-1 border rounded" id="section3">
+        <div className="row  mx-1 p-1 border rounded bg-white" id="section3">
           <ul className="nav nav-tabs" id="myTab" role="tablist">
             <li className="nav-item" role="presentation">
               <button
@@ -226,13 +226,14 @@ function Form() {
                 tabindex="0"
               >
                 <ul className="list-group">
+                 
+                  <li className="list-group-item">
                   <input
                     class="form-control mr-sm-2 mt-3 mb-2 w-50 m-auto"
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
                   />
-                  <li className="list-group-item">
                     <div className="row">
                       <div className="col-sm-6">
                         <div className="form-outline" id="form1">

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function Detail() {
+function AppDetail({props}) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -145,7 +145,7 @@ function Detail() {
   )
 }
 
-export default Detail
+export default AppDetail;
 const Wrapper = styled.div`
 
 

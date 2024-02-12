@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import Calendar from 'react-calendar';
 import "react-calendar/dist/Calendar.css";
+import { IoArrowBackCircle } from "react-icons/io5";
 
 import styled from 'styled-components';
+import Detail from '../Bill/Detail';
+import AppDetail from './AppDetails';
 
 
 function Calender1() {
@@ -24,17 +27,19 @@ function Calender1() {
   console.log(value)
   return (
    <Wrapper>
-    <div><p className='text-center'>View summary by date
+    <div><h6 className='text-center'>View summary by date
       
-      </p></div>
+      </h6></div>
     <div className={isDisplay?"d-none" : "d-block"}>
     <div className="cal "> <Calendar onChange={onChange} onClickDay={()=>{setIsDisplay(true)}} value={value} /></div>
     </div>
   
   
   <div className={isDisplay?"d-block" : "d-none"}>
-    <div className='w-50 mx-auto mt-1 mb-1'>
-    <select className="form-select">
+    <div className=' mx-auto
+     mt-1 mb-1 d-flex justify-content-around'>
+      <div className='w-50'><span className='backIcon' onClick={()=>{setIsDisplay(false)}}><IoArrowBackCircle /></span></div>
+   <div className='w-50'> <select className="form-select">
       <option value="">Dr. Arun</option>
       <option value="">Dr. Arun</option>
       <option value="">Dr. Arun</option>
@@ -43,12 +48,13 @@ function Calender1() {
      
     </select>
     </div>
-    <div className='text-center my-1'>
+    </div>
+    <div className='text-end my-1'>
       <input type="date"  onChange={(e)=>{setDate(e.target.value)}} value={date}/>
     </div>
     <div className='d-flex justify-content-around align-items-center'>
-    <div className='bg-success'><p className='p-1 my-auto' >Scheduled</p></div>
-    <div  className='bg-warning'><p className='p-1 my-auto'>Unscheduled</p></div>
+    <div className='bg-success mb-2'><p className='p-1 my-auto ' >Scheduled</p></div>
+    <div  className='bg-warning mb-2'><p className='p-1 my-auto '>Unscheduled</p></div>
     </div>
    
   <div className="table-responsive" id="tab">
@@ -57,7 +63,7 @@ function Calender1() {
           
             <tbody>
               <tr>
-                <td className='bg-success'>10:00 AM</td>
+                <td className='bg-success' >10:00 AM </td>
                 <td className='bg-success'>10:15 AM</td>
                 <td>10:30 AM</td>
                 <td>10:45 AM</td>
@@ -141,6 +147,8 @@ function Calender1() {
 
 export default Calender1
 const Wrapper = styled.div` 
+background-color: white;
+padding:10px;
 .cal{
   @media screen and (max-width: 768px) {
       width: 20rem
@@ -150,7 +158,7 @@ const Wrapper = styled.div`
     }
 }
 .react-calendar{
-  height: 30.8rem;
+  height: 28.8rem;
     width: 415px;
     max-width: 100%;
     background: white;
@@ -161,6 +169,14 @@ const Wrapper = styled.div`
       height: 20rem;
       line-height: 1rem;
     }
+}
+.backIcon{
+ font-size: 30px;
+
+}
+td{
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
    
    ` 

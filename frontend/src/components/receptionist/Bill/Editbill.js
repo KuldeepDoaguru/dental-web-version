@@ -19,7 +19,7 @@ function Editbill() {
        Edit
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} size='lg' onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Bill</Modal.Title>
         </Modal.Header>

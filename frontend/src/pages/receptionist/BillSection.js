@@ -159,7 +159,7 @@ function BillSection() {
     Action
   </button>
   <ul className="dropdown-menu">
-  <li><a className="dropdown-item mx-0" href="#"><Detail/></a></li>
+  <li><a className="dropdown-item mx-0 detail" href="#"><Detail/></a></li>
     <li><a className="dropdown-item mx-4 " href="#"><Editbill/></a></li>
   
     <li><a className="dropdown-item mx-0" href="#"><Makepayment/></a></li>
@@ -300,4 +300,5 @@ td{
    
     }
 }
+
 `

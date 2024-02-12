@@ -18,7 +18,7 @@ const Login = () => {
                     <div className="row justify-content-center">
                       <div className="col-md-10 col-lg-6 col-xl-5 order-2">
                         <p className="text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                          Receptionist Login
+                          Login
                         </p>
 
                         <form className="mx-1 mx-md-4">

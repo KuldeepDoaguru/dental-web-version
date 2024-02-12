@@ -55,9 +55,9 @@ const Header = () => {
                   </a>
                   <ul className="dropdown-menu second-dropdown">
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <Link className="dropdown-item" to="/super-admin-profile">
                         View Profile
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <hr className="dropdown-divider" />

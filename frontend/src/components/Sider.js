@@ -3,6 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { MdOutlineInventory } from "react-icons/md";
 import { FaCodeBranch } from "react-icons/fa";
+import { TbReportSearch } from "react-icons/tb";
+import { IoIosPeople } from "react-icons/io";
 
 const Sider = () => {
   const location = useLocation();
@@ -119,9 +121,28 @@ const Sider = () => {
               </Link>
             </li>
             <hr />
-
             <li>
-              <Link to="/lab" className={`link-div ${getSidebarClass("/lab")}`}>
+              <Link
+                to="/manage-staff"
+                className={`link-div ${getSidebarClass("/manage-staff")}`}
+              >
+                <div>
+                  {/* <i className="fs-4 bi bi-camera-video"></i> */}
+                  <IoIosPeople className="fs-4 bi bi-camera-video" />
+                </div>
+                <div>
+                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                    Manage Staff
+                  </h3>
+                </div>
+              </Link>
+            </li>
+            <hr />
+            <li>
+              <Link
+                to="/lab-setting"
+                className={`link-div ${getSidebarClass("/lab-setting")}`}
+              >
                 <div>
                   <i className="fs-4 bi bi-file-medical"></i>
                 </div>
@@ -136,15 +157,16 @@ const Sider = () => {
 
             <li>
               <Link
-                to="/video"
-                className={`link-div ${getSidebarClass("/video")}`}
+                to="/reports"
+                className={`link-div ${getSidebarClass("/reports")}`}
               >
                 <div>
-                  <i className="fs-4 bi bi-camera-video"></i>
+                  {/* <i className="fs-4 bi bi-camera-video"></i> */}
+                  <TbReportSearch className="fs-4 bi bi-camera-video" />
                 </div>
                 <div>
                   <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                    Video
+                    Report
                   </h3>
                 </div>
               </Link>
@@ -152,14 +174,19 @@ const Sider = () => {
             <hr />
             <li>
               <div className={`link-div ${getSidebarClass("/settings")}`}>
-                <div>
-                  <i className="fs-4 bi bi-gear"></i>
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                    Settings
-                  </h3>
-                </div>
+                <Link
+                  to="/clinic-setting"
+                  className={`link-div ${getSidebarClass("/clinic-setting")}`}
+                >
+                  <div>
+                    <i className="fs-4 bi bi-gear"></i>
+                  </div>
+                  <div>
+                    <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                      Settings
+                    </h3>
+                  </div>
+                </Link>
               </div>
             </li>
             <hr />

@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Sider from "../components/Sider";
 import { Link } from "react-router-dom";
 
 const Branches = () => {
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({ notice: "" });
+  const [popupVisible, setPopupVisible] = useState(false);
+
+  const openUpdatePopup = (index, item) => {
+    setSelectedItem(item);
+    setShowPopup(true);
+  };
+
+  const closeUpdatePopup = () => {
+    setShowPopup(false);
+  };
+
   return (
     <>
       <Container>
@@ -38,6 +51,72 @@ const Branches = () => {
                         </Link>
                       </div>
                     </div>
+
+                    {/* pop-up for creating notice */}
+                    <div
+                      className={`popup-container${showPopup ? " active" : ""}`}
+                    >
+                      <div className="popup">
+                        <h2>Update Branch Details</h2>
+                        <form
+                          className="d-flex flex-column"
+                          // onSubmit={handleNoticeSubmit}
+                        >
+                          <input
+                            type="text"
+                            placeholder="branch name"
+                            // value={noticeData.linkURL}
+                            // onChange={(e) =>
+                            //   setNoticeData({
+                            //     ...noticeData,
+                            //     linkURL: e.target.value,
+                            //   })
+                            // }
+                          />
+                          <textarea
+                            placeholder="update branch address"
+                            rows="4"
+                            cols="50"
+                            required
+                            // value={noticeData.noticeText}
+                            // onChange={(e) =>
+                            //   setNoticeData({
+                            //     ...noticeData,
+                            //     noticeText: e.target.value,
+                            //   })
+                            // }
+                          />
+                          <input
+                            type="text"
+                            placeholder="update branch contact number"
+                            // value={noticeData.linkURL}
+                            // onChange={(e) =>
+                            //   setNoticeData({
+                            //     ...noticeData,
+                            //     linkURL: e.target.value,
+                            //   })
+                            // }
+                          />
+                          <div className="d-flex justify-content-evenly">
+                            <button
+                              type="submit"
+                              className="btn btn-success mt-2"
+                            >
+                              update
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-danger mt-2"
+                              onClick={closeUpdatePopup}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+
+                    {/* popup for updating notice */}
 
                     <h2 className="text-center"> Branch List </h2>
                     <div className="container mt-3">
@@ -113,7 +192,10 @@ const Branches = () => {
                                 className="table-small"
                                 style={{ width: "10%" }}
                               >
-                                <button className="btn btn-warning">
+                                <button
+                                  className="btn btn-warning"
+                                  onClick={() => openUpdatePopup()}
+                                >
                                   Edit Details
                                 </button>
                               </td>
@@ -142,4 +224,28 @@ const Branches = () => {
 };
 
 export default Branches;
-const Container = styled.div``;
+const Container = styled.div`
+  .popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-container.active {
+    display: flex;
+    background-color: #00000075;
+  }
+
+  .popup {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+`;

@@ -157,8 +157,8 @@ const Sider = () => {
 
             <li>
               <Link
-                to="/reports"
-                className={`link-div ${getSidebarClass("/reports")}`}
+                to="/reports-dashboard"
+                className={`link-div ${getSidebarClass("/reports-dashboard")}`}
               >
                 <div>
                   {/* <i className="fs-4 bi bi-camera-video"></i> */}

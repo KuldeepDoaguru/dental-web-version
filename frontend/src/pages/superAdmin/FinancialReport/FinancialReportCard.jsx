@@ -6,8 +6,16 @@ import FinancialTables from "./FinancialTables";
 import styled from "styled-components";
 import Header from "../../../components/Header";
 import Sider from "../../../components/Sider";
+import { useLocation } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const FinancialReportCard = () => {
+  const location = useLocation();
+
+  const goBack = () => {
+    window.history.go(-1);
+  };
+
   return (
     <>
       <Container>
@@ -41,7 +49,11 @@ const FinancialReportCard = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="container-fluid mt-3">
+                  <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
                   <FinancialReportHead />
                   <FinancialReports />
                   <FinancialCard />

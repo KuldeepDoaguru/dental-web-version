@@ -1,29 +1,29 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import Sider from "../../../components/Sider";
 import Header from "../../../components/Header";
-import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
 
-const PrescriptionTemplate = () => {
-  const [showAddPreTemp, setShowAddPreTemp] = useState(false);
-  const [showEditPreTemp, setShowEditPreTemp] = useState(false);
+const CalenderSetting = () => {
+  const [showAddBlockDays, setShowAddBlockDays] = useState(false);
+  const [showEditBlockDays, setShowEditBlockDays] = useState(false);
 
-  const openAddPreTempPopup = (index, item) => {
+  const openAddBlockDaysPopup = (index, item) => {
     // setSelectedItem(item);
     console.log("open pop up");
-    setShowAddPreTemp(true);
+    setShowAddBlockDays(true);
   };
 
-  const openEditPreTempPopup = (index, item) => {
+  const openEditBlockDaysPopup = (index, item) => {
     // setSelectedItem(item);
     console.log("open pop up");
-    setShowEditPreTemp(true);
+    setShowEditBlockDays(true);
   };
 
   const closeUpdatePopup = () => {
-    setShowAddPreTemp(false);
-    setShowEditPreTemp(false);
+    setShowAddBlockDays(false);
+    setShowEditBlockDays(false);
   };
 
   return (
@@ -60,68 +60,129 @@ const PrescriptionTemplate = () => {
                   </div>
                 </div>
                 <div className="container mt-3">
-                  <h3 className="text-center">
-                    {" "}
-                    Prescription Template Settings
-                  </h3>
-                  <div className="mid-box">
-                    <div className="row mt-5">
-                      <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
-                        <input
-                          type="text"
-                          placeholder="search here"
-                          className="inputser"
-                        />
-                        <button className="mx-2 btn btn-info">
-                          <FaSearch />
-                        </button>
-                      </div>
-                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
-                        <button
-                          className="btn btn-info"
-                          onClick={() => openAddPreTempPopup()}
-                        >
-                          Add Prescription Template
-                        </button>
-                      </div>
+                  <div className="banner-mid">
+                    <div>
+                      <h3 className="text-light">Calender Settings</h3>
+                    </div>
+                    <div>
+                      <button className="btn btn-info">Back to settings</button>
                     </div>
                   </div>
+                  <div className="container calender-time">
+                    <h6 className="fw-bold mx-2">Calender Time : </h6>
+                    <input type="time" /> <p className="mx-2">To</p>
+                    <input type="time" />
+                  </div>
+                  <div className="appointment-slot-time">
+                    <div>
+                      {" "}
+                      <p className="fw-bold">Appointment Slot Time : </p>
+                    </div>
+                    <div className="d-flex mx-2">
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="flexRadioDefault"
+                          id="flexRadioDefault1"
+                        />
+                        <label class="form-check-label" for="flexRadioDefault1">
+                          10 min
+                        </label>
+                      </div>
+                      <div class="form-check mx-2">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="flexRadioDefault"
+                          id="flexRadioDefault2"
+                          checked
+                        />
+                        <label class="form-check-label" for="flexRadioDefault2">
+                          15 min
+                        </label>
+                      </div>
+                      <div class="form-check">
+                        <input
+                          class="form-check-input"
+                          type="radio"
+                          name="flexRadioDefault"
+                          id="flexRadioDefault2"
+                          checked
+                        />
+                        <label class="form-check-label" for="flexRadioDefault2">
+                          30 min
+                        </label>
+                      </div>
+                    </div>
+                    <div></div>
+                  </div>
+
                   <div className="container mt-3">
-                    <div className="banner-mid">
+                    <div className="calender-time mb-2">
                       <div>
-                        <h6 className="text-light">
-                          Prescription Template List
+                        <h6 className="text-dark fw-bold">
+                          Block Days On Calender :
                         </h6>
                       </div>
                       <div>
-                        <p className="fw-bold text-light">Total - 30</p>
+                        <button
+                          className="btn btn-info mx-2"
+                          onClick={() => openAddBlockDaysPopup()}
+                        >
+                          Add Block Days
+                        </button>
                       </div>
                     </div>
                     <div class="table-responsive rounded">
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno">Template ID</th>
-                            <th className="table-small">Template Name</th>
-                            <th className="table-small">Drug</th>
-                            <th className="table-small">Strength</th>
-                            <th className="table-small">Instructions</th>
-                            <th className="table-small">Actions</th>
+                            <th className="table-sno" style={{ width: "10%" }}>
+                              Block Days
+                            </th>
+                            <th
+                              className="table-small"
+                              style={{ width: "20%" }}
+                            >
+                              Block Time
+                            </th>
+                            <th
+                              className="table-small"
+                              style={{ width: "20%" }}
+                            >
+                              Notes
+                            </th>
+                            <th
+                              className="table-small"
+                              style={{ width: "10%" }}
+                            >
+                              Actions
+                            </th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Maleria</td>
-                            <td className="table-small">Paracetamol</td>
-                            <td className="table-small">400 Mg</td>
-                            <td className="table-small">
-                              Take Only incase of fever
+                            <td className="table-sno" style={{ width: "10%" }}>
+                              15 Feb 2024
                             </td>
+                            <td
+                              className="table-small"
+                              style={{ width: "20%" }}
+                            >
+                              Full Day
+                            </td>
+                            <td
+                              className="table-small"
+                              style={{ width: "20%" }}
+                            >
+                              Govt Holiday
+                            </td>
+
                             <td>
                               <button
                                 className="btn btn-warning"
-                                onClick={() => openEditPreTempPopup()}
+                                onClick={() => openEditBlockDaysPopup()}
                               >
                                 Edit
                               </button>
@@ -131,17 +192,26 @@ const PrescriptionTemplate = () => {
                             </td>
                           </tr>
                           <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Maleria</td>
-                            <td className="table-small">Paracetamol</td>
-                            <td className="table-small">400 Mg</td>
-                            <td className="table-small">
-                              Take Only incase of fever
+                            <td className="table-sno" style={{ width: "10%" }}>
+                              15 Feb 2024
                             </td>
+                            <td
+                              className="table-small"
+                              style={{ width: "20%" }}
+                            >
+                              Full Day
+                            </td>
+                            <td
+                              className="table-small"
+                              style={{ width: "20%" }}
+                            >
+                              Govt Holiday
+                            </td>
+
                             <td>
                               <button
                                 className="btn btn-warning"
-                                onClick={() => openEditPreTempPopup()}
+                                onClick={() => openEditBlockDaysPopup()}
                               >
                                 Edit
                               </button>
@@ -151,17 +221,26 @@ const PrescriptionTemplate = () => {
                             </td>
                           </tr>
                           <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Maleria</td>
-                            <td className="table-small">Paracetamol</td>
-                            <td className="table-small">400 Mg</td>
-                            <td className="table-small">
-                              Take Only incase of fever
+                            <td className="table-sno" style={{ width: "10%" }}>
+                              15 Feb 2024
                             </td>
+                            <td
+                              className="table-small"
+                              style={{ width: "20%" }}
+                            >
+                              Full Day
+                            </td>
+                            <td
+                              className="table-small"
+                              style={{ width: "20%" }}
+                            >
+                              Govt Holiday
+                            </td>
+
                             <td>
                               <button
                                 className="btn btn-warning"
-                                onClick={() => openEditPreTempPopup()}
+                                onClick={() => openEditBlockDaysPopup()}
                               >
                                 Edit
                               </button>
@@ -181,16 +260,18 @@ const PrescriptionTemplate = () => {
           {/* ***************************************************************************************************** */}
           {/* other pop-up */}
           {/* pop-up for adding lab */}
-          <div className={`popup-container${showAddPreTemp ? " active" : ""}`}>
+          <div
+            className={`popup-container${showAddBlockDays ? " active" : ""}`}
+          >
             <div className="popup">
-              <h4 className="text-center">Add Prescription Template</h4>
+              <h4 className="text-center">Add Drugs</h4>
               <form
                 className="d-flex flex-column"
                 // onSubmit={handleNoticeSubmit}
               >
                 <input
-                  type="text"
-                  placeholder="Add Template Name"
+                  type="date"
+                  placeholder="select date"
                   className="rounded p-2"
                   // value={noticeData.linkURL}
                   // onChange={(e) =>
@@ -203,7 +284,7 @@ const PrescriptionTemplate = () => {
                 <br />
                 <input
                   type="text"
-                  placeholder="Add Drug Name"
+                  placeholder="Add hours"
                   className="rounded p-2"
                   // value={noticeData.linkURL}
                   // onChange={(e) =>
@@ -216,20 +297,7 @@ const PrescriptionTemplate = () => {
                 <br />
                 <input
                   type="text"
-                  placeholder="Add Strength"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
-                <br />
-                <input
-                  type="text"
-                  placeholder="Add Instruction"
+                  placeholder="Add Notes"
                   className="rounded p-2"
                   // value={noticeData.linkURL}
                   // onChange={(e) =>
@@ -263,16 +331,18 @@ const PrescriptionTemplate = () => {
           {/* ***************************************************************************************************** */}
           {/* other pop-up */}
           {/* pop-up for adding lab */}
-          <div className={`popup-container${showEditPreTemp ? " active" : ""}`}>
+          <div
+            className={`popup-container${showEditBlockDays ? " active" : ""}`}
+          >
             <div className="popup">
-              <h4 className="text-center">Edit Prescription Template</h4>
+              <h4 className="text-center">Edit Drugs Details</h4>
               <form
                 className="d-flex flex-column"
                 // onSubmit={handleNoticeSubmit}
               >
                 <input
-                  type="text"
-                  placeholder="Update Template Name"
+                  type="date"
+                  placeholder="select date"
                   className="rounded p-2"
                   // value={noticeData.linkURL}
                   // onChange={(e) =>
@@ -285,7 +355,7 @@ const PrescriptionTemplate = () => {
                 <br />
                 <input
                   type="text"
-                  placeholder="Update Drug Name"
+                  placeholder="Add hours"
                   className="rounded p-2"
                   // value={noticeData.linkURL}
                   // onChange={(e) =>
@@ -298,20 +368,7 @@ const PrescriptionTemplate = () => {
                 <br />
                 <input
                   type="text"
-                  placeholder="Update strength"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
-                <br />
-                <input
-                  type="text"
-                  placeholder="Update Instruction"
+                  placeholder="Add Notes"
                   className="rounded p-2"
                   // value={noticeData.linkURL}
                   // onChange={(e) =>
@@ -347,26 +404,29 @@ const PrescriptionTemplate = () => {
   );
 };
 
-export default PrescriptionTemplate;
+export default CalenderSetting;
 const Container = styled.div`
-  .inputser {
-    border-radius: 1.5rem;
-    padding: 0.5rem;
-    width: 80%;
-  }
-
-  .navlink.active {
-    background-color: red;
-    color: white;
-    border-radius: 1rem;
-  }
-
   .banner-mid {
     background-color: #004aad;
     padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  .calender-time {
+    display: flex;
+    margin-top: 1rem;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
+  .appointment-slot-time {
+    display: flex;
+    margin-top: 1rem;
+    align-content: center;
+    justify-content: center;
+    align-items: flex-start;
   }
 
   .popup-container {

@@ -3,8 +3,15 @@ import styled from "styled-components";
 import Header from "../../Header";
 import Sider from "../../Sider";
 import Card from "../Card";
+import { useLocation } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const DoctorProfile = () => {
+  const location = useLocation();
+
+  const goBack = () => {
+    window.history.go(-1);
+  };
   return (
     <>
       <Container>
@@ -39,6 +46,9 @@ const DoctorProfile = () => {
                   </div>
                 </div>
                 <div className="container mt-4">
+                  <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
                   <Card />
                 </div>
                 <div className="container shadow p-3 mt-5 bg-body rounded">

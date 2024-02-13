@@ -30,9 +30,9 @@ const DoctorList = () => {
                       </div>
                     </div>
                     <div>
-                      <Link to="/register-doctor">
+                      {/* <Link to="/register-doctor">
                         <button className="btn btn-success">Add Doctor</button>
-                      </Link>
+                      </Link> */}
                     </div>
                   </div>
                 </div>

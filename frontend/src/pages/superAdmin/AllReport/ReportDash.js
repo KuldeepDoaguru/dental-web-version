@@ -1,10 +1,10 @@
 import React from "react";
-import styled from "styled-components";
-import Header from "../../components/Header";
-import Sider from "../../components/Sider";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+import Sider from "../../../components/Sider";
+import Header from "../../../components/Header";
 
-const ClinicSetting = () => {
+const ReportDash = () => {
   return (
     <>
       <Container>
@@ -46,7 +46,7 @@ const ClinicSetting = () => {
                       <div className="col-12">
                         <nav class="navbar navbar-expand-lg bg-body-tertiary">
                           <div class="container d-flex justify-content-center">
-                            <h2 className="">Clinic Settings</h2>
+                            <h2 className="">Reports Dashboard</h2>
                           </div>
                         </nav>
                       </div>
@@ -56,21 +56,11 @@ const ClinicSetting = () => {
                         <div className="col-12">
                           <div class="row g-5">
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/lab-setting">
+                              <Link to="/finance-reports">
                                 <div className="card">
                                   <div class="card-body d-flex justify-content-center text-light align-items-center">
-                                    <h4 className="text-light">Lab</h4>
-                                  </div>
-                                </div>
-                              </Link>
-                            </div>
-
-                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
-                              <Link to="/calender-setting">
-                                <div className="card">
-                                  <div class="card-body">
-                                    <h4 className="d-flex justify-content-center text-light align-items-center">
-                                      Calender
+                                    <h4 className="text-light">
+                                      Financial Report
                                     </h4>
                                   </div>
                                 </div>
@@ -78,11 +68,23 @@ const ClinicSetting = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
-                              <Link to="/drug-setting">
+                              <Link to="/appointment-report">
+                                <div className="card">
+                                  <div class="card-body">
+                                    <h4 className="d-flex justify-content-center text-light align-items-center">
+                                      Appointment Report
+                                    </h4>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+
+                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
+                              <Link to="/Billing-report">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-light align-items-center">
-                                      DRUG
+                                      Billing Reports
                                     </h4>
                                   </div>
                                 </div>
@@ -90,11 +92,11 @@ const ClinicSetting = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/communication-setting">
+                              <Link to="/inventory-report">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-light align-items-center">
-                                      Communication
+                                      Inventory Reports
                                     </h4>
                                   </div>
                                 </div>
@@ -106,7 +108,7 @@ const ClinicSetting = () => {
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-light align-items-center">
-                                      Prescription Template
+                                      Employee Attendance Report
                                     </h4>
                                   </div>
                                 </div>
@@ -118,7 +120,40 @@ const ClinicSetting = () => {
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-light align-items-center">
-                                      Treatments
+                                      Employee Details Report
+                                    </h4>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                              <Link to="/treatment-setting">
+                                <div className="card">
+                                  <div class="card-body">
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Lab Details Report
+                                    </h4>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                              <Link to="/treatment-setting">
+                                <div className="card">
+                                  <div class="card-body">
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Lab Test Report
+                                    </h4>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                              <Link to="/treatment-setting">
+                                <div className="card">
+                                  <div class="card-body">
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Lab Task Report
                                     </h4>
                                   </div>
                                 </div>
@@ -139,7 +174,7 @@ const ClinicSetting = () => {
   );
 };
 
-export default ClinicSetting;
+export default ReportDash;
 const Container = styled.div`
   nav {
     background-color: #004aad;

@@ -25,6 +25,13 @@ import FinancialReportCard from "./pages/superAdmin/FinancialReport/FinancialRep
 import ManageStaff from "./pages/superAdmin/ManageStaff";
 import DrugSetting from "./pages/superAdmin/drug-setting/DrugSetting";
 import PrescriptionTemplate from "./pages/superAdmin/Prescription-Templates/PrescriptionTemplate";
+import CalenderSetting from "./pages/superAdmin/CalenderSettings/CalenderSetting";
+import TreatmentSetting from "./pages/superAdmin/TreatmentSetting/TreatmentSetting";
+import CommunicationSetting from "./pages/superAdmin/Communication-setting/CommunicationSetting";
+import ReportDash from "./pages/superAdmin/AllReport/ReportDash";
+import AppointmentReport from "./pages/superAdmin/AllReport/AppointmentReport";
+import BillingReport from "./pages/superAdmin/AllReport/BillingReport";
+import InventoryReport from "./pages/superAdmin/AllReport/InventoryReport";
 
 function App() {
   return (
@@ -48,11 +55,18 @@ function App() {
       <Route path="/clinic-setting" element={<ClinicSetting />} />
       <Route path="/lab-setting" element={<LabSetting />} />
       <Route path="/drug-setting" element={<DrugSetting />} />
+      <Route path="/calender-setting" element={<CalenderSetting />} />
+      <Route path="/treatment-setting" element={<TreatmentSetting />} />
+      <Route path="/communication-setting" element={<CommunicationSetting />} />
       <Route
         path="/prescription-templates"
         element={<PrescriptionTemplate />}
       />
-      <Route path="/reports" element={<FinancialReportCard />} />
+      <Route path="/reports-dashboard" element={<ReportDash />} />
+      <Route path="/finance-reports" element={<FinancialReportCard />} />
+      <Route path="/appointment-report" element={<AppointmentReport />} />
+      <Route path="/Billing-report" element={<BillingReport />} />
+      <Route path="/inventory-report" element={<InventoryReport />} />
       <Route path="/manage-staff" element={<ManageStaff />} />
       {/* super admin routes end  */}
     </Routes>

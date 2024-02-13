@@ -2,8 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import Header from "../../Header";
 import Sider from "../../Sider";
+import { useLocation } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const AddDoctor = () => {
+  const location = useLocation();
+
+  const goBack = () => {
+    window.history.go(-1);
+  };
   return (
     <>
       <Container>
@@ -38,6 +45,9 @@ const AddDoctor = () => {
                   </div>
                 </div>
                 <div className="container mt-3">
+                  <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
                   <h3 className="text-center">Register Doctor</h3>
                   <div className="container mt-3">
                     <form action="">

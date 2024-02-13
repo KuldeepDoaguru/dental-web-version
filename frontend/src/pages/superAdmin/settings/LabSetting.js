@@ -74,7 +74,7 @@ const LabSetting = () => {
                 <div className="container mt-3">
                   <h2 className="text-center">Lab Settings</h2>
                   <div className="mid-box">
-                    <div className="row mt-5">
+                    <div className="row mt-5 background">
                       <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                         <input
                           type="text"
@@ -86,20 +86,24 @@ const LabSetting = () => {
                         </button>
                       </div>
                       <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
-                        <button
-                          className="btn btn-info"
-                          onClick={() => openAddLabPopup()}
-                        >
-                          Add Lab
-                        </button>
+                        <div className="d-flex justify-content-end">
+                          <button
+                            className="btn btn-info"
+                            onClick={() => openAddLabPopup()}
+                          >
+                            Add Lab
+                          </button>
+                        </div>
                       </div>
                       <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
-                        <button
-                          className="btn btn-info"
-                          onClick={() => openAddLabTestPopup()}
-                        >
-                          Add Lab Test
-                        </button>
+                        <div className="d-flex justify-content-center">
+                          <button
+                            className="btn btn-info"
+                            onClick={() => openAddLabTestPopup()}
+                          >
+                            Add Lab Test
+                          </button>
+                        </div>
                       </div>
                       <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
                         <button
@@ -112,7 +116,7 @@ const LabSetting = () => {
                     </div>
                   </div>
                   {/* nav-items-start */}
-                  <div className="container-fluid mt-5 navsect">
+                  <div className="container-fluid mt-5 navsect background">
                     <Nav
                       className="d-flex justify-content-between side-cont"
                       activeKey={selectedTab}
@@ -444,5 +448,12 @@ const Container = styled.div`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .background {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: inset 0px 0px 4px #b1adad;
   }
 `;

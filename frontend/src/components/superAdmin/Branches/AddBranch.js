@@ -2,8 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import Header from "../../Header";
 import Sider from "../../Sider";
+import { useHistory, useLocation } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const AddBranch = () => {
+  const location = useLocation();
+
+  const goBack = () => {
+    window.history.go(-1);
+  };
   return (
     <>
       <Container>
@@ -18,6 +25,9 @@ const AddBranch = () => {
                 <div className="row d-flex justify-content-between mx-3">
                   <div className="col-12 col-md-12 mt-4">
                     <div className="">
+                      <button className="btn btn-success" onClick={goBack}>
+                        <IoMdArrowRoundBack /> Back
+                      </button>
                       <h2 className="text-center"> Create Branch </h2>
                       <div className="container">
                         <div className="row">

@@ -56,18 +56,18 @@ const HeadBar = () => {
                   </a>
                   <ul className="dropdown-menu second-dropdown">
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <a className="dropdown-item" href="/profileDashboard">
                         View Profile
                       </a>
                     </li>
-                    <li>
+                    {/* <li>
                       <hr className="dropdown-divider" />
-                    </li>
-                    <li>
+                    </li> */}
+                    {/* <li>
                       <a className="dropdown-item" href="/">
                         Logout
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </li>
 

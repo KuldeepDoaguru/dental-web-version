@@ -5,6 +5,11 @@ import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/superAdmin/Dashboard";
 import UniversalLogin from "./pages/UniversalLogin";
 import DoctorDashboard from "./pages/DoctorPage/DoctorDashboard";
+import Card from "./components/Doctor/Card/Card";
+import Profile from "./components/Doctor/Profile/Profile";
+import ProfileDashboard from "./components/Doctor/Profile/ProfileDashboard";
+import AppointTable from "./components/Doctor/Tables/AppointTable";
+import AllAppoint from "./components/Doctor/Appointment/AllAppoint";
 
 function App() {
   return (
@@ -16,6 +21,12 @@ function App() {
 
       {/* Doctor Routes start here  */}
       <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+      <Route path="/card" element={<Card />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/profileDashboard" element={<ProfileDashboard />} />
+      <Route path="/appointTable" element={<AppointTable />} />
+      <Route path="/appointTable" element={<AppointTable />} />
+      <Route path="/all-appoint" element={<AllAppoint />} />
       {/* Doctor Routes end here  */}
     </Routes>
   );

@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-// import Card from "../../components/superAdmin/dashboard/Card";
-import HeadBar from "../../components/Doctor/HeadBar";
-import SideBar from "../../components/Doctor/SideBar";
-import Card from "../../components/Doctor/Card/Card";
-import AppointTable from "../../components/Doctor/Tables/AppointTable";
+import HeadBar from "../HeadBar";
+import SideBar from "../SideBar";
+import Profile from "./Profile";
+import Card from "../Card/Card";
 
-const DoctorDashboard = () => {
+const ProfileDashboard = () => {
   return (
     <Wrapper>
       <HeadBar />
@@ -38,7 +37,7 @@ const DoctorDashboard = () => {
                 </div>
               </div>
               <div className="row d-flex justify-content-around ms-4">
-                <Card />
+                {/* <Card /> */}
                 {/* <div className="col-8 col-md-2 my-3 p-0">
                   <Card
                     title={"Total Patient"}
@@ -110,18 +109,17 @@ const DoctorDashboard = () => {
                 </div> */}
               </div>
               <div className="row">
-                <AppointTable />
+                <Profile />
               </div>
             </div>
           </div>
         </div>
       </div>
     </Wrapper>
-  );
-};
+  )
+}
 
-export default DoctorDashboard;
-
+export default ProfileDashboard;
 const Wrapper = styled.div`
   .main {
     height: 100%;

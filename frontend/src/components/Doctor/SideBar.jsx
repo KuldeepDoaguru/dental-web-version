@@ -61,9 +61,9 @@ const Sider = () => {
             <hr />
             <li>
               <Link
-                to="/super-admin-appointment"
+                to="/examination-Dashboard"
                 className={`link-div ${getSidebarClass(
-                  "/super-admin-appointment"
+                  "/examination-Dashboard"
                 )}`}
               >
                 <div>

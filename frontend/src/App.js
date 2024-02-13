@@ -10,6 +10,9 @@ import Profile from "./components/Doctor/Profile/Profile";
 import ProfileDashboard from "./components/Doctor/Profile/ProfileDashboard";
 import AppointTable from "./components/Doctor/Tables/AppointTable";
 import AllAppoint from "./components/Doctor/Appointment/AllAppoint";
+import PatientProfile from "./pages/DoctorPage/PatientProfile";
+import AllPatient from "./pages/DoctorPage/AllPatient";
+import ExaminationDashBoard from "./components/Doctor/Examination/ExaminationDashBoard";
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
       <Route path="/appointTable" element={<AppointTable />} />
       <Route path="/appointTable" element={<AppointTable />} />
       <Route path="/all-appoint" element={<AllAppoint />} />
+      <Route path="/Patient-profile" element={<PatientProfile />} />
+      <Route path="/all-patient" element={<AllPatient />} />
+      <Route path="/examination-Dashboard" element={<ExaminationDashBoard />} />
       {/* Doctor Routes end here  */}
     </Routes>
   );

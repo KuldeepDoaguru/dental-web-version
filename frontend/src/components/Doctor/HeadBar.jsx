@@ -55,10 +55,10 @@ const HeadBar = () => {
                     <FaUserAlt className="icon" />
                   </a>
                   <ul className="dropdown-menu second-dropdown">
-                    <li>
-                      <a className="dropdown-item" href="/profileDashboard">
+                    <li className="text-center">
+                      <Link to="/profileDashboard">
                         View Profile
-                      </a>
+                        </Link>
                     </li>
                     {/* <li>
                       <hr className="dropdown-divider" />
@@ -128,5 +128,9 @@ const Wrapper = styled.div`
     li {
       list-style: none !important;
     }
+  }
+  a{
+    text-decoration: none;
+    color: black;
   }
 `;

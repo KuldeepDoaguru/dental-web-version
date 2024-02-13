@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { IoPeople } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const Card = () => {
   return (
@@ -53,6 +54,7 @@ const Card = () => {
               </div>
             </div>
             <div className="col-lg-3 px-3">
+              <Link to="/all-patient">
               <div className="card">
                 <div className="icon">
                   <IoPeople  className="fs-1"/>
@@ -62,6 +64,7 @@ const Card = () => {
                   <h5 className="card-subtitle mb-2">119</h5>
                 </div>
               </div>
+              </Link>
             </div>
             <div className="col-lg-3 col-3">
               <div className="card">
@@ -120,5 +123,8 @@ const Wrapper = styled.div`
   .card-subtitle{
     text-align: center;
     color: white;
+  }
+  a{
+    text-decoration: none;
   }
 `;

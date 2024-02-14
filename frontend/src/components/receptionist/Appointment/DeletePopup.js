@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function DeletePopup() {
+function DeletePopup({onClose,slotInfo}) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -14,7 +14,7 @@ function DeletePopup() {
        Delete
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={true} onHide={onClose}>
         <Modal.Header closeButton>
           <Modal.Title>Are You Sure ?</Modal.Title>
         </Modal.Header>
@@ -22,7 +22,7 @@ function DeletePopup() {
           <Button variant="primary" onClick={handleClose}>
             Yes
           </Button>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={onClose}>
             No 
           </Button>
         </Modal.Footer>

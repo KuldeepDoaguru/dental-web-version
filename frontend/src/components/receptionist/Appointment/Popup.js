@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function Popup() {
+function Popup({ onClose, slotInfo }) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -17,7 +17,7 @@ function Popup() {
        
       </Button>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={true} onHide={onClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add New Appointment</Modal.Title>
         </Modal.Header>
@@ -30,7 +30,7 @@ function Popup() {
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Date & Time:</label>
-            <input type="text" class="form-control" id="recipient-name"/>
+            <input type="text"  class="form-control" id="recipient-name"/>
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Doctor:</label>
@@ -48,7 +48,7 @@ function Popup() {
         </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={onClose}>
             Close
           </Button>
          

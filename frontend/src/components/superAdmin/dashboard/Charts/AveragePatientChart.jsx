@@ -59,7 +59,7 @@ function AveragePatientChart() {
 
   return (
     <Wrapper>
-      <div className="container-fluid mt-4 ms-4" id="main">
+      <div className="container-fluid mt-4" id="main">
         <div className="row">
           <div className="d-flex justify-content-center">
             <LineChart

@@ -10,6 +10,7 @@ import EarningChart from "../../components/superAdmin/dashboard/Charts/EarningCh
 import { FcAlarmClock } from "react-icons/fc";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import ClinicActivity from "../../components/superAdmin/dashboard/ClinicActivity";
+import MostTakenTreat from "../../components/superAdmin/dashboard/Charts/MostTakenTreat";
 
 const Dashboard = () => {
   return (
@@ -59,22 +60,34 @@ const Dashboard = () => {
                 </div>
               </div>
               <Card />
-              <div className="container pb-3">
+              <div className="container-fluid pb-3">
                 <div className="row g-5 mt-3">
-                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                    <h3 className="text-center">Average Patients Visits</h3>
-                    <AveragePatientChart />
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                    <h3 className="text-center">
+                      Mostly taken treatment this month
+                    </h3>
+                    <MostTakenTreat />
                   </div>
-                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                    <h3 className="text-center">New Patient Visits</h3>
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                    <h3 className="text-center">Patient visits this month</h3>
                     <PatientStatisticChart />
                   </div>
-                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                    <h3 className="text-center">Day Wise Apointment</h3>
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                    <h3 className="text-center">
+                      Total apointments this month
+                    </h3>
                     <AppointmentChart />
                   </div>
-                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                    <h3 className="text-center">Earning Report</h3>
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                    <h3 className="text-center">Earning report this month</h3>
+                    <AveragePatientChart />
+                  </div>
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                    <h3 className="text-center">Earning report this month</h3>
+                    <EarningChart />
+                  </div>
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                    <h3 className="text-center">Earning report this month</h3>
                     <EarningChart />
                   </div>
                 </div>

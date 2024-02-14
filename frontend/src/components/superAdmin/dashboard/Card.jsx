@@ -7,14 +7,14 @@ const Card = () => {
     <>
       <Container>
         <div className="row d-flex justify-content-around">
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column">
                 <div>
                   <i className="bi bi-people-fill icon"></i>
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title">Total Patient</h5>
+                  <h5 className="card-title">Total Patient Today</h5>
                   <p className="card-text">250</p>
                 </div>
               </div>
@@ -28,7 +28,7 @@ const Card = () => {
                   <i className="bi bi-people-fill icon"></i>
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title">New Patient</h5>
+                  <h5 className="card-title">Employees Present Today</h5>
                   <p className="card-text">25</p>
                 </div>
               </div>
@@ -42,7 +42,7 @@ const Card = () => {
                   <i className="bi bi-people-fill icon"></i>
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title">Earnings</h5>
+                  <h5 className="card-title">Total Earnings Today</h5>
                   <p className="card-text">25000</p>
                 </div>
               </div>
@@ -56,7 +56,7 @@ const Card = () => {
                   <i className="bi bi-people-fill icon"></i>
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title">Total Doctors</h5>
+                  <h5 className="card-title">Total Available Doctors Today</h5>
                   <p className="card-text">15</p>
                 </div>
               </div>
@@ -71,7 +71,7 @@ const Card = () => {
                 </div>
 
                 <div className="cardtext">
-                  <h5 className="card-title">Appointments</h5>
+                  <h5 className="card-title">Today's Appointments</h5>
                   <p className="card-text">56</p>
                 </div>
               </div>

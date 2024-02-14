@@ -48,7 +48,7 @@ const AllBills = () => {
                   </div>
                 </div>
                 <div className="container mt-3">
-                  <h3 className="text-center">All Bills List</h3>
+                  <h3 className="text-center">Bill List</h3>
                   <div className="container mt-3">
                     <div class="table-responsive rounded">
                       <table class="table table-bordered rounded shadow">

@@ -32,6 +32,11 @@ import ReportDash from "./pages/superAdmin/AllReport/ReportDash";
 import AppointmentReport from "./pages/superAdmin/AllReport/AppointmentReport";
 import BillingReport from "./pages/superAdmin/AllReport/BillingReport";
 import InventoryReport from "./pages/superAdmin/AllReport/InventoryReport";
+import EmpAttendanceRepo from "./pages/superAdmin/AllReport/EmpAttendanceRepo";
+import EmpDetailsRepo from "./pages/superAdmin/AllReport/EmpDetailsRepo";
+import LabDetailsReport from "./pages/superAdmin/AllReport/LabDetailsReport";
+import LabTestReport from "./pages/superAdmin/AllReport/LabTestReport";
+import LabTaskReport from "./pages/superAdmin/AllReport/LabTaskReport";
 
 function App() {
   return (
@@ -67,6 +72,14 @@ function App() {
       <Route path="/appointment-report" element={<AppointmentReport />} />
       <Route path="/Billing-report" element={<BillingReport />} />
       <Route path="/inventory-report" element={<InventoryReport />} />
+      <Route
+        path="/employee-attendance-report"
+        element={<EmpAttendanceRepo />}
+      />
+      <Route path="/employee-details-report" element={<EmpDetailsRepo />} />
+      <Route path="/lab-details-report" element={<LabDetailsReport />} />
+      <Route path="/lab-test-report" element={<LabTestReport />} />
+      <Route path="/lab-task-report" element={<LabTaskReport />} />
       <Route path="/manage-staff" element={<ManageStaff />} />
       {/* super admin routes end  */}
     </Routes>

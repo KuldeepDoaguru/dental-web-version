@@ -104,7 +104,7 @@ const ReportDash = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/prescription-templates">
+                              <Link to="/employee-attendance-report">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-light align-items-center">
@@ -116,7 +116,7 @@ const ReportDash = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/treatment-setting">
+                              <Link to="/employee-details-report">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-light align-items-center">
@@ -127,7 +127,7 @@ const ReportDash = () => {
                               </Link>
                             </div>
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/treatment-setting">
+                              <Link to="/lab-details-report">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-light align-items-center">
@@ -138,7 +138,7 @@ const ReportDash = () => {
                               </Link>
                             </div>
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/treatment-setting">
+                              <Link to="/lab-test-report">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-light align-items-center">
@@ -149,7 +149,7 @@ const ReportDash = () => {
                               </Link>
                             </div>
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/treatment-setting">
+                              <Link to="/lab-task-report">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-light align-items-center">

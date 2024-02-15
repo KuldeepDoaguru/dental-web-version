@@ -34,7 +34,7 @@ function Sider() {
                       </span>
                     </a>
                  </Link> </li>
-                  <li>
+                  {/* <li>
                    <Link to='/bill_section'><a
                     
                       
@@ -45,7 +45,7 @@ function Sider() {
                         Billing
                       </span>
                     </a></Link> 
-                  </li>
+                  </li> */}
                   <li>
                     <Link to='/doctor_section'>
                     <a

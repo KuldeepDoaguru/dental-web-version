@@ -1,31 +1,137 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
+
 function Form() {
   
-  
-  const [data,setData] = useState({
-    date:"",
-  }) 
-  // const [age, setAge] = useState(null);
 
-  // useEffect(()=>{
-  //   const calculateAge = (date) => {
-  //     const dob = new Date(date);
-  //     const now = new Date();
-  //     let years = now.getFullYear() - dob.getFullYear();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedPatient, setSelectedPatient] = useState(null); // State to store the selected patient
+  const [data,setData] = useState(
+    { uid :"1", patient_Name:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male", city: "jabalpur", contact_Person : "father" , contact_Person_Name: "rahul", blood_Group : "o+" , dob : "", age : "25", address: "Ranital gate no. 4 , jabalpur"}
+    
+  ) 
+
+  const [bookData,setBookData] = useState(
+    { uid :"1", patient_Name:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male", city: "jabalpur", contact_Person : "father" , dateTime:"", contact_Person_Name: "rahul", blood_Group : "o+" , dob : "", age : "25", address: "Ranital gate no. 4 , jabalpur"}
+    
+  ) 
+
+  const [patients, setPatients] = useState([
+    {
+      uid: "1",
+      patient_Name: "Mohit sahu",
+      mobile: "9806324245",
+      email: "patinet@gmail.com",
+      gender: "Male",
+      city: "jabalpur",
+      contact_Person: "father",
+      dateTime: "",
+      contact_Person_Name: "rahul",
+      blood_Group: "o+",
+      dob: "",
+      age: "25",
+      address: "Ranital gate no. 4 , jabalpur",
+    },
+    {
+      uid: "2",
+      patient_Name: "Rahul sahu",
+      mobile: "9806324245",
+      email: "patinet@gmail.com",
+      gender: "Male",
+      city: "jabalpur",
+      contact_Person: "father",
+      dateTime: "",
+      contact_Person_Name: "rahul",
+      blood_Group: "o+",
+      dob: "",
+      age: "25",
+      address: "Ranital gate no. 4 , jabalpur",
+    },
+    {
+      uid: "1",
+      patient_Name: "dev",
+      mobile: "9806324245",
+      email: "patinet@gmail.com",
+      gender: "Male",
+      city: "jabalpur",
+      contact_Person: "father",
+      dateTime: "",
+      contact_Person_Name: "rahul",
+      blood_Group: "o+",
+      dob: "",
+      age: "25",
+      address: "Ranital gate no. 4 , jabalpur",
+    },
+    
+  ]);
+
+
+  const [filteredPatients, setFilteredPatients] = useState([]);
+
+  // useEffect(() => {
+  //   // Filter patients based on the search query
+  //   const filtered = patients.filter((patient) =>
+  //     data.patient_Name.toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
+  //   setFilteredPatients(filtered);
+  // }, [searchQuery, patients]);
+
+  useEffect(() => {
+    // Filter patients based on the search query if there's a search query, otherwise set an empty array
+    const filtered = searchQuery
+      ? patients.filter((patient) =>
+          patient.patient_Name.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+      : [];
+    setFilteredPatients(filtered);
+  }, [searchQuery, patients]);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+
+  console.log(bookData)
+
+  useEffect(()=>{
+    const calculateAge = (date) => {
+      const dob = new Date(date);
+      const now = new Date();
+      let years = now.getFullYear() - dob.getFullYear();
       
-  //     // Adjust for leap years
-  //     const dobThisYear = new Date(now.getFullYear(), dob.getMonth(), dob.getDate());
-  //     if (now < dobThisYear) {
-  //       years--;
-  //     }
+      // Adjust for leap years
+      const dobThisYear = new Date(now.getFullYear(), dob.getMonth(), dob.getDate());
+      if (now < dobThisYear) {
+        years--;
+      }
       
-  //     setAge(years);
-  //   };
-  //   calculateAge(data.date);
-  // },[data.date])
+      setData({...data, age: years});
+    };
+    calculateAge(data.dob);
+  },[data.dob])
   
+  const handleChange = (e)=>{
+      const {name,value} = e.target;
+      setData({
+        ...data,
+        [name]: value
+      });
+  }
+
+  const handleBookChange = (e)=>{
+    const {name,value} = e.target;
+    setBookData({
+      ...data,
+      [name]: value
+    });
+}
+
+const handlePatientSelect = (patient) => {
+  setSelectedPatient(patient); // Set the selected patient when it's clicked
+  setSearchQuery(""); // Reset the search query to close the search list
+};
+
 
   
  
@@ -90,15 +196,14 @@ function Form() {
                       </div>
                       <div className="col-sm-6 ">
                         <div className="form-outline">
-                          <label className="form-label" for="form6Example2">
-                            Gender
-                          </label>
-
-                          <input
-                            type="text"
-                            id="form6Example2"
-                            className="form-control"
-                          />
+                        <label className="form-label" htmlFor="">Gender</label>
+    <select className="form-select" id="commercial_property_type" name="commercial_property_type"  required >
+      <option value="">Select Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+     
+    </select>
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -141,26 +246,36 @@ function Form() {
                       </div>
                       <div className="col-sm-6">
                         <div className="form-outline">
-                          <label className="form-label" for="form6Example2">
-                            Contact Person
-                          </label>
-                          <input
-                            type="text"
-                            id="form6Example2"
-                            className="form-control"
-                          />
+                        <label className="form-label" htmlFor="">Contact Person</label>
+    <select className="form-select" id="commercial_property_type" name="commercial_property_type"  required >
+      <option value="">Select</option>
+      <option value="Self">Self</option>
+      <option value="Father">Father</option>
+      <option value="Mother">Mother</option>
+      <option value="Husband">Husband</option>
+      <option value="Wife">Wife</option>
+      <option value="Son">Son</option>
+      <option value="Daughter">Daughter</option>
+      <option value="Other">Other</option>
+     
+    </select>
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-outline">
-                          <label className="form-label" for="form6Example1">
-                            Blood Group
-                          </label>
-                          <input
-                            type="text"
-                            id="form6Example1"
-                            className="form-control"
-                          />
+                        <label className="form-label" htmlFor="">Blood Group</label>
+    <select className="form-select" id="commercial_property_type" name="commercial_property_type"  required >
+      <option value="">Select</option>
+      <option value="A+">A+</option>
+      <option value="B+">B+</option>
+      <option value="O+">O+</option>
+      <option value="AB+">AB+</option>
+      <option value="A-">A-</option>
+      <option value="B-">B-</option>
+      <option value="O-">O-</option>
+      <option value="AB-">AB-</option>
+     
+    </select>
                         </div>
                       </div>
                       <div className="col-sm-6">
@@ -188,9 +303,10 @@ function Form() {
                             type="date"
                             id="form6Example1"
                             className="form-control"
-                            value={data.date}
+                            name="dob"
+                            
                             onChange={(e) => {
-                              setData(e.target.value);
+                              handleChange(e)
                             }}
                           />
                         </div>
@@ -205,6 +321,9 @@ function Form() {
                             type="text"
                             id="form6Example2"
                             className="form-control"
+                            name="age"
+                            onChange={handleChange}
+                            value={data.age ? data.age : ""}
                           />
                         </div>
                       </div>
@@ -228,13 +347,29 @@ function Form() {
                 <ul className="list-group">
                  
                   <li className="list-group-item">
+                  <PatientList>
                   <input
                     class="form-control mr-sm-2 mt-3 mb-2 w-50 m-auto"
                     type="search"
                     placeholder="Search"
                     aria-label="Search"
+                    value={searchQuery}
+                    onChange={handleSearch}
                   />
-                    <div className="row">
+                   <ul className="list-group">
+                      {filteredPatients.map((patient) => (
+                        <li key={patient.uid}
+                        className={`list-group-item ${selectedPatient && selectedPatient.uid === patient.uid ? "active" : ""}`} // Add 'active' class if the patient is selected
+            onClick={() => handlePatientSelect(patient)} // Call handlePatientSelect function when the patient is clicked 
+                        >
+                          {patient.patient_Name}
+                          {/* Display other patient details as needed */}
+                        </li>
+                      ))}
+                    </ul>
+                    </PatientList>
+                    
+                    <div className="row mt-5">
                       <div className="col-sm-6">
                         <div className="form-outline" id="form1">
                         <label className="form-label" for="form6Example1">
@@ -244,7 +379,9 @@ function Form() {
                             type="text"
                             id="form6Example1"
                             className="form-control"
+                            value={selectedPatient ? selectedPatient.patient_Name : ""}
                           />
+                          
 
                          
                         </div>
@@ -255,9 +392,11 @@ function Form() {
                             Date&Time
                           </label>
                           <input
-                            type="text"
+                            type="datetime-local"
                             id="form6Example2"
                             className="form-control"
+                            name="dateTime"
+                            onChange={(e)=>handleBookChange(e)}
                           />
                          
                         </div>
@@ -392,6 +531,7 @@ function Form() {
                         </button>
                       </div>
                     </div>
+                    
                   </li>
                 </ul>
               </div>
@@ -406,6 +546,7 @@ function Form() {
 export default Form;
 
 const Wrapper = styled.div`
+ position: relative;
   #section3 {
     @media screen and (max-width: 768px) {
       margin-top: 1rem;
@@ -447,4 +588,17 @@ const Wrapper = styled.div`
       
     }
   
+`;
+
+// const FormContainer = styled.div`
+//   /* Your styling for the form container */
+//   margin-top: 50px;
+// `;
+
+const PatientList = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  /* Your styling for the patient list */
 `;

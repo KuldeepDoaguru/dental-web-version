@@ -5,6 +5,7 @@ import { MdOutlineInventory } from "react-icons/md";
 import { FaCodeBranch } from "react-icons/fa";
 import { TbReportSearch } from "react-icons/tb";
 import { IoIosPeople } from "react-icons/io";
+import { AiFillBell } from "react-icons/ai";
 
 const Sider = () => {
   const location = useLocation();
@@ -173,21 +174,37 @@ const Sider = () => {
             </li>
             <hr />
             <li>
-              <div className={`link-div ${getSidebarClass("/settings")}`}>
-                <Link
-                  to="/clinic-setting"
-                  className={`link-div ${getSidebarClass("/clinic-setting")}`}
-                >
-                  <div>
-                    <i className="fs-4 bi bi-gear"></i>
-                  </div>
-                  <div>
-                    <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                      Settings
-                    </h3>
-                  </div>
-                </Link>
-              </div>
+              <Link
+                to="/clinic-setting"
+                className={`link-div ${getSidebarClass("/clinic-setting")}`}
+              >
+                <div>
+                  <i className="fs-4 bi bi-gear"></i>
+                </div>
+                <div>
+                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                    Settings
+                  </h3>
+                </div>
+              </Link>
+            </li>
+            <hr />
+            <li>
+              <Link
+                to="/super-admin-notification"
+                className={`link-div ${getSidebarClass(
+                  "/super-admin-notification"
+                )}`}
+              >
+                <div>
+                  <AiFillBell className="fs-4 bi bi-house-door-fill" />
+                </div>
+                <div>
+                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                    Notifications
+                  </h3>
+                </div>
+              </Link>
             </li>
             <hr />
             <li>

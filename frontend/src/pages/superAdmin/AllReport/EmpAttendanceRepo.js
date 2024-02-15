@@ -57,7 +57,9 @@ const EmpAttendanceRepo = () => {
                       <div className="col-12">
                         <nav class="navbar navbar-expand-lg bg-body-tertiary">
                           <div class="container d-flex justify-content-center">
-                            <h2 className="">Employee Attendance Report</h2>
+                            <h2 className="">
+                              Employee Attendance and Time Sheet
+                            </h2>
                           </div>
                         </nav>
                       </div>
@@ -162,1472 +164,167 @@ const EmpAttendanceRepo = () => {
                                 <tr className="table-row">
                                   <td>007</td>
                                   <td>Mahesh Kuldeep</td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "red",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "green",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "#ff8e00",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
                                 </tr>
                                 <tr className="table-row">
                                   <td>007</td>
                                   <td>Mahesh Kuldeep</td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "red",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "green",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "#ff8e00",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
                                 </tr>
                                 <tr className="table-row">
                                   <td>007</td>
                                   <td>Mahesh Kuldeep</td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "red",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "green",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "#ff8e00",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
                                 </tr>
                                 <tr className="table-row">
                                   <td>007</td>
                                   <td>Mahesh Kuldeep</td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "red",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "green",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "#ff8e00",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
                                 </tr>
                                 <tr className="table-row">
                                   <td>007</td>
                                   <td>Mahesh Kuldeep</td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "red",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "green",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "#ff8e00",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
-                                  <td>
-                                    <div className="icon-td">
-                                      <FaCircle
-                                        style={{
-                                          color: "grey",
-                                          fontSize: "25px",
-                                        }}
-                                      />
-                                    </div>
-                                  </td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
+                                  <td>9 hrs</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -1651,18 +348,11 @@ const Container = styled.div`
   .table {
     overflow-x: auto;
     th {
-      background-color: #e0e0e0;
-      border: 1px solid grey;
+      background-color: #004aad;
+      color: white;
     }
     td {
-      .icon-td {
-        display: flex;
-        align-content: center;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        height: 3rem;
-      }
+      font-weight: bold;
     }
   }
   .table::-webkit-scrollbar {

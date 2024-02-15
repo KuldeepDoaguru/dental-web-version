@@ -163,122 +163,43 @@ const Apointment = () => {
                         <table class="table table-bordered rounded shadow">
                           <thead className="table-head">
                             <tr>
-                              <th
-                                className="table-sno"
-                                style={{ width: "10%" }}
-                              >
-                                SN
+                              <th className="table-sno">SN</th>
+                              <th className="table-small">Assigned Doctor</th>
+                              <th>Patient UHID</th>
+                              <th className="table-small">Patient Name</th>
+                              <th className="table-small">Patient Number</th>
+                              <th className="table-small">Treatment Status</th>
+                              <th className="table-small">Payment Status</th>
+                              <th className="table-small">
+                                Payment Date & Time
                               </th>
-                              <th
-                                className="table-small"
-                                style={{ width: "20%" }}
-                              >
-                                Branch Name
+                              <th className="table-small">
+                                Treatment Provided
                               </th>
-                              <th
-                                className="table-small"
-                                style={{ width: "20%" }}
-                              >
-                                Assigned Doctor
-                              </th>
-                              <th
-                                className="table-small"
-                                style={{ width: "20%" }}
-                              >
-                                Patient Name
-                              </th>
-                              <th
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                Patient Number
-                              </th>
-                              <th
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                Created by
-                              </th>
-                              <th
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                Updated by
-                              </th>
-                              <th
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                Appointment Date
-                              </th>
-                              <th
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                Edit
-                              </th>
-                              <th
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                Delete
-                              </th>
+                              <th className="table-small">Created by</th>
+                              <th className="table-small">Updated by</th>
+                              <th className="table-small">Appointment Date</th>
+                              <th className="table-small">Edit</th>
+                              <th className="table-small">Delete</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr className="table-row">
-                              <td
-                                className="table-sno"
-                                style={{ width: "10%" }}
-                              >
-                                1
+                              <td className="table-sno">1</td>
+                              <td className="table-small">Shubham</td>
+                              <td>007</td>
+                              <td className="table-small">Dev ansh</td>
+                              <td className="table-small">8602161019</td>
+                              <td className="table-small">Treated</td>
+                              <td className="table-small">Payment Complete</td>
+                              <td className="table-small">
+                                12/12/2024 12:00PM
                               </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "20%" }}
-                              >
-                                Madan Mahal
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "20%" }}
-                              >
-                                Shubham
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                Dev ansh
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                8602161019
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                mohit
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                mohit
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                09-02-2024
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
+                              <td className="table-small">2 injections</td>
+                              <td className="table-small">mohit</td>
+                              <td className="table-small">mohit</td>
+                              <td className="table-small">09-02-2024</td>
+                              <td className="table-small">
                                 <button
                                   className="btn btn-warning"
                                   onClick={() => openUpdatePopup()}
@@ -286,10 +207,123 @@ const Apointment = () => {
                                   Edit
                                 </button>
                               </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
+                              <td className="table-small">
+                                <button className="btn btn-danger">
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                            <tr className="table-row">
+                              <td className="table-sno">1</td>
+                              <td className="table-small">Shubham</td>
+                              <td>007</td>
+                              <td className="table-small">Dev ansh</td>
+                              <td className="table-small">8602161019</td>
+                              <td className="table-small">Treated</td>
+                              <td className="table-small">Payment Complete</td>
+                              <td className="table-small">
+                                12/12/2024 12:00PM
+                              </td>
+                              <td className="table-small">2 injections</td>
+                              <td className="table-small">mohit</td>
+                              <td className="table-small">mohit</td>
+                              <td className="table-small">09-02-2024</td>
+                              <td className="table-small">
+                                <button
+                                  className="btn btn-warning"
+                                  onClick={() => openUpdatePopup()}
+                                >
+                                  Edit
+                                </button>
+                              </td>
+                              <td className="table-small">
+                                <button className="btn btn-danger">
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                            <tr className="table-row">
+                              <td className="table-sno">1</td>
+                              <td className="table-small">Shubham</td>
+                              <td>007</td>
+                              <td className="table-small">Dev ansh</td>
+                              <td className="table-small">8602161019</td>
+                              <td className="table-small">Treated</td>
+                              <td className="table-small">Payment Complete</td>
+                              <td className="table-small">
+                                12/12/2024 12:00PM
+                              </td>
+                              <td className="table-small">2 injections</td>
+                              <td className="table-small">mohit</td>
+                              <td className="table-small">mohit</td>
+                              <td className="table-small">09-02-2024</td>
+                              <td className="table-small">
+                                <button
+                                  className="btn btn-warning"
+                                  onClick={() => openUpdatePopup()}
+                                >
+                                  Edit
+                                </button>
+                              </td>
+                              <td className="table-small">
+                                <button className="btn btn-danger">
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                            <tr className="table-row">
+                              <td className="table-sno">1</td>
+                              <td className="table-small">Shubham</td>
+                              <td>007</td>
+                              <td className="table-small">Dev ansh</td>
+                              <td className="table-small">8602161019</td>
+                              <td className="table-small">Treated</td>
+                              <td className="table-small">Payment Complete</td>
+                              <td className="table-small">
+                                12/12/2024 12:00PM
+                              </td>
+                              <td className="table-small">2 injections</td>
+                              <td className="table-small">mohit</td>
+                              <td className="table-small">mohit</td>
+                              <td className="table-small">09-02-2024</td>
+                              <td className="table-small">
+                                <button
+                                  className="btn btn-warning"
+                                  onClick={() => openUpdatePopup()}
+                                >
+                                  Edit
+                                </button>
+                              </td>
+                              <td className="table-small">
+                                <button className="btn btn-danger">
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                            <tr className="table-row">
+                              <td className="table-sno">1</td>
+                              <td className="table-small">Shubham</td>
+                              <td>007</td>
+                              <td className="table-small">Dev ansh</td>
+                              <td className="table-small">8602161019</td>
+                              <td className="table-small">Treated</td>
+                              <td className="table-small">Payment Complete</td>
+                              <td className="table-small">
+                                12/12/2024 12:00PM
+                              </td>
+                              <td className="table-small">2 injections</td>
+                              <td className="table-small">mohit</td>
+                              <td className="table-small">mohit</td>
+                              <td className="table-small">09-02-2024</td>
+                              <td className="table-small">
+                                <button
+                                  className="btn btn-warning"
+                                  onClick={() => openUpdatePopup()}
+                                >
+                                  Edit
+                                </button>
+                              </td>
+                              <td className="table-small">
                                 <button className="btn btn-danger">
                                   Delete
                                 </button>
@@ -334,5 +368,10 @@ const Container = styled.div`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  th {
+    background-color: #004aad;
+    color: white;
   }
 `;

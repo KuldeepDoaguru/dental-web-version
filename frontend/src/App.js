@@ -37,6 +37,7 @@ import EmpDetailsRepo from "./pages/superAdmin/AllReport/EmpDetailsRepo";
 import LabDetailsReport from "./pages/superAdmin/AllReport/LabDetailsReport";
 import LabTestReport from "./pages/superAdmin/AllReport/LabTestReport";
 import LabTaskReport from "./pages/superAdmin/AllReport/LabTaskReport";
+import SuperAdmNotify from "./pages/superAdmin/SuperAdmNotify";
 
 function App() {
   return (
@@ -81,6 +82,7 @@ function App() {
       <Route path="/lab-test-report" element={<LabTestReport />} />
       <Route path="/lab-task-report" element={<LabTaskReport />} />
       <Route path="/manage-staff" element={<ManageStaff />} />
+      <Route path="/super-admin-notification" element={<SuperAdmNotify />} />
       {/* super admin routes end  */}
     </Routes>
   );

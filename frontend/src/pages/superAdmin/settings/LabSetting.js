@@ -129,7 +129,7 @@ const LabSetting = () => {
                           </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                          <Nav.Link eventKey="tab2" className="navlink">
+                          <Nav.Link eventKey="tab2" className="navlink mx-2">
                             Lab Test
                           </Nav.Link>
                         </Nav.Item>
@@ -423,6 +423,12 @@ const Container = styled.div`
   .navlink.active {
     background-color: red;
     color: white;
+    border-radius: 1rem;
+  }
+
+  .navlink {
+    background-color: #e0e0e0;
+    color: black;
     border-radius: 1rem;
   }
 

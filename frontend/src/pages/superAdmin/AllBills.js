@@ -54,80 +54,74 @@ const AllBills = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno" style={{ width: "10%" }}>
-                              SN
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Branch Name
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Patient Name
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Total Amount
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Bill Date
-                            </th>
-                            {/* <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Edit
-                            </th> */}
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Delete
-                            </th>
+                            <th className="table-sno">SN</th>
+                            <th className="table-small">Patient UHID</th>
+                            <th className="table-small">Patient Name</th>
+                            <th className="table-small">Total Amount</th>
+                            <th>Payment Status</th>
+                            <th>Payment Date & Time</th>
+                            <th className="table-small">Bill Date</th>
+                            <th className="table-small">Delete</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              1
+                            <td className="table-sno">1</td>
+                            <td className="table-small">007</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td className="table-small">1000</td>
+                            <td>Completed</td>
+                            <td>12/12/2024 12:00PM</td>
+                            <td className="table-small">12/12/2024</td>
+                            <td className="table-small">
+                              <button className="btn btn-danger">Delete</button>
                             </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Madan Mahal
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+                            <td className="table-small">007</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td className="table-small">1000</td>
+                            <td>Completed</td>
+                            <td>12/12/2024 12:00PM</td>
+                            <td className="table-small">12/12/2024</td>
+                            <td className="table-small">
+                              <button className="btn btn-danger">Delete</button>
                             </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Shubham patel
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+                            <td className="table-small">007</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td className="table-small">1000</td>
+                            <td>Completed</td>
+                            <td>12/12/2024 12:00PM</td>
+                            <td className="table-small">12/12/2024</td>
+                            <td className="table-small">
+                              <button className="btn btn-danger">Delete</button>
                             </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              1000
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+                            <td className="table-small">007</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td className="table-small">1000</td>
+                            <td>Completed</td>
+                            <td>12/12/2024 12:00PM</td>
+                            <td className="table-small">12/12/2024</td>
+                            <td className="table-small">
+                              <button className="btn btn-danger">Delete</button>
                             </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              12/12/2024
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+                            <td className="table-small">007</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td className="table-small">1000</td>
+                            <td>Completed</td>
+                            <td>12/12/2024 12:00PM</td>
+                            <td className="table-small">12/12/2024</td>
+                            <td className="table-small">
                               <button className="btn btn-danger">Delete</button>
                             </td>
                           </tr>
@@ -151,5 +145,10 @@ const Container = styled.div`
     background-color: #f53237 !important;
     border-radius: 1rem;
     color: white !important;
+  }
+
+  th {
+    background-color: #004aad;
+    color: white;
   }
 `;

@@ -11,6 +11,9 @@ import { FcAlarmClock } from "react-icons/fc";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import ClinicActivity from "../../components/superAdmin/dashboard/ClinicActivity";
 import MostTakenTreat from "../../components/superAdmin/dashboard/Charts/MostTakenTreat";
+import NewRegPatient from "../../components/superAdmin/dashboard/Charts/NewRegPatient";
+import ExpenseChart from "../../components/superAdmin/dashboard/Charts/ExpenseChart";
+import ComplaintsEmp from "../../components/superAdmin/dashboard/ComplaintsEmp";
 
 const Dashboard = () => {
   return (
@@ -79,22 +82,31 @@ const Dashboard = () => {
                     <AppointmentChart />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                    <h3 className="text-center">Earning report this month</h3>
-                    <AveragePatientChart />
+                    <h3 className="text-center">
+                      New Registered Patient this Month
+                    </h3>
+                    <NewRegPatient />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">Earning report this month</h3>
                     <EarningChart />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                    <h3 className="text-center">Earning report this month</h3>
-                    <EarningChart />
+                    <h3 className="text-center">Expense report this month</h3>
+                    <ExpenseChart />
                   </div>
                 </div>
                 {/* <div className="row g-5 mt-3"></div> */}
               </div>
-              <div className="mt-3">
-                <ClinicActivity />
+              <div className="container-fluid mt-3">
+                <div className="row">
+                  <div className="col-xxl-7 col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12">
+                    <ClinicActivity />
+                  </div>
+                  <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12">
+                    <ComplaintsEmp />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

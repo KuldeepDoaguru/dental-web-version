@@ -75,6 +75,7 @@ const ManageStaff = () => {
                           <th>Mobile</th>
                           <th>Email</th>
                           <th>Designation</th>
+                          <th>Role</th>
                           <th>Status</th>
                           <th>Actions</th>
                         </tr>
@@ -86,6 +87,7 @@ const ManageStaff = () => {
                           <td>+91-999965651</td>
                           <td>maheshkuldeep@gmail.com</td>
                           <td>Cunsultant</td>
+                          <td>Consultant</td>
                           <td>Pending</td>
                           <td>
                             <button
@@ -105,6 +107,7 @@ const ManageStaff = () => {
                           <td>+91-999965651</td>
                           <td>maheshkuldeep@gmail.com</td>
                           <td>Cunsultant</td>
+                          <td>Consultant</td>
                           <td>Pending</td>
                           <td>
                             <button
@@ -124,6 +127,7 @@ const ManageStaff = () => {
                           <td>+91-999965651</td>
                           <td>maheshkuldeep@gmail.com</td>
                           <td>Cunsultant</td>
+                          <td>Consultant</td>
                           <td>Pending</td>
                           <td>
                             <button
@@ -143,6 +147,7 @@ const ManageStaff = () => {
                           <td>+91-999965651</td>
                           <td>maheshkuldeep@gmail.com</td>
                           <td>Cunsultant</td>
+                          <td>Consultant</td>
                           <td>Pending</td>
                           <td>
                             <button
@@ -162,6 +167,7 @@ const ManageStaff = () => {
                           <td>+91-999965651</td>
                           <td>maheshkuldeep@gmail.com</td>
                           <td>Cunsultant</td>
+                          <td>Consultant</td>
                           <td>Pending</td>
                           <td>
                             <button
@@ -281,7 +287,7 @@ const ManageStaff = () => {
 
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">
-                    Login Password
+                    One Time Login Password
                   </label>
                   <input
                     type="password"
@@ -459,5 +465,10 @@ const Container = styled.div`
     height: auto;
     width: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  th {
+    background-color: #004aad;
+    color: white;
   }
 `;

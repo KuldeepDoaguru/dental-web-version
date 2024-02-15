@@ -40,13 +40,36 @@ const SuperAdProfile = () => {
                 <div className="container mt-3">
                   <h3 className="text-center">Hello Admin Name</h3>
                   <div className="container mt-3 d-flex justify-content-center">
-                    <div className="card shadow" style={{ width: "18rem" }}>
+                    {/* <div className="card shadow" style={{ width: "18rem" }}>
                       <div class="card-body">
                         <h5 class="card-title">Name : Super Admin Name</h5>
                         <h5 class="card-title">Role : Super Admin</h5>
                         <h5 class="card-title">Email : Super@gmail.com</h5>
                         <h5 class="card-title">Mobile : 8602161019</h5>
                       </div>
+                    </div> */}
+
+                    <div class="table-responsive rounded">
+                      <table class="table table-bordered rounded shadow">
+                        <thead className="table-head">
+                          <tr>
+                            <th className="table-small">Name</th>
+                            <th className="table-small">Role</th>
+                            <th className="table-small">Mobile</th>
+                            <th className="table-small">Email</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr className="table-row">
+                            <td className="table-small">Mahesh Kuldeep</td>
+                            <td className="table-small">Super Admin</td>
+                            <td className="table-small">8602161019</td>
+                            <td className="table-small">
+                              superadmin@gmail.com
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -60,4 +83,15 @@ const SuperAdProfile = () => {
 };
 
 export default SuperAdProfile;
-const Container = styled.div``;
+const Container = styled.div`
+  th,
+  td {
+    font-size: 2rem;
+    padding: 1rem;
+  }
+
+  th {
+    background-color: #004aad;
+    color: white;
+  }
+`;

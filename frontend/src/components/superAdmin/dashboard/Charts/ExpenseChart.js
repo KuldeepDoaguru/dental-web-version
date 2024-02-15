@@ -92,7 +92,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const EarningChart = () => {
+const ExpenseChart = () => {
   return (
     <>
       <Container>
@@ -121,10 +121,10 @@ const EarningChart = () => {
   );
 };
 
-export default EarningChart;
+export default ExpenseChart;
 const Container = styled.div`
   #main {
-    background-color: #82ccdd;
+    background-color: #eccc68;
     width: 100%;
     border-radius: 5px;
     padding: 2rem;

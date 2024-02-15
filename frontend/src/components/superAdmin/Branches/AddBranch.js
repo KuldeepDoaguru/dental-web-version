@@ -64,6 +64,14 @@ const AddBranch = () => {
                                     placeholder="write branch contact number"
                                   />
                                 </div>
+                                <div className="input-div">
+                                  <label>Branch Contact Email</label>
+                                  <input
+                                    type="email"
+                                    name="branch-email"
+                                    placeholder="write branch contact number"
+                                  />
+                                </div>
                                 <button className="btn btn-success mt-2">
                                   Add Branch
                                 </button>

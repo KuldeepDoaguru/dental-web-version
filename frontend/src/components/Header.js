@@ -43,7 +43,7 @@ const Header = () => {
               id="navbarSupportedContent"
             >
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li className="nav-item dropdown" id="userid">
+                <li className="nav-item dropdown mx-3" id="userid">
                   <a
                     className="nav-link dropdown-toggle"
                     href="/"
@@ -70,8 +70,155 @@ const Header = () => {
                   </ul>
                 </li>
 
-                <li className="nav-item" id="bell">
-                  <AiFillBell className="icon" />
+                <li className="nav-item dropdown" id="bell">
+                  <a
+                    className="nav-link dropdown-toggle"
+                    href="/"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <AiFillBell className="icon" />
+                  </a>
+                  <ul className="dropdown-menu third-dropdown">
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/super-admin-profile">
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </div>
@@ -116,7 +263,7 @@ const Wrapper = styled.div`
 
   .icon {
     color: white;
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
   .navbar {
     background-color: #004aad;
@@ -127,5 +274,12 @@ const Wrapper = styled.div`
     li {
       list-style: none !important;
     }
+  }
+
+  .third-dropdown {
+    width: 500px;
+    left: -27rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 100px);
   }
 `;

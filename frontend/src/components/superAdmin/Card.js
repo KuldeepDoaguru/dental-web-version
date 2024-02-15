@@ -8,12 +8,12 @@ const Card = () => {
     <>
       <Wrapper>
         <div className="container">
-          <div className="row">
+          <div className="row mt-4">
             <div className="col-lg-5 col-5">
               <div className="d-flex justify-content-center">
                 <div className="card">
                   <div className="text-center text-light p-2">
-                    Today's Appointments
+                    <h4>Today's Appointments</h4>
                   </div>
                   <div className="card-body">
                     <ul>
@@ -25,25 +25,13 @@ const Card = () => {
                       </li>
                       <li>
                         <div className="d-flex justify-content-between p-2">
-                          <p className="item-para">Checked-In</p>&nbsp;
-                          <span className="text-success fw-bold">45</span>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="d-flex justify-content-between p-2">
-                          <p className="item-para">Checked-Out</p>&nbsp;
-                          <span className="text-warning fw-bold">45</span>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="d-flex justify-content-between p-2">
-                          <p className="item-para">Complete</p>&nbsp;
+                          <p className="item-para">Completed</p>&nbsp;
                           <span className="text-info fw-bold">45</span>
                         </div>
                       </li>
                       <li>
                         <div className="d-flex justify-content-between p-2">
-                          <p className="item-para">Cancled</p>&nbsp;
+                          <p className="item-para">Cancelled</p>&nbsp;
                           <span className="text-secondary fw-bold">45</span>
                         </div>
                       </li>
@@ -86,6 +74,7 @@ const Wrapper = styled.div`
   .card {
     background: #004aad;
     padding: 1rem;
+    width: 100%;
     box-shadow: 1px 2px 8px black;
     &:hover {
       background: black;
@@ -120,5 +109,13 @@ const Wrapper = styled.div`
   .card-subtitle {
     text-align: center;
     color: white;
+  }
+
+  .text-danger {
+    font-size: 1.5rem;
+  }
+
+  .text-secondary {
+    font-size: 1.5rem;
   }
 `;

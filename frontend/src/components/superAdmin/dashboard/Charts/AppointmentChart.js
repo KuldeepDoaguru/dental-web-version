@@ -59,7 +59,7 @@ const AppointmentChart = () => {
   return (
     <>
       <Container>
-        <div className="container-fluid mt-4 ms-4 " id="main">
+        <div className="container-fluid mt-4" id="main">
           <div className="row">
             <div className="col-12 d-flex justify-content-center">
               <AreaChart

@@ -31,7 +31,7 @@ const Inventory = () => {
                       </div>
                     </div>
                     <div>
-                      <Link to="/superadmin-add-inventory">
+                      <Link to="/add-invetory">
                         <button className="btn btn-success">
                           Add Inventory
                         </button>
@@ -56,7 +56,7 @@ const Inventory = () => {
                       <div className="col-xl-4">
                         <div>
                           <label>Stock Status :</label>
-                          <select name="" id="" className="mx-3">
+                          <select name="" id="" className="mx-3 p-1 rounded">
                             <option value="All">All</option>
                             <option value="out-of-stock">Out-Stock</option>
                             <option value="in-stock">in-Stock</option>
@@ -67,146 +67,180 @@ const Inventory = () => {
                         <div className="d-flex justify-content-evenly">
                           <div>
                             <label>Sort by :</label>
-                            <select name="" id="" className="mx-3">
+                            <select name="" id="" className="mx-3 p-1 rounded">
                               <option value="All">Recently Added</option>
                               <option value="out-of-stock">Sort by name</option>
                               <option value="in-stock">Sort by Type</option>
                               <option value="in-stock">Sort by MRP</option>
                             </select>
                           </div>
-                          <div>
-                            <button className="btn btn-success">
-                              {" "}
-                              <FaSearch />
-                            </button>
-                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="container mt-3 rounded">
+                  <div className="container mt-1 rounded">
                     <div class="table-responsive rounded">
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno" style={{ width: "10%" }}>
-                              ID
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Branch Name
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Item Name
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Type
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
+                            <th className="table-sno">ID</th>
+                            <th className="table-small">Item Name</th>
+                            <th className="table-small">Type</th>
+                            <th className="table-small">
                               Last Purchase Details
                             </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Last MRP
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Available Stock
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Status
-                            </th>
+                            <th className="table-small">Last MRP</th>
+                            <th className="table-small">Available Stock</th>
+                            <th className="table-small">Status</th>
                             {/* <th
                               className="table-small"
-                              style={{ width: "10%" }}
+                              
                             >
                               Edit
                             </th> */}
-                            <th
-                              className="table-small text-center"
-                              style={{ width: "10%" }}
-                            >
-                              Action
-                            </th>
+                            <th className="table-small text-center">Action</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              1
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Madan Mahal
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
+                            <td className="table-sno">1</td>
+
+                            <td className="table-small">
                               Tablet 10 mg Item Code - 101 HSN Code - 101
                             </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Drug
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
+                            <td className="table-small">Drug</td>
+                            <td className="table-small">
                               Purchase Date - 15 jul 2023
                             </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Rs - 100/-
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              50
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              inStock
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
+                            <td className="table-small">Rs - 100/-</td>
+                            <td className="table-small">50</td>
+                            <td className="table-small">inStock</td>
+                            <td className="table-small">
                               <div className="d-flex">
-                                <Link to="/add-invetory">
+                                <button className="btn btn-success mx-1">
+                                  Purchase Details
+                                </button>
+                                <Link to="/edit-invetory">
                                   {" "}
-                                  <button className="btn btn-info">
-                                    Add Stock
+                                  <button className="btn btn-warning">
+                                    Edit Items
                                   </button>
                                 </Link>
 
+                                <button className="btn btn-danger mx-1">
+                                  Delete Items
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+
+                            <td className="table-small">
+                              Tablet 10 mg Item Code - 101 HSN Code - 101
+                            </td>
+                            <td className="table-small">Drug</td>
+                            <td className="table-small">
+                              Purchase Date - 15 jul 2023
+                            </td>
+                            <td className="table-small">Rs - 100/-</td>
+                            <td className="table-small">50</td>
+                            <td className="table-small">inStock</td>
+                            <td className="table-small">
+                              <div className="d-flex">
+                                <button className="btn btn-success mx-1">
+                                  Purchase Details
+                                </button>
+                                <Link to="/edit-invetory">
+                                  {" "}
+                                  <button className="btn btn-warning">
+                                    Edit Items
+                                  </button>
+                                </Link>
+
+                                <button className="btn btn-danger mx-1">
+                                  Delete Items
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+
+                            <td className="table-small">
+                              Tablet 10 mg Item Code - 101 HSN Code - 101
+                            </td>
+                            <td className="table-small">Drug</td>
+                            <td className="table-small">
+                              Purchase Date - 15 jul 2023
+                            </td>
+                            <td className="table-small">Rs - 100/-</td>
+                            <td className="table-small">50</td>
+                            <td className="table-small">inStock</td>
+                            <td className="table-small">
+                              <div className="d-flex">
+                                <button className="btn btn-success mx-1">
+                                  Purchase Details
+                                </button>
+                                <Link to="/edit-invetory">
+                                  {" "}
+                                  <button className="btn btn-warning">
+                                    Edit Items
+                                  </button>
+                                </Link>
+
+                                <button className="btn btn-danger mx-1">
+                                  Delete Items
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+
+                            <td className="table-small">
+                              Tablet 10 mg Item Code - 101 HSN Code - 101
+                            </td>
+                            <td className="table-small">Drug</td>
+                            <td className="table-small">
+                              Purchase Date - 15 jul 2023
+                            </td>
+                            <td className="table-small">Rs - 100/-</td>
+                            <td className="table-small">50</td>
+                            <td className="table-small">inStock</td>
+                            <td className="table-small">
+                              <div className="d-flex">
+                                <button className="btn btn-success mx-1">
+                                  Purchase Details
+                                </button>
+                                <Link to="/edit-invetory">
+                                  {" "}
+                                  <button className="btn btn-warning">
+                                    Edit Items
+                                  </button>
+                                </Link>
+
+                                <button className="btn btn-danger mx-1">
+                                  Delete Items
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+
+                            <td className="table-small">
+                              Tablet 10 mg Item Code - 101 HSN Code - 101
+                            </td>
+                            <td className="table-small">Drug</td>
+                            <td className="table-small">
+                              Purchase Date - 15 jul 2023
+                            </td>
+                            <td className="table-small">Rs - 100/-</td>
+                            <td className="table-small">50</td>
+                            <td className="table-small">inStock</td>
+                            <td className="table-small">
+                              <div className="d-flex">
                                 <button className="btn btn-success mx-1">
                                   Purchase Details
                                 </button>
@@ -238,4 +272,9 @@ const Inventory = () => {
 };
 
 export default Inventory;
-const Container = styled.div``;
+const Container = styled.div`
+  th {
+    background-color: #004aad;
+    color: white;
+  }
+`;

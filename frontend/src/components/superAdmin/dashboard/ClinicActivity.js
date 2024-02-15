@@ -504,4 +504,9 @@ const Container = styled.div`
       list-style-type: none;
     }
   }
+
+  .tab-content {
+    height: 32rem;
+    overflow: auto;
+  }
 `;

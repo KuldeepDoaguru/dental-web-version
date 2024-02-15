@@ -43,98 +43,115 @@ const DoctorList = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno" style={{ width: "10%" }}>
-                              id
+                            <th className="table-sno">doc_id</th>
+                            <th className="table-small">Doctor Name</th>
+                            <th className="table-small">Mobile</th>
+                            <th className="table-small">Email</th>
+                            <th className="table-small">Gender</th>
+                            <th className="table-small">Address</th>
+                            <th className="table-small">
+                              FeedBack by Receptionist
                             </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Branch Name
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Doctor Name
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Mobile
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Email
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Gender
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Address
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              View Details
-                            </th>
+                            <th>Doctor Availability</th>
+                            <th className="table-small">View Details</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              1
+                            <td className="table-sno">1</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td className="table-small">8602161019</td>
+                            <td className="table-small">doctor@gmail.com</td>
+                            <td className="table-small">Male</td>
+                            <td className="table-small">Jabalpur</td>
+                            <td>He is a good doctor</td>
+                            <td>Available</td>
+                            <td className="table-small">
+                              <Link to="/doctor-profile">
+                                <button className="btn btn-warning">
+                                  View Details
+                                </button>
+                              </Link>
                             </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Madan Mahal
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td className="table-small">8602161019</td>
+                            <td className="table-small">doctor@gmail.com</td>
+                            <td className="table-small">Male</td>
+                            <td className="table-small">Jabalpur</td>
+                            <td>He is a good doctor</td>
+                            <td>Available</td>
+                            <td className="table-small">
+                              <Link to="/doctor-profile">
+                                <button className="btn btn-warning">
+                                  View Details
+                                </button>
+                              </Link>
                             </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Shubham patel
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td className="table-small">8602161019</td>
+                            <td className="table-small">doctor@gmail.com</td>
+                            <td className="table-small">Male</td>
+                            <td className="table-small">Jabalpur</td>
+                            <td>He is a good doctor</td>
+                            <td>Available</td>
+                            <td className="table-small">
+                              <Link to="/doctor-profile">
+                                <button className="btn btn-warning">
+                                  View Details
+                                </button>
+                              </Link>
                             </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              8602161019
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td className="table-small">8602161019</td>
+                            <td className="table-small">doctor@gmail.com</td>
+                            <td className="table-small">Male</td>
+                            <td className="table-small">Jabalpur</td>
+                            <td>He is a good doctor</td>
+                            <td>Available</td>
+                            <td className="table-small">
+                              <Link to="/doctor-profile">
+                                <button className="btn btn-warning">
+                                  View Details
+                                </button>
+                              </Link>
                             </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              doctor@gmail.com
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td className="table-small">8602161019</td>
+                            <td className="table-small">doctor@gmail.com</td>
+                            <td className="table-small">Male</td>
+                            <td className="table-small">Jabalpur</td>
+                            <td>He is a good doctor</td>
+                            <td>Available</td>
+                            <td className="table-small">
+                              <Link to="/doctor-profile">
+                                <button className="btn btn-warning">
+                                  View Details
+                                </button>
+                              </Link>
                             </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Male
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Jabalpur
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td className="table-small">8602161019</td>
+                            <td className="table-small">doctor@gmail.com</td>
+                            <td className="table-small">Male</td>
+                            <td className="table-small">Jabalpur</td>
+                            <td>He is a good doctor</td>
+                            <td>Available</td>
+                            <td className="table-small">
                               <Link to="/doctor-profile">
                                 <button className="btn btn-warning">
                                   View Details
@@ -157,4 +174,9 @@ const DoctorList = () => {
 };
 
 export default DoctorList;
-const Container = styled.div``;
+const Container = styled.div`
+  th {
+    background-color: #004aad;
+    color: white;
+  }
+`;

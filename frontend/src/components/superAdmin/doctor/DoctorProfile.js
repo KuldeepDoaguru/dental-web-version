@@ -69,7 +69,7 @@ const DoctorProfile = () => {
                       />
                     </div>
                     <div className="col-lg-8">
-                      <div className="row mb-3">
+                      <div className="row g-3">
                         <div className="col-lg-4">
                           <label className="text-info">UserID</label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -88,8 +88,6 @@ const DoctorProfile = () => {
                             <p className="m-0">doctor@doaguru.com</p>
                           </div>
                         </div>
-                      </div>
-                      <div className="row mb-3">
                         <div className="col-lg-4">
                           <label className="text-info">Sex</label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -108,8 +106,6 @@ const DoctorProfile = () => {
                             <p className="m-0">Jabalpur</p>
                           </div>
                         </div>
-                      </div>
-                      <div className="row mb-3">
                         <div className="col-lg-4">
                           <label className="text-info">Designation</label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -128,8 +124,6 @@ const DoctorProfile = () => {
                             <p className="m-0">482002</p>
                           </div>
                         </div>
-                      </div>
-                      <div className="row">
                         <div className="col-lg-4">
                           <label className="text-info">Country</label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -148,6 +142,44 @@ const DoctorProfile = () => {
                             <p className="m-0">7000070070</p>
                           </div>
                         </div>
+                        <div className="col-lg-4">
+                          <label className="text-info">Experience</label>
+                          <div className="shadow-none p-1 bg-light rounded">
+                            <p className="m-0">2 Years</p>
+                          </div>
+                        </div>
+                        <div className="col-lg-4">
+                          <label className="text-info">Last Degree</label>
+                          <div className="shadow-none p-1 bg-light rounded">
+                            <p className="m-0">B.com</p>
+                          </div>
+                        </div>
+                        <div className="col-lg-4">
+                          <label className="text-info">College Name</label>
+                          <div className="shadow-none p-1 bg-light rounded">
+                            <p className="m-0">Mahakousal</p>
+                          </div>
+                        </div>
+                        <div className="col-lg-4">
+                          <label className="text-info">
+                            Previous Work Experience
+                          </label>
+                          <div className="shadow-none p-1 bg-light rounded">
+                            <p className="m-0">AIIMS</p>
+                          </div>
+                        </div>
+                        <div className="col-lg-4">
+                          <label className="text-info">Working Days</label>
+                          <div className="shadow-none p-1 bg-light rounded">
+                            <p className="m-0">Mon-Wed</p>
+                          </div>
+                        </div>
+                        <div className="col-lg-4">
+                          <label className="text-info">Working Shift</label>
+                          <div className="shadow-none p-1 bg-light rounded">
+                            <p className="m-0">12PM - 2PM</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -162,4 +194,12 @@ const DoctorProfile = () => {
 };
 
 export default DoctorProfile;
-const Container = styled.div``;
+const Container = styled.div`
+  .text-info {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+`;

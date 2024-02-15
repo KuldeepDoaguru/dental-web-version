@@ -28,6 +28,10 @@ function AppointmentSection() {
 
   const [showAddPopup, setShowAddPopup] = useState(false);
 
+  const now = new Date();
+  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 10, 0, 0);
+  const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 20, 0, 0);
+
   useEffect(() => {
     /**
      * What Is This?
@@ -119,6 +123,12 @@ const onSelectSlot = useCallback((slotInfo) => {
          onSelectEvent={onSelectEvent}
          onSelectSlot={onSelectSlot} 
          selectable
+         step={15} // Set the step to 15 minutes for each time slot
+  // timeslots={4}
+   // Set the number of time slots per hour to 4 (60 minutes / 15 minutes = 4)
+
+          min={startOfDay}
+          max={endOfDay}
         
          />
 

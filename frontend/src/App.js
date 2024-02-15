@@ -13,6 +13,7 @@ import AllAppoint from "./components/Doctor/Appointment/AllAppoint";
 import PatientProfile from "./pages/DoctorPage/PatientProfile";
 import AllPatient from "./pages/DoctorPage/AllPatient";
 import ExaminationDashBoard from "./components/Doctor/Examination/ExaminationDashBoard";
+import PediatricDental from "./components/Doctor/Examination/PediatricDental";
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
       <Route path="/Patient-profile" element={<PatientProfile />} />
       <Route path="/all-patient" element={<AllPatient />} />
       <Route path="/examination-Dashboard" element={<ExaminationDashBoard />} />
+      <Route path="/PediatricDental" element={<PediatricDental />} />
+
       {/* Doctor Routes end here  */}
     </Routes>
   );

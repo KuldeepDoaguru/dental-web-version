@@ -11,6 +11,8 @@ function EditPopup({ onClose, slotInfo }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  console.log(slotInfo)
+
   return (
     <>
    <Wrapper className="container">
@@ -28,11 +30,11 @@ function EditPopup({ onClose, slotInfo }) {
         <form>
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Patient Name:</label>
-            <input type="text" class="form-control" id="recipient-name"/>
+            <input type="text" value={slotInfo.title} class="form-control" id="recipient-name"/>
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Date & Time:</label>
-            <input type="text" value={slotInfo.slots}  class="form-control" id="recipient-name"/>
+            <input type="text" value={slotInfo.start}  class="form-control" id="recipient-name"/>
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Doctor:</label>

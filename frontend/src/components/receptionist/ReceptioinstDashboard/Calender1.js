@@ -53,8 +53,8 @@ function Calender1() {
       <input type="date"  onChange={(e)=>{setDate(e.target.value)}} value={date}/>
     </div>
     <div className='d-flex justify-content-around align-items-center'>
-    <div className='bg-success mb-2'><p className='p-1 my-auto ' >Scheduled</p></div>
-    <div  className='bg-warning mb-2'><p className='p-1 my-auto '>Unscheduled</p></div>
+    <div className='bg-success mb-2 rounded-2'><p className='p-1 my-auto' >Scheduled</p></div>
+    <div  className='bg-warning mb-2 rounded-2'><p className='p-1 my-auto'>Unscheduled</p></div>
     </div>
    
   <div className="table-responsive" id="tab">
@@ -177,6 +177,7 @@ padding:10px;
 td{
   padding-top: 3px;
   padding-bottom: 3px;
+  border-radius: 7px;
 }
    
    ` 

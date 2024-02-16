@@ -22,16 +22,24 @@ const EditInventory = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div>
-                        <h6>Select Branch : </h6>
+                        <h4>Select Branch : </h4>
                       </div>
                       <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
+                        <select
+                          name="branch"
+                          id="branch"
+                          className="mx-2 p-2 rounded shadow select-style"
+                        >
+                          <option value="Madan Mahal" className="fw-bold">
+                            Madan Mahal
+                          </option>
+                          <option value="Madan Mahal" className="fw-bold">
+                            Ranjhi
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -51,9 +59,9 @@ const EditInventory = () => {
                   <h3 className="text-center">Edit Inventory Item</h3>
                   <div className="container mt-3">
                     <form action="">
-                      <div className="container d-flex justify-content-evenly mt-5">
+                      <div className="container d-flex justify-content-center mt-5">
                         <h5>Type : </h5>
-                        <div class="form-check">
+                        <div class="form-check mx-2">
                           <input
                             class="form-check-input"
                             type="radio"
@@ -64,7 +72,7 @@ const EditInventory = () => {
                             class="form-check-label"
                             for="flexRadioDisabled"
                           >
-                            Disabled radio
+                            Drug
                           </label>
                         </div>
                         <div class="form-check">
@@ -79,10 +87,10 @@ const EditInventory = () => {
                             class="form-check-label"
                             for="flexRadioCheckedDisabled"
                           >
-                            Disabled checked radio
+                            Supplies
                           </label>
                         </div>
-                        <div class="form-check">
+                        <div class="form-check mx-2">
                           <input
                             class="form-check-input"
                             type="radio"
@@ -94,7 +102,7 @@ const EditInventory = () => {
                             class="form-check-label"
                             for="flexRadioCheckedDisabled"
                           >
-                            Disabled checked radio
+                            Equipments
                           </label>
                         </div>
                       </div>
@@ -201,4 +209,11 @@ const EditInventory = () => {
 };
 
 export default EditInventory;
-const Container = styled.div``;
+const Container = styled.div`
+  .select-style {
+    border: none;
+    background-color: #22a6b3;
+    font-weight: bold;
+    color: white;
+  }
+`;

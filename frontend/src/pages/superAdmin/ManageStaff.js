@@ -34,16 +34,24 @@ const ManageStaff = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div>
-                        <h6>Select Branch : </h6>
+                        <h4>Select Branch : </h4>
                       </div>
                       <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
+                        <select
+                          name="branch"
+                          id="branch"
+                          className="mx-2 p-2 rounded shadow select-style"
+                        >
+                          <option value="Madan Mahal" className="fw-bold">
+                            Madan Mahal
+                          </option>
+                          <option value="Madan Mahal" className="fw-bold">
+                            Ranjhi
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -56,7 +64,7 @@ const ManageStaff = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <h2 className="text-center">Manage Employee</h2>
                   <div className="d-flex justify-content-end">
                     <button
@@ -73,9 +81,12 @@ const ManageStaff = () => {
                           <th>Emp ID</th>
                           <th>Name</th>
                           <th>Mobile</th>
+                          <th>Gender</th>
                           <th>Email</th>
                           <th>Designation</th>
                           <th>Role</th>
+                          <th>Salary</th>
+                          <th>Address</th>
                           <th>Status</th>
                           <th>Actions</th>
                         </tr>
@@ -85,10 +96,13 @@ const ManageStaff = () => {
                           <td>007</td>
                           <td>Dr.Mahesh Kuldeep</td>
                           <td>+91-999965651</td>
+                          <td>Male</td>
                           <td>maheshkuldeep@gmail.com</td>
                           <td>Cunsultant</td>
-                          <td>Consultant</td>
-                          <td>Pending</td>
+                          <td>Cunsultant</td>
+                          <td>30000</td>
+                          <td>Jabalpur</td>
+                          <td>Active</td>
                           <td>
                             <button
                               className="btn btn-warning"
@@ -105,10 +119,13 @@ const ManageStaff = () => {
                           <td>007</td>
                           <td>Dr.Mahesh Kuldeep</td>
                           <td>+91-999965651</td>
+                          <td>Male</td>
                           <td>maheshkuldeep@gmail.com</td>
                           <td>Cunsultant</td>
-                          <td>Consultant</td>
-                          <td>Pending</td>
+                          <td>Cunsultant</td>
+                          <td>30000</td>
+                          <td>Jabalpur</td>
+                          <td>Active</td>
                           <td>
                             <button
                               className="btn btn-warning"
@@ -125,10 +142,13 @@ const ManageStaff = () => {
                           <td>007</td>
                           <td>Dr.Mahesh Kuldeep</td>
                           <td>+91-999965651</td>
+                          <td>Male</td>
                           <td>maheshkuldeep@gmail.com</td>
                           <td>Cunsultant</td>
-                          <td>Consultant</td>
-                          <td>Pending</td>
+                          <td>Cunsultant</td>
+                          <td>30000</td>
+                          <td>Jabalpur</td>
+                          <td>Active</td>
                           <td>
                             <button
                               className="btn btn-warning"
@@ -145,10 +165,13 @@ const ManageStaff = () => {
                           <td>007</td>
                           <td>Dr.Mahesh Kuldeep</td>
                           <td>+91-999965651</td>
+                          <td>Male</td>
                           <td>maheshkuldeep@gmail.com</td>
                           <td>Cunsultant</td>
-                          <td>Consultant</td>
-                          <td>Pending</td>
+                          <td>Cunsultant</td>
+                          <td>30000</td>
+                          <td>Jabalpur</td>
+                          <td>Active</td>
                           <td>
                             <button
                               className="btn btn-warning"
@@ -165,10 +188,13 @@ const ManageStaff = () => {
                           <td>007</td>
                           <td>Dr.Mahesh Kuldeep</td>
                           <td>+91-999965651</td>
+                          <td>Male</td>
                           <td>maheshkuldeep@gmail.com</td>
                           <td>Cunsultant</td>
-                          <td>Consultant</td>
-                          <td>Pending</td>
+                          <td>Cunsultant</td>
+                          <td>30000</td>
+                          <td>Jabalpur</td>
+                          <td>Active</td>
                           <td>
                             <button
                               className="btn btn-warning"
@@ -285,16 +311,78 @@ const ManageStaff = () => {
                   </div>
                 </div>
 
-                <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label">
-                    One Time Login Password
-                  </label>
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="exampleFormControlInput1"
-                    placeholder="Employee Password"
-                  />
+                <div className="d-flex justify-content-between">
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">
+                      Employee Role
+                    </label>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="flexCheckDefault"
+                      />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Admin
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="flexCheckDefault"
+                      />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Receptionist
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="flexCheckDefault"
+                      />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Consultant
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="flexCheckDefault"
+                      />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Lab Attendent
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        value=""
+                        id="flexCheckDefault"
+                      />
+                      <label class="form-check-label" for="flexCheckDefault">
+                        Doctor
+                      </label>
+                    </div>
+                  </div>
+                  <div className="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">
+                      One Time Login Password
+                    </label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      placeholder="Employee Password"
+                    />
+                  </div>
                 </div>
 
                 <div className="d-flex justify-content-center">
@@ -414,6 +502,66 @@ const ManageStaff = () => {
                     </select>
                   </div>
                 </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    Employee Role
+                  </label>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Admin
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Receptionist
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Consultant
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Lab Attendent
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      value=""
+                      id="flexCheckDefault"
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Doctor
+                    </label>
+                  </div>
+                </div>
 
                 <div className="d-flex justify-content-center">
                   <button type="submit" className="btn btn-success mt-2">
@@ -470,5 +618,16 @@ const Container = styled.div`
   th {
     background-color: #004aad;
     color: white;
+  }
+
+  .select-style {
+    border: none;
+    background-color: #22a6b3;
+    font-weight: bold;
+    color: white;
+  }
+
+  label {
+    font-weight: bold;
   }
 `;

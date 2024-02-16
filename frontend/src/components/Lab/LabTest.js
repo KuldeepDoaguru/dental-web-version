@@ -27,6 +27,7 @@ const LabTest = () => {
                 <th>Lab Test Code</th>
                 <th>Total Waiting Days for Report</th>
                 <th>Default Lab</th>
+                <th>Date</th>
                 <th>Cost</th>
                 <th>Actions</th>
               </tr>
@@ -37,6 +38,7 @@ const LabTest = () => {
                 <td>LAB2015</td>
                 <td>same day</td>
                 <td>Lab Name</td>
+                <td>12/12/2023</td>
                 <td>500</td>
                 <td>
                   <button
@@ -53,6 +55,7 @@ const LabTest = () => {
                 <td>LAB2015</td>
                 <td>same day</td>
                 <td>Lab Name</td>
+                <td>12/12/2023</td>
                 <td>500</td>
                 <td>
                   <button
@@ -69,6 +72,7 @@ const LabTest = () => {
                 <td>LAB2015</td>
                 <td>same day</td>
                 <td>Lab Name</td>
+                <td>12/12/2023</td>
                 <td>500</td>
                 <td>
                   <button
@@ -85,6 +89,7 @@ const LabTest = () => {
                 <td>LAB2015</td>
                 <td>same day</td>
                 <td>Lab Name</td>
+                <td>12/12/2023</td>
                 <td>500</td>
                 <td>
                   <button
@@ -101,6 +106,7 @@ const LabTest = () => {
                 <td>LAB2015</td>
                 <td>same day</td>
                 <td>Lab Name</td>
+                <td>12/12/2023</td>
                 <td>500</td>
                 <td>
                   <button

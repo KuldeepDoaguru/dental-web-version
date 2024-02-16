@@ -22,16 +22,24 @@ const LabDetailsReport = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div>
-                        <h6>Select Branch : </h6>
+                        <h4>Select Branch : </h4>
                       </div>
                       <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
+                        <select
+                          name="branch"
+                          id="branch"
+                          className="mx-2 p-2 rounded shadow select-style"
+                        >
+                          <option value="Madan Mahal" className="fw-bold">
+                            Madan Mahal
+                          </option>
+                          <option value="Madan Mahal" className="fw-bold">
+                            Ranjhi
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -44,7 +52,7 @@ const LabDetailsReport = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
                   </button>
@@ -54,12 +62,12 @@ const LabDetailsReport = () => {
 
                       <div className="col-12">
                         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                          <div class="container d-flex justify-content-center">
+                          <div class="container-fluid d-flex justify-content-center">
                             <h2 className="">Lab Details Report</h2>
                           </div>
                         </nav>
                       </div>
-                      <div className="container mt-2">
+                      <div className="container-fluid mt-2">
                         <div className="d-flex justify-content-center mb-2 mt-2">
                           <button className="btn btn-warning mx-2">
                             Download Report
@@ -129,4 +137,11 @@ const LabDetailsReport = () => {
 };
 
 export default LabDetailsReport;
-const Container = styled.div``;
+const Container = styled.div`
+  .select-style {
+    border: none;
+    background-color: #22a6b3;
+    font-weight: bold;
+    color: white;
+  }
+`;

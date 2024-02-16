@@ -23,16 +23,24 @@ const EmpDetailsRepo = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div>
-                        <h6>Select Branch : </h6>
+                        <h4>Select Branch : </h4>
                       </div>
                       <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
+                        <select
+                          name="branch"
+                          id="branch"
+                          className="mx-2 p-2 rounded shadow select-style"
+                        >
+                          <option value="Madan Mahal" className="fw-bold">
+                            Madan Mahal
+                          </option>
+                          <option value="Madan Mahal" className="fw-bold">
+                            Ranjhi
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -45,7 +53,7 @@ const EmpDetailsRepo = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
                   </button>
@@ -70,7 +78,7 @@ const EmpDetailsRepo = () => {
 
                           <div className="d-flex justify-content-between">
                             <div>
-                              <button className="btn btn-secondary">
+                              <button className="btn btn-info">
                                 Filter by Designation
                               </button>
                             </div>
@@ -96,104 +104,125 @@ const EmpDetailsRepo = () => {
                           <table class="table table-bordered rounded shadow">
                             <thead className="table-head">
                               <tr>
-                                <th
-                                  className="table-sno"
-                                  style={{ width: "10%" }}
-                                >
-                                  id
-                                </th>
-                                <th
-                                  className="table-small"
-                                  style={{ width: "20%" }}
-                                >
-                                  Branch Name
-                                </th>
-                                <th
-                                  className="table-small"
-                                  style={{ width: "20%" }}
-                                >
-                                  Doctor Name
-                                </th>
-                                <th
-                                  className="table-small"
-                                  style={{ width: "10%" }}
-                                >
-                                  Mobile
-                                </th>
-                                <th
-                                  className="table-small"
-                                  style={{ width: "10%" }}
-                                >
-                                  Email
-                                </th>
-                                <th
-                                  className="table-small"
-                                  style={{ width: "10%" }}
-                                >
-                                  Gender
-                                </th>
-                                <th
-                                  className="table-small"
-                                  style={{ width: "10%" }}
-                                >
-                                  Address
-                                </th>
-                                <th
-                                  className="table-small"
-                                  style={{ width: "10%" }}
-                                >
-                                  View Details
-                                </th>
+                                <th className="table-sno">EMP ID</th>
+                                <th className="table-small">Branch Name</th>
+                                <th className="table-small">Employee Name</th>
+                                <th>Role</th>
+                                <th>Designation</th>
+                                <th>Salary</th>
+
+                                <th className="table-small">Mobile</th>
+                                <th className="table-small">Email</th>
+                                <th className="table-small">Gender</th>
+                                <th className="table-small">Address</th>
+                                <th>Status</th>
+                                <th className="table-small">View Details</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr className="table-row">
-                                <td
-                                  className="table-sno"
-                                  style={{ width: "10%" }}
-                                >
-                                  1
-                                </td>
-                                <td
-                                  className="table-small"
-                                  style={{ width: "20%" }}
-                                >
-                                  Madan Mahal
-                                </td>
-                                <td
-                                  className="table-small"
-                                  style={{ width: "20%" }}
-                                >
-                                  Shubham patel
-                                </td>
-                                <td
-                                  className="table-small"
-                                  style={{ width: "10%" }}
-                                >
-                                  8602161019
-                                </td>
-                                <td
-                                  className="table-small"
-                                  style={{ width: "10%" }}
-                                >
+                                <td className="table-sno">1</td>
+                                <td className="table-small">Madan Mahal</td>
+                                <td className="table-small">Shubham patel</td>
+                                <td>Doctor</td>
+                                <td>Doctor</td>
+                                <td>30000</td>
+                                <td className="table-small">8602161019</td>
+                                <td className="table-small">
                                   doctor@gmail.com
                                 </td>
-                                <td
-                                  className="table-small"
-                                  style={{ width: "10%" }}
-                                >
-                                  Male
+                                <td className="table-small">Male</td>
+                                <td className="table-small">Jabalpur</td>
+                                <td>Active</td>
+                                <td className="table-small">
+                                  <Link to="/doctor-profile">
+                                    <button className="btn btn-warning">
+                                      View Details
+                                    </button>
+                                  </Link>
                                 </td>
-                                <td
-                                  className="table-small"
-                                  style={{ width: "10%" }}
-                                >
-                                  Jabalpur
+                              </tr>
+                              <tr className="table-row">
+                                <td className="table-sno">1</td>
+                                <td className="table-small">Madan Mahal</td>
+                                <td className="table-small">Shubham patel</td>
+                                <td>Doctor</td>
+                                <td>Doctor</td>
+                                <td>30000</td>
+                                <td className="table-small">8602161019</td>
+                                <td className="table-small">
+                                  doctor@gmail.com
                                 </td>
-                                <td
-                                  className="table-small"
-                                  style={{ width: "10%" }}
-                                >
+                                <td className="table-small">Male</td>
+                                <td className="table-small">Jabalpur</td>
+                                <td>Active</td>
+                                <td className="table-small">
+                                  <Link to="/doctor-profile">
+                                    <button className="btn btn-warning">
+                                      View Details
+                                    </button>
+                                  </Link>
+                                </td>
+                              </tr>
+                              <tr className="table-row">
+                                <td className="table-sno">1</td>
+                                <td className="table-small">Madan Mahal</td>
+                                <td className="table-small">Shubham patel</td>
+                                <td>Doctor</td>
+                                <td>Doctor</td>
+                                <td>30000</td>
+                                <td className="table-small">8602161019</td>
+                                <td className="table-small">
+                                  doctor@gmail.com
+                                </td>
+                                <td className="table-small">Male</td>
+                                <td className="table-small">Jabalpur</td>
+                                <td>Active</td>
+                                <td className="table-small">
+                                  <Link to="/doctor-profile">
+                                    <button className="btn btn-warning">
+                                      View Details
+                                    </button>
+                                  </Link>
+                                </td>
+                              </tr>
+                              <tr className="table-row">
+                                <td className="table-sno">1</td>
+                                <td className="table-small">Madan Mahal</td>
+                                <td className="table-small">Shubham patel</td>
+                                <td>Doctor</td>
+                                <td>Doctor</td>
+                                <td>30000</td>
+                                <td className="table-small">8602161019</td>
+                                <td className="table-small">
+                                  doctor@gmail.com
+                                </td>
+                                <td className="table-small">Male</td>
+                                <td className="table-small">Jabalpur</td>
+                                <td>Active</td>
+                                <td className="table-small">
+                                  <Link to="/doctor-profile">
+                                    <button className="btn btn-warning">
+                                      View Details
+                                    </button>
+                                  </Link>
+                                </td>
+                              </tr>
+                              <tr className="table-row">
+                                <td className="table-sno">1</td>
+                                <td className="table-small">Madan Mahal</td>
+                                <td className="table-small">Shubham patel</td>
+                                <td>Doctor</td>
+                                <td>Doctor</td>
+                                <td>30000</td>
+                                <td className="table-small">8602161019</td>
+                                <td className="table-small">
+                                  doctor@gmail.com
+                                </td>
+                                <td className="table-small">Male</td>
+                                <td className="table-small">Jabalpur</td>
+                                <td>Active</td>
+                                <td className="table-small">
                                   <Link to="/doctor-profile">
                                     <button className="btn btn-warning">
                                       View Details
@@ -218,4 +247,15 @@ const EmpDetailsRepo = () => {
 };
 
 export default EmpDetailsRepo;
-const Container = styled.div``;
+const Container = styled.div`
+  .select-style {
+    border: none;
+    background-color: #22a6b3;
+    font-weight: bold;
+    color: white;
+  }
+  th {
+    background-color: #004aad;
+    color: white;
+  }
+`;

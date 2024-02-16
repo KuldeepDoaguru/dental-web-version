@@ -173,53 +173,6 @@ const Sider = () => {
               </Link>
             </li>
             <hr />
-            <li>
-              <Link
-                to="/clinic-setting"
-                className={`link-div ${getSidebarClass("/clinic-setting")}`}
-              >
-                <div>
-                  <i className="fs-4 bi bi-gear"></i>
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                    Settings
-                  </h3>
-                </div>
-              </Link>
-            </li>
-            <hr />
-            <li>
-              <Link
-                to="/super-admin-notification"
-                className={`link-div ${getSidebarClass(
-                  "/super-admin-notification"
-                )}`}
-              >
-                <div>
-                  <AiFillBell className="fs-4 bi bi-house-door-fill" />
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                    Notifications
-                  </h3>
-                </div>
-              </Link>
-            </li>
-            <hr />
-            <li>
-              <div className="link-div">
-                <div>
-                  <i className="fs-4 bi bi-power"></i>
-                </div>
-                <div>
-                  <button className="btn btn-danger d-none d-sm-inline">
-                    Logout
-                  </button>
-                </div>
-              </div>
-            </li>
-            <hr />
           </ul>
         </div>
       </div>

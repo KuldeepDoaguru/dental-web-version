@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const UniversalLogin = () => {
+  const [role, setRole] = useState("select-role");
+
+  const HandleChange = (event) => {
+    setRole(event.target.value);
+  };
+
+  console.log(role);
+
   return (
     <>
       <Container>
@@ -10,15 +18,28 @@ const UniversalLogin = () => {
           <div className="container h-100 ">
             <div className="row d-flex justify-content-center align-items-center h-100">
               <div className="col-lg-12 col-xl-11">
-                <div
-                  className="card text-black"
-                  style={{ borderRadius: "25px", backgroundColor: "#eee" }}
-                >
+                <div className="text-black cardstyle shadow">
                   <div className="card-body p-md-5">
                     <div className="row justify-content-center">
                       <div className="col-md-10 col-lg-6 col-xl-5 order-2">
+                        <div className="d-flex justify-content-end">
+                          <select
+                            name="role"
+                            id=""
+                            className="p-2 rounded shadow select-style"
+                            value={role}
+                            onChange={HandleChange}
+                          >
+                            <option value="select-role">role</option>
+                            <option value="super-admin">Super Admin</option>
+                            <option value="admin">Admin</option>
+                            <option value="receptionist">Receptionist</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="accountant">Accountant</option>
+                          </select>
+                        </div>
                         <p className="text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                          Receptionist Login
+                          Login
                         </p>
 
                         <form className="mx-1 mx-md-4">
@@ -29,12 +50,13 @@ const UniversalLogin = () => {
                                 className="form-label"
                                 for="form3Example3c"
                               >
-                                Your Email
+                                Email
                               </label>
                               <input
                                 type="email"
                                 id="form3Example3c"
                                 className="form-control"
+                                placeholder="email"
                               />
                             </div>
                           </div>
@@ -52,6 +74,7 @@ const UniversalLogin = () => {
                                 type="password"
                                 id="form3Example4c"
                                 className="form-control"
+                                placeholder="password"
                               />
                             </div>
                           </div>
@@ -65,7 +88,16 @@ const UniversalLogin = () => {
                           </div>
 
                           <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                            <Link to="/superadmin-dashboard">
+                            <Link
+                              to={
+                                (role === "admin" && "/admin-dashboard") ||
+                                (role === "super-admin" &&
+                                  "/superadmin-dashboard") ||
+                                (role === "receptionist" && "*") ||
+                                (role === "doctor" && "*") ||
+                                (role === "accountant" && "*")
+                              }
+                            >
                               <button
                                 type="button"
                                 className="btn btn-primary btn-lg"
@@ -87,7 +119,7 @@ const UniversalLogin = () => {
                       </div>
                       <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1">
                         <img
-                          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                          src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1708075638/dental%20guru/Login-page_1_cwadmt.png"
                           className="img-fluid"
                           alt="Sample"
                         />
@@ -105,4 +137,20 @@ const UniversalLogin = () => {
 };
 
 export default UniversalLogin;
-const Container = styled.div``;
+const Container = styled.div`
+  .cardstyle {
+    border-radius: 25px;
+    background-color: #d7f3f0 !important;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .select-style {
+    border: none;
+    background-color: #22a6b3;
+    font-weight: bold;
+    color: white;
+  }
+`;

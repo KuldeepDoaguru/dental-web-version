@@ -49,16 +49,24 @@ const LabSetting = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div>
-                        <h6>Select Branch : </h6>
+                        <h4>Select Branch : </h4>
                       </div>
                       <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
+                        <select
+                          name="branch"
+                          id="branch"
+                          className="mx-2 p-2 rounded shadow select-style"
+                        >
+                          <option value="Madan Mahal" className="fw-bold">
+                            Madan Mahal
+                          </option>
+                          <option value="Madan Mahal" className="fw-bold">
+                            Ranjhi
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -71,11 +79,11 @@ const LabSetting = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <h2 className="text-center">Lab Settings</h2>
                   <div className="mid-box">
                     <div className="row mt-5 background">
-                      <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                      <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
                         <input
                           type="text"
                           placeholder="search here"
@@ -85,29 +93,29 @@ const LabSetting = () => {
                           <FaSearch />
                         </button>
                       </div>
-                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+                      <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
                         <div className="d-flex justify-content-end">
                           <button
-                            className="btn btn-info"
+                            className="btn btn-info lab-actbtn"
                             onClick={() => openAddLabPopup()}
                           >
                             Add Lab
                           </button>
                         </div>
                       </div>
-                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+                      <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
                         <div className="d-flex justify-content-center">
                           <button
-                            className="btn btn-info"
+                            className="btn btn-info lab-actbtn"
                             onClick={() => openAddLabTestPopup()}
                           >
                             Add Lab Test
                           </button>
                         </div>
                       </div>
-                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+                      <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
                         <button
-                          className="btn btn-info"
+                          className="btn btn-info lab-actbtn"
                           onClick={() => openAddLabTaskPopup()}
                         >
                           Add Lab Task
@@ -164,44 +172,71 @@ const LabSetting = () => {
                 className="d-flex flex-column"
                 // onSubmit={handleNoticeSubmit}
               >
-                <input
-                  type="text"
-                  placeholder="Lab Name"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
-                <br />
-                <input
-                  type="text"
-                  placeholder="contact number"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
-                <br />
-                <input
-                  type="email"
-                  placeholder="add email"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
+                <div className="d-flex flex-column">
+                  <div className="d-flex">
+                    <div className="d-flex flex-column">
+                      <label htmlFor="">Lab Name</label>
+                      <input
+                        type="text"
+                        placeholder="Lab Name"
+                        className="rounded p-2"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                    <div className="d-flex flex-column mx-2 w-100">
+                      <label htmlFor="">Type</label>
+                      <select name="" id="" className="typeset w-100">
+                        <option value="">Internal</option>
+                        <option value="">External</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+                  <div className="d-flex">
+                    <div className="d-flex flex-column">
+                      <label htmlFor="">Number</label>
+                      <input
+                        type="text"
+                        placeholder="contact number"
+                        className="rounded p-2"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                    <div className="d-flex flex-column mx-2">
+                      <label htmlFor="">Email</label>
+                      <input
+                        type="email"
+                        placeholder="add email"
+                        className="rounded p-2"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                  </div>
+                  <br />
+                  <div className="d-flex flex-column">
+                    <label htmlFor="">Address</label>
+                    <textarea name="" id="" cols="30" rows="3"></textarea>
+                  </div>
+                </div>
+
                 <div className="d-flex justify-content-evenly">
                   <button type="submit" className="btn btn-success mt-2">
                     Save
@@ -461,5 +496,26 @@ const Container = styled.div`
     padding: 1rem;
     border-radius: 0.5rem;
     box-shadow: inset 0px 0px 4px #b1adad;
+  }
+
+  .select-style {
+    border: none;
+    background-color: #22a6b3;
+    font-weight: bold;
+    color: white;
+  }
+
+  .typeset {
+    padding: 0.5rem;
+    border-radius: 6px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  .lab-actbtn {
+    height: 4rem;
+    font-weight: bold;
   }
 `;

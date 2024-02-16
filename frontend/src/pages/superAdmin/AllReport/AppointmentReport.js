@@ -23,16 +23,24 @@ const AppointmentReport = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div>
-                        <h6>Select Branch : </h6>
+                        <h4>Select Branch : </h4>
                       </div>
                       <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
+                        <select
+                          name="branch"
+                          id="branch"
+                          className="mx-2 p-2 rounded shadow select-style"
+                        >
+                          <option value="Madan Mahal" className="fw-bold">
+                            Madan Mahal
+                          </option>
+                          <option value="Madan Mahal" className="fw-bold">
+                            Ranjhi
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -45,7 +53,7 @@ const AppointmentReport = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="container-fluid">
                     <button className="btn btn-success" onClick={goBack}>
                       <IoMdArrowRoundBack /> Back
@@ -81,10 +89,11 @@ const AppointmentReport = () => {
                                   className="p-2 rounded"
                                 />
                               </div>
+                              <button className="btn btn-warning mx-2">
+                                Download Report
+                              </button>
                             </div>
-                            <button className="btn btn-warning">
-                              Download Report
-                            </button>
+
                             <div className="d-flex justify-content-between">
                               <div>
                                 <select
@@ -122,66 +131,96 @@ const AppointmentReport = () => {
                           <table class="table table-bordered">
                             <thead className="table-head">
                               <tr>
+                                <th>Branch</th>
                                 <th>UHID</th>
                                 <th>Patient Name</th>
-                                <th>Branch</th>
-                                <th>Mobile</th>
+                                <th>Contact Number</th>
                                 <th>Email</th>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>Status</th>
+                                <th>Assigned Doctor</th>
+                                <th>Treatment Provided</th>
+                                <th>Treatment Status</th>
+                                <th>Payment Status</th>
+                                <th>Payment Date & Time</th>
+                                <th>Appointed by</th>
+                                <th>Update by</th>
+                                <th>Appointment Time</th>
                               </tr>
                             </thead>
                             <tbody>
                               <tr className="table-row">
+                                <td>Madan Mahal</td>
                                 <td>007</td>
                                 <td>Mahesh Kuldeep</td>
-                                <td>Madan Mahal</td>
                                 <td>+91-999965651</td>
                                 <td>maheshkuldeep@gmail.com</td>
-                                <td>12/12/2023</td>
-                                <td>10:30 pm</td>
+                                <td>shubham</td>
+                                <td>2 injection</td>
                                 <td>Treated</td>
+                                <td>Complete</td>
+                                <td>12/12/2023 10:30pm</td>
+                                <td>mohit</td>
+                                <td>mohit</td>
+                                <td>12/12/2023 10:30pm</td>
                               </tr>
                               <tr className="table-row">
+                                <td>Madan Mahal</td>
                                 <td>007</td>
                                 <td>Mahesh Kuldeep</td>
-                                <td>Madan Mahal</td>
                                 <td>+91-999965651</td>
                                 <td>maheshkuldeep@gmail.com</td>
-                                <td>12/12/2023</td>
-                                <td>10:30 pm</td>
+                                <td>shubham</td>
+                                <td>2 injection</td>
                                 <td>Treated</td>
+                                <td>Complete</td>
+                                <td>12/12/2023 10:30pm</td>
+                                <td>mohit</td>
+                                <td>mohit</td>
+                                <td>12/12/2023 10:30pm</td>
                               </tr>
                               <tr className="table-row">
+                                <td>Madan Mahal</td>
                                 <td>007</td>
                                 <td>Mahesh Kuldeep</td>
-                                <td>Madan Mahal</td>
                                 <td>+91-999965651</td>
                                 <td>maheshkuldeep@gmail.com</td>
-                                <td>12/12/2023</td>
-                                <td>10:30 pm</td>
+                                <td>shubham</td>
+                                <td>2 injection</td>
                                 <td>Treated</td>
+                                <td>Complete</td>
+                                <td>12/12/2023 10:30pm</td>
+                                <td>mohit</td>
+                                <td>mohit</td>
+                                <td>12/12/2023 10:30pm</td>
                               </tr>
                               <tr className="table-row">
+                                <td>Madan Mahal</td>
                                 <td>007</td>
                                 <td>Mahesh Kuldeep</td>
-                                <td>Madan Mahal</td>
                                 <td>+91-999965651</td>
                                 <td>maheshkuldeep@gmail.com</td>
-                                <td>12/12/2023</td>
-                                <td>10:30 pm</td>
+                                <td>shubham</td>
+                                <td>2 injection</td>
                                 <td>Treated</td>
+                                <td>Complete</td>
+                                <td>12/12/2023 10:30pm</td>
+                                <td>mohit</td>
+                                <td>mohit</td>
+                                <td>12/12/2023 10:30pm</td>
                               </tr>
                               <tr className="table-row">
+                                <td>Madan Mahal</td>
                                 <td>007</td>
                                 <td>Mahesh Kuldeep</td>
-                                <td>Madan Mahal</td>
                                 <td>+91-999965651</td>
                                 <td>maheshkuldeep@gmail.com</td>
-                                <td>12/12/2023</td>
-                                <td>10:30 pm</td>
+                                <td>shubham</td>
+                                <td>2 injection</td>
                                 <td>Treated</td>
+                                <td>Complete</td>
+                                <td>12/12/2023 10:30pm</td>
+                                <td>mohit</td>
+                                <td>mohit</td>
+                                <td>12/12/2023 10:30pm</td>
                               </tr>
                             </tbody>
                           </table>
@@ -200,4 +239,16 @@ const AppointmentReport = () => {
 };
 
 export default AppointmentReport;
-const Container = styled.div``;
+const Container = styled.div`
+  .select-style {
+    border: none;
+    background-color: #22a6b3;
+    font-weight: bold;
+    color: white;
+  }
+
+  th {
+    background-color: #004aad;
+    color: white;
+  }
+`;

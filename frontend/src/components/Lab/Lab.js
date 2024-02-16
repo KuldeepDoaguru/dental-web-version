@@ -26,6 +26,7 @@ const Lab = () => {
                 <th>Lab Type</th>
                 <th>Contact</th>
                 <th>Email</th>
+                <th>Address</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -35,6 +36,7 @@ const Lab = () => {
                 <td>Internal</td>
                 <td>+91-999965651</td>
                 <td>maheshkuldeep@gmail.com</td>
+                <td>Jabalpur</td>
                 <td>
                   <button
                     className="btn btn-warning"
@@ -50,6 +52,7 @@ const Lab = () => {
                 <td>Internal</td>
                 <td>+91-999965651</td>
                 <td>maheshkuldeep@gmail.com</td>
+                <td>Jabalpur</td>
                 <td>
                   <button
                     className="btn btn-warning"
@@ -65,6 +68,7 @@ const Lab = () => {
                 <td>Internal</td>
                 <td>+91-999965651</td>
                 <td>maheshkuldeep@gmail.com</td>
+                <td>Jabalpur</td>
                 <td>
                   <button
                     className="btn btn-warning"
@@ -80,6 +84,7 @@ const Lab = () => {
                 <td>Internal</td>
                 <td>+91-999965651</td>
                 <td>maheshkuldeep@gmail.com</td>
+                <td>Jabalpur</td>
                 <td>
                   <button
                     className="btn btn-warning"
@@ -95,6 +100,7 @@ const Lab = () => {
                 <td>Internal</td>
                 <td>+91-999965651</td>
                 <td>maheshkuldeep@gmail.com</td>
+                <td>Jabalpur</td>
                 <td>
                   <button
                     className="btn btn-warning"
@@ -116,52 +122,74 @@ const Lab = () => {
                 className="d-flex flex-column"
                 // onSubmit={handleNoticeSubmit}
               >
-                <input
-                  type="text"
-                  placeholder="Lab Name"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
-                <br />
-                <select name="" id="" className="rounded p-2">
-                  <option value="">Internal</option>
-                  <option value="">External</option>
-                </select>
-                <br />
-                <input
-                  type="text"
-                  placeholder="Lab Number"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
-                <br />
-                <input
-                  type="email"
-                  placeholder="Add Email"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
+                <div className="d-flex flex-column">
+                  <div className="d-flex">
+                    <div className="d-flex flex-column">
+                      <label htmlFor="">Lab Name</label>
+                      <input
+                        type="text"
+                        placeholder="Lab Name"
+                        className="rounded p-2"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                    <div className="d-flex flex-column mx-2 w-100">
+                      <label htmlFor="">Type</label>
+                      <select name="" id="" className="typeset w-100">
+                        <option value="">Internal</option>
+                        <option value="">External</option>
+                      </select>
+                    </div>
+                  </div>
+                  <br />
+                  <div className="d-flex">
+                    <div className="d-flex flex-column">
+                      <label htmlFor="">Number</label>
+                      <input
+                        type="text"
+                        placeholder="contact number"
+                        className="rounded p-2"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                    <div className="d-flex flex-column mx-2">
+                      <label htmlFor="">Email</label>
+                      <input
+                        type="email"
+                        placeholder="add email"
+                        className="rounded p-2"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                  </div>
+                  <br />
+                  <div className="d-flex flex-column">
+                    <label htmlFor="">Address</label>
+                    <textarea name="" id="" cols="30" rows="3"></textarea>
+                  </div>
+                </div>
+
                 <div className="d-flex justify-content-evenly">
                   <button type="submit" className="btn btn-success mt-2">
-                    update
+                    Save
                   </button>
                   <button
                     type="button"

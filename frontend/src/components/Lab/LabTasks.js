@@ -28,7 +28,8 @@ const LabTasks = () => {
                 <th>Lab Task Code</th>
                 <th>Waiting Days for Task</th>
                 <th>Default Lab</th>
-                <th>Code</th>
+                <th>Cost</th>
+                <th>Date</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -39,6 +40,8 @@ const LabTasks = () => {
                 <td>same day</td>
                 <td>Lab Name</td>
                 <td>500</td>
+                <td>12/12/2024</td>
+
                 <td>
                   <button
                     className="btn btn-warning"
@@ -55,6 +58,7 @@ const LabTasks = () => {
                 <td>same day</td>
                 <td>Lab Name</td>
                 <td>500</td>
+                <td>12/12/2024</td>
                 <td>
                   <button
                     className="btn btn-warning"
@@ -71,6 +75,7 @@ const LabTasks = () => {
                 <td>same day</td>
                 <td>Lab Name</td>
                 <td>500</td>
+                <td>12/12/2024</td>
                 <td>
                   <button
                     className="btn btn-warning"
@@ -87,6 +92,7 @@ const LabTasks = () => {
                 <td>same day</td>
                 <td>Lab Name</td>
                 <td>500</td>
+                <td>12/12/2024</td>
                 <td>
                   <button
                     className="btn btn-warning"
@@ -103,6 +109,7 @@ const LabTasks = () => {
                 <td>same day</td>
                 <td>Lab Name</td>
                 <td>500</td>
+                <td>12/12/2024</td>
                 <td>
                   <button
                     className="btn btn-warning"

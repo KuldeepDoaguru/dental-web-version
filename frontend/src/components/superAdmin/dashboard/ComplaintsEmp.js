@@ -16,6 +16,8 @@ const ComplaintsEmp = () => {
                   <th className="table-small">Complain Message</th>
                   <th className="table-small">Complain Date & Time</th>
                   <th>Status</th>
+                  <th className="table-small">Solution Date</th>
+                  <th className="table-small">Pending Since</th>
                 </tr>
               </thead>
               <tbody>
@@ -28,6 +30,8 @@ const ComplaintsEmp = () => {
                   </td>
                   <td className="table-small">12/12/2024 12:00pm</td>
                   <td>solved</td>
+                  <td>12/12/2024</td>
+                  <td>9 Days</td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -38,6 +42,8 @@ const ComplaintsEmp = () => {
                   </td>
                   <td className="table-small">12/12/2024 12:00pm</td>
                   <td>solved</td>
+                  <td>12/12/2024</td>
+                  <td>9 Days</td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -48,6 +54,8 @@ const ComplaintsEmp = () => {
                   </td>
                   <td className="table-small">12/12/2024 12:00pm</td>
                   <td>solved</td>
+                  <td>12/12/2024</td>
+                  <td>9 Days</td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -58,6 +66,8 @@ const ComplaintsEmp = () => {
                   </td>
                   <td className="table-small">12/12/2024 12:00pm</td>
                   <td>solved</td>
+                  <td>12/12/2024</td>
+                  <td>9 Days</td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -68,6 +78,8 @@ const ComplaintsEmp = () => {
                   </td>
                   <td className="table-small">12/12/2024 12:00pm</td>
                   <td>solved</td>
+                  <td>12/12/2024</td>
+                  <td>9 Days</td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -78,6 +90,8 @@ const ComplaintsEmp = () => {
                   </td>
                   <td className="table-small">12/12/2024 12:00pm</td>
                   <td>solved</td>
+                  <td>12/12/2024</td>
+                  <td>9 Days</td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -88,6 +102,8 @@ const ComplaintsEmp = () => {
                   </td>
                   <td className="table-small">12/12/2024 12:00pm</td>
                   <td>solved</td>
+                  <td>12/12/2024</td>
+                  <td>9 Days</td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -98,6 +114,8 @@ const ComplaintsEmp = () => {
                   </td>
                   <td className="table-small">12/12/2024 12:00pm</td>
                   <td>solved</td>
+                  <td>12/12/2024</td>
+                  <td>9 Days</td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -108,6 +126,8 @@ const ComplaintsEmp = () => {
                   </td>
                   <td className="table-small">12/12/2024 12:00pm</td>
                   <td>solved</td>
+                  <td>12/12/2024</td>
+                  <td>9 Days</td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -118,6 +138,8 @@ const ComplaintsEmp = () => {
                   </td>
                   <td className="table-small">12/12/2024 12:00pm</td>
                   <td>solved</td>
+                  <td>12/12/2024</td>
+                  <td>9 Days</td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -128,6 +150,8 @@ const ComplaintsEmp = () => {
                   </td>
                   <td className="table-small">12/12/2024 12:00pm</td>
                   <td>solved</td>
+                  <td>12/12/2024</td>
+                  <td>9 Days</td>
                 </tr>
               </tbody>
             </table>

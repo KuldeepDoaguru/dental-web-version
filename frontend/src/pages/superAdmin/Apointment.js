@@ -32,12 +32,20 @@ const Apointment = () => {
                     <div className="d-flex justify-content-between">
                       <div className="d-flex">
                         <div>
-                          <h6>Select Branch : </h6>
+                          <h4>Select Branch : </h4>
                         </div>
                         <div>
-                          <select name="branch" id="branch" className="mx-2">
-                            <option value="Madan Mahal">Madan Mahal</option>
-                            <option value="Madan Mahal">Ranjhi</option>
+                          <select
+                            name="branch"
+                            id="branch"
+                            className="mx-2 p-2 rounded shadow select-style"
+                          >
+                            <option value="Madan Mahal" className="fw-bold">
+                              Madan Mahal
+                            </option>
+                            <option value="Madan Mahal" className="fw-bold">
+                              Ranjhi
+                            </option>
                           </select>
                         </div>
                       </div>
@@ -158,27 +166,31 @@ const Apointment = () => {
                     {/* popup for updating notice */}
 
                     <h2 className="text-center"> Appointment Details </h2>
-                    <div className="container mt-3">
+                    <div className="container-fluid mt-3">
                       <div class="table-responsive rounded">
                         <table class="table table-bordered rounded shadow">
                           <thead className="table-head">
                             <tr>
                               <th className="table-sno">SN</th>
-                              <th className="table-small">Assigned Doctor</th>
                               <th>Patient UHID</th>
+
                               <th className="table-small">Patient Name</th>
-                              <th className="table-small">Patient Number</th>
+                              <th className="table-small">Contact Number</th>
+                              <th className="table-small">Assigned Doctor</th>
+                              <th className="table-small">
+                                Treatment Provided
+                              </th>
                               <th className="table-small">Treatment Status</th>
                               <th className="table-small">Payment Status</th>
                               <th className="table-small">
                                 Payment Date & Time
                               </th>
-                              <th className="table-small">
-                                Treatment Provided
-                              </th>
-                              <th className="table-small">Created by</th>
+
+                              <th className="table-small">Appointed by</th>
                               <th className="table-small">Updated by</th>
-                              <th className="table-small">Appointment Date</th>
+                              <th className="table-small">
+                                Appointment Date & Time
+                              </th>
                               <th className="table-small">Edit</th>
                               <th className="table-small">Delete</th>
                             </tr>
@@ -372,6 +384,13 @@ const Container = styled.div`
 
   th {
     background-color: #004aad;
+    color: white;
+  }
+
+  .select-style {
+    border: none;
+    background-color: #22a6b3;
+    font-weight: bold;
     color: white;
   }
 `;

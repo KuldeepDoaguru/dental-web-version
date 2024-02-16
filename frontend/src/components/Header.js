@@ -4,6 +4,7 @@ import { AiFillBell } from "react-icons/ai";
 import { FaUserAlt } from "react-icons/fa";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { IoSettings } from "react-icons/io5";
 const Header = () => {
   return (
     <Wrapper>
@@ -43,6 +44,11 @@ const Header = () => {
               id="navbarSupportedContent"
             >
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li className="nav-item mx-3">
+                  <Link to="/clinic-setting">
+                    <IoSettings className="icon" />
+                  </Link>
+                </li>
                 <li className="nav-item dropdown mx-3" id="userid">
                   <a
                     className="nav-link dropdown-toggle"
@@ -82,7 +88,10 @@ const Header = () => {
                   </a>
                   <ul className="dropdown-menu third-dropdown">
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
@@ -90,7 +99,10 @@ const Header = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
@@ -98,7 +110,10 @@ const Header = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
@@ -106,7 +121,10 @@ const Header = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
@@ -114,7 +132,10 @@ const Header = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
@@ -122,7 +143,10 @@ const Header = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
@@ -130,33 +154,18 @@ const Header = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
@@ -164,7 +173,10 @@ const Header = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
@@ -172,33 +184,18 @@ const Header = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
@@ -206,7 +203,10 @@ const Header = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
@@ -214,7 +214,70 @@ const Header = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <Link className="dropdown-item" to="/super-admin-profile">
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
+                        Admin Added New Doctor - Approve the doctor
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li>
+                      <Link
+                        className="dropdown-item"
+                        to="/super-admin-notification"
+                      >
                         Admin Added New Doctor - Approve the doctor
                       </Link>
                     </li>
@@ -264,6 +327,9 @@ const Wrapper = styled.div`
   .icon {
     color: white;
     font-size: 2rem;
+    &:hover {
+      color: #55efc4;
+    }
   }
   .navbar {
     background-color: #004aad;

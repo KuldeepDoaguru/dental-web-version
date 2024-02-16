@@ -5,13 +5,24 @@ import styled from "styled-components";
 
 const MostTakenTreat = () => {
   const [chartData, setChartData] = useState({
-    series: [44, 55, 13, 43, 22],
+    series: [44, 55, 13, 43, 22, 44, 55, 13, 43, 22],
     options: {
       chart: {
         width: 380,
         type: "pie",
       },
-      labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
+      labels: [
+        "Team A",
+        "Team B",
+        "Team C",
+        "Team D",
+        "Team E",
+        "Team A",
+        "Team B",
+        "Team C",
+        "Team D",
+        "Team E",
+      ],
       responsive: [
         {
           breakpoint: 480,

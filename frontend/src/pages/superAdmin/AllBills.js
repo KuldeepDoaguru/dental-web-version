@@ -25,16 +25,24 @@ const AllBills = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div>
-                        <h6>Select Branch : </h6>
+                        <h4>Select Branch : </h4>
                       </div>
                       <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
+                        <select
+                          name="branch"
+                          id="branch"
+                          className="mx-2 p-2 rounded shadow select-style"
+                        >
+                          <option value="Madan Mahal" className="fw-bold">
+                            Madan Mahal
+                          </option>
+                          <option value="Madan Mahal" className="fw-bold">
+                            Ranjhi
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -47,80 +55,110 @@ const AllBills = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <h3 className="text-center">Bill List</h3>
-                  <div className="container mt-3">
+                  <div className="container-fluid mt-3">
                     <div class="table-responsive rounded">
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
                             <th className="table-sno">SN</th>
+                            <th>Bill Date</th>
                             <th className="table-small">Patient UHID</th>
                             <th className="table-small">Patient Name</th>
+                            <th className="table-small">Patient Mobile</th>
+                            <th className="table-small">Patient Email</th>
+                            <th className="table-small">Treatment</th>
+                            <th className="table-small">Drugs with Quantity</th>
                             <th className="table-small">Total Amount</th>
+                            <th>Paid Amount</th>
                             <th>Payment Status</th>
                             <th>Payment Date & Time</th>
-                            <th className="table-small">Bill Date</th>
                             <th className="table-small">Delete</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr className="table-row">
                             <td className="table-sno">1</td>
+                            <td className="table-small">12/12/2024</td>
                             <td className="table-small">007</td>
                             <td className="table-small">Shubham patel</td>
+                            <td>+918602161019</td>
+                            <td>shubham@gmail.com</td>
+                            <td>2 injections</td>
+                            <td>5</td>
+                            <td className="table-small">1000</td>
                             <td className="table-small">1000</td>
                             <td>Completed</td>
                             <td>12/12/2024 12:00PM</td>
-                            <td className="table-small">12/12/2024</td>
                             <td className="table-small">
                               <button className="btn btn-danger">Delete</button>
                             </td>
                           </tr>
                           <tr className="table-row">
                             <td className="table-sno">1</td>
+                            <td className="table-small">12/12/2024</td>
                             <td className="table-small">007</td>
                             <td className="table-small">Shubham patel</td>
+                            <td>+918602161019</td>
+                            <td>shubham@gmail.com</td>
+                            <td>2 injections</td>
+                            <td>5</td>
+                            <td className="table-small">1000</td>
                             <td className="table-small">1000</td>
                             <td>Completed</td>
                             <td>12/12/2024 12:00PM</td>
-                            <td className="table-small">12/12/2024</td>
                             <td className="table-small">
                               <button className="btn btn-danger">Delete</button>
                             </td>
                           </tr>
                           <tr className="table-row">
                             <td className="table-sno">1</td>
+                            <td className="table-small">12/12/2024</td>
                             <td className="table-small">007</td>
                             <td className="table-small">Shubham patel</td>
+                            <td>+918602161019</td>
+                            <td>shubham@gmail.com</td>
+                            <td>2 injections</td>
+                            <td>5</td>
+                            <td className="table-small">1000</td>
                             <td className="table-small">1000</td>
                             <td>Completed</td>
                             <td>12/12/2024 12:00PM</td>
-                            <td className="table-small">12/12/2024</td>
                             <td className="table-small">
                               <button className="btn btn-danger">Delete</button>
                             </td>
                           </tr>
                           <tr className="table-row">
                             <td className="table-sno">1</td>
+                            <td className="table-small">12/12/2024</td>
                             <td className="table-small">007</td>
                             <td className="table-small">Shubham patel</td>
+                            <td>+918602161019</td>
+                            <td>shubham@gmail.com</td>
+                            <td>2 injections</td>
+                            <td>5</td>
+                            <td className="table-small">1000</td>
                             <td className="table-small">1000</td>
                             <td>Completed</td>
                             <td>12/12/2024 12:00PM</td>
-                            <td className="table-small">12/12/2024</td>
                             <td className="table-small">
                               <button className="btn btn-danger">Delete</button>
                             </td>
                           </tr>
                           <tr className="table-row">
                             <td className="table-sno">1</td>
+                            <td className="table-small">12/12/2024</td>
                             <td className="table-small">007</td>
                             <td className="table-small">Shubham patel</td>
+                            <td>+918602161019</td>
+                            <td>shubham@gmail.com</td>
+                            <td>2 injections</td>
+                            <td>5</td>
+                            <td className="table-small">1000</td>
                             <td className="table-small">1000</td>
                             <td>Completed</td>
                             <td>12/12/2024 12:00PM</td>
-                            <td className="table-small">12/12/2024</td>
                             <td className="table-small">
                               <button className="btn btn-danger">Delete</button>
                             </td>
@@ -149,6 +187,13 @@ const Container = styled.div`
 
   th {
     background-color: #004aad;
+    color: white;
+  }
+
+  .select-style {
+    border: none;
+    background-color: #22a6b3;
+    font-weight: bold;
     color: white;
   }
 `;

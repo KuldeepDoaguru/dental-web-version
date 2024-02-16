@@ -15,7 +15,7 @@ import NewRegPatient from "../../components/superAdmin/dashboard/Charts/NewRegPa
 import ExpenseChart from "../../components/superAdmin/dashboard/Charts/ExpenseChart";
 import ComplaintsEmp from "../../components/superAdmin/dashboard/ComplaintsEmp";
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   return (
     <Wrapper>
       <Header />
@@ -123,7 +123,7 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;
 
 const Wrapper = styled.div`
   .main {

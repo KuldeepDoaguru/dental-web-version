@@ -41,33 +41,39 @@ const SuperAdmNotify = () => {
                   <div className="container mt-3">
                     <ul>
                       <li>
-                        <Link to="/super-admin-profile">
-                          Admin Added New Doctor - Approve the doctor
-                        </Link>
+                        <div className="li-div">
+                          <Link to="/super-admin-profile">
+                            Admin Added New Doctor - Approve the doctor
+                          </Link>
+                        </div>
                       </li>
                       <li>
-                        {" "}
-                        <Link to="/super-admin-profile">
-                          Admin Added New Doctor - Approve the doctor
-                        </Link>
+                        <div className="li-div">
+                          <Link to="/super-admin-profile">
+                            Admin Added New Doctor - Approve the doctor
+                          </Link>
+                        </div>
                       </li>
                       <li>
-                        {" "}
-                        <Link to="/super-admin-profile">
-                          Admin Added New Doctor - Approve the doctor
-                        </Link>
+                        <div className="li-div">
+                          <Link to="/super-admin-profile">
+                            Admin Added New Doctor - Approve the doctor
+                          </Link>
+                        </div>
                       </li>
                       <li>
-                        {" "}
-                        <Link to="/super-admin-profile">
-                          Admin Added New Doctor - Approve the doctor
-                        </Link>
+                        <div className="li-div">
+                          <Link to="/super-admin-profile">
+                            Admin Added New Doctor - Approve the doctor
+                          </Link>
+                        </div>
                       </li>
                       <li>
-                        {" "}
-                        <Link to="/super-admin-profile">
-                          Admin Added New Doctor - Approve the doctor
-                        </Link>
+                        <div className="li-div">
+                          <Link to="/super-admin-profile">
+                            Admin Added New Doctor - Approve the doctor
+                          </Link>
+                        </div>
                       </li>
                     </ul>
                   </div>
@@ -86,5 +92,25 @@ const Container = styled.div`
   th {
     background-color: #004aad;
     color: white;
+  }
+  .li-div {
+    background-color: #c7ecee;
+    margin-top: 1rem;
+    padding: 1rem;
+    border: none;
+    box-shadow: 0px 0px 10px darkgrey;
+    border-radius: 10px;
+    color: #004aad;
+    font-weight: bold;
+    &:hover {
+      background-color: #000;
+    }
+    a {
+      text-decoration: none;
+    }
+  }
+
+  li {
+    list-style: none;
   }
 `;

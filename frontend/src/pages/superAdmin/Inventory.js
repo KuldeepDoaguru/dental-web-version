@@ -17,16 +17,24 @@ const Inventory = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div>
-                        <h6>Select Branch : </h6>
+                        <h4>Select Branch : </h4>
                       </div>
                       <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
+                        <select
+                          name="branch"
+                          id="branch"
+                          className="mx-2 p-2 rounded shadow select-style"
+                        >
+                          <option value="Madan Mahal" className="fw-bold">
+                            Madan Mahal
+                          </option>
+                          <option value="Madan Mahal" className="fw-bold">
+                            Ranjhi
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -39,7 +47,7 @@ const Inventory = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <h3 className="text-center">Inventory Management</h3>
                   <div className="br-box mt-4">
                     <div className="row">
@@ -78,18 +86,19 @@ const Inventory = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="container mt-1 rounded">
+                  <div className="container-fluid mt-1 rounded">
                     <div class="table-responsive rounded">
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno">ID</th>
+                            <th className="table-sno">SN</th>
+                            <th className="table-sno">Purchase ID</th>
                             <th className="table-small">Item Name</th>
-                            <th className="table-small">Type</th>
+                            <th className="table-small">Item Type</th>
                             <th className="table-small">
                               Last Purchase Details
                             </th>
-                            <th className="table-small">Last MRP</th>
+                            <th className="table-small">MRP</th>
                             <th className="table-small">Available Stock</th>
                             <th className="table-small">Status</th>
                             {/* <th
@@ -275,6 +284,13 @@ export default Inventory;
 const Container = styled.div`
   th {
     background-color: #004aad;
+    color: white;
+  }
+
+  .select-style {
+    border: none;
+    background-color: #22a6b3;
+    font-weight: bold;
     color: white;
   }
 `;

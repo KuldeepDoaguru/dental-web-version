@@ -41,6 +41,15 @@ import SuperAdmNotify from "./pages/superAdmin/SuperAdmNotify";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import { useState } from "react";
 import ErrorPage from "./pages/ErrorPage";
+import ClinicSetAdmin from "./pages/admin/ClinicSetAdmin";
+import AdminProfile from "./components/Admin/AdminProfile";
+import AdminNotify from "./pages/admin/AdminNotify";
+import AdminApointment from "./pages/admin/AdminApointment";
+import AdminBillList from "./pages/admin/AdminBillList";
+import AdminInventory from "./pages/admin/AdminInventory";
+import AdminAddInventory from "./pages/admin/AdminAddInventory";
+import AdminEditInventory from "./pages/admin/AdminEditInventory";
+import AdminDocSection from "./pages/admin/AdminDocSection";
 
 const App = () => {
   const [role, setRole] = useState("admin");
@@ -111,6 +120,16 @@ const App = () => {
         <>
           {" "}
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/admin-clinic-setting" element={<ClinicSetAdmin />} />
+          <Route path="/admin-profile" element={<AdminProfile />} />
+          <Route path="/admin-notification" element={<AdminNotify />} />
+          <Route path="/admin-appointment" element={<AdminApointment />} />
+          <Route path="/admin-bill_section" element={<AdminBillList />} />
+          <Route path="/admin-inventory" element={<AdminInventory />} />
+          <Route path="/admin-add-invetory" element={<AdminAddInventory />} />
+          <Route path="/admin-edit-invetory" element={<AdminEditInventory />} />
+          <Route path="/admin-doctor_section" element={<AdminDocSection />} />
+          <Route path="/admin-doctor-profile" element={<DoctorProfile />} />
         </>
       ) : (
         <>

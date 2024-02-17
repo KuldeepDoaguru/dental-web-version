@@ -14,43 +14,34 @@ import MostTakenTreat from "../../components/superAdmin/dashboard/Charts/MostTak
 import NewRegPatient from "../../components/superAdmin/dashboard/Charts/NewRegPatient";
 import ExpenseChart from "../../components/superAdmin/dashboard/Charts/ExpenseChart";
 import ComplaintsEmp from "../../components/superAdmin/dashboard/ComplaintsEmp";
+import HeaderAdmin from "./HeaderAdmin";
+import SiderAdmin from "./SiderAdmin";
+import AdminCards from "../../components/Admin/dashboard/AdminCards";
+import TreatmentTMAdmin from "../../components/Admin/admin-charts/TreatmentTMAdmin";
+import PatientVisTMAdmin from "../../components/Admin/admin-charts/PatientVisTMAdmin";
+import TotalApsTMAdmin from "../../components/Admin/admin-charts/TotalApsTMAdmin";
+import NewPatientTMAdmin from "../../components/Admin/admin-charts/NewPatientTMAdmin";
+import EarnTMAdmin from "../../components/Admin/admin-charts/EarnTMAdmin";
+import ExpenseTMAdmin from "../../components/Admin/admin-charts/ExpenseTMAdmin";
+import AdminClinicAct from "../../components/Admin/dashboard/AdminClinicAct";
+import AdminComplaintsSec from "../../components/Admin/dashboard/AdminComplaintsSec";
 
 const AdminDashboard = () => {
   return (
     <Wrapper>
-      <Header />
+      <HeaderAdmin />
 
       <div className="main">
         <div className="container-fluid">
           <div className="row flex-nowrap ">
             <div className="col-lg-1 col-1 p-0">
-              <Sider />
+              <SiderAdmin />
             </div>
             <div className="col-lg-11 col-11 ps-0">
               <div className="row d-flex justify-content-between mx-3">
                 <div className="col-12 col-md-4 mt-4">
-                  <div className="d-flex">
-                    <div>
-                      <h4>Select Branch : </h4>
-                    </div>
-                    <div>
-                      <select
-                        name="branch"
-                        id="branch"
-                        className="mx-2 p-2 rounded shadow select-style"
-                      >
-                        <option value="Madan Mahal" className="fw-bold">
-                          Madan Mahal
-                        </option>
-                        <option value="Madan Mahal" className="fw-bold">
-                          Ranjhi
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-
                   <h3> Welcome to Dental Guru! </h3>
-                  <p>Super Admin Dashboard</p>
+                  <p>Admin Dashboard - Madan Mahal Branch</p>
                 </div>
                 <div className="col-12 col-md-4 my-3">
                   <form className="d-flex ms-auto my-sm" role="search">
@@ -70,37 +61,37 @@ const AdminDashboard = () => {
                   </form>
                 </div>
               </div>
-              <Card />
+              <AdminCards />
               <div className="container-fluid pb-3">
                 <div className="row g-5 mt-3">
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">Treatment this month</h3>
-                    <MostTakenTreat />
+                    <TreatmentTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">Patient visits this month</h3>
-                    <PatientStatisticChart />
+                    <PatientVisTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">
                       Total apointments this month
                     </h3>
-                    <NewRegPatient />
+                    <TotalApsTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">
                       New Registered Patient this Month
                     </h3>
 
-                    <AppointmentChart />
+                    <NewPatientTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">Earning report this month</h3>
-                    <EarningChart />
+                    <EarnTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">Expense report this month</h3>
-                    <ExpenseChart />
+                    <ExpenseTMAdmin />
                   </div>
                 </div>
                 {/* <div className="row g-5 mt-3"></div> */}
@@ -108,10 +99,10 @@ const AdminDashboard = () => {
               <div className="container-fluid mt-3">
                 <div className="row">
                   <div className="col-xxl-7 col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12">
-                    <ClinicActivity />
+                    <AdminClinicAct />
                   </div>
                   <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12">
-                    <ComplaintsEmp />
+                    <AdminComplaintsSec />
                   </div>
                 </div>
               </div>

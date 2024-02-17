@@ -3,19 +3,32 @@ import styled from "styled-components";
 
 
 function Form() {
-  
+    
+  const  [formdata,setFormData ] = useState({})
 
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchDoctor, setSearchDoctor] = useState("");
+  const [showDoctorList,setShowDoctorList] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null); // State to store the selected patient
+  const [selectedDoctor, setSelectedDoctor] = useState(null); // State to store the selected Doctor
   const [data,setData] = useState(
     { uid :"1", patient_Name:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male", city: "jabalpur", contact_Person : "father" , contact_Person_Name: "rahul", blood_Group : "o+" , dob : "", age : "25", address: "Ranital gate no. 4 , jabalpur"}
     
   ) 
 
+
   const [bookData,setBookData] = useState(
     { uid :"1", patient_Name:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male", city: "jabalpur", contact_Person : "father" , dateTime:"", contact_Person_Name: "rahul", blood_Group : "o+" , dob : "", age : "25", address: "Ranital gate no. 4 , jabalpur"}
     
   ) 
+
+  const doctors = [
+    { uid :"1", doctor_name:"Mohit Sahu",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
+    { uid :"2", doctor_name:"Rahul sen",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
+    { uid :"3", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"}
+    
+
+  ];
 
   const [patients, setPatients] = useState([
     {
@@ -49,7 +62,7 @@ function Form() {
       address: "Ranital gate no. 4 , jabalpur",
     },
     {
-      uid: "1",
+      uid: "3",
       patient_Name: "dev",
       mobile: "9806324245",
       email: "patinet@gmail.com",
@@ -68,6 +81,7 @@ function Form() {
 
 
   const [filteredPatients, setFilteredPatients] = useState([]);
+  const [filteredDoctor,setFilteredDoctor] = useState([]);
 
   // useEffect(() => {
   //   // Filter patients based on the search query
@@ -88,7 +102,22 @@ function Form() {
   }, [searchQuery, patients]);
 
   const handleSearch = (e) => {
+    
     setSearchQuery(e.target.value);
+  };
+  useEffect(() => {
+    // Filter patients based on the search query if there's a search query, otherwise set an empty array
+    const filtered = showDoctorList
+      ? doctors.filter((doctor) =>
+          doctor.doctor_name.toLowerCase().includes(searchDoctor.toLowerCase())
+        )
+      : [];
+    setFilteredDoctor(filtered);
+  }, [searchDoctor]);
+
+  const handleSearchDoctor = (e) => {
+    setShowDoctorList(true)
+    setSearchDoctor(e.target.value);
   };
 
 
@@ -131,9 +160,15 @@ const handlePatientSelect = (patient) => {
   setSelectedPatient(patient); // Set the selected patient when it's clicked
   setSearchQuery(""); // Reset the search query to close the search list
 };
+const handleDoctorSelect = (doctor) => {
+  setSelectedDoctor(doctor); // Set the selected patient when it's clicked
+  setShowDoctorList(false)
+  setSearchDoctor(doctor.doctor_name); // Reset the search query to close the search list
+};
 
 
-  
+  console.log(filteredDoctor)
+  console.log(selectedDoctor)
  
  
   
@@ -362,7 +397,7 @@ const handlePatientSelect = (patient) => {
                         className={`list-group-item ${selectedPatient && selectedPatient.uid === patient.uid ? "active" : ""}`} // Add 'active' class if the patient is selected
             onClick={() => handlePatientSelect(patient)} // Call handlePatientSelect function when the patient is clicked 
                         >
-                          {patient.patient_Name}
+                          {patient.patient_Name}{"-"} Mobile : {patient.mobile}
                           {/* Display other patient details as needed */}
                         </li>
                       ))}
@@ -401,18 +436,42 @@ const handlePatientSelect = (patient) => {
                          
                         </div>
                       </div>
+                      
                       <div className="col-sm-6">
                         <div className="form-outline">
+
                         <label className="form-label" for="form6Example1">
                             Doctor
                           </label>
+                          <DoctorList>
                           <input
-                            type="text"
+                            type="search"
                             id="form6Example1"
                             className="form-control"
+                            value={searchDoctor}
+                    onChange={handleSearchDoctor}
+                    
+                  
+
                           />
+                          <div style={{zIndex:1}}>
+                          <ul className="list-group">
+                      {filteredDoctor.map((doctor) => (
+                        <li key={doctor.uid}
+                        className={`list-group-item ${selectedDoctor && selectedDoctor.uid === doctor.uid ? "active" : ""}`} // Add 'active' class if the patient is selected
+            onClick={() => handleDoctorSelect(doctor)} // Call handlePatientSelect function when the patient is clicked 
+                        >
+                          {doctor.doctor_name} {"-"} Department: {doctor.department}
+                          {/* Display other patient details as needed */}
+                        </li>
+                      ))}
+                    </ul>
+
+                    </div>
+                    </DoctorList>
                           
                         </div>
+                      
                       </div>
                       <div className="col-sm-6">
                         <div className="form-outline" id="form1">
@@ -600,5 +659,15 @@ const PatientList = styled.div`
   top: 0;
   left: 0;
   z-index: 1;
+  width: 100%;
   /* Your styling for the patient list */
 `;
+const DoctorList = styled.div`
+  position: absolute;
+  top: 50; /* Position the list below the input field */
+  left: 5;
+  z-index: 1000; /* Set a high z-index to ensure the list is displayed above other elements */
+ 
+  /* Your additional styling for the doctor list */
+`;
+

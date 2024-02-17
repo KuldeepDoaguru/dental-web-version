@@ -300,17 +300,24 @@ import suparabtn from "../Assest/Examination Buttons/Supra erupted1.png";
 const ExaminationPatient = () => {
   const [selectedTeeth, setSelectedTeeth] = useState([]);
   const [selectAllTeeth, setSelectAllTeeth] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const [inputValues, setInputValues] = useState([
+    { email: "", chiefComplaints: "", advice: "", onExamination: "" },
+  ]);
+
 
   const handlCheckBoxChange = (e) => {
     const { value, checked } = e.target;
+    const toothNumber = Number(value);
+
     if (checked) {
       setSelectedTeeth((prevSelectedTeeth) => [
         ...prevSelectedTeeth,
-        Number(value),
+        toothNumber,
       ]);
     } else {
       setSelectedTeeth((prevSelectedTeeth) =>
-        prevSelectedTeeth.filter((val) => val !== value)
+        prevSelectedTeeth.filter((val) => val !== toothNumber)
       );
     }
   };
@@ -333,6 +340,23 @@ const ExaminationPatient = () => {
   };
 
   console.log(selectedTeeth);
+
+    // ADD NEW FORM
+
+    const handleInputChange = (index, e) => {
+      const { name, value } = e.target;
+      const newInputValues = [...inputValues];
+      newInputValues[index][name] = value;
+      setInputValues(newInputValues);
+    };
+  
+    const addNewForm = () => {
+      setInputValues([
+        ...inputValues,
+        { email: "", chiefComplaints: "", advice: "", onExamination: "" },
+      ]);
+    };
+  
 
   // caries start here
 
@@ -372,7 +396,12 @@ const ExaminationPatient = () => {
     // Add more mappings as needed
   };
 
-  const caries = () => {
+  const caries = (condition) => {
+    const newInputValues = inputValues.map((inputValue) => {
+      const updatedEmail = inputValue.email ? inputValue.email + `, ${condition}` : condition;
+      return { ...inputValue, email: updatedEmail };
+    });
+    setInputValues(newInputValues);
     selectedTeeth.forEach((toothId) => {
       const toothIndex = allTeethValues.indexOf(toothId);
       if (toothIndex !== -1) {
@@ -426,6 +455,8 @@ const ExaminationPatient = () => {
   };
 
   const fracture = () => {
+    const newInputValue = inputValue ? inputValue + ", Fracture" : "Fracture";
+    setInputValue(newInputValue);
     selectedTeeth.forEach((toothId) => {
       const toothIndex = allTeethValues.indexOf(toothId);
       if (toothIndex !== -1) {
@@ -478,6 +509,8 @@ const ExaminationPatient = () => {
   };
 
   const impacted = () => {
+    const newInputValue = inputValue ? inputValue + ", Impacted" : "Impacted";
+    setInputValue(newInputValue);
     selectedTeeth.forEach((toothId) => {
       const toothIndex = allTeethValues.indexOf(toothId);
       if (toothIndex !== -1) {
@@ -531,6 +564,10 @@ const ExaminationPatient = () => {
   };
 
   const missing = () => {
+    const newInputValue = inputValue
+      ? inputValue + ", Missing Tooth"
+      : "Missing Tooth";
+    setInputValue(newInputValue);
     selectedTeeth.forEach((toothId) => {
       const toothIndex = allTeethValues.indexOf(toothId);
       if (toothIndex !== -1) {
@@ -584,6 +621,8 @@ const ExaminationPatient = () => {
   };
 
   const mobility = () => {
+    const newInputValue = inputValue ? inputValue + ", Mobility" : "Mobility";
+    setInputValue(newInputValue);
     selectedTeeth.forEach((toothId) => {
       const toothIndex = allTeethValues.indexOf(toothId);
       if (toothIndex !== -1) {
@@ -637,6 +676,10 @@ const ExaminationPatient = () => {
   };
 
   const periapical = () => {
+    const newInputValue = inputValue
+      ? inputValue + ", Periapical Abscess"
+      : "Periapical Abscess";
+    setInputValue(newInputValue);
     selectedTeeth.forEach((toothId) => {
       const toothIndex = allTeethValues.indexOf(toothId);
       if (toothIndex !== -1) {
@@ -690,6 +733,10 @@ const ExaminationPatient = () => {
   };
 
   const root = () => {
+    const newInputValue = inputValue
+      ? inputValue + ", Root Stump"
+      : "Root Stump";
+    setInputValue(newInputValue);
     selectedTeeth.forEach((toothId) => {
       const toothIndex = allTeethValues.indexOf(toothId);
       if (toothIndex !== -1) {
@@ -742,6 +789,10 @@ const ExaminationPatient = () => {
   };
 
   const supara = () => {
+    const newInputValue = inputValue
+      ? inputValue + ", Supra Erupted"
+      : "Supra Erupted";
+    setInputValue(newInputValue);
     selectedTeeth.forEach((toothId) => {
       const toothIndex = allTeethValues.indexOf(toothId);
       if (toothIndex !== -1) {
@@ -755,6 +806,7 @@ const ExaminationPatient = () => {
   };
 
   // supara end here
+
 
   return (
     <>
@@ -1324,90 +1376,185 @@ const ExaminationPatient = () => {
               <div className="text-center">
                 <button
                   onClick={handleClick}
-                  className=" btn btn-info text-light"
+                  className=" btn btn-info text-light mx-2"
                 >
                   {selectAllTeeth ? "Unselect All" : "Select All"}
                 </button>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="btn btn-info text-light mx-2"
+                >
+                  Reload
+                </button>
               </div>
-              {/* <div>
-                <input
-                  type="text"
-                  readOnly
-                  value={selectedTeeth.join(", ")}
-                />
-              </div> */}
               <div>
-                <div class="row mt-5">
-                  <div class="col">
-                    <div data-mdb-input-init class="form-outline">
-                      <input
-                        type="text"
-                        id="form8Example1"
-                        className="form-control"
-                        placeholder="Selected Teeth Number"
-                        readOnly
-                        value={selectedTeeth.join(", ")}
-                      />
+                {/* <form>
+                  <div class="row mt-5">
+                    <div class="col">
+                      <div data-mdb-input-init class="form-outline">
+                        <input
+                          type="text"
+                          id="form8Example1"
+                          className="form-control"
+                          placeholder="Selected Teeth Number"
+                          readOnly
+                          value={selectedTeeth.join(", ")}
+                        />
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div data-mdb-input-init class="form-outline">
+                        <input
+                          type="email"
+                          value={inputValue}
+                          onChange={(e) => setInputValue(e.target.value)}
+                          id="form8Example2"
+                          placeholder="Dental Condition"
+                          class="form-control"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div class="col">
-                    
-                    <div data-mdb-input-init class="form-outline">
-                      <select id="inputState" class="form-control">
-                        <option selected>Choose...</option>
-                        <option onClick={caries}>caries</option>
-                        <option>fracture</option>
-                        <option>impacted</option>
-                        <option>missing</option>
-                        <option>mobility</option>
-                        <option>periapical</option>
-                        <option>root</option>
-                        <option>supara</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
 
-                <hr />
+                  <hr />
 
-                <div class="row">
-                  <div class="col">
-                    <div data-mdb-input-init class="form-outline">
-                      <input
-                        type="text"
-                        id="form8Example3"
-                        class="form-control"
-                        placeholder="Cheif Complaints"
-                      />
+                  <div class="row">
+                    <div class="col">
+                      <div data-mdb-input-init class="form-outline">
+                        <input
+                          type="text"
+                          id="form8Example3"
+                          class="form-control"
+                          placeholder="Cheif Complaints"
+                        />
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div data-mdb-input-init class="form-outline">
+                        <input
+                          type="text"
+                          id="form8Example4"
+                          class="form-control"
+                          placeholder="Advice"
+                        />
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div data-mdb-input-init class="form-outline">
+                        <input
+                          type="email"
+                          id="form8Example5"
+                          class="form-control"
+                          placeholder="ON Examination"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div class="col">
-                    <div data-mdb-input-init class="form-outline">
-                      <input
-                        type="text"
-                        id="form8Example4"
-                        class="form-control"
-                        placeholder="Advice"
-                      />
-                    </div>
+                  <div className="text-center m-3">
+                  <button className="btn btn-info text-light mx-2">Add New</button>
+                  <button className="btn btn-info text-light mx-2">Save & Continue</button>
                   </div>
-                  <div class="col">
-                    <div data-mdb-input-init class="form-outline">
-                      <input
-                        type="email"
-                        id="form8Example5"
-                        class="form-control"
-                        placeholder="ON Examination"
-                      />
+                </form> */}
+
+                <form>
+                  {inputValues.map((inputvalue, index) => (
+                    <div key={index}>
+                      <div className="row mt-5">
+                        <div className="col">
+                          <div data-mdb-input-init className="form-outline">
+                            <input
+                              type="text"
+                              id={`form8Example1_${index}`}
+                              className="form-control"
+                              placeholder="Selected Teeth Number"
+                              readOnly
+                              value={selectedTeeth.join(", ")}
+                            />
+                          </div>
+                        </div>
+                        <div className="col">
+                          <div data-mdb-input-init className="form-outline">
+                            <input
+                              type="text"
+                              name="text"
+                              value={inputvalue.email}
+                              onChange={(e) => {
+                                handleInputChange(index, e);
+                                setInputValue(e.target.value);
+                              }}
+                              id={`form8Example2_${index}`}
+                              placeholder="Dental Condition"
+                              className="form-control"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      <hr />
+
+                      <div className="row">
+                        <div className="col">
+                          <div data-mdb-input-init className="form-outline">
+                            <input
+                              type="text"
+                              name="chiefComplaints"
+                              value={inputvalue.chiefComplaints}
+                              onChange={(e) => handleInputChange(index, e)}
+                              id={`form8Example3_${index}`}
+                              className="form-control"
+                              placeholder="Chief Complaints"
+                            />
+                          </div>
+                        </div>
+                        <div className="col">
+                          <div data-mdb-input-init className="form-outline">
+                            <input
+                              type="text"
+                              name="advice"
+                              value={inputvalue.advice}
+                              onChange={(e) => handleInputChange(index, e)}
+                              id={`form8Example4_${index}`}
+                              className="form-control"
+                              placeholder="Advice"
+                            />
+                          </div>
+                        </div>
+                        <div className="col">
+                          <div data-mdb-input-init className="form-outline">
+                            <input
+                              type="text"
+                              name="onExamination"
+                              value={inputvalue.onExamination}
+                              onChange={(e) => handleInputChange(index, e)}
+                              id={`form8Example5_${index}`}
+                              className="form-control"
+                              placeholder="ON Examination"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                  ))}
+
+                  <div className="text-center m-3">
+                    <button
+                      type="button"
+                      className="btn btn-info text-light mx-2"
+                      onClick={addNewForm}
+                    >
+                      Add New
+                    </button>
+                    <button className="btn btn-info text-light mx-2">
+                      Save & Continue
+                    </button>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
 
             <div className="col-lg-2 col-2">
               <div className="d-flex flex-column text-center">
-                <div onClick={caries} className="p-2">
+                <div onClick={() => caries("Caries")} className="p-2">
                   <img
                     src={cariesbtn}
                     alt="caries"

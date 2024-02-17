@@ -23,7 +23,7 @@ function App() {
       <Route path="/superadmin-dashboard" element={<Dashboard />} />
       <Route path="/" element={<UniversalLogin />} />
 
-      {/* Doctor Routes start here  */}
+      {/* ************** Doctor Routes start here ******************* */}
       <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
       <Route path="/card" element={<Card />} />
       <Route path="/profile" element={<Profile />} />
@@ -36,7 +36,7 @@ function App() {
       <Route path="/examination-Dashboard" element={<ExaminationDashBoard />} />
       <Route path="/PediatricDental" element={<PediatricDental />} />
 
-      {/* Doctor Routes end here  */}
+      {/* ****************** Doctor Routes end here ******************* */}
     </Routes>
   );
 }

@@ -1,12 +1,10 @@
 import React from "react";
-import styled from "styled-components";
-import Header from "../../components/Header";
-import Sider from "../../components/Sider";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import HeaderAdmin from "./HeaderAdmin";
 import SiderAdmin from "./SiderAdmin";
 
-const ClinicSetAdmin = () => {
+const AdminReportDash = () => {
   return (
     <>
       <Container>
@@ -19,44 +17,14 @@ const ClinicSetAdmin = () => {
               </div>
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container-fluid mt-3">
-                  <div className="d-flex justify-content-between">
-                    <div className="d-flex">
-                      <div>
-                        <h4>Select Branch : </h4>
-                      </div>
-                      <div>
-                        <select
-                          name="branch"
-                          id="branch"
-                          className="mx-2 p-2 rounded shadow select-style"
-                        >
-                          <option value="Madan Mahal" className="fw-bold">
-                            Madan Mahal
-                          </option>
-                          <option value="Madan Mahal" className="fw-bold">
-                            Ranjhi
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      {/* <Link to="/superadmin-add-branch">
-                          <button className="btn btn-success">
-                            Add Branch
-                          </button>
-                        </Link> */}
-                    </div>
-                  </div>
-                </div>
-                <div className="container-fluid mt-3">
                   <div className="container-fluid">
                     <div className="row mt-3">
                       {/* <div className="col-1"></div> */}
 
                       <div className="col-12">
-                        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                        <nav class="navbar navbar-expand-lg bg-body-tertiary shadow rounded">
                           <div class="container d-flex justify-content-center">
-                            <h2 className="">Clinic Settings</h2>
+                            <h2 className="">Reports Dashboard</h2>
                           </div>
                         </nav>
                       </div>
@@ -66,21 +34,11 @@ const ClinicSetAdmin = () => {
                         <div className="col-12">
                           <div class="row g-5">
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/admin-lab-setting">
+                              <Link to="/admin-finance-reports">
                                 <div className="card">
-                                  <div class="card-body d-flex justify-content-center text-dark  align-items-center">
-                                    <h4 className="text-dark ">Lab</h4>
-                                  </div>
-                                </div>
-                              </Link>
-                            </div>
-
-                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
-                              <Link to="/calender-setting">
-                                <div className="card">
-                                  <div class="card-body">
-                                    <h4 className="d-flex justify-content-center text-dark  align-items-center">
-                                      Calender
+                                  <div class="card-body d-flex justify-content-center text-light align-items-center">
+                                    <h4 className="text-light">
+                                      Financial Report
                                     </h4>
                                   </div>
                                 </div>
@@ -88,11 +46,23 @@ const ClinicSetAdmin = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
-                              <Link to="/drug-setting">
+                              <Link to="/admin-appointment-report">
                                 <div className="card">
                                   <div class="card-body">
-                                    <h4 className=" d-flex justify-content-center text-dark  align-items-center">
-                                      DRUG
+                                    <h4 className="d-flex justify-content-center text-light align-items-center">
+                                      Appointment Report
+                                    </h4>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+
+                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
+                              <Link to="/admin-Billing-report">
+                                <div className="card">
+                                  <div class="card-body">
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Billing Reports
                                     </h4>
                                   </div>
                                 </div>
@@ -100,11 +70,11 @@ const ClinicSetAdmin = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/communication-setting">
+                              <Link to="/admin-inventory-report">
                                 <div className="card">
                                   <div class="card-body">
-                                    <h4 className=" d-flex justify-content-center text-dark  align-items-center">
-                                      Communication
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Inventory Reports
                                     </h4>
                                   </div>
                                 </div>
@@ -112,11 +82,11 @@ const ClinicSetAdmin = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/prescription-templates">
+                              <Link to="/admin-employee-attendance-report">
                                 <div className="card">
                                   <div class="card-body">
-                                    <h4 className=" d-flex justify-content-center text-dark  align-items-center">
-                                      Prescription Template
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Employee Attendance Report
                                     </h4>
                                   </div>
                                 </div>
@@ -124,11 +94,44 @@ const ClinicSetAdmin = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/treatment-setting">
+                              <Link to="/admin-employee-details-report">
                                 <div className="card">
                                   <div class="card-body">
-                                    <h4 className=" d-flex justify-content-center text-dark  align-items-center">
-                                      Treatments
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Employee Details Report
+                                    </h4>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                              <Link to="/admin-lab-details-report">
+                                <div className="card">
+                                  <div class="card-body">
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Lab Details Report
+                                    </h4>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                              <Link to="/admin-lab-test-report">
+                                <div className="card">
+                                  <div class="card-body">
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Lab Test Report
+                                    </h4>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                              <Link to="/admin-lab-task-report">
+                                <div className="card">
+                                  <div class="card-body">
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Lab Task Report
                                     </h4>
                                   </div>
                                 </div>
@@ -149,18 +152,18 @@ const ClinicSetAdmin = () => {
   );
 };
 
-export default ClinicSetAdmin;
+export default AdminReportDash;
 const Container = styled.div`
   nav {
-    background-color: #1abc9c;
+    background-color: #004aad;
   }
   .card {
     background-color: #1abc9c;
     height: 8rem;
-    box-shadow: 0px 0px 16px #41c686;
     border: none;
+    box-shadow: 1px 1px 8px #1abc9c;
     &:hover {
-      background-color: #3498db;
+      background-color: #000;
     }
   }
 

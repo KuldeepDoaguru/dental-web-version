@@ -49,7 +49,7 @@ const AdminDocSection = () => {
                             <td>He is a good doctor</td>
                             <td>Available</td>
                             <td className="table-small">
-                              <Link to="/doctor-profile">
+                              <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">
                                   View Details
                                 </button>
@@ -66,7 +66,7 @@ const AdminDocSection = () => {
                             <td>He is a good doctor</td>
                             <td>Available</td>
                             <td className="table-small">
-                              <Link to="/doctor-profile">
+                              <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">
                                   View Details
                                 </button>
@@ -83,7 +83,7 @@ const AdminDocSection = () => {
                             <td>He is a good doctor</td>
                             <td>Available</td>
                             <td className="table-small">
-                              <Link to="/doctor-profile">
+                              <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">
                                   View Details
                                 </button>
@@ -100,7 +100,7 @@ const AdminDocSection = () => {
                             <td>He is a good doctor</td>
                             <td>Available</td>
                             <td className="table-small">
-                              <Link to="/doctor-profile">
+                              <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">
                                   View Details
                                 </button>
@@ -117,7 +117,7 @@ const AdminDocSection = () => {
                             <td>He is a good doctor</td>
                             <td>Available</td>
                             <td className="table-small">
-                              <Link to="/doctor-profile">
+                              <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">
                                   View Details
                                 </button>
@@ -134,7 +134,7 @@ const AdminDocSection = () => {
                             <td>He is a good doctor</td>
                             <td>Available</td>
                             <td className="table-small">
-                              <Link to="/doctor-profile">
+                              <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">
                                   View Details
                                 </button>

@@ -2,15 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import HeaderAdmin from "./HeaderAdmin";
+import SiderAdmin from "./SiderAdmin";
 import { FaSearch } from "react-icons/fa";
 import { IoMdArrowDropdownCircle } from "react-icons/io";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { FaCommentsDollar } from "react-icons/fa6";
-import Sider from "../../../components/Sider";
-import Header from "../../../components/Header";
 
-const FinancialReportCard = () => {
+const AdminFinancialReport = () => {
   const location = useLocation();
 
   const goBack = () => {
@@ -20,12 +20,12 @@ const FinancialReportCard = () => {
   return (
     <>
       <Container>
-        <Header />
+        <HeaderAdmin />
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-nowrap ">
               <div className="col-lg-1 col-1 p-0">
-                <Sider />
+                <SiderAdmin />
               </div>
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container-fluid mt-3">
@@ -87,12 +87,14 @@ const FinancialReportCard = () => {
                 <div className="container-fluid">
                   <div className="row mt-2 g-5">
                     <div className="col-sm-12 col-md-11 col-lg-6 col-xl-6">
-                      <div className="d-flex justify-content-center">
+                      <div className="d-flex justify-content-between">
                         <button class="btn btn-outline-success fs-3 shadow">
                           Earning
                         </button>
+                        <button className="btn btn-info fw-bold">
+                          Download
+                        </button>
                       </div>
-                      <button>Download</button>
                       <div class="table-responsive mt-2">
                         <table class="table table-bordered">
                           <thead className="table-head">
@@ -132,9 +134,12 @@ const FinancialReportCard = () => {
                     </div>
 
                     <div className="col-sm-12 col-md-11 col-lg-6 col-xl-6">
-                      <div className="d-flex justify-content-center">
+                      <div className="d-flex justify-content-between">
                         <button class="btn btn-outline-success fs-3 shadow">
                           Expenses
+                        </button>
+                        <button className="btn btn-info fw-bold">
+                          Download
                         </button>
                       </div>
                       <div class="table-responsive mt-2">
@@ -185,7 +190,7 @@ const FinancialReportCard = () => {
   );
 };
 
-export default FinancialReportCard;
+export default AdminFinancialReport;
 const Container = styled.div`
   .select-style {
     border: none;

@@ -50,6 +50,19 @@ import AdminInventory from "./pages/admin/AdminInventory";
 import AdminAddInventory from "./pages/admin/AdminAddInventory";
 import AdminEditInventory from "./pages/admin/AdminEditInventory";
 import AdminDocSection from "./pages/admin/AdminDocSection";
+import AdminDocProfile from "./pages/admin/AdminDocProfile";
+import AdminManageStaff from "./pages/admin/AdminManageStaff";
+import AdminLabSetting from "./pages/admin/AdminLabSetting";
+import AdminReportDash from "./pages/admin/AdminReportDash";
+import AdminFinancialReport from "./pages/admin/AdminFinancialReport";
+import AdminAppointmentReport from "./pages/admin/All-Report/AdminAppointmentReport";
+import AdminBillingReport from "./pages/admin/All-Report/AdminBillingReport";
+import AdminInventoryReport from "./pages/admin/All-Report/AdminInventoryReport";
+import AdminEmpAttendReport from "./pages/admin/All-Report/AdminEmpAttendReport";
+import AdminEmpDetailReport from "./pages/admin/All-Report/AdminEmpDetailReport";
+import AdminLabDetailsRepo from "./pages/admin/All-Report/AdminLabDetailsRepo";
+import AdminLabTestRepo from "./pages/admin/All-Report/AdminLabTestRepo";
+import AdminLabTaskRepo from "./pages/admin/All-Report/AdminLabTaskRepo";
 
 const App = () => {
   const [role, setRole] = useState("admin");
@@ -129,7 +142,43 @@ const App = () => {
           <Route path="/admin-add-invetory" element={<AdminAddInventory />} />
           <Route path="/admin-edit-invetory" element={<AdminEditInventory />} />
           <Route path="/admin-doctor_section" element={<AdminDocSection />} />
-          <Route path="/admin-doctor-profile" element={<DoctorProfile />} />
+          <Route path="/admin-doctor-profile" element={<AdminDocProfile />} />
+          <Route path="/admin-manage-staff" element={<AdminManageStaff />} />
+          <Route path="/admin-lab-setting" element={<AdminLabSetting />} />
+          <Route
+            path="/admin-reports-dashboard"
+            element={<AdminReportDash />}
+          />
+          <Route
+            path="/admin-finance-reports"
+            element={<AdminFinancialReport />}
+          />
+          <Route
+            path="/admin-appointment-report"
+            element={<AdminAppointmentReport />}
+          />
+          <Route
+            path="/admin-Billing-report"
+            element={<AdminBillingReport />}
+          />
+          <Route
+            path="/admin-inventory-report"
+            element={<AdminInventoryReport />}
+          />
+          <Route
+            path="/admin-employee-attendance-report"
+            element={<AdminEmpAttendReport />}
+          />
+          <Route
+            path="/admin-employee-details-report"
+            element={<AdminEmpDetailReport />}
+          />
+          <Route
+            path="/admin-lab-details-report"
+            element={<AdminLabDetailsRepo />}
+          />
+          <Route path="/admin-lab-test-report" element={<AdminLabTestRepo />} />
+          <Route path="/admin-lab-task-report" element={<AdminLabTaskRepo />} />
         </>
       ) : (
         <>

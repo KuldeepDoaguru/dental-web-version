@@ -110,8 +110,10 @@ const SiderAdmin = () => {
               <hr />
               <li>
                 <Link
-                  to="/manage-staff"
-                  className={`link-div ${getSidebarClass("/manage-staff")}`}
+                  to="/admin-manage-staff"
+                  className={`link-div ${getSidebarClass(
+                    "/admin-manage-staff"
+                  )}`}
                 >
                   <div>
                     {/* <i className="fs-4 bi bi-camera-video"></i> */}
@@ -127,8 +129,10 @@ const SiderAdmin = () => {
               <hr />
               <li>
                 <Link
-                  to="/lab-setting"
-                  className={`link-div ${getSidebarClass("/lab-setting")}`}
+                  to="/admin-lab-setting"
+                  className={`link-div ${getSidebarClass(
+                    "/admin-lab-setting"
+                  )}`}
                 >
                   <div>
                     <i className="fs-4 bi bi-file-medical"></i>
@@ -144,9 +148,9 @@ const SiderAdmin = () => {
 
               <li>
                 <Link
-                  to="/reports-dashboard"
+                  to="/admin-reports-dashboard"
                   className={`link-div ${getSidebarClass(
-                    "/reports-dashboard"
+                    "/admin-reports-dashboard"
                   )}`}
                 >
                   <div>

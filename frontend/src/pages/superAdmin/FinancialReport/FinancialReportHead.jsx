@@ -9,7 +9,6 @@ const FinancialReportHead = () => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-1"></div>
-
             <div className="col-11">
               <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container d-flex justify-content-center ms-lg-5">

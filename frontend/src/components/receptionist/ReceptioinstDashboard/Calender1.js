@@ -3,50 +3,165 @@ import Calendar from 'react-calendar';
 import "react-calendar/dist/Calendar.css";
 import { IoArrowBackCircle } from "react-icons/io5";
 
+
+
+
 import styled from 'styled-components';
 import Detail from '../Bill/Detail';
 import AppDetail from './AppDetails';
+import Popup from '../Appointment/Popup';
+import AppDetails from '../Appointment/AppDetail';
+
+
 
 
 
 function Calender1() {
   const [value, onChange] = useState(new Date());
   const [isDisplay,setIsDisplay] = useState(false);
-  const [date,setDate] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState("");
 
-  const getCellStyle = (time) => {
-    // Find the appointment with the matching timing
-    const appointment = appointment_data.find(appointment => appointment.timing === time);
+  // const [date,setDate] = useState("");
+  // Add timeSlots state
+const [timeSlots, setTimeSlots] = useState([]);
+const [doctorName,setDoctorName] = useState("Dr Umer Qureshi");
+
+
+
+// Update handleDayClick function
+const handleDayClick = (selectedDate) => {
+  // Clear any previous time slots
+  setIsDisplay(true)
+  setTimeSlots([]);
+
+  // Generate time slots from 10 am to 8 pm
+  const startTime = new Date(selectedDate);
+  startTime.setHours(10, 0, 0); // Set start time to 10:00 AM
+  const endTime = new Date(selectedDate);
+  endTime.setHours(20, 0, 0); // Set end time to 8:00 PM
+
+  const slots = [];
+  let currentTime = new Date(startTime);
+
+  // Generate time slots every 15 minutes
+  while (currentTime < endTime) {
+    const timeSlot = currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    const dateTimeSlot = `${selectedDate.toLocaleDateString()} ${timeSlot}`; // Concatenate date and time
+    slots.push(dateTimeSlot);
+    currentTime.setMinutes(currentTime.getMinutes() + 15); // Add 15 minutes
+  }
+
+  // Update state with the generated time slots
+  setTimeSlots(slots);
+};
+
+
+// New function to handle time slot click
+const handleTimeSlotClick = (timeSlot) => {
+  // Find the appointment associated with the clicked time slot
+  const slotTime = new Date(timeSlot);
+  const clickedAppointment = appointment_data.find(appointment => {
+    // Convert the appointment timing to match the format of time slots
+    const appointmentTime = new Date(appointment.timing);
+    console.log(appointmentTime)
+    console.log(slotTime)
+    return (
+
+      
+      appointmentTime.getFullYear() === slotTime.getFullYear() &&
+      appointmentTime.getMonth() === slotTime.getMonth() &&
+      appointmentTime.getDate() === slotTime.getDate() &&
+      appointmentTime.getHours() === slotTime.getHours() &&
+      appointmentTime.getMinutes() === slotTime.getMinutes() && 
+
+      appointment.doctor === doctorName // Check if doctor's name matches
+
+
+         
+      //  appointmentTime.getTime() === slotTime.getTime()
+         // Check if appointment time matches
+
+    );
+  });
+   console.log(clickedAppointment)
+  // Set the selected appointment and open the popup
+  if (clickedAppointment) {
+    setSelectedAppointment(clickedAppointment);
+    setShowPopup(true);
+  }
+};
+
+// Update handleDayClick function
+// const handleDayClick = (selectedDate) => {
+//   // Clear any previous time slots
+//   setTimeSlots([]);
+//   setIsDisplay(true)
+
+//   // Generate time slots from 10 am to 8 pm
+//   const startTime = new Date(selectedDate);
+//   startTime.setHours(10, 0, 0); // Set start time to 10:00 AM
+//   const endTime = new Date(selectedDate);
+//   endTime.setHours(20, 0, 0); // Set end time to 8:00 PM
+
+//   const slots = [];
+//   let currentTime = new Date(startTime);
+
+//   // Generate time slots every 15 minutes
+//   while (currentTime < endTime) {
+//     slots.push(currentTime.toLocaleString()); // Convert Date object to string using local date and time format
+//     currentTime.setMinutes(currentTime.getMinutes() + 15); // Add 15 minutes
+//   }
+
+//   // Update state with the generated time slots
+//   setTimeSlots(slots);
+// };
+
+
+
+const getCellStyle = (time) => {
+  // Convert the time slot string to match the format of appointment timing
+  const slotTime = new Date(time);
+
+  // Find any appointment that matches the time slot
+  const appointment = appointment_data.find(appointment => {
+    // Convert the appointment timing to match the format of time slots
+    const appointmentTime = new Date(appointment.timing);
+    console.log(appointmentTime)
+    console.log(slotTime)
+    return (
+
+      
+      appointmentTime.getFullYear() === slotTime.getFullYear() &&
+      appointmentTime.getMonth() === slotTime.getMonth() &&
+      appointmentTime.getDate() === slotTime.getDate() &&
+      appointmentTime.getHours() === slotTime.getHours() &&
+      appointmentTime.getMinutes() === slotTime.getMinutes() && 
+
+      appointment.doctor === doctorName // Check if doctor's name matches
+
+
+         
+      //  appointmentTime.getTime() === slotTime.getTime()
+         // Check if appointment time matches
+
+    );
+  });
+  console.log(appointment)
+  // If there's no appointment at this time, return default class
+  if (!appointment) {
+    return 'bg-warning';
+  }
+
+  // If appointment is scheduled, return class for scheduled
+  if (appointment) {
+    return 'bg-success';
+  }
+
   
-    // If there's no appointment at this time, return default class
-    if (!appointment) {
-      return '';
-    }
-  
-    // If appointment is scheduled, return class for scheduled
-    if (appointment.status === 'Scheduled') {
-      return 'bg-success';
-    }
-  
-    // If appointment is unscheduled, return class for unscheduled
-    if (appointment.status === 'Unscheduled') {
-      return 'bg-warning';
-    }
-  };
+};
  
-  // Define an array of time slots
-  const timeSlots = [
-    "10:00 AM", "10:15 AM", "10:30 AM", "10:45 AM",
-    "11:00 AM", "11:15 AM", "11:30 AM", "11:45 AM",
-    "12:00 PM", "12:15 PM", "12:30 PM", "12:45 PM",
-    "1:00 PM", "1:15 PM", "1:30 PM", "1:45 PM",
-    "2:00 PM", "2:15 PM", "2:30 PM", "2:45 PM",
-    "3:00 PM", "3:15 PM", "3:30 PM", "3:45 PM",
-    "4:00 PM", "4:15 PM", "4:30 PM", "4:45 PM",
-    "5:00 PM", "5:15 PM", "5:30 PM", "5:45 PM",
-    "6:00 PM", "6:15 PM", "6:30 PM", "6:45 PM",
-    "7:00 PM", "7:15 PM", "7:30 PM", "7:45 PM",
-  ];
+  
 
 
   // Function to divide time slots into 10 columns
@@ -66,66 +181,17 @@ const columns = 10;
 const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
 
   const appointment_data = [
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"10:15 Am",status:"Missed",action:"edit"},
-    { uid :"2", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"10:30 Am",status:"Missed",action:"edit"},
-    { uid :"3", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"10:45 Am",status:"Missed",action:"edit"},
-    { uid :"4", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"11:00 Am",status:"Missed",action:"edit"},
-    { uid :"5", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"11:15 Am",status:"Missed",action:"edit"},
-    { uid :"6", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"11:45 Am",status:"Missed",action:"edit"},
-    { uid :"7", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"12:15 Am",status:"Missed",action:"edit"},
-    { uid :"8", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"12:45 Am",status:"Missed",action:"edit"},
-    { uid :"9", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"12:30 Am",status:"Missed",action:"edit"},
-    { uid :"10", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"1:00 Pm",status:"Missed",action:"edit"},
-    { uid :"11", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"1:15 Pm",status:"Missed",action:"edit"},
-    { uid :"12", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2:15 Pm",status:"Missed",action:"edit"},
-    { uid :"13", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2:30 Pm",status:"Missed",action:"edit"},
-    { uid :"14", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"3:00 Pm",status:"Missed",action:"edit"},
-    { uid :"15", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"4:00 Am",status:"Missed",action:"edit"},
-    { uid :"16", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"5:00 Pm",status:"Missed",action:"edit"},
-    { uid :"17", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"6:00 Pm",status:"Missed",action:"edit"},
-    { uid :"18", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"7:00 Pm",status:"Missed",action:"edit"},
-    { uid :"19", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"20", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"2", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"3", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"4", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"5", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"6", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"7", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"8", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"9", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"10", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"11", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"12", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"13", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"14", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"15", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"16", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"17", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"18", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"19", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"20", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"2", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"3", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"4", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"5", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"6", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"7", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"8", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"9", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"10", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"11", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"12", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"13", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"14", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"15", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"16", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"17", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"18", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"19", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"20", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:45",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:00",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T11:30",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctor:"Dr. Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T12:30",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T12:45",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:00",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctor:"Dr. Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T10:45",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T12:00",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T13:00",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctor:"Dr. Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T13:00",status:"Missed",action:"edit"},
+
     
   ];
 
@@ -137,9 +203,16 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
     return adjustedDate.toISOString().split('T')[0]; // Return the ISO string in "yyyy-mm-dd" format
   }
 
- useEffect(()=>{
-   setDate(formatDate(value))
- },[isDisplay])
+//  useEffect(()=>{
+//    setDate(formatDate(value))
+//  },[value]);
+
+ 
+
+ 
+
+
+console.log(timeSlots)
   
   
   console.log(value)
@@ -149,7 +222,8 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
       
       </h6></div>
     <div className={isDisplay?"d-none" : "d-block"}>
-    <div className="cal "> <Calendar onChange={onChange} onClickDay={()=>{setIsDisplay(true)}} value={value} /></div>
+    <div className="cal "> <Calendar onChange={onChange}
+    onClickDay={handleDayClick} value={value} /></div>
     </div>
   
   
@@ -157,24 +231,24 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
     <div className=' mx-auto
      mt-1 mb-1 d-flex justify-content-around'>
       <div className='w-50'><span className='backIcon' onClick={()=>{setIsDisplay(false)}}><IoArrowBackCircle /></span></div>
-   <div className='w-50'> <select className="form-select">
-      <option value="">Dr. Arun</option>
-      <option value="">Dr. Arun</option>
-      <option value="">Dr. Arun</option>
-      <option value="">Dr. Arun</option>
+   <div className='w-50'> <select className="form-select" onChange={(e) => setDoctorName(e.target.value)} >
+      <option value="Dr Umer Qureshi">Dr Umer Qureshi</option>
+      <option value="Dr. Ajay">Dr. Ajay</option>
+      <option value="Dr. Vijay">Dr. Vijay</option>
+      <option value="Dr. Mohit">Dr. Mohit</option>
       
      
     </select>
     </div>
     </div>
-    <div className='text-end my-1'>
-      <input type="date"  onChange={(e)=>{setDate(e.target.value)}} value={date}/>
-    </div>
+    {/* <div className='text-end my-1'>
+      <input type="date"  onChange={(e)=>{setDate(e.target.value)}}  value={date}/>
+    </div> */}
     <div className='d-flex justify-content-around align-items-center'>
     <div className='bg-success mb-2 rounded-2'><p className='p-1 my-auto' >Scheduled</p></div>
     <div  className='bg-warning mb-2 rounded-2'><p className='p-1 my-auto'>Unscheduled</p></div>
     </div>
-   
+    
   <div className="table-responsive" id="tab">
            
           <table className="table table-bordered table-striped">
@@ -184,7 +258,7 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
             {timeSlotsColumns.map((column, columnIndex) => (
   <tr key={columnIndex}>
     {column.map((timeSlot, index) => (
-      <td key={index} className={getCellStyle(timeSlot)}>{timeSlot}</td>
+      <td key={index} className={getCellStyle(timeSlot)} onClick={() => handleTimeSlotClick(timeSlot)}>{timeSlot}</td>
     ))}
   </tr>
 ))}
@@ -267,6 +341,10 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
         </div>
     
   </div>
+
+  {showPopup && (
+        <AppDetails onClose={() => setShowPopup(false)} slotInfo={selectedAppointment} />
+      )}
    </Wrapper>
   )
 }

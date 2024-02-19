@@ -22,6 +22,7 @@ import VideoSection from './pages/receptionist/VideoSection'
 import LabSection from './pages/receptionist/LabSection'
 import ReportSection from './pages/receptionist/ReportSection'
 import NewPatient from './pages/receptionist/NewPatient'
+import Inquiry from "./pages/receptionist/Inquiry";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
       <Route path="/receptionist_registration" element={<Registration />} />
       <Route path='/receptionist-dashboard' Component={Receptionistdash}/>
     <Route path='/all_patient' Component={AllPatient}/>
+    <Route path='/inquiry' element={<Inquiry/>}/>
     <Route path='/patient_profile' Component={PatientProfile}/>
     <Route path='/appointment' Component={AppointmentSection}/>
     <Route path='/edit_appointment' Component={EditPopup}/>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import teeth18 from "../Assest/teeth1.png";
 import teeth17 from "../Assest/teeth2.png";
@@ -297,29 +297,35 @@ import periapicalbtn from "../Assest/Examination Buttons/periapical.png";
 import rootbtn from "../Assest/Examination Buttons/rootstump1.png";
 import suparabtn from "../Assest/Examination Buttons/Supra erupted1.png";
 
-const ExaminationPatient = () => {
-  const [selectedTeeth, setSelectedTeeth] = useState([]);
+const ExaminationPatientTest = () => {
+    const [selectedTeeth, setSelectedTeeth] = useState([]);
+    const [inputItemList, setInputItemList] = useState([]);
+  const [inputItem, setInputItem] = useState({
+    selectTeeth: [],
+    desease: "",
+    chiefComplain: "",
+    advice: "",
+    onExamination: "",
+  });
   const [selectAllTeeth, setSelectAllTeeth] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const [inputValues, setInputValues] = useState([
-    { email: "", chiefComplaints: "", advice: "", onExamination: "" },
-  ]);
 
 
   const handlCheckBoxChange = (e) => {
     const { value, checked } = e.target;
     const toothNumber = Number(value);
 
-    if (checked) {
-      setSelectedTeeth((prevSelectedTeeth) => [
-        ...prevSelectedTeeth,
-        toothNumber,
-      ]);
-    } else {
-      setSelectedTeeth((prevSelectedTeeth) =>
-        prevSelectedTeeth.filter((val) => val !== toothNumber)
-      );
-    }
+    setSelectedTeeth((prevSelectedTeeth) =>
+      checked
+        ? [...prevSelectedTeeth, toothNumber]
+        : prevSelectedTeeth.filter((val) => val !== toothNumber)
+    );
+
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      selectTeeth: checked
+        ? [...prevInputItem.selectTeeth, toothNumber]
+        : prevInputItem.selectTeeth.filter((val) => val !== toothNumber),
+    }));
   };
 
   const allTeethValues = [
@@ -343,19 +349,19 @@ const ExaminationPatient = () => {
 
     // ADD NEW FORM
 
-    const handleInputChange = (index, e) => {
-      const { name, value } = e.target;
-      const newInputValues = [...inputValues];
-      newInputValues[index][name] = value;
-      setInputValues(newInputValues);
-    };
+    // const handleInputChange = (index, e) => {
+    //   const { name, value } = e.target;
+    //   const newInputValues = [...inputValues];
+    //   newInputValues[index][name] = value;
+    //   setInputValues(newInputValues);
+    // };
   
-    const addNewForm = () => {
-      setInputValues([
-        ...inputValues,
-        { email: "", chiefComplaints: "", advice: "", onExamination: "" },
-      ]);
-    };
+    // const addNewForm = () => {
+    //   setInputValues([
+    //     ...inputValues,
+    //     { email: "", chiefComplaints: "", advice: "", onExamination: "" },
+    //   ]);
+    // };
   
 
   // caries start here
@@ -396,20 +402,18 @@ const ExaminationPatient = () => {
     // Add more mappings as needed
   };
 
-  const caries = (condition) => {
-    const newInputValues = inputValues.map((inputValue) => {
-      const updatedEmail = inputValue.email ? inputValue.email + `, ${condition}` : condition;
-      return { ...inputValue, email: updatedEmail };
-    });
-    setInputValues(newInputValues);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothImageMapping[toothId];
-        }
+  const caries = () => {
+    const newInputItem = {
+      ...inputItem,
+      desease: inputItem.desease ? inputItem.desease + ", Caries" : "Caries",
+    };
+    setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothImageMapping[toothId]) {
+        toothElement.src = toothImageMapping[toothId];
       }
     });
   };
@@ -454,17 +458,19 @@ const ExaminationPatient = () => {
     // Add more mappings as needed
   };
 
+ 
   const fracture = () => {
-    const newInputValue = inputValue ? inputValue + ", Fracture" : "Fracture";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothfractureImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothfractureImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Fracture" : "Fracture",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothfractureImageMapping[toothId]) {
+        toothElement.src = toothfractureImageMapping[toothId];
       }
     });
   };
@@ -509,16 +515,17 @@ const ExaminationPatient = () => {
   };
 
   const impacted = () => {
-    const newInputValue = inputValue ? inputValue + ", Impacted" : "Impacted";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothimpactedImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothimpactedImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Impacted" : "Impacted",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothimpactedImageMapping[toothId]) {
+        toothElement.src = toothimpactedImageMapping[toothId];
       }
     });
   };
@@ -564,18 +571,16 @@ const ExaminationPatient = () => {
   };
 
   const missing = () => {
-    const newInputValue = inputValue
-      ? inputValue + ", Missing Tooth"
-      : "Missing Tooth";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothmissingImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothmissingImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Missing Tooth" : "Missing Tooth",};
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothmissingImageMapping[toothId]) {
+        toothElement.src = toothmissingImageMapping[toothId];
       }
     });
   };
@@ -621,16 +626,17 @@ const ExaminationPatient = () => {
   };
 
   const mobility = () => {
-    const newInputValue = inputValue ? inputValue + ", Mobility" : "Mobility";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothmobilityImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothmobilityImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Mobility" : "Mobility",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothmobilityImageMapping[toothId]) {
+        toothElement.src = toothmobilityImageMapping[toothId];
       }
     });
   };
@@ -676,18 +682,17 @@ const ExaminationPatient = () => {
   };
 
   const periapical = () => {
-    const newInputValue = inputValue
-      ? inputValue + ", Periapical Abscess"
-      : "Periapical Abscess";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothperiapicalImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothperiapicalImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Periapical Abscess" : "Periapical Abscess",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothperiapicalImageMapping[toothId]) {
+        toothElement.src = toothperiapicalImageMapping[toothId];
       }
     });
   };
@@ -733,18 +738,17 @@ const ExaminationPatient = () => {
   };
 
   const root = () => {
-    const newInputValue = inputValue
-      ? inputValue + ", Root Stump"
-      : "Root Stump";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothrootImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothrootImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Root Stump" : "Root Stump",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothrootImageMapping[toothId]) {
+        toothElement.src = toothrootImageMapping[toothId];
       }
     });
   };
@@ -789,23 +793,68 @@ const ExaminationPatient = () => {
   };
 
   const supara = () => {
-    const newInputValue = inputValue
-      ? inputValue + ", Supra Erupted"
-      : "Supra Erupted";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothsuparaImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothsuparaImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Supra Erupted" : "Supra Erupted",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothsuparaImageMapping[toothId]) {
+        toothElement.src = toothsuparaImageMapping[toothId];
       }
     });
   };
 
   // supara end here
+
+  const handleSelecteditem = (event) => {
+    const { name, value } = event.target;
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      [name]: value,
+    }));
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+  };
+
+  const handleAddNew = () => {
+    // Push the current inputItem to inputItemList
+    setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
+
+    // console.log("Before resetting inputItem:", inputItem);
+
+    setInputItem({
+      selectTeeth: [],
+      desease: "",
+      chiefComplain: "",
+      advice: "",
+      onExamination: "",
+    });
+
+    console.log("After resetting inputItem:", inputItem); 
+
+    // Clear the checked property of all checkboxes
+    setTimeout(() => {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+      });
+
+    setSelectedTeeth([]);
+  };
+
+  useEffect(() => {
+    setInputItem((prevState) => ({
+      ...prevState,
+      selectTeeth: selectedTeeth,
+    }));
+  }, [selectedTeeth]);
 
 
   return (
@@ -1388,7 +1437,7 @@ const ExaminationPatient = () => {
                 </button>
               </div>
               <div>
-                {/* <form>
+              <form onSubmit={handleSave}>
                   <div class="row mt-5">
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
@@ -1398,19 +1447,26 @@ const ExaminationPatient = () => {
                           className="form-control"
                           placeholder="Selected Teeth Number"
                           readOnly
-                          value={selectedTeeth.join(", ")}
+                          //   value={selectedTeeth.join(", ")}
+                          value={inputItem.selectTeeth.join(", ")}
+                          // onChange={handleSelecteditem}
                         />
                       </div>
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
                         <input
-                          type="email"
-                          value={inputValue}
-                          onChange={(e) => setInputValue(e.target.value)}
+                          type="text"
+                          value={inputItem.desease}
+                          onChange={(e) =>
+                            setInputItem({
+                              ...inputItem, // Merge existing inputItem state
+                              desease: e.target.value,
+                            })
+                          }
                           id="form8Example2"
                           placeholder="Dental Condition"
-                          class="form-control"
+                          className="form-control"
                         />
                       </div>
                     </div>
@@ -1423,6 +1479,9 @@ const ExaminationPatient = () => {
                       <div data-mdb-input-init class="form-outline">
                         <input
                           type="text"
+                          name="chiefComplain"
+                          onChange={handleSelecteditem}
+                          value={inputItem.chiefComplain}
                           id="form8Example3"
                           class="form-control"
                           placeholder="Cheif Complaints"
@@ -1434,6 +1493,9 @@ const ExaminationPatient = () => {
                         <input
                           type="text"
                           id="form8Example4"
+                          name="advice"
+                          onChange={handleSelecteditem}
+                          value={inputItem.advice}
                           class="form-control"
                           placeholder="Advice"
                         />
@@ -1442,8 +1504,11 @@ const ExaminationPatient = () => {
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
                         <input
-                          type="email"
+                          type="text"
                           id="form8Example5"
+                          name="onExamination"
+                          onChange={handleSelecteditem}
+                          value={inputItem.onExamination}
                           class="form-control"
                           placeholder="ON Examination"
                         />
@@ -1451,104 +1516,42 @@ const ExaminationPatient = () => {
                     </div>
                   </div>
                   <div className="text-center m-3">
-                  <button className="btn btn-info text-light mx-2">Add New</button>
-                  <button className="btn btn-info text-light mx-2">Save & Continue</button>
-                  </div>
-                </form> */}
-
-                <form>
-                  {inputValues.map((inputvalue, index) => (
-                    <div key={index}>
-                      <div className="row mt-5">
-                        <div className="col">
-                          <div data-mdb-input-init className="form-outline">
-                            <input
-                              type="text"
-                              id={`form8Example1_${index}`}
-                              className="form-control"
-                              placeholder="Selected Teeth Number"
-                              readOnly
-                              value={selectedTeeth.join(", ")}
-                            />
-                          </div>
-                        </div>
-                        <div className="col">
-                          <div data-mdb-input-init className="form-outline">
-                            <input
-                              type="text"
-                              name="text"
-                              value={inputvalue.email}
-                              onChange={(e) => {
-                                handleInputChange(index, e);
-                                setInputValue(e.target.value);
-                              }}
-                              id={`form8Example2_${index}`}
-                              placeholder="Dental Condition"
-                              className="form-control"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      <hr />
-
-                      <div className="row">
-                        <div className="col">
-                          <div data-mdb-input-init className="form-outline">
-                            <input
-                              type="text"
-                              name="chiefComplaints"
-                              value={inputvalue.chiefComplaints}
-                              onChange={(e) => handleInputChange(index, e)}
-                              id={`form8Example3_${index}`}
-                              className="form-control"
-                              placeholder="Chief Complaints"
-                            />
-                          </div>
-                        </div>
-                        <div className="col">
-                          <div data-mdb-input-init className="form-outline">
-                            <input
-                              type="text"
-                              name="advice"
-                              value={inputvalue.advice}
-                              onChange={(e) => handleInputChange(index, e)}
-                              id={`form8Example4_${index}`}
-                              className="form-control"
-                              placeholder="Advice"
-                            />
-                          </div>
-                        </div>
-                        <div className="col">
-                          <div data-mdb-input-init className="form-outline">
-                            <input
-                              type="text"
-                              name="onExamination"
-                              value={inputvalue.onExamination}
-                              onChange={(e) => handleInputChange(index, e)}
-                              id={`form8Example5_${index}`}
-                              className="form-control"
-                              placeholder="ON Examination"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-
-                  <div className="text-center m-3">
                     <button
                       type="button"
-                      className="btn btn-info text-light mx-2"
-                      onClick={addNewForm}
+                      className="btn btn-info text-light mx-3"
+                      onClick={handleAddNew}
                     >
                       Add New
                     </button>
-                    <button className="btn btn-info text-light mx-2">
+                    <button
+                      type="submit"
+                      className="btn btn-info text-light mx-3"
+                      onClick={()=>window.location.reload()}
+                    >
                       Save & Continue
                     </button>
                   </div>
                 </form>
+              </div>
+              <div>
+                <h2>Saved Data</h2>
+                <div>
+                  {inputItemList.length ? (
+                    <ul className="list">
+                      {inputItemList.map((item, index) => (
+                        <li key={index} className="list-item">
+                          {/* Render each item's properties */}
+                          Select Teeth: {item.selectTeeth.join(", ")}, Disease:{" "}
+                          {item.desease}, Chief Complaint: {item.chiefComplain},
+                          Advice: {item.advice}, On Examination:{" "}
+                          {item.onExamination}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>Loading...</p> // You can replace this with your custom placeholder
+                  )}
+                </div>
               </div>
             </div>
 
@@ -1619,13 +1622,24 @@ const ExaminationPatient = () => {
   );
 };
 
-export default ExaminationPatient;
+export default ExaminationPatientTest;
 const Wrapper = styled.div`
+overflow: hidden;
   .buttons {
     width: 150px;
     cursor: pointer;
     &:hover {
       width: 152px;
     }
+  }
+  .list {
+    list-style-type: none;
+    padding: 0;
+  }
+  .list-item {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
   }
 `;

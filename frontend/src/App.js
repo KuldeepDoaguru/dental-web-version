@@ -14,6 +14,10 @@ import PatientProfile from "./pages/DoctorPage/PatientProfile";
 import AllPatient from "./pages/DoctorPage/AllPatient";
 import ExaminationDashBoard from "./components/Doctor/Examination/ExaminationDashBoard";
 import PediatricDental from "./components/Doctor/Examination/PediatricDental";
+import ExaminationDashTwo from "./components/Doctor/Examination/ExaminationDashTwo";
+import ExaminationPatient from "./components/Doctor/Examination/ExaminationPatient";
+import ExaminationDashBoardPatient from "./components/Doctor/Examination/ExaminationDashBoardPatient";
+import ExaminationDashBoardPediatric from "./components/Doctor/Examination/ExaminationDashBoardPediatric";
 
 function App() {
   return (
@@ -23,7 +27,8 @@ function App() {
       <Route path="/superadmin-dashboard" element={<Dashboard />} />
       <Route path="/" element={<UniversalLogin />} />
 
-      {/* ************** Doctor Routes start here ******************* */}
+      {/* ************** Doctor Routes Start Here ******************* */}
+      
       <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
       <Route path="/card" element={<Card />} />
       <Route path="/profile" element={<Profile />} />
@@ -35,8 +40,12 @@ function App() {
       <Route path="/all-patient" element={<AllPatient />} />
       <Route path="/examination-Dashboard" element={<ExaminationDashBoard />} />
       <Route path="/PediatricDental" element={<PediatricDental />} />
+      <Route path="/ExaminationDashTwo" element={<ExaminationDashTwo />} />
+      <Route path="/ExaminationPatient" element={<ExaminationPatient />} />
+      <Route path="/ExaminationDashBoardPatient" element={<ExaminationDashBoardPatient />} />
+      <Route path="/ExaminationDashBoardPediatric" element={<ExaminationDashBoardPediatric />} />
 
-      {/* ****************** Doctor Routes end here ******************* */}
+      {/* ****************** Doctor Routes End Here ******************* */}
     </Routes>
   );
 }

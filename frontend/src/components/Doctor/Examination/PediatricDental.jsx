@@ -187,64 +187,47 @@ import missingbtn from "../Assest/Examination Buttons/missing tooth.png";
 import mobilitybtn from "../Assest/Examination Buttons/mobility.png";
 import periapicalbtn from "../Assest/Examination Buttons/periapical.png";
 import rootbtn from "../Assest/Examination Buttons/rootstump1.png";
-import suparabtn from "../Assest/Examination Buttons/Supra erupted1.png";    
+import suparabtn from "../Assest/Examination Buttons/Supra erupted1.png";
 
-const PediatricDental = () => {
-    const [selectedTeeth, setSelectedTeeth] = useState([]);
-    const [inputValue, setInputValue] = useState("");
-    const [inputItemList, setInputItemList] = useState([])
-    const [inputItem, setInputItem] = useState({
-      selectTeeth:[],
-      desease:"",
-      chiefComplain:"",
-      advice:"",
-      onExamination:""
-    })
-    const [selectAllTeeth, setSelectAllTeeth] = useState(false);
-   
+const PediatricDentalTest = () => {
+  const [selectedTeeth, setSelectedTeeth] = useState([]);
+  const [inputItemList, setInputItemList] = useState([]);
+  const [inputItem, setInputItem] = useState({
+    selectTeeth: [],
+    desease: "",
+    chiefComplain: "",
+    advice: "",
+    onExamination: "",
+  });
+  const [selectAllTeeth, setSelectAllTeeth] = useState(false);
 
-    const handlCheckBoxChange = (e) => {
-      const { value, checked } = e.target;
-      const toothNumber = Number(value);
-  
-      if (checked) {
-        setSelectedTeeth((prevSelectedTeeth) => [
-          ...prevSelectedTeeth,
-          toothNumber,
-        ]);
-      } else {
-        setSelectedTeeth((prevSelectedTeeth) =>
-          prevSelectedTeeth.filter((val) => val !== toothNumber)
-        );
-      }
-    };
+  const handlCheckBoxChange = (e) => {
+    const { value, checked } = e.target;
+    const toothNumber = Number(value);
 
-    const allTeethValues = [
-        55, 
-        54, 
-        53, 
-        52, 
-        51, 
-        61,
-        62, 
-        63, 
-        64, 
-        65, 
-        85, 
-        84, 
-        83, 
-        82, 
-        81, 
-        71, 
-        72, 
-        73, 
-        74, 
-        75
-      ];
+    setSelectedTeeth((prevSelectedTeeth) =>
+      checked
+        ? [...prevSelectedTeeth, toothNumber]
+        : prevSelectedTeeth.filter((val) => val !== toothNumber)
+    );
 
-      console.log(selectedTeeth);
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      selectTeeth: checked
+        ? [...prevInputItem.selectTeeth, toothNumber]
+        : prevInputItem.selectTeeth.filter((val) => val !== toothNumber),
+    }));
+  };
 
-      
+  const allTeethValues = [
+    55, 54, 53, 52, 51, 61, 62, 63, 64, 65, 85, 84, 83, 82, 81, 71, 72, 73, 74,
+    75,
+  ];
+
+  console.log(inputItem);
+
+//   console.log(selectedTeeth);
+
   const handleClick = () => {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     const newState = !selectAllTeeth;
@@ -257,7 +240,7 @@ const PediatricDental = () => {
     setSelectAllTeeth(newState);
   };
 
-        // caries start here
+  // caries start here
 
   const toothImageMapping = {
     55: cariesT1,
@@ -279,20 +262,21 @@ const PediatricDental = () => {
     72: cariesT17,
     73: cariesT18,
     74: cariesT19,
-    75: cariesT20
+    75: cariesT20,
   };
 
   const caries = () => {
-    const newInputValue = inputValue ? inputValue + ", Caries" : "Caries";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothImageMapping[toothId];
-        }
+    const newInputItem = {
+      ...inputItem,
+      desease: inputItem.desease ? inputItem.desease + ", Caries" : "Caries",
+    };
+    setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothImageMapping[toothId]) {
+        toothElement.src = toothImageMapping[toothId];
       }
     });
   };
@@ -321,20 +305,21 @@ const PediatricDental = () => {
     72: fractureT17,
     73: fractureT18,
     74: fractureT19,
-    75: fractureT20
+    75: fractureT20,
   };
 
   const fracture = () => {
-    const newInputValue = inputValue ? inputValue + ", Fracture" : "Fracture";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothfractureImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothfractureImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Fracture" : "Fracture",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothfractureImageMapping[toothId]) {
+        toothElement.src = toothfractureImageMapping[toothId];
       }
     });
   };
@@ -362,20 +347,21 @@ const PediatricDental = () => {
     72: impactedT17,
     73: impactedT18,
     74: impactedT19,
-    75: impactedT20
+    75: impactedT20,
   };
 
   const impacted = () => {
-    const newInputValue = inputValue ? inputValue + ", Impacted" : "Impacted";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothimpactedImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothimpactedImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Impacted" : "Impacted",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothimpactedImageMapping[toothId]) {
+        toothElement.src = toothimpactedImageMapping[toothId];
       }
     });
   };
@@ -408,18 +394,16 @@ const PediatricDental = () => {
   };
 
   const missing = () => {
-    const newInputValue = inputValue
-      ? inputValue + ", Missing Tooth"
-      : "Missing Tooth";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothmissingImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothmissingImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Missing Tooth" : "Missing Tooth",};
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothmissingImageMapping[toothId]) {
+        toothElement.src = toothmissingImageMapping[toothId];
       }
     });
   };
@@ -448,20 +432,21 @@ const PediatricDental = () => {
     72: mobilityT17,
     73: mobilityT18,
     74: mobilityT19,
-    75: mobilityT20
+    75: mobilityT20,
   };
 
   const mobility = () => {
-    const newInputValue = inputValue ? inputValue + ", Mobility" : "Mobility";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothmobilityImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothmobilityImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Mobility" : "Mobility",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothmobilityImageMapping[toothId]) {
+        toothElement.src = toothmobilityImageMapping[toothId];
       }
     });
   };
@@ -490,22 +475,21 @@ const PediatricDental = () => {
     72: periapicalT17,
     73: periapicalT18,
     74: periapicalT19,
-    75: periapicalT20
+    75: periapicalT20,
   };
 
   const periapical = () => {
-    const newInputValue = inputValue
-      ? inputValue + ", Periapical Abscess"
-      : "Periapical Abscess";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothperiapicalImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothperiapicalImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Periapical Abscess" : "Periapical Abscess",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothperiapicalImageMapping[toothId]) {
+        toothElement.src = toothperiapicalImageMapping[toothId];
       }
     });
   };
@@ -534,27 +518,25 @@ const PediatricDental = () => {
     72: rootT17,
     73: rootT18,
     74: rootT19,
-    75: rootT20
+    75: rootT20,
     // Add more mappings as needed
   };
 
   const root = () => {
-    const newInputValue = inputValue
-      ? inputValue + ", Root Stump"
-      : "Root Stump";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothrootImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothrootImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Root Stump" : "Root Stump",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothrootImageMapping[toothId]) {
+        toothElement.src = toothrootImageMapping[toothId];
       }
     });
   };
-
   // root end here
 
   // supara start here
@@ -579,88 +561,89 @@ const PediatricDental = () => {
     72: suparaT17,
     73: suparaT18,
     74: suparaT19,
-    75: suparaT20
+    75: suparaT20,
   };
 
   const supara = () => {
-    const newInputValue = inputValue
-      ? inputValue + ", Supra Erupted"
-      : "Supra Erupted";
-    setInputValue(newInputValue);
-    selectedTeeth.forEach((toothId) => {
-      const toothIndex = allTeethValues.indexOf(toothId);
-      if (toothIndex !== -1) {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement && toothsuparaImageMapping[toothId]) {
-          // Change the image source for the selected tooth
-          toothElement.src = toothsuparaImageMapping[toothId];
-        }
+    const newInputItem = {
+        ...inputItem,
+        desease: inputItem.desease ? inputItem.desease + ", Supra Erupted" : "Supra Erupted",
+      };
+      setInputItem(newInputItem);
+
+    // Additional logic here if needed
+    inputItem.selectTeeth.forEach((toothId) => {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement && toothsuparaImageMapping[toothId]) {
+        toothElement.src = toothsuparaImageMapping[toothId];
       }
     });
   };
 
   // supara end here
-  console.log(inputItem);
-  const handleSelecteditem = (event)=>{
+
+  const handleSelecteditem = (event) => {
     const { name, value } = event.target;
-    setInputItem({
-      ...inputItem,
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
       [name]: value,
-    });
-  }
+    }));
+  };
 
   const handleSave = (e) => {
     e.preventDefault();
   };
 
-  const handleAddNew = () =>{
+  const handleAddNew = () => {
     // Push the current inputItem to inputItemList
-    setInputItemList(prevInputItemList => [...prevInputItemList, inputItem]);
-    setInputItem(
-     {
-      selectTeeth:[],
-      desease:"",
-      chiefComplain:"",
-      advice:"",
-      onExamination:""
-     }
-    )
-  }
+    setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
+
+    // console.log("Before resetting inputItem:", inputItem);
+
+    setInputItem({
+      selectTeeth: [], 
+      desease: "",
+      chiefComplain: "",
+      advice: "",
+      onExamination: "",
+    });
+
+    console.log("After resetting inputItem:", inputItem); 
+
+    // Clear the checked property of all checkboxes
+    setTimeout(() => {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+      });
+
+    setSelectedTeeth([]);
+  };
 
   useEffect(() => {
-    // Load inputItemList from localStorage on component mount
-    const storedInputItemList = localStorage.getItem('inputItemList');
-    if (storedInputItemList) {
-        setInputItemList(JSON.parse(storedInputItemList));
-    }
-}, []);
-
-useEffect(() => {
-    // Store inputItemList in localStorage whenever it changes
-    localStorage.setItem('inputItemList', JSON.stringify(inputItemList));
-}, [inputItemList]);
-
-
-  useEffect(() => {
-    setInputItem(prevState => ({
+    setInputItem((prevState) => ({
       ...prevState,
       selectTeeth: selectedTeeth,
-      desease: inputValue,
     }));
+  }, [selectedTeeth]);
 
-  }, [selectedTeeth, inputValue]);
-
-  console.log(inputItemList);
+  //   console.log(inputItemList);
   return (
     <>
-    <Wrapper>
+      <Wrapper>
         <div className="container">
-            {/* dental chart 20 teeth start */}
+          {/* dental chart 20 teeth start */}
           <div className="row">
             <div className="col-lg-12 col-12">
               <div className="d-flex justify-content-center">
                 <div>
-                  <img src={teeth18} alt="" id="tooth_55" className="img-fluid" />
+                  <img
+                    src={teeth18}
+                    alt=""
+                    id="tooth_55"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -672,7 +655,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth16} alt="" id="tooth_54" className="img-fluid" />
+                  <img
+                    src={teeth16}
+                    alt=""
+                    id="tooth_54"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -684,7 +672,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth13} alt="" id="tooth_53" className="img-fluid" />
+                  <img
+                    src={teeth13}
+                    alt=""
+                    id="tooth_53"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -696,7 +689,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth12} alt="" id="tooth_52" className="img-fluid" />
+                  <img
+                    src={teeth12}
+                    alt=""
+                    id="tooth_52"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -708,7 +706,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth11} alt="" id="tooth_51" className="img-fluid" />
+                  <img
+                    src={teeth11}
+                    alt=""
+                    id="tooth_51"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -720,7 +723,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth21} alt="" id="tooth_61" className="img-fluid" />
+                  <img
+                    src={teeth21}
+                    alt=""
+                    id="tooth_61"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -732,7 +740,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth22} alt="" id="tooth_62" className="img-fluid" />
+                  <img
+                    src={teeth22}
+                    alt=""
+                    id="tooth_62"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -744,7 +757,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth23} alt="" id="tooth_63" className="img-fluid" />
+                  <img
+                    src={teeth23}
+                    alt=""
+                    id="tooth_63"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -756,7 +774,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth26} alt="" id="tooth_64" className="img-fluid" />
+                  <img
+                    src={teeth26}
+                    alt=""
+                    id="tooth_64"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -768,7 +791,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth28} alt="" id="tooth_65" className="img-fluid" />
+                  <img
+                    src={teeth28}
+                    alt=""
+                    id="tooth_65"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -786,7 +814,12 @@ useEffect(() => {
             <div className="col-lg-12 col-12">
               <div className="d-flex justify-content-center">
                 <div>
-                  <img src={teeth47} alt="" id="tooth_85" className="img-fluid" />
+                  <img
+                    src={teeth47}
+                    alt=""
+                    id="tooth_85"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -798,7 +831,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth46} alt="" id="tooth_84" className="img-fluid" />
+                  <img
+                    src={teeth46}
+                    alt=""
+                    id="tooth_84"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -810,7 +848,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth43} alt="" id="tooth_83" className="img-fluid" />
+                  <img
+                    src={teeth43}
+                    alt=""
+                    id="tooth_83"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -822,7 +865,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth42} alt="" id="tooth_82" className="img-fluid" />
+                  <img
+                    src={teeth42}
+                    alt=""
+                    id="tooth_82"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -834,7 +882,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth41} alt="" id="tooth_81" className="img-fluid" />
+                  <img
+                    src={teeth41}
+                    alt=""
+                    id="tooth_81"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -846,7 +899,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth31} alt="" id="tooth_71" className="img-fluid" />
+                  <img
+                    src={teeth31}
+                    alt=""
+                    id="tooth_71"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -858,7 +916,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth32} alt="" id="tooth_72" className="img-fluid" />
+                  <img
+                    src={teeth32}
+                    alt=""
+                    id="tooth_72"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -870,7 +933,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth33} alt="" id="tooth_73" className="img-fluid" />
+                  <img
+                    src={teeth33}
+                    alt=""
+                    id="tooth_73"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -882,7 +950,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth36} alt="" id="tooth_74" className="img-fluid" />
+                  <img
+                    src={teeth36}
+                    alt=""
+                    id="tooth_74"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -894,7 +967,12 @@ useEffect(() => {
                   </div>
                 </div>
                 <div>
-                  <img src={teeth37} alt="" id="tooth_75" className="img-fluid" />
+                  <img
+                    src={teeth37}
+                    alt=""
+                    id="tooth_75"
+                    className="img-fluid"
+                  />
                   <div className="text-center">
                     <input
                       type="checkbox"
@@ -937,7 +1015,8 @@ useEffect(() => {
                           className="form-control"
                           placeholder="Selected Teeth Number"
                           readOnly
-                          value={selectedTeeth.join(", ")}
+                          //   value={selectedTeeth.join(", ")}
+                          value={inputItem.selectTeeth.join(", ")}
                           // onChange={handleSelecteditem}
                         />
                       </div>
@@ -946,12 +1025,16 @@ useEffect(() => {
                       <div data-mdb-input-init class="form-outline">
                         <input
                           type="text"
-                          value={inputValue}
-                          // name="desease"
-                          onChange={(e) => setInputValue(e.target.value)}
+                          value={inputItem.desease}
+                          onChange={(e) =>
+                            setInputItem({
+                              ...inputItem, // Merge existing inputItem state
+                              desease: e.target.value,
+                            })
+                          }
                           id="form8Example2"
                           placeholder="Dental Condition"
-                          class="form-control"
+                          className="form-control"
                         />
                       </div>
                     </div>
@@ -966,6 +1049,7 @@ useEffect(() => {
                           type="text"
                           name="chiefComplain"
                           onChange={handleSelecteditem}
+                          value={inputItem.chiefComplain}
                           id="form8Example3"
                           class="form-control"
                           placeholder="Cheif Complaints"
@@ -979,6 +1063,7 @@ useEffect(() => {
                           id="form8Example4"
                           name="advice"
                           onChange={handleSelecteditem}
+                          value={inputItem.advice}
                           class="form-control"
                           placeholder="Advice"
                         />
@@ -991,6 +1076,7 @@ useEffect(() => {
                           id="form8Example5"
                           name="onExamination"
                           onChange={handleSelecteditem}
+                          value={inputItem.onExamination}
                           class="form-control"
                           placeholder="ON Examination"
                         />
@@ -998,22 +1084,43 @@ useEffect(() => {
                     </div>
                   </div>
                   <div className="text-center m-3">
-                  <button type="button" className="btn btn-info text-light mx-3" onClick={handleAddNew}>New Add</button>
-                  <button type="submit" className="btn btn-info text-light mx-3">Save & Continue</button>
+                    <button
+                      type="button"
+                      className="btn btn-info text-light mx-3"
+                      onClick={handleAddNew}
+                    >
+                      Add New
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn btn-info text-light mx-3"
+                      onClick={()=>window.location.reload()}
+                    >
+                      Save & Continue
+                    </button>
                   </div>
                 </form>
               </div>
               <div>
-        <h2>Saved Data</h2>
-        <ul>
-          {inputItemList.map((item, index) => (
-            <li key={index}>
-              {/* Render each item's properties */}
-              Select Teeth: {item.selectTeeth.join(", ")}, Disease: {item.desease}, Chief Complaint: {item.chiefComplain}, Advice: {item.advice}, On Examination: {item.onExamination}
-            </li>
-          ))}
-        </ul>
-      </div>
+                <h2>Saved Data</h2>
+                <div>
+                  {inputItemList.length ? (
+                    <ul className="list">
+                      {inputItemList.map((item, index) => (
+                        <li key={index} className="list-item">
+                          {/* Render each item's properties */}
+                          Select Teeth: {item.selectTeeth.join(", ")}, Disease:{" "}
+                          {item.desease}, Chief Complaint: {item.chiefComplain},
+                          Advice: {item.advice}, On Examination:{" "}
+                          {item.onExamination}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>Loading...</p> // You can replace this with your custom placeholder
+                  )}
+                </div>
+              </div>
             </div>
 
             <div className="col-lg-2 col-2">
@@ -1078,18 +1185,28 @@ useEffect(() => {
             </div>
           </div>
         </div>
-    </Wrapper>
+      </Wrapper>
     </>
-  )
-}
+  );
+};
 
-export default PediatricDental;
+export default PediatricDentalTest;
 const Wrapper = styled.div`
-.buttons {
+  .buttons {
     width: 150px;
     cursor: pointer;
     &:hover {
       width: 152px;
     }
+  }
+  .list {
+    list-style-type: none;
+    padding: 0;
+  }
+  .list-item {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
   }
 `;

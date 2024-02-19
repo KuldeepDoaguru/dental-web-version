@@ -120,7 +120,7 @@ const Wrapper = styled.div`
     font-size: 1.5rem;
   }
   .navbar {
-    background-color: #004aad;
+    background-color: #0dcaf0;
     box-shadow: 1px 1px 6px black;
   }
 

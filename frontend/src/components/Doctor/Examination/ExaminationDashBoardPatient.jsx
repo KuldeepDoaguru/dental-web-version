@@ -2,10 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import HeadBar from "../HeadBar";
 import SideBar from "../SideBar";
-import ExaminationDashTwo from "./ExaminationDashTwo";
+import ExaminationPatient from "./ExaminationPatient";
 
-const ExaminationDashBoard = () => {
-
+const ExaminationDashBoardPatient = () => {
   return (
     <>
       <Wrapper>
@@ -18,7 +17,7 @@ const ExaminationDashBoard = () => {
                 <SideBar />
               </div>
               <div className="col-lg-11 col-11 ps-0 m-2">
-                <ExaminationDashTwo />
+               <ExaminationPatient />
               </div>
             </div>
           </div>
@@ -28,5 +27,5 @@ const ExaminationDashBoard = () => {
   );
 };
 
-export default ExaminationDashBoard;
+export default ExaminationDashBoardPatient;
 const Wrapper = styled.div``;

@@ -241,7 +241,7 @@ const Wrapper = styled.div`
   #sidebar {
     width: 100%;
     height: 55rem;
-    background-color: #004aad;
+    background-color: #0dcaf0;
     @media screen and (max-width: 768px) {
       width: 3rem;
       height: 212rem;
@@ -256,7 +256,7 @@ const Wrapper = styled.div`
   }
 
   li:hover {
-    color: red;
+    color: #8ae6ff;
   }
 
   .link-div {
@@ -270,7 +270,8 @@ const Wrapper = styled.div`
   }
 
   .active-nav {
-    background-color: red;
+    background-color:  #8ae6ff;
     padding: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   }
 `;

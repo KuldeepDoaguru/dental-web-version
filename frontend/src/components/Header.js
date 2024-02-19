@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   return (
     <Wrapper>
-      <div className="container-fluid" style={{ backgroundColor: "#004aad" }}>
+      <div className="container-fluid" style={{ backgroundColor: "#0dcaf0" }}>
         <nav className="navbar navbar-expand-lg ">
           <div className="container-fluid">
             <Link to="/">

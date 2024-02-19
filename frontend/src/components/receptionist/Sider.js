@@ -34,6 +34,15 @@ function Sider() {
                       </span>
                     </a>
                  </Link> </li>
+                  <li> <Link to='/inquiry'>
+                    <a className="nav-link px-0 align-middle">
+                      <i className="fs-4 bi bi-table"></i>{" "}
+                      <br />
+                      <span className=" d-none d-sm-inline align-middle" id="navleft">
+                      Inquiry
+                      </span>
+                    </a>
+                 </Link> </li>
                   {/* <li>
                    <Link to='/bill_section'><a
                     
@@ -154,7 +163,7 @@ const Wrapper=styled.div`
   #sidebar{
     width: 5rem;
     height: 79rem;
-    background-color:#004aad;
+    background-color:teal;
     @media screen and (max-width: 768px){
       width: 3rem;
       height: 212rem;

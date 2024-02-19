@@ -8,7 +8,7 @@ function Header() {
   return (
     <Wrapper> 
     
-      <div className="container-fluid" style={{backgroundColor:"#004aad"}}>
+      <div className="container-fluid" style={{backgroundColor:"teal"}}>
      
 <nav className="navbar navbar-expand-lg ">
   <div className="container-fluid">

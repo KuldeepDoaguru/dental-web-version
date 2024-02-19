@@ -77,10 +77,10 @@ const AdminInventory = () => {
                             <th className="table-sno">SN</th>
                             <th className="table-sno">Purchase ID</th>
                             <th className="table-small">Item Name</th>
+                            <th>Item Code</th>
+                            <th>HSN Code</th>
                             <th className="table-small">Item Type</th>
-                            <th className="table-small">
-                              Last Purchase Details
-                            </th>
+                            <th className="table-small">Last Generate Bill</th>
                             <th className="table-small">MRP</th>
                             <th className="table-small">Available Stock</th>
                             <th className="table-small">Status</th>
@@ -100,6 +100,9 @@ const AdminInventory = () => {
                             <td className="table-small">
                               Tablet 10 mg Item Code - 101 HSN Code - 101
                             </td>
+                            <td>00761</td>
+                            <td>9761</td>
+
                             <td className="table-small">Drug</td>
                             <td className="table-small">
                               Purchase Date - 15 jul 2023
@@ -110,17 +113,17 @@ const AdminInventory = () => {
                             <td className="table-small">
                               <div className="d-flex">
                                 <button className="btn btn-success mx-1">
-                                  Purchase Details
+                                  Generate Bill
                                 </button>
                                 <Link to="/admin-edit-invetory">
                                   {" "}
                                   <button className="btn btn-warning">
-                                    Edit Items
+                                    Edit
                                   </button>
                                 </Link>
 
                                 <button className="btn btn-danger mx-1">
-                                  Delete Items
+                                  Delete
                                 </button>
                               </div>
                             </td>
@@ -131,6 +134,8 @@ const AdminInventory = () => {
                             <td className="table-small">
                               Tablet 10 mg Item Code - 101 HSN Code - 101
                             </td>
+                            <td>00761</td>
+                            <td>9761</td>
                             <td className="table-small">Drug</td>
                             <td className="table-small">
                               Purchase Date - 15 jul 2023
@@ -141,17 +146,17 @@ const AdminInventory = () => {
                             <td className="table-small">
                               <div className="d-flex">
                                 <button className="btn btn-success mx-1">
-                                  Purchase Details
+                                  Generate Bill
                                 </button>
                                 <Link to="/admin-edit-invetory">
                                   {" "}
                                   <button className="btn btn-warning">
-                                    Edit Items
+                                    Edit
                                   </button>
                                 </Link>
 
                                 <button className="btn btn-danger mx-1">
-                                  Delete Items
+                                  Delete
                                 </button>
                               </div>
                             </td>
@@ -162,6 +167,8 @@ const AdminInventory = () => {
                             <td className="table-small">
                               Tablet 10 mg Item Code - 101 HSN Code - 101
                             </td>
+                            <td>00761</td>
+                            <td>9761</td>
                             <td className="table-small">Drug</td>
                             <td className="table-small">
                               Purchase Date - 15 jul 2023
@@ -172,17 +179,17 @@ const AdminInventory = () => {
                             <td className="table-small">
                               <div className="d-flex">
                                 <button className="btn btn-success mx-1">
-                                  Purchase Details
+                                  Generate Bill
                                 </button>
                                 <Link to="/admin-edit-invetory">
                                   {" "}
                                   <button className="btn btn-warning">
-                                    Edit Items
+                                    Edit
                                   </button>
                                 </Link>
 
                                 <button className="btn btn-danger mx-1">
-                                  Delete Items
+                                  Delete
                                 </button>
                               </div>
                             </td>
@@ -193,6 +200,8 @@ const AdminInventory = () => {
                             <td className="table-small">
                               Tablet 10 mg Item Code - 101 HSN Code - 101
                             </td>
+                            <td>00761</td>
+                            <td>9761</td>
                             <td className="table-small">Drug</td>
                             <td className="table-small">
                               Purchase Date - 15 jul 2023
@@ -203,17 +212,17 @@ const AdminInventory = () => {
                             <td className="table-small">
                               <div className="d-flex">
                                 <button className="btn btn-success mx-1">
-                                  Purchase Details
+                                  Generate Bill
                                 </button>
                                 <Link to="/admin-edit-invetory">
                                   {" "}
                                   <button className="btn btn-warning">
-                                    Edit Items
+                                    Edit
                                   </button>
                                 </Link>
 
                                 <button className="btn btn-danger mx-1">
-                                  Delete Items
+                                  Delete
                                 </button>
                               </div>
                             </td>
@@ -224,6 +233,8 @@ const AdminInventory = () => {
                             <td className="table-small">
                               Tablet 10 mg Item Code - 101 HSN Code - 101
                             </td>
+                            <td>00761</td>
+                            <td>9761</td>
                             <td className="table-small">Drug</td>
                             <td className="table-small">
                               Purchase Date - 15 jul 2023
@@ -234,17 +245,17 @@ const AdminInventory = () => {
                             <td className="table-small">
                               <div className="d-flex">
                                 <button className="btn btn-success mx-1">
-                                  Purchase Details
+                                  Generate Bill
                                 </button>
                                 <Link to="/admin-edit-invetory">
                                   {" "}
                                   <button className="btn btn-warning">
-                                    Edit Items
+                                    Edit
                                   </button>
                                 </Link>
 
                                 <button className="btn btn-danger mx-1">
-                                  Delete Items
+                                  Delete
                                 </button>
                               </div>
                             </td>
@@ -266,8 +277,8 @@ const AdminInventory = () => {
 export default AdminInventory;
 const Container = styled.div`
   th {
-    background-color: #004aad;
-    color: white;
+    background-color: #1abc9c;
+    color: #000;
   }
 
   .select-style {

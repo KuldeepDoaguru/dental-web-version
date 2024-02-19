@@ -40,8 +40,10 @@ const AdminDashboard = () => {
             <div className="col-lg-11 col-11 ps-0">
               <div className="row d-flex justify-content-between mx-3">
                 <div className="col-12 col-md-4 mt-4">
-                  <h3> Welcome to Dental Guru! </h3>
-                  <p>Admin Dashboard - Madan Mahal Branch</p>
+                  <h3> Welcome to DentalGuru! </h3>
+                  <p className="fs-4 fw-bold">
+                    Admin Dashboard - Madan Mahal Branch
+                  </p>
                 </div>
                 <div className="col-12 col-md-4 my-3">
                   <form className="d-flex ms-auto my-sm" role="search">
@@ -53,7 +55,7 @@ const AdminDashboard = () => {
                     />
                     <button
                       className="btn btn-primary"
-                      style={{ backgroundColor: "#004aad" }}
+                      style={{ backgroundColor: "#1abc9c", border: "none" }}
                       type="submit"
                     >
                       Search
@@ -98,10 +100,10 @@ const AdminDashboard = () => {
               </div>
               <div className="container-fluid mt-3">
                 <div className="row">
-                  <div className="col-xxl-7 col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12">
+                  <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <AdminClinicAct />
                   </div>
-                  <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12">
+                  <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <AdminComplaintsSec />
                   </div>
                 </div>

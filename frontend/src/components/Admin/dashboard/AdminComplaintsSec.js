@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const AdminComplaintsSec = () => {
@@ -11,13 +12,14 @@ const AdminComplaintsSec = () => {
             <table class="table table-bordered rounded shadow">
               <thead className="table-head">
                 <tr>
-                  <th className="table-sno">EMP_id</th>
-                  <th className="table-small">Employee Name</th>
-                  <th className="table-small">Complain Message</th>
-                  <th className="table-small">Complain Date & Time</th>
-                  <th>Status</th>
-                  <th className="table-small">Solution Date</th>
-                  <th className="table-small">Pending Since</th>
+                  <th className="table-sno sticky">EMP_id</th>
+                  <th className="table-small sticky">Employee Name</th>
+                  <th className="table-small sticky">Complaint</th>
+                  <th className="table-small sticky">Received On</th>
+                  <th className="sticky">Status</th>
+                  <th className="table-small sticky">Solved On</th>
+                  <th className="table-small sticky">Pending Since</th>
+                  <th className="table-small sticky">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -32,6 +34,11 @@ const AdminComplaintsSec = () => {
                   <td>solved</td>
                   <td>12/12/2024</td>
                   <td>9 Days</td>
+                  <td>
+                    <Link to="/admin-complaint-page">
+                      <button className="btn btn-dark">View Complaint</button>
+                    </Link>
+                  </td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -44,6 +51,11 @@ const AdminComplaintsSec = () => {
                   <td>solved</td>
                   <td>12/12/2024</td>
                   <td>9 Days</td>
+                  <td>
+                    <Link to="/admin-complaint-page">
+                      <button className="btn btn-dark">View Complaint</button>
+                    </Link>
+                  </td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -56,6 +68,11 @@ const AdminComplaintsSec = () => {
                   <td>solved</td>
                   <td>12/12/2024</td>
                   <td>9 Days</td>
+                  <td>
+                    <Link to="/admin-complaint-page">
+                      <button className="btn btn-dark">View Complaint</button>
+                    </Link>
+                  </td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -68,6 +85,11 @@ const AdminComplaintsSec = () => {
                   <td>solved</td>
                   <td>12/12/2024</td>
                   <td>9 Days</td>
+                  <td>
+                    <Link to="/admin-complaint-page">
+                      <button className="btn btn-dark">View Complaint</button>
+                    </Link>
+                  </td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -80,6 +102,11 @@ const AdminComplaintsSec = () => {
                   <td>solved</td>
                   <td>12/12/2024</td>
                   <td>9 Days</td>
+                  <td>
+                    <Link to="/admin-complaint-page">
+                      <button className="btn btn-dark">View Complaint</button>
+                    </Link>
+                  </td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -92,6 +119,11 @@ const AdminComplaintsSec = () => {
                   <td>solved</td>
                   <td>12/12/2024</td>
                   <td>9 Days</td>
+                  <td>
+                    <Link to="/admin-complaint-page">
+                      <button className="btn btn-dark">View Complaint</button>
+                    </Link>
+                  </td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -104,6 +136,11 @@ const AdminComplaintsSec = () => {
                   <td>solved</td>
                   <td>12/12/2024</td>
                   <td>9 Days</td>
+                  <td>
+                    <Link to="/admin-complaint-page">
+                      <button className="btn btn-dark">View Complaint</button>
+                    </Link>
+                  </td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -116,6 +153,11 @@ const AdminComplaintsSec = () => {
                   <td>solved</td>
                   <td>12/12/2024</td>
                   <td>9 Days</td>
+                  <td>
+                    <Link to="/admin-complaint-page">
+                      <button className="btn btn-dark">View Complaint</button>
+                    </Link>
+                  </td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -128,6 +170,11 @@ const AdminComplaintsSec = () => {
                   <td>solved</td>
                   <td>12/12/2024</td>
                   <td>9 Days</td>
+                  <td>
+                    <Link to="/admin-complaint-page">
+                      <button className="btn btn-dark">View Complaint</button>
+                    </Link>
+                  </td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -140,6 +187,11 @@ const AdminComplaintsSec = () => {
                   <td>solved</td>
                   <td>12/12/2024</td>
                   <td>9 Days</td>
+                  <td>
+                    <Link to="/admin-complaint-page">
+                      <button className="btn btn-dark">View Complaint</button>
+                    </Link>
+                  </td>
                 </tr>
                 <tr className="table-row">
                   <td className="table-sno">1</td>
@@ -152,6 +204,11 @@ const AdminComplaintsSec = () => {
                   <td>solved</td>
                   <td>12/12/2024</td>
                   <td>9 Days</td>
+                  <td>
+                    <Link to="/admin-complaint-page">
+                      <button className="btn btn-dark">View Complaint</button>
+                    </Link>
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -166,7 +223,7 @@ export default AdminComplaintsSec;
 const Container = styled.div`
   .main-cont {
     .table-responsive {
-      height: 32rem;
+      height: 20rem;
       overflow: auto;
     }
   }
@@ -174,5 +231,14 @@ const Container = styled.div`
   th {
     background-color: #1abc9c;
     color: white;
+    position: sticky;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    background-color: #1abc9c;
+    color: white;
+    z-index: 1;
   }
 `;

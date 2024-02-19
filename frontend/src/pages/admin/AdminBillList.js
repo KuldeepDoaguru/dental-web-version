@@ -10,11 +10,18 @@ import HeaderAdmin from "./HeaderAdmin";
 import SiderAdmin from "./SiderAdmin";
 
 const AdminBillList = () => {
-  //   const [billType, setBillType] = useState(null);
-  const initialTab = localStorage.getItem("selectedTab") || "tab1";
-  const [selectedTab, setSelectedTab] = useState(initialTab);
+  const [showEditBillList, setShowEditBillList] = useState(false);
 
-  console.log(selectedTab);
+  const openEditBillListPopup = (index, item) => {
+    // setSelectedItem(item);
+    console.log("open pop up");
+    setShowEditBillList(true);
+  };
+
+  const closeUpdatePopup = () => {
+    setShowEditBillList(false);
+  };
+
   return (
     <>
       <Container>
@@ -45,6 +52,13 @@ const AdminBillList = () => {
                             <th>Paid Amount</th>
                             <th>Payment Status</th>
                             <th>Payment Date & Time</th>
+                            <th
+                              className="table-small"
+                              onClick={openEditBillListPopup}
+                            >
+                              Edit
+                            </th>
+                            <th className="table-small">Print</th>
                             <th className="table-small">Delete</th>
                           </tr>
                         </thead>
@@ -63,22 +77,16 @@ const AdminBillList = () => {
                             <td>Completed</td>
                             <td>12/12/2024 12:00PM</td>
                             <td className="table-small">
-                              <button className="btn btn-danger">Delete</button>
+                              <button
+                                className="btn btn-info"
+                                onClick={openEditBillListPopup}
+                              >
+                                Edit
+                              </button>
                             </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">12/12/2024</td>
-                            <td className="table-small">007</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td>+918602161019</td>
-                            <td>shubham@gmail.com</td>
-                            <td>2 injections</td>
-                            <td>5</td>
-                            <td className="table-small">1000</td>
-                            <td className="table-small">1000</td>
-                            <td>Completed</td>
-                            <td>12/12/2024 12:00PM</td>
+                            <td className="table-small">
+                              <button className="btn btn-warning">Print</button>
+                            </td>
                             <td className="table-small">
                               <button className="btn btn-danger">Delete</button>
                             </td>
@@ -97,22 +105,16 @@ const AdminBillList = () => {
                             <td>Completed</td>
                             <td>12/12/2024 12:00PM</td>
                             <td className="table-small">
-                              <button className="btn btn-danger">Delete</button>
+                              <button
+                                className="btn btn-info"
+                                onClick={openEditBillListPopup}
+                              >
+                                Edit
+                              </button>
                             </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">12/12/2024</td>
-                            <td className="table-small">007</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td>+918602161019</td>
-                            <td>shubham@gmail.com</td>
-                            <td>2 injections</td>
-                            <td>5</td>
-                            <td className="table-small">1000</td>
-                            <td className="table-small">1000</td>
-                            <td>Completed</td>
-                            <td>12/12/2024 12:00PM</td>
+                            <td className="table-small">
+                              <button className="btn btn-warning">Print</button>
+                            </td>
                             <td className="table-small">
                               <button className="btn btn-danger">Delete</button>
                             </td>
@@ -130,6 +132,73 @@ const AdminBillList = () => {
                             <td className="table-small">1000</td>
                             <td>Completed</td>
                             <td>12/12/2024 12:00PM</td>
+                            <td className="table-small">
+                              <button
+                                className="btn btn-info"
+                                onClick={openEditBillListPopup}
+                              >
+                                Edit
+                              </button>
+                            </td>
+                            <td className="table-small">
+                              <button className="btn btn-warning">Print</button>
+                            </td>
+                            <td className="table-small">
+                              <button className="btn btn-danger">Delete</button>
+                            </td>
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+                            <td className="table-small">12/12/2024</td>
+                            <td className="table-small">007</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td>+918602161019</td>
+                            <td>shubham@gmail.com</td>
+                            <td>2 injections</td>
+                            <td>5</td>
+                            <td className="table-small">1000</td>
+                            <td className="table-small">1000</td>
+                            <td>Completed</td>
+                            <td>12/12/2024 12:00PM</td>
+                            <td className="table-small">
+                              <button
+                                className="btn btn-info"
+                                onClick={openEditBillListPopup}
+                              >
+                                Edit
+                              </button>
+                            </td>
+                            <td className="table-small">
+                              <button className="btn btn-warning">Print</button>
+                            </td>
+                            <td className="table-small">
+                              <button className="btn btn-danger">Delete</button>
+                            </td>
+                          </tr>
+                          <tr className="table-row">
+                            <td className="table-sno">1</td>
+                            <td className="table-small">12/12/2024</td>
+                            <td className="table-small">007</td>
+                            <td className="table-small">Shubham patel</td>
+                            <td>+918602161019</td>
+                            <td>shubham@gmail.com</td>
+                            <td>2 injections</td>
+                            <td>5</td>
+                            <td className="table-small">1000</td>
+                            <td className="table-small">1000</td>
+                            <td>Completed</td>
+                            <td>12/12/2024 12:00PM</td>
+                            <td className="table-small">
+                              <button
+                                className="btn btn-info"
+                                onClick={openEditBillListPopup}
+                              >
+                                Edit
+                              </button>
+                            </td>
+                            <td className="table-small">
+                              <button className="btn btn-warning">Print</button>
+                            </td>
                             <td className="table-small">
                               <button className="btn btn-danger">Delete</button>
                             </td>
@@ -142,6 +211,223 @@ const AdminBillList = () => {
               </div>
             </div>
           </div>
+          {/* ******************************************************************************************** */}
+          {/* pop-up for edit bills */}
+          <div
+            className={`popup-container${showEditBillList ? " active" : ""}`}
+          >
+            <div className="popup">
+              <h4 className="text-center">Edit Bill Details</h4>
+              <form
+                className="form-group"
+                // onSubmit={handleNoticeSubmit}
+              >
+                <div className="form-group">
+                  <div className="d-flex">
+                    <div className="input-group">
+                      <label htmlFor="" className="fw-bold">
+                        Bill Date
+                      </label>
+                      <input
+                        type="date"
+                        placeholder="Lab Name"
+                        className="rounded p-2 w-100"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                    <div className="input-group mx-2">
+                      <label htmlFor="" className="fw-bold">
+                        Patient UHID
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Patient UHID"
+                        className="rounded p-2 w-100"
+                      />
+                    </div>
+                  </div>
+                  <div className="d-flex mt-2">
+                    <div className="input-group">
+                      <label htmlFor="" className="fw-bold">
+                        Patient Name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Patient Name"
+                        className="rounded p-2 w-100"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                    <div className="input-group mx-2">
+                      <label htmlFor="" className="fw-bold">
+                        Patient Mobile
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Patient Mobile"
+                        className="rounded p-2 w-100"
+                        maxLength={10}
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                  </div>
+                  <div className="d-flex mt-2">
+                    <div className="input-group">
+                      <label htmlFor="" className="fw-bold">
+                        Patient Email
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="Patient email"
+                        className="rounded p-2 w-100"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                    <div className="input-group mx-2">
+                      <label htmlFor="" className="fw-bold">
+                        Treatment
+                      </label>
+                      <select name="" id="" className="rounded p-2 w-100">
+                        <option value="">2 Injection</option>
+                        <option value="">4 Injection</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="d-flex mt-2">
+                    <div className="input-group">
+                      <label htmlFor="" className="fw-bold">
+                        Drugs with Quantity
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Drugs with Quantity"
+                        className="rounded p-2 w-100"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                    <div className="input-group mx-2">
+                      <label htmlFor="" className="fw-bold">
+                        Total Amount
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Total Amount"
+                        className="rounded p-2 w-100"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                  </div>
+                  <div className="d-flex mt-2">
+                    <div className="input-group">
+                      <label htmlFor="" className="fw-bold">
+                        Paid Amount
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Paid Amount"
+                        className="rounded p-2 w-100"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                    <div className="input-group mx-2">
+                      <label htmlFor="" className="fw-bold">
+                        Payment Status
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Payment Status"
+                        className="rounded p-2 w-100"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                  </div>
+                  <div className="d-flex mt-2">
+                    <div className="input-group">
+                      <label htmlFor="" className="fw-bold">
+                        Payment Date and Time
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Payment Date and Time"
+                        className="rounded p-2 w-100"
+                        // value={noticeData.linkURL}
+                        // onChange={(e) =>
+                        //   setNoticeData({
+                        //     ...noticeData,
+                        //     linkURL: e.target.value,
+                        //   })
+                        // }
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="d-flex justify-content-evenly">
+                  <button type="submit" className="btn btn-success mt-2">
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger mt-2"
+                    onClick={closeUpdatePopup}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          {/* pop-up for edit Bills */}
+          {/* ************************************************************************************* */}
         </div>
       </Container>
     </>
@@ -166,5 +452,29 @@ const Container = styled.div`
     background-color: #22a6b3;
     font-weight: bold;
     color: white;
+  }
+
+  .popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-container.active {
+    display: flex;
+    background-color: #00000075;
+  }
+
+  .popup {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 `;

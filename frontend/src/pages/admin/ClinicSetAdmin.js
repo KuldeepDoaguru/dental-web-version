@@ -19,36 +19,6 @@ const ClinicSetAdmin = () => {
               </div>
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container-fluid mt-3">
-                  <div className="d-flex justify-content-between">
-                    <div className="d-flex">
-                      <div>
-                        <h4>Select Branch : </h4>
-                      </div>
-                      <div>
-                        <select
-                          name="branch"
-                          id="branch"
-                          className="mx-2 p-2 rounded shadow select-style"
-                        >
-                          <option value="Madan Mahal" className="fw-bold">
-                            Madan Mahal
-                          </option>
-                          <option value="Madan Mahal" className="fw-bold">
-                            Ranjhi
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      {/* <Link to="/superadmin-add-branch">
-                          <button className="btn btn-success">
-                            Add Branch
-                          </button>
-                        </Link> */}
-                    </div>
-                  </div>
-                </div>
-                <div className="container-fluid mt-3">
                   <div className="container-fluid">
                     <div className="row mt-3">
                       {/* <div className="col-1"></div> */}
@@ -76,7 +46,7 @@ const ClinicSetAdmin = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
-                              <Link to="/calender-setting">
+                              <Link to="/admin-calender-setting">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className="d-flex justify-content-center text-dark  align-items-center">
@@ -88,7 +58,7 @@ const ClinicSetAdmin = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
-                              <Link to="/drug-setting">
+                              <Link to="/admin-drug-setting">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-dark  align-items-center">
@@ -100,7 +70,7 @@ const ClinicSetAdmin = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/communication-setting">
+                              <Link to="/admin-communication-setting">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-dark  align-items-center">
@@ -112,7 +82,7 @@ const ClinicSetAdmin = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/prescription-templates">
+                              <Link to="/admin-prescription-templates">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-dark  align-items-center">
@@ -124,7 +94,7 @@ const ClinicSetAdmin = () => {
                             </div>
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/treatment-setting">
+                              <Link to="/admin-treatment-setting">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-dark  align-items-center">

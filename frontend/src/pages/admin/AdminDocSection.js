@@ -25,16 +25,17 @@ const AdminDocSection = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno">doc_id</th>
+                            <th className="table-sno">EMP_ID</th>
                             <th className="table-small">Doctor Name</th>
                             <th className="table-small">Mobile</th>
                             <th className="table-small">Email</th>
                             <th className="table-small">Gender</th>
                             <th className="table-small">Address</th>
                             <th className="table-small">
-                              FeedBack by Receptionist
+                              Feedback by Receptionist
                             </th>
                             <th>Doctor Availability</th>
+                            <th>Shift Time</th>
                             <th className="table-small">View Details</th>
                           </tr>
                         </thead>
@@ -48,6 +49,7 @@ const AdminDocSection = () => {
                             <td className="table-small">Jabalpur</td>
                             <td>He is a good doctor</td>
                             <td>Available</td>
+                            <td>12:00PM - 7:00PM</td>
                             <td className="table-small">
                               <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">
@@ -65,6 +67,7 @@ const AdminDocSection = () => {
                             <td className="table-small">Jabalpur</td>
                             <td>He is a good doctor</td>
                             <td>Available</td>
+                            <td>12:00PM - 7:00PM</td>
                             <td className="table-small">
                               <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">
@@ -82,6 +85,7 @@ const AdminDocSection = () => {
                             <td className="table-small">Jabalpur</td>
                             <td>He is a good doctor</td>
                             <td>Available</td>
+                            <td>12:00PM - 7:00PM</td>
                             <td className="table-small">
                               <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">
@@ -99,6 +103,7 @@ const AdminDocSection = () => {
                             <td className="table-small">Jabalpur</td>
                             <td>He is a good doctor</td>
                             <td>Available</td>
+                            <td>12:00PM - 7:00PM</td>
                             <td className="table-small">
                               <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">
@@ -116,6 +121,7 @@ const AdminDocSection = () => {
                             <td className="table-small">Jabalpur</td>
                             <td>He is a good doctor</td>
                             <td>Available</td>
+                            <td>12:00PM - 7:00PM</td>
                             <td className="table-small">
                               <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">
@@ -133,6 +139,7 @@ const AdminDocSection = () => {
                             <td className="table-small">Jabalpur</td>
                             <td>He is a good doctor</td>
                             <td>Available</td>
+                            <td>12:00PM - 7:00PM</td>
                             <td className="table-small">
                               <Link to="/admin-doctor-profile">
                                 <button className="btn btn-warning">

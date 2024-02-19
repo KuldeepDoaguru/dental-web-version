@@ -44,19 +44,21 @@ const AdminApointment = () => {
                               <th className="table-small">Contact Number</th>
                               <th className="table-small">Assigned Doctor</th>
                               <th className="table-small">
-                                Treatment Provided
+                                Appointment Date & Time
                               </th>
+                              <th className="table-small">Appointed by</th>
+
                               <th className="table-small">Treatment Status</th>
                               <th className="table-small">Payment Status</th>
                               <th className="table-small">
                                 Payment Date & Time
                               </th>
 
-                              <th className="table-small">Appointed by</th>
                               <th className="table-small">Updated by</th>
                               <th className="table-small">
-                                Appointment Date & Time
+                                Treatment Provided
                               </th>
+
                               <th className="table-small">Edit</th>
                               <th className="table-small">Delete</th>
                             </tr>
@@ -73,10 +75,15 @@ const AdminApointment = () => {
                               <td className="table-small">
                                 12/12/2024 12:00PM
                               </td>
-                              <td className="table-small">2 injections</td>
+
                               <td className="table-small">mohit</td>
                               <td className="table-small">mohit</td>
                               <td className="table-small">09-02-2024</td>
+                              <td className="table-small">
+                                <button className="btn btn-info">
+                                  View Treatment
+                                </button>
+                              </td>
                               <td className="table-small">
                                 <button
                                   className="btn btn-warning"
@@ -102,10 +109,15 @@ const AdminApointment = () => {
                               <td className="table-small">
                                 12/12/2024 12:00PM
                               </td>
-                              <td className="table-small">2 injections</td>
+
                               <td className="table-small">mohit</td>
                               <td className="table-small">mohit</td>
                               <td className="table-small">09-02-2024</td>
+                              <td className="table-small">
+                                <button className="btn btn-info">
+                                  View Treatment
+                                </button>
+                              </td>
                               <td className="table-small">
                                 <button
                                   className="btn btn-warning"
@@ -131,10 +143,15 @@ const AdminApointment = () => {
                               <td className="table-small">
                                 12/12/2024 12:00PM
                               </td>
-                              <td className="table-small">2 injections</td>
+
                               <td className="table-small">mohit</td>
                               <td className="table-small">mohit</td>
                               <td className="table-small">09-02-2024</td>
+                              <td className="table-small">
+                                <button className="btn btn-info">
+                                  View Treatment
+                                </button>
+                              </td>
                               <td className="table-small">
                                 <button
                                   className="btn btn-warning"
@@ -160,10 +177,15 @@ const AdminApointment = () => {
                               <td className="table-small">
                                 12/12/2024 12:00PM
                               </td>
-                              <td className="table-small">2 injections</td>
+
                               <td className="table-small">mohit</td>
                               <td className="table-small">mohit</td>
                               <td className="table-small">09-02-2024</td>
+                              <td className="table-small">
+                                <button className="btn btn-info">
+                                  View Treatment
+                                </button>
+                              </td>
                               <td className="table-small">
                                 <button
                                   className="btn btn-warning"
@@ -189,10 +211,15 @@ const AdminApointment = () => {
                               <td className="table-small">
                                 12/12/2024 12:00PM
                               </td>
-                              <td className="table-small">2 injections</td>
+
                               <td className="table-small">mohit</td>
                               <td className="table-small">mohit</td>
                               <td className="table-small">09-02-2024</td>
+                              <td className="table-small">
+                                <button className="btn btn-info">
+                                  View Treatment
+                                </button>
+                              </td>
                               <td className="table-small">
                                 <button
                                   className="btn btn-warning"
@@ -294,10 +321,10 @@ const AdminApointment = () => {
                 </div>
                 <div className="d-flex">
                   <div class="d-flex flex-column input-group mb-3">
-                    <label htmlFor="">Treatment Provide</label>
+                    <label htmlFor="">Apointment Date and Time</label>
                     <input
-                      type="text"
-                      placeholder="Treatment Provide"
+                      type="date"
+                      placeholder="Apointment Date and Time"
                       className="rounded p-1 shadow"
                       // value={noticeData.linkURL}
                       // onChange={(e) =>
@@ -310,40 +337,25 @@ const AdminApointment = () => {
                   </div>
                   <div class="d-flex flex-column input-group mb-3 mx-2">
                     <label htmlFor="">Treatment Status</label>
-                    <input
-                      type="text"
-                      placeholder="Treatment Status"
-                      className="rounded p-1 shadow"
-                      // value={noticeData.linkURL}
-                      // onChange={(e) =>
-                      //   setNoticeData({
-                      //     ...noticeData,
-                      //     linkURL: e.target.value,
-                      //   })
-                      // }
-                    />
+                    <select name="" id="" className="rounded p-1 shadow">
+                      <option value="">Treated</option>
+                      <option value="">Hold</option>
+                      <option value="">Pending</option>
+                    </select>
                   </div>
                 </div>
                 <div className="d-flex">
                   <div class="d-flex flex-column input-group mb-3">
                     <label htmlFor="">Payment Status</label>
-                    <input
-                      type="text"
-                      placeholder="Payment Status"
-                      className="rounded p-1 shadow"
-                      // value={noticeData.linkURL}
-                      // onChange={(e) =>
-                      //   setNoticeData({
-                      //     ...noticeData,
-                      //     linkURL: e.target.value,
-                      //   })
-                      // }
-                    />
+                    <select name="" id="" className="rounded p-1 shadow">
+                      <option value="">Success</option>
+                      <option value="">Pending</option>
+                    </select>
                   </div>
                   <div class="d-flex flex-column input-group mb-3 mx-2">
                     <label htmlFor="">Payment date and time</label>
                     <input
-                      type="text"
+                      type="date"
                       placeholder="Payment date and time"
                       className="rounded p-1 shadow"
                       // value={noticeData.linkURL}
@@ -359,51 +371,22 @@ const AdminApointment = () => {
                 <div className="d-flex">
                   <div class="d-flex flex-column input-group mb-3">
                     <label htmlFor="">Appointed by</label>
-                    <input
-                      type="text"
-                      placeholder="Appointed by"
-                      className="rounded p-1 shadow"
-                      // value={noticeData.linkURL}
-                      // onChange={(e) =>
-                      //   setNoticeData({
-                      //     ...noticeData,
-                      //     linkURL: e.target.value,
-                      //   })
-                      // }
-                    />
+                    <select name="" id="" className="rounded p-1 shadow">
+                      <option value="">Mohit</option>
+                      <option value="">Shubham</option>
+                      <option value="">Naman</option>
+                    </select>
                   </div>
                   <div class="d-flex flex-column input-group mb-3 mx-2">
                     <label htmlFor="">Updated by</label>
-                    <input
-                      type="text"
-                      placeholder="Updated by"
-                      className="rounded p-1 shadow"
-                      // value={noticeData.linkURL}
-                      // onChange={(e) =>
-                      //   setNoticeData({
-                      //     ...noticeData,
-                      //     linkURL: e.target.value,
-                      //   })
-                      // }
-                    />
+                    <select name="" id="" className="rounded p-1 shadow">
+                      <option value="">Mohit</option>
+                      <option value="">Shubham</option>
+                      <option value="">Naman</option>
+                    </select>
                   </div>
                 </div>
 
-                <div class="d-flex flex-column input-group mb-3">
-                  <label htmlFor="">Apointment Date and Time</label>
-                  <input
-                    type="text"
-                    placeholder="Apointment Date and Time"
-                    className="rounded p-1 shadow"
-                    // value={noticeData.linkURL}
-                    // onChange={(e) =>
-                    //   setNoticeData({
-                    //     ...noticeData,
-                    //     linkURL: e.target.value,
-                    //   })
-                    // }
-                  />
-                </div>
                 <div className="d-flex justify-content-end">
                   <button
                     type="submit"

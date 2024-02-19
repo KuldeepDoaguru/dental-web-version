@@ -192,7 +192,7 @@ const Container = styled.div`
   }
   #sidebar {
     width: 100%;
-    height: 130rem;
+    height: 160rem;
     background-color: #1abc9c;
     @media screen and (max-width: 768px) {
       width: 3rem;

@@ -7,7 +7,8 @@ import SiderAdmin from "./SiderAdmin";
 import AdminLab from "../../components/Admin/Lab-settings/AdminLab";
 import AdminLabTest from "../../components/Admin/Lab-settings/AdminLabTest";
 import AdminLabTask from "../../components/Admin/Lab-settings/AdminLabTask";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const AdminLabSetting = () => {
   const initialTab = localStorage.getItem("selectedTab") || "tab1";
@@ -15,6 +16,12 @@ const AdminLabSetting = () => {
   const [showAddLab, setShowAddLab] = useState(false);
   const [showAddLabTest, setShowAddLabTest] = useState(false);
   const [showAddLabTask, setShowAddLabTask] = useState(false);
+
+  const location = useLocation();
+
+  const goBack = () => {
+    window.history.go(-1);
+  };
 
   const openAddLabPopup = (index, item) => {
     // setSelectedItem(item);
@@ -50,8 +57,10 @@ const AdminLabSetting = () => {
                 <SiderAdmin />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="d-flex">
-                  <Link to="/admin-lab-setting">btn</Link>
+                <div className="d-flex p-2">
+                  <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
                 </div>
                 <div className="container-fluid mt-3">
                   <h2 className="text-center">Lab Settings</h2>

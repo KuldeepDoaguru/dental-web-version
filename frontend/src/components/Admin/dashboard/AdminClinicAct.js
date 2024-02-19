@@ -13,7 +13,7 @@ const AdminClinicAct = () => {
   return (
     <>
       <Container>
-        <div className="container">
+        <div className="container-fluid">
           <div className="clinic-act-heading">
             <div>
               <h5>
@@ -34,7 +34,7 @@ const AdminClinicAct = () => {
             </div>
           </div>
         </div>
-        <div className="container mt-2">
+        <div className="container-fluid mt-2">
           <ul class="nav nav-pills mb-3 ms-3" id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
               <button
@@ -410,7 +410,7 @@ const AdminClinicAct = () => {
             </div>
 
             <div
-              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade"
+              className="container-fluid pe-5 mb-3 py-4 pb-4 tab-pane fade"
               id="pills-Patient"
               role="tabpanel"
               aria-labelledby="pills-Patient-tab"

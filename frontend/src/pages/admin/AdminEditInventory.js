@@ -26,7 +26,7 @@ const AdminEditInventory = () => {
                   <button className="btn btn-success shadow" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
                   </button>
-                  <h3 className="text-center">Add Inventory Item</h3>
+                  <h3 className="text-center">Update Inventory Item</h3>
                   <div className="container mt-3">
                     <form action="">
                       <div className="container d-flex justify-content-center mt-5">
@@ -76,93 +76,135 @@ const AdminEditInventory = () => {
                           </label>
                         </div>
                       </div>
-                      <div className="d-flex justify-content-center mt-4">
-                        <div class="mb-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
-                          >
-                            Item Name
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Item Name"
-                          />
+                      <div className="form-group">
+                        <div className="d-flex">
+                          <div className="input-group">
+                            <label htmlFor="" className="fw-bold">
+                              Item Name
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Item Name"
+                              className="rounded p-2 w-100"
+                              // value={noticeData.linkURL}
+                              // onChange={(e) =>
+                              //   setNoticeData({
+                              //     ...noticeData,
+                              //     linkURL: e.target.value,
+                              //   })
+                              // }
+                            />
+                          </div>
+                          <div className="input-group mx-2">
+                            <label htmlFor="" className="fw-bold">
+                              Item Code
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Item Code"
+                              className="rounded p-2 w-100"
+                            />
+                          </div>
                         </div>
-                        <div class="mb-3 mx-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
-                          >
-                            Item Code
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Item Code"
-                          />
+                        <div className="d-flex mt-2">
+                          <div className="input-group">
+                            <label htmlFor="" className="fw-bold">
+                              HSN Code
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="HSN Code"
+                              className="rounded p-2 w-100"
+                              // value={noticeData.linkURL}
+                              // onChange={(e) =>
+                              //   setNoticeData({
+                              //     ...noticeData,
+                              //     linkURL: e.target.value,
+                              //   })
+                              // }
+                            />
+                          </div>
+                          <div className="input-group mx-2">
+                            <label htmlFor="" className="fw-bold">
+                              Item Type
+                            </label>
+                            <select name="" id="" className="rounded p-2 w-100">
+                              <option value="">Drug</option>
+                              <option value="">Equipment</option>
+                              <option value="">Supplies</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="d-flex mt-2">
+                          <div className="input-group">
+                            <label htmlFor="" className="fw-bold">
+                              Last Generate Bill Date
+                            </label>
+                            <input
+                              type="date"
+                              placeholder="Last Generate Bill"
+                              className="rounded p-2 w-100"
+                              // value={noticeData.linkURL}
+                              // onChange={(e) =>
+                              //   setNoticeData({
+                              //     ...noticeData,
+                              //     linkURL: e.target.value,
+                              //   })
+                              // }
+                            />
+                          </div>
+                          <div className="input-group mx-2">
+                            <label htmlFor="" className="fw-bold">
+                              MRP
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="MRP"
+                              className="rounded p-2 w-100"
+                              // value={noticeData.linkURL}
+                              // onChange={(e) =>
+                              //   setNoticeData({
+                              //     ...noticeData,
+                              //     linkURL: e.target.value,
+                              //   })
+                              // }
+                            />
+                          </div>
+                        </div>
+                        <div className="d-flex mt-2">
+                          <div className="input-group">
+                            <label htmlFor="" className="fw-bold">
+                              Available Stock
+                            </label>
+                            <input
+                              type="text"
+                              placeholder="Available Stock"
+                              className="rounded p-2 w-100"
+                              // value={noticeData.linkURL}
+                              // onChange={(e) =>
+                              //   setNoticeData({
+                              //     ...noticeData,
+                              //     linkURL: e.target.value,
+                              //   })
+                              // }
+                            />
+                          </div>
+                          <div className="input-group mx-2">
+                            <label htmlFor="" className="fw-bold">
+                              Status
+                            </label>
+                            <select name="" id="" className="rounded p-2 w-100">
+                              <option value="">inStock</option>
+                              <option value="">OutStock</option>
+                            </select>
+                          </div>
                         </div>
                       </div>
-                      <div className="d-flex justify-content-center">
-                        <div class="mb-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
-                          >
-                            HSN Code
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="HSN Code"
-                          />
-                        </div>
-                        <div class="mb-3 mx-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
-                          >
-                            HSN Code
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="HSN Code"
-                          />
-                        </div>
-                      </div>
-                      <div className="d-flex justify-content-center">
-                        <div class="mb-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
-                          >
-                            Manufacturer
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Manufacturer"
-                          />
-                        </div>
-                        <div class="mb-3 mx-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
-                          >
-                            Low Stock Threshhold
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Low Stock Threshhold"
-                          />
-                        </div>
-                      </div>
-                      <div className="d-flex justify-content-center">
-                        {" "}
-                        <button className="btn btn-info" type="submit">
+                      <div className="d-flex justify-content-center mt-3 ">
+                        <button
+                          className="btn btn-info fw-bold fs-4 shadow"
+                          type="submit"
+                        >
                           Submit
                         </button>
                       </div>

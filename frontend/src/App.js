@@ -63,6 +63,13 @@ import AdminEmpDetailReport from "./pages/admin/All-Report/AdminEmpDetailReport"
 import AdminLabDetailsRepo from "./pages/admin/All-Report/AdminLabDetailsRepo";
 import AdminLabTestRepo from "./pages/admin/All-Report/AdminLabTestRepo";
 import AdminLabTaskRepo from "./pages/admin/All-Report/AdminLabTaskRepo";
+import AdminCalenderSetting from "./pages/admin/AdminClinicSetting/AdminCalenderSetting";
+import AdminDrugSetting from "./pages/admin/AdminClinicSetting/AdminDrugSetting";
+import AdminCommunicationSetting from "./pages/admin/AdminClinicSetting/AdminCommunicationSetting";
+import AdminPrescriptTemp from "./pages/admin/AdminClinicSetting/AdminPrescriptTemp";
+import AdminTreatSetting from "./pages/admin/AdminClinicSetting/AdminTreatSetting";
+import AdminComplaintPage from "./components/Admin/dashboard/AdminComplaintPage";
+import ComplaintPage from "./pages/superAdmin/ComplaintPage";
 
 const App = () => {
   const [role, setRole] = useState("admin");
@@ -118,6 +125,7 @@ const App = () => {
             path="/super-admin-notification"
             element={<SuperAdmNotify />}
           />
+          <Route path="/complaint-page" element={<ComplaintPage />} />
         </>
       ) : (
         <>
@@ -179,6 +187,27 @@ const App = () => {
           />
           <Route path="/admin-lab-test-report" element={<AdminLabTestRepo />} />
           <Route path="/admin-lab-task-report" element={<AdminLabTaskRepo />} />
+          <Route
+            path="/admin-calender-setting"
+            element={<AdminCalenderSetting />}
+          />
+          <Route path="/admin-drug-setting" element={<AdminDrugSetting />} />
+          <Route
+            path="/admin-communication-setting"
+            element={<AdminCommunicationSetting />}
+          />
+          <Route
+            path="/admin-prescription-templates"
+            element={<AdminPrescriptTemp />}
+          />
+          <Route
+            path="/admin-treatment-setting"
+            element={<AdminTreatSetting />}
+          />
+          <Route
+            path="/admin-complaint-page"
+            element={<AdminComplaintPage />}
+          />
         </>
       ) : (
         <>

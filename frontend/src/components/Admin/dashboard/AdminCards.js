@@ -15,7 +15,7 @@ const AdminCards = () => {
                   <i className="bi bi-people-fill icon"></i>
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title">Total Patient Today</h5>
+                  <h5 className="card-title">Patient Today</h5>
                   <p className="card-text">250</p>
                 </div>
               </div>
@@ -43,7 +43,7 @@ const AdminCards = () => {
                   <i className="bi bi-people-fill icon"></i>
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title">Total Earnings Today</h5>
+                  <h5 className="card-title">Earnings Today</h5>
                   <p className="card-text">25000</p>
                 </div>
               </div>
@@ -57,7 +57,7 @@ const AdminCards = () => {
                   <i className="bi bi-people-fill icon"></i>
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title">Total Available Doctors Today</h5>
+                  <h5 className="card-title">Available Doctors Today</h5>
                   <p className="card-text">15</p>
                 </div>
               </div>

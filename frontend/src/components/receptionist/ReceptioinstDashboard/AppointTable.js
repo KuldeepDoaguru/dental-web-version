@@ -345,4 +345,7 @@ const Wrapper = styled.div`
       width: 75%;
     }
   }
+  th{
+    background-color: teal;
+  }
 `;

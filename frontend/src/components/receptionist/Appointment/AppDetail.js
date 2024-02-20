@@ -30,12 +30,24 @@ function AppDetails({ onClose, slotInfo }) {
             <input type="text" class="form-control" id="recipient-name" readOnly value={slotInfo.patient}/>
           </div>
           <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Status</label>
+            <input type="text" class="form-control" id="recipient-name" readOnly value={slotInfo.status}/>
+          </div>
+          <div class="mb-3">
             <label for="message-text" class="col-form-label">Date & Time:</label>
-            <input type="text"  value={slotInfo.slots} class="form-control" id="recipient-name"/>
+            <input type="text"  value={slotInfo.timing} class="form-control" id="recipient-name" readOnly />
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Mobile No.</label>
+            <input type="text"  value={slotInfo.mobile} class="form-control" id="recipient-name" readOnly />
+          </div>
+          <div class="mb-3">
+            <label for="message-text" class="col-form-label">Treatment</label>
+            <input type="text"  value={slotInfo.treatment} class="form-control" id="recipient-name" readOnly />
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Doctor:</label>
-            <input type="text" class="form-control" id="recipient-name"/>
+            <input type="text" class="form-control" id="recipient-name" value={slotInfo.doctor} readOnly/>
           </div>
           {/* <div class="mb-3">
             <label for="message-text" class="col-form-label">Add Treatment:</label>

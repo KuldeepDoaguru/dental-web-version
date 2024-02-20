@@ -25,7 +25,7 @@ function Sider() {
                       </span>{" "}
                     </a></Link>
                   </li>
-                  <li> <Link to='/appointment'>
+                  {/* <li> <Link to='/appointment'>
                     <a className="nav-link px-0 align-middle">
                       <i className="fs-4 bi bi-table"></i>{" "}
                       <br />
@@ -33,7 +33,7 @@ function Sider() {
                        Appointment
                       </span>
                     </a>
-                 </Link> </li>
+                 </Link> </li> */}
                   <li> <Link to='/inquiry'>
                     <a className="nav-link px-0 align-middle">
                       <i className="fs-4 bi bi-table"></i>{" "}

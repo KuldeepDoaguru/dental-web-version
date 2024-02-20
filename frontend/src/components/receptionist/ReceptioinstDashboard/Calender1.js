@@ -27,6 +27,7 @@ function Calender1() {
 const [timeSlots, setTimeSlots] = useState([]);
 const [doctorName,setDoctorName] = useState("Dr Umer Qureshi");
 
+console.log(value.toLocaleDateString());
 
 
 // Update handleDayClick function
@@ -84,7 +85,7 @@ const handleTimeSlotClick = (timeSlot) => {
 
     );
   });
-   console.log(clickedAppointment)
+   
   // Set the selected appointment and open the popup
   if (clickedAppointment) {
     setSelectedAppointment(clickedAppointment);
@@ -213,7 +214,7 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
 
 
 console.log(timeSlots)
-  
+ console.log(value) 
   
   console.log(value)
   return (
@@ -242,8 +243,11 @@ console.log(timeSlots)
     </div>
     </div>
     {/* <div className='text-end my-1'>
-      <input type="date"  onChange={(e)=>{setDate(e.target.value)}}  value={date}/>
+      <input type="text"   value={value.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' })} readOnly/>
     </div> */}
+    <div className='text-end my-1'>
+      <p className=''>{value.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: '2-digit', year: 'numeric' })}</p>
+    </div>
     <div className='d-flex justify-content-around align-items-center'>
     <div className='bg-success mb-2 rounded-2'><p className='p-1 my-auto' >Scheduled</p></div>
     <div  className='bg-warning mb-2 rounded-2'><p className='p-1 my-auto'>Unscheduled</p></div>
@@ -258,7 +262,7 @@ console.log(timeSlots)
             {timeSlotsColumns.map((column, columnIndex) => (
   <tr key={columnIndex}>
     {column.map((timeSlot, index) => (
-      <td key={index} className={getCellStyle(timeSlot)} onClick={() => handleTimeSlotClick(timeSlot)}>{timeSlot}</td>
+      <td key={index} className={getCellStyle(timeSlot)} onClick={() => handleTimeSlotClick(timeSlot)}>{new Date(timeSlot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
     ))}
   </tr>
 ))}

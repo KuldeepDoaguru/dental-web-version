@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { MdOutlineInventory } from "react-icons/md";
+// import { MdOutlineInventory } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
 import { AiOutlineAccountBook } from "react-icons/ai";
 import { SiCodereview } from "react-icons/si";
@@ -79,8 +79,8 @@ const Sider = () => {
             <hr />
             <li>
               <Link
-                to="/bill_section"
-                className={`link-div ${getSidebarClass("/bill_section")}`}
+                to="/TreatmentDashBoard"
+                className={`link-div ${getSidebarClass("/TreatmentDashBoard")}`}
               >
                 <div>
                 <SiAddthis className="fs-3 bi bi-house-door-fill" />

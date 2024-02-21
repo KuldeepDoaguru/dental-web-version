@@ -87,7 +87,7 @@ const Card = () => {
 export default Card;
 const Wrapper = styled.div`
   .card {
-    background: #004aad;
+    background: #0d93f0 ;
     padding: 1rem;
     box-shadow: 1px 2px 8px black;
     &:hover {

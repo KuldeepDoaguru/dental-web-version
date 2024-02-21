@@ -18,6 +18,7 @@ import ExaminationDashTwo from "./components/Doctor/Examination/ExaminationDashT
 import ExaminationPatient from "./components/Doctor/Examination/ExaminationPatient";
 import ExaminationDashBoardPatient from "./components/Doctor/Examination/ExaminationDashBoardPatient";
 import ExaminationDashBoardPediatric from "./components/Doctor/Examination/ExaminationDashBoardPediatric";
+import TreatmentDashBoard from "./components/Doctor/Treatment/TreatmentDashBoard";
 
 function App() {
   return (
@@ -32,7 +33,7 @@ function App() {
       <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
       <Route path="/card" element={<Card />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/profileDashboard" element={<ProfileDashboard />} />
+      <Route path="/profileDashboard" element={<ProfileDashboard />} /> 
       <Route path="/appointTable" element={<AppointTable />} />
       <Route path="/appointTable" element={<AppointTable />} />
       <Route path="/all-appoint" element={<AllAppoint />} />
@@ -44,6 +45,7 @@ function App() {
       <Route path="/ExaminationPatient" element={<ExaminationPatient />} />
       <Route path="/ExaminationDashBoardPatient" element={<ExaminationDashBoardPatient />} />
       <Route path="/ExaminationDashBoardPediatric" element={<ExaminationDashBoardPediatric />} />
+      <Route path="/TreatmentDashBoard" element={<TreatmentDashBoard />} />
 
       {/* ****************** Doctor Routes End Here ******************* */}
     </Routes>

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import { MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import teeth18 from "../Assest/teeth1.png";
 import teeth16 from "../Assest/teeth3.png";
 import teeth13 from "../Assest/teeth6.png";
@@ -200,6 +203,9 @@ const PediatricDentalTest = () => {
     onExamination: "",
   });
   const [selectAllTeeth, setSelectAllTeeth] = useState(false);
+  const [isFormFilled, setIsFormFilled] = useState(false);
+
+  const navigate = useNavigate();
 
   const handlCheckBoxChange = (e) => {
     const { value, checked } = e.target;
@@ -226,7 +232,7 @@ const PediatricDentalTest = () => {
 
   console.log(inputItem);
 
-//   console.log(selectedTeeth);
+  //   console.log(selectedTeeth);
 
   const handleClick = () => {
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -265,10 +271,37 @@ const PediatricDentalTest = () => {
     75: cariesT20,
   };
 
+  // const caries = () => {
+  //   const newInputItem = {
+  //     ...inputItem,
+  //     desease: inputItem.desease ? inputItem.desease + ", Caries" : "Caries",
+  //   };
+  //   setInputItem(newInputItem);
+
+  //   // Additional logic here if needed
+  //   inputItem.selectTeeth.forEach((toothId) => {
+  //     const toothElement = document.getElementById(`tooth_${toothId}`);
+  //     if (toothElement && toothImageMapping[toothId]) {
+  //       toothElement.src = toothImageMapping[toothId];
+  //     }
+  //   });
+  // };
+
   const caries = () => {
+    let updatedDisease;
+    if (inputItem.desease && inputItem.desease.includes("Caries")) {
+      updatedDisease = inputItem.desease
+        .replace(", Caries", "")
+        .replace("Caries", "");
+    } else {
+      updatedDisease = inputItem.desease
+        ? inputItem.desease + ", Caries"
+        : "Caries";
+    }
+
     const newInputItem = {
       ...inputItem,
-      desease: inputItem.desease ? inputItem.desease + ", Caries" : "Caries",
+      desease: updatedDisease,
     };
     setInputItem(newInputItem);
 
@@ -309,11 +342,21 @@ const PediatricDentalTest = () => {
   };
 
   const fracture = () => {
+    let updatedDisease;
+    if (inputItem.desease && inputItem.desease.includes("Fracture")) {
+      updatedDisease = inputItem.desease
+        .replace(", Fracture", "")
+        .replace("Fracture", "");
+    } else {
+      updatedDisease = inputItem.desease
+        ? inputItem.desease + ", Fracture"
+        : "Fracture";
+    }
     const newInputItem = {
-        ...inputItem,
-        desease: inputItem.desease ? inputItem.desease + ", Fracture" : "Fracture",
-      };
-      setInputItem(newInputItem);
+      ...inputItem,
+      desease: updatedDisease,
+    };
+    setInputItem(newInputItem);
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
@@ -351,11 +394,21 @@ const PediatricDentalTest = () => {
   };
 
   const impacted = () => {
+    let updatedDisease;
+    if (inputItem.desease && inputItem.desease.includes("Impacted")) {
+      updatedDisease = inputItem.desease
+        .replace(", Impacted", "")
+        .replace("Impacted", "");
+    } else {
+      updatedDisease = inputItem.desease
+        ? inputItem.desease + ", Impacted"
+        : "Impacted";
+    }
     const newInputItem = {
-        ...inputItem,
-        desease: inputItem.desease ? inputItem.desease + ", Impacted" : "Impacted",
-      };
-      setInputItem(newInputItem);
+      ...inputItem,
+      desease: updatedDisease,
+    };
+    setInputItem(newInputItem);
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
@@ -394,10 +447,21 @@ const PediatricDentalTest = () => {
   };
 
   const missing = () => {
+    let updatedDisease;
+    if (inputItem.desease && inputItem.desease.includes("Missing Tooth")) {
+      updatedDisease = inputItem.desease
+        .replace(", Missing Tooth", "")
+        .replace("Missing Tooth", "");
+    } else {
+      updatedDisease = inputItem.desease
+        ? inputItem.desease + ", Missing Tooth"
+        : "Missing Tooth";
+    }
     const newInputItem = {
-        ...inputItem,
-        desease: inputItem.desease ? inputItem.desease + ", Missing Tooth" : "Missing Tooth",};
-      setInputItem(newInputItem);
+      ...inputItem,
+      desease: updatedDisease,
+    };
+    setInputItem(newInputItem);
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
@@ -436,11 +500,21 @@ const PediatricDentalTest = () => {
   };
 
   const mobility = () => {
+    let updatedDisease;
+    if (inputItem.desease && inputItem.desease.includes("Mobility")) {
+      updatedDisease = inputItem.desease
+        .replace(", Mobility", "")
+        .replace("Mobility", "");
+    } else {
+      updatedDisease = inputItem.desease
+        ? inputItem.desease + ", Mobility"
+        : "Mobility";
+    }
     const newInputItem = {
-        ...inputItem,
-        desease: inputItem.desease ? inputItem.desease + ", Mobility" : "Mobility",
-      };
-      setInputItem(newInputItem);
+      ...inputItem,
+      desease: updatedDisease,
+    };
+    setInputItem(newInputItem);
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
@@ -479,11 +553,21 @@ const PediatricDentalTest = () => {
   };
 
   const periapical = () => {
+    let updatedDisease;
+    if (inputItem.desease && inputItem.desease.includes("Periapical Abscess")) {
+      updatedDisease = inputItem.desease
+        .replace(", Periapical Abscess", "")
+        .replace("Periapical Abscess", "");
+    } else {
+      updatedDisease = inputItem.desease
+        ? inputItem.desease + ", Periapical Abscess"
+        : "Periapical Abscess";
+    }
     const newInputItem = {
-        ...inputItem,
-        desease: inputItem.desease ? inputItem.desease + ", Periapical Abscess" : "Periapical Abscess",
-      };
-      setInputItem(newInputItem);
+      ...inputItem,
+      desease: updatedDisease,
+    };
+    setInputItem(newInputItem);
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
@@ -523,11 +607,21 @@ const PediatricDentalTest = () => {
   };
 
   const root = () => {
+    let updatedDisease;
+    if (inputItem.desease && inputItem.desease.includes("Root Stump")) {
+      updatedDisease = inputItem.desease
+        .replace(", Root Stump", "")
+        .replace("Root Stump", "");
+    } else {
+      updatedDisease = inputItem.desease
+        ? inputItem.desease + ", Root Stump"
+        : "Root Stump";
+    }
     const newInputItem = {
-        ...inputItem,
-        desease: inputItem.desease ? inputItem.desease + ", Root Stump" : "Root Stump",
-      };
-      setInputItem(newInputItem);
+      ...inputItem,
+      desease: updatedDisease,
+    };
+    setInputItem(newInputItem);
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
@@ -537,6 +631,7 @@ const PediatricDentalTest = () => {
       }
     });
   };
+
   // root end here
 
   // supara start here
@@ -565,11 +660,21 @@ const PediatricDentalTest = () => {
   };
 
   const supara = () => {
+    let updatedDisease;
+    if (inputItem.desease && inputItem.desease.includes("Supra Erupted")) {
+      updatedDisease = inputItem.desease
+        .replace(", Supra Erupted", "")
+        .replace("Supra Erupted", "");
+    } else {
+      updatedDisease = inputItem.desease
+        ? inputItem.desease + ", Supra Erupted"
+        : "Supra Erupted";
+    }
     const newInputItem = {
-        ...inputItem,
-        desease: inputItem.desease ? inputItem.desease + ", Supra Erupted" : "Supra Erupted",
-      };
-      setInputItem(newInputItem);
+      ...inputItem,
+      desease: updatedDisease,
+    };
+    setInputItem(newInputItem);
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
@@ -588,6 +693,13 @@ const PediatricDentalTest = () => {
       ...prevInputItem,
       [name]: value,
     }));
+    setIsFormFilled(
+      !!inputItem.selectTeeth.length ||
+        inputItem.desease ||
+        inputItem.chiefComplain ||
+        inputItem.advice ||
+        inputItem.onExamination
+    );
   };
 
   const handleSave = (e) => {
@@ -601,22 +713,22 @@ const PediatricDentalTest = () => {
     // console.log("Before resetting inputItem:", inputItem);
 
     setInputItem({
-      selectTeeth: [], 
+      selectTeeth: [],
       desease: "",
       chiefComplain: "",
       advice: "",
       onExamination: "",
     });
 
-    console.log("After resetting inputItem:", inputItem); 
+    console.log("After resetting inputItem:", inputItem);
 
     // Clear the checked property of all checkboxes
     setTimeout(() => {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach((checkbox) => {
-          checkbox.checked = false;
-        });
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
       });
+    });
 
     setSelectedTeeth([]);
   };
@@ -627,12 +739,72 @@ const PediatricDentalTest = () => {
       selectTeeth: selectedTeeth,
     }));
   }, [selectedTeeth]);
-
   //   console.log(inputItemList);
+
+  const handleRedirect = (e) => {
+    if (isFormFilled) {
+      e.preventDefault(); // Prevent the default redirection behavior
+      alert("You cannot navigate away while the form is filled.");
+    } else {
+      navigate("/ExaminationDashBoardPatient");
+    }
+  };
+
+  const editItem = (index) => {
+    const selectedItem = inputItemList[index]; // Get the item to edit
+    setInputItem({
+      selectTeeth: selectedItem.selectTeeth,
+      desease: selectedItem.desease,
+      chiefComplain: selectedItem.chiefComplain,
+      advice: selectedItem.advice,
+      onExamination: selectedItem.onExamination,
+    });
+  };
+
+  const deleteItem = (index) => {
+    // Your logic to delete the item at the given index
+    const newList = [...inputItemList];
+    newList.splice(index, 1);
+    setInputItemList(newList);
+  };
   return (
     <>
       <Wrapper>
         <div className="container">
+          <div className="row">
+            <div className="col-md-12 text-start p-3">
+              <button
+                className="btn btn-info text-light"
+                onClick={handleRedirect}
+              >
+                Dental-X Chart
+              </button>
+            </div>
+          </div>
+          <div className="row shadow-sm p-3 mb-3 bg-body rounded">
+            <div className="col-lg-12 d-flex justify-content-between align-items-center">
+              <div className="col-lg-4">
+                <p><strong>UHID</strong> : Patient UHID</p>
+              </div>
+              <div className="col-lg-4">
+                <p><strong>Patient Name</strong> : Patient Complete Name</p>
+              </div>
+              <div className="col-lg-4">
+                <p><strong>Patient Mobile No.</strong> : 1234567890</p>
+              </div>
+            </div>
+            <div className="col-lg-12 d-flex justify-content-between align-items-center">
+            <div className="col-lg-4">
+                <p className="mb-0"><strong>RGID</strong> : Patient RGID</p>
+              </div>
+              <div className="col-lg-4">
+                <p className="mb-0"><strong>Age</strong> : 25</p>
+              </div>
+              <div className="col-lg-4">
+                <p className="mb-0"><strong>Address</strong> : ABC 195 Address</p>
+              </div>
+            </div>
+          </div>
           {/* dental chart 20 teeth start */}
           <div className="row">
             <div className="col-lg-12 col-12">
@@ -1094,7 +1266,7 @@ const PediatricDentalTest = () => {
                     <button
                       type="submit"
                       className="btn btn-info text-light mx-3"
-                      onClick={()=>window.location.reload()}
+                      onClick={() => window.location.reload()}
                     >
                       Save & Continue
                     </button>
@@ -1113,11 +1285,27 @@ const PediatricDentalTest = () => {
                           {item.desease}, Chief Complaint: {item.chiefComplain},
                           Advice: {item.advice}, On Examination:{" "}
                           {item.onExamination}
+                          <div className="buttons">
+                            <button
+                              className="btn btn-primary mx-1"
+                              onClick={() => editItem(index)}
+                            >
+                              <MdEdit size={20} />
+                            </button>
+                            <button
+                              className="btn btn-danger mx-1"
+                              onClick={() => deleteItem(index)}
+                            >
+                              <MdDelete size={20} />
+                            </button>
+                          </div>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <p>Loading...</p> // You can replace this with your custom placeholder
+                    <p class="placeholder-glow">
+                      Currently, there is no available data.
+                    </p>
                   )}
                 </div>
               </div>
@@ -1208,5 +1396,13 @@ const Wrapper = styled.div`
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .buttons {
+  }
+  button a {
+    text-decoration: none;
+    color: white;
   }
 `;

@@ -6,16 +6,18 @@ function Doctor() {
   const [date,setDate] = useState(new Date().toISOString().split('T')[0]) ; // Set default date to today's date
   const [searchQuery, setSearchQuery] = useState("");
   const [timeSlots, setTimeSlots] = useState([]);
+
+  
   
   const doctors = [
-    { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", startTiming:"10:00" ,endTiming:"18:00", scheduleBlockDays:"20/02/2024",lunchTime: ""},
-    { uid :"10", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,startTiming:"10:00" ,endTiming:"20:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
-    { uid :"2", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,startTiming:"10:00" ,endTiming:"20:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
-    { uid :"4", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,startTiming:"10:00" ,endTiming:"20:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"5", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,startTiming:"10:00" ,endTiming:"20:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"6", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,startTiming:"10:00" ,endTiming:"20:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"7", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,startTiming:"10:00" ,endTiming:"20:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"8", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,startTiming:"10:00" ,endTiming:"20:00", scheduleBlockDays:"20/02/2024",lunchTime: ""}
+    { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:"20/02/2024",lunchTime: ""},
+    { uid :"10", doctor_name:"Dr Rajiv",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"12:00",eveningStartTiming:"18:00" ,eveningEndTiming:"22:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
+    { uid :"2", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
+    { uid :"4", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+    { uid :"5", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+    { uid :"6", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+    { uid :"7", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+    { uid :"8", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"20/02/2024",lunchTime: ""}
     
 
   ];
@@ -36,6 +38,8 @@ function Doctor() {
   
   const [availableDoctor,setAvailableDoctor] = useState();
 
+  const [filteredDoctor,setFilteredDoctor] = useState();
+
   const filterDoctor = ()=>{
     const filteredDoctors = doctors.filter((doctor) => {
       const [day, month, year] = doctor.scheduleBlockDays.split("/");
@@ -47,12 +51,11 @@ function Doctor() {
     });
 
     setAvailableDoctor(filteredDoctors)
+    setFilteredDoctor(filteredDoctor)
     
   }
   console.log(availableDoctor)
-  useEffect(()=>{
-    filterDoctor();
-  },[date,searchQuery])
+ 
 
     // Function to format the date from "YYYY-MM-DD" to "DD-MM-YYYY"
     const formatDate = (dateString) => {
@@ -64,42 +67,125 @@ function Doctor() {
       setSearchQuery(e.target.value);
     };
 
+   
+    const [currentPage, setCurrentPage] =
+    useState(1);
+  const studentsPerPage = 5;
 
+    const nextPage = () =>
+    setCurrentPage(currentPage + 1);
+  const prevPage = () =>
+    setCurrentPage(currentPage - 1);
+
+
+    const indexOfLastStudent =
+    currentPage * studentsPerPage;
+  const indexOfFirstStudent =
+    indexOfLastStudent -
+    studentsPerPage;
+  const currentDoctor = searchQuery ? 
+  availableDoctor?.slice(
+    indexOfFirstStudent,
+    indexOfLastStudent
+  )
+  :
+    availableDoctor?.slice(
+      indexOfFirstStudent,
+      indexOfLastStudent
+    );
+
+    useEffect(()=>{
+      filterDoctor();
+    },[date,searchQuery])
 
     // gerate time slots
-    const handleGerateSlots = (selectedDate) => {
+    // const handleGenrateSlots = (selectedDate) => {
+    //   // Clear any previous time slots
+    //   setTimeSlots([]);
+    
+    //   // Loop through each doctor to generate time slots
+    //   doctors.forEach((doctor) => {
+    //     const startTime = new Date(date);
+    //     const endTime = new Date(date);
+    //     const [startHour, startMinute] = doctor.morningStartTiming.split(":").map(Number);
+    //     const [endHour, endMinute] = doctor.morningEndTiming.split(":").map(Number);
+    
+    //     // Set start and end time
+    //     startTime.setHours(startHour, startMinute, 0);
+    //     endTime.setHours(endHour, endMinute, 0);
+    
+    //     const slots = [];
+    //     let currentTime = new Date(startTime);
+    
+    //     // Generate time slots every 15 minutes within doctor's start and end time
+    //     while (currentTime < endTime) {
+    //       const timeSlot = currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    //       const dateTimeSlot = `${date} ${timeSlot}`; // Concatenate date and time
+    //       slots.push(dateTimeSlot);
+    //       currentTime.setMinutes(currentTime.getMinutes() + 15); // Add 15 minutes
+    //     }
+    
+    //     // Add time slots for the current doctor to the state
+    //     setTimeSlots(prevSlots => [...prevSlots, {doctorId:doctor.uid, doctorName: doctor.doctor_name, slots }]);
+    //   });
+    // };
+
+    const handleGenrateSlots = (selectedDate) => {
       // Clear any previous time slots
       setTimeSlots([]);
     
       // Loop through each doctor to generate time slots
       doctors.forEach((doctor) => {
-        const startTime = new Date(date);
-        const endTime = new Date(date);
-        const [startHour, startMinute] = doctor.startTiming.split(":").map(Number);
-        const [endHour, endMinute] = doctor.endTiming.split(":").map(Number);
+
+        // for genrate morning time slots
+        const morningStartTime = new Date(date);
+        const morningEndTime = new Date(date);
+        const [morningStartHour, morningStartMinute] = doctor.morningStartTiming.split(":").map(Number);
+        const [morningEndHour, MorningEndMinute] = doctor.morningEndTiming.split(":").map(Number);
     
         // Set start and end time
-        startTime.setHours(startHour, startMinute, 0);
-        endTime.setHours(endHour, endMinute, 0);
+        morningStartTime.setHours(morningStartHour, morningStartMinute, 0);
+        morningEndTime.setHours(morningEndHour, MorningEndMinute, 0);
     
-        const slots = [];
-        let currentTime = new Date(startTime);
+        const morningSlots = [];
+        let currentTime = new Date(morningStartTime);
     
         // Generate time slots every 15 minutes within doctor's start and end time
-        while (currentTime < endTime) {
+        while (currentTime < morningEndTime) {
           const timeSlot = currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
           const dateTimeSlot = `${date} ${timeSlot}`; // Concatenate date and time
-          slots.push(dateTimeSlot);
+          morningSlots.push(dateTimeSlot);
           currentTime.setMinutes(currentTime.getMinutes() + 15); // Add 15 minutes
+        }
+
+        // for genrate evening time slots
+        const eveningStartTime = new Date(date);
+        const eveningEndTime = new Date(date);
+        const [eveningStartHour, eveningStartMinute] = doctor.eveningStartTiming.split(":").map(Number);
+        const [eveningEndHour, eveningEndMinute] = doctor.eveningEndTiming.split(":").map(Number);
+    
+        // Set start and end time
+        eveningStartTime.setHours(eveningStartHour, eveningStartMinute, 0);
+        eveningEndTime.setHours(eveningEndHour, eveningEndMinute, 0);
+    
+        const eveningSlots = [];
+        let currentTime1 = new Date(eveningStartTime);
+    
+        // Generate time slots every 15 minutes within doctor's start and end time
+        while (currentTime1 < eveningEndTime) {
+          const timeSlot = currentTime1.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+          const dateTimeSlot = `${date} ${timeSlot}`; // Concatenate date and time
+          eveningSlots.push(dateTimeSlot);
+          currentTime1.setMinutes(currentTime1.getMinutes() + 15); // Add 15 minutes
         }
     
         // Add time slots for the current doctor to the state
-        setTimeSlots(prevSlots => [...prevSlots, {doctorId:doctor.uid, doctorName: doctor.doctor_name, slots }]);
+        setTimeSlots(prevSlots => [...prevSlots, {doctorId:doctor.uid, doctorName: doctor.doctor_name, morningSlots ,eveningSlots }]);
       });
     };
 
     useEffect(()=>{
-         handleGerateSlots();
+         handleGenrateSlots();
     },[date])
 
     console.log(timeSlots)
@@ -126,7 +212,7 @@ function Doctor() {
               </tr>
             </thead>
             <tbody>
-              {availableDoctor?.map((doctor,index)=>{
+              {currentDoctor?.map((doctor,index)=>{
     // Filter appointment data for the current doctor
     const doctorAppointments = appointment_data.filter(
       (appointment) => appointment.doctorId === doctor.uid && 
@@ -136,8 +222,8 @@ function Doctor() {
     // Find the time slots for the current doctor from the timeSlots state
 const doctorTimeSlots = timeSlots.find(slot => slot.doctorId === doctor.uid);
 
-// Filter out time slots where there are no overlapping appointments
-const availableSlots = doctorTimeSlots.slots.filter(slot => {
+// Filter out morning time slots where there are no overlapping appointments
+const availableMorningSlots = doctorTimeSlots.morningSlots.filter(slot => {
   // Check if any appointment overlaps with the current slot
   return !doctorAppointments.some(appointment => {
     const slotTime = new Date(slot).getTime();
@@ -147,19 +233,45 @@ const availableSlots = doctorTimeSlots.slots.filter(slot => {
   });
  
 });
-console.log(availableSlots)
+// Filter out evening time slots where there are no overlapping appointments
+const availableEveningSlots = doctorTimeSlots.eveningSlots.filter(slot => {
+  // Check if any appointment overlaps with the current slot
+  return !doctorAppointments.some(appointment => {
+    const slotTime = new Date(slot).getTime();
+    const appointmentTime = new Date(appointment.timing).getTime();
+    // Check if the appointment timing overlaps with the current slot
+    return appointmentTime === slotTime;
+  });
+ 
+});
+console.log(availableEveningSlots)
     return (
       <tr key={index}>
         <td>{index + 1}</td>
         <td>{doctor.doctor_name}</td>
         <td>{doctorAppointments.length}</td> {/* Display number of appointments */}
         <td>
+         
+         
         <select className="form-select">
+        <option value="Morning">Morning</option>
           {/* Display available time slots for the current doctor */}
-          {availableSlots && availableSlots.map((slot, i) => (
-            <option key={i} value={slot}>{slot}</option>
+          {availableMorningSlots && availableMorningSlots.map((slot, i) => (
+            <option key={i} value={slot} disabled>{new Date(slot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</option>
           ))}
         </select>
+          
+        
+        
+        <select className="form-select">
+          {/* Display available time slots for the current doctor */}
+          <option value="Morning">Evening</option>
+          {availableEveningSlots && availableEveningSlots.map((slot, i) => (
+            <option key={i} value={slot} disabled>{new Date(slot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</option>
+          ))}
+        </select>
+        
+         
         </td>
       </tr>
     );
@@ -178,21 +290,30 @@ console.log(availableSlots)
           </table>
         </div>
       </div>
-     <div className="d-flex justify-content-center mt-1">
-  <ul className="pagination">
-    <li className="page-item">
-      <a className="page-link">Previous</a>
-    </li>
-    <li className="page-item"><a className="page-link" href="#">1</a></li>
-    <li className="page-item active" aria-current="page">
-      <a className="page-link" href="#">2</a>
-    </li>
-    <li className="page-item"><a className="page-link" href="#">3</a></li>
-    <li className="page-item">
-      <a className="page-link" href="#">Next</a>
-    </li>
-  </ul>
-  </div> 
+      <div className="pagination-section mt-3 justify-content-center d-flex">
+              <div className="pagination">
+                <button
+                  onClick={prevPage}
+                  disabled={
+                    currentPage === 1
+                  }
+                  className="btn btn-danger">
+                  Previous
+                </button>
+                <span className="fs-4 mx-3">
+                  {currentPage}
+                </span>
+                <button
+                  onClick={nextPage}
+                  className="btn btn-success"
+                  disabled={
+                    currentDoctor?.length <
+                    studentsPerPage
+                  }>
+                  Next
+                </button>
+              </div>
+            </div> 
 
     </Wrapper>
   );
@@ -219,4 +340,5 @@ const Wrapper = styled.div`
    font-size: 20px;
   }
 }
+
 `

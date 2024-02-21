@@ -1,22 +1,72 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import HeaderAdmin from "./HeaderAdmin";
 import SiderAdmin from "./SiderAdmin";
+import axios from "axios";
 
 const AdminManageStaff = () => {
   const [showAddEmployee, setShowAddEmployee] = useState(false);
   const [showEditEmployee, setShowEditEmployee] = useState(false);
+  const [showAdminDetails, setShowAdminDetails] = useState([]);
+  const [empData, setEmpData] = useState({
+    empName: "",
+    empMobile: "",
+    empEmail: "",
+    empDesignation: "",
+    password: "",
+    empRole: "",
+    status: "pending",
+  });
+
+  const getEmployeeList = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8888/api/v1/admin/getEmployeeDetails"
+      );
+      console.log(response.data);
+      setShowAdminDetails(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value, type, checked } = event.target;
+
+    if (type === "checkbox") {
+      let updatedRoles = empData[name] || ""; // Initialize with empty string if not yet defined
+
+      if (checked) {
+        updatedRoles += (updatedRoles ? ", " : "") + value; // Add the checked role with a comma separator
+      } else {
+        updatedRoles = updatedRoles
+          .split(", ")
+          .filter((role) => role !== value)
+          .join(", "); // Remove the unchecked role
+      }
+
+      setEmpData({
+        ...empData,
+        [name]: updatedRoles, // Set the updated roles string
+      });
+    } else {
+      setEmpData({
+        ...empData,
+        [name]: value,
+      });
+    }
+  };
+
+  console.log(empData);
 
   const openAddEmployeePopup = (index, item) => {
-    // setSelectedItem(item);
     console.log("open pop up");
     setShowAddEmployee(true);
   };
 
   const openEditEmployeePopup = (index, item) => {
-    // setSelectedItem(item);
     console.log("open pop up");
     setShowEditEmployee(true);
   };
@@ -25,6 +75,23 @@ const AdminManageStaff = () => {
     setShowAddEmployee(false);
     setShowEditEmployee(false);
   };
+
+  const handleEnrollEmployeeSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/v1/admin/enroll-employee",
+        empData
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getEmployeeList();
+  }, []);
   return (
     <>
       <Container>
@@ -64,121 +131,33 @@ const AdminManageStaff = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr className="table-row">
-                          <td>007</td>
-                          <td>Dr.Mahesh Kuldeep</td>
-                          <td>+91-999965651</td>
-                          <td>Male</td>
-                          <td>maheshkuldeep@gmail.com</td>
-                          <td>Cunsultant</td>
-                          <td>Cunsultant</td>
-                          <td>30000</td>
-                          <td>Jabalpur</td>
-                          <td>Active</td>
-                          <td>
-                            <button
-                              className="btn btn-warning"
-                              onClick={() => openEditEmployeePopup()}
-                            >
-                              Edit
-                            </button>
-                            <button className="btn btn-danger mx-1">
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>007</td>
-                          <td>Dr.Mahesh Kuldeep</td>
-                          <td>+91-999965651</td>
-                          <td>Male</td>
-                          <td>maheshkuldeep@gmail.com</td>
-                          <td>Cunsultant</td>
-                          <td>Cunsultant</td>
-                          <td>30000</td>
-                          <td>Jabalpur</td>
-                          <td>Active</td>
-                          <td>
-                            <button
-                              className="btn btn-warning"
-                              onClick={() => openEditEmployeePopup()}
-                            >
-                              Edit
-                            </button>
-                            <button className="btn btn-danger mx-1">
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>007</td>
-                          <td>Dr.Mahesh Kuldeep</td>
-                          <td>+91-999965651</td>
-                          <td>Male</td>
-                          <td>maheshkuldeep@gmail.com</td>
-                          <td>Cunsultant</td>
-                          <td>Cunsultant</td>
-                          <td>30000</td>
-                          <td>Jabalpur</td>
-                          <td>Active</td>
-                          <td>
-                            <button
-                              className="btn btn-warning"
-                              onClick={() => openEditEmployeePopup()}
-                            >
-                              Edit
-                            </button>
-                            <button className="btn btn-danger mx-1">
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>007</td>
-                          <td>Dr.Mahesh Kuldeep</td>
-                          <td>+91-999965651</td>
-                          <td>Male</td>
-                          <td>maheshkuldeep@gmail.com</td>
-                          <td>Cunsultant</td>
-                          <td>Cunsultant</td>
-                          <td>30000</td>
-                          <td>Jabalpur</td>
-                          <td>Active</td>
-                          <td>
-                            <button
-                              className="btn btn-warning"
-                              onClick={() => openEditEmployeePopup()}
-                            >
-                              Edit
-                            </button>
-                            <button className="btn btn-danger mx-1">
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>007</td>
-                          <td>Dr.Mahesh Kuldeep</td>
-                          <td>+91-999965651</td>
-                          <td>Male</td>
-                          <td>maheshkuldeep@gmail.com</td>
-                          <td>Cunsultant</td>
-                          <td>Cunsultant</td>
-                          <td>30000</td>
-                          <td>Jabalpur</td>
-                          <td>Active</td>
-                          <td>
-                            <button
-                              className="btn btn-warning"
-                              onClick={() => openEditEmployeePopup()}
-                            >
-                              Edit
-                            </button>
-                            <button className="btn btn-danger mx-1">
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
+                        {showAdminDetails?.map((item, index) => (
+                          <>
+                            <tr className="table-row">
+                              <td>{item.employee_ID}</td>
+                              <td>{item.employee_name}</td>
+                              <td>{item.employee_mobile}</td>
+                              <td>male</td>
+                              <td>{item.employee_email}</td>
+                              <td>{item.employee_designation}</td>
+                              <td>{item.employee_role}</td>
+                              <td>30000</td>
+                              <td>Jabalpur</td>
+                              <td>Active</td>
+                              <td>
+                                <button
+                                  className="btn btn-warning"
+                                  onClick={() => openEditEmployeePopup()}
+                                >
+                                  Edit
+                                </button>
+                                <button className="btn btn-danger mx-1">
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                          </>
+                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -195,29 +174,22 @@ const AdminManageStaff = () => {
               <hr />
               <form
                 className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
+                onSubmit={handleEnrollEmployeeSubmit}
               >
-                <div className="d-flex">
-                  <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">
-                      Employee ID
-                    </label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="exampleFormControlInput1"
-                      placeholder="EMP ID"
-                    />
-                  </div>
-                  <div class="mb-3 mx-2">
+                <div className="">
+                  <div class="mb-3 ">
                     <label for="exampleFormControlInput1" class="form-label">
                       Employee Name
                     </label>
                     <input
                       type="text"
-                      class="form-control"
+                      class="form-control w-100"
                       id="exampleFormControlInput1"
                       placeholder="Employee Name"
+                      name="empName"
+                      value={empData.empName}
+                      required
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -231,6 +203,10 @@ const AdminManageStaff = () => {
                       class="form-control"
                       id="exampleFormControlInput1"
                       placeholder="Employee Mobile"
+                      name="empMobile"
+                      value={empData.empMobile}
+                      required
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div class="mb-3 mx-2">
@@ -242,6 +218,10 @@ const AdminManageStaff = () => {
                       class="form-control"
                       id="exampleFormControlInput1"
                       placeholder="Employee Email"
+                      name="empEmail"
+                      value={empData.empEmail}
+                      required
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -251,88 +231,21 @@ const AdminManageStaff = () => {
                       Employee Designation
                     </label>
                     <select
-                      name=""
-                      id=""
+                      id="empDesignation"
                       class="form-select"
                       aria-label="Default select example"
+                      value={empData.empDesignation}
+                      onChange={handleInputChange}
+                      name="empDesignation"
                     >
-                      <option value="">Receptionist</option>
-                      <option value="">Consultant</option>
-                      <option value="">Helper</option>
-                      <option value="">Lab Attendent</option>
-                      <option value="">Doctor</option>
+                      <option value="Receptionist">Receptionist</option>
+                      <option value="Consultant">Consultant</option>
+                      <option value="Helper">Helper</option>
+                      <option value="Lab Attendant">Lab Attendant</option>
+                      <option value="Doctor">Doctor</option>
                     </select>
                   </div>
-                  <div class="mb-3 mx-2 w-100">
-                    <label for="exampleFormControlInput1" class="form-label">
-                      Employee Status
-                    </label>
-                    <select
-                      name=""
-                      id=""
-                      class="form-select"
-                      aria-label="Default select example"
-                    >
-                      <option value="">Approved</option>
-                      <option value="">Pending</option>
-                      <option value="">Rejected</option>
-                      <option value="">Hold</option>
-                      <option value="">Leave</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="d-flex justify-content-between">
-                  <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">
-                      Employee Role
-                    </label>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                      />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Receptionist
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                      />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Consultant
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                      />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Lab Attendent
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                      />
-                      <label class="form-check-label" for="flexCheckDefault">
-                        Doctor
-                      </label>
-                    </div>
-                  </div>
-                  <div className="mb-3">
+                  <div className="mb-3 w-100 mx-2">
                     <label for="exampleFormControlInput1" class="form-label">
                       One Time Login Password
                     </label>
@@ -341,7 +254,85 @@ const AdminManageStaff = () => {
                       class="form-control"
                       id="exampleFormControlInput1"
                       placeholder="Employee Password"
+                      name="password"
+                      value={empData.password}
+                      onChange={handleInputChange}
                     />
+                  </div>
+                </div>
+
+                <div className="d-flex justify-content-between">
+                  <div className="mb-3">
+                    <label
+                      htmlFor="exampleFormControlInput1"
+                      className="form-label"
+                    >
+                      Employee Role
+                    </label>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value="Receptionist"
+                        id="flexCheckReceptionist"
+                        onChange={handleInputChange}
+                        name="empRole"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexCheckReceptionist"
+                      >
+                        Receptionist
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value="Consultant"
+                        id="flexCheckConsultant"
+                        onChange={handleInputChange}
+                        name="empRole"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexCheckConsultant"
+                      >
+                        Consultant
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value="Lab Attendant"
+                        id="flexCheckLabAttendant"
+                        onChange={handleInputChange}
+                        name="empRole"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexCheckLabAttendant"
+                      >
+                        Lab Attendant
+                      </label>
+                    </div>
+                    <div className="form-check">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        value="Doctor"
+                        id="flexCheckDoctor"
+                        onChange={handleInputChange}
+                        name="empRole"
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor="flexCheckDoctor"
+                      >
+                        Doctor
+                      </label>
+                    </div>
                   </div>
                 </div>
 
@@ -377,8 +368,8 @@ const AdminManageStaff = () => {
                 className="d-flex flex-column"
                 // onSubmit={handleNoticeSubmit}
               >
-                <div className="d-flex">
-                  <div class="mb-3">
+                <div className="">
+                  {/* <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label">
                       Employee ID
                     </label>
@@ -388,7 +379,7 @@ const AdminManageStaff = () => {
                       id="exampleFormControlInput1"
                       placeholder="EMP ID"
                     />
-                  </div>
+                  </div> */}
                   <div class="mb-3 mx-2">
                     <label for="exampleFormControlInput1" class="form-label">
                       Employee Name
@@ -441,23 +432,6 @@ const AdminManageStaff = () => {
                       <option value="">Helper</option>
                       <option value="">Lab Attendent</option>
                       <option value="">Doctor</option>
-                    </select>
-                  </div>
-                  <div class="mb-3 mx-2 w-100">
-                    <label for="exampleFormControlInput1" class="form-label">
-                      Employee Status
-                    </label>
-                    <select
-                      name=""
-                      id=""
-                      class="form-select"
-                      aria-label="Default select example"
-                    >
-                      <option value="">Approved</option>
-                      <option value="">Pending</option>
-                      <option value="">Rejected</option>
-                      <option value="">Hold</option>
-                      <option value="">Leave</option>
                     </select>
                   </div>
                 </div>
@@ -564,7 +538,7 @@ const Container = styled.div`
   }
 
   th {
-    background-color: #004aad;
+    background-color: #1abc9c;
     color: white;
   }
 

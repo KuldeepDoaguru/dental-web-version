@@ -2,6 +2,7 @@ const express = require("express");
 const colors = require("colors");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const adminRoutes = require("./Routes/Admin-routes/adminRoutes");
 
 dotenv.config();
 // rest object
@@ -10,6 +11,9 @@ const app = express();
 // middlewares
 app.use(cors());
 app.use(express.json());
+
+// routes
+app.use("/api/v1/admin", adminRoutes);
 
 // rest api
 app.get("/", (req, res) => {

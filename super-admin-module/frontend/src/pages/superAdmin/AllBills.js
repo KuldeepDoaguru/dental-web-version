@@ -6,6 +6,7 @@ import { Dropdown, Nav } from "react-bootstrap";
 // import BillTypeData from "../../components/superAdmin/BillType/BillTypeData";
 import HospitalPurchaseBills from "../../components/superAdmin/BillType/HospitalPurchaseBills";
 import PatientsBills from "../../components/superAdmin/BillType/PatientsBills";
+import BranchSelector from "../../components/BranchSelector";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 const AllBills = () => {
@@ -27,32 +28,7 @@ const AllBills = () => {
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    <div className="d-flex">
-                      <div>
-                        <h4>Select Branch : </h4>
-                      </div>
-                      <div>
-                        <select
-                          name="branch"
-                          id="branch"
-                          className="mx-2 p-2 rounded shadow select-style"
-                        >
-                          <option value="Madan Mahal" className="fw-bold">
-                            Madan Mahal
-                          </option>
-                          <option value="Madan Mahal" className="fw-bold">
-                            Ranjhi
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      {/* <Link to="/superadmin-add-branch">
-                          <button className="btn btn-success">
-                            Add Branch
-                          </button>
-                        </Link> */}
-                    </div>
+                    <BranchSelector />
                   </div>
                 </div>
                 <div className="container-fluid mt-3">

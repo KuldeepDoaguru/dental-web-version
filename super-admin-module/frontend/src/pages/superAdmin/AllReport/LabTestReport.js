@@ -4,6 +4,7 @@ import Sider from "../../../components/Sider";
 import Header from "../../../components/Header";
 import { useLocation } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import BranchSelector from "../../../components/BranchSelector";
 
 const LabTestReport = () => {
   const location = useLocation();
@@ -24,32 +25,7 @@ const LabTestReport = () => {
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    <div className="d-flex">
-                      <div>
-                        <h4>Select Branch : </h4>
-                      </div>
-                      <div>
-                        <select
-                          name="branch"
-                          id="branch"
-                          className="mx-2 p-2 rounded shadow select-style"
-                        >
-                          <option value="Madan Mahal" className="fw-bold">
-                            Madan Mahal
-                          </option>
-                          <option value="Madan Mahal" className="fw-bold">
-                            Ranjhi
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      {/* <Link to="/superadmin-add-branch">
-                          <button className="btn btn-success">
-                            Add Branch
-                          </button>
-                        </Link> */}
-                    </div>
+                    <BranchSelector />
                   </div>
                 </div>
                 <div className="container-fluid mt-3">

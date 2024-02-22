@@ -372,42 +372,6 @@ const superAdminLoginUser = async (req, res) => {
   }
 };
 
-// const verifyOtp = async (req, res) => {
-//   try {
-//     const { email, otp } = req.body;
-//     db.query(
-//       "SELECT * FROM otpcollections WHERE email = ? AND code = ?",
-//       [email, otp],
-//       async (err, result) => {
-//         console.log("result: ", result);
-//         if (err) {
-//           return res.status(500).json({
-//             success: false,
-//             message: "Internal server error",
-//           });
-//         }
-//         if (result.length > 0) {
-//           return res.status(200).json({
-//             success: true,
-//             message: "OTP verification success",
-//           });
-//         } else {
-//           return res.status(404).json({
-//             success: false,
-//             message: "Invalid email or OTP",
-//           });
-//         }
-//       }
-//     );
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({
-//       success: false,
-//       message: "Internal server error",
-//     });
-//   }
-// };
-
 const verifyOtp = (req, res) => {
   try {
     const { email, otp } = req.body;
@@ -437,6 +401,89 @@ const verifyOtp = (req, res) => {
   }
 };
 
+const getBranch = (req, res) => {
+  try {
+    const getQuery = "SELECT * FROM branches";
+    db.query(getQuery, (err, result) => {
+      if (err) {
+        res.status(500).send(err);
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+const makeAppointents = (req, res) => {
+  try {
+    const {
+      uhid,
+      branch_name,
+      patient_name,
+      dob,
+      gender,
+      maritalstatus,
+      patient_contact,
+      assigned_doctor,
+      treatment_provided,
+      treatment_status,
+      payment_status,
+      payment_date_time,
+      appointed_by,
+    } = req.body;
+
+    const insertQuery = `INSERT INTO apointments (uhid, branch_name, patient_name, dob, gender, maritalstatus, patient_contact,
+      assigned_doctor, treatment_provided, treatment_status, payment_status, payment_date_time, appointed_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+
+    const insertValues = [
+      uhid,
+      branch_name,
+      patient_name,
+      dob,
+      gender,
+      maritalstatus,
+      patient_contact,
+      assigned_doctor,
+      treatment_provided,
+      treatment_status,
+      payment_status,
+      payment_date_time,
+      appointed_by,
+    ];
+    db.query(insertQuery, insertValues, (err, results) => {
+      if (err) {
+        res.status(400).send(err);
+      }
+      res.status(200).send(results);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Interval server error" });
+  }
+};
+
+const appointmentData = (req, res) => {
+  try {
+    const getQuery = "SELECT * FROM apointments";
+    db.query(getQuery, (err, result) => {
+      if (err) {
+        res
+          .status(400)
+          .json({ success: false, message: "error getting appointment" });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   EnrollEmployee,
   EditEmployeeDetails,
@@ -444,4 +491,7 @@ module.exports = {
   superAdminLoginUser,
   sendOtp,
   verifyOtp,
+  getBranch,
+  makeAppointents,
+  appointmentData,
 };

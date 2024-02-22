@@ -1,8 +1,34 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Card = () => {
+  const [appointmentList, setAppointmentList] = useState([]);
+
+  const getAppointList = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:7777/api/v1/super-admin/getAppointmentData"
+      );
+      console.log(response.data);
+      setAppointmentList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAppointList();
+  }, []);
+
+  console.log(appointmentList[0]?.treatment_status);
+  //filter for patient treated today card
+  const filterForPatTreatToday = appointmentList?.filter(
+    (item) => item.treatment_status === "success"
+  );
+
+  console.log(filterForPatTreatToday);
   return (
     <>
       <Container>
@@ -14,7 +40,7 @@ const Card = () => {
                   <i className="bi bi-people-fill icon"></i>
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title">Total Patient Today</h5>
+                  <h5 className="card-title">Patient Treated Today</h5>
                   <p className="card-text">250</p>
                 </div>
               </div>

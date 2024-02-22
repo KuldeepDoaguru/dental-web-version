@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import { Link } from "react-router-dom";
+import BranchSelector from "../../components/BranchSelector";
 
 const DoctorList = () => {
   return (
@@ -18,30 +19,7 @@ const DoctorList = () => {
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    <div className="d-flex">
-                      <div>
-                        <h4>Select Branch : </h4>
-                      </div>
-                      <div>
-                        <select
-                          name="branch"
-                          id="branch"
-                          className="mx-2 p-2 rounded shadow select-style"
-                        >
-                          <option value="Madan Mahal" className="fw-bold">
-                            Madan Mahal
-                          </option>
-                          <option value="Madan Mahal" className="fw-bold">
-                            Ranjhi
-                          </option>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      {/* <Link to="/register-doctor">
-                        <button className="btn btn-success">Add Doctor</button>
-                      </Link> */}
-                    </div>
+                    <BranchSelector />
                   </div>
                 </div>
                 <div className="container mt-3">

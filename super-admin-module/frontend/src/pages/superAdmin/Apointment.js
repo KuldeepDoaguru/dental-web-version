@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import { Link } from "react-router-dom";
+import BranchSelector from "../../components/BranchSelector";
 
 const Apointment = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -30,32 +31,7 @@ const Apointment = () => {
                 <div className="row d-flex justify-content-between mx-3">
                   <div className="col-12 col-md-12 mt-4">
                     <div className="d-flex justify-content-between">
-                      <div className="d-flex">
-                        <div>
-                          <h4>Select Branch : </h4>
-                        </div>
-                        <div>
-                          <select
-                            name="branch"
-                            id="branch"
-                            className="mx-2 p-2 rounded shadow select-style"
-                          >
-                            <option value="Madan Mahal" className="fw-bold">
-                              Madan Mahal
-                            </option>
-                            <option value="Madan Mahal" className="fw-bold">
-                              Ranjhi
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div>
-                        {/* <Link to="/superadmin-add-branch">
-                          <button className="btn btn-success">
-                            Add Branch
-                          </button>
-                        </Link> */}
-                      </div>
+                      <BranchSelector />
                     </div>
 
                     {/* pop-up for creating notice */}

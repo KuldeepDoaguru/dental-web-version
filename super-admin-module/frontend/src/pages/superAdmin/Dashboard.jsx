@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Card from "../../components/superAdmin/dashboard/Card";
 import AveragePatientChart from "../../components/superAdmin/dashboard/Charts/AveragePatientChart";
@@ -14,6 +14,8 @@ import MostTakenTreat from "../../components/superAdmin/dashboard/Charts/MostTak
 import NewRegPatient from "../../components/superAdmin/dashboard/Charts/NewRegPatient";
 import ExpenseChart from "../../components/superAdmin/dashboard/Charts/ExpenseChart";
 import ComplaintsEmp from "../../components/superAdmin/dashboard/ComplaintsEmp";
+import BranchSelector from "../../components/BranchSelector";
+import axios from "axios";
 
 const Dashboard = () => {
   return (
@@ -29,28 +31,7 @@ const Dashboard = () => {
             <div className="col-lg-11 col-11 ps-0">
               <div className="row d-flex justify-content-between mx-3">
                 <div className="col-12 col-md-4 mt-4">
-                  <div className="d-flex">
-                    <div>
-                      <h4>Select Branch : </h4>
-                    </div>
-                    <div>
-                      <select
-                        name="branch"
-                        id="branch"
-                        className="mx-2 p-2 rounded shadow select-style"
-                      >
-                        <option value="select-branch" className="fw-bold">
-                          select-branch
-                        </option>
-                        <option value="Madan Mahal" className="fw-bold">
-                          Madan Mahal
-                        </option>
-                        <option value="Madan Mahal" className="fw-bold">
-                          Ranjhi
-                        </option>
-                      </select>
-                    </div>
-                  </div>
+                  <BranchSelector />
 
                   <h3> Welcome to Dental Guru! </h3>
                   <p>Super Admin Dashboard</p>
@@ -91,9 +72,7 @@ const Dashboard = () => {
                     <NewRegPatient />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                    <h3 className="text-center">
-                      New Registered Patient this Month
-                    </h3>
+                    <h3 className="text-center">New Patient this Month</h3>
 
                     <AppointmentChart />
                   </div>

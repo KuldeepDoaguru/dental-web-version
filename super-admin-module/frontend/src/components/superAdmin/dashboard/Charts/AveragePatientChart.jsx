@@ -63,7 +63,7 @@ function AveragePatientChart() {
         <div className="row">
           <div className="d-flex justify-content-center">
             <LineChart
-              width={500}
+              width={350}
               height={300}
               data={data}
               margin={{

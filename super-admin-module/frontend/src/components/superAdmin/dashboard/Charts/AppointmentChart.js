@@ -63,7 +63,7 @@ const AppointmentChart = () => {
           <div className="row">
             <div className="col-12 d-flex justify-content-center">
               <AreaChart
-                width={500}
+                width={350}
                 height={300}
                 data={data}
                 margin={{

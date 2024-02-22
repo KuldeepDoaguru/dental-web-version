@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import Registration from "./components/receptionist/Registration";
 import Login from "./components/receptionist/Login";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/superAdmin/Dashboard";
 import Chart from "./components/superAdmin/dashboard/Charts/AveragePatientChart";
 import Header from "./components/Header";
@@ -70,62 +70,85 @@ import AdminPrescriptTemp from "./pages/admin/AdminClinicSetting/AdminPrescriptT
 import AdminTreatSetting from "./pages/admin/AdminClinicSetting/AdminTreatSetting";
 import AdminComplaintPage from "./components/Admin/dashboard/AdminComplaintPage";
 import ComplaintPage from "./pages/superAdmin/ComplaintPage";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "./redux/slices/UserSlicer";
+import { setBranch } from "./redux/slices/BranchSlicer";
 
 const App = () => {
+  const storedUserData = localStorage.getItem("userData");
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  if (storedUserData) {
+    const userData = JSON.parse(storedUserData);
+    dispatch(setUser(userData));
+  }
+
+  const selectedBranch = localStorage.getItem("branchName");
+  const branch = useSelector((state) => state.name);
+
+  if (selectedBranch) {
+    const branch = JSON.parse(selectedBranch);
+    dispatch(setBranch(branch));
+  }
   // const [role, setRole] = useState("admin");
   return (
-    <Routes>
-      <Route path="/" element={<UniversalLogin />} />
-      {/* ************************************************************************************ */}
-      {/* super admin routes start  */}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<UniversalLogin />} />
+        {/* ************************************************************************************ */}
+        {/* super admin routes start  */}
 
-      <Route path="/receptionist_login" element={<Login />} />
-      <Route path="/receptionist_registration" element={<Registration />} />
-      <Route path="/superadmin-dashboard" element={<Dashboard />} />
-      <Route path="/super-admin-appointment" element={<Apointment />} />
-      <Route path="/superadmin-branch" element={<Branches />} />
-      <Route path="/superadmin-add-branch" element={<AddBranch />} />
-      <Route path="/bill_section" element={<AllBills />} />
-      <Route path="/inventory" element={<Inventory />} />
-      <Route path="/add-invetory" element={<AddInventory />} />
-      <Route path="/edit-invetory" element={<EditInventory />} />
-      <Route path="/doctor_section" element={<DoctorList />} />
-      <Route path="/register-doctor" element={<AddDoctor />} />
-      <Route path="/super-admin-profile" element={<SuperAdProfile />} />
-      <Route path="/doctor-profile" element={<DoctorProfile />} />
-      <Route path="/clinic-setting" element={<ClinicSetting />} />
-      <Route path="/lab-setting" element={<LabSetting />} />
-      <Route path="/drug-setting" element={<DrugSetting />} />
-      <Route path="/calender-setting" element={<CalenderSetting />} />
-      <Route path="/treatment-setting" element={<TreatmentSetting />} />
-      <Route path="/communication-setting" element={<CommunicationSetting />} />
-      <Route
-        path="/prescription-templates"
-        element={<PrescriptionTemplate />}
-      />
-      <Route path="/reports-dashboard" element={<ReportDash />} />
-      <Route path="/finance-reports" element={<FinancialReportCard />} />
-      <Route path="/appointment-report" element={<AppointmentReport />} />
-      <Route path="/Billing-report" element={<BillingReport />} />
-      <Route path="/inventory-report" element={<InventoryReport />} />
-      <Route
-        path="/employee-attendance-report"
-        element={<EmpAttendanceRepo />}
-      />
-      <Route path="/employee-details-report" element={<EmpDetailsRepo />} />
-      <Route path="/lab-details-report" element={<LabDetailsReport />} />
-      <Route path="/lab-test-report" element={<LabTestReport />} />
-      <Route path="/lab-task-report" element={<LabTaskReport />} />
-      <Route path="/manage-staff" element={<ManageStaff />} />
-      <Route path="/super-admin-notification" element={<SuperAdmNotify />} />
-      <Route path="/complaint-page" element={<ComplaintPage />} />
-      <Route path="*" element={<ErrorPage />} />
+        <Route path="/receptionist_login" element={<Login />} />
+        <Route path="/receptionist_registration" element={<Registration />} />
+        <Route path="/superadmin-dashboard" element={<Dashboard />} />
+        <Route path="/super-admin-appointment" element={<Apointment />} />
+        <Route path="/superadmin-branch" element={<Branches />} />
+        <Route path="/superadmin-add-branch" element={<AddBranch />} />
+        <Route path="/bill_section" element={<AllBills />} />
+        <Route path="/inventory" element={<Inventory />} />
+        <Route path="/add-invetory" element={<AddInventory />} />
+        <Route path="/edit-invetory" element={<EditInventory />} />
+        <Route path="/doctor_section" element={<DoctorList />} />
+        <Route path="/register-doctor" element={<AddDoctor />} />
+        <Route path="/super-admin-profile" element={<SuperAdProfile />} />
+        <Route path="/doctor-profile" element={<DoctorProfile />} />
+        <Route path="/clinic-setting" element={<ClinicSetting />} />
+        <Route path="/lab-setting" element={<LabSetting />} />
+        <Route path="/drug-setting" element={<DrugSetting />} />
+        <Route path="/calender-setting" element={<CalenderSetting />} />
+        <Route path="/treatment-setting" element={<TreatmentSetting />} />
+        <Route
+          path="/communication-setting"
+          element={<CommunicationSetting />}
+        />
+        <Route
+          path="/prescription-templates"
+          element={<PrescriptionTemplate />}
+        />
+        <Route path="/reports-dashboard" element={<ReportDash />} />
+        <Route path="/finance-reports" element={<FinancialReportCard />} />
+        <Route path="/appointment-report" element={<AppointmentReport />} />
+        <Route path="/Billing-report" element={<BillingReport />} />
+        <Route path="/inventory-report" element={<InventoryReport />} />
+        <Route
+          path="/employee-attendance-report"
+          element={<EmpAttendanceRepo />}
+        />
+        <Route path="/employee-details-report" element={<EmpDetailsRepo />} />
+        <Route path="/lab-details-report" element={<LabDetailsReport />} />
+        <Route path="/lab-test-report" element={<LabTestReport />} />
+        <Route path="/lab-task-report" element={<LabTaskReport />} />
+        <Route path="/manage-staff" element={<ManageStaff />} />
+        <Route path="/super-admin-notification" element={<SuperAdmNotify />} />
+        <Route path="/complaint-page" element={<ComplaintPage />} />
+        <Route path="*" element={<ErrorPage />} />
 
-      {/* super admin routes end  */}
-      {/* ************************************************************************************ */}
-      {/* super admin routes start  */}
+        {/* super admin routes end  */}
+        {/* ************************************************************************************ */}
+        {/* super admin routes start  */}
 
-      {/* <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        {/* <Route path="/admin-dashboard" element={<AdminDashboard />} />
       <Route path="/admin-clinic-setting" element={<ClinicSetAdmin />} />
       <Route path="/admin-profile" element={<AdminProfile />} />
       <Route path="/admin-notification" element={<AdminNotify />} />
@@ -179,8 +202,9 @@ const App = () => {
       <Route path="/admin-treatment-setting" element={<AdminTreatSetting />} />
       <Route path="/admin-complaint-page" element={<AdminComplaintPage />} /> */}
 
-      {/* super admin routes end  */}
-    </Routes>
+        {/* super admin routes end  */}
+      </Routes>
+    </BrowserRouter>
   );
 };
 

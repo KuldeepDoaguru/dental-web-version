@@ -206,6 +206,7 @@ const UniversalLogin = () => {
                               </label>
                               <input
                                 name="password"
+                                type="password"
                                 id="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}

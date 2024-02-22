@@ -98,7 +98,7 @@ const EarningChart = () => {
       <Container>
         <div className="container-fluid mt-4" id="main">
           <BarChart
-            width={500}
+            width={350}
             height={300}
             data={data}
             margin={{

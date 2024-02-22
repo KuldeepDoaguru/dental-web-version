@@ -1,13 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Sider from "../components/Sider";
 import { Link } from "react-router-dom";
+import BranchSelector from "../components/BranchSelector";
+import axios from "axios";
 
 const Branches = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState({ notice: "" });
   const [popupVisible, setPopupVisible] = useState(false);
+  const [branchList, setBranchList] = useState([]);
 
   const openUpdatePopup = (index, item) => {
     setSelectedItem(item);
@@ -17,6 +20,24 @@ const Branches = () => {
   const closeUpdatePopup = () => {
     setShowPopup(false);
   };
+
+  const getBranchList = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:7777/api/v1/super-admin/getBranch"
+      );
+      console.log(response.data);
+      setBranchList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getBranchList();
+  }, []);
+
+  console.log(branchList);
 
   return (
     <>
@@ -32,32 +53,7 @@ const Branches = () => {
                 <div className="row d-flex justify-content-between mx-3">
                   <div className="col-12 col-md-12 mt-4">
                     <div className="d-flex justify-content-between">
-                      <div className="d-flex">
-                        <div>
-                          <h4>Select Branch : </h4>
-                        </div>
-                        <div>
-                          <select
-                            name="branch"
-                            id="branch"
-                            className="mx-2 p-2 rounded shadow select-style"
-                          >
-                            <option value="Madan Mahal" className="fw-bold">
-                              Madan Mahal
-                            </option>
-                            <option value="Madan Mahal" className="fw-bold">
-                              Ranjhi
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div>
-                        <Link to="/superadmin-add-branch">
-                          <button className="btn btn-success">
-                            Add Branch
-                          </button>
-                        </Link>
-                      </div>
+                      <BranchSelector />
                     </div>
 
                     {/* pop-up for creating notice */}
@@ -136,7 +132,7 @@ const Branches = () => {
                                 className="table-sno"
                                 style={{ width: "10%" }}
                               >
-                                SN
+                                Branch ID
                               </th>
                               <th
                                 className="table-small"
@@ -156,66 +152,68 @@ const Branches = () => {
                               >
                                 Contact Number
                               </th>
-                              <th
+                              {/* <th
                                 className="table-small"
                                 style={{ width: "10%" }}
                               >
                                 Edit
-                              </th>
-                              <th
+                              </th> */}
+                              {/* <th
                                 className="table-small"
                                 style={{ width: "10%" }}
                               >
                                 Delete
-                              </th>
+                              </th> */}
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="table-row">
-                              <td
-                                className="table-sno"
-                                style={{ width: "10%" }}
-                              >
-                                1
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "20%" }}
-                              >
-                                Madan Mahal
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "20%" }}
-                              >
-                                Madan Mahal, Nagpur Road
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                8602161019
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                <button
-                                  className="btn btn-warning"
-                                  onClick={() => openUpdatePopup()}
+                            {branchList?.map((item) => (
+                              <tr className="table-row" key={item.branch_id}>
+                                <td
+                                  className="table-sno"
+                                  style={{ width: "10%" }}
                                 >
-                                  Edit Details
-                                </button>
-                              </td>
-                              <td
-                                className="table-small"
-                                style={{ width: "10%" }}
-                              >
-                                <button className="btn btn-danger">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
+                                  {item.branch_id}
+                                </td>
+                                <td
+                                  className="table-small"
+                                  style={{ width: "20%" }}
+                                >
+                                  {item.branch_name}
+                                </td>
+                                <td
+                                  className="table-small"
+                                  style={{ width: "20%" }}
+                                >
+                                  {item.branch_address}
+                                </td>
+                                <td
+                                  className="table-small"
+                                  style={{ width: "10%" }}
+                                >
+                                  {item.branch_contact}
+                                </td>
+                                {/* <td
+         className="table-small"
+         style={{ width: "10%" }}
+       >
+         <button
+           className="btn btn-warning"
+           onClick={() => openUpdatePopup()}
+         >
+           Edit Details
+         </button>
+       </td> */}
+                                {/* <td
+         className="table-small"
+         style={{ width: "10%" }}
+       >
+         <button className="btn btn-danger">
+           Delete
+         </button>
+       </td> */}
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>

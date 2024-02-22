@@ -357,6 +357,10 @@ export default Calender1
 const Wrapper = styled.div` 
 background-color: white;
 padding:10px;
+width: 100%;
+margin-left: 25px;
+border-radius: 5px;
+
 .cal{
   @media screen and (max-width: 768px) {
       width: 20rem

@@ -6,7 +6,7 @@ function Card() {
   return (
     <Wrapper>
       <div className="row">
-        <div className="col-lg-12 col-md-12">
+        <div className="col-lg-11 col-md-11">
           <div className="card" id="card1">
             <div className="card-body">
               <h6 className="card-title" style={{ color: "black " }}>
@@ -46,7 +46,7 @@ function Card() {
             </div>
           </div>
         </div>
-        <div className="col-lg-12 col-md-12">
+        <div className="col-lg-11 col-md-11">
           <div className="card" id="card2">
             <div className="card-body d-flex justify-content-between">
               <i className="bi bi-person h1"></i>
@@ -62,7 +62,7 @@ function Card() {
             </div>
           </div>
         </div>
-        <div className="col-lg-12 col-md-12">
+        <div className="col-lg-11 col-md-11">
           
           <div className="card" id="card3">
             <div className="card-body d-flex justify-content-between">
@@ -79,7 +79,7 @@ function Card() {
             </div>
           </div>
         </div>
-        <div className="col-lg-12 col-md-12">
+        <div className="col-lg-11 col-md-11">
           <div className="card" id="card4">
             <div className="card-body d-flex justify-content-between">
               <i className="bi bi-people-fill h1"></i>

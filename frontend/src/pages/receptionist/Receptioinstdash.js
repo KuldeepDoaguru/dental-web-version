@@ -19,7 +19,7 @@ function Receptioinstdash() {
     </div>
     <div className="col-lg-11 mt-2" id='set'>
       <div className="row">
-   <div className="col-lg-2">
+   <div className="col-lg-2 cards" >
     <Card/>
    </div>
    <div className="col-lg-4">
@@ -31,7 +31,7 @@ function Receptioinstdash() {
   <Doctor/>
 </div>
  
-   <div className="col-lg-3">
+   <div className="col-lg-3 calender">
 
     <Calender1/>
 </div>
@@ -52,6 +52,17 @@ function Receptioinstdash() {
 
 export default Receptioinstdash
 const Wrapper=styled.div`
+.cards{
+  width: 15%;
+  @media screen and (max-width: 768px) {
+ width: 95%;
+}
+
+
+}
+.calender{
+ 
+}
 #set{
 
   margin-left: -4.5rem;
@@ -60,11 +71,13 @@ const Wrapper=styled.div`
 }
   @media screen and (min-width: 1020px) and (max-width: 1700px) {
     margin-left: -1.9rem;
+    
   }
 }
 
 #sider{
   height: 62rem;
+  
  
 
 }

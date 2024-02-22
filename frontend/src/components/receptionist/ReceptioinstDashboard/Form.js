@@ -5,7 +5,7 @@ import styled from "styled-components";
 function Form() {
     
   const  [formdata,setFormData ] = useState({})
-
+ 
   const [searchQuery, setSearchQuery] = useState("");
   const [searchDoctor, setSearchDoctor] = useState("");
   const [showDoctorList,setShowDoctorList] = useState(false);
@@ -25,7 +25,12 @@ function Form() {
   const doctors = [
     { uid :"1", doctor_name:"Mohit Sahu",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
     { uid :"2", doctor_name:"Rahul sen",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"3", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"}
+    { uid :"3", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
+    { uid :"4", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
+    { uid :"5", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
+    { uid :"6", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
+    { uid :"7", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
+    { uid :"8", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
     
 
   ];
@@ -39,7 +44,6 @@ function Form() {
       gender: "Male",
       city: "jabalpur",
       contact_Person: "father",
-      dateTime: "",
       contact_Person_Name: "rahul",
       blood_Group: "o+",
       dob: "",
@@ -54,7 +58,6 @@ function Form() {
       gender: "Male",
       city: "jabalpur",
       contact_Person: "father",
-      dateTime: "",
       contact_Person_Name: "rahul",
       blood_Group: "o+",
       dob: "",
@@ -69,15 +72,60 @@ function Form() {
       gender: "Male",
       city: "jabalpur",
       contact_Person: "father",
-      dateTime: "",
       contact_Person_Name: "rahul",
       blood_Group: "o+",
       dob: "",
       age: "25",
       address: "Ranital gate no. 4 , jabalpur",
     },
+    {
+      uid: "3",
+      patient_Name: "dev",
+      mobile: "9806324245",
+      email: "patinet@gmail.com",
+      gender: "Male",
+      city: "jabalpur",
+      contact_Person: "father",
+      contact_Person_Name: "rahul",
+      blood_Group: "o+",
+      dob: "",
+      age: "25",
+      address: "Ranital gate no. 4 , jabalpur",
+    },
+    {
+      uid: "3",
+      patient_Name: "dev",
+      mobile: "9806324245",
+      email: "patinet@gmail.com",
+      gender: "Male",
+      city: "jabalpur",
+      contact_Person: "father",
+      contact_Person_Name: "rahul",
+      blood_Group: "o+",
+      dob: "",
+      age: "25",
+      address: "Ranital gate no. 4 , jabalpur",
+    },
+    {
+      uid: "3",
+      patient_Name: "dev",
+      mobile: "9806324245",
+      email: "patinet@gmail.com",
+      gender: "Male",
+      city: "jabalpur",
+      contact_Person: "father",
+      contact_Person_Name: "rahul",
+      blood_Group: "o+",
+      dob: "",
+      age: "25",
+      address: "Ranital gate no. 4 , jabalpur",
+    },
+   
     
   ]);
+
+  
+
 
 
   const [filteredPatients, setFilteredPatients] = useState([]);
@@ -123,6 +171,8 @@ function Form() {
 
   console.log(bookData)
 
+  console.log(patients)
+
   useEffect(()=>{
     const calculateAge = (date) => {
       const dob = new Date(date);
@@ -146,6 +196,41 @@ function Form() {
         ...data,
         [name]: value
       });
+  }
+
+  const handleSubmit = (e)=>{
+     e.preventDefault();
+
+     const newPatient = {
+      uid: (patients.length + 1).toString(), // Generate a unique ID (you might need a better way to generate unique IDs)
+      patient_Name: data.patient_Name,
+      mobile: data.mobile,
+      email: data.email,
+      gender: data.gender,
+      city: data.city,
+      contact_Person:data.contact_Person,
+      contact_Person_Name: data.contact_Person_Name,
+      blood_Group: data.blood_Group,
+      dob: data.dob,
+      age: data.age,
+      address: data.address,
+    };
+
+     setPatients([...patients,newPatient])
+
+     setData({
+      patient_Name: "",
+      mobile: "",
+      email: "",
+      gender: "",
+      city: "",
+      contact_Person: "",
+      contact_Person_Name: "",
+      blood_Group: "",
+      dob: "",
+      age: "",
+      address: "",
+    });
   }
 
   const handleBookChange = (e)=>{
@@ -214,6 +299,7 @@ const handleDoctorSelect = (doctor) => {
                 aria-labelledby="home-tab"
                 tabindex="0"
               >
+                <form onSubmit={handleSubmit}>
                 <ul className="list-group">
                   <li className="list-group-item">
                     <div className="row">
@@ -226,13 +312,16 @@ const handleDoctorSelect = (doctor) => {
                             type="text"
                             id="form6Example1"
                             className="form-control"
+                            name="patient_Name"
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
                       <div className="col-sm-6 ">
                         <div className="form-outline">
                         <label className="form-label" htmlFor="">Gender</label>
-    <select className="form-select" id="commercial_property_type" name="commercial_property_type"  required >
+    <select className="form-select" id="gender" name="gender"  required onChange={handleChange}>
       <option value="">Select Gender</option>
       <option value="Male">Male</option>
       <option value="Female">Female</option>
@@ -250,8 +339,66 @@ const handleDoctorSelect = (doctor) => {
                             required
                             type="text"
                             className="form-control"
+                            name="mobile"
                             placeholder=""
                             maxLength={10}
+                            minLength={10}
+                            onChange={handleChange}
+
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-outline">
+                          <label className="form-label" for="form6Example1">
+                            Moblie
+                          </label>
+                          <input
+                            required
+                            type="text"
+                            className="form-control"
+                            name="mobile"
+                            placeholder=""
+                            maxLength={10}
+                            minLength={10}
+                            onChange={handleChange}
+
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-outline">
+                          <label className="form-label" for="form6Example1">
+                            Moblie
+                          </label>
+                          <input
+                            required
+                            type="text"
+                            className="form-control"
+                            name="mobile"
+                            placeholder=""
+                            maxLength={10}
+                            minLength={10}
+                            onChange={handleChange}
+
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-outline">
+                          <label className="form-label" for="form6Example1">
+                            Moblie
+                          </label>
+                          <input
+                            required
+                            type="text"
+                            className="form-control"
+                            name="mobile"
+                            placeholder=""
+                            maxLength={10}
+                            minLength={10}
+                            onChange={handleChange}
+
                           />
                         </div>
                       </div>
@@ -264,6 +411,9 @@ const handleDoctorSelect = (doctor) => {
                             type="text"
                             id="form6Example2"
                             className="form-control"
+                            name="city"
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -276,13 +426,16 @@ const handleDoctorSelect = (doctor) => {
                             type="text"
                             id="form6Example1"
                             className="form-control"
+                            name="address"
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
                       <div className="col-sm-6">
                         <div className="form-outline">
                         <label className="form-label" htmlFor="">Contact Person</label>
-    <select className="form-select" id="commercial_property_type" name="commercial_property_type"  required >
+    <select className="form-select" id="contact_Person" name="contact_Person"  required onChange={handleChange}>
       <option value="">Select</option>
       <option value="Self">Self</option>
       <option value="Father">Father</option>
@@ -299,7 +452,7 @@ const handleDoctorSelect = (doctor) => {
                       <div className="col-sm-6">
                         <div className="form-outline">
                         <label className="form-label" htmlFor="">Blood Group</label>
-    <select className="form-select" id="commercial_property_type" name="commercial_property_type"  required >
+    <select className="form-select" id="blood_Group" name="blood_Group" onChange={handleChange}>
       <option value="">Select</option>
       <option value="A+">A+</option>
       <option value="B+">B+</option>
@@ -320,8 +473,11 @@ const handleDoctorSelect = (doctor) => {
                           </label>
                           <input
                             type="text"
-                            id="form6Example2"
+                            id="contact_Person_Name"
+                            name="contact_Person_Name"
                             className="form-control"
+                            onChange={handleChange}
+                            required
                           />
                         </div>
                       </div>
@@ -359,11 +515,12 @@ const handleDoctorSelect = (doctor) => {
                             name="age"
                             onChange={handleChange}
                             value={data.age ? data.age : ""}
+                            required
                           />
                         </div>
                       </div>
                       <div className="formbtn">
-                        <button className="btn btn-success " id="btn2">
+                        <button className="btn btn-success " type="submit" id="btn2">
                           {" "}
                           Sumbit
                         </button>
@@ -371,6 +528,7 @@ const handleDoctorSelect = (doctor) => {
                     </div>
                   </li>
                 </ul>
+                </form>
               </div>
               <div
                 className="tab-pane fade"
@@ -382,16 +540,17 @@ const handleDoctorSelect = (doctor) => {
                 <ul className="list-group">
                  
                   <li className="list-group-item">
-                  <PatientList>
+                 
                   <input
-                    class="form-control mr-sm-2 mt-3 mb-2 w-50 m-auto"
+                    class="form-control mr-sm-2 mt-3 mb-2 m-auto"
                     type="search"
-                    placeholder="Search"
+                    placeholder="Search Patient Name or Mobile"
                     aria-label="Search"
                     value={searchQuery}
                     onChange={handleSearch}
                   />
-                   <ul className="list-group">
+                   <PatientList>
+                   <ul className="list-group" >
                       {filteredPatients.map((patient) => (
                         <li key={patient.uid}
                         className={`list-group-item ${selectedPatient && selectedPatient.uid === patient.uid ? "active" : ""}`} // Add 'active' class if the patient is selected
@@ -432,6 +591,7 @@ const handleDoctorSelect = (doctor) => {
                             className="form-control"
                             name="dateTime"
                             onChange={(e)=>handleBookChange(e)}
+                           
                           />
                          
                         </div>
@@ -443,7 +603,7 @@ const handleDoctorSelect = (doctor) => {
                         <label className="form-label" for="form6Example1">
                             Doctor
                           </label>
-                          <DoctorList>
+                          
                           <input
                             type="search"
                             id="form6Example1"
@@ -454,7 +614,9 @@ const handleDoctorSelect = (doctor) => {
                   
 
                           />
-                          <div style={{zIndex:1}}>
+                          <DoctorList>
+                          <div >
+                          
                           <ul className="list-group">
                       {filteredDoctor.map((doctor) => (
                         <li key={doctor.uid}
@@ -605,6 +767,8 @@ const handleDoctorSelect = (doctor) => {
 export default Form;
 
 const Wrapper = styled.div`
+
+  
  position: relative;
   #section3 {
     @media screen and (max-width: 768px) {
@@ -623,6 +787,7 @@ const Wrapper = styled.div`
 
     #tab1 {
       height: 12rem;
+      overflow-y: auto;
       @media screen and (max-width: 768px) {
         margin-left: -1.1rem;
       }
@@ -644,6 +809,7 @@ const Wrapper = styled.div`
     }
     #myTabContent{
       height: 28.5rem;
+      overflow-y: auto;
       
     }
   
@@ -656,17 +822,19 @@ const Wrapper = styled.div`
 
 const PatientList = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
+  
+  z-index: 1000;
   width: 100%;
+  overflow-y: auto;
+  max-height: 400px;
   /* Your styling for the patient list */
 `;
 const DoctorList = styled.div`
   position: absolute;
-  top: 50; /* Position the list below the input field */
-  left: 5;
-  z-index: 1000; /* Set a high z-index to ensure the list is displayed above other elements */
+  z-index: 999; /* Set a high z-index to ensure the list is displayed above other elements */
+  width: 100%;
+  overflow-y: auto;
+  max-height: 400px;
  
   /* Your additional styling for the doctor list */
 `;

@@ -68,31 +68,13 @@ function Doctor() {
     };
 
    
-    const [currentPage, setCurrentPage] =
-    useState(1);
-  const studentsPerPage = 5;
+  
 
-    const nextPage = () =>
-    setCurrentPage(currentPage + 1);
-  const prevPage = () =>
-    setCurrentPage(currentPage - 1);
+  
 
 
-    const indexOfLastStudent =
-    currentPage * studentsPerPage;
-  const indexOfFirstStudent =
-    indexOfLastStudent -
-    studentsPerPage;
-  const currentDoctor = searchQuery ? 
-  availableDoctor?.slice(
-    indexOfFirstStudent,
-    indexOfLastStudent
-  )
-  :
-    availableDoctor?.slice(
-      indexOfFirstStudent,
-      indexOfLastStudent
-    );
+   
+ 
 
     useEffect(()=>{
       filterDoctor();
@@ -192,11 +174,11 @@ function Doctor() {
 
   return (
     <Wrapper>
-      <div className="widget-area-2 proclinic-box-shadow bg-white">
+      <div className="widget-area-2 proclinic-box-shadow rounded bg-white px-1 ">
         <h3 className="widget-title text-center">Doctor Available for {formatDate(date)}</h3>
         <div className="d-flex px-2 gap-1">
         <input type="date" class="form-control mr-sm-2 mt-3 mb-2 w-75 m-auto"   value={date} onChange={(e)=>setDate(e.target.value)}/>
-        <input class="form-control mr-sm-2 mt-3 mb-2 w-75 m-auto" type="search" placeholder="Search" aria-label="Search"  onChange={handleSearchChange}/>
+        <input class="form-control mr-sm-2 mt-3 mb-2 w-75 m-auto" type="search" placeholder="Search Doctor" aria-label="Search"  onChange={handleSearchChange}/>
         </div>
       
       
@@ -205,14 +187,14 @@ function Doctor() {
           <table className="table table-bordered table-striped">
             <thead>
               <tr>
-                <th>S:NO</th>
+                <th style={{fontSize:"12px"}}>No.</th>
                 <th>Doctor</th>
-                <th>No. of App.</th>
+                <th>App.</th>
                 <th>Available Slot</th>
               </tr>
             </thead>
             <tbody>
-              {currentDoctor?.map((doctor,index)=>{
+              {availableDoctor?.map((doctor,index)=>{
     // Filter appointment data for the current doctor
     const doctorAppointments = appointment_data.filter(
       (appointment) => appointment.doctorId === doctor.uid && 
@@ -252,7 +234,7 @@ console.log(availableEveningSlots)
         <td>{doctorAppointments.length}</td> {/* Display number of appointments */}
         <td>
          
-         
+         <div className="d-flex">
         <select className="form-select">
         <option value="Morning">Morning</option>
           {/* Display available time slots for the current doctor */}
@@ -270,6 +252,7 @@ console.log(availableEveningSlots)
             <option key={i} value={slot} disabled>{new Date(slot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</option>
           ))}
         </select>
+        </div>
         
          
         </td>
@@ -290,30 +273,7 @@ console.log(availableEveningSlots)
           </table>
         </div>
       </div>
-      <div className="pagination-section mt-3 justify-content-center d-flex">
-              <div className="pagination">
-                <button
-                  onClick={prevPage}
-                  disabled={
-                    currentPage === 1
-                  }
-                  className="btn btn-danger">
-                  Previous
-                </button>
-                <span className="fs-4 mx-3">
-                  {currentPage}
-                </span>
-                <button
-                  onClick={nextPage}
-                  className="btn btn-success"
-                  disabled={
-                    currentDoctor?.length <
-                    studentsPerPage
-                  }>
-                  Next
-                </button>
-              </div>
-            </div> 
+     
 
     </Wrapper>
   );
@@ -321,6 +281,8 @@ console.log(availableEveningSlots)
 
 export default Doctor;
 const Wrapper = styled.div`
+width: 110%;
+
 #tab{
   @media screen and (max-width: 768px)  {
    width: 20rem;
@@ -340,5 +302,16 @@ const Wrapper = styled.div`
    font-size: 20px;
   }
 }
+th{
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+td{
+  white-space: nowrap;
+  font-size: 14px;
+  
+}
+
 
 `

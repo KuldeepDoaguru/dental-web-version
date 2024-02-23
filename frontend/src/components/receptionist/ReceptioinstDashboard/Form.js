@@ -348,60 +348,9 @@ const handleDoctorSelect = (doctor) => {
                           />
                         </div>
                       </div>
-                      <div className="col-sm-6">
-                        <div className="form-outline">
-                          <label className="form-label" for="form6Example1">
-                            Moblie
-                          </label>
-                          <input
-                            required
-                            type="text"
-                            className="form-control"
-                            name="mobile"
-                            placeholder=""
-                            maxLength={10}
-                            minLength={10}
-                            onChange={handleChange}
-
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-outline">
-                          <label className="form-label" for="form6Example1">
-                            Moblie
-                          </label>
-                          <input
-                            required
-                            type="text"
-                            className="form-control"
-                            name="mobile"
-                            placeholder=""
-                            maxLength={10}
-                            minLength={10}
-                            onChange={handleChange}
-
-                          />
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-outline">
-                          <label className="form-label" for="form6Example1">
-                            Moblie
-                          </label>
-                          <input
-                            required
-                            type="text"
-                            className="form-control"
-                            name="mobile"
-                            placeholder=""
-                            maxLength={10}
-                            minLength={10}
-                            onChange={handleChange}
-
-                          />
-                        </div>
-                      </div>
+                   
+                    
+                  
                       <div className="col-sm-6">
                         <div className="form-outline" id="form1">
                           <label className="form-label" for="form6Example2">
@@ -517,6 +466,53 @@ const handleDoctorSelect = (doctor) => {
                             value={data.age ? data.age : ""}
                             required
                           />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-outline">
+                          <label className="form-label" for="form6Example2">
+                            Weight
+                          </label>
+
+                          <input
+                            type="text"
+                            id="form6Example2"
+                            className="form-control"
+                            name="weight"
+                            onChange={handleChange}
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-outline">
+                          <label className="form-label" for="form6Example2">
+                         Have any allergy
+                          </label>
+
+                          <input
+                            type="text"
+                            id="form6Example2"
+                            className="form-control"
+                            name="allergy"
+                            onChange={handleChange}
+                        
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-outline">
+                          <label className="form-label" for="form6Example2">
+                         Have any disease
+                          </label>
+
+                          <select className="form-select" id="disease" name="disease"  required onChange={handleChange}>
+      <option value="">Select disease</option>
+      <option value=""></option>
+      <option value="Female"></option>
+      <option value="Other"></option>
+     
+    </select>
                         </div>
                       </div>
                       <div className="formbtn">

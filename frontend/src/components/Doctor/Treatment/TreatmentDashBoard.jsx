@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import HeadBar from "../HeadBar";
 import SideBar from "../SideBar";
+import Treat from "./Treat";
 
 const TreatmentDashBoard = () => {
 
@@ -16,8 +17,8 @@ const TreatmentDashBoard = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SideBar />
               </div>
-              <div className="col-lg-11 col-11 ps-0 m-2">
-                Welcome to Treatment
+              <div className="col-lg-11 col-11 ps-0 m-4">
+                <Treat />
               </div>
             </div>
           </div>

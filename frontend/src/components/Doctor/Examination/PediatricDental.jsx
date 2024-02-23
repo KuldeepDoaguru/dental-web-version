@@ -1287,7 +1287,7 @@ const PediatricDentalTest = () => {
                           {item.onExamination}
                           <div className="buttons">
                             <button
-                              className="btn btn-primary mx-1"
+                              type="button" className="btn btn-primary"
                               onClick={() => editItem(index)}
                             >
                               <MdEdit size={20} />

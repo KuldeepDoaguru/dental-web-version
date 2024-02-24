@@ -12,7 +12,7 @@ function Form() {
   const [selectedPatient, setSelectedPatient] = useState(null); // State to store the selected patient
   const [selectedDoctor, setSelectedDoctor] = useState(null); // State to store the selected Doctor
   const [data,setData] = useState(
-    { uid :"1", patient_Name:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male", city: "jabalpur", contact_Person : "father" , contact_Person_Name: "rahul", blood_Group : "o+" , dob : "", age : "25", address: "Ranital gate no. 4 , jabalpur"}
+    { uid :"1", patient_Name:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male", city: "jabalpur", contact_Person : "father" , contact_Person_Name: "rahul", blood_Group : "o+" , dob : "", age : "25",weight:"",allergy:"",disease:"", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"",  address: "Ranital gate no. 4 , jabalpur"}
     
   ) 
 
@@ -23,16 +23,30 @@ function Form() {
   ) 
 
   const doctors = [
-    { uid :"1", doctor_name:"Mohit Sahu",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"2", doctor_name:"Rahul sen",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"3", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"4", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"5", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"6", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"7", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"8", doctor_name:"Umer khan",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
+    { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:"20/02/2024",lunchTime: ""},
+    { uid :"10", doctor_name:"Dr Rajiv",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"12:00",eveningStartTiming:"18:00" ,eveningEndTiming:"22:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
+    { uid :"2", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
+    { uid :"4", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+    { uid :"5", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+    { uid :"6", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+    { uid :"7", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+    { uid :"8", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"20/02/2024",lunchTime: ""}
     
 
+  ];
+
+  const appointment_data = [
+    { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:45",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau", doctorId:"1",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:00",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau", doctorId:"1" ,doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T11:30",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctorId:"2", doctor:"Dr Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T12:30",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T12:45",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctorId:"2", doctor:"Dr Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T10:45",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T12:00",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T13:00",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctorId:"2", doctor:"Dr Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T13:00",status:"Missed",action:"edit"},
+
+    
   ];
 
   const [patients, setPatients] = useState([
@@ -126,7 +140,7 @@ function Form() {
 
   
 
-
+console.log(selectedDoctor)
 
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [filteredDoctor,setFilteredDoctor] = useState([]);
@@ -198,40 +212,80 @@ function Form() {
       });
   }
 
-  const handleSubmit = (e)=>{
-     e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    // Check if the selected doctor is null
+    if (!selectedDoctor) {
+      console.log("Please select a doctor");
+      return;
+    }
+  
 
-     const newPatient = {
-      uid: (patients.length + 1).toString(), // Generate a unique ID (you might need a better way to generate unique IDs)
-      patient_Name: data.patient_Name,
-      mobile: data.mobile,
-      email: data.email,
-      gender: data.gender,
-      city: data.city,
-      contact_Person:data.contact_Person,
-      contact_Person_Name: data.contact_Person_Name,
-      blood_Group: data.blood_Group,
-      dob: data.dob,
-      age: data.age,
-      address: data.address,
-    };
-
-     setPatients([...patients,newPatient])
-
-     setData({
-      patient_Name: "",
-      mobile: "",
-      email: "",
-      gender: "",
-      city: "",
-      contact_Person: "",
-      contact_Person_Name: "",
-      blood_Group: "",
-      dob: "",
-      age: "",
-      address: "",
+   
+    const isSlotAvailable = appointment_data.every((appointment) => {
+      // Check if the appointment is for the selected doctor and if it falls within the same datetime range
+      const appointmentDate = new Date(appointment.timing);
+      const selectedDate = new Date(data.appDateTime);
+      
+      return !(appointment.doctorId === selectedDoctor.uid && appointmentDate.getTime() === selectedDate.getTime());
     });
-  }
+
+    console.log(isSlotAvailable)
+  
+    if (isSlotAvailable) {
+      // Slot is available, proceed with booking
+      const newPatient = {
+        uid: (patients.length + 1).toString(), // Generate a unique ID (you might need a better way to generate unique IDs)
+        patient_Name: data.patient_Name,
+        mobile: data.mobile,
+        email: data.email,
+        gender: data.gender,
+        city: data.city,
+        contact_Person: data.contact_Person,
+        contact_Person_Name: data.contact_Person_Name,
+        blood_Group: data.blood_Group,
+        dob: data.dob,
+        age: data.age,
+        address: data.address,
+        weight: data.weight,
+        allergy: data.allergy,
+        disease: data.disease,
+        doctorId: selectedDoctor.uid,
+        doctor_name: selectedDoctor.doctor_name,
+        appDateTime: data.appDateTime,
+        treatment: data.treatment,
+        notes: data.notes,
+      };
+  
+      setPatients([...patients, newPatient]);
+  
+      // Reset form data
+      setData({
+        patient_Name: "",
+        mobile: "",
+        email: "",
+        gender: "",
+        city: "",
+        contact_Person: "",
+        contact_Person_Name: "",
+        blood_Group: "",
+        dob: "",
+        age: "",
+        address: "",
+      });
+  
+      // Reset selected doctor
+      // setSelectedDoctor(null);
+  
+      console.log("Appointment booked successfully!");
+      alert("Appointment booked successfully!");
+    } else {
+      // Slot is not available
+      alert("The selected doctor's slot is not available at the specified time");
+      console.log("The selected doctor's slot is not available at the specified time");
+    }
+  };
 
   const handleBookChange = (e)=>{
     const {name,value} = e.target;
@@ -418,7 +472,7 @@ const handleDoctorSelect = (doctor) => {
                       <div className="col-sm-6">
                         <div className="form-outline">
                           <label className="form-label" for="form6Example2">
-                            Contact Person Name
+                            Cont. Per. Name
                           </label>
                           <input
                             type="text"
@@ -508,17 +562,239 @@ const handleDoctorSelect = (doctor) => {
 
                           <select className="form-select" id="disease" name="disease"  required onChange={handleChange}>
       <option value="">Select disease</option>
-      <option value=""></option>
-      <option value="Female"></option>
-      <option value="Other"></option>
+      <option value="">Hypertension</option>
+      <option value="Female">Diabetes</option>
+      <option value="Female">Heart</option>
+      <option value="Other">Cardiovascular</option>
+      <option value="Other">Asthma</option>
+      <option value="Other">Arthritis</option>
+      <option value="Other">Osteoporosis</option>
+      <option value="Other">Thyroid</option>
+      <option value="Other">Kidney</option>
+      <option value="Other">Liver</option>
+      <option value="Other">Gastrointestinal</option>
+      <option value="Other">Cancer</option>
+      <option value="Other">Depression</option>
+      <option value="Other">Anxiety</option>
+      <option value="Other">Alzheimer's</option>
+      <option value="Other">HIV</option>
+      <option value="Other">Hepatitis</option>
+  
      
     </select>
                         </div>
                       </div>
-                      <div className="formbtn">
+
+                      <div className="col-sm-6">
+                        <div className="form-outline">
+                          <label className="form-label" for="form6Example2">
+                         Patient Type
+                          </label>
+
+                          <select className="form-select" id="patientType" name="patientType"  required onChange={handleChange}>
+      <option value="">Select Patient Type</option>
+      <option value="Genral">General</option>
+      <option value="CGHS(Serving)">CGHS(Serving)</option>
+      <option value="CGHS(Pensioner)">CGHS(Pensioner)</option>
+      <option value="CSMA">CSMA</option>
+  
+     
+    </select>
+                        </div>
+                      </div>
+                      <p className="mt-4">Fill details for Book Appointment</p>
+
+                      <ul className="list-group">
+                 
+                 <li className="list-group-item">
+                
+                
+                   
+                   <div className="row">
+                   <div className="col-sm-6">
+                       <div className="form-outline">
+
+                       <label className="form-label" for="form6Example1">
+                           Doctor
+                         </label>
+                         
+                         <input
+                           type="search"
+                           id="form6Example1"
+                           name="doctor"
+                           className="form-control"
+                           value={searchDoctor}
+                   onChange={handleSearchDoctor}
+                   required
+
+                   
+                 
+
+                         />
+                         <DoctorList>
+                         <div >
+                         
+                         <ul className="list-group">
+                     {filteredDoctor.map((doctor) => (
+                       <li key={doctor.uid}
+                       className={`list-group-item ${selectedDoctor && selectedDoctor.uid === doctor.uid ? "active" : ""}`} // Add 'active' class if the patient is selected
+           onClick={() => handleDoctorSelect(doctor)} // Call handlePatientSelect function when the patient is clicked 
+                       >
+                         {doctor.doctor_name} {"-"} Department: {doctor.department}
+                         {/* Display other patient details as needed */}
+                       </li>
+                     ))}
+                   </ul>
+
+                   </div>
+                   </DoctorList>
+                         
+                       </div>
+                     
+                     </div>
+                     <div className="col-sm-6 ">
+                       <div className="form-outline">
+                       <label className="form-label" for="form6Example2">
+                           Date&Time
+                         </label>
+                         <input
+                           type="datetime-local"
+                           id="form6Example2"
+                           className="form-control"
+                           name="appDateTime"
+                           onChange={handleChange}
+                           required
+                          
+                         />
+                        
+                       </div>
+                     </div>
+                     
+                    
+                     <div className="col-sm-6">
+                       <div className="form-outline" id="form1">
+                       <label className="form-label" for="form6Example2">
+                           Add Treatment
+                         </label>
+                         <input
+                           type="text"
+                           id="form6Example2"
+                           className="form-control"
+                           name="treatment"
+                           required
+                           onChange={handleChange}
+                         />
+                         
+                       </div>
+                     </div>
+                     <div className="col-sm-6">
+                       <div className="form-outline">
+                       <label className="form-label" for="form6Example1">
+                           Notes
+                         </label>
+                         <input
+                           type="text"
+                           id="form6Example1"
+                           className="form-control"
+                           name="notes"
+                           onChange={handleChange}
+                         />
+                        
+                       </div>
+                     </div>
+                     
+                    <div className="d-flex  mt-4">
+                     <div className="col-sm-3 p-0 ">
+                       <div className="form-outline">
+                         <label className="form-label" for="form6Example1">
+                           Doctor :
+                         </label>
+                       </div>
+                     </div>
+                     <div className="col-sm-4 p-0">
+                       <div className="form-outline">
+                         <input
+                           class="form-check-input"
+                           type="checkbox"
+                           value=""
+                           id="flexCheckDefault"
+                         />
+                         <label
+                           class="form-check-label mx-1"
+                           for="flexCheckDefault"
+                         >
+                           Sms
+                         </label>
+                       </div>
+                     </div>
+                     <div className="col-sm-5 p-0">
+                       <div className="form-outline">
+                         <input
+                           class="form-check-input"
+                           type="checkbox"
+                           value=""
+                           id="flexCheckDefault"
+                         />
+                         <label
+                           class="form-check-label mx-1"
+                           for="flexCheckDefault"
+                         >
+                           Send Email
+                         </label>
+                       </div>
+                     </div>
+                     </div>
+                     <div className="d-flex ">
+                     <div className="col-sm-3 p-0">
+                       <div className="form-outline">
+                         <label className="form-label" for="form6Example1">
+                           Patient :
+                         </label>
+                       </div>
+                     </div>
+                     <div className="col-sm-4 p-0">
+                       <div className="form-outline">
+                         <input
+                           class="form-check-input"
+                           type="checkbox"
+                           value=""
+                           id="flexCheckDefault"
+                         />
+                         <label
+                           class="form-check-label mx-1"
+                           for="flexCheckDefault"
+                         >
+                           Sms
+                         </label>
+                       </div>
+                     </div>
+                     <div className="col-sm-5 p-0">
+                       <div className="form-outline">
+                         <input
+                           class="form-check-input"
+                           type="checkbox"
+                           value=""
+                           id="flexCheckDefault"
+                         />
+                         <label
+                           class="form-check-label mx-1"
+                           for="flexCheckDefault"
+                         >
+                           Send Email
+                         </label>
+                       </div>
+                     </div>
+                     </div>
+
+                   
+                   </div>
+                   
+                 </li>
+               </ul>
+                      <div className="formbtn d-flex justify-content-center">
                         <button className="btn btn-success " type="submit" id="btn2">
                           {" "}
-                          Sumbit
+                          Add Patient & Book Appointment
                         </button>
                       </div>
                     </div>
@@ -661,92 +937,95 @@ const handleDoctorSelect = (doctor) => {
                         
                       </div>
 
-                      <div className="col-sm-3">
-                        <div className="form-outline">
-                          <label className="form-label" for="form6Example1">
-                            Doctor :
-                          </label>
-                        </div>
-                      </div>
-                      <div className="col-sm-4">
-                        <div className="form-outline">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          />
-                          <label
-                            class="form-check-label mx-2"
-                            for="flexCheckDefault"
-                          >
-                            Sms
-                          </label>
-                        </div>
-                      </div>
-                      <div className="col-sm-5">
-                        <div className="form-outline">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          />
-                          <label
-                            class="form-check-label mx-2"
-                            for="flexCheckDefault"
-                          >
-                            Send Email
-                          </label>
-                        </div>
-                      </div>
+                      <div className="d-flex  mt-4">
+                     <div className="col-sm-3 p-0 ">
+                       <div className="form-outline">
+                         <label className="form-label" for="form6Example1">
+                           Doctor :
+                         </label>
+                       </div>
+                     </div>
+                     <div className="col-sm-4 p-0">
+                       <div className="form-outline">
+                         <input
+                           class="form-check-input"
+                           type="checkbox"
+                           value=""
+                           id="flexCheckDefault"
+                         />
+                         <label
+                           class="form-check-label mx-1"
+                           for="flexCheckDefault"
+                         >
+                           Sms
+                         </label>
+                       </div>
+                     </div>
+                     <div className="col-sm-5 p-0">
+                       <div className="form-outline">
+                         <input
+                           class="form-check-input"
+                           type="checkbox"
+                           value=""
+                           id="flexCheckDefault"
+                         />
+                         <label
+                           class="form-check-label mx-1"
+                           for="flexCheckDefault"
+                         >
+                           Send Email
+                         </label>
+                       </div>
+                     </div>
+                     </div>
+                     <div className="d-flex ">
+                     <div className="col-sm-3 p-0">
+                       <div className="form-outline">
+                         <label className="form-label" for="form6Example1">
+                           Patient :
+                         </label>
+                       </div>
+                     </div>
+                     <div className="col-sm-4 p-0">
+                       <div className="form-outline">
+                         <input
+                           class="form-check-input"
+                           type="checkbox"
+                           value=""
+                           id="flexCheckDefault"
+                         />
+                         <label
+                           class="form-check-label mx-1"
+                           for="flexCheckDefault"
+                         >
+                           Sms
+                         </label>
+                       </div>
+                     </div>
+                     <div className="col-sm-5 p-0">
+                       <div className="form-outline">
+                         <input
+                           class="form-check-input"
+                           type="checkbox"
+                           value=""
+                           id="flexCheckDefault"
+                         />
+                         <label
+                           class="form-check-label mx-1"
+                           for="flexCheckDefault"
+                         >
+                           Send Email
+                         </label>
+                       </div>
+                     </div>
+                     </div>
 
-                      <div className="col-sm-3">
-                        <div className="form-outline">
-                          <label className="form-label" for="form6Example1">
-                            Patient :
-                          </label>
-                        </div>
-                      </div>
-                      <div className="col-sm-4">
-                        <div className="form-outline">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          />
-                          <label
-                            class="form-check-label mx-2"
-                            for="flexCheckDefault"
-                          >
-                            Sms
-                          </label>
-                        </div>
-                      </div>
-                      <div className="col-sm-5">
-                        <div className="form-outline">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          />
-                          <label
-                            class="form-check-label mx-2"
-                            for="flexCheckDefault"
-                          >
-                            Send Email
-                          </label>
-                        </div>
-                      </div>
-
-                      <div className="formbtn">
-                        <button className="btn btn-success " id="btn2">
+                     <div className="formbtn d-flex justify-content-center">
+                        <button className="btn btn-success " type="submit" id="btn2">
                           {" "}
-                          Sumbit
+                          Book Appointment
                         </button>
-                      </div>
+                        </div>
                     </div>
                     
                   </li>
@@ -778,7 +1057,7 @@ const Wrapper = styled.div`
   }
     .formbtn {
       margin-top: 1rem;
-      margin-left: 2rem;
+      
     }
 
     #tab1 {
@@ -790,17 +1069,27 @@ const Wrapper = styled.div`
     }
 
     #btn2 {
-      margin-left: 9rem;
+      
 
       @media screen and (max-width: 768px) {
+        font-size: small;
         margin-left: 5.5rem;
       }
       @media screen and (min-width: 768px) and (max-width: 1020px) {
+        font-size: small;
         margin-left: 1rem;
       }
-      @media screen and (min-width: 1600px) and (max-width: 3700px) {
-        margin-left: 10rem;
+      @media screen and (min-width: 1020px) and (max-width: 1600px) {
+        
         margin-bottom: 1rem;
+        font-size: small;
+        
+      }
+      @media screen and (min-width: 1600px) and (max-width: 3700px) {
+      
+        margin-bottom: 1rem;
+        font-size: small;
+        
       }
     }
     #myTabContent{

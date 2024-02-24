@@ -26,7 +26,7 @@ function Receptioinstdash() {
     <Form/>
    </div>
    
-   <div className="col-lg-3">
+   <div className="col-lg-3 me-3">
 
   <Doctor/>
 </div>

@@ -19,6 +19,7 @@ import ExaminationPatient from "./components/Doctor/Examination/ExaminationPatie
 import ExaminationDashBoardPatient from "./components/Doctor/Examination/ExaminationDashBoardPatient";
 import ExaminationDashBoardPediatric from "./components/Doctor/Examination/ExaminationDashBoardPediatric";
 import TreatmentDashBoard from "./components/Doctor/Treatment/TreatmentDashBoard";
+import PrescriptionDashBoard from "./components/Doctor/Prescription/PrescriptionDashBoard";
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
       <Route path="/ExaminationDashBoardPatient" element={<ExaminationDashBoardPatient />} />
       <Route path="/ExaminationDashBoardPediatric" element={<ExaminationDashBoardPediatric />} />
       <Route path="/TreatmentDashBoard" element={<TreatmentDashBoard />} />
+      <Route path="/PrescriptionDashBoard" element={<PrescriptionDashBoard />} />
 
       {/* ****************** Doctor Routes End Here ******************* */}
     </Routes>

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { SiAddthis } from "react-icons/si";
 import { AiOutlineAccountBook } from "react-icons/ai";
 import { SiCodereview } from "react-icons/si";
-import { ImLab } from "react-icons/im";
+// import { ImLab } from "react-icons/im";
 import { FaHistory } from "react-icons/fa";
 
 const Sider = () => {
@@ -92,7 +92,7 @@ const Sider = () => {
                 </div>
               </Link>
             </li>
-            <hr />
+            {/* <hr />
             <li>
               <Link
                 to="/bill_section"
@@ -107,12 +107,12 @@ const Sider = () => {
                   </h3>
                 </div>
               </Link>
-            </li>
+            </li> */}
             <hr />
             <li>
               <Link
-                to="/superadmin-branch"
-                className={`link-div ${getSidebarClass("/superadmin-branch")}`}
+                to="/PrescriptionDashBoard"
+                className={`link-div ${getSidebarClass("/PrescriptionDashBoard")}`}
               >
                 <div>
                   <AiOutlineAccountBook className="fs-1 bi bi-house-door-fill"/>

@@ -358,7 +358,7 @@ const Wrapper = styled.div`
 background-color: white;
 padding:10px;
 width: 100%;
-margin-left: 25px;
+margin-left: 10px;
 border-radius: 5px;
 
 .cal{

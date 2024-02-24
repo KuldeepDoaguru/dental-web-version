@@ -174,7 +174,7 @@ function Doctor() {
 
   return (
     <Wrapper>
-      <div className="widget-area-2 proclinic-box-shadow rounded bg-white px-1 ">
+      <div className="widget-area-2 proclinic-box-shadow rounded bg-white px-1 me-2">
         <h3 className="widget-title text-center">Doctor Available for {formatDate(date)}</h3>
         <div className="d-flex px-2 gap-1">
         <input type="date" class="form-control mr-sm-2 mt-3 mb-2 w-75 m-auto"   value={date} onChange={(e)=>setDate(e.target.value)}/>

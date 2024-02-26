@@ -1,13 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Sider from "../../../components/Sider";
 import Header from "../../../components/Header";
 import { FaSearch } from "react-icons/fa";
+import BranchSelector from "../../../components/BranchSelector";
+import axios from "axios";
+import cogoToast from "cogo-toast";
 
 const TreatmentSetting = () => {
   const [showAddTreatments, setShowAddTreatments] = useState(false);
   const [showEditTreatments, setShowEditTreatments] = useState(false);
+  const [keyword, setkeyword] = useState("");
+  const [treatList, setTreatList] = useState([]);
+  const [trID, setTrID] = useState();
+  const [treatData, setTreatData] = useState({
+    treatName: "",
+    treatCost: "",
+    treatDiscount: "",
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+
+    // Use spread syntax to update only the changed field
+    setTreatData({
+      ...treatData,
+      [name]: value,
+    });
+  };
+
+  console.log(treatData);
 
   const openAddTreatmentsPopup = (index, item) => {
     // setSelectedItem(item);
@@ -15,7 +38,9 @@ const TreatmentSetting = () => {
     setShowAddTreatments(true);
   };
 
-  const openEditTreatmentsPopup = (index, item) => {
+  const openEditTreatmentsPopup = (id) => {
+    console.log(id);
+    setTrID(id);
     // setSelectedItem(item);
     console.log("open pop up");
     setShowEditTreatments(true);
@@ -26,6 +51,58 @@ const TreatmentSetting = () => {
     setShowEditTreatments(false);
   };
 
+  const addTreatments = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:7777/api/v1/super-admin/addTreatment",
+        treatData
+      );
+      console.log(response);
+      cogoToast.success("Treatment Addded Successfully");
+      closeUpdatePopup();
+      treatData.treatName = "";
+      treatData.treatCost = "";
+      treatData.treatDiscount = "";
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getTreatmentList = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:7777/api/v1/super-admin/getTreatmentList"
+      );
+      console.log(data);
+      setTreatList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateTreatmentDetails = async (e, id) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:7777/api/v1/super-admin/updateTreatmentDetails/${id}`,
+        treatData
+      );
+
+      console.log(response);
+      cogoToast.success("Treatment updated successfully");
+      closeUpdatePopup();
+      getTreatmentList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTreatmentList();
+  }, []);
+
+  console.log(trID);
   return (
     <Container>
       <Header />
@@ -36,55 +113,40 @@ const TreatmentSetting = () => {
               <Sider />
             </div>
             <div className="col-lg-11 col-11 ps-0">
-              <div className="container mt-3">
-                <div className="d-flex justify-content-between">
-                  <div className="d-flex">
-                    <div>
-                      <h6>Select Branch : </h6>
-                    </div>
-                    <div>
-                      <select name="branch" id="branch" className="mx-2">
-                        <option value="Madan Mahal">Madan Mahal</option>
-                        <option value="Madan Mahal">Ranjhi</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    {/* <Link to="/superadmin-add-branch">
-                          <button className="btn btn-success">
-                            Add Branch
-                          </button>
-                        </Link> */}
-                  </div>
-                </div>
+              <div className="container-fluid mt-3">
+                <BranchSelector />
               </div>
-              <div className="container mt-3">
+              <div className="container-fluid mt-3">
                 <div className="container-fluid">
                   <div className="row mt-3">
                     {/* <div className="col-1"></div> */}
 
                     <div className="col-12">
                       <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                        <div class="container d-flex justify-content-center">
+                        <div class="container-fluid d-flex justify-content-center">
                           <h2 className="">Treatment Settings</h2>
                         </div>
                       </nav>
                     </div>
-                    <div className="mid-box">
+                    <div className="container-fluid">
                       <div className="row mt-5">
                         <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
                           <input
                             type="text"
                             placeholder="search here"
                             className="inputser"
+                            value={keyword}
+                            onChange={(e) =>
+                              setkeyword(e.target.value.toLowerCase())
+                            }
                           />
-                          <button className="mx-2 btn btn-info">
+                          <button className="mx-2 btn btn-info btnback">
                             <FaSearch />
                           </button>
                         </div>
                         <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
                           <button
-                            className="btn btn-info"
+                            className="btn btn-info btnback"
                             onClick={() => openAddTreatmentsPopup()}
                           >
                             Add Treatment
@@ -107,138 +169,64 @@ const TreatmentSetting = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno" style={{ width: "10%" }}>
-                              Treatment ID
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Treatment Name
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Cost(INR)
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
+                            <th className="table-sno">Treatment ID</th>
+                            <th className="table-small">Treatment Name</th>
+                            <th className="table-small">Cost(INR)</th>
+                            <th className="table-small">
                               Maximum Discount To give
                             </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Actions
-                            </th>
+                            <th className="table-small">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              1
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Consultation
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              500
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              0
-                            </td>
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditTreatmentsPopup()}
-                              >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              1
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Consultation
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              500
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              0
-                            </td>
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditTreatmentsPopup()}
-                              >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              1
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Consultation
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              500
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              0
-                            </td>
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditTreatmentsPopup()}
-                              >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
+                          {treatList
+                            ?.filter((val) => {
+                              if (keyword === "") {
+                                return true;
+                              } else if (
+                                val.treatment_name
+                                  .toLowerCase()
+                                  .includes(keyword) ||
+                                val.treatment_name
+                                  .toLowerCase()
+                                  .includes(keyword)
+                              ) {
+                                return val;
+                              }
+                            })
+                            .map((item) => (
+                              <>
+                                <tr className="table-row">
+                                  <td className="table-sno">
+                                    {item.treatment_id}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.treatment_name}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.treatment_cost}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.treatment_discount}
+                                  </td>
+                                  <td>
+                                    <button
+                                      className="btn btn-warning"
+                                      onClick={() =>
+                                        openEditTreatmentsPopup(
+                                          item.treatment_id
+                                        )
+                                      }
+                                    >
+                                      Edit
+                                    </button>
+                                    <button className="btn btn-danger mx-1">
+                                      Delete
+                                    </button>
+                                  </td>
+                                </tr>
+                              </>
+                            ))}
                         </tbody>
                       </table>
                     </div>
@@ -255,6 +243,7 @@ const TreatmentSetting = () => {
           <div className="popup">
             <h4 className="text-center">Add Treatment</h4>
             <form
+              onSubmit={addTreatments}
               className="d-flex flex-column"
               // onSubmit={handleNoticeSubmit}
             >
@@ -262,39 +251,27 @@ const TreatmentSetting = () => {
                 type="text"
                 placeholder="Add Treatment Name"
                 className="rounded p-2"
-                // value={noticeData.linkURL}
-                // onChange={(e) =>
-                //   setNoticeData({
-                //     ...noticeData,
-                //     linkURL: e.target.value,
-                //   })
-                // }
+                name="treatName"
+                value={treatData.treatName}
+                onChange={handleInputChange}
               />
               <br />
               <input
                 type="text"
                 placeholder="Add Cost"
                 className="rounded p-2"
-                // value={noticeData.linkURL}
-                // onChange={(e) =>
-                //   setNoticeData({
-                //     ...noticeData,
-                //     linkURL: e.target.value,
-                //   })
-                // }
+                name="treatCost"
+                value={treatData.treatCost}
+                onChange={handleInputChange}
               />
               <br />
               <input
                 type="text"
                 placeholder="Max Discount to give"
                 className="rounded p-2"
-                // value={noticeData.linkURL}
-                // onChange={(e) =>
-                //   setNoticeData({
-                //     ...noticeData,
-                //     linkURL: e.target.value,
-                //   })
-                // }
+                name="treatDiscount"
+                value={treatData.treatDiscount}
+                onChange={handleInputChange}
               />
               <br />
 
@@ -327,45 +304,33 @@ const TreatmentSetting = () => {
             <h4 className="text-center">Edit Drugs Details</h4>
             <form
               className="d-flex flex-column"
-              // onSubmit={handleNoticeSubmit}
+              onSubmit={(e) => updateTreatmentDetails(e, trID)}
             >
               <input
                 type="text"
                 placeholder="Add Treatment Name"
                 className="rounded p-2"
-                // value={noticeData.linkURL}
-                // onChange={(e) =>
-                //   setNoticeData({
-                //     ...noticeData,
-                //     linkURL: e.target.value,
-                //   })
-                // }
+                name="treatName"
+                value={treatData.treatName}
+                onChange={handleInputChange}
               />
               <br />
               <input
                 type="text"
                 placeholder="Add Cost"
                 className="rounded p-2"
-                // value={noticeData.linkURL}
-                // onChange={(e) =>
-                //   setNoticeData({
-                //     ...noticeData,
-                //     linkURL: e.target.value,
-                //   })
-                // }
+                name="treatCost"
+                value={treatData.treatCost}
+                onChange={handleInputChange}
               />
               <br />
               <input
                 type="text"
                 placeholder="Max Discount to give"
                 className="rounded p-2"
-                // value={noticeData.linkURL}
-                // onChange={(e) =>
-                //   setNoticeData({
-                //     ...noticeData,
-                //     linkURL: e.target.value,
-                //   })
-                // }
+                name="treatDiscount"
+                value={treatData.treatDiscount}
+                onChange={handleInputChange}
               />
               <br />
 
@@ -436,5 +401,10 @@ const Container = styled.div`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .btnback {
+    background: #004aad;
+    color: white;
   }
 `;

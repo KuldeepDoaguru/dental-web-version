@@ -91,6 +91,7 @@ const App = () => {
     const branch = JSON.parse(selectedBranch);
     dispatch(setBranch(branch));
   }
+  
   // const [role, setRole] = useState("admin");
   return (
     <BrowserRouter>

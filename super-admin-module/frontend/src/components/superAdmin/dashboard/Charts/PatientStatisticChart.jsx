@@ -1,8 +1,9 @@
-import React, { PureComponent } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   BarChart,
   Bar,
-  Rectangle,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -13,81 +14,78 @@ import {
 import styled from "styled-components";
 
 const PatientStatisticChart = () => {
-  const data = [
-    {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [appointmentList, setAppointmentList] = useState([]);
+
+  useEffect(() => {
+    const getAppointList = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:7777/api/v1/super-admin/getAppointmentData/${branch.name}`
+        );
+        setAppointmentList(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getAppointList();
+  }, [branch.name]);
+
+  const getDate = new Date();
+  const year = getDate.getFullYear();
+  const month = String(getDate.getMonth() + 1).padStart(2, "0");
+  const lastDay = new Date(year, month, 0).getDate(); // Last day of the current month
+  const formattedDate = `${year}-${month}`;
+
+  const filterByTreated = appointmentList?.filter(
+    (item) => item.treatment_status === "Treated"
+  );
+
+  // Group appointments by date and count appointments for each day
+  const dailyAppointments = filterByTreated.reduce((acc, appointment) => {
+    const date = appointment.apointment_date_time.split("T")[0];
+    acc[date] = acc[date] ? acc[date] + 1 : 1;
+    return acc;
+  }, {});
+
+  // Create an array containing data for all days of the month
+  const data = Array.from({ length: lastDay }, (_, index) => {
+    const day = String(index + 1).padStart(2, "0");
+    const date = `${formattedDate}-${day}`;
+    return {
+      date,
+      patients: dailyAppointments[date] || 0,
+    };
+  });
+
   return (
     <Wrapper>
       <div className="container-fluid mt-4" id="main">
         <div className="row">
           <div className="col-12 d-flex justify-content-center">
             <BarChart
-              width={350}
+              width={400}
               height={300}
               data={data}
               margin={{
                 top: 5,
-                right: 10,
-                left: 10,
+                right: 30,
+                left: 0,
                 bottom: 5,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
+              <XAxis dataKey="date" /> {/* Corrected dataKey */}
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar
-                dataKey="pv"
-                fill="#004aad"
-                activeBar={<Rectangle fill="pink" stroke="blue" />}
-              />
-              <Bar
-                dataKey="uv"
-                fill="#257042"
-                activeBar={<Rectangle fill="gold" stroke="purple" />}
-              />
+              <Bar dataKey="patients" fill="#8884d8" />
             </BarChart>
           </div>
         </div>

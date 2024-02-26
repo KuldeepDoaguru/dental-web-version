@@ -468,9 +468,10 @@ const makeAppointents = (req, res) => {
 };
 
 const appointmentData = (req, res) => {
+  const branchName = req.params.branch;
   try {
-    const getQuery = "SELECT * FROM apointments";
-    db.query(getQuery, (err, result) => {
+    const getQuery = "SELECT * FROM apointments WHERE branch_name = ?";
+    db.query(getQuery, branchName, (err, result) => {
       if (err) {
         res
           .status(400)
@@ -484,6 +485,233 @@ const appointmentData = (req, res) => {
   }
 };
 
+const getAvailableEmp = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery = "SELECT * FROM employee_attendance WHERE branch";
+    db.query(getQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const addTreatment = (req, res) => {
+  try {
+    const { treatName, treatCost, treatDiscount } = req.body;
+    const requiredFields = [treatName, treatCost, treatDiscount];
+    if (requiredFields.some((field) => !field)) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const selectQuery = "SELECT * FROM treatment_list WHERE treatment_name = ?";
+    db.query(selectQuery, [treatName], (err, result) => {
+      if (err) {
+        res.status(500).json({ success: false, error: err.message });
+      } else {
+        if (result.length > 0) {
+          return res
+            .status(400)
+            .send(result.message, "Treatment already exists");
+        } else {
+          const InsertQuery = `INSERT INTO treatment_list (treatment_name,	treatment_cost,	treatment_discount) VALUES (?, ?, ?)`;
+
+          const InsertUserParams = [treatName, treatCost, treatDiscount];
+          db.query(InsertQuery, InsertUserParams, (errInsert, resultInsert) => {
+            if (errInsert) {
+              res.status(400).json({
+                success: false,
+                message: "error while inserting treatment",
+              });
+            } else {
+              res.status(200).send(resultInsert);
+            }
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ success: false, message: "Internal server error" });
+  }
+};
+
+const getTreatmentList = (req, res) => {
+  try {
+    const getQuery = "SELECT * FROM treatment_list";
+    db.query(getQuery, (err, result) => {
+      if (err) {
+        res.status(400).send(err.message);
+      } else {
+        res.status(200).send(result);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const updateTreatmentDetails = (req, res) => {
+  try {
+    const treatID = req.params.id;
+    const { treatName, treatCost, treatDiscount } = req.body;
+
+    const selectQuery = "SELECT * FROM treatment_list WHERE treatment_id = ?";
+    db.query(selectQuery, [treatID], (err, result) => {
+      if (err) {
+        res.status(400).send(err);
+      } else {
+        if (result && result.length > 0) {
+          const updateFields = [];
+          const updateValues = [];
+
+          if (treatName) {
+            updateFields.push("treatment_name = ?");
+            updateValues.push(treatName);
+          }
+
+          if (treatCost) {
+            updateFields.push("treatment_cost = ?");
+            updateValues.push(treatCost);
+          }
+
+          if (treatDiscount) {
+            updateFields.push("treatment_discount = ?");
+            updateValues.push(treatDiscount);
+          }
+
+          const updateQuery = `UPDATE treatment_list SET ${updateFields.join(
+            ", "
+          )} WHERE treatment_id = ?`;
+
+          db.query(updateQuery, [...updateValues, treatID], (err, result) => {
+            if (err) {
+              return res
+                .status(500)
+                .json({ success: false, message: "failed to update details" });
+            } else {
+              return res.status(200).json({
+                success: true,
+                message: "Details updated successfully",
+              });
+            }
+          });
+        } else {
+          return res
+            .status(404)
+            .json({ success: false, message: "treatment not found" });
+        }
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getPatientDetailsByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery = `SELECT * FROM patient_details WHERE branch_name = ?`;
+    db.query(getQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).send(err);
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const purchaseInventory = (req, res) => {
+  try {
+    const {
+      item_name,
+      item_category,
+      item_mrp,
+      item_code,
+      HSN_code,
+      pur_quantity,
+      discount,
+      total_amount,
+      branch_name,
+      distributor_name,
+      distributor_number,
+      purchase_date,
+    } = req.body;
+
+    // Validations
+    const requiredFields = [
+      item_name,
+      item_category,
+      item_mrp,
+      item_code,
+      HSN_code,
+      pur_quantity,
+      total_amount,
+      branch_name,
+      distributor_name,
+      distributor_number,
+      purchase_date,
+    ];
+    if (requiredFields.some((field) => !field)) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const insertQuery =
+      "INSERT INTO purchase_inventory (item_name, item_category, item_mrp, item_code, HSN_code, pur_quantity, discount, total_amount,  branch_name, distributor_name, distributor_number,purchase_date	) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+
+    const insertParams = [
+      item_name,
+      item_category,
+      item_mrp,
+      item_code,
+      HSN_code,
+      pur_quantity,
+      discount,
+      total_amount,
+      branch_name,
+      distributor_name,
+      distributor_number,
+      purchase_date,
+    ];
+
+    db.query(insertQuery, insertParams, (err, result) => {
+      if (err) {
+        res.status(400).send({ success: false, message: err.message });
+      }
+      res.status(200).send({ success: true, result: result });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ success: false, message: "Internal server error" });
+  }
+};
+
+const getPurInventoryByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery = "SELECT * FROM purchase_inventory WHERE branch_name = ?";
+    db.query(getQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).send({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   EnrollEmployee,
   EditEmployeeDetails,
@@ -494,4 +722,11 @@ module.exports = {
   getBranch,
   makeAppointents,
   appointmentData,
+  getAvailableEmp,
+  addTreatment,
+  getTreatmentList,
+  updateTreatmentDetails,
+  getPatientDetailsByBranch,
+  purchaseInventory,
+  getPurInventoryByBranch,
 };

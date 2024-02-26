@@ -9,6 +9,13 @@ const {
   getBranch,
   makeAppointents,
   appointmentData,
+  getAvailableEmp,
+  addTreatment,
+  getTreatmentList,
+  updateTreatmentDetails,
+  getPatientDetailsByBranch,
+  purchaseInventory,
+  getPurInventoryByBranch,
 } = require("../../controllers/superAdminController/superAdminController");
 // const multer = require("multer");
 
@@ -22,6 +29,12 @@ router.post("/sendOtp", sendOtp);
 router.post("/verifyOtp", verifyOtp);
 router.get("/getBranch", getBranch);
 router.post("/makeAppointents", makeAppointents);
-router.get("/getAppointmentData", appointmentData);
-
+router.get("/getAppointmentData/:branch", appointmentData);
+router.get("/getAvailableEmp/:branch", getAvailableEmp);
+router.post("/addTreatment", addTreatment);
+router.get("/getTreatmentList", getTreatmentList);
+router.put("/updateTreatmentDetails/:id", updateTreatmentDetails);
+router.get("/getPatientDetailsByBranch/:branch", getPatientDetailsByBranch);
+router.post("/purchaseInventory", purchaseInventory);
+router.get("/getPurInventoryByBranch/:branch", getPurInventoryByBranch);
 module.exports = router;

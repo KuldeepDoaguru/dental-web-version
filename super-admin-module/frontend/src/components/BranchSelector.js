@@ -7,10 +7,10 @@ import { setBranch } from "../redux/slices/BranchSlicer";
 const BranchSelector = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  // console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  // console.log(`User Name: ${branch.name}`);
   const [branchList, setBranchList] = useState();
   const [selectedBranch, setSelectedBranch] = useState();
 
@@ -25,8 +25,11 @@ const BranchSelector = () => {
       console.log(error);
     }
   };
+
   const branchData = {
-    name: selectedBranch,
+    name:
+      selectedBranch ||
+      (branchList?.length > 0 ? branchList[0].branch_name : ""),
   };
   localStorage.setItem("branchName", JSON.stringify(branchData));
   dispatch(setBranch(branchData));
@@ -36,8 +39,8 @@ const BranchSelector = () => {
     getBranchList();
   }, []);
 
-  console.log(branchList);
-  console.log(selectedBranch);
+  // console.log(branchList);
+  // console.log(selectedBranch);
 
   return (
     <>
@@ -55,9 +58,9 @@ const BranchSelector = () => {
                 value={selectedBranch}
                 onChange={(e) => setSelectedBranch(e.target.value)}
               >
-                <option value="select-branch" className="fw-bold">
+                {/* <option value="select-branch" className="fw-bold">
                   select-branch
-                </option>
+                </option> */}
                 {branchList?.map((branch) => (
                   <option key={branch.branch_name} value={branch.branch_name}>
                     {branch.branch_name}
@@ -80,4 +83,11 @@ const BranchSelector = () => {
 };
 
 export default BranchSelector;
-const Container = styled.div``;
+const Container = styled.div`
+  .select-style {
+    border: none;
+    background-color: #22a6b3;
+    font-weight: bold;
+    color: white;
+  }
+`;

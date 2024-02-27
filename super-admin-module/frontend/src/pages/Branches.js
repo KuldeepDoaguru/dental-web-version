@@ -123,7 +123,7 @@ const Branches = () => {
                     {/* popup for updating notice */}
 
                     <h2 className="text-center"> Branch List </h2>
-                    <div className="container mt-3">
+                    <div className="container-fluid mt-3">
                       <div class="table-responsive rounded">
                         <table class="table table-bordered rounded shadow">
                           <thead className="table-head">
@@ -259,6 +259,11 @@ const Container = styled.div`
     border: none;
     background-color: #22a6b3;
     font-weight: bold;
+    color: white;
+  }
+
+  th {
+    background-color: #004aad;
     color: white;
   }
 `;

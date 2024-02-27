@@ -1,12 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import { Link } from "react-router-dom";
 import BranchSelector from "../../components/BranchSelector";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Apointment = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [appointmentList, setAppointmentList] = useState([]);
+  const [updateData, setUpdateData] = useState({
+    branch: "",
+    patientName: "",
+    patContact: "",
+    assignedDoc: "",
+    treatProvide: "",
+    treatStatus: "",
+    payStatus: "",
+    payDateTime: "",
+    appointedBy: "",
+    appointDateTime: "",
+  });
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setUpdateData({
+      ...updateData,
+      [name]: value,
+    });
+  };
 
   const openUpdatePopup = (index, item) => {
     // setSelectedItem(item);
@@ -16,6 +41,25 @@ const Apointment = () => {
   const closeUpdatePopup = () => {
     setShowPopup(false);
   };
+
+  const getAppointList = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getAppointmentData/${branch.name}`
+      );
+      console.log(response.data);
+      setAppointmentList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAppointList();
+  }, [branch.name]);
+
+  console.log(appointmentList);
+  console.log(updateData);
 
   return (
     <>
@@ -33,113 +77,6 @@ const Apointment = () => {
                     <div className="d-flex justify-content-between">
                       <BranchSelector />
                     </div>
-
-                    {/* pop-up for creating notice */}
-                    <div
-                      className={`popup-container${showPopup ? " active" : ""}`}
-                    >
-                      <div className="popup">
-                        <h2>Update Apointment Details</h2>
-                        <form
-                          className="d-flex flex-column"
-                          // onSubmit={handleNoticeSubmit}
-                        >
-                          <label htmlFor="">Select Branch</label>
-                          <select
-                            type="text"
-                            placeholder="branch name"
-                            className="rounded p-1"
-                            // value={noticeData.linkURL}
-                            // onChange={(e) =>
-                            //   setNoticeData({
-                            //     ...noticeData,
-                            //     linkURL: e.target.value,
-                            //   })
-                            // }
-                          >
-                            <option value="Madan Mahal">Madan Mahal</option>
-                            <option value="Ranjhi">Ranjhi</option>
-                          </select>
-                          <br />
-                          <label htmlFor="">Select Doctor</label>
-                          <select
-                            type="text"
-                            placeholder=""
-                            className="rounded p-1"
-                            // value={noticeData.linkURL}
-                            // onChange={(e) =>
-                            //   setNoticeData({
-                            //     ...noticeData,
-                            //     linkURL: e.target.value,
-                            //   })
-                            // }
-                          >
-                            <option value="Shubham singh">Shubham singh</option>
-                            <option value="Mohit singh">Mohit singh</option>
-                          </select>
-                          <br />
-                          <label htmlFor="">Update Patient Name</label>
-                          <input
-                            type="text"
-                            placeholder="update Patient Name"
-                            className="rounded p-1"
-                            // value={noticeData.linkURL}
-                            // onChange={(e) =>
-                            //   setNoticeData({
-                            //     ...noticeData,
-                            //     linkURL: e.target.value,
-                            //   })
-                            // }
-                          />
-                          <br />
-                          <label htmlFor="">Update Patient Number</label>
-                          <input
-                            type="text"
-                            placeholder="update Patient contact number"
-                            className="rounded p-1"
-                            // value={noticeData.linkURL}
-                            // onChange={(e) =>
-                            //   setNoticeData({
-                            //     ...noticeData,
-                            //     linkURL: e.target.value,
-                            //   })
-                            // }
-                          />
-                          <br />
-                          <label htmlFor="">Update Date and Time</label>
-                          <input
-                            type="date"
-                            placeholder="update date and time"
-                            className="rounded p-1"
-                            // value={noticeData.linkURL}
-                            // onChange={(e) =>
-                            //   setNoticeData({
-                            //     ...noticeData,
-                            //     linkURL: e.target.value,
-                            //   })
-                            // }
-                          />
-                          <br />
-                          <div className="d-flex justify-content-evenly">
-                            <button
-                              type="submit"
-                              className="btn btn-success mt-2"
-                            >
-                              update
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-danger mt-2"
-                              onClick={closeUpdatePopup}
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-
-                    {/* popup for updating notice */}
 
                     <h2 className="text-center"> Appointment Details </h2>
                     <div className="container-fluid mt-3">
@@ -172,151 +109,59 @@ const Apointment = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="table-row">
-                              <td className="table-sno">1</td>
-                              <td className="table-small">Shubham</td>
-                              <td>007</td>
-                              <td className="table-small">Dev ansh</td>
-                              <td className="table-small">8602161019</td>
-                              <td className="table-small">Treated</td>
-                              <td className="table-small">Payment Complete</td>
-                              <td className="table-small">
-                                12/12/2024 12:00PM
-                              </td>
-                              <td className="table-small">2 injections</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">09-02-2024</td>
-                              <td className="table-small">
-                                <button
-                                  className="btn btn-warning"
-                                  onClick={() => openUpdatePopup()}
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button className="btn btn-danger">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
-                            <tr className="table-row">
-                              <td className="table-sno">1</td>
-                              <td className="table-small">Shubham</td>
-                              <td>007</td>
-                              <td className="table-small">Dev ansh</td>
-                              <td className="table-small">8602161019</td>
-                              <td className="table-small">Treated</td>
-                              <td className="table-small">Payment Complete</td>
-                              <td className="table-small">
-                                12/12/2024 12:00PM
-                              </td>
-                              <td className="table-small">2 injections</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">09-02-2024</td>
-                              <td className="table-small">
-                                <button
-                                  className="btn btn-warning"
-                                  onClick={() => openUpdatePopup()}
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button className="btn btn-danger">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
-                            <tr className="table-row">
-                              <td className="table-sno">1</td>
-                              <td className="table-small">Shubham</td>
-                              <td>007</td>
-                              <td className="table-small">Dev ansh</td>
-                              <td className="table-small">8602161019</td>
-                              <td className="table-small">Treated</td>
-                              <td className="table-small">Payment Complete</td>
-                              <td className="table-small">
-                                12/12/2024 12:00PM
-                              </td>
-                              <td className="table-small">2 injections</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">09-02-2024</td>
-                              <td className="table-small">
-                                <button
-                                  className="btn btn-warning"
-                                  onClick={() => openUpdatePopup()}
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button className="btn btn-danger">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
-                            <tr className="table-row">
-                              <td className="table-sno">1</td>
-                              <td className="table-small">Shubham</td>
-                              <td>007</td>
-                              <td className="table-small">Dev ansh</td>
-                              <td className="table-small">8602161019</td>
-                              <td className="table-small">Treated</td>
-                              <td className="table-small">Payment Complete</td>
-                              <td className="table-small">
-                                12/12/2024 12:00PM
-                              </td>
-                              <td className="table-small">2 injections</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">09-02-2024</td>
-                              <td className="table-small">
-                                <button
-                                  className="btn btn-warning"
-                                  onClick={() => openUpdatePopup()}
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button className="btn btn-danger">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
-                            <tr className="table-row">
-                              <td className="table-sno">1</td>
-                              <td className="table-small">Shubham</td>
-                              <td>007</td>
-                              <td className="table-small">Dev ansh</td>
-                              <td className="table-small">8602161019</td>
-                              <td className="table-small">Treated</td>
-                              <td className="table-small">Payment Complete</td>
-                              <td className="table-small">
-                                12/12/2024 12:00PM
-                              </td>
-                              <td className="table-small">2 injections</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">09-02-2024</td>
-                              <td className="table-small">
-                                <button
-                                  className="btn btn-warning"
-                                  onClick={() => openUpdatePopup()}
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button className="btn btn-danger">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
+                            {appointmentList?.map((item) => (
+                              <>
+                                <tr className="table-row">
+                                  <td className="table-sno">
+                                    {item.appoint_id}
+                                  </td>
+                                  <td className="table-small">{item.uhid}</td>
+                                  <td>{item.patient_name}</td>
+                                  <td className="table-small">
+                                    {item.patient_contact}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.assigned_doctor}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.treatment_provided}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.treatment_status}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.payment_status}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.payment_date_time?.split("T")[0]}{" "}
+                                    {item.payment_date_time?.split("T")[1]}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.appointed_by}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.updated_by ? item.updated_by : "-"}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.apointment_date_time?.split("T")[0]}{" "}
+                                    {item.apointment_date_time?.split("T")[1]}
+                                  </td>
+                                  <td className="table-small">
+                                    <button
+                                      className="btn btn-warning"
+                                      onClick={() => openUpdatePopup()}
+                                    >
+                                      Edit
+                                    </button>
+                                  </td>
+                                  <td className="table-small">
+                                    <button className="btn btn-danger">
+                                      Delete
+                                    </button>
+                                  </td>
+                                </tr>
+                              </>
+                            ))}
                           </tbody>
                         </table>
                       </div>
@@ -326,6 +171,125 @@ const Apointment = () => {
               </div>
             </div>
           </div>
+          {/* ******************************************************************************************* */}
+          {/* pop-up for creating notice */}
+          <div className={`popup-container${showPopup ? " active" : ""}`}>
+            <div className="popup">
+              <h2>Update Apointment Details</h2>
+              <form
+                className="d-flex flex-column"
+                // onSubmit={handleNoticeSubmit}
+              >
+                <div className="d-flex">
+                  <div className="d-flex flex-column input-group mb-3">
+                    <label htmlFor="">Select Branch</label>
+                    <select
+                      type="text"
+                      placeholder="branch name"
+                      className="rounded p-1"
+                    >
+                      <option value={branch.name}>{branch.name}</option>
+                    </select>
+                  </div>
+                  <div className="input-group mb-3 mx-2">
+                    <label htmlFor="">Update Patient Name</label>
+                    <input
+                      type="text"
+                      name="patientName"
+                      placeholder="update Patient Name"
+                      className="rounded p-1 w-100"
+                      value={updateData.patientName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+
+                <div className="d-flex">
+                  <div className="d-flex flex-column input-group mb-3">
+                    <label htmlFor="">Update Patient Number</label>
+                    <input
+                      type="text"
+                      placeholder="update Patient contact number"
+                      className="rounded p-1 w-100"
+                    />
+                  </div>
+                  <div className="input-group mb-3 mx-2">
+                    <label htmlFor="">Update Assigned Doctor</label>
+                    <select name="" id="" className="rounded p-1 w-100">
+                      <option value="">dev</option>
+                      <option value="">mohit</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="d-flex">
+                  <div className="input-group mb-3">
+                    <label htmlFor="">Treatment Provided</label>
+                    <select name="" id="" className="rounded p-1 w-100">
+                      <option value="">test</option>
+                      <option value="">test1</option>
+                    </select>
+                  </div>
+                  <div className="input-group mb-3 mx-2">
+                    <label htmlFor="">Treatment Status</label>
+                    <select name="" id="" className="rounded p-1 w-100">
+                      <option value="">test</option>
+                      <option value="">test1</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="d-flex">
+                  <div className="input-group mb-3">
+                    <label htmlFor="">Payment Status</label>
+                    <select name="" id="" className="rounded p-1 w-100">
+                      <option value="">test</option>
+                      <option value="">test1</option>
+                    </select>
+                  </div>
+                  <div className="input-group mb-3 mx-2">
+                    <label htmlFor="">Payment Date & Time</label>
+                    <input
+                      type="date"
+                      placeholder="update Patient Name"
+                      className="rounded p-1 w-100"
+                    />
+                  </div>
+                </div>
+                <div className="d-flex">
+                  <div className="input-group mb-3">
+                    <label htmlFor="">Appointed by</label>
+                    <input
+                      type="text"
+                      placeholder="Appointed by"
+                      className="rounded p-1 w-100"
+                    />
+                  </div>
+                  <div className="input-group mb-3 mx-2">
+                    <label htmlFor="">Appointment Date & Time</label>
+                    <input
+                      type="date"
+                      placeholder="update Patient Name"
+                      className="rounded p-1 w-100"
+                    />
+                  </div>
+                </div>
+                <div className="d-flex justify-content-evenly">
+                  <button type="submit" className="btn btn-success mt-2">
+                    update
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger mt-2"
+                    onClick={closeUpdatePopup}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          {/* popup for updating notice */}
+          {/* **************************************************************************************************** */}
         </div>
       </Container>
     </>
@@ -368,5 +332,9 @@ const Container = styled.div`
     background-color: #22a6b3;
     font-weight: bold;
     color: white;
+  }
+
+  label {
+    font-weight: bold;
   }
 `;

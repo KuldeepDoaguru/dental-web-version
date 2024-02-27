@@ -105,6 +105,42 @@ const ClinicActivity = () => {
     getPatdetailsByBranch();
   }, [branch.name]);
 
+  console.log(currentDate);
+
+  //filter for day wise Appointment
+  const filterAppointment = appointmentList?.filter((item) => {
+    return item.apointment_date_time?.split("T")[0] === currentDate;
+  });
+
+  console.log(filterAppointment);
+
+  //filter for day wise Treatment
+  const filterTreatment = appointmentList?.filter((item) => {
+    return (
+      item.apointment_date_time?.split("T")[0] === currentDate &&
+      item.treatment_status === "Treated"
+    );
+  });
+
+  console.log(filterTreatment);
+
+  //filter for day wise billing
+  const filterBilling = appointmentList?.filter((item) => {
+    return (
+      item.apointment_date_time?.split("T")[0] === currentDate &&
+      item.payment_status === "success"
+    );
+  });
+
+  console.log(filterBilling);
+
+  //filter for day wise patient registeration
+  const filterPatient = patDetails?.filter((item) => {
+    return item.regdatetime?.split("T")[0] === currentDate;
+  });
+
+  console.log(filterPatient);
+
   return (
     <>
       <Container>
@@ -112,16 +148,21 @@ const ClinicActivity = () => {
           <div className="clinic-act-heading">
             <div>
               <h5>
-                <FcAlarmClock /> Clinic Activity for 09/02/2024
+                <FcAlarmClock /> Clinic Activity for {currentDate}
               </h5>
             </div>
             <div>
               <h5>
-                09/02/2024 <IoIosArrowDropdownCircle onClick={handleCalender} />
+                {currentDate}{" "}
+                <IoIosArrowDropdownCircle onClick={handleCalender} />
               </h5>
               {showCalender ? (
                 <>
-                  <input type="date" />
+                  <input
+                    type="date"
+                    name="currentDate"
+                    onChange={(e) => setCurrentDate(e.target.value)}
+                  />
                 </>
               ) : (
                 <></>
@@ -209,79 +250,6 @@ const ClinicActivity = () => {
             className="tab-content border ms-3 me-3 my-3 mb-5"
             id="pills-tabContent"
           >
-            {/* <div
-              className="container-fluid pe-5 ps-5 my-3 mb-3 py-4 pb-4 tab-pane fade show active"
-              id="pills-python"
-              role="tabpanel"
-              aria-labelledby="pills-python-tab"
-            >
-              <ul>
-                <li>
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <h4>
-                        <FaDotCircle className="mx-1" /> Welcome to Dental Guru!
-                      </h4>
-                    </div>
-                    <div>
-                      <p>10 hours ago</p>
-                    </div>
-                  </div>
-                </li>
-                <hr />
-                <li>
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <h4>
-                        <FaDotCircle className="mx-1" /> Welcome to Dental Guru!
-                      </h4>
-                    </div>
-                    <div>
-                      <p>10 hours ago</p>
-                    </div>
-                  </div>
-                </li>
-                <hr />
-                <li>
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <h4>
-                        <FaDotCircle className="mx-1" /> Welcome to Dental Guru!
-                      </h4>
-                    </div>
-                    <div>
-                      <p>10 hours ago</p>
-                    </div>
-                  </div>
-                </li>
-                <hr />
-                <li>
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <h4>
-                        <FaDotCircle className="mx-1" /> Welcome to Dental Guru!
-                      </h4>
-                    </div>
-                    <div>
-                      <p>10 hours ago</p>
-                    </div>
-                  </div>
-                </li>
-                <hr />
-                <li>
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <h4>
-                        <FaDotCircle className="mx-1" /> Welcome to Dental Guru!
-                      </h4>
-                    </div>
-                    <div>
-                      <p>10 hours ago</p>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div> */}
             <div
               className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade"
               id="pills-java"
@@ -289,7 +257,7 @@ const ClinicActivity = () => {
               aria-labelledby="pills-java-tab"
             >
               <ul>
-                {appointmentList?.map((item) => (
+                {filterAppointment?.map((item) => (
                   <>
                     <li>
                       <div className="d-flex justify-content-between">
@@ -324,7 +292,7 @@ const ClinicActivity = () => {
               aria-labelledby="pills-treatment-tab"
             >
               <ul>
-                {appointmentList?.map((item) => (
+                {filterTreatment?.map((item) => (
                   <>
                     <li>
                       <div className="d-flex justify-content-between">
@@ -360,7 +328,7 @@ const ClinicActivity = () => {
               aria-labelledby="pills-billing-tab"
             >
               <ul>
-                {appointmentList?.map((item) => (
+                {filterBilling?.map((item) => (
                   <>
                     <li>
                       <div className="d-flex justify-content-between">
@@ -395,7 +363,7 @@ const ClinicActivity = () => {
               aria-labelledby="pills-Patient-tab"
             >
               <ul>
-                {patDetails?.map((item) => (
+                {filterPatient?.map((item) => (
                   <>
                     <li>
                       <div className="d-flex justify-content-between">

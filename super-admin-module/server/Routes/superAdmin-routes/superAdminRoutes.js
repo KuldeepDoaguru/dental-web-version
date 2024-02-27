@@ -16,6 +16,8 @@ const {
   getPatientDetailsByBranch,
   purchaseInventory,
   getPurInventoryByBranch,
+  addEmployeeComplain,
+  getEmployeeComplainByBranch,
 } = require("../../controllers/superAdminController/superAdminController");
 // const multer = require("multer");
 
@@ -37,4 +39,6 @@ router.put("/updateTreatmentDetails/:id", updateTreatmentDetails);
 router.get("/getPatientDetailsByBranch/:branch", getPatientDetailsByBranch);
 router.post("/purchaseInventory", purchaseInventory);
 router.get("/getPurInventoryByBranch/:branch", getPurInventoryByBranch);
+router.post("/addEmployeeComplain", addEmployeeComplain);
+router.get("/getEmployeeComplainByBranch/:branch", getEmployeeComplainByBranch);
 module.exports = router;

@@ -712,6 +712,64 @@ const getPurInventoryByBranch = (req, res) => {
   }
 };
 
+const addEmployeeComplain = (req, res) => {
+  try {
+    const { emp_id, employee_name, branch_name, complain, rec_on, status } =
+      req.body;
+
+    // Validations
+    const requiredFields = [
+      emp_id,
+      employee_name,
+      branch_name,
+      complain,
+      rec_on,
+      status,
+    ];
+    if (requiredFields.some((field) => !field)) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const insertQuery =
+      "INSERT INTO employee_complaints (emp_id, employee_name, branch_name, complain, rec_on, status) VALUES (?,?,?,?,?,?)";
+
+    const insertParams = [
+      emp_id,
+      employee_name,
+      branch_name,
+      complain,
+      rec_on,
+      status,
+    ];
+
+    db.query(insertQuery, insertParams, (err, result) => {
+      if (err) {
+        return res.status(400).send({ success: false, message: err.message });
+      }
+      res.status(200).send({ success: true, result: result });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ success: false, message: "Internal server error" });
+  }
+};
+
+const getEmployeeComplainByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery = "SELECT * FROM employee_complaints WHERE branch_name = ?";
+    db.query(getQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).send({ success: false, error: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   EnrollEmployee,
   EditEmployeeDetails,
@@ -729,4 +787,6 @@ module.exports = {
   getPatientDetailsByBranch,
   purchaseInventory,
   getPurInventoryByBranch,
+  addEmployeeComplain,
+  getEmployeeComplainByBranch,
 };

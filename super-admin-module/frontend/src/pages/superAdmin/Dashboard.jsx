@@ -16,8 +16,15 @@ import ExpenseChart from "../../components/superAdmin/dashboard/Charts/ExpenseCh
 import ComplaintsEmp from "../../components/superAdmin/dashboard/ComplaintsEmp";
 import BranchSelector from "../../components/BranchSelector";
 import axios from "axios";
+import { Link, useLocation, useRoutes } from "react-router-dom";
+import routesConfig from "../RoutesConfig";
 
 const Dashboard = () => {
+  const location = useLocation();
+  const [keyword, setkeyword] = useState("");
+  const searchData = routesConfig;
+  console.log(searchData);
+
   return (
     <Wrapper>
       <Header />
@@ -43,6 +50,8 @@ const Dashboard = () => {
                       type="search"
                       placeholder="Search"
                       aria-label="Search"
+                      value={keyword}
+                      onChange={(e) => setkeyword(e.target.value.toLowerCase())}
                     />
                     <button
                       className="btn btn-primary"
@@ -51,7 +60,29 @@ const Dashboard = () => {
                     >
                       Search
                     </button>
+                    <div>
+                      {/* {suggestions.map((suggestion, index) => (
+                        <div key={index}>{suggestion}</div>
+                      ))} */}
+                    </div>
                   </form>
+                  <div className="suedo-shado">
+                    <ul className="bg-light">
+                      {keyword &&
+                        searchData
+                          ?.filter((val) =>
+                            val.title.toLowerCase().includes(keyword)
+                          )
+                          ?.map((item, index) => (
+                            <>
+                              <li key={index}>
+                                <Link to={item.path}>{item.title}</Link>
+                              </li>
+                              <hr />
+                            </>
+                          ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
               <Card />
@@ -137,5 +168,19 @@ const Wrapper = styled.div`
     background-color: #22a6b3;
     font-weight: bold;
     color: white;
+  }
+
+  .suedo-shado {
+    position: absolute;
+    width: 20rem;
+    z-index: 9999;
+    a {
+      text-decoration: none;
+      font-weight: bold;
+      color: #22a6b3;
+    }
+    li {
+      list-style: none;
+    }
   }
 `;

@@ -20,6 +20,7 @@ import ExaminationDashBoardPatient from "./components/Doctor/Examination/Examina
 import ExaminationDashBoardPediatric from "./components/Doctor/Examination/ExaminationDashBoardPediatric";
 import TreatmentDashBoard from "./components/Doctor/Treatment/TreatmentDashBoard";
 import PrescriptionDashBoard from "./components/Doctor/Prescription/PrescriptionDashBoard";
+import CreatePrescrip from "./components/Doctor/Prescription/CreatePrescrip";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
       <Route path="/ExaminationDashBoardPediatric" element={<ExaminationDashBoardPediatric />} />
       <Route path="/TreatmentDashBoard" element={<TreatmentDashBoard />} />
       <Route path="/PrescriptionDashBoard" element={<PrescriptionDashBoard />} />
+      <Route path="/CreatePrescrip" element={<CreatePrescrip />} />
 
       {/* ****************** Doctor Routes End Here ******************* */}
     </Routes>

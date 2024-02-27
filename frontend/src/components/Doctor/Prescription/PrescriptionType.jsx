@@ -2,7 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 import { Helmet } from "react-helmet";
 
-const PrescriptionType = () => {
+const PrescriptionType = ({ patientName, patientAgeSex, dateOfVisit }) => {
     return (
         <>
             <Wrapper>
@@ -18,17 +18,17 @@ const PrescriptionType = () => {
                                 <div className="d-flex justify-content-center col-lg-4">
                                 <label className='lable'>Patient Name: </label>
                                 &nbsp;
-                                <p className='drRx m-0'><span className='spans'>Jone Deo</span></p>
+                                <p className='drRx m-0'><span className='spans'>{patientName}</span></p>
                                 </div>
                                 <div className="d-flex justify-content-center  col-4">
                                 <label className='lable'>Age/Sex: </label>
                                 &nbsp;
-                                <p className='drRx m-0'><span className='spans'>25/M</span></p>
+                                <p className='drRx m-0'><span className='spans'>{patientAgeSex}</span></p>
                                 </div>
                                 <div className="d-flex justify-content-center col-4">
                                 <label className='lable'>Date: </label>
                                 &nbsp;
-                                <p className='drRx m-0'><span className='spans'>31/02/2024</span></p>
+                                <p className='drRx m-0'><span className='spans'>{dateOfVisit}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -43,13 +43,13 @@ export default PrescriptionType;
 const Wrapper = styled.div`
 .lable{
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 .spans{
     border-bottom: 2px dotted black; 
 }
 .drRx{
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-family: "Kalam", cursive;
     font-weight: 600;
     font-style: normal;

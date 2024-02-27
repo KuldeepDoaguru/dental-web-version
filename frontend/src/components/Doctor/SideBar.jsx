@@ -111,8 +111,8 @@ const Sider = () => {
             <hr />
             <li>
               <Link
-                to="/PrescriptionDashBoard"
-                className={`link-div ${getSidebarClass("/PrescriptionDashBoard")}`}
+                to="/CreatePrescrip"
+                className={`link-div ${getSidebarClass("/CreatePrescrip")}`}
               >
                 <div>
                   <AiOutlineAccountBook className="fs-1 bi bi-house-door-fill"/>

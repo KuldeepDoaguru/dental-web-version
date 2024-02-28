@@ -485,6 +485,114 @@ const appointmentData = (req, res) => {
   }
 };
 
+const updateAppointData = (req, res) => {
+  try {
+    const appointId = req.params.id;
+    const {
+      branch,
+      patientName,
+      patientNumber,
+      assignedDoc,
+      appointedBy,
+      appointDateTime,
+      appointment_status,
+      updatedBy,
+    } = req.body;
+
+    const selectQuery = "SELECT * FROM apointments WHERE appoint_id";
+    db.query(selectQuery, appointId, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateFields = [];
+        const updateValues = [];
+
+        if (branch) {
+          updateFields.push("branch_name = ?");
+          updateValues.push(branch);
+        }
+
+        if (patientName) {
+          updateFields.push("patient_name = ?");
+          updateValues.push(patientName);
+        }
+
+        if (patientNumber) {
+          updateFields.push("patient_contact = ?");
+          updateValues.push(patientNumber);
+        }
+
+        if (assignedDoc) {
+          updateFields.push("assigned_doctor = ?");
+          updateValues.push(assignedDoc);
+        }
+
+        if (appointedBy) {
+          updateFields.push("appointed_by = ?");
+          updateValues.push(appointedBy);
+        }
+
+        if (appointDateTime) {
+          updateFields.push("apointment_date_time = ?");
+          updateValues.push(appointDateTime);
+        }
+        if (appointment_status) {
+          updateFields.push("appointment_status = ?");
+          updateValues.push(appointment_status);
+        }
+        if (updatedBy) {
+          updateFields.push("updated_by = ?");
+          updateValues.push(updatedBy);
+        }
+        const updateQuery = `UPDATE apointments SET ${updateFields.join(
+          ", "
+        )} WHERE appoint_id = ?`;
+
+        db.query(updateQuery, [...updateValues, appointId], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Failed to update details",
+            });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "Details updated successfully",
+            });
+          }
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Appointment not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const deleteAppointData = (req, res) => {
+  try {
+    const appointID = req.params.id;
+    const deleteQuery = "DELETE FROM apointments WHERE appoint_id = ?";
+    db.query(deleteQuery, appointID, (err, result) => {
+      if (err) {
+        res.status(500).json({ success: false, message: err.message });
+      }
+      res
+        .status(200)
+        .send({ success: true, message: "Data deleted successfully" });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 const getAvailableEmp = (req, res) => {
   try {
     const branch = req.params.branch;
@@ -643,10 +751,23 @@ const purchaseInventory = (req, res) => {
       discount,
       total_amount,
       branch_name,
+      available_stock,
+      low_stock_threshhold,
       distributor_name,
       distributor_number,
       purchase_date,
     } = req.body;
+
+    const reciept_doc = req.file;
+    console.log(reciept_doc, "pro");
+    if (!reciept_doc) {
+      return res.status(400).json({ error: "No file uploaded." });
+    }
+
+    const imageUrl = `http://localhost:${PORT}/reciept_doc/${reciept_doc.originalname}`;
+
+    console.log("Received request:769", req.body);
+    console.log("profilePicture: 770", imageUrl);
 
     // Validations
     const requiredFields = [
@@ -660,39 +781,61 @@ const purchaseInventory = (req, res) => {
       branch_name,
       distributor_name,
       distributor_number,
+
       purchase_date,
     ];
     if (requiredFields.some((field) => !field)) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const insertQuery =
-      "INSERT INTO purchase_inventory (item_name, item_category, item_mrp, item_code, HSN_code, pur_quantity, discount, total_amount,  branch_name, distributor_name, distributor_number,purchase_date	) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+    const selectQuery =
+      "SELECT * FROM purchase_inventory WHERE item_code = ? AND HSN_code = ?";
 
-    const insertParams = [
-      item_name,
-      item_category,
-      item_mrp,
-      item_code,
-      HSN_code,
-      pur_quantity,
-      discount,
-      total_amount,
-      branch_name,
-      distributor_name,
-      distributor_number,
-      purchase_date,
-    ];
-
-    db.query(insertQuery, insertParams, (err, result) => {
+    db.query(selectQuery, [item_code, HSN_code], (err, result) => {
       if (err) {
-        res.status(400).send({ success: false, message: err.message });
+        return res.status(400).json({ success: false, message: err.message });
       }
-      res.status(200).send({ success: true, result: result });
+      if (result.length === 0) {
+        const insertQuery =
+          "INSERT INTO purchase_inventory (item_name, item_category, item_mrp, item_code, HSN_code, pur_quantity, discount, total_amount,  branch_name, available_stock, low_stock_threshhold, distributor_name, distributor_number, bill_receipt_doc,purchase_date	) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        const insertParams = [
+          item_name,
+          item_category,
+          item_mrp,
+          item_code,
+          HSN_code,
+          pur_quantity,
+          discount,
+          total_amount,
+          branch_name,
+          available_stock,
+          low_stock_threshhold,
+          distributor_name,
+          distributor_number,
+          imageUrl,
+          purchase_date,
+        ];
+
+        db.query(insertQuery, insertParams, (err, result) => {
+          if (err) {
+            return res
+              .status(400)
+              .send({ success: false, message: err.message });
+          }
+          return res.status(200).send({ success: true, result: result });
+        });
+      } else {
+        return res
+          .status(400)
+          .send("item code and HSN Code already exist try adding stock");
+      }
     });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ success: false, message: "Internal server error" });
+    return res
+      .status(500)
+      .send({ success: false, message: "Internal server error" });
   }
 };
 
@@ -789,4 +932,6 @@ module.exports = {
   getPurInventoryByBranch,
   addEmployeeComplain,
   getEmployeeComplainByBranch,
+  updateAppointData,
+  deleteAppointData,
 };

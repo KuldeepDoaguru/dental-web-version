@@ -28,151 +28,177 @@ const EditInventory = () => {
                     <BranchSelector />
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
                   </button>
                   <h3 className="text-center">Edit Inventory Item</h3>
-                  <div className="container mt-3">
-                    <form action="">
-                      <div className="container d-flex justify-content-center mt-5">
-                        <h5>Type : </h5>
-                        <div class="form-check mx-2">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="flexRadioDisabled"
-                            id="flexRadioDisabled"
-                          />
-                          <label
-                            class="form-check-label"
-                            for="flexRadioDisabled"
-                          >
-                            Drug
-                          </label>
+                  <hr />
+                  <div className="container d-flex justify-content-center mt-3">
+                    <div className="box-input">
+                      <form action="" className="">
+                        <div className="d-flex justify-content-center">
+                          <div class="input-group mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Item Code
+                            </label>
+                            <input
+                              type="text"
+                              class="p-1 w-100 rounded"
+                              placeholder="Item Code"
+                            />
+                          </div>
+                          <div class="input-group mb-3 mx-2">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label rounded"
+                            >
+                              Item Name
+                            </label>
+                            <input
+                              type="text"
+                              class="p-1 w-100 rounded"
+                              placeholder="Item Name"
+                            />
+                          </div>
                         </div>
-                        <div class="form-check">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="flexRadioDisabled"
-                            id="flexRadioCheckedDisabled"
-                            checked
-                          />
-                          <label
-                            class="form-check-label"
-                            for="flexRadioCheckedDisabled"
-                          >
-                            Supplies
-                          </label>
+                        <div className="d-flex justify-content-center">
+                          <div class="input-group mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              HSN Code
+                            </label>
+                            <input
+                              type="text"
+                              class="p-1 w-100 rounded"
+                              placeholder="HSN Code"
+                            />
+                          </div>
+                          <div class="input-group mb-3 mx-2">
+                            <label for="exampleFormControlInput1" class="">
+                              Purchase Date
+                            </label>
+                            <input
+                              type="date"
+                              class="p-1 w-100 rounded"
+                              placeholder="purchase date"
+                            />
+                          </div>
                         </div>
-                        <div class="form-check mx-2">
-                          <input
-                            class="form-check-input"
-                            type="radio"
-                            name="flexRadioDisabled"
-                            id="flexRadioCheckedDisabled"
-                            checked
-                          />
-                          <label
-                            class="form-check-label"
-                            for="flexRadioCheckedDisabled"
-                          >
-                            Equipments
-                          </label>
+                        <div className="container-fluid d-flex justify-content-start mt-2">
+                          <h5>Category : </h5>
+                          <div class="form-check mx-2">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="flexRadioDisabled"
+                              id="flexRadioDisabled"
+                            />
+                            <label
+                              class="form-check-label"
+                              for="flexRadioDisabled"
+                            >
+                              Drug
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="flexRadioDisabled"
+                              id="flexRadioCheckedDisabled"
+                              checked
+                            />
+                            <label
+                              class="form-check-label"
+                              for="flexRadioCheckedDisabled"
+                            >
+                              Supplies
+                            </label>
+                          </div>
+                          <div class="form-check mx-2">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="flexRadioDisabled"
+                              id="flexRadioCheckedDisabled"
+                              checked
+                            />
+                            <label
+                              class="form-check-label"
+                              for="flexRadioCheckedDisabled"
+                            >
+                              Equipments
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      <div className="d-flex justify-content-center mt-4">
-                        <div class="mb-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
-                          >
-                            Item Name
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Item Name"
-                          />
+
+                        <div className="d-flex justify-content-center mt-2">
+                          <div class="input-group mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              MRP
+                            </label>
+                            <input
+                              type="text"
+                              class="p-1 w-100 rounded"
+                              placeholder="Item MRP"
+                            />
+                          </div>
+                          <div class="input-group mb-3 mx-2">
+                            <label for="exampleFormControlInput1" class="">
+                              Available Stock
+                            </label>
+                            <input
+                              type="number"
+                              class="p-1 w-100 rounded"
+                              placeholder="available stock"
+                            />
+                          </div>
                         </div>
-                        <div class="mb-3 mx-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
-                          >
-                            Item Code
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Item Code"
-                          />
+                        <div className="d-flex justify-content-center mt-2">
+                          <div class="input-group mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Low Stock Threshold
+                            </label>
+                            <input
+                              type="text"
+                              class="p-1 w-100 rounded"
+                              placeholder="Low Stock Threshold"
+                            />
+                          </div>
+                          <div class="input-group mb-3 mx-2">
+                            <label for="exampleFormControlInput1" class="">
+                              Reciept Document
+                            </label>
+                            <input
+                              type="file"
+                              class="p-1 w-100 rounded"
+                              placeholder="available stock"
+                            />
+                          </div>
                         </div>
-                      </div>
-                      <div className="d-flex justify-content-center">
-                        <div class="mb-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
+                        <div className="d-flex justify-content-start mt-2">
+                          {" "}
+                          <button
+                            className="btn btn-info fw-bold shadow"
+                            type="submit"
                           >
-                            HSN Code
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="HSN Code"
-                          />
+                            Submit
+                          </button>
                         </div>
-                        <div class="mb-3 mx-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
-                          >
-                            HSN Code
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="HSN Code"
-                          />
-                        </div>
-                      </div>
-                      <div className="d-flex justify-content-center">
-                        <div class="mb-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
-                          >
-                            Manufacturer
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Manufacturer"
-                          />
-                        </div>
-                        <div class="mb-3 mx-3">
-                          <label
-                            for="exampleFormControlInput1"
-                            class="form-label"
-                          >
-                            Low Stock Threshhold
-                          </label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder="Low Stock Threshhold"
-                          />
-                        </div>
-                      </div>
-                      <div className="d-flex justify-content-center">
-                        {" "}
-                        <button className="btn btn-info" type="submit">
-                          Submit
-                        </button>
-                      </div>
-                    </form>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>

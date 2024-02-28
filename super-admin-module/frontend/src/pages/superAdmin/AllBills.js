@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
@@ -7,14 +7,50 @@ import { Dropdown, Nav } from "react-bootstrap";
 import HospitalPurchaseBills from "../../components/superAdmin/BillType/HospitalPurchaseBills";
 import PatientsBills from "../../components/superAdmin/BillType/PatientsBills";
 import BranchSelector from "../../components/BranchSelector";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import cogoToast from "cogo-toast";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 const AllBills = () => {
-  //   const [billType, setBillType] = useState(null);
-  const initialTab = localStorage.getItem("selectedTab") || "tab1";
-  const [selectedTab, setSelectedTab] = useState(initialTab);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [listBills, setListBills] = useState([]);
 
-  console.log(selectedTab);
+  const getBillDetailsList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getBillsByBranch/${branch.name}`
+      );
+      console.log(data);
+      setListBills(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteBillData = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:7777/api/v1/super-admin/deleteBills/${id}`
+      );
+      console.log(response);
+      cogoToast.success("Appointment Deleted Successfully");
+      getBillDetailsList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getBillDetailsList();
+  }, [branch.name]);
+
+  console.log(listBills);
   return (
     <>
       <Container>
@@ -38,13 +74,14 @@ const AllBills = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno">SN</th>
+                            <th className="table-sno">Bill ID</th>
                             <th>Bill Date</th>
                             <th className="table-small">Patient UHID</th>
                             <th className="table-small">Patient Name</th>
                             <th className="table-small">Patient Mobile</th>
                             <th className="table-small">Patient Email</th>
                             <th className="table-small">Treatment</th>
+                            <th className="table-small">Treatment Status</th>
                             <th className="table-small">Drugs with Quantity</th>
                             <th className="table-small">Total Amount</th>
                             <th>Paid Amount</th>
@@ -54,91 +91,41 @@ const AllBills = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">12/12/2024</td>
-                            <td className="table-small">007</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td>+918602161019</td>
-                            <td>shubham@gmail.com</td>
-                            <td>2 injections</td>
-                            <td>5</td>
-                            <td className="table-small">1000</td>
-                            <td className="table-small">1000</td>
-                            <td>Completed</td>
-                            <td>12/12/2024 12:00PM</td>
-                            <td className="table-small">
-                              <button className="btn btn-danger">Delete</button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">12/12/2024</td>
-                            <td className="table-small">007</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td>+918602161019</td>
-                            <td>shubham@gmail.com</td>
-                            <td>2 injections</td>
-                            <td>5</td>
-                            <td className="table-small">1000</td>
-                            <td className="table-small">1000</td>
-                            <td>Completed</td>
-                            <td>12/12/2024 12:00PM</td>
-                            <td className="table-small">
-                              <button className="btn btn-danger">Delete</button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">12/12/2024</td>
-                            <td className="table-small">007</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td>+918602161019</td>
-                            <td>shubham@gmail.com</td>
-                            <td>2 injections</td>
-                            <td>5</td>
-                            <td className="table-small">1000</td>
-                            <td className="table-small">1000</td>
-                            <td>Completed</td>
-                            <td>12/12/2024 12:00PM</td>
-                            <td className="table-small">
-                              <button className="btn btn-danger">Delete</button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">12/12/2024</td>
-                            <td className="table-small">007</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td>+918602161019</td>
-                            <td>shubham@gmail.com</td>
-                            <td>2 injections</td>
-                            <td>5</td>
-                            <td className="table-small">1000</td>
-                            <td className="table-small">1000</td>
-                            <td>Completed</td>
-                            <td>12/12/2024 12:00PM</td>
-                            <td className="table-small">
-                              <button className="btn btn-danger">Delete</button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">12/12/2024</td>
-                            <td className="table-small">007</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td>+918602161019</td>
-                            <td>shubham@gmail.com</td>
-                            <td>2 injections</td>
-                            <td>5</td>
-                            <td className="table-small">1000</td>
-                            <td className="table-small">1000</td>
-                            <td>Completed</td>
-                            <td>12/12/2024 12:00PM</td>
-                            <td className="table-small">
-                              <button className="btn btn-danger">Delete</button>
-                            </td>
-                          </tr>
+                          {listBills?.map((item) => (
+                            <>
+                              <tr className="table-row">
+                                <td className="table-sno">{item.bill_id}</td>
+                                <td className="table-small">
+                                  {item.bill_date?.split("T")[0]}
+                                </td>
+                                <td className="table-small">{item.uhid}</td>
+                                <td className="table-small">
+                                  {item.patient_name}
+                                </td>
+                                <td>{item.patient_mobile}</td>
+                                <td>{item.patient_email}</td>
+                                <td>{item.treatment}</td>
+                                <td>{item.treatment_status}</td>
+                                <td>{item.drugs_quantity}</td>
+                                <td className="table-small">
+                                  {item.total_amount}
+                                </td>
+                                <td className="table-small">
+                                  {item.paid_amount}
+                                </td>
+                                <td>{item.payment_status}</td>
+                                <td>{item.payment_date_time}</td>
+                                <td className="table-small">
+                                  <button
+                                    className="btn btn-danger"
+                                    onClick={() => deleteBillData(item.bill_id)}
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            </>
+                          ))}
                         </tbody>
                       </table>
                     </div>

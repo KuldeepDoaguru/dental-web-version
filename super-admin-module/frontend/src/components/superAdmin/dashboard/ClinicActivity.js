@@ -18,6 +18,7 @@ const ClinicActivity = () => {
   const [patDetails, setPatDetails] = useState([]);
   const [currentDate, setCurrentDate] = useState("");
   const [timeDifference, setTimeDifference] = useState(null);
+  const [todayDate, setTodayDate] = useState("");
 
   const handleCalender = () => {
     setShowCalender(!showCalender);
@@ -34,6 +35,11 @@ const ClinicActivity = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    const date = new Date();
+    setTodayDate(date.toISOString());
+  }, []);
 
   const getPatdetailsByBranch = async () => {
     try {
@@ -109,25 +115,44 @@ const ClinicActivity = () => {
 
   //filter for day wise Appointment
   const filterAppointment = appointmentList?.filter((item) => {
-    return item.apointment_date_time?.split("T")[0] === currentDate;
+    if (currentDate) {
+      return item.apointment_date_time?.split("T")[0] === currentDate;
+    } else {
+      return (
+        item.apointment_date_time?.split("T")[0] === todayDate?.split("T")[0]
+      );
+    }
   });
 
   console.log(filterAppointment);
 
   //filter for day wise Treatment
   const filterTreatment = appointmentList?.filter((item) => {
-    return (
-      item.apointment_date_time?.split("T")[0] === currentDate &&
-      item.treatment_status === "Treated"
-    );
+    if (currentDate) {
+      return (
+        item.apointment_date_time?.split("T")[0] === currentDate &&
+        item.treatment_status === "Treated"
+      );
+    } else {
+      return (
+        item.apointment_date_time?.split("T")[0] === todayDate?.split("T")[0] &&
+        item.treatment_status === "Treated"
+      );
+    }
   });
 
   console.log(filterTreatment);
 
   //filter for day wise billing
   const filterBilling = appointmentList?.filter((item) => {
+    if (currentDate) {
+      return (
+        item.apointment_date_time?.split("T")[0] === currentDate &&
+        item.payment_status === "success"
+      );
+    }
     return (
-      item.apointment_date_time?.split("T")[0] === currentDate &&
+      item.apointment_date_time?.split("T")[0] === todayDate?.split("T")[0] &&
       item.payment_status === "success"
     );
   });
@@ -136,7 +161,10 @@ const ClinicActivity = () => {
 
   //filter for day wise patient registeration
   const filterPatient = patDetails?.filter((item) => {
-    return item.regdatetime?.split("T")[0] === currentDate;
+    if (currentDate) {
+      return item.regdatetime?.split("T")[0] === currentDate;
+    }
+    return item.regdatetime?.split("T")[0] === todayDate?.split("T")[0];
   });
 
   console.log(filterPatient);
@@ -148,12 +176,13 @@ const ClinicActivity = () => {
           <div className="clinic-act-heading">
             <div>
               <h5>
-                <FcAlarmClock /> Clinic Activity for {currentDate}
+                <FcAlarmClock /> Clinic Activity for{" "}
+                {currentDate ? currentDate : todayDate?.split("T")[0]}
               </h5>
             </div>
             <div>
               <h5>
-                {currentDate}{" "}
+                {currentDate ? currentDate : todayDate?.split("T")[0]}
                 <IoIosArrowDropdownCircle onClick={handleCalender} />
               </h5>
               {showCalender ? (

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import BranchSelector from "../../components/BranchSelector";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import cogoToast from "cogo-toast";
 
 const Apointment = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -13,17 +14,16 @@ const Apointment = () => {
   console.log(`User Name: ${branch.name}`);
   const [appointmentList, setAppointmentList] = useState([]);
   const [updateData, setUpdateData] = useState({
-    branch: "",
+    branch: branch.name,
     patientName: "",
     patContact: "",
     assignedDoc: "",
-    treatProvide: "",
-    treatStatus: "",
-    payStatus: "",
-    payDateTime: "",
     appointedBy: "",
     appointDateTime: "",
+    updatedBy: "",
+    appointment_status: "",
   });
+  const [selectedItem, setSelectedItem] = useState();
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -33,9 +33,11 @@ const Apointment = () => {
     });
   };
 
-  const openUpdatePopup = (index, item) => {
-    // setSelectedItem(item);
+  const openUpdatePopup = (id) => {
+    console.log(id);
+    setSelectedItem(id);
     setShowPopup(true);
+    // updateAppData(e, id);
   };
 
   const closeUpdatePopup = () => {
@@ -60,6 +62,36 @@ const Apointment = () => {
 
   console.log(appointmentList);
   console.log(updateData);
+  console.log(selectedItem);
+
+  const updateAppData = async (e, id) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:7777/api/v1/super-admin/updateAppointData/${id}`,
+        updateData
+      );
+      console.log(response);
+      closeUpdatePopup();
+      cogoToast.success("Appointment Details Updated Successfully");
+      getAppointList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteAppointment = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:7777/api/v1/super-admin/deleteAppointData/${id}`
+      );
+      console.log(response);
+      cogoToast.success("Appointment Deleted Successfully");
+      getAppointList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -84,25 +116,28 @@ const Apointment = () => {
                         <table class="table table-bordered rounded shadow">
                           <thead className="table-head">
                             <tr>
-                              <th className="table-sno">SN</th>
+                              <th className="table-sno">Appointment ID</th>
                               <th>Patient UHID</th>
 
                               <th className="table-small">Patient Name</th>
                               <th className="table-small">Contact Number</th>
                               <th className="table-small">Assigned Doctor</th>
-                              <th className="table-small">
+                              {/* <th className="table-small">
                                 Treatment Provided
-                              </th>
-                              <th className="table-small">Treatment Status</th>
+                              </th> */}
+                              {/* <th className="table-small">Treatment Status</th>
                               <th className="table-small">Payment Status</th>
                               <th className="table-small">
                                 Payment Date & Time
-                              </th>
+                              </th> */}
 
                               <th className="table-small">Appointed by</th>
                               <th className="table-small">Updated by</th>
                               <th className="table-small">
                                 Appointment Date & Time
+                              </th>
+                              <th className="table-small">
+                                Appointment Status
                               </th>
                               <th className="table-small">Edit</th>
                               <th className="table-small">Delete</th>
@@ -123,7 +158,7 @@ const Apointment = () => {
                                   <td className="table-small">
                                     {item.assigned_doctor}
                                   </td>
-                                  <td className="table-small">
+                                  {/* <td className="table-small">
                                     {item.treatment_provided}
                                   </td>
                                   <td className="table-small">
@@ -135,7 +170,7 @@ const Apointment = () => {
                                   <td className="table-small">
                                     {item.payment_date_time?.split("T")[0]}{" "}
                                     {item.payment_date_time?.split("T")[1]}
-                                  </td>
+                                  </td> */}
                                   <td className="table-small">
                                     {item.appointed_by}
                                   </td>
@@ -146,16 +181,24 @@ const Apointment = () => {
                                     {item.apointment_date_time?.split("T")[0]}{" "}
                                     {item.apointment_date_time?.split("T")[1]}
                                   </td>
+                                  <td>{item.appointment_status}</td>
                                   <td className="table-small">
                                     <button
                                       className="btn btn-warning"
-                                      onClick={() => openUpdatePopup()}
+                                      onClick={() =>
+                                        openUpdatePopup(item.appoint_id)
+                                      }
                                     >
                                       Edit
                                     </button>
                                   </td>
                                   <td className="table-small">
-                                    <button className="btn btn-danger">
+                                    <button
+                                      className="btn btn-danger"
+                                      onClick={() =>
+                                        deleteAppointment(item.appoint_id)
+                                      }
+                                    >
                                       Delete
                                     </button>
                                   </td>
@@ -178,7 +221,7 @@ const Apointment = () => {
               <h2>Update Apointment Details</h2>
               <form
                 className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
+                onSubmit={(e) => updateAppData(e, selectedItem)}
               >
                 <div className="d-flex">
                   <div className="d-flex flex-column input-group mb-3">
@@ -196,7 +239,7 @@ const Apointment = () => {
                     <input
                       type="text"
                       name="patientName"
-                      placeholder="update Patient Name"
+                      // placeholder={appointmentList[]}
                       className="rounded p-1 w-100"
                       value={updateData.patientName}
                       onChange={handleInputChange}
@@ -211,49 +254,26 @@ const Apointment = () => {
                       type="text"
                       placeholder="update Patient contact number"
                       className="rounded p-1 w-100"
+                      name="patContact"
+                      value={updateData.patContact}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="input-group mb-3 mx-2">
                     <label htmlFor="">Update Assigned Doctor</label>
-                    <select name="" id="" className="rounded p-1 w-100">
-                      <option value="">dev</option>
-                      <option value="">mohit</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="d-flex">
-                  <div className="input-group mb-3">
-                    <label htmlFor="">Treatment Provided</label>
-                    <select name="" id="" className="rounded p-1 w-100">
-                      <option value="">test</option>
-                      <option value="">test1</option>
-                    </select>
-                  </div>
-                  <div className="input-group mb-3 mx-2">
-                    <label htmlFor="">Treatment Status</label>
-                    <select name="" id="" className="rounded p-1 w-100">
-                      <option value="">test</option>
-                      <option value="">test1</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="d-flex">
-                  <div className="input-group mb-3">
-                    <label htmlFor="">Payment Status</label>
-                    <select name="" id="" className="rounded p-1 w-100">
-                      <option value="">test</option>
-                      <option value="">test1</option>
-                    </select>
-                  </div>
-                  <div className="input-group mb-3 mx-2">
-                    <label htmlFor="">Payment Date & Time</label>
-                    <input
-                      type="date"
-                      placeholder="update Patient Name"
+                    <select
+                      id=""
                       className="rounded p-1 w-100"
-                    />
+                      name="assignedDoc"
+                      value={updateData.assignedDoc}
+                      onChange={handleInputChange}
+                    >
+                      <option value="dev">dev</option>
+                      <option value="mohit">mohit</option>
+                    </select>
                   </div>
                 </div>
+
                 <div className="d-flex">
                   <div className="input-group mb-3">
                     <label htmlFor="">Appointed by</label>
@@ -261,6 +281,9 @@ const Apointment = () => {
                       type="text"
                       placeholder="Appointed by"
                       className="rounded p-1 w-100"
+                      name="appointedBy"
+                      value={updateData.appointedBy}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="input-group mb-3 mx-2">
@@ -269,6 +292,33 @@ const Apointment = () => {
                       type="date"
                       placeholder="update Patient Name"
                       className="rounded p-1 w-100"
+                      name="appointDateTime"
+                      value={updateData.appointDateTime}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="d-flex">
+                  <div className="input-group mb-3">
+                    <label htmlFor="">Updated by</label>
+                    <input
+                      type="text"
+                      placeholder="updated by"
+                      className="rounded p-1 w-100"
+                      name="updatedBy"
+                      value={updateData.updatedBy}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="input-group mb-3 mx-2">
+                    <label htmlFor="">Appointment Status</label>
+                    <input
+                      type="text"
+                      placeholder="update Patient Name"
+                      className="rounded p-1 w-100"
+                      name="appointment_status"
+                      value={updateData.appointment_status}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>

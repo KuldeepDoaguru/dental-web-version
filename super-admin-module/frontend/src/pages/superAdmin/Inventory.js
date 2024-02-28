@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import { Link } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
 import BranchSelector from "../../components/BranchSelector";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import cogoToast from "cogo-toast";
 
 const Inventory = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [invList, setInvList] = useState([]);
+
+  const getPurchaseList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getPurInventoryByBranch/${branch.name}`
+      );
+      console.log(data);
+      setInvList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPurchaseList();
+  }, [branch.name]);
+
   return (
     <>
       <Container>
@@ -74,16 +101,17 @@ const Inventory = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno">SN</th>
                             <th className="table-sno">Purchase ID</th>
+                            <th>Item Code</th>
+                            <th>HSN Code</th>
                             <th className="table-small">Item Name</th>
                             <th className="table-small">Item Type</th>
-                            <th className="table-small">
-                              Last Purchase Details
-                            </th>
+                            <th className="table-small">Purchase Date</th>
                             <th className="table-small">MRP</th>
                             <th className="table-small">Available Stock</th>
-                            <th className="table-small">Status</th>
+                            <th className="table-small">
+                              Low Stock Threshhold
+                            </th>
                             {/* <th
                               className="table-small"
                               
@@ -94,161 +122,48 @@ const Inventory = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
+                          {invList?.map((item) => (
+                            <>
+                              <tr className="table-row">
+                                <td className="table-sno">{item.pur_id}</td>
+                                <td>{item.item_code}</td>
+                                <td>{item.HSN_code}</td>
+                                <td className="table-small">
+                                  {item.item_name}
+                                </td>
+                                <td className="table-small">
+                                  {item.item_category}
+                                </td>
+                                <td className="table-small">
+                                  {item.purchase_date?.split("T")[0]}
+                                </td>
+                                <td className="table-small">{item.item_mrp}</td>
+                                <td className="table-small">
+                                  {item.available_stock}
+                                </td>
+                                <td className="table-small">
+                                  {item.low_stock_threshhold}
+                                </td>
+                                <td className="table-small">
+                                  <div className="d-flex">
+                                    <button className="btn btn-success mx-1">
+                                      Purchase Details
+                                    </button>
+                                    <Link to="/edit-invetory">
+                                      {" "}
+                                      <button className="btn btn-warning">
+                                        Edit Items
+                                      </button>
+                                    </Link>
 
-                            <td className="table-small">
-                              Tablet 10 mg Item Code - 101 HSN Code - 101
-                            </td>
-                            <td className="table-small">Drug</td>
-                            <td className="table-small">
-                              Purchase Date - 15 jul 2023
-                            </td>
-                            <td className="table-small">Rs - 100/-</td>
-                            <td className="table-small">50</td>
-                            <td className="table-small">inStock</td>
-                            <td className="table-small">
-                              <div className="d-flex">
-                                <button className="btn btn-success mx-1">
-                                  Purchase Details
-                                </button>
-                                <Link to="/edit-invetory">
-                                  {" "}
-                                  <button className="btn btn-warning">
-                                    Edit Items
-                                  </button>
-                                </Link>
-
-                                <button className="btn btn-danger mx-1">
-                                  Delete Items
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-
-                            <td className="table-small">
-                              Tablet 10 mg Item Code - 101 HSN Code - 101
-                            </td>
-                            <td className="table-small">Drug</td>
-                            <td className="table-small">
-                              Purchase Date - 15 jul 2023
-                            </td>
-                            <td className="table-small">Rs - 100/-</td>
-                            <td className="table-small">50</td>
-                            <td className="table-small">inStock</td>
-                            <td className="table-small">
-                              <div className="d-flex">
-                                <button className="btn btn-success mx-1">
-                                  Purchase Details
-                                </button>
-                                <Link to="/edit-invetory">
-                                  {" "}
-                                  <button className="btn btn-warning">
-                                    Edit Items
-                                  </button>
-                                </Link>
-
-                                <button className="btn btn-danger mx-1">
-                                  Delete Items
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-
-                            <td className="table-small">
-                              Tablet 10 mg Item Code - 101 HSN Code - 101
-                            </td>
-                            <td className="table-small">Drug</td>
-                            <td className="table-small">
-                              Purchase Date - 15 jul 2023
-                            </td>
-                            <td className="table-small">Rs - 100/-</td>
-                            <td className="table-small">50</td>
-                            <td className="table-small">inStock</td>
-                            <td className="table-small">
-                              <div className="d-flex">
-                                <button className="btn btn-success mx-1">
-                                  Purchase Details
-                                </button>
-                                <Link to="/edit-invetory">
-                                  {" "}
-                                  <button className="btn btn-warning">
-                                    Edit Items
-                                  </button>
-                                </Link>
-
-                                <button className="btn btn-danger mx-1">
-                                  Delete Items
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-
-                            <td className="table-small">
-                              Tablet 10 mg Item Code - 101 HSN Code - 101
-                            </td>
-                            <td className="table-small">Drug</td>
-                            <td className="table-small">
-                              Purchase Date - 15 jul 2023
-                            </td>
-                            <td className="table-small">Rs - 100/-</td>
-                            <td className="table-small">50</td>
-                            <td className="table-small">inStock</td>
-                            <td className="table-small">
-                              <div className="d-flex">
-                                <button className="btn btn-success mx-1">
-                                  Purchase Details
-                                </button>
-                                <Link to="/edit-invetory">
-                                  {" "}
-                                  <button className="btn btn-warning">
-                                    Edit Items
-                                  </button>
-                                </Link>
-
-                                <button className="btn btn-danger mx-1">
-                                  Delete Items
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-
-                            <td className="table-small">
-                              Tablet 10 mg Item Code - 101 HSN Code - 101
-                            </td>
-                            <td className="table-small">Drug</td>
-                            <td className="table-small">
-                              Purchase Date - 15 jul 2023
-                            </td>
-                            <td className="table-small">Rs - 100/-</td>
-                            <td className="table-small">50</td>
-                            <td className="table-small">inStock</td>
-                            <td className="table-small">
-                              <div className="d-flex">
-                                <button className="btn btn-success mx-1">
-                                  Purchase Details
-                                </button>
-                                <Link to="/edit-invetory">
-                                  {" "}
-                                  <button className="btn btn-warning">
-                                    Edit Items
-                                  </button>
-                                </Link>
-
-                                <button className="btn btn-danger mx-1">
-                                  Delete Items
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
+                                    <button className="btn btn-danger mx-1">
+                                      Delete Items
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            </>
+                          ))}
                         </tbody>
                       </table>
                     </div>

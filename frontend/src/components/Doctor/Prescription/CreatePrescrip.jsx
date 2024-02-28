@@ -35,7 +35,7 @@ const CreatePrescrip = () => {
           (
             <div>
               <PrescriptionHead />
-              <div className="container-fluid">
+              <div className="container-fluid m-0 p-0">
                 <div className="row">
                   <div className="col-lg-12 col-md-12 col-sm-12">
                     <div className="shadow-none p-3">
@@ -127,15 +127,32 @@ const Wrapper = styled.div`
     display: none !important;
   }
 }
-
 @media print {
+  @page {
+    margin: 0; /* Remove default page margins */
+  }
+
+  body {
+    margin: 0; /* Ensure no margin on the body */
+  }
+
   .container-fluid {
-    width: 100%;
-    margin: 0;
-    padding: 0;
+    width: 100%; /* Optionally set the width */
+    margin: 0; /* Remove margin */
+    padding: 0; /* Remove padding */
     page-break-before: auto;
   }
 }
+
+/* @media print {
+  .container-fluid{
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none;
+    page-break-before: auto;
+  }
+} */
 
 @media print {
   .prescFooter{

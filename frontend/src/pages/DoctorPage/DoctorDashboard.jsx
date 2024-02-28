@@ -5,6 +5,7 @@ import HeadBar from "../../components/Doctor/HeadBar";
 import SideBar from "../../components/Doctor/SideBar";
 import Card from "../../components/Doctor/Card/Card";
 import AppointTable from "../../components/Doctor/Tables/AppointTable";
+import AveragePatientChart from "../../components/Doctor/Charts/AveragePatientChart";
 
 const DoctorDashboard = () => {
   return (
@@ -109,8 +110,14 @@ const DoctorDashboard = () => {
                   />
                 </div> */}
               </div>
-              <div className="row">
-                <AppointTable />
+              <div className="row ms-5">
+                {/* <AppointTable /> */}
+                <div className="col-lg-11 col-md-12 col-sm-12">
+                  <div className="shadow-sm bg-white rounded mt-5 d-flex flex-column ">
+                  <h6 className='ms-4 text-center'>Average Patients Visits</h6>
+                  <AveragePatientChart />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

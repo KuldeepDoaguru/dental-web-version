@@ -127,8 +127,8 @@ const Sider = () => {
             <hr/>
             <li>
               <Link
-                to="/inventory"
-                className={`link-div ${getSidebarClass("/inventory")}`}
+                to="/HistoryDashBoard"
+                className={`link-div ${getSidebarClass("/HistoryDashBoard")}`}
               >
                 <div>
                   <FaHistory className="fs-4 bi bi-house-door-fill" />

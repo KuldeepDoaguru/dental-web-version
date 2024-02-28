@@ -5,7 +5,7 @@ const PrescriptionFooter = () => {
   return (
     <>
     <Wrapper>
-        <div className="container-fluid">
+        <div className="container-fluid m-0 p-0">
             <div className="row">
                 <div className="col-lg-12 col-md-12 col-sm-12">
                     <div className='prescpFooter text-center'>

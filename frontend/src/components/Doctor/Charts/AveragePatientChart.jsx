@@ -1,5 +1,6 @@
-import React, { PureComponent } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+// import React, { PureComponent } from 'react';
+import React from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import styled from "styled-components";
 
 function AveragePatientChart() {
@@ -52,12 +53,10 @@ function AveragePatientChart() {
     <Wrapper>
       <div className='container-fluid mt-4 ms-4' id='main'>
         <div className='row'>
-          <div className=' col-12  d-flex justify-content-center'>
-
-
-
+          <div className='col-lg-12 col-md-12 col-sm-12'>
+            <div className="d-flex justify-content-center align-items-center">
             <LineChart
-              width={500}
+              width={1000}
               height={300}
               data={data}
               margin={{
@@ -66,7 +65,6 @@ function AveragePatientChart() {
                 left: 60,
                 bottom: 5,
               }}
-
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
@@ -76,6 +74,7 @@ function AveragePatientChart() {
               <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
               <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
             </LineChart>
+            </div>
           </div>
         </div>
       </div>
@@ -87,19 +86,12 @@ export default AveragePatientChart
 
 const Wrapper = styled.div`
 #main{
-    
-    background-color: white;
-    width: 80%;
+    width: 100%;
     border-radius: 5px;
-   
-
 }
 
 
 @media screen and (max-width: 768px) {
- 
     font-size: small;
-    
-     
     }
 `;

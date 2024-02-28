@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from 'react-router-dom';
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import { RiLoader2Fill } from "react-icons/ri";
 import teeth18 from "../Assest/teeth1.png";
 import teeth17 from "../Assest/teeth2.png";
 import teeth16 from "../Assest/teeth3.png";
@@ -312,6 +313,16 @@ const ExaminationPatientTest = () => {
   });
   const [selectAllTeeth, setSelectAllTeeth] = useState(false);
   const [isFormFilled, setIsFormFilled] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+
+    const timeout = setTimeout(() => {
+      setIsLoading(false)
+    }, 1000);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   const navigate = useNavigate();
 
@@ -395,13 +406,13 @@ const ExaminationPatientTest = () => {
     } else {
       updatedDisease = inputItem.desease ? inputItem.desease + ", Caries" : "Caries";
     }
-  
+
     const newInputItem = {
       ...inputItem,
       desease: updatedDisease,
     };
     setInputItem(newInputItem);
-  
+
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
@@ -453,9 +464,9 @@ const ExaminationPatientTest = () => {
 
   const fracture = () => {
     let updatedDisease;
-    if(inputItem.desease && inputItem.desease.includes("Fracture")){
+    if (inputItem.desease && inputItem.desease.includes("Fracture")) {
       updatedDisease = inputItem.desease.replace(", Fracture", "").replace("Fracture", "");
-    }else{
+    } else {
       updatedDisease = inputItem.desease ? inputItem.desease + ", Fracture" : "Fracture";
     }
     const newInputItem = {
@@ -514,9 +525,9 @@ const ExaminationPatientTest = () => {
 
   const impacted = () => {
     let updatedDisease;
-    if(inputItem.desease && inputItem.desease.includes("Impacted")){
+    if (inputItem.desease && inputItem.desease.includes("Impacted")) {
       updatedDisease = inputItem.desease.replace(", Impacted", "").replace("Impacted", "");
-    }else{
+    } else {
       updatedDisease = inputItem.desease ? inputItem.desease + ", Impacted" : "Impacted";
     }
     const newInputItem = {
@@ -576,9 +587,9 @@ const ExaminationPatientTest = () => {
 
   const missing = () => {
     let updatedDisease;
-    if(inputItem.desease && inputItem.desease.includes("Missing Tooth")){
+    if (inputItem.desease && inputItem.desease.includes("Missing Tooth")) {
       updatedDisease = inputItem.desease.replace(", Missing Tooth", "").replace("Missing Tooth", "");
-    }else{
+    } else {
       updatedDisease = inputItem.desease ? inputItem.desease + ", Missing Tooth" : "Missing Tooth";
     }
     const newInputItem = {
@@ -638,9 +649,9 @@ const ExaminationPatientTest = () => {
 
   const mobility = () => {
     let updatedDisease;
-    if(inputItem.desease && inputItem.desease.includes("Mobility")){
+    if (inputItem.desease && inputItem.desease.includes("Mobility")) {
       updatedDisease = inputItem.desease.replace(", Mobility", "").replace("Mobility", "");
-    }else{
+    } else {
       updatedDisease = inputItem.desease ? inputItem.desease + ", Mobility" : "Mobility";
     }
     const newInputItem = {
@@ -700,9 +711,9 @@ const ExaminationPatientTest = () => {
 
   const periapical = () => {
     let updatedDisease;
-    if(inputItem.desease && inputItem.desease.includes("Periapical Abscess")){
+    if (inputItem.desease && inputItem.desease.includes("Periapical Abscess")) {
       updatedDisease = inputItem.desease.replace(", Periapical Abscess", "").replace("Periapical Abscess", "");
-    }else{
+    } else {
       updatedDisease = inputItem.desease ? inputItem.desease + ", Periapical Abscess" : "Periapical Abscess";
     }
     const newInputItem = {
@@ -762,9 +773,9 @@ const ExaminationPatientTest = () => {
 
   const root = () => {
     let updatedDisease;
-    if(inputItem.desease && inputItem.desease.includes("Root Stump")){
+    if (inputItem.desease && inputItem.desease.includes("Root Stump")) {
       updatedDisease = inputItem.desease.replace(", Root Stump", "").replace("Root Stump", "");
-    }else{
+    } else {
       updatedDisease = inputItem.desease ? inputItem.desease + ", Root Stump" : "Root Stump";
     }
     const newInputItem = {
@@ -823,9 +834,9 @@ const ExaminationPatientTest = () => {
 
   const supara = () => {
     let updatedDisease;
-    if(inputItem.desease && inputItem.desease.includes("Supra Erupted")){
+    if (inputItem.desease && inputItem.desease.includes("Supra Erupted")) {
       updatedDisease = inputItem.desease.replace(", Supra Erupted", "").replace("Supra Erupted", "");
-    }else{
+    } else {
       updatedDisease = inputItem.desease ? inputItem.desease + ", Supra Erupted" : "Supra Erupted";
     }
     const newInputItem = {
@@ -851,7 +862,7 @@ const ExaminationPatientTest = () => {
       ...prevInputItem,
       [name]: value,
     }));
-    
+
     setIsFormFilled(
       !!inputItem.selectTeeth.length ||
       inputItem.desease ||
@@ -899,7 +910,7 @@ const ExaminationPatientTest = () => {
     }));
   }, [selectedTeeth]);
 
-  const handleRedirect = (e) =>{
+  const handleRedirect = (e) => {
     if (isFormFilled) {
       e.preventDefault(); // Prevent the default redirection behavior
       alert("You cannot navigate away while the form is filled.");
@@ -950,7 +961,7 @@ const ExaminationPatientTest = () => {
               </div>
             </div>
             <div className="col-lg-12 d-flex justify-content-between align-items-center">
-            <div className="col-lg-4">
+              <div className="col-lg-4">
                 <p className="mb-0"><strong>RGID</strong> : Patient RGID</p>
               </div>
               <div className="col-lg-4">
@@ -962,562 +973,570 @@ const ExaminationPatientTest = () => {
             </div>
           </div>
           {/* dental chart 32 teeth start */}
-          <div className="row">
-            <div className="col-lg-12 col-12">
-              <div className="d-flex justify-content-center">
-                <div>
-                  <img
-                    src={teeth18}
-                    id="tooth_18"
-                    alt=""
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="18"
-                      value="18"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth17}
-                    alt=""
-                    id="tooth_17"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="17"
-                      value="17"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth16}
-                    alt=""
-                    id="tooth_16"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="16"
-                      value="16"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth15}
-                    alt=""
-                    id="tooth_15"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="15"
-                      value="15"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth14}
-                    alt=""
-                    id="tooth_14"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="14"
-                      value="14"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth13}
-                    alt=""
-                    id="tooth_13"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="13"
-                      value="13"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth12}
-                    alt=""
-                    id="tooth_12"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="12"
-                      value="12"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth11}
-                    alt=""
-                    id="tooth_11"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="11"
-                      value="11"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth21}
-                    alt=""
-                    id="tooth_21"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="21"
-                      value="21"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth22}
-                    alt=""
-                    id="tooth_22"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="22"
-                      value="22"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth23}
-                    alt=""
-                    id="tooth_23"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="23"
-                      value="23"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth24}
-                    alt=""
-                    id="tooth_24"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="24"
-                      value="24"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth25}
-                    alt=""
-                    id="tooth_25"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="25"
-                      value="25"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth26}
-                    alt=""
-                    id="tooth_26"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="26"
-                      value="26"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth27}
-                    alt=""
-                    id="tooth_27"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="27"
-                      value="27"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth28}
-                    alt=""
-                    id="tooth_28"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="28"
-                      value="28"
-                      onChange={handlCheckBoxChange}
-                    />
+          {isLoading ? (
+            <div>
+              <div className='text-center'><RiLoader2Fill size={45} className="spin" /></div>
+            </div>
+          ) : (
+            <>
+              <div className="row">
+                <div className="col-lg-12 col-12">
+                  <div className="d-flex justify-content-center">
+                    <div>
+                      <img
+                        src={teeth18}
+                        id="tooth_18"
+                        alt=""
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="18"
+                          value="18"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth17}
+                        alt=""
+                        id="tooth_17"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="17"
+                          value="17"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth16}
+                        alt=""
+                        id="tooth_16"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="16"
+                          value="16"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth15}
+                        alt=""
+                        id="tooth_15"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="15"
+                          value="15"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth14}
+                        alt=""
+                        id="tooth_14"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="14"
+                          value="14"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth13}
+                        alt=""
+                        id="tooth_13"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="13"
+                          value="13"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth12}
+                        alt=""
+                        id="tooth_12"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="12"
+                          value="12"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth11}
+                        alt=""
+                        id="tooth_11"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="11"
+                          value="11"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth21}
+                        alt=""
+                        id="tooth_21"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="21"
+                          value="21"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth22}
+                        alt=""
+                        id="tooth_22"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="22"
+                          value="22"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth23}
+                        alt=""
+                        id="tooth_23"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="23"
+                          value="23"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth24}
+                        alt=""
+                        id="tooth_24"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="24"
+                          value="24"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth25}
+                        alt=""
+                        id="tooth_25"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="25"
+                          value="25"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth26}
+                        alt=""
+                        id="tooth_26"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="26"
+                          value="26"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth27}
+                        alt=""
+                        id="tooth_27"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="27"
+                          value="27"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth28}
+                        alt=""
+                        id="tooth_28"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="28"
+                          value="28"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-lg-12 col-12">
-              <div className="d-flex justify-content-center">
-                <div>
-                  <img
-                    src={teeth48}
-                    alt=""
-                    id="tooth_48"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="48"
-                      value="48"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth47}
-                    alt=""
-                    id="tooth_47"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="47"
-                      value="47"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth46}
-                    alt=""
-                    id="tooth_46"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="46"
-                      value="46"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth45}
-                    alt=""
-                    id="tooth_45"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="45"
-                      value="45"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth44}
-                    alt=""
-                    id="tooth_44"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="44"
-                      value="44"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth43}
-                    alt=""
-                    id="tooth_43"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="43"
-                      value="43"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth42}
-                    alt=""
-                    id="tooth_42"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="42"
-                      value="42"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth41}
-                    alt=""
-                    id="tooth_41"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="41"
-                      value="41"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth31}
-                    alt=""
-                    id="tooth_31"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="31"
-                      value="31"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth32}
-                    alt=""
-                    id="tooth_32"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="32"
-                      value="32"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth33}
-                    alt=""
-                    id="tooth_33"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="33"
-                      value="33"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth34}
-                    alt=""
-                    id="tooth_34"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="34"
-                      value="34"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth35}
-                    alt=""
-                    id="tooth_35"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="35"
-                      value="35"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth36}
-                    alt=""
-                    id="tooth_36"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="36"
-                      value="36"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth37}
-                    alt=""
-                    id="tooth_37"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="37"
-                      value="37"
-                      onChange={handlCheckBoxChange}
-                    />
-                  </div>
-                </div>
-                <div>
-                  <img
-                    src={teeth38}
-                    alt=""
-                    id="tooth_38"
-                    className="img-fluid"
-                  />
-                  <div className="text-center">
-                    <input
-                      type="checkbox"
-                      name=""
-                      id="38"
-                      value="38"
-                      onChange={handlCheckBoxChange}
-                    />
+              <div className="row">
+                <div className="col-lg-12 col-12">
+                  <div className="d-flex justify-content-center">
+                    <div>
+                      <img
+                        src={teeth48}
+                        alt=""
+                        id="tooth_48"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="48"
+                          value="48"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth47}
+                        alt=""
+                        id="tooth_47"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="47"
+                          value="47"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth46}
+                        alt=""
+                        id="tooth_46"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="46"
+                          value="46"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth45}
+                        alt=""
+                        id="tooth_45"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="45"
+                          value="45"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth44}
+                        alt=""
+                        id="tooth_44"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="44"
+                          value="44"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth43}
+                        alt=""
+                        id="tooth_43"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="43"
+                          value="43"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth42}
+                        alt=""
+                        id="tooth_42"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="42"
+                          value="42"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth41}
+                        alt=""
+                        id="tooth_41"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="41"
+                          value="41"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth31}
+                        alt=""
+                        id="tooth_31"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="31"
+                          value="31"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth32}
+                        alt=""
+                        id="tooth_32"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="32"
+                          value="32"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth33}
+                        alt=""
+                        id="tooth_33"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="33"
+                          value="33"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth34}
+                        alt=""
+                        id="tooth_34"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="34"
+                          value="34"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth35}
+                        alt=""
+                        id="tooth_35"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="35"
+                          value="35"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth36}
+                        alt=""
+                        id="tooth_36"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="36"
+                          value="36"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth37}
+                        alt=""
+                        id="tooth_37"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="37"
+                          value="37"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        src={teeth38}
+                        alt=""
+                        id="tooth_38"
+                        className="img-fluid"
+                      />
+                      <div className="text-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="38"
+                          value="38"
+                          onChange={handlCheckBoxChange}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </>
+            )}
           {/* dental chart 32 teeth end */}
 
           <div className="row mt-5">
@@ -1549,7 +1568,7 @@ const ExaminationPatientTest = () => {
                           readOnly
                           //   value={selectedTeeth.join(", ")}
                           value={inputItem.selectTeeth.join(", ")}
-                          // onChange={handleSelecteditem}
+                        // onChange={handleSelecteditem}
                         />
                       </div>
                     </div>
@@ -1762,4 +1781,16 @@ const Wrapper = styled.div`
     text-decoration: none;
     color: white;
   }
+  @keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
 `;

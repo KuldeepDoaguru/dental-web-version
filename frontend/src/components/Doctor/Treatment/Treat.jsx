@@ -4,6 +4,7 @@ import { IoMdArrowDropright } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { GrFormNextLink } from "react-icons/gr";
+import { useNavigate } from "react-router-dom";
 
 const Treat = () => {
   const [inputs, setInputs] = useState({
@@ -17,6 +18,7 @@ const Treat = () => {
   });
   const [filteredOptions, setFilteredOptions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -299,7 +301,7 @@ const Treat = () => {
                 </tbody>
               </table>
               <div className="d-flex justify-content-center align-items-center">
-                <button className="btn btn-info text-light">
+                <button className="btn btn-info text-light" onClick={()=>navigate("/TPrescriptionDash")}>
                   Next <GrFormNextLink size={25}/>
                 </button>
               </div>

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 
 
 function Form() {
@@ -11,14 +13,95 @@ function Form() {
   const [showDoctorList,setShowDoctorList] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null); // State to store the selected patient
   const [selectedDoctor, setSelectedDoctor] = useState(null); // State to store the selected Doctor
+  const [selectedDisease, setSelectedDisease] = useState([]);
+  const [selectedTreatment, setSelectedTreatment] = useState([]);
+
+  const disease = [
+    { value: 'NoDisease', label: 'No disease' },
+    { value: 'Diabetes', label: 'Diabetes' },
+    { value: 'Heart', label: 'Heart' },
+    { value: 'Cardiovascular', label: 'Cardiovascular' },
+    { value: 'Asthma', label: 'Asthma' },
+    { value: 'Arthritis', label: 'Arthritis' },
+    { value: 'Osteoporosis', label: 'Osteoporosis' },
+    { value: 'Thyroid', label: 'Thyroid' },
+    { value: 'Kidney', label: 'Kidney' },
+    { value: 'Liver', label: 'Liver' },
+    { value: 'Gastrointestinal', label: 'Gastrointestinal' },
+    { value: 'Cancer', label: 'Cancer' },
+    { value: 'Depression', label: 'Depression' },
+    { value: 'Anxiety', label: 'Anxiety' },
+    { value: "Alzheimer's", label: "Alzheimer's" },
+    { value: 'HIV', label: 'HIV' },
+    { value: 'Hepatitis', label: 'Hepatitis' },
+    
+  ];
+
+  const treatments = [
+    { value: 'OPD', label: 'OPD' },
+    { value: 'Dental Cleanings', label: 'Dental Cleanings' },
+    { value: 'Dental Examinations', label: 'Dental Examinations' },
+    { value: 'Dental Sealants', label: 'Dental Sealants' },
+    { value: 'Fluoride Treatments', label: 'Fluoride Treatments' },
+    { value: 'Crowns (Caps)', label: 'Crowns (Caps)' },
+    { value: 'Bridges', label: 'Bridges' },
+    { value: 'Dentures (Partial or Full)', label: 'Dentures (Partial or Full)' },
+    { value: 'Dental Implants', label: 'Dental Implants' },
+    { value: 'Root Canal Treatment (RCT)', label: 'Root Canal Treatment (RCT)' },
+    { value: 'Root Canal Retreatment (Re-Root Canal)', label: 'Root Canal Retreatment (Re-Root Canal)' },
+    { value: 'Apicoectomy (Endodontic Surgery)', label: 'Apicoectomy (Endodontic Surgery)' },
+    { value: 'Scaling and Root Planing (Deep Cleaning)', label: 'Scaling and Root Planing (Deep Cleaning)' },
+    { value: 'Periodontal Maintenance', label: 'Periodontal Maintenance' },
+    { value: 'Gum Graft Surgery', label: 'Gum Graft Surgery' },
+    { value: 'Periodontal Flap Surgery', label: 'Periodontal Flap Surgery' },
+    { value: 'Teeth Whitening (Bleaching)', label: 'Teeth Whitening (Bleaching)' },
+    { value: 'Dental Bonding', label: 'Dental Bonding' },
+    { value: 'Porcelain Veneers', label: 'Porcelain Veneers' },
+    { value: 'Inlays and Onlays', label: 'Inlays and Onlays' },
+    { value: 'Orthodontic Treatments (Braces, Clear Aligners)', label: 'Orthodontic Treatments (Braces, Clear Aligners)' },
+    { value: 'Tooth Extractions (Simple and Surgical)', label: 'Tooth Extractions (Simple and Surgical)' },
+    { value: 'Wisdom Tooth Extraction', label: 'Wisdom Tooth Extraction' },
+    { value: 'Dental Implant Surgery', label: 'Dental Implant Surgery' },
+    { value: 'Jaw Surgery (Orthognathic Surgery)', label: 'Jaw Surgery (Orthognathic Surgery)' },
+    { value: 'Complete Dentures', label: 'Complete Dentures' },
+    { value: 'Partial Dentures', label: 'Partial Dentures' },
+    { value: 'Dental Bridges', label: 'Dental Bridges' },
+    { value: 'Dental Implant Restorations', label: 'Dental Implant Restorations' },
+    { value: 'Dental Sealants', label: 'Dental Sealants' },
+    { value: 'Fluoride Treatments', label: 'Fluoride Treatments' },
+    { value: 'Pediatric Dental Cleanings', label: 'Pediatric Dental Cleanings' },
+    { value: 'Dental Fillings for Children', label: 'Dental Fillings for Children' },
+    { value: 'Traditional Braces', label: 'Traditional Braces' },
+    { value: 'Clear Aligners (Invisalign, ClearCorrect)', label: 'Clear Aligners (Invisalign, ClearCorrect)' },
+    { value: 'Retainers', label: 'Retainers' },
+    { value: 'Orthodontic Appliances', label: 'Orthodontic Appliances' },
+    { value: 'Treatment for Dental Trauma', label: 'Treatment for Dental Trauma' },
+    { value: 'Emergency Tooth Extractions', label: 'Emergency Tooth Extractions' },
+    { value: 'Pain Management', label: 'Pain Management' },
+    { value: 'Temporary Dental Repairs', label: 'Temporary Dental Repairs' }
+];
+
+
+
+
+  const handleChangeDisease = (selectedOptions) => {
+    setSelectedDisease(selectedOptions.map(option => option.value));
+  };
+
+  const handleChangeTreatment = (selectedOption) => {
+    setSelectedTreatment(selectedOption.value);
+  };
+
+
+  
   const [data,setData] = useState(
-    { uid :"1", patient_Name:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male", city: "jabalpur", contact_Person : "father" , contact_Person_Name: "rahul", blood_Group : "o+" , dob : "", age : "25",weight:"",allergy:"",disease:"", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"",  address: "Ranital gate no. 4 , jabalpur"}
+    { uid :"1", patient_Name:"",mobile: "",email: "",gender: "", contact_Person : "" , contact_Person_Name: "", blood_Group : "" , dob : "", age : "",weight:"",allergy:"",disease:"", patientType:"", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"",  address: ""}
     
   ) 
 
 
   const [bookData,setBookData] = useState(
-    { uid :"1", patient_Name:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male", city: "jabalpur", contact_Person : "father" , dateTime:"", contact_Person_Name: "rahul", blood_Group : "o+" , dob : "", age : "25", address: "Ranital gate no. 4 , jabalpur"}
+    { uid :"1", patient_Name:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male", contact_Person : "father" , dateTime:"", contact_Person_Name: "rahul", blood_Group : "o+" , dob : "", age : "25", address: "Ranital gate no. 4 , jabalpur"}
     
   ) 
 
@@ -56,7 +139,6 @@ function Form() {
       mobile: "9806324245",
       email: "patinet@gmail.com",
       gender: "Male",
-      city: "jabalpur",
       contact_Person: "father",
       contact_Person_Name: "rahul",
       blood_Group: "o+",
@@ -70,7 +152,6 @@ function Form() {
       mobile: "9806324245",
       email: "patinet@gmail.com",
       gender: "Male",
-      city: "jabalpur",
       contact_Person: "father",
       contact_Person_Name: "rahul",
       blood_Group: "o+",
@@ -84,7 +165,6 @@ function Form() {
       mobile: "9806324245",
       email: "patinet@gmail.com",
       gender: "Male",
-      city: "jabalpur",
       contact_Person: "father",
       contact_Person_Name: "rahul",
       blood_Group: "o+",
@@ -98,7 +178,6 @@ function Form() {
       mobile: "9806324245",
       email: "patinet@gmail.com",
       gender: "Male",
-      city: "jabalpur",
       contact_Person: "father",
       contact_Person_Name: "rahul",
       blood_Group: "o+",
@@ -112,7 +191,6 @@ function Form() {
       mobile: "9806324245",
       email: "patinet@gmail.com",
       gender: "Male",
-      city: "jabalpur",
       contact_Person: "father",
       contact_Person_Name: "rahul",
       blood_Group: "o+",
@@ -126,7 +204,6 @@ function Form() {
       mobile: "9806324245",
       email: "patinet@gmail.com",
       gender: "Male",
-      city: "jabalpur",
       contact_Person: "father",
       contact_Person_Name: "rahul",
       blood_Group: "o+",
@@ -220,6 +297,43 @@ console.log(selectedDoctor)
       console.log("Please select a doctor");
       return;
     }
+
+     // Convert appointment time to Date object
+  const selectedDateTime = new Date(data.appDateTime);
+
+  // Check if the selected doctor is available during the appointment time
+  const isDoctorAvailable = (selectedDateTime) => {
+    const morningStart = new Date(selectedDateTime);
+    morningStart.setHours(selectedDoctor.morningStartTiming.split(":")[0], selectedDoctor.morningStartTiming.split(":")[1]);
+    const morningEnd = new Date(selectedDateTime);
+    morningEnd.setHours(selectedDoctor.morningEndTiming.split(":")[0], selectedDoctor.morningEndTiming.split(":")[1]);
+    const eveningStart = new Date(selectedDateTime);
+    eveningStart.setHours(selectedDoctor.eveningStartTiming.split(":")[0], selectedDoctor.eveningStartTiming.split(":")[1]);
+    const eveningEnd = new Date(selectedDateTime);
+    eveningEnd.setHours(selectedDoctor.eveningEndTiming.split(":")[0], selectedDoctor.eveningEndTiming.split(":")[1]);
+
+    return (
+      (selectedDateTime >= morningStart && selectedDateTime <= morningEnd) ||
+      (selectedDateTime >= eveningStart && selectedDateTime <= eveningEnd)
+    );
+  };
+
+  // if (!isDoctorAvailable(selectedDateTime)) {
+  //   // Doctor is not available at the specified time
+  //   alert("The selected doctor is not available at the specified time");
+  //   console.log("The selected doctor is not available at the specified time");
+  //   return;
+  // }
+
+  if (!isDoctorAvailable(selectedDateTime)) {
+    // Doctor is not available at the specified time
+    const confirmation = window.confirm("The selected doctor is not available at the specified time. Do you want to proceed with booking?");
+    if (!confirmation) {
+      return; // If the user cancels, return early
+    }
+    
+    
+  }
   
 
    
@@ -241,7 +355,6 @@ console.log(selectedDoctor)
         mobile: data.mobile,
         email: data.email,
         gender: data.gender,
-        city: data.city,
         contact_Person: data.contact_Person,
         contact_Person_Name: data.contact_Person_Name,
         blood_Group: data.blood_Group,
@@ -250,11 +363,12 @@ console.log(selectedDoctor)
         address: data.address,
         weight: data.weight,
         allergy: data.allergy,
-        disease: data.disease,
+        disease: selectedDisease,
+        patientType: data.patientType,
         doctorId: selectedDoctor.uid,
         doctor_name: selectedDoctor.doctor_name,
         appDateTime: data.appDateTime,
-        treatment: data.treatment,
+        treatment: selectedTreatment,
         notes: data.notes,
       };
   
@@ -265,14 +379,22 @@ console.log(selectedDoctor)
         patient_Name: "",
         mobile: "",
         email: "",
-        gender: "",
-        city: "",
+        gender:"",
         contact_Person: "",
         contact_Person_Name: "",
         blood_Group: "",
         dob: "",
         age: "",
         address: "",
+        weight: "",
+        allergy: "",
+        disease: "",
+        patientType: "",
+        doctorId: "",
+        doctor_name: "",
+        appDateTime: "",
+        treatment: "",
+        notes: "",
       });
   
       // Reset selected doctor
@@ -282,8 +404,8 @@ console.log(selectedDoctor)
       alert("Appointment booked successfully!");
     } else {
       // Slot is not available
-      alert("The selected doctor's slot is not available at the specified time");
-      console.log("The selected doctor's slot is not available at the specified time");
+      alert("The selected doctor's slot is already booked at the specified time");
+      console.log("The selected doctor's slot is already booked at the specified time");
     }
   };
 
@@ -308,6 +430,29 @@ const handleDoctorSelect = (doctor) => {
 
   console.log(filteredDoctor)
   console.log(selectedDoctor)
+
+
+  // const [selectedDiseasedemo, setSelectedDiseasedemo] = useState([]);
+  // const [inputDisease, setInputDisease] = useState('');
+
+  // const diseaseOptions = [
+  //   { value: 'NoDisease', label: 'No disease' },
+  //   { value: 'Diabetes', label: 'Diabetes' },
+  //   { value: 'Heart', label: 'Heart' },
+  //   // Add other disease options here
+  // ];
+
+  // const handleChangeDiseasedemo = (newValue, actionMeta) => {
+  
+  //   setSelectedDiseasedemo(newValue);
+  //   if (actionMeta.action === 'create-option') {
+  //     // If a new option is created, add it to the list of options
+  //     const newOption = { value: newValue[newValue.length - 1].value, label: newValue[newValue.length - 1].label };
+  //     diseaseOptions.push(newOption);
+  //   }
+  // };
+
+  // console.log(selectedDiseasedemo)
  
  
   
@@ -408,15 +553,15 @@ const handleDoctorSelect = (doctor) => {
                       <div className="col-sm-6">
                         <div className="form-outline" id="form1">
                           <label className="form-label" for="form6Example2">
-                            City
+                            Email
                           </label>
                           <input
-                            type="text"
+                            type="email"
                             id="form6Example2"
                             className="form-control"
                             name="city"
                             onChange={handleChange}
-                            required
+                          
                           />
                         </div>
                       </div>
@@ -554,17 +699,18 @@ const handleDoctorSelect = (doctor) => {
                           />
                         </div>
                       </div>
-                      <div className="col-sm-6">
+                      {/* <div className="col-sm-6">
                         <div className="form-outline">
                           <label className="form-label" for="form6Example2">
                          Have any disease
                           </label>
 
-                          <select className="form-select" id="disease" name="disease"  required onChange={handleChange}>
+                          <select className="form-select" id="disease" name="disease"  required onChange={handleChange} multiple>
       <option value="">Select disease</option>
-      <option value="">Hypertension</option>
-      <option value="Female">Diabetes</option>
-      <option value="Female">Heart</option>
+      <option value="No disease">No disease</option>
+      <option value="Hypertension">Hypertension</option>
+      <option value="Diabetes">Diabetes</option>
+      <option value="Heart">Heart</option>
       <option value="Other">Cardiovascular</option>
       <option value="Other">Asthma</option>
       <option value="Other">Arthritis</option>
@@ -582,6 +728,23 @@ const handleDoctorSelect = (doctor) => {
   
      
     </select>
+                        </div>
+                      </div> */}
+                      <div className="col-sm-12">
+                        <div className="form-outline">
+                          <label className="form-label" for="form6Example2">
+                         Have any disease
+                          </label>
+
+                          <Select
+        id="disease"
+        name="disease"
+        options={disease}
+        isMulti
+        value={selectedDisease.map(option => ({ value: option, label: option }))}
+        onChange={handleChangeDisease}
+      />
+
                         </div>
                       </div>
 
@@ -602,6 +765,20 @@ const handleDoctorSelect = (doctor) => {
     </select>
                         </div>
                       </div>
+
+                      {/* <div>
+      <label htmlFor="disease">Select Disease</label>
+      <CreatableSelect
+        id="disease"
+        isMulti
+        onChange={handleChangeDiseasedemo}
+        options={diseaseOptions}
+        value={selectedDiseasedemo}
+        inputValue={inputDisease}
+        onInputChange={setInputDisease}
+        placeholder="Select or type to add..."
+      />
+    </div> */}
                       <p className="mt-4">Fill details for Book Appointment</p>
 
                       <ul className="list-group">
@@ -676,14 +853,13 @@ const handleDoctorSelect = (doctor) => {
                        <label className="form-label" for="form6Example2">
                            Add Treatment
                          </label>
-                         <input
-                           type="text"
-                           id="form6Example2"
-                           className="form-control"
-                           name="treatment"
-                           required
-                           onChange={handleChange}
-                         />
+                         <Select
+        id="treatment"
+        name="treatment"
+        options={treatments}
+        value={selectedTreatment ? { value: selectedTreatment, label: selectedTreatment } : null}
+        onChange={handleChangeTreatment}
+      />
                          
                        </div>
                      </div>

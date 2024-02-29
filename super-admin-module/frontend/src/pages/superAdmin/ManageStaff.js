@@ -1,12 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import BranchSelector from "../../components/BranchSelector";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const ManageStaff = () => {
   const [showAddEmployee, setShowAddEmployee] = useState(false);
   const [showEditEmployee, setShowEditEmployee] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [doctorList, setDoctorList] = useState([]);
+
+  const getDocDetailsList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getEmployeeDetails/${branch.name}`
+      );
+      console.log(data);
+      setDoctorList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getDocDetailsList();
+  }, []);
+
+  console.log(doctorList);
 
   const openAddEmployeePopup = (index, item) => {
     // setSelectedItem(item);
@@ -54,135 +81,77 @@ const ManageStaff = () => {
                     <table class="table table-bordered">
                       <thead className="table-head">
                         <tr>
-                          <th>Emp ID</th>
-                          <th>Name</th>
-                          <th>Mobile</th>
-                          <th>Gender</th>
-                          <th>Email</th>
-                          <th>Designation</th>
-                          <th>Role</th>
-                          <th>Salary</th>
-                          <th>Address</th>
-                          <th>Status</th>
-                          <th>Actions</th>
+                          <th className="thead">Emp ID</th>
+                          <th className="thead">Name</th>
+                          <th className="thead">Mobile</th>
+                          <th className="thead">Gender</th>
+                          <th className="thead">Email</th>
+                          <th className="thead">Designation</th>
+                          <th className="thead">Role</th>
+                          <th className="thead">Salary</th>
+                          <th className="thead">Address</th>
+                          <th className="thead">Status</th>
+                          <th className="thead">Morning Shift Start Time</th>
+                          <th className="thead">Morning Shift End Time</th>
+                          <th className="thead">Evening Shift Start Time</th>
+                          <th className="thead">Evening Shift End Time</th>
+                          <th className="thead">Allday Shift Start Time</th>
+                          <th className="thead">Allday Shift End Time</th>
+                          <th className="thead">Availability</th>
+                          <th className="" style={{ minWidth: "10rem" }}>
+                            Actions
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr className="table-row">
-                          <td>007</td>
-                          <td>Dr.Mahesh Kuldeep</td>
-                          <td>+91-999965651</td>
-                          <td>Male</td>
-                          <td>maheshkuldeep@gmail.com</td>
-                          <td>Cunsultant</td>
-                          <td>Cunsultant</td>
-                          <td>30000</td>
-                          <td>Jabalpur</td>
-                          <td>Active</td>
-                          <td>
-                            <button
-                              className="btn btn-warning"
-                              onClick={() => openEditEmployeePopup()}
-                            >
-                              Edit
-                            </button>
-                            <button className="btn btn-danger mx-1">
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>007</td>
-                          <td>Dr.Mahesh Kuldeep</td>
-                          <td>+91-999965651</td>
-                          <td>Male</td>
-                          <td>maheshkuldeep@gmail.com</td>
-                          <td>Cunsultant</td>
-                          <td>Cunsultant</td>
-                          <td>30000</td>
-                          <td>Jabalpur</td>
-                          <td>Active</td>
-                          <td>
-                            <button
-                              className="btn btn-warning"
-                              onClick={() => openEditEmployeePopup()}
-                            >
-                              Edit
-                            </button>
-                            <button className="btn btn-danger mx-1">
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>007</td>
-                          <td>Dr.Mahesh Kuldeep</td>
-                          <td>+91-999965651</td>
-                          <td>Male</td>
-                          <td>maheshkuldeep@gmail.com</td>
-                          <td>Cunsultant</td>
-                          <td>Cunsultant</td>
-                          <td>30000</td>
-                          <td>Jabalpur</td>
-                          <td>Active</td>
-                          <td>
-                            <button
-                              className="btn btn-warning"
-                              onClick={() => openEditEmployeePopup()}
-                            >
-                              Edit
-                            </button>
-                            <button className="btn btn-danger mx-1">
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>007</td>
-                          <td>Dr.Mahesh Kuldeep</td>
-                          <td>+91-999965651</td>
-                          <td>Male</td>
-                          <td>maheshkuldeep@gmail.com</td>
-                          <td>Cunsultant</td>
-                          <td>Cunsultant</td>
-                          <td>30000</td>
-                          <td>Jabalpur</td>
-                          <td>Active</td>
-                          <td>
-                            <button
-                              className="btn btn-warning"
-                              onClick={() => openEditEmployeePopup()}
-                            >
-                              Edit
-                            </button>
-                            <button className="btn btn-danger mx-1">
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>007</td>
-                          <td>Dr.Mahesh Kuldeep</td>
-                          <td>+91-999965651</td>
-                          <td>Male</td>
-                          <td>maheshkuldeep@gmail.com</td>
-                          <td>Cunsultant</td>
-                          <td>Cunsultant</td>
-                          <td>30000</td>
-                          <td>Jabalpur</td>
-                          <td>Active</td>
-                          <td>
-                            <button
-                              className="btn btn-warning"
-                              onClick={() => openEditEmployeePopup()}
-                            >
-                              Edit
-                            </button>
-                            <button className="btn btn-danger mx-1">
-                              Delete
-                            </button>
-                          </td>
-                        </tr>
+                        {doctorList?.map((item) => (
+                          <>
+                            <tr className="table-row">
+                              <td className="thead">{item.employee_ID}</td>
+                              <td className="thead">{item.employee_name}</td>
+                              <td className="thead">{item.employee_mobile}</td>
+                              <td className="thead">{item.gender}</td>
+                              <td className="thead">{item.employee_email}</td>
+                              <td className="thead">
+                                {item.employee_designation}
+                              </td>
+                              <td className="thead">{item.employee_role}</td>
+                              <td className="thead">{item.salary}</td>
+                              <td className="thead">{item.address}</td>
+                              <td className="thead">{item.employee_status}</td>
+                              <td className="thead">
+                                {item.morning_shift_start_time}
+                              </td>
+                              <td className="thead">
+                                {item.morning_shift_end_time}
+                              </td>
+                              <td className="thead">
+                                {item.evening_shift_start_time}
+                              </td>
+                              <td className="thead">
+                                {item.evening_shift_end_time}
+                              </td>
+                              <td className="thead">
+                                {item.allday_shift_start_time}
+                              </td>
+                              <td className="thead">
+                                {item.allday_shift_end_time}
+                              </td>
+                              <td className="thead">{item.availability}</td>
+                              <td className="" style={{ minWidth: "10rem" }}>
+                                <button
+                                  className="btn btn-warning"
+                                  onClick={() => openEditEmployeePopup()}
+                                >
+                                  Edit
+                                </button>
+                                <button className="btn btn-danger mx-1">
+                                  Delete
+                                </button>
+                              </td>
+                            </tr>
+                          </>
+                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -605,5 +574,9 @@ const Container = styled.div`
 
   label {
     font-weight: bold;
+  }
+
+  .thead {
+    min-width: 8rem;
   }
 `;

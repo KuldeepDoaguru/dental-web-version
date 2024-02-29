@@ -21,12 +21,16 @@ const {
   getEmployeeComplainByBranch,
   updateAppointData,
   deleteAppointData,
+  getEmployeeDataByBranch,
 } = require("../../controllers/superAdminController/superAdminController");
 const {
   makeBills,
   getBillsByBranch,
   deleteBills,
   getPurchaseBillByBranch,
+  getPurchaseInvByPurId,
+  updatePurInvoice,
+  deletePurInvoice,
 } = require("../../controllers/superAdminController/BillSectionController");
 // const multer = require("multer");
 
@@ -34,7 +38,7 @@ const router = express.Router();
 
 router.post("/enroll-employee", EnrollEmployee);
 router.put("/EditEmployeeDetails/:emp_id", EditEmployeeDetails);
-router.get("/getEmployeeDetails", getEmployeeData);
+router.get("/getEmployeeDetails/:branch", getEmployeeDataByBranch);
 router.post("/adminLoginUser", superAdminLoginUser);
 router.post("/sendOtp", sendOtp);
 router.post("/verifyOtp", verifyOtp);
@@ -74,6 +78,14 @@ router.delete("/deleteAppointData/:id", deleteAppointData);
 router.post("/makeBills", makeBills);
 router.get("/getBillsByBranch/:branch", getBillsByBranch);
 router.delete("/deleteBills/:id", deleteBills);
+router.get("/getPurchaseInvByPurId/:branch/:id", getPurchaseInvByPurId);
+router.put(
+  "/updatePurInvoice/:branch/:id",
+  upload.single("reciept_doc"),
+  updatePurInvoice
+);
+
+router.delete("/deletePurInvoice/:branch/:id", deletePurInvoice);
 
 //**************************************************************************************************** */
 module.exports = router;

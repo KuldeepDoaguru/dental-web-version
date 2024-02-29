@@ -106,7 +106,7 @@ const Sider = () => {
               </Link>
             </li>
             <hr />
-            <li>
+            {/* <li>
               <Link
                 to="/doctor_section"
                 className={`link-div ${getSidebarClass("/doctor_section")}`}
@@ -121,7 +121,7 @@ const Sider = () => {
                 </div>
               </Link>
             </li>
-            <hr />
+            <hr /> */}
             <li>
               <Link
                 to="/manage-staff"

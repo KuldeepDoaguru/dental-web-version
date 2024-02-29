@@ -131,10 +131,11 @@ const EnrollEmployee = async (req, res) => {
   }
 };
 
-const getEmployeeData = (req, res) => {
+const getEmployeeDataByBranch = (req, res) => {
   try {
-    const getQuery = `SELECT * FROM employee_register`;
-    db.query(getQuery, (err, result) => {
+    const branch = req.params.branch;
+    const getQuery = `SELECT * FROM employee_register WHERE branch_name = ?`;
+    db.query(getQuery, branch, (err, result) => {
       if (err) {
         res.status(400).send({ message: "error in fetching employee" });
       }
@@ -764,7 +765,7 @@ const purchaseInventory = (req, res) => {
       return res.status(400).json({ error: "No file uploaded." });
     }
 
-    const imageUrl = `http://localhost:${PORT}/reciept_doc/${reciept_doc.originalname}`;
+    const imageUrl = `http://localhost:${PORT}/reciept_doc/${reciept_doc.filename}`;
 
     console.log("Received request:769", req.body);
     console.log("profilePicture: 770", imageUrl);
@@ -781,7 +782,6 @@ const purchaseInventory = (req, res) => {
       branch_name,
       distributor_name,
       distributor_number,
-
       purchase_date,
     ];
     if (requiredFields.some((field) => !field)) {
@@ -916,7 +916,7 @@ const getEmployeeComplainByBranch = (req, res) => {
 module.exports = {
   EnrollEmployee,
   EditEmployeeDetails,
-  getEmployeeData,
+  getEmployeeDataByBranch,
   superAdminLoginUser,
   sendOtp,
   verifyOtp,

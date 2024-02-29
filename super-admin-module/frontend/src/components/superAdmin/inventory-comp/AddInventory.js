@@ -27,9 +27,9 @@ const AddInventory = () => {
     item_code: "",
     HSN_code: "",
     pur_quantity: "",
-    discount: "",
-    total_amount: "",
-    branch_name: "",
+    discount: 0,
+    total_amount: 0,
+    branch_name: branch.name,
     available_stock: "",
     low_stock_threshhold: "",
     distributor_name: "",
@@ -50,10 +50,17 @@ const AddInventory = () => {
     const { name, value, type, checked } = event.target;
 
     // Use spread syntax to update only the changed field
-    setRecData({
-      ...recData,
+    setRecData((prevRecData) => ({
+      ...prevRecData,
       [name]: type === "radio" || type === "checkbox" ? checked : value,
-    });
+      total_amount:
+        name === "item_mrp" || name === "pur_quantity" || name === "discount"
+          ? (name === "item_mrp" ? value : recData.item_mrp) *
+              (name === "pur_quantity" ? value : recData.pur_quantity) -
+            (name === "discount" ? value : recData.discount)
+          : prevRecData.total_amount,
+      available_stock: name === "pur_quantity" ? value : recData.pur_quantity,
+    }));
   };
 
   const goBack = () => {
@@ -115,6 +122,7 @@ const AddInventory = () => {
                         action=""
                         className=""
                         enctype="multipart/form-data"
+                        onSubmit={addPurchaseDetails}
                       >
                         <div className="d-flex justify-content-center">
                           <div class="input-group mb-3">
@@ -127,6 +135,7 @@ const AddInventory = () => {
                             <input
                               type="text"
                               class="p-1 w-100 rounded"
+                              name="item_code"
                               placeholder="Item Code"
                               value={recData.item_code}
                               onChange={handleInputChange}
@@ -143,6 +152,7 @@ const AddInventory = () => {
                               type="text"
                               class="p-1 w-100 rounded"
                               placeholder="Item Name"
+                              name="item_name"
                               value={recData.item_name}
                               onChange={handleInputChange}
                             />
@@ -160,6 +170,7 @@ const AddInventory = () => {
                               type="text"
                               class="p-1 w-100 rounded"
                               placeholder="HSN Code"
+                              name="HSN_code"
                               value={recData.HSN_code}
                               onChange={handleInputChange}
                             />
@@ -172,6 +183,7 @@ const AddInventory = () => {
                               type="date"
                               class="p-1 w-100 rounded"
                               placeholder="purchase date"
+                              name="purchase_date"
                               value={recData.purchase_date}
                               onChange={handleInputChange}
                             />
@@ -233,19 +245,21 @@ const AddInventory = () => {
                               type="text"
                               class="p-1 w-100 rounded"
                               placeholder="Item MRP"
+                              name="item_mrp"
                               value={recData.item_mrp}
                               onChange={handleInputChange}
                             />
                           </div>
                           <div class="input-group mb-3 mx-2">
                             <label for="exampleFormControlInput1" class="">
-                              Available Stock
+                              Purchase Quantity
                             </label>
                             <input
                               type="number"
                               class="p-1 w-100 rounded"
-                              placeholder="available stock"
-                              value={recData.available_stock}
+                              placeholder="purchase quantity"
+                              name="pur_quantity"
+                              value={recData.pur_quantity}
                               onChange={handleInputChange}
                             />
                           </div>
@@ -262,6 +276,7 @@ const AddInventory = () => {
                               type="text"
                               class="p-1 w-100 rounded"
                               placeholder="Low Stock Threshold"
+                              name="low_stock_threshhold"
                               value={recData.low_stock_threshhold}
                               onChange={handleInputChange}
                             />
@@ -281,10 +296,89 @@ const AddInventory = () => {
                             />
                           </div>
                         </div>
+                        <div className="d-flex justify-content-center mt-2">
+                          <div class="input-group mb-3">
+                            <label for="exampleFormControlInput1" class="">
+                              Branch
+                            </label>
+                            <select name="" id="" class="p-1 w-100 rounded">
+                              <option value={branch.name}>{branch.name}</option>
+                            </select>
+                          </div>
+                          <div class="input-group mb-3 mx-2">
+                            <label for="exampleFormControlInput1" class="">
+                              Distributor Name
+                            </label>
+                            <input
+                              type="text"
+                              class="p-1 w-100 rounded"
+                              placeholder="distributor_name"
+                              name="distributor_name"
+                              value={recData.distributor_name}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="d-flex justify-content-center mt-2">
+                          <div class="input-group mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Distributor Number
+                            </label>
+                            <input
+                              type="text"
+                              class="p-1 w-100 rounded"
+                              maxLength={10}
+                              placeholder="distributor number"
+                              name="distributor_number"
+                              value={recData.distributor_number}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                          <div class="input-group mb-3 mx-2">
+                            <label for="exampleFormControlInput1" class="">
+                              Discount
+                            </label>
+                            <input
+                              type="number"
+                              class="p-1 w-100 rounded"
+                              placeholder="discount"
+                              name="discount"
+                              value={recData.discount}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="d-flex justify-content-center mt-2">
+                          <div class="input-group mt-3">
+                            {/* <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Total Amount
+                            </label> */}
+                            <h4 class="p-1 w-100 rounded">
+                              Available Stock : {recData.available_stock}
+                            </h4>
+                          </div>
+                          <div class="input-group mx-2 mt-3">
+                            {/* <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Total Amount
+                            </label> */}
+                            <h4 class="p-1 w-100 rounded">
+                              Total Amount :{recData.total_amount}
+                            </h4>
+                          </div>
+                        </div>
                         <div className="d-flex justify-content-start mt-2">
                           {" "}
                           <button
-                            className="btn btn-info fw-bold shadow"
+                            className="btn btn-info btnbox fw-bold shadow"
                             type="submit"
                           >
                             Submit
@@ -314,8 +408,24 @@ const Container = styled.div`
 
   label {
     font-weight: bold;
+    color: #004aad;
   }
+
   .box-input {
     width: 50%;
+  }
+
+  input {
+    border: 1px solid #004aad;
+  }
+  .input-group {
+    h4 {
+      color: #004aad;
+    }
+  }
+
+  .btnbox {
+    background-color: #004aad;
+    color: white;
   }
 `;

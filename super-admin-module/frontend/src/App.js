@@ -91,7 +91,7 @@ const App = () => {
     const branch = JSON.parse(selectedBranch);
     dispatch(setBranch(branch));
   }
-  
+
   // const [role, setRole] = useState("admin");
   return (
     <BrowserRouter>
@@ -109,7 +109,7 @@ const App = () => {
         <Route path="/bill_section" element={<AllBills />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/add-invetory" element={<AddInventory />} />
-        <Route path="/edit-invetory" element={<EditInventory />} />
+        <Route path="/edit-invetory/:pid" element={<EditInventory />} />
         <Route path="/doctor_section" element={<DoctorList />} />
         <Route path="/register-doctor" element={<AddDoctor />} />
         <Route path="/super-admin-profile" element={<SuperAdProfile />} />

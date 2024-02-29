@@ -1,11 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import { Link } from "react-router-dom";
 import BranchSelector from "../../components/BranchSelector";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const DoctorList = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [doctorList, setDoctorList] = useState([]);
+
+  const getDocDetailsList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getEmployeeDetails/${branch.name}`
+      );
+      console.log(data);
+      setDoctorList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getDocDetailsList();
+  }, []);
+
+  console.log(doctorList);
+  //filter for designation
+  const filterForDesignation = doctorList?.filter((item) => {
+    return item.employee_designation === "doctor";
+  });
+
+  console.log(filterForDesignation);
+
   return (
     <>
       <Container>
@@ -29,122 +63,47 @@ const DoctorList = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno">doc_id</th>
+                            <th className="table-sno">emp_id</th>
                             <th className="table-small">Doctor Name</th>
                             <th className="table-small">Mobile</th>
                             <th className="table-small">Email</th>
                             <th className="table-small">Gender</th>
                             <th className="table-small">Address</th>
-                            <th className="table-small">
-                              FeedBack by Receptionist
-                            </th>
-                            <th>Doctor Availability</th>
+                            <th className="table-small">Salary</th>
+                           <th></th>
                             <th className="table-small">View Details</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td className="table-small">8602161019</td>
-                            <td className="table-small">doctor@gmail.com</td>
-                            <td className="table-small">Male</td>
-                            <td className="table-small">Jabalpur</td>
-                            <td>He is a good doctor</td>
-                            <td>Available</td>
-                            <td className="table-small">
-                              <Link to="/doctor-profile">
-                                <button className="btn btn-warning">
-                                  View Details
-                                </button>
-                              </Link>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td className="table-small">8602161019</td>
-                            <td className="table-small">doctor@gmail.com</td>
-                            <td className="table-small">Male</td>
-                            <td className="table-small">Jabalpur</td>
-                            <td>He is a good doctor</td>
-                            <td>Available</td>
-                            <td className="table-small">
-                              <Link to="/doctor-profile">
-                                <button className="btn btn-warning">
-                                  View Details
-                                </button>
-                              </Link>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td className="table-small">8602161019</td>
-                            <td className="table-small">doctor@gmail.com</td>
-                            <td className="table-small">Male</td>
-                            <td className="table-small">Jabalpur</td>
-                            <td>He is a good doctor</td>
-                            <td>Available</td>
-                            <td className="table-small">
-                              <Link to="/doctor-profile">
-                                <button className="btn btn-warning">
-                                  View Details
-                                </button>
-                              </Link>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td className="table-small">8602161019</td>
-                            <td className="table-small">doctor@gmail.com</td>
-                            <td className="table-small">Male</td>
-                            <td className="table-small">Jabalpur</td>
-                            <td>He is a good doctor</td>
-                            <td>Available</td>
-                            <td className="table-small">
-                              <Link to="/doctor-profile">
-                                <button className="btn btn-warning">
-                                  View Details
-                                </button>
-                              </Link>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td className="table-small">8602161019</td>
-                            <td className="table-small">doctor@gmail.com</td>
-                            <td className="table-small">Male</td>
-                            <td className="table-small">Jabalpur</td>
-                            <td>He is a good doctor</td>
-                            <td>Available</td>
-                            <td className="table-small">
-                              <Link to="/doctor-profile">
-                                <button className="btn btn-warning">
-                                  View Details
-                                </button>
-                              </Link>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Shubham patel</td>
-                            <td className="table-small">8602161019</td>
-                            <td className="table-small">doctor@gmail.com</td>
-                            <td className="table-small">Male</td>
-                            <td className="table-small">Jabalpur</td>
-                            <td>He is a good doctor</td>
-                            <td>Available</td>
-                            <td className="table-small">
-                              <Link to="/doctor-profile">
-                                <button className="btn btn-warning">
-                                  View Details
-                                </button>
-                              </Link>
-                            </td>
-                          </tr>
+                          {filterForDesignation?.map((item) => (
+                            <>
+                              <tr className="table-row">
+                                <td className="table-sno">
+                                  {item.employee_ID}
+                                </td>
+                                <td className="table-small">
+                                  {item.employee_name}
+                                </td>
+                                <td className="table-small">
+                                  {item.employee_mobile}
+                                </td>
+                                <td className="table-small">
+                                  {item.employee_email}
+                                </td>
+                                <td className="table-small">{item.gender}</td>
+                                <td className="table-small">{item.address}</td>
+                                <td>{item.salary}</td>
+                                <td>Available</td>
+                                <td className="table-small">
+                                  <Link to="/doctor-profile">
+                                    <button className="btn btn-warning">
+                                      View Details
+                                    </button>
+                                  </Link>
+                                </td>
+                              </tr>
+                            </>
+                          ))}
                         </tbody>
                       </table>
                     </div>

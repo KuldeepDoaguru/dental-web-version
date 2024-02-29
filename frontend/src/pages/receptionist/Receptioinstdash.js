@@ -35,7 +35,7 @@ function Receptioinstdash() {
 
     <Calender1/>
 </div>
-  <div className="col-lg-12">
+  <div className="col-lg-12 mt-4">
     <AppointTable/>
   </div>
 

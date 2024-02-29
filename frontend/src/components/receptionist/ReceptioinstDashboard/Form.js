@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
+import { Modal, Button } from 'react-bootstrap';
 
 
 function Form() {
+
     
   const  [formdata,setFormData ] = useState({})
  
@@ -13,8 +15,10 @@ function Form() {
   const [showDoctorList,setShowDoctorList] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null); // State to store the selected patient
   const [selectedDoctor, setSelectedDoctor] = useState(null); // State to store the selected Doctor
-  const [selectedDisease, setSelectedDisease] = useState([]);
   const [selectedTreatment, setSelectedTreatment] = useState([]);
+
+  const [selectedDisease, setSelectedDisease] = useState([]);
+  const [inputDisease, setInputDisease] = useState('');
 
   const disease = [
     { value: 'NoDisease', label: 'No disease' },
@@ -36,6 +40,8 @@ function Form() {
     { value: 'Hepatitis', label: 'Hepatitis' },
     
   ];
+
+
 
   const treatments = [
     { value: 'OPD', label: 'OPD' },
@@ -82,11 +88,21 @@ function Form() {
 ];
 
 
+const handleChangeDisease = (newValue, actionMeta) => {
+  
+  setSelectedDisease(newValue);
+  if (actionMeta.action === 'create-option') {
+    // If a new option is created, add it to the list of options
+    const newOption = { value: newValue[newValue.length - 1].value, label: newValue[newValue.length - 1].label };
+    disease.push(newOption);
+  }
+};
 
 
-  const handleChangeDisease = (selectedOptions) => {
-    setSelectedDisease(selectedOptions.map(option => option.value));
-  };
+
+  // const handleChangeDisease = (selectedOptions) => {
+  //   setSelectedDisease(selectedOptions.map(option => option.value));
+  // };
 
   const handleChangeTreatment = (selectedOption) => {
     setSelectedTreatment(selectedOption.value);
@@ -100,10 +116,9 @@ function Form() {
   ) 
 
 
-  const [bookData,setBookData] = useState(
-    { uid :"1", patient_Name:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male", contact_Person : "father" , dateTime:"", contact_Person_Name: "rahul", blood_Group : "o+" , dob : "", age : "25", address: "Ranital gate no. 4 , jabalpur"}
-    
-  ) 
+  const [bookData,setBookData] = useState({
+    patient_uid :"", patient_Name:"",status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"",
+  }) 
 
   const doctors = [
     { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:"20/02/2024",lunchTime: ""},
@@ -118,7 +133,7 @@ function Form() {
 
   ];
 
-  const appointment_data = [
+  const [appointment_data,setAppointmentData] = useState([
     { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:45",status:"Missed",action:"edit"},
     { uid :"1", patient:"Mohit Shau", doctorId:"1",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:00",status:"Missed",action:"edit"},
     { uid :"1", patient:"Mohit Shau", doctorId:"1" ,doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T11:30",status:"Missed",action:"edit"},
@@ -128,9 +143,11 @@ function Form() {
     { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T12:00",status:"Missed",action:"edit"},
     { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T13:00",status:"Missed",action:"edit"},
     { uid :"1", patient:"Mohit Shau",doctorId:"2", doctor:"Dr Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T13:00",status:"Missed",action:"edit"},
+    { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T15:00",status:"Missed",action:"edit"},
+    
 
     
-  ];
+  ]);
 
   const [patients, setPatients] = useState([
     {
@@ -262,7 +279,7 @@ console.log(selectedDoctor)
 
   console.log(bookData)
 
-  console.log(patients)
+  console.log(appointment_data)
 
   useEffect(()=>{
     const calculateAge = (date) => {
@@ -325,15 +342,7 @@ console.log(selectedDoctor)
   //   return;
   // }
 
-  if (!isDoctorAvailable(selectedDateTime)) {
-    // Doctor is not available at the specified time
-    const confirmation = window.confirm("The selected doctor is not available at the specified time. Do you want to proceed with booking?");
-    if (!confirmation) {
-      return; // If the user cancels, return early
-    }
-    
-    
-  }
+
   
 
    
@@ -363,7 +372,7 @@ console.log(selectedDoctor)
         address: data.address,
         weight: data.weight,
         allergy: data.allergy,
-        disease: selectedDisease,
+        disease: selectedDisease.map((option) => option.value),
         patientType: data.patientType,
         doctorId: selectedDoctor.uid,
         doctor_name: selectedDoctor.doctor_name,
@@ -371,8 +380,23 @@ console.log(selectedDoctor)
         treatment: selectedTreatment,
         notes: data.notes,
       };
+
+      if (!isDoctorAvailable(selectedDateTime)) {
+        // Doctor is not available at the specified time
+
+
+        const confirmation = window.confirm("The selected doctor is not available at the specified time. Do you want to proceed with booking?");
+        if (!confirmation) {
+          return; // If the user cancels, return early
+        }
+
+   
+        
+        
+      }
   
       setPatients([...patients, newPatient]);
+      setAppointmentData([...appointment_data,newPatient]);
   
       // Reset form data
       setData({
@@ -409,13 +433,7 @@ console.log(selectedDoctor)
     }
   };
 
-  const handleBookChange = (e)=>{
-    const {name,value} = e.target;
-    setBookData({
-      ...data,
-      [name]: value
-    });
-}
+
 
 const handlePatientSelect = (patient) => {
   setSelectedPatient(patient); // Set the selected patient when it's clicked
@@ -432,27 +450,117 @@ const handleDoctorSelect = (doctor) => {
   console.log(selectedDoctor)
 
 
-  // const [selectedDiseasedemo, setSelectedDiseasedemo] = useState([]);
-  // const [inputDisease, setInputDisease] = useState('');
+  const handleBookChange = (e)=>{
+    const {name,value} = e.target;
+    setBookData({
+      ...bookData,
+      [name]: value
+    });
+}
 
-  // const diseaseOptions = [
-  //   { value: 'NoDisease', label: 'No disease' },
-  //   { value: 'Diabetes', label: 'Diabetes' },
-  //   { value: 'Heart', label: 'Heart' },
-  //   // Add other disease options here
-  // ];
+ const handleBookAppointment = (e) =>{
+    
+  e.preventDefault();
 
-  // const handleChangeDiseasedemo = (newValue, actionMeta) => {
+   // Check if the selected doctor is null
+   if (!selectedDoctor) {
+    console.log("Please select a doctor");
+    return;
+  }
+
+   // Convert appointment time to Date object
+const selectedDateTime = new Date(bookData.appDateTime);
+
+// Check if the selected doctor is available during the appointment time
+const isDoctorAvailable = (selectedDateTime) => {
+  const morningStart = new Date(selectedDateTime);
+  morningStart.setHours(selectedDoctor.morningStartTiming.split(":")[0], selectedDoctor.morningStartTiming.split(":")[1]);
+  const morningEnd = new Date(selectedDateTime);
+  morningEnd.setHours(selectedDoctor.morningEndTiming.split(":")[0], selectedDoctor.morningEndTiming.split(":")[1]);
+  const eveningStart = new Date(selectedDateTime);
+  eveningStart.setHours(selectedDoctor.eveningStartTiming.split(":")[0], selectedDoctor.eveningStartTiming.split(":")[1]);
+  const eveningEnd = new Date(selectedDateTime);
+  eveningEnd.setHours(selectedDoctor.eveningEndTiming.split(":")[0], selectedDoctor.eveningEndTiming.split(":")[1]);
+
+  return (
+    (selectedDateTime >= morningStart && selectedDateTime <= morningEnd) ||
+    (selectedDateTime >= eveningStart && selectedDateTime <= eveningEnd)
+  );
+};
+
+ 
+  const isSlotAvailable = appointment_data.every((appointment) => {
+    // Check if the appointment is for the selected doctor and if it falls within the same datetime range
+    const appointmentDate = new Date(appointment.timing);
+    const selectedDate = new Date(bookData.appDateTime);
+    
+    return !(appointment.doctorId === selectedDoctor.uid && appointmentDate.getTime() === selectedDate.getTime());
+  });
+
+  if (isSlotAvailable) {
+    // Slot is available, proceed with booking
+    const newAppointment = {
+      patient_uid : selectedPatient.uid,
+      patient_Name: selectedPatient.patient_Name,
+      doctorId: selectedDoctor.uid,
+      doctor_name: selectedDoctor.doctor_name,
+      appDateTime: bookData.appDateTime,
+      treatment: selectedTreatment,
+      notes: bookData.notes,
+      status : "apoint"
+    };
   
-  //   setSelectedDiseasedemo(newValue);
-  //   if (actionMeta.action === 'create-option') {
-  //     // If a new option is created, add it to the list of options
-  //     const newOption = { value: newValue[newValue.length - 1].value, label: newValue[newValue.length - 1].label };
-  //     diseaseOptions.push(newOption);
-  //   }
-  // };
+    
 
-  // console.log(selectedDiseasedemo)
+    if (!isDoctorAvailable(selectedDateTime)) {
+      // Doctor is not available at the specified time
+
+
+      const confirmation = window.confirm("The selected doctor is not available at the specified time. Do you want to proceed with booking?");
+      if (!confirmation) {
+        return; // If the user cancels, return early
+      }
+
+ 
+      
+      
+    }
+    setAppointmentData([...appointment_data,newAppointment]);
+    // Reset form data
+    
+
+    // Reset selected doctor
+    // setSelectedDoctor(null);
+
+    console.log("Appointment booked successfully!");
+    alert("Appointment booked successfully!");
+  } else {
+    // Slot is not available
+    alert("The selected doctor's slot is already booked at the specified time");
+    console.log("The selected doctor's slot is already booked at the specified time");
+  }
+
+
+
+
+  
+
+
+
+ 
+
+
+
+
+
+ }
+
+ console.log(bookData)
+
+
+
+
+ 
  
  
   
@@ -735,15 +843,17 @@ const handleDoctorSelect = (doctor) => {
                           <label className="form-label" for="form6Example2">
                          Have any disease
                           </label>
-
-                          <Select
+                          <CreatableSelect
         id="disease"
-        name="disease"
-        options={disease}
         isMulti
-        value={selectedDisease.map(option => ({ value: option, label: option }))}
         onChange={handleChangeDisease}
+        options={disease}
+        value={selectedDisease}
+        inputValue={inputDisease}
+        onInputChange={setInputDisease}
+        placeholder="Select or type to add..."
       />
+                          
 
                         </div>
                       </div>
@@ -766,19 +876,7 @@ const handleDoctorSelect = (doctor) => {
                         </div>
                       </div>
 
-                      {/* <div>
-      <label htmlFor="disease">Select Disease</label>
-      <CreatableSelect
-        id="disease"
-        isMulti
-        onChange={handleChangeDiseasedemo}
-        options={diseaseOptions}
-        value={selectedDiseasedemo}
-        inputValue={inputDisease}
-        onInputChange={setInputDisease}
-        placeholder="Select or type to add..."
-      />
-    </div> */}
+                
                       <p className="mt-4">Fill details for Book Appointment</p>
 
                       <ul className="list-group">
@@ -978,6 +1076,7 @@ const handleDoctorSelect = (doctor) => {
                 </ul>
                 </form>
               </div>
+
               <div
                 className="tab-pane fade"
                 id="profile-tab-pane"
@@ -985,6 +1084,7 @@ const handleDoctorSelect = (doctor) => {
                 aria-labelledby="profile-tab"
                 tabindex="0"
               >
+                <form onSubmit={handleBookAppointment}>
                 <ul className="list-group">
                  
                   <li className="list-group-item">
@@ -1022,6 +1122,7 @@ const handleDoctorSelect = (doctor) => {
                             id="form6Example1"
                             className="form-control"
                             value={selectedPatient ? selectedPatient.patient_Name : ""}
+                            required
                           />
                           
 
@@ -1037,8 +1138,9 @@ const handleDoctorSelect = (doctor) => {
                             type="datetime-local"
                             id="form6Example2"
                             className="form-control"
-                            name="dateTime"
+                            name="appDateTime"
                             onChange={(e)=>handleBookChange(e)}
+                            required
                            
                           />
                          
@@ -1058,6 +1160,7 @@ const handleDoctorSelect = (doctor) => {
                             className="form-control"
                             value={searchDoctor}
                     onChange={handleSearchDoctor}
+                    required
                     
                   
 
@@ -1088,11 +1191,14 @@ const handleDoctorSelect = (doctor) => {
                         <label className="form-label" for="form6Example2">
                             Add Treatment
                           </label>
-                          <input
-                            type="text"
-                            id="form6Example2"
-                            className="form-control"
-                          />
+                          <Select
+        id="treatment"
+        name="treatment"
+        options={treatments}
+        value={selectedTreatment ? { value: selectedTreatment, label: selectedTreatment } : null}
+        onChange={handleChangeTreatment}
+        required
+      />
                           
                         </div>
                       </div>
@@ -1105,6 +1211,8 @@ const handleDoctorSelect = (doctor) => {
                             type="text"
                             id="form6Example1"
                             className="form-control"
+                            onChange={handleBookChange}
+                            name="notes"
                           />
                          
                         </div>
@@ -1206,6 +1314,7 @@ const handleDoctorSelect = (doctor) => {
                     
                   </li>
                 </ul>
+                </form>
               </div>
             </div>
           </ul>

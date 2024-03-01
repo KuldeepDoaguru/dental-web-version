@@ -89,7 +89,7 @@ const AddInventory = () => {
         }
       );
       cogoToast.success("Registration successful!");
-      // navigate("/inventory");
+      navigate("/inventory");
     } catch (error) {
       console.log(error);
     }

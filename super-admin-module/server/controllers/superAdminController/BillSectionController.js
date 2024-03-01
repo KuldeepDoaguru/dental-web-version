@@ -282,6 +282,181 @@ const deletePurInvoice = (req, res) => {
   }
 };
 
+const editEmployeeDetails = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const empId = req.params.empID;
+    const {
+      empName,
+      empMobile,
+      empGender,
+      empEmail,
+      empDesignation,
+      empSalary,
+      empAddress,
+      status,
+      morningShiftStartTime,
+      morningShiftEndTime,
+      eveningShiftStartTime,
+      eveningShiftEndTime,
+      allDayShiftStartTime,
+      allDayShiftEndTime,
+      working_days,
+      password,
+      empRole,
+      availability,
+    } = req.body;
+
+    const empProfilePicture = req.file;
+    console.log(empProfilePicture, "pro");
+
+    const imageUrl = `http://localhost:${PORT}/empProfilePicture/${empProfilePicture?.filename}`;
+
+    console.log("profilePicture: 770", imageUrl);
+
+    console.log(req.body);
+    console.log(password, "23");
+
+    const getQuery = `SELECT * FROM employee_register WHERE branch_name = ? AND employee_ID = ?`;
+    db.query(getQuery, [branch, empId], (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+
+      if (result && result.length > 0) {
+        const updateFields = [];
+        const updateValues = [];
+
+        if (empName) {
+          updateFields.push("employee_name = ?");
+          updateValues.push(empName);
+        }
+
+        if (empMobile) {
+          updateFields.push("employee_mobile = ?");
+          updateValues.push(empMobile);
+        }
+
+        if (empEmail) {
+          updateFields.push("employee_email = ?");
+          updateValues.push(empEmail);
+        }
+
+        if (empDesignation) {
+          updateFields.push("employee_designation = ?");
+          updateValues.push(empDesignation);
+        }
+
+        if (empRole) {
+          updateFields.push("employee_role = ?");
+          updateValues.push(empRole);
+        }
+
+        if (empGender) {
+          updateFields.push("gender = ?");
+          updateValues.push(empGender);
+        }
+        if (empSalary) {
+          updateFields.push("salary = ?");
+          updateValues.push(empSalary);
+        }
+        if (empAddress) {
+          updateFields.push("address = ?");
+          updateValues.push(empAddress);
+        }
+
+        if (status) {
+          updateFields.push("employee_status = ?");
+          updateValues.push(status);
+        }
+
+        if (morningShiftStartTime) {
+          updateFields.push("morning_shift_start_time = ?");
+          updateValues.push(morningShiftStartTime);
+        }
+
+        if (morningShiftEndTime) {
+          updateFields.push("morning_shift_end_time = ?");
+          updateValues.push(morningShiftEndTime);
+        }
+
+        if (eveningShiftStartTime) {
+          updateFields.push("evening_shift_start_time = ?");
+          updateValues.push(eveningShiftStartTime);
+        }
+
+        if (eveningShiftEndTime) {
+          updateFields.push("evening_shift_end_time = ?");
+          updateValues.push(eveningShiftEndTime);
+        }
+
+        if (allDayShiftStartTime) {
+          updateFields.push("allday_shift_start_time = ?");
+          updateValues.push(allDayShiftStartTime);
+        }
+
+        if (allDayShiftEndTime) {
+          updateFields.push("allday_shift_end_time = ?");
+          updateValues.push(allDayShiftEndTime);
+        }
+
+        if (working_days) {
+          updateFields.push("working_days = ?");
+          updateValues.push(working_days);
+        }
+
+        if (password) {
+          updateFields.push("employee_password = ?");
+          updateValues.push(password);
+        }
+
+        if (availability) {
+          updateFields.push("availability = ?");
+          updateValues.push(availability);
+        }
+
+        if (empProfilePicture) {
+          updateFields.push("employee_picture = ?");
+          updateValues.push(imageUrl);
+        }
+
+        const updateQuery = `UPDATE employee_register SET ${updateFields.join(
+          ", "
+        )} WHERE branch_name = ? AND employee_ID = ?`;
+
+        db.query(
+          updateQuery,
+          [...updateValues, branch, empId],
+          (err, result) => {
+            if (err) {
+              return res.status(500).json({
+                success: false,
+                message: "Failed to update details",
+              });
+            } else {
+              return res.status(200).json({
+                success: true,
+                message: "Details updated successfully",
+              });
+            }
+          }
+        );
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   makeBills,
   getBillsByBranch,
@@ -289,4 +464,5 @@ module.exports = {
   getPurchaseInvByPurId,
   updatePurInvoice,
   deletePurInvoice,
+  editEmployeeDetails,
 };

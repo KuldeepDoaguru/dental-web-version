@@ -22,6 +22,7 @@ const {
   updateAppointData,
   deleteAppointData,
   getEmployeeDataByBranch,
+  getEmployeeDataByBranchAndId,
 } = require("../../controllers/superAdminController/superAdminController");
 const {
   makeBills,
@@ -31,14 +32,31 @@ const {
   getPurchaseInvByPurId,
   updatePurInvoice,
   deletePurInvoice,
+  editEmployeeDetails,
 } = require("../../controllers/superAdminController/BillSectionController");
 // const multer = require("multer");
 
 const router = express.Router();
 
-router.post("/enroll-employee", EnrollEmployee);
+const profilePicturestorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "empProfilePicture/");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now();
+    cb(null, uniqueSuffix + file.originalname);
+  },
+});
+
+const profilePictureupload = multer({ storage: profilePicturestorage });
+router.post(
+  "/enroll-employee",
+  profilePictureupload.single("empProfilePicture"),
+  EnrollEmployee
+);
 router.put("/EditEmployeeDetails/:emp_id", EditEmployeeDetails);
-router.get("/getEmployeeDetails/:branch", getEmployeeDataByBranch);
+router.get("/getEmployeeDetails/:branch/:empId", getEmployeeDataByBranchAndId);
+router.get("/getEmployeeDataByBranch/:branch", getEmployeeDataByBranch);
 router.post("/adminLoginUser", superAdminLoginUser);
 router.post("/sendOtp", sendOtp);
 router.post("/verifyOtp", verifyOtp);
@@ -86,6 +104,11 @@ router.put(
 );
 
 router.delete("/deletePurInvoice/:branch/:id", deletePurInvoice);
+router.put(
+  "/editEmployeeDetails/:branch/:empID",
+  profilePictureupload.single("empProfilePicture"),
+  editEmployeeDetails
+);
 
 //**************************************************************************************************** */
 module.exports = router;

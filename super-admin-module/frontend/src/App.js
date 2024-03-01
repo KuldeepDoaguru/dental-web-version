@@ -15,7 +15,7 @@ import AllBills from "./pages/superAdmin/AllBills";
 import Inventory from "./pages/superAdmin/Inventory";
 import DoctorList from "./pages/superAdmin/DoctorList";
 import SuperAdProfile from "./components/superAdmin/SuperAdProfile";
-import DoctorProfile from "./components/superAdmin/doctor/DoctorProfile";
+import DoctorProfile from "./components/superAdmin/doctor/EmployeeProfile";
 import AddInventory from "./components/superAdmin/inventory-comp/AddInventory";
 import EditInventory from "./components/superAdmin/inventory-comp/EditInventory";
 import AddDoctor from "./components/superAdmin/doctor/AddDoctor";
@@ -73,6 +73,7 @@ import ComplaintPage from "./pages/superAdmin/ComplaintPage";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./redux/slices/UserSlicer";
 import { setBranch } from "./redux/slices/BranchSlicer";
+import EmployeeProfile from "./components/superAdmin/doctor/EmployeeProfile";
 
 const App = () => {
   const storedUserData = localStorage.getItem("userData");
@@ -113,7 +114,7 @@ const App = () => {
         <Route path="/doctor_section" element={<DoctorList />} />
         <Route path="/register-doctor" element={<AddDoctor />} />
         <Route path="/super-admin-profile" element={<SuperAdProfile />} />
-        <Route path="/doctor-profile" element={<DoctorProfile />} />
+        <Route path="/employee-profile/:eid" element={<EmployeeProfile />} />
         <Route path="/clinic-setting" element={<ClinicSetting />} />
         <Route path="/lab-setting" element={<LabSetting />} />
         <Route path="/drug-setting" element={<DrugSetting />} />

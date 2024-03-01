@@ -11,6 +11,7 @@ dotenv.config();
 // rest object
 const app = express();
 app.use(express.static("reciept_doc"));
+app.use(express.static("empProfilePicture"));
 app.use(express.static(join(__dirname, "build")));
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
@@ -20,6 +21,10 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/reciept_doc", express.static(join(__dirname, "reciept_doc")));
+app.use(
+  "/empProfilePicture",
+  express.static(join(__dirname, "empProfilePicture"))
+);
 // routes
 app.use("/api/v1/super-admin", superAdminRoutes);
 

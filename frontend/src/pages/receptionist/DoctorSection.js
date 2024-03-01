@@ -12,21 +12,29 @@ function DoctorSection() {
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Function to convert 24-hour time to AM/PM format
+const convertToAMPM = (time) => {
+  const [hours, minutes] = time.split(':');
+  let suffix = 'AM';
+  let formattedHours = parseInt(hours, 10);
+
+  if (formattedHours >= 12) {
+    suffix = 'PM';
+    formattedHours = formattedHours !== 12 ? formattedHours - 12 : formattedHours;
+  }
+
+  return `${formattedHours}:${minutes} ${suffix}`;
+};
+
 
 
   const Table_data = [
-    { uid :"1", doctor_name:"Mohit Sahu",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"2", doctor_name:"Rahul sen",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"3", doctor_name:"Umer khan",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"4", doctor_name:"Shadab Ali",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"5", doctor_name:"Saket Agrawal",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"6", doctor_name:"Mohit Sahu",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"1", doctor_name:"Mohit Sahu",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"2", doctor_name:"Rahul sen",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"3", doctor_name:"Umer khan",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"4", doctor_name:"Shadab Ali",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"5", doctor_name:"Saket Agrawal",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
-    { uid :"6", doctor_name:"Mohit Sahu",mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur"},
+    { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:"20/02/2024",lunchTime: ""},
+    { uid :"2", doctor_name:"Dr Mohit Sahu",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:"20/02/2024",lunchTime: ""},
+    { uid :"3", doctor_name:"Dr Shubham Soni",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:"20/02/2024",lunchTime: ""},
+    { uid :"4", doctor_name:"Dr Dev",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:"20/02/2024",lunchTime: ""},
+    { uid :"5", doctor_name:"Dr Mahesh Kuldeep",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:"20/02/2024",lunchTime: ""},
+   
     
 
   ];
@@ -187,11 +195,13 @@ function DoctorSection() {
                             <th>Email</th>
                             <th>Gender</th>
                             <th>Address</th>
+                            <th>Shift</th>
                             <th>Appointment</th>
                           </tr>
                         </thead>
                         <tbody>
                           {currentRows.map((data,index) => (
+                            
                                   <tr key={index}>
                                   <td>{data.uid}</td>
                                 <td> {data.doctor_name}</td>
@@ -202,6 +212,8 @@ function DoctorSection() {
                                   <td>
                                    {data.address}
                                   </td>
+                                  <td>Morning : <span> {convertToAMPM(data.morningStartTiming) } to {convertToAMPM(data.morningEndTiming) }</span> 
+                                  <span className='d-block'>Evening : {convertToAMPM(data.eveningStartTiming)} to {convertToAMPM(data.eveningEndTiming)}</span>   </td>
                                   <td><Link to='/doctor_profile'>View Details</Link></td>
                                 </tr>
                           ))}

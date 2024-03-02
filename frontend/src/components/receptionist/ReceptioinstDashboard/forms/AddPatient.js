@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Modal, Button } from 'react-bootstrap';
+import axios from "axios";
 
 
 function AddPatient() {
@@ -111,7 +112,7 @@ const handleChangeDisease = (newValue, actionMeta) => {
 
   
   const [data,setData] = useState(
-    { uid :"1", patient_Name:"",mobile: "",email: "",gender: "", contact_Person : "" , contact_Person_Name: "", blood_Group : "" , dob : "", age : "",weight:"",allergy:"",disease:"", patientType:"", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"",  address: ""}
+    { branch_name:"", patient_Name:"",mobile: "",email: "",gender: "", aadhaar_no:"", contact_Person : "" , contact_Person_Name: "", blood_Group : "" , dob : "", age : "",weight:"",allergy:"",disease:"", patientType:"", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"",  address: "", patient_added_by:"",patient_updated_by:"",patient_added_by_emp_id:"", patient_updated_by_emp_id:""}
     
   ) 
 
@@ -303,7 +304,7 @@ console.log(selectedDoctor)
       });
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
   
     // Check if the selected doctor is null
@@ -356,11 +357,12 @@ console.log(selectedDoctor)
     if (isSlotAvailable) {
       // Slot is available, proceed with booking
       const newPatient = {
-        uid: (patients.length + 1).toString(), // Generate a unique ID (you might need a better way to generate unique IDs)
+        branch_name:"vijay nagar",
         patient_Name: data.patient_Name,
         mobile: data.mobile,
         email: data.email,
         gender: data.gender,
+        aadhaar_no : data.aadhaar_no,
         contact_Person: data.contact_Person,
         contact_Person_Name: data.contact_Person_Name,
         blood_Group: data.blood_Group,
@@ -369,6 +371,7 @@ console.log(selectedDoctor)
         address: data.address,
         weight: data.weight,
         allergy: data.allergy,
+        status : "appoint",
         disease: selectedDisease.map((option) => option.value),
         patientType: data.patientType,
         doctorId: selectedDoctor.uid,
@@ -376,6 +379,10 @@ console.log(selectedDoctor)
         appDateTime: data.appDateTime,
         treatment: selectedTreatment,
         notes: data.notes,
+        patient_added_by: "ravi",
+        patient_added_by_emp_id : "11",
+
+
       };
 
       if (!isDoctorAvailable(selectedDateTime)) {
@@ -385,11 +392,16 @@ console.log(selectedDoctor)
         const confirmation = window.confirm("The selected doctor is not available at the specified time. Do you want to proceed with booking?");
         if (!confirmation) {
           return; // If the user cancels, return early
-        }
+        } }
 
-   
-        
-        
+      try{
+         const response = await axios.post('http://localhost:4000/api/v1/receptionist/add-patient',newPatient);
+         console.log(response);
+
+      }
+      catch(error){
+        console.log(error)
+
       }
   
       setPatients([...patients, newPatient]);
@@ -534,6 +546,21 @@ const handleDoctorSelect = (doctor) => {
                             name="address"
                             onChange={handleChange}
                             required
+                          />
+                        </div>
+                      </div>
+                      <div className="col-sm-6">
+                        <div className="form-outline">
+                          <label className="form-label" for="form6Example1">
+                           Aadhaar No.
+                          </label>
+                          <input
+                            type="text"
+                            id="form6Example1"
+                            className="form-control"
+                            name="aadhaar_no"
+                            onChange={handleChange}
+                          
                           />
                         </div>
                       </div>

@@ -457,6 +457,59 @@ const editEmployeeDetails = (req, res) => {
   }
 };
 
+const getPatientDataByBranchAndId = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const pid = req.params.pid;
+    const selectQuery = `SELECT * FROM patient_details WHERE branch_name = ? AND uhid = ?`;
+    db.query(selectQuery, [branch, pid], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+const getPatientBillByBranchAndId = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const pid = req.params.pid;
+    const selectQuery =
+      "SELECT * FROM patient_bills WHERE branch_name = ? AND uhid = ?";
+    db.query(selectQuery, [branch, pid], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+const getAppointmentByBranchAndId = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const pid = req.params.pid;
+    const selectQuery =
+      "SELECT * FROM apointments WHERE branch_name = ? AND uhid = ?";
+    db.query(selectQuery, [branch, pid], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   makeBills,
   getBillsByBranch,
@@ -465,4 +518,7 @@ module.exports = {
   updatePurInvoice,
   deletePurInvoice,
   editEmployeeDetails,
+  getPatientDataByBranchAndId,
+  getPatientBillByBranchAndId,
+  getAppointmentByBranchAndId,
 };

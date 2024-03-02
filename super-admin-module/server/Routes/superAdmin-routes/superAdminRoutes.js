@@ -33,6 +33,9 @@ const {
   updatePurInvoice,
   deletePurInvoice,
   editEmployeeDetails,
+  getPatientDataByBranchAndId,
+  getPatientBillByBranchAndId,
+  getAppointmentByBranchAndId,
 } = require("../../controllers/superAdminController/BillSectionController");
 // const multer = require("multer");
 
@@ -108,6 +111,20 @@ router.put(
   "/editEmployeeDetails/:branch/:empID",
   profilePictureupload.single("empProfilePicture"),
   editEmployeeDetails
+);
+
+router.get(
+  "/getPatientDataByBranchAndId/:branch/:pid",
+  getPatientDataByBranchAndId
+);
+
+router.get(
+  "/getPatientBillByBranchAndId/:branch/:pid",
+  getPatientBillByBranchAndId
+);
+router.get(
+  "/getAppointmentByBranchAndId/:branch/:pid",
+  getAppointmentByBranchAndId
 );
 
 //**************************************************************************************************** */

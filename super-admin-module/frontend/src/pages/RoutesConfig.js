@@ -34,6 +34,7 @@ const routesConfig = [
   { path: "/manage-staff", title: "Manage Staff" },
   { path: "/super-admin-notification", title: "Super Admin Notification" },
   { path: "/complaint-page", title: "Complaint Page" },
+  { path: "/patient-list", title: "Patient List" },
   { path: "*", title: "Error Page" },
 ];
 

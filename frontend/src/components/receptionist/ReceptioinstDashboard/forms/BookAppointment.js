@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Select from 'react-select';
+import axios from "axios";
 
 
 
@@ -16,6 +17,25 @@ function BookAppointment() {
   const [selectedPatient, setSelectedPatient] = useState(null); // State to store the selected patient
   const [selectedDoctor, setSelectedDoctor] = useState(null); // State to store the selected Doctor
   const [selectedTreatment, setSelectedTreatment] = useState([]);
+  const [patients, setPatients] = useState([]);
+
+  const getPatient = async () =>{
+    try{
+      const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-Patients');
+      console.log(response);
+      setPatients(response?.data?.data)
+     }
+     catch(error){
+        console.log(error)
+     }
+    
+  }
+
+  useEffect(()=>{
+     getPatient();
+  },[]);
+
+
 
  
   
@@ -84,9 +104,9 @@ function BookAppointment() {
   ) 
 
 
-  const [bookData,setBookData] = useState({
-    patient_uid :"", patient_Name:"",status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"",
-  }) 
+  const [bookData,setBookData] = useState(
+    { branch_name:"", patient_Name:"",mobile: "", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"", appointment_created_by:"",appointment_updated_by:"",appointment_created_by_emp_id	:"", appointment_updated_by_emp_id	:""}
+  ) 
 
   const doctors = [
     { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:["2024/02/21","2024/02/20","2024/02/19"],lunchTime: ""},
@@ -117,91 +137,91 @@ function BookAppointment() {
     
   ]);
 
-  const [patients, setPatients] = useState([
-    {
-      uid: "1",
-      patient_Name: "Mohit sahu",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
-    {
-      uid: "2",
-      patient_Name: "Rahul sahu",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
-    {
-      uid: "3",
-      patient_Name: "dev",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
-    {
-      uid: "3",
-      patient_Name: "dev",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
-    {
-      uid: "3",
-      patient_Name: "dev",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
-    {
-      uid: "3",
-      patient_Name: "dev",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
+  // const [patients, setPatients] = useState([
+  //   {
+  //     uid: "1",
+  //     patient_Name: "Mohit sahu",
+  //     mobile: "9806324245",
+  //     email: "patinet@gmail.com",
+  //     gender: "Male",
+  //     contact_Person: "father",
+  //     contact_Person_Name: "rahul",
+  //     blood_Group: "o+",
+  //     dob: "",
+  //     age: "25",
+  //     address: "Ranital gate no. 4 , jabalpur",
+  //   },
+  //   {
+  //     uid: "2",
+  //     patient_Name: "Rahul sahu",
+  //     mobile: "9806324245",
+  //     email: "patinet@gmail.com",
+  //     gender: "Male",
+  //     contact_Person: "father",
+  //     contact_Person_Name: "rahul",
+  //     blood_Group: "o+",
+  //     dob: "",
+  //     age: "25",
+  //     address: "Ranital gate no. 4 , jabalpur",
+  //   },
+  //   {
+  //     uid: "3",
+  //     patient_Name: "dev",
+  //     mobile: "9806324245",
+  //     email: "patinet@gmail.com",
+  //     gender: "Male",
+  //     contact_Person: "father",
+  //     contact_Person_Name: "rahul",
+  //     blood_Group: "o+",
+  //     dob: "",
+  //     age: "25",
+  //     address: "Ranital gate no. 4 , jabalpur",
+  //   },
+  //   {
+  //     uid: "3",
+  //     patient_Name: "dev",
+  //     mobile: "9806324245",
+  //     email: "patinet@gmail.com",
+  //     gender: "Male",
+  //     contact_Person: "father",
+  //     contact_Person_Name: "rahul",
+  //     blood_Group: "o+",
+  //     dob: "",
+  //     age: "25",
+  //     address: "Ranital gate no. 4 , jabalpur",
+  //   },
+  //   {
+  //     uid: "3",
+  //     patient_Name: "dev",
+  //     mobile: "9806324245",
+  //     email: "patinet@gmail.com",
+  //     gender: "Male",
+  //     contact_Person: "father",
+  //     contact_Person_Name: "rahul",
+  //     blood_Group: "o+",
+  //     dob: "",
+  //     age: "25",
+  //     address: "Ranital gate no. 4 , jabalpur",
+  //   },
+  //   {
+  //     uid: "3",
+  //     patient_Name: "dev",
+  //     mobile: "9806324245",
+  //     email: "patinet@gmail.com",
+  //     gender: "Male",
+  //     contact_Person: "father",
+  //     contact_Person_Name: "rahul",
+  //     blood_Group: "o+",
+  //     dob: "",
+  //     age: "25",
+  //     address: "Ranital gate no. 4 , jabalpur",
+  //   },
    
     
-  ]);
+  // ]);
 
   
-
+  
 console.log(selectedDoctor)
 
   const [filteredPatients, setFilteredPatients] = useState([]);
@@ -219,7 +239,7 @@ console.log(selectedDoctor)
     // Filter patients based on the search query if there's a search query, otherwise set an empty array
     const filtered = searchQuery
       ? patients.filter((patient) =>
-          patient.patient_Name.toLowerCase().includes(searchQuery.toLowerCase())
+          patient.patient_name.toLowerCase().includes(searchQuery.toLowerCase())
         )
       : [];
     setFilteredPatients(filtered);
@@ -301,7 +321,7 @@ const handleDoctorSelect = (doctor) => {
     });
 }
 
- const handleBookAppointment = (e) =>{
+ const handleBookAppointment = async (e) =>{
     
   e.preventDefault();
 
@@ -361,14 +381,19 @@ const isDoctorAvailable = (selectedDateTime) => {
   if (isSlotAvailable) {
     // Slot is available, proceed with booking
     const newAppointment = {
-      patient_uid : selectedPatient.uid,
-      patient_Name: selectedPatient.patient_Name,
+      branch_name : "vijay nagar",
+      patient_uhid : selectedPatient.uhid,
+      patient_name: selectedPatient.patient_name,
+      mobile: selectedPatient.mobileno,
+
       doctorId: selectedDoctor.uid,
       doctor_name: selectedDoctor.doctor_name,
       appDateTime: bookData.appDateTime,
       treatment: selectedTreatment,
       notes: bookData.notes,
-      status : "apoint"
+      status : "apoint",
+      appointment_created_by: "rahul",
+      appointment_created_by_emp_id: "10"
     };
   
 
@@ -382,6 +407,16 @@ const isDoctorAvailable = (selectedDateTime) => {
       }
 
     }
+
+    try{
+      const response = await axios.post('http://localhost:4000/api/v1/receptionist/book-appointment',newAppointment);
+      console.log(response);
+
+   }
+   catch(error){
+     console.log(error)
+
+   }
     setAppointmentData([...appointment_data,newAppointment]);
     // Reset form data
     
@@ -511,10 +546,10 @@ const isDoctorAvailable = (selectedDateTime) => {
                    <ul className="list-group" >
                       {filteredPatients.map((patient) => (
                         <li key={patient.uid}
-                        className={`list-group-item ${selectedPatient && selectedPatient.uid === patient.uid ? "active" : ""}`} // Add 'active' class if the patient is selected
+                        className={`list-group-item ${selectedPatient && selectedPatient.uhid === patient.uhid ? "active" : ""}`} // Add 'active' class if the patient is selected
             onClick={() => handlePatientSelect(patient)} // Call handlePatientSelect function when the patient is clicked 
                         >
-                          {patient.patient_Name}{"-"} Mobile : {patient.mobile}
+                          {patient.patient_name}{"-"} Mobile : {patient.mobileno}
                           {/* Display other patient details as needed */}
                         </li>
                       ))}
@@ -531,7 +566,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                             type="text"
                             id="form6Example1"
                             className="form-control"
-                            value={selectedPatient ? selectedPatient.patient_Name : ""}
+                            value={selectedPatient ? selectedPatient.patient_name : ""}
                             required
                           />
                           

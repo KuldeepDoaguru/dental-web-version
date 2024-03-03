@@ -22,7 +22,7 @@ const PatientProfile = () => {
   const patientProfileData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPatientDataByBranchAndId/${branch.name}/${pid}`
+        `http://localhost:7777/api/v1/super-admin/getPatientDataByBranchAndId/${pid}`
       );
       console.log(data);
       setPatientData(data);
@@ -34,7 +34,7 @@ const PatientProfile = () => {
   const getOngoingTreat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPatientBillByBranchAndId/${branch.name}/${pid}`
+        `http://localhost:7777/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
       );
       console.log(data);
       setOngoingTreat(data);
@@ -46,7 +46,7 @@ const PatientProfile = () => {
   useEffect(() => {
     patientProfileData();
     getOngoingTreat();
-  }, [branch.name]);
+  }, []);
 
   console.log(patientData[0]?.patient_name);
 
@@ -248,6 +248,20 @@ const PatientProfile = () => {
                         </div>
                       </div>
                     </li>
+                    <li>
+                      <div>
+                        <div className="row">
+                          <div className="col-5">
+                            <strong>Registration Branch :</strong>
+                          </div>
+                          <div className="col-7">
+                            <span className="">
+                              {patientData[0]?.branch_name}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -269,7 +283,7 @@ const PatientProfile = () => {
               </div>
             </div>
             <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 col-sm-12">
-              <div className="mt-3">
+              <div className="mrgtop">
                 <Navbar />
               </div>
             </div>
@@ -297,5 +311,8 @@ const Wrapper = styled.div`
 
   .mrgnzero {
     margin-right: 0rem;
+  }
+  .mrgtop {
+    margin-top: 4rem;
   }
 `;

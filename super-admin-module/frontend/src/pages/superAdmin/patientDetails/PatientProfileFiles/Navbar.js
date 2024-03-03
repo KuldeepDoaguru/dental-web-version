@@ -368,9 +368,9 @@ const Wrapper = styled.div`
       margin-left: 1.2rem;
     }
   }
-  #app {
-    width: 65rem;
-  }
+  /* #app {
+    width: 75rem;
+  } */
 
   .nav-link {
     background-color: #22a6b3;

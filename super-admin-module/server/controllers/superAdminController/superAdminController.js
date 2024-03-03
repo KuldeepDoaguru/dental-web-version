@@ -337,19 +337,40 @@ const sendOtp = (req, res) => {
       } else {
         console.log("OTP sent:", info.response);
 
-        // Assuming you have a 'db' object for database operations
-        db.query(
-          "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)",
-          [email, OTP],
-          (err, result) => {
-            if (err) {
-              console.error(err);
-              return res.status(500).send({ message: "Failed to store OTP" });
-            }
-
-            res.status(200).json({ message: "OTP sent successfully" });
+        const selectQuery = "SELECT * FROM otpcollections WHERE email = ?";
+        db.query(selectQuery, email, (err, result) => {
+          if (err) {
+            res.status(400).json({ success: false, message: err.message });
           }
-        );
+          if (result && result.length > 0) {
+            const updateQuery =
+              "UPDATE otpcollections SET code = ? WHERE email = ?";
+            db.query(updateQuery, [OTP, email], (upErr, upResult) => {
+              if (upErr) {
+                res
+                  .status(400)
+                  .json({ success: false, message: upErr.message });
+              }
+              res.status(200).send(upResult);
+            });
+          } else {
+            // Assuming you have a 'db' object for database operations
+            db.query(
+              "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)",
+              [email, OTP],
+              (err, result) => {
+                if (err) {
+                  console.error(err);
+                  return res
+                    .status(500)
+                    .send({ message: "Failed to store OTP" });
+                }
+
+                res.status(200).json({ message: "OTP sent successfully" });
+              }
+            );
+          }
+        });
       }
     });
   } catch (error) {

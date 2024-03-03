@@ -14,11 +14,12 @@ const Overview = () => {
   console.log(`User Name: ${branch.name}`);
   const [patPendingBill, setPatPendingBill] = useState([]);
   const [patAppointDetails, setPatAppointDetails] = useState([]);
+  const [exmData, setExmData] = useState([]);
 
   const getPendingBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPatientBillByBranchAndId/${branch.name}/${pid}`
+        `http://localhost:7777/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
       );
       console.log(data);
       setPatPendingBill(data);
@@ -30,10 +31,21 @@ const Overview = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAppointmentByBranchAndId/${branch.name}/${pid}`
+        `http://localhost:7777/api/v1/super-admin/getAppointmentByBranchAndId/${pid}`
       );
       console.log(data);
       setPatAppointDetails(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getExamineDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/examinDetailsByPatId/${pid}`
+      );
+      setExmData(data);
     } catch (error) {
       console.log(error);
     }
@@ -43,7 +55,11 @@ const Overview = () => {
   useEffect(() => {
     getPendingBillDetails();
     getAppointDetailsPat();
-  }, [branch.name]);
+  }, []);
+
+  useEffect(() => {
+    getExamineDetails();
+  }, []);
 
   console.log(patPendingBill);
   console.log(patAppointDetails);
@@ -215,32 +231,19 @@ const Overview = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>25 April 2023</td>
-                      <td>Tooth Decay</td>
-                      <td>Decayed</td>
+                    {exmData?.slice(-3).map((item) => (
+                      <>
+                        <tr>
+                          <td>{item.examin_date?.split("T")[0]}</td>
+                          <td>{item.examin_issue}</td>
+                          <td>{item.examin_investigation}</td>
 
-                      <td>26 27 28 29</td>
-                      <td>Tooth infection</td>
-                      <td>Dr.Umer Qureshi</td>
-                    </tr>
-                    <tr>
-                      <td>25 April 2023</td>
-                      <td>Tooth Decay</td>
-                      <td>Decayed</td>
-
-                      <td>26 27 28 29</td>
-                      <td>Tooth infection</td>
-                      <td>Dr.Umer Qureshi</td>
-                    </tr>
-                    <tr>
-                      <td>25 April 2023</td>
-                      <td>Tooth Decay</td>
-                      <td>Decayed</td>
-                      <td>26 27 28 29</td>
-                      <td>Tooth infection</td>
-                      <td>Dr.Umer Qureshi</td>
-                    </tr>
+                          <td>{item.tooth}</td>
+                          <td>{item.diagnosis}</td>
+                          <td>{item.doctor_name}</td>
+                        </tr>
+                      </>
+                    ))}
                   </tbody>
                 </table>
               </div>

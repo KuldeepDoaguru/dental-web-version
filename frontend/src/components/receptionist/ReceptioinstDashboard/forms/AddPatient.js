@@ -21,72 +21,108 @@ function AddPatient() {
   const [selectedDisease, setSelectedDisease] = useState([]);
   const [inputDisease, setInputDisease] = useState('');
 
-  const disease = [
-    { value: 'NoDisease', label: 'No disease' },
-    { value: 'Diabetes', label: 'Diabetes' },
-    { value: 'Heart', label: 'Heart' },
-    { value: 'Cardiovascular', label: 'Cardiovascular' },
-    { value: 'Asthma', label: 'Asthma' },
-    { value: 'Arthritis', label: 'Arthritis' },
-    { value: 'Osteoporosis', label: 'Osteoporosis' },
-    { value: 'Thyroid', label: 'Thyroid' },
-    { value: 'Kidney', label: 'Kidney' },
-    { value: 'Liver', label: 'Liver' },
-    { value: 'Gastrointestinal', label: 'Gastrointestinal' },
-    { value: 'Cancer', label: 'Cancer' },
-    { value: 'Depression', label: 'Depression' },
-    { value: 'Anxiety', label: 'Anxiety' },
-    { value: "Alzheimer's", label: "Alzheimer's" },
-    { value: 'HIV', label: 'HIV' },
-    { value: 'Hepatitis', label: 'Hepatitis' },
+  const [disease, setDisease] = useState([]);
+  const [treatments,setTreatment] = useState([]);
+
+  const getDisease = async () =>{
+     try{
+      const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-disease');
+      console.log(response);
+      setDisease(response?.data?.data)
+     }
+     catch(error){
+        console.log(error)
+     }
     
-  ];
+
+  }
+  console.log(disease)
+
+  const getTreatment = async () =>{
+    try{
+     const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-treatments');
+     console.log(response);
+     setTreatment(response?.data?.data)
+    }
+    catch(error){
+       console.log(error)
+    }
+   
+
+ }
+
+
+  useEffect(()=>{
+    getDisease();
+    getTreatment();
+  },[])
+
+  // const disease1 = [
+  //   { value: 'No Disease', label: 'No disease' },
+  //   { value: 'Diabetes', label: 'Diabetes' },
+  //   { value: 'Heart', label: 'Heart' },
+  //   { value: 'Cardiovascular', label: 'Cardiovascular' },
+  //   { value: 'Asthma', label: 'Asthma' },
+  //   { value: 'Arthritis', label: 'Arthritis' },
+  //   { value: 'Osteoporosis', label: 'Osteoporosis' },
+  //   { value: 'Thyroid', label: 'Thyroid' },
+  //   { value: 'Kidney', label: 'Kidney' },
+  //   { value: 'Liver', label: 'Liver' },
+  //   { value: 'Gastrointestinal', label: 'Gastrointestinal' },
+  //   { value: 'Cancer', label: 'Cancer' },
+  //   { value: 'Depression', label: 'Depression' },
+  //   { value: 'Anxiety', label: 'Anxiety' },
+  //   { value: "Alzheimer's", label: "Alzheimer's" },
+  //   { value: 'HIV', label: 'HIV' },
+  //   { value: 'Hepatitis', label: 'Hepatitis' },
+    
+  // ];
 
 
 
-  const treatments = [
-    { value: 'OPD', label: 'OPD' },
-    { value: 'Dental Cleanings', label: 'Dental Cleanings' },
-    { value: 'Dental Examinations', label: 'Dental Examinations' },
-    { value: 'Dental Sealants', label: 'Dental Sealants' },
-    { value: 'Fluoride Treatments', label: 'Fluoride Treatments' },
-    { value: 'Crowns (Caps)', label: 'Crowns (Caps)' },
-    { value: 'Bridges', label: 'Bridges' },
-    { value: 'Dentures (Partial or Full)', label: 'Dentures (Partial or Full)' },
-    { value: 'Dental Implants', label: 'Dental Implants' },
-    { value: 'Root Canal Treatment (RCT)', label: 'Root Canal Treatment (RCT)' },
-    { value: 'Root Canal Retreatment (Re-Root Canal)', label: 'Root Canal Retreatment (Re-Root Canal)' },
-    { value: 'Apicoectomy (Endodontic Surgery)', label: 'Apicoectomy (Endodontic Surgery)' },
-    { value: 'Scaling and Root Planing (Deep Cleaning)', label: 'Scaling and Root Planing (Deep Cleaning)' },
-    { value: 'Periodontal Maintenance', label: 'Periodontal Maintenance' },
-    { value: 'Gum Graft Surgery', label: 'Gum Graft Surgery' },
-    { value: 'Periodontal Flap Surgery', label: 'Periodontal Flap Surgery' },
-    { value: 'Teeth Whitening (Bleaching)', label: 'Teeth Whitening (Bleaching)' },
-    { value: 'Dental Bonding', label: 'Dental Bonding' },
-    { value: 'Porcelain Veneers', label: 'Porcelain Veneers' },
-    { value: 'Inlays and Onlays', label: 'Inlays and Onlays' },
-    { value: 'Orthodontic Treatments (Braces, Clear Aligners)', label: 'Orthodontic Treatments (Braces, Clear Aligners)' },
-    { value: 'Tooth Extractions (Simple and Surgical)', label: 'Tooth Extractions (Simple and Surgical)' },
-    { value: 'Wisdom Tooth Extraction', label: 'Wisdom Tooth Extraction' },
-    { value: 'Dental Implant Surgery', label: 'Dental Implant Surgery' },
-    { value: 'Jaw Surgery (Orthognathic Surgery)', label: 'Jaw Surgery (Orthognathic Surgery)' },
-    { value: 'Complete Dentures', label: 'Complete Dentures' },
-    { value: 'Partial Dentures', label: 'Partial Dentures' },
-    { value: 'Dental Bridges', label: 'Dental Bridges' },
-    { value: 'Dental Implant Restorations', label: 'Dental Implant Restorations' },
-    { value: 'Dental Sealants', label: 'Dental Sealants' },
-    { value: 'Fluoride Treatments', label: 'Fluoride Treatments' },
-    { value: 'Pediatric Dental Cleanings', label: 'Pediatric Dental Cleanings' },
-    { value: 'Dental Fillings for Children', label: 'Dental Fillings for Children' },
-    { value: 'Traditional Braces', label: 'Traditional Braces' },
-    { value: 'Clear Aligners (Invisalign, ClearCorrect)', label: 'Clear Aligners (Invisalign, ClearCorrect)' },
-    { value: 'Retainers', label: 'Retainers' },
-    { value: 'Orthodontic Appliances', label: 'Orthodontic Appliances' },
-    { value: 'Treatment for Dental Trauma', label: 'Treatment for Dental Trauma' },
-    { value: 'Emergency Tooth Extractions', label: 'Emergency Tooth Extractions' },
-    { value: 'Pain Management', label: 'Pain Management' },
-    { value: 'Temporary Dental Repairs', label: 'Temporary Dental Repairs' }
-];
+//   const treatments = [
+//     { value: 'OPD', label: 'OPD' },
+//     { value: 'Dental Cleanings', label: 'Dental Cleanings' },
+//     { value: 'Dental Examinations', label: 'Dental Examinations' },
+//     { value: 'Dental Sealants', label: 'Dental Sealants' },
+//     { value: 'Fluoride Treatments', label: 'Fluoride Treatments' },
+//     { value: 'Crowns (Caps)', label: 'Crowns (Caps)' },
+//     { value: 'Bridges', label: 'Bridges' },
+//     { value: 'Dentures (Partial or Full)', label: 'Dentures (Partial or Full)' },
+//     { value: 'Dental Implants', label: 'Dental Implants' },
+//     { value: 'Root Canal Treatment (RCT)', label: 'Root Canal Treatment (RCT)' },
+//     { value: 'Root Canal Retreatment (Re-Root Canal)', label: 'Root Canal Retreatment (Re-Root Canal)' },
+//     { value: 'Apicoectomy (Endodontic Surgery)', label: 'Apicoectomy (Endodontic Surgery)' },
+//     { value: 'Scaling and Root Planing (Deep Cleaning)', label: 'Scaling and Root Planing (Deep Cleaning)' },
+//     { value: 'Periodontal Maintenance', label: 'Periodontal Maintenance' },
+//     { value: 'Gum Graft Surgery', label: 'Gum Graft Surgery' },
+//     { value: 'Periodontal Flap Surgery', label: 'Periodontal Flap Surgery' },
+//     { value: 'Teeth Whitening (Bleaching)', label: 'Teeth Whitening (Bleaching)' },
+//     { value: 'Dental Bonding', label: 'Dental Bonding' },
+//     { value: 'Porcelain Veneers', label: 'Porcelain Veneers' },
+//     { value: 'Inlays and Onlays', label: 'Inlays and Onlays' },
+//     { value: 'Orthodontic Treatments (Braces, Clear Aligners)', label: 'Orthodontic Treatments (Braces, Clear Aligners)' },
+//     { value: 'Tooth Extractions (Simple and Surgical)', label: 'Tooth Extractions (Simple and Surgical)' },
+//     { value: 'Wisdom Tooth Extraction', label: 'Wisdom Tooth Extraction' },
+//     { value: 'Dental Implant Surgery', label: 'Dental Implant Surgery' },
+//     { value: 'Jaw Surgery (Orthognathic Surgery)', label: 'Jaw Surgery (Orthognathic Surgery)' },
+//     { value: 'Complete Dentures', label: 'Complete Dentures' },
+//     { value: 'Partial Dentures', label: 'Partial Dentures' },
+//     { value: 'Dental Bridges', label: 'Dental Bridges' },
+//     { value: 'Dental Implant Restorations', label: 'Dental Implant Restorations' },
+//     { value: 'Dental Sealants', label: 'Dental Sealants' },
+//     { value: 'Fluoride Treatments', label: 'Fluoride Treatments' },
+//     { value: 'Pediatric Dental Cleanings', label: 'Pediatric Dental Cleanings' },
+//     { value: 'Dental Fillings for Children', label: 'Dental Fillings for Children' },
+//     { value: 'Traditional Braces', label: 'Traditional Braces' },
+//     { value: 'Clear Aligners (Invisalign, ClearCorrect)', label: 'Clear Aligners (Invisalign, ClearCorrect)' },
+//     { value: 'Retainers', label: 'Retainers' },
+//     { value: 'Orthodontic Appliances', label: 'Orthodontic Appliances' },
+//     { value: 'Treatment for Dental Trauma', label: 'Treatment for Dental Trauma' },
+//     { value: 'Emergency Tooth Extractions', label: 'Emergency Tooth Extractions' },
+//     { value: 'Pain Management', label: 'Pain Management' },
+//     { value: 'Temporary Dental Repairs', label: 'Temporary Dental Repairs' }
+// ];
 
 
 const handleChangeDisease = (newValue, actionMeta) => {
@@ -372,7 +408,7 @@ console.log(selectedDoctor)
         weight: data.weight,
         allergy: data.allergy,
         status : "appoint",
-        disease: selectedDisease.map((option) => option.value),
+        disease: selectedDisease.map((option) => option.value).toString(),
         patientType: data.patientType,
         doctorId: selectedDoctor.uid,
         doctor_name: selectedDoctor.doctor_name,
@@ -408,27 +444,27 @@ console.log(selectedDoctor)
       setAppointmentData([...appointment_data,newPatient]);
   
       // Reset form data
-      setData({
-        patient_Name: "",
-        mobile: "",
-        email: "",
-        gender:"",
-        contact_Person: "",
-        contact_Person_Name: "",
-        blood_Group: "",
-        dob: "",
-        age: "",
-        address: "",
-        weight: "",
-        allergy: "",
-        disease: "",
-        patientType: "",
-        doctorId: "",
-        doctor_name: "",
-        appDateTime: "",
-        treatment: "",
-        notes: "",
-      });
+      // setData({
+      //   patient_Name: "",
+      //   mobile: "",
+      //   email: "",
+      //   gender:"",
+      //   contact_Person: "",
+      //   contact_Person_Name: "",
+      //   blood_Group: "",
+      //   dob: "",
+      //   age: "",
+      //   address: "",
+      //   weight: "",
+      //   allergy: "",
+      //   disease: "",
+      //   patientType: "",
+      //   doctorId: "",
+      //   doctor_name: "",
+      //   appDateTime: "",
+      //   treatment: "",
+      //   notes: "",
+      // });
   
       // Reset selected doctor
       // setSelectedDoctor(null);
@@ -528,7 +564,7 @@ const handleDoctorSelect = (doctor) => {
                             type="email"
                             id="form6Example2"
                             className="form-control"
-                            name="city"
+                            name="email"
                             onChange={handleChange}
                           
                           />

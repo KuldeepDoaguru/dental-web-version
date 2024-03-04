@@ -10,11 +10,10 @@ function AddPatient() {
 
     
   const  [formdata,setFormData ] = useState({})
- 
+   const  branch = "Madan Mahal"
   const [searchQuery, setSearchQuery] = useState("");
   const [searchDoctor, setSearchDoctor] = useState("");
   const [showDoctorList,setShowDoctorList] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState(null); // State to store the selected patient
   const [selectedDoctor, setSelectedDoctor] = useState(null); // State to store the selected Doctor
   const [selectedTreatment, setSelectedTreatment] = useState([]);
 
@@ -23,6 +22,19 @@ function AddPatient() {
 
   const [disease, setDisease] = useState([]);
   const [treatments,setTreatment] = useState([]);
+  const [doctors,setDoctors] = useState([]);
+
+
+  const getDoctors = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
+      setDoctors(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+  console.log(doctors);
 
   const getDisease = async () =>{
      try{
@@ -55,6 +67,7 @@ function AddPatient() {
   useEffect(()=>{
     getDisease();
     getTreatment();
+    getDoctors();
   },[])
 
   // const disease1 = [
@@ -157,18 +170,18 @@ const handleChangeDisease = (newValue, actionMeta) => {
     patient_uid :"", patient_Name:"",status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"",
   }) 
 
-  const doctors = [
-    { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:"20/02/2024",lunchTime: ""},
-    { uid :"10", doctor_name:"Dr Rajiv",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"12:00",eveningStartTiming:"18:00" ,eveningEndTiming:"22:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
-    { uid :"2", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
-    { uid :"4", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"5", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"6", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"7", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"8", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"20/02/2024",lunchTime: ""}
+  // const doctors = [
+  //   { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:"20/02/2024",lunchTime: ""},
+  //   { uid :"10", doctor_name:"Dr Rajiv",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"12:00",eveningStartTiming:"18:00" ,eveningEndTiming:"22:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
+  //   { uid :"2", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
+  //   { uid :"4", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+  //   { uid :"5", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+  //   { uid :"6", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+  //   { uid :"7", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+  //   { uid :"8", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"20/02/2024",lunchTime: ""}
     
 
-  ];
+  // ];
 
   const [appointment_data,setAppointmentData] = useState([
     { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:45",status:"Missed",action:"edit"},
@@ -186,94 +199,13 @@ const handleChangeDisease = (newValue, actionMeta) => {
     
   ]);
 
-  const [patients, setPatients] = useState([
-    {
-      uid: "1",
-      patient_Name: "Mohit sahu",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
-    {
-      uid: "2",
-      patient_Name: "Rahul sahu",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
-    {
-      uid: "3",
-      patient_Name: "dev",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
-    {
-      uid: "3",
-      patient_Name: "dev",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
-    {
-      uid: "3",
-      patient_Name: "dev",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
-    {
-      uid: "3",
-      patient_Name: "dev",
-      mobile: "9806324245",
-      email: "patinet@gmail.com",
-      gender: "Male",
-      contact_Person: "father",
-      contact_Person_Name: "rahul",
-      blood_Group: "o+",
-      dob: "",
-      age: "25",
-      address: "Ranital gate no. 4 , jabalpur",
-    },
-   
-    
-  ]);
+ 
 
   
 
 console.log(selectedDoctor)
 
-  const [filteredPatients, setFilteredPatients] = useState([]);
+  
   const [filteredDoctor,setFilteredDoctor] = useState([]);
 
   // useEffect(() => {
@@ -284,22 +216,14 @@ console.log(selectedDoctor)
   //   setFilteredPatients(filtered);
   // }, [searchQuery, patients]);
 
-  useEffect(() => {
-    // Filter patients based on the search query if there's a search query, otherwise set an empty array
-    const filtered = searchQuery
-      ? patients.filter((patient) =>
-          patient.patient_Name.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      : [];
-    setFilteredPatients(filtered);
-  }, [searchQuery, patients]);
+  
 
  
   useEffect(() => {
     // Filter patients based on the search query if there's a search query, otherwise set an empty array
     const filtered = showDoctorList
       ? doctors.filter((doctor) =>
-          doctor.doctor_name.toLowerCase().includes(searchDoctor.toLowerCase())
+          doctor.employee_name.toLowerCase().includes(searchDoctor.toLowerCase())
         )
       : [];
     setFilteredDoctor(filtered);
@@ -355,13 +279,13 @@ console.log(selectedDoctor)
   // Check if the selected doctor is available during the appointment time
   const isDoctorAvailable = (selectedDateTime) => {
     const morningStart = new Date(selectedDateTime);
-    morningStart.setHours(selectedDoctor.morningStartTiming.split(":")[0], selectedDoctor.morningStartTiming.split(":")[1]);
+    morningStart.setHours(selectedDoctor.morning_shift_start_time.split(":")[0], selectedDoctor.morning_shift_start_time.split(":")[1]);
     const morningEnd = new Date(selectedDateTime);
-    morningEnd.setHours(selectedDoctor.morningEndTiming.split(":")[0], selectedDoctor.morningEndTiming.split(":")[1]);
+    morningEnd.setHours(selectedDoctor.morning_shift_end_time.split(":")[0], selectedDoctor.morning_shift_end_time.split(":")[1]);
     const eveningStart = new Date(selectedDateTime);
-    eveningStart.setHours(selectedDoctor.eveningStartTiming.split(":")[0], selectedDoctor.eveningStartTiming.split(":")[1]);
+    eveningStart.setHours(selectedDoctor.evening_shift_start_time	.split(":")[0], selectedDoctor.evening_shift_start_time	.split(":")[1]);
     const eveningEnd = new Date(selectedDateTime);
-    eveningEnd.setHours(selectedDoctor.eveningEndTiming.split(":")[0], selectedDoctor.eveningEndTiming.split(":")[1]);
+    eveningEnd.setHours(selectedDoctor.evening_shift_end_time.split(":")[0], selectedDoctor.evening_shift_end_time.split(":")[1]);
 
     return (
       (selectedDateTime >= morningStart && selectedDateTime <= morningEnd) ||
@@ -385,7 +309,7 @@ console.log(selectedDoctor)
       const appointmentDate = new Date(appointment.timing);
       const selectedDate = new Date(data.appDateTime);
       
-      return !(appointment.doctorId === selectedDoctor.uid && appointmentDate.getTime() === selectedDate.getTime());
+      return !(appointment.doctorId === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
     });
 
     console.log(isSlotAvailable)
@@ -393,7 +317,7 @@ console.log(selectedDoctor)
     if (isSlotAvailable) {
       // Slot is available, proceed with booking
       const newPatient = {
-        branch_name:"vijay nagar",
+        branch_name:"Madan Mahal",
         patient_Name: data.patient_Name,
         mobile: data.mobile,
         email: data.email,
@@ -410,8 +334,8 @@ console.log(selectedDoctor)
         status : "appoint",
         disease: selectedDisease.map((option) => option.value).toString(),
         patientType: data.patientType,
-        doctorId: selectedDoctor.uid,
-        doctor_name: selectedDoctor.doctor_name,
+        doctorId: selectedDoctor.employee_ID,
+        doctor_name: selectedDoctor.employee_name,
         appDateTime: data.appDateTime,
         treatment: selectedTreatment,
         notes: data.notes,
@@ -433,15 +357,22 @@ console.log(selectedDoctor)
       try{
          const response = await axios.post('http://localhost:4000/api/v1/receptionist/add-patient',newPatient);
          console.log(response);
+         if(response?.data?.success){
+          alert(response?.data?.message);
+         }
+         else{
+          alert(response?.data?.message);
+         }
 
       }
       catch(error){
         console.log(error)
+        alert(error.response.data.message);
 
       }
   
-      setPatients([...patients, newPatient]);
-      setAppointmentData([...appointment_data,newPatient]);
+      // setPatients([...patients, newPatient]);
+      // setAppointmentData([...appointment_data,newPatient]);
   
       // Reset form data
       // setData({
@@ -469,8 +400,8 @@ console.log(selectedDoctor)
       // Reset selected doctor
       // setSelectedDoctor(null);
   
-      console.log("Appointment booked successfully!");
-      alert("Appointment booked successfully!");
+      // console.log("Appointment booked successfully!");
+      // alert("Appointment booked successfully!");
     } else {
       // Slot is not available
       alert("The selected doctor's slot is already booked at the specified time");
@@ -484,7 +415,7 @@ console.log(selectedDoctor)
 const handleDoctorSelect = (doctor) => {
   setSelectedDoctor(doctor); // Set the selected patient when it's clicked
   setShowDoctorList(false)
-  setSearchDoctor(doctor.doctor_name); // Reset the search query to close the search list
+  setSearchDoctor(doctor.employee_name); // Reset the search query to close the search list
 };
 
 
@@ -793,11 +724,11 @@ const handleDoctorSelect = (doctor) => {
                          
                          <ul className="list-group">
                      {filteredDoctor.map((doctor) => (
-                       <li key={doctor.uid}
-                       className={`list-group-item ${selectedDoctor && selectedDoctor.uid === doctor.uid ? "active" : ""}`} // Add 'active' class if the patient is selected
+                       <li key={doctor.employee_ID}
+                       className={`list-group-item ${selectedDoctor && selectedDoctor.employee_ID === doctor.employee_ID ? "active" : ""}`} // Add 'active' class if the patient is selected
            onClick={() => handleDoctorSelect(doctor)} // Call handlePatientSelect function when the patient is clicked 
                        >
-                         {doctor.doctor_name} {"-"} Department: {doctor.department}
+                       {doctor.employee_name} {"-"} Id: {doctor.employee_ID}
                          {/* Display other patient details as needed */}
                        </li>
                      ))}

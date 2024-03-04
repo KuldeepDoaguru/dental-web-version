@@ -5,16 +5,49 @@ import Sider from "../components/Sider";
 import { Link } from "react-router-dom";
 import BranchSelector from "../components/BranchSelector";
 import axios from "axios";
+import cogoToast from "cogo-toast";
 
 const Branches = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState({ notice: "" });
   const [popupVisible, setPopupVisible] = useState(false);
   const [branchList, setBranchList] = useState([]);
+  const [upData, setUpData] = useState({
+    name: "",
+    address: "",
+    contact: "",
+  });
 
-  const openUpdatePopup = (index, item) => {
-    setSelectedItem(item);
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setUpData({
+      ...upData,
+      [name]: value,
+    });
+  };
+
+  const openUpdatePopup = (id) => {
+    setSelectedItem(id);
     setShowPopup(true);
+  };
+
+  console.log(selectedItem);
+
+  const updateBranchDetails = async (e, id) => {
+    console.log(id);
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:7777/api/v1/super-admin/updateBranchDetails/${id}`,
+        upData
+      );
+      console.log(response);
+      getBranchList();
+      setShowPopup(false);
+      cogoToast.success("branch details updated successfully");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const closeUpdatePopup = () => {
@@ -64,43 +97,48 @@ const Branches = () => {
                         <h2>Update Branch Details</h2>
                         <form
                           className="d-flex flex-column"
-                          // onSubmit={handleNoticeSubmit}
+                          onSubmit={(e) => updateBranchDetails(e, selectedItem)}
                         >
-                          <input
-                            type="text"
-                            placeholder="branch name"
-                            // value={noticeData.linkURL}
-                            // onChange={(e) =>
-                            //   setNoticeData({
-                            //     ...noticeData,
-                            //     linkURL: e.target.value,
-                            //   })
-                            // }
-                          />
-                          <textarea
-                            placeholder="update branch address"
-                            rows="4"
-                            cols="50"
-                            required
-                            // value={noticeData.noticeText}
-                            // onChange={(e) =>
-                            //   setNoticeData({
-                            //     ...noticeData,
-                            //     noticeText: e.target.value,
-                            //   })
-                            // }
-                          />
-                          <input
-                            type="text"
-                            placeholder="update branch contact number"
-                            // value={noticeData.linkURL}
-                            // onChange={(e) =>
-                            //   setNoticeData({
-                            //     ...noticeData,
-                            //     linkURL: e.target.value,
-                            //   })
-                            // }
-                          />
+                          <div className="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">
+                              Branch Name
+                            </label>
+                            <input
+                              type="text"
+                              name="name"
+                              class="form-control"
+                              placeholder="branch name"
+                              value={upData.name}
+                              onChange={handleChange}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">
+                              Branch Address
+                            </label>
+                            <input
+                              placeholder="update branch address"
+                              class="form-control"
+                              name="address"
+                              value={upData.address}
+                              onChange={handleChange}
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">
+                              Branch Contact
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="update branch contact number"
+                              name="contact"
+                              value={upData.contact}
+                              maxLength={10}
+                              onChange={handleChange}
+                            />
+                          </div>
+
                           <div className="d-flex justify-content-evenly">
                             <button
                               type="submit"
@@ -152,12 +190,12 @@ const Branches = () => {
                               >
                                 Contact Number
                               </th>
-                              {/* <th
+                              <th
                                 className="table-small"
                                 style={{ width: "10%" }}
                               >
                                 Edit
-                              </th> */}
+                              </th>
                               {/* <th
                                 className="table-small"
                                 style={{ width: "10%" }}
@@ -193,17 +231,19 @@ const Branches = () => {
                                 >
                                   {item.branch_contact}
                                 </td>
-                                {/* <td
-         className="table-small"
-         style={{ width: "10%" }}
-       >
-         <button
-           className="btn btn-warning"
-           onClick={() => openUpdatePopup()}
-         >
-           Edit Details
-         </button>
-       </td> */}
+                                <td
+                                  className="table-small"
+                                  style={{ width: "10%" }}
+                                >
+                                  <button
+                                    className="btn btn-warning"
+                                    onClick={() =>
+                                      openUpdatePopup(item.branch_id)
+                                    }
+                                  >
+                                    Edit Details
+                                  </button>
+                                </td>
                                 {/* <td
          className="table-small"
          style={{ width: "10%" }}

@@ -20,6 +20,39 @@ const AllBills = () => {
   const branch = useSelector((state) => state.branch);
   console.log(`User Name: ${branch.name}`);
   const [listBills, setListBills] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedItem, setSelectedItem] = useState();
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [placehold, setPlacehold] = useState([]);
+  const [upData, setUpData] = useState({
+    bill_date: "",
+    uhid: "",
+    branch_name: branch.name,
+    patient_name: "",
+    patient_mobile: "",
+    patient_email: "",
+    treatment: "",
+    treatment_status: "",
+    drugs_quantity: "",
+    total_amount: "",
+    paid_amount: "",
+    payment_status: "",
+    payment_date_time: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setUpData({ ...upData, [name]: value });
+  };
+
+  const openUpdatePopup = (id) => {
+    setSelectedItem(id);
+    setShowPopup(true);
+  };
+
+  const closeUpdatePopup = () => {
+    setShowPopup(false);
+  };
 
   const getBillDetailsList = async () => {
     try {
@@ -46,11 +79,46 @@ const AllBills = () => {
     }
   };
 
+  const getBillDetailsByBid = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getBillBYBillId/${selectedItem}`
+      );
+      setPlacehold(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateBillDetails = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:7777/api/v1/super-admin/updateBillDetailsByBillId/${selectedItem}`,
+        upData
+      );
+      console.log(response);
+      getBillDetailsList();
+      cogoToast.success("bill details updated successfully");
+      closeUpdatePopup();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getBillDetailsList();
   }, [branch.name]);
 
+  useEffect(() => {
+    getBillDetailsByBid();
+  }, [selectedItem]);
+
   console.log(listBills);
+  console.log(selectedItem);
+  console.log(placehold);
+
+  console.log(upData);
   return (
     <>
       <Container>
@@ -87,6 +155,7 @@ const AllBills = () => {
                             <th>Paid Amount</th>
                             <th>Payment Status</th>
                             <th>Payment Date & Time</th>
+                            <th>Edit Details</th>
                             <th className="table-small">Delete</th>
                           </tr>
                         </thead>
@@ -117,6 +186,16 @@ const AllBills = () => {
                                 <td>{item.payment_date_time}</td>
                                 <td className="table-small">
                                   <button
+                                    className="btn btn-warning fw-bold"
+                                    onClick={() =>
+                                      openUpdatePopup(item.bill_id)
+                                    }
+                                  >
+                                    Edit
+                                  </button>
+                                </td>
+                                <td className="table-small">
+                                  <button
                                     className="btn btn-danger"
                                     onClick={() => deleteBillData(item.bill_id)}
                                   >
@@ -135,6 +214,230 @@ const AllBills = () => {
             </div>
           </div>
         </div>
+
+        {/* ********************************************************************************************* */}
+        {/* pop-up for creating notice */}
+        <div className={`popup-container${showPopup ? " active" : ""}`}>
+          <div className="popup">
+            <h2 className="text-center">Update Branch Details</h2>
+            <hr />
+            <form className="d-flex flex-column" onSubmit={updateBillDetails}>
+              <div className="container">
+                <div className="row">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Bill Date
+                      </label>
+                      <input
+                        type="date"
+                        class="form-control"
+                        placeholder="branch name"
+                        value={upData.bill_date}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Patient UHID
+                      </label>
+                      <input
+                        placeholder={placehold[0]?.uhid}
+                        class="form-control"
+                        name="uhid"
+                        value={upData.uhid}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Patient Name
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={placehold[0]?.patient_name}
+                        name="patient_name"
+                        value={upData.patient_name}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Patient Mobile
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={placehold[0]?.patient_mobile}
+                        name="patient_mobile"
+                        value={upData.patient_mobile}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Patient Email
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={placehold[0]?.patient_email}
+                        name="patient_email"
+                        value={upData.patient_email}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Treatment
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={placehold[0]?.treatment}
+                        name="treatment"
+                        value={upData.treatment}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Treatment Status
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={placehold[0]?.treatment_status}
+                        name="treatment_status"
+                        value={upData.treatment_status}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Drugs with Quantity
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={placehold[0]?.drugs_quantity}
+                        name="drugs_quantity"
+                        value={upData.drugs_quantity}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Total Amount
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={placehold[0]?.total_amount}
+                        name="total_amount"
+                        value={upData.total_amount}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Paid Amount
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={placehold[0]?.paid_amount}
+                        name="paid_amount"
+                        value={upData.paid_amount}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Payment Status
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={placehold[0]?.payment_status}
+                        name="payment_status"
+                        value={upData.payment_status}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Pending Amount
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={placehold[0]?.pending_amount}
+                        name="pending_amount"
+                        value={upData.pending_amount}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleInputEmail1" class="form-label">
+                        Payment Date & Time
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder={placehold[0]?.payment_date_time}
+                        name="payment_date_time"
+                        value={upData.payment_date_time}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="container d-flex justify-content-start">
+                <button type="submit" className="btn btn-success mt-2">
+                  update
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-danger mt-2 mx-2"
+                  onClick={closeUpdatePopup}
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* popup for updating notice */}
+        {/* ******************************************************************************************** */}
       </Container>
     </>
   );
@@ -142,6 +445,30 @@ const AllBills = () => {
 
 export default AllBills;
 const Container = styled.div`
+  .popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-container.active {
+    display: flex;
+    background-color: #00000075;
+  }
+
+  .popup {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
   .navlink.active {
     background-color: #f53237 !important;
     border-radius: 1rem;

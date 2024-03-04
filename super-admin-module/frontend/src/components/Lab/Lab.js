@@ -18,6 +18,17 @@ const Lab = () => {
   return (
     <>
       <Container>
+        <div className="mid-box">
+          <div className="row mt-2 background">
+            <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
+              <input
+                type="text"
+                placeholder="search here"
+                className="inputser"
+              />
+            </div>
+          </div>
+        </div>
         <div class="table-responsive mt-4">
           <table class="table table-bordered">
             <thead className="table-head">

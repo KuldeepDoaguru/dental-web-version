@@ -12,22 +12,22 @@ const Timeline = () => {
   console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
   console.log(`User Name: ${branch.name}`);
-  const [patAppointDetails, setPatAppointDetails] = useState([]);
+  const [patTimeline, setPatTimeline] = useState([]);
 
-  const getAppointDetailsPat = async () => {
+  const getTimelineDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAppointmentByBranchAndId/${pid}`
+        `http://localhost:7777/api/v1/super-admin/getPatientTimeline/${pid}`
       );
       console.log(data);
-      setPatAppointDetails(data);
+      setPatTimeline(data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getAppointDetailsPat();
+    getTimelineDetails();
   }, []);
   return (
     <Wrapper>
@@ -47,13 +47,13 @@ const Timeline = () => {
                 </tr>
               </thead>
               <tbody>
-                {patAppointDetails?.map((item) => (
+                {patTimeline?.map((item) => (
                   <>
                     <tr>
-                      <td>25-09-23</td>
-                      <td>7:30pm</td>
-                      <td>Payment</td>
-                      <td>Rahul Kumar Successfully make payment of 2000/- </td>
+                      <td>{item.event_date?.split("T")[0]}</td>
+                      <td>{item.event_time.split(".")[0]}</td>
+                      <td>{item.event_type}</td>
+                      <td>{item.event_description}</td>
                     </tr>
                   </>
                 ))}

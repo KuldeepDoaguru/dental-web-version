@@ -537,6 +537,285 @@ const getPaymentDetailsByPatId = (req, res) => {
   }
 };
 
+const getPrescriptionDetailsById = (req, res) => {
+  try {
+    const pid = req.params.pid;
+    const selectQuery = "SELECT * FROM prescription_details WHERE uhid = ?";
+    db.query(selectQuery, pid, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const insertTimelineEvent = (req, res) => {
+  try {
+    const { type, description, branch, patientId } = req.body;
+    const insertQuery =
+      "INSERT INTO patient_timeline (event_type,	event_description,	branch_name,	uhid	) VALUES (?,?,?,?)";
+    db.query(
+      insertQuery,
+      [type, description, branch, patientId],
+      (err, result) => {
+        if (err) {
+          res.status(400).json({ success: false, message: err.message });
+        }
+        res.status(200).json({ success: true, result: result });
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+const getPatientTimeline = (req, res) => {
+  try {
+    const pid = req.params.pid;
+    const selectQuery = "SELECT * FROM patient_timeline WHERE uhid = ?";
+    db.query(selectQuery, pid, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+const addLab = (req, res) => {
+  try {
+    const { name, type, contact, email, address, status } = req.body;
+    const selectQuery = "SELECT * FROM lab_details WHERE lab_email = ?";
+    db.query(selectQuery, email, (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length <= 0) {
+        const insertQuery =
+          "INSERT INTO lab_details (lab_name,	lab_type,	lab_contact,	lab_email,	address,	status) VALUES (?,?,?,?,?,?)";
+        db.query(
+          insertQuery,
+          [name, type, contact, email, address, status],
+          (upErr, upResult) => {
+            if (upErr) {
+              res.status(400).json({ success: false, message: upErr.message });
+            }
+            res.status(200).json({ success: true, upResult: upResult });
+          }
+        );
+      } else {
+        res.status(400).json({ success: false, message: "lab already exist" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const updateBranchDetails = (req, res) => {
+  try {
+    const bid = req.params.bid;
+    const { name, address, contact } = req.body;
+    const selectQuery = "SELECT * FROM branches WHERE branch_id = ?";
+    db.query(selectQuery, bid, (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateFields = [];
+        const updateValues = [];
+
+        if (name) {
+          updateFields.push("branch_name = ?");
+          updateValues.push(name);
+        }
+
+        if (address) {
+          updateFields.push("branch_address = ?");
+          updateValues.push(address);
+        }
+
+        if (contact) {
+          updateFields.push("branch_contact = ?");
+          updateValues.push(contact);
+        }
+
+        const updateQuery = `UPDATE branches SET ${updateFields.join(
+          ", "
+        )} WHERE branch_id = ?`;
+
+        db.query(updateQuery, [...updateValues, bid], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Failed to update details",
+            });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "Branch Details updated successfully",
+            });
+          }
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Branch not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+const updateBillDetailsByBillId = (req, res) => {
+  try {
+    const bid = req.params.bid;
+    const {
+      bill_date,
+      uhid,
+      branch_name,
+      patient_name,
+      patient_mobile,
+      patient_email,
+      treatment,
+      treatment_status,
+      drugs_quantity,
+      total_amount,
+      paid_amount,
+      payment_status,
+      payment_date_time,
+    } = req.body;
+    const selectQuery = "SELECT * FROM patient_bills WHERE bill_id = ?";
+    db.query(selectQuery, bid, (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateFields = [];
+        const updateValues = [];
+
+        if (bill_date) {
+          updateFields.push("bill_date = ?");
+          updateValues.push(bill_date);
+        }
+
+        if (uhid) {
+          updateFields.push("uhid = ?");
+          updateValues.push(uhid);
+        }
+
+        if (branch_name) {
+          updateFields.push("branch_name = ?");
+          updateValues.push(branch_name);
+        }
+
+        if (patient_name) {
+          updateFields.push("patient_name = ?");
+          updateValues.push(patient_name);
+        }
+
+        if (patient_mobile) {
+          updateFields.push("patient_mobile = ?");
+          updateValues.push(patient_mobile);
+        }
+
+        if (patient_email) {
+          updateFields.push("patient_email = ?");
+          updateValues.push(patient_email);
+        }
+
+        if (treatment) {
+          updateFields.push("treatment = ?");
+          updateValues.push(treatment);
+        }
+
+        if (treatment_status) {
+          updateFields.push("treatment_status = ?");
+          updateValues.push(treatment_status);
+        }
+
+        if (drugs_quantity) {
+          updateFields.push("drugs_quantity = ?");
+          updateValues.push(drugs_quantity);
+        }
+
+        if (total_amount) {
+          updateFields.push("total_amount = ?");
+          updateValues.push(total_amount);
+        }
+
+        if (paid_amount) {
+          updateFields.push("paid_amount = ?");
+          updateValues.push(paid_amount);
+        }
+
+        if (payment_status) {
+          updateFields.push("payment_status = ?");
+          updateValues.push(payment_status);
+        }
+
+        if (payment_date_time) {
+          updateFields.push("payment_date_time = ?");
+          updateValues.push(payment_date_time);
+        }
+
+        const updateQuery = `UPDATE patient_bills SET ${updateFields.join(
+          ", "
+        )} WHERE bill_id = ?`;
+
+        db.query(updateQuery, [...updateValues, bid], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Failed to update details",
+            });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "Bill Details updated successfully",
+            });
+          }
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Bill not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+const getBillBYBillId = (req, res) => {
+  try {
+    const bid = req.params.bid;
+    const selectQuery = "SELECT * FROM patient_bills WHERE bill_id = ?";
+    db.query(selectQuery, bid, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   makeBills,
   getBillsByBranch,
@@ -550,4 +829,11 @@ module.exports = {
   getAppointmentByBranchAndId,
   examinDetailsByPatId,
   getPaymentDetailsByPatId,
+  getPrescriptionDetailsById,
+  insertTimelineEvent,
+  getPatientTimeline,
+  addLab,
+  updateBranchDetails,
+  updateBillDetailsByBillId,
+  getBillBYBillId,
 };

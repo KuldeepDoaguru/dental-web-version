@@ -57,12 +57,14 @@ const EditInventory = () => {
       [name]: type === "radio" || type === "checkbox" ? checked : value,
       total_amount:
         name === "item_mrp" || name === "pur_quantity" || name === "discount"
-          ? (name === "item_mrp" ? value : updateData.item_mrp) *
-              (name === "pur_quantity" ? value : updateData.pur_quantity) -
-            (name === "discount" ? value : updateData.discount)
+          ? (name === "item_mrp"
+              ? value
+              : prevRecData.item_mrp || purInvDetails[0].item_mrp) *
+              (name === "pur_quantity" ? value : prevRecData.pur_quantity) -
+            (name === "discount" ? value : prevRecData.discount)
           : prevRecData.total_amount,
       available_stock:
-        name === "pur_quantity" ? value : updateData.pur_quantity,
+        name === "pur_quantity" ? value : prevRecData.available_stock,
     }));
   };
 

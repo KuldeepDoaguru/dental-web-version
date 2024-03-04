@@ -60,14 +60,14 @@ const LabSetting = () => {
                   <div className="mid-box">
                     <div className="row mt-5 background">
                       <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
-                        <input
+                        {/* <input
                           type="text"
                           placeholder="search here"
                           className="inputser"
                         />
                         <button className="mx-2 btn btn-info">
                           <FaSearch />
-                        </button>
+                        </button> */}
                       </div>
                       <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
                         <div className="d-flex justify-content-end">

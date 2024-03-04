@@ -627,7 +627,7 @@ const updateAppointData = (req, res) => {
           } else {
             return res.status(200).json({
               success: true,
-              message: "Details updated successfully",
+              message: "Appointment Details updated successfully",
             });
           }
         });

@@ -38,6 +38,13 @@ const {
   getAppointmentByBranchAndId,
   examinDetailsByPatId,
   getPaymentDetailsByPatId,
+  getPrescriptionDetailsById,
+  insertTimelineEvent,
+  getPatientTimeline,
+  addLab,
+  updateBranchDetails,
+  updateBillDetailsByBillId,
+  getBillBYBillId,
 } = require("../../controllers/superAdminController/BillSectionController");
 // const multer = require("multer");
 
@@ -122,6 +129,13 @@ router.get("/getAppointmentByBranchAndId/:pid", getAppointmentByBranchAndId);
 
 router.get("/examinDetailsByPatId/:pid", examinDetailsByPatId);
 router.get("/getPaymentDetailsByPatId/:pid", getPaymentDetailsByPatId);
+router.get("/getPrescriptionDetailsById/:pid", getPrescriptionDetailsById);
+router.post("/insertTimelineEvent", insertTimelineEvent);
+router.get("/getPatientTimeline/:pid", getPatientTimeline);
+router.post("/addLab", addLab);
+router.put("/updateBranchDetails/:bid", updateBranchDetails);
+router.put("/updateBillDetailsByBillId/:bid", updateBillDetailsByBillId);
+router.get("/getBillBYBillId/:bid", getBillBYBillId);
 
 //**************************************************************************************************** */
 module.exports = router;

@@ -169,6 +169,17 @@ const ClinicActivity = () => {
 
   console.log(filterPatient);
 
+  const tdate = new Date();
+
+  // Get year, month, and date
+  const year = tdate.getFullYear();
+  const month = String(tdate.getMonth() + 1).padStart(2, "0"); // Adding 1 to adjust month, padStart ensures 2 digits
+  const date = String(tdate.getDate()).padStart(2, "0"); // Ensuring 2 digits
+
+  // Format as 'YYYY-MM-DD'
+  const formattedDate = `${year}-${month}-${date}`;
+
+  console.log(formattedDate);
   return (
     <>
       <Container>
@@ -298,13 +309,22 @@ const ClinicActivity = () => {
                           </h4>
                         </div>
                         <div>
-                          <p className="fw-bold">
-                            {formattedTime -
-                              item.apointment_date_time
-                                .split("T")[1]
-                                ?.split(":")[0]}{" "}
-                            Hours ago
-                          </p>
+                          {item.apointment_date_time.split("T")[0] ===
+                          formattedDate ? (
+                            <>
+                              <p className="fw-bold">
+                                {formattedTime -
+                                  item.apointment_date_time
+                                    .split("T")[1]
+                                    ?.split(":")[0]}{" "}
+                                Hours ago
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <p>{item.apointment_date_time.split("T")[0]}</p>
+                            </>
+                          )}
                         </div>
                       </div>
                     </li>
@@ -334,13 +354,22 @@ const ClinicActivity = () => {
                           </h4>
                         </div>
                         <div>
-                          <p className="fw-bold">
-                            {formattedTime -
-                              item.apointment_date_time
-                                .split("T")[1]
-                                ?.split(":")[0]}{" "}
-                            Hours ago
-                          </p>
+                          {item.apointment_date_time.split("T")[0] ===
+                          formattedDate ? (
+                            <>
+                              <p className="fw-bold">
+                                {formattedTime -
+                                  item.apointment_date_time
+                                    .split("T")[1]
+                                    ?.split(":")[0]}{" "}
+                                Hours ago
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <p>{item.apointment_date_time.split("T")[0]}</p>
+                            </>
+                          )}
                         </div>
                       </div>
                     </li>
@@ -369,13 +398,22 @@ const ClinicActivity = () => {
                           </h4>
                         </div>
                         <div>
-                          <p className="fw-bold">
-                            {formattedTime -
-                              item.apointment_date_time
-                                .split("T")[1]
-                                ?.split(":")[0]}{" "}
-                            Hours ago
-                          </p>
+                          {item.apointment_date_time.split("T")[0] ===
+                          formattedDate ? (
+                            <>
+                              <p className="fw-bold">
+                                {formattedTime -
+                                  item.apointment_date_time
+                                    .split("T")[1]
+                                    ?.split(":")[0]}{" "}
+                                Hours ago
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <p>{item.apointment_date_time.split("T")[0]}</p>
+                            </>
+                          )}
                         </div>
                       </div>
                     </li>
@@ -404,13 +442,21 @@ const ClinicActivity = () => {
                           </h4>
                         </div>
                         <div>
-                          <p className="fw-bold">
-                            {formattedTime -
-                              item.regdatetime
-                                .split("T")[1]
-                                ?.split(":")[0]}{" "}
-                            Hours ago
-                          </p>
+                          {item.regdatetime.split("T")[0] === formattedDate ? (
+                            <>
+                              <p className="fw-bold">
+                                {formattedTime -
+                                  item.regdatetime
+                                    .split("T")[1]
+                                    ?.split(":")[0]}{" "}
+                                Hours ago
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <p>{item.regdatetime.split("T")[0]}</p>
+                            </>
+                          )}
                         </div>
                       </div>
                     </li>
@@ -444,7 +490,7 @@ const Container = styled.div`
   }
 
   .tab-content {
-    height: 32rem;
+    height: 100%;
     overflow: auto;
   }
 `;

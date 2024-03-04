@@ -13,6 +13,7 @@ const Apointment = () => {
   const branch = useSelector((state) => state.branch);
   console.log(`User Name: ${branch.name}`);
   const [appointmentList, setAppointmentList] = useState([]);
+  const [timeLIneData, setTimeLineData] = useState();
   const [updateData, setUpdateData] = useState({
     branch: branch.name,
     patientName: "",
@@ -49,7 +50,7 @@ const Apointment = () => {
       const response = await axios.get(
         `http://localhost:7777/api/v1/super-admin/getAppointmentData/${branch.name}`
       );
-      console.log(response.data);
+      console.log(response);
       setAppointmentList(response.data);
     } catch (error) {
       console.log(error);
@@ -64,6 +65,24 @@ const Apointment = () => {
   console.log(updateData);
   console.log(selectedItem);
 
+  const timelineData = async (updateData) => {
+    console.log(updateData);
+    try {
+      const response = await axios.post(
+        "http://localhost:7777/api/v1/super-admin/insertTimelineEvent",
+        {
+          type: "appointment",
+          description: "apointment scheduled",
+          branch: branch.name,
+          patientId: "DH0001",
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const updateAppData = async (e, id) => {
     e.preventDefault();
     try {
@@ -72,7 +91,9 @@ const Apointment = () => {
         updateData
       );
       console.log(response);
+      setTimeLineData(response);
       closeUpdatePopup();
+      timelineData(updateData);
       cogoToast.success("Appointment Details Updated Successfully");
       getAppointList();
     } catch (error) {
@@ -92,6 +113,8 @@ const Apointment = () => {
       console.log(error);
     }
   };
+
+  console.log(timeLIneData);
 
   return (
     <>
@@ -139,6 +162,7 @@ const Apointment = () => {
                               <th className="table-small">
                                 Appointment Status
                               </th>
+                              <th>Cancel Reason</th>
                               <th className="table-small">Edit</th>
                               <th className="table-small">Delete</th>
                             </tr>
@@ -182,6 +206,7 @@ const Apointment = () => {
                                     {item.apointment_date_time?.split("T")[1]}
                                   </td>
                                   <td>{item.appointment_status}</td>
+                                  <td>{item.cancel_reason}</td>
                                   <td className="table-small">
                                     <button
                                       className="btn btn-warning"

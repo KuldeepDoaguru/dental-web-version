@@ -16,6 +16,19 @@ const Overview = () => {
   const [patAppointDetails, setPatAppointDetails] = useState([]);
   const [exmData, setExmData] = useState([]);
 
+  const [presData, setPresData] = useState([]);
+
+  const getPresDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getPrescriptionDetailsById/${pid}`
+      );
+      setPresData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getPendingBillDetails = async () => {
     try {
       const { data } = await axios.get(
@@ -55,6 +68,7 @@ const Overview = () => {
   useEffect(() => {
     getPendingBillDetails();
     getAppointDetailsPat();
+    getPresDetails();
   }, []);
 
   useEffect(() => {
@@ -253,29 +267,22 @@ const Overview = () => {
                   <thead>
                     <tr>
                       <th>Date</th>
-                      <th>Durg</th>
                       <th>Doctor Name</th>
+                      <th>Medicine Name</th>
+                      <th>Note</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>25 April 2023</td>
-                      <td>Aceterminophen</td>
-
-                      <td>Dr.Umer Qureshi</td>
-                    </tr>
-                    <tr>
-                      <td>25 April 2023</td>
-                      <td>Aceterminophen</td>
-
-                      <td>Dr.Umer Qureshi</td>
-                    </tr>
-                    <tr>
-                      <td>25 April 2023</td>
-                      <td>Aceterminophen</td>
-
-                      <td>Dr.Umer Qureshi</td>
-                    </tr>
+                    {presData?.slice(-3).map((item) => (
+                      <>
+                        <tr>
+                          <td>{item.prescription_date?.split("T")[0]}</td>
+                          <td>{item.doctor_name}</td>
+                          <td>{item.medicine_name}</td>
+                          <td>{item.note}</td>
+                        </tr>
+                      </>
+                    ))}
                   </tbody>
                 </table>
               </div>

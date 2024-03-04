@@ -1,80 +1,38 @@
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Table, Input, Button, Form } from "react-bootstrap";
+import axios from 'axios';
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const  branch = "Madan Mahal"
+  const [appointmentsData,setAppointmentData] = useState([]);
 
-  const Table_data = [
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"2", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"3", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"4", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"5", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"6", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"7", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"8", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"9", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"10", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"11", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"12", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"13", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"14", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"15", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"16", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"17", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"18", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"19", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"20", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"2", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"3", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"4", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"5", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"6", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"7", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"8", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"9", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"10", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"11", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"12", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"13", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"14", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"15", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"16", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"17", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"18", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"19", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"20", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"2", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"3", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"4", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"5", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"6", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"7", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"8", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"9", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"10", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"11", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"12", patient:"Umer Qureshi",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"13", patient:"Dhani Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"14", patient:"Ragni Burma",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"15", patient:"Rohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"16", patient:"Ritin Tiwari",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"17", patient:"Dev Ansh Dubey",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"18", patient:"Juber",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"19", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    { uid :"20", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245",treatment:"root canal",timing:"9:00 Am",status:"Missed",action:"edit"},
-    
-  ];
+  const getAppointments = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
+      setAppointmentData(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  console.log(appointmentsData);
+
+  useEffect(()=>{
+    getAppointments();
+  },[])
+
+ 
 
   // const handleChange = (e) => {
   //   setSearchInput(e.target.value);
@@ -91,8 +49,8 @@ const AppointTable = () => {
       setSearchTerm(searchTerm);
       setCurrentPage(1); // Reset to the first page when searching
   
-      const filteredResults = Table_data.filter((row) =>
-        row.patient.toLowerCase().includes(searchTerm)
+      const filteredResults = appointmentsData.filter((row) =>
+        row.patient_name.toLowerCase().includes(searchTerm)
       );
   
       setFilteredData(filteredResults);
@@ -108,10 +66,10 @@ const AppointTable = () => {
   // Pagination functions
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : Table_data.slice(indexOfFirstRow, indexOfLastRow);
+  const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : appointmentsData.slice(indexOfFirstRow, indexOfLastRow);
 
 
-  const totalPages = Math.ceil(Table_data.length / rowsPerPage);
+  const totalPages = Math.ceil(appointmentsData.length / rowsPerPage);
 
   const paginate = (pageNumber) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
@@ -120,7 +78,7 @@ const AppointTable = () => {
   };
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(Table_data.length / rowsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(appointmentsData.length / rowsPerPage); i++) {
     pageNumbers.push(i);
   }
 
@@ -237,27 +195,44 @@ const AppointTable = () => {
           <table className="table table-bordered table-striped">
           <thead>
           <tr>
-            <th>Uid</th>
+            <th>A.Id</th>
             <th>Patient Name</th>
-            <th>Doctor Name</th>
-            <th>Treatment</th>
             <th>Mobile</th>
             <th>Timing</th>
+            <th>Treatment</th>
+            <th>Doctor Name</th>
+            <th>Blood Group</th>
+            <th>Age</th>
+            <th>Weight</th>
+            <th>Patient Type</th>
+            <th>Note</th>
             <th>Status</th>
             <th>Action</th>
 
           </tr>
         </thead>
         <tbody>
-          {currentRows.map((country, index) => (
+          {currentRows.map((patient, index) => (
             <tr key={index}>
-              <td>{country.uid}</td>
-              <td>{country.patient}</td>
-              <td>{country.doctor}</td>
-              <td>{country.treatment}</td>
-              <td>{country.mobile}</td>
-              <td>{country.timing}</td>
-              <td>{country.status}</td>
+              <td>{patient.appoint_id}</td>
+              <td>{patient.patient_name}</td>
+              <td>{patient.patient_contact}</td>
+              <td>{patient.appointment_dateTime
+}</td>
+              <td>{patient.treatment_provided
+}</td>
+              <td>{patient.assigned_doctor_name
+}</td>
+              <td>{patient.bloodgroup}</td>
+              <td>{patient.age}</td>
+              <td>{patient.weight}</td>
+              <td>{patient.
+patient_type
+}</td>
+              <td>{patient.notes}</td>
+              <td>{patient.appointment_status
+}</td>
+              
               <td><div className="dropdown">
   <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action
@@ -290,7 +265,7 @@ const AppointTable = () => {
                           
                         >
                          {/* Showing Page {currentPage} of {totalPages} from {data?.length} entries */}
-                       {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {Table_data?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {Table_data?.length} entries</> }  
+                       {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {appointmentsData?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {appointmentsData?.length} entries</> }  
 
                         </h4></div>
                     <div className="col-lg-3 col-md-3 col-sm-12 col-12">
@@ -306,7 +281,7 @@ const AppointTable = () => {
                       
                         <Button
                           onClick={() => paginate(currentPage + 1)}
-                          disabled={indexOfLastRow >= Table_data.length}
+                          disabled={indexOfLastRow >= appointmentsData.length}
                           variant="success"
                         >
                           Next

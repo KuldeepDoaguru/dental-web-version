@@ -10,7 +10,7 @@ function BookAppointment() {
 
     
   const  [formdata,setFormData ] = useState({})
- 
+  const  branch = "Madan Mahal"
   const [searchQuery, setSearchQuery] = useState("");
   const [searchDoctor, setSearchDoctor] = useState("");
   const [showDoctorList,setShowDoctorList] = useState(false);
@@ -18,6 +18,7 @@ function BookAppointment() {
   const [selectedDoctor, setSelectedDoctor] = useState(null); // State to store the selected Doctor
   const [selectedTreatment, setSelectedTreatment] = useState([]);
   const [patients, setPatients] = useState([]);
+  const [treatments,setTreatment] = useState([]);
 
   const getPatient = async () =>{
     try{
@@ -31,57 +32,43 @@ function BookAppointment() {
     
   }
 
+  const getTreatment = async () =>{
+    try{
+     const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-treatments');
+     console.log(response);
+     setTreatment(response?.data?.data)
+    }
+    catch(error){
+       console.log(error)
+    }
+   
+
+ }
+
+ const [doctors,setDoctors] = useState([]);
+
+
+  const getDoctors = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
+      setDoctors(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
   useEffect(()=>{
      getPatient();
+     getTreatment();
+     getDoctors();
   },[]);
 
 
 
  
   
-  const treatments = [
-    { value: 'OPD', label: 'OPD' },
-    { value: 'Dental Cleanings', label: 'Dental Cleanings' },
-    { value: 'Dental Examinations', label: 'Dental Examinations' },
-    { value: 'Dental Sealants', label: 'Dental Sealants' },
-    { value: 'Fluoride Treatments', label: 'Fluoride Treatments' },
-    { value: 'Crowns (Caps)', label: 'Crowns (Caps)' },
-    { value: 'Bridges', label: 'Bridges' },
-    { value: 'Dentures (Partial or Full)', label: 'Dentures (Partial or Full)' },
-    { value: 'Dental Implants', label: 'Dental Implants' },
-    { value: 'Root Canal Treatment (RCT)', label: 'Root Canal Treatment (RCT)' },
-    { value: 'Root Canal Retreatment (Re-Root Canal)', label: 'Root Canal Retreatment (Re-Root Canal)' },
-    { value: 'Apicoectomy (Endodontic Surgery)', label: 'Apicoectomy (Endodontic Surgery)' },
-    { value: 'Scaling and Root Planing (Deep Cleaning)', label: 'Scaling and Root Planing (Deep Cleaning)' },
-    { value: 'Periodontal Maintenance', label: 'Periodontal Maintenance' },
-    { value: 'Gum Graft Surgery', label: 'Gum Graft Surgery' },
-    { value: 'Periodontal Flap Surgery', label: 'Periodontal Flap Surgery' },
-    { value: 'Teeth Whitening (Bleaching)', label: 'Teeth Whitening (Bleaching)' },
-    { value: 'Dental Bonding', label: 'Dental Bonding' },
-    { value: 'Porcelain Veneers', label: 'Porcelain Veneers' },
-    { value: 'Inlays and Onlays', label: 'Inlays and Onlays' },
-    { value: 'Orthodontic Treatments (Braces, Clear Aligners)', label: 'Orthodontic Treatments (Braces, Clear Aligners)' },
-    { value: 'Tooth Extractions (Simple and Surgical)', label: 'Tooth Extractions (Simple and Surgical)' },
-    { value: 'Wisdom Tooth Extraction', label: 'Wisdom Tooth Extraction' },
-    { value: 'Dental Implant Surgery', label: 'Dental Implant Surgery' },
-    { value: 'Jaw Surgery (Orthognathic Surgery)', label: 'Jaw Surgery (Orthognathic Surgery)' },
-    { value: 'Complete Dentures', label: 'Complete Dentures' },
-    { value: 'Partial Dentures', label: 'Partial Dentures' },
-    { value: 'Dental Bridges', label: 'Dental Bridges' },
-    { value: 'Dental Implant Restorations', label: 'Dental Implant Restorations' },
-    { value: 'Dental Sealants', label: 'Dental Sealants' },
-    { value: 'Fluoride Treatments', label: 'Fluoride Treatments' },
-    { value: 'Pediatric Dental Cleanings', label: 'Pediatric Dental Cleanings' },
-    { value: 'Dental Fillings for Children', label: 'Dental Fillings for Children' },
-    { value: 'Traditional Braces', label: 'Traditional Braces' },
-    { value: 'Clear Aligners (Invisalign, ClearCorrect)', label: 'Clear Aligners (Invisalign, ClearCorrect)' },
-    { value: 'Retainers', label: 'Retainers' },
-    { value: 'Orthodontic Appliances', label: 'Orthodontic Appliances' },
-    { value: 'Treatment for Dental Trauma', label: 'Treatment for Dental Trauma' },
-    { value: 'Emergency Tooth Extractions', label: 'Emergency Tooth Extractions' },
-    { value: 'Pain Management', label: 'Pain Management' },
-    { value: 'Temporary Dental Repairs', label: 'Temporary Dental Repairs' }
-];
+  
 
 
 
@@ -108,18 +95,18 @@ function BookAppointment() {
     { branch_name:"", patient_Name:"",mobile: "", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"", appointment_created_by:"",appointment_updated_by:"",appointment_created_by_emp_id	:"", appointment_updated_by_emp_id	:""}
   ) 
 
-  const doctors = [
-    { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:["2024/02/21","2024/02/20","2024/02/19"],lunchTime: ""},
-    { uid :"10", doctor_name:"Dr Rajiv",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"12:00",eveningStartTiming:"18:00" ,eveningEndTiming:"22:00", scheduleBlockDays:"2024/02/21",lunchTime: ""},
-    { uid :"2", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
-    { uid :"4", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"5", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"6", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"7", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"8", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"20/02/2024",lunchTime: ""}
+  // const doctors = [
+  //   { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:["2024/02/21","2024/02/20","2024/02/19"],lunchTime: ""},
+  //   { uid :"10", doctor_name:"Dr Rajiv",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"12:00",eveningStartTiming:"18:00" ,eveningEndTiming:"22:00", scheduleBlockDays:"2024/02/21",lunchTime: ""},
+  //   { uid :"2", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
+  //   { uid :"4", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+  //   { uid :"5", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+  //   { uid :"6", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+  //   { uid :"7", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
+  //   { uid :"8", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"20/02/2024",lunchTime: ""}
     
 
-  ];
+  // ];
 
   const [appointment_data,setAppointmentData] = useState([
     { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:45",status:"Missed",action:"edit"},
@@ -249,11 +236,13 @@ console.log(selectedDoctor)
     
     setSearchQuery(e.target.value);
   };
+
+
   useEffect(() => {
     // Filter patients based on the search query if there's a search query, otherwise set an empty array
     const filtered = showDoctorList
       ? doctors.filter((doctor) =>
-          doctor.doctor_name.toLowerCase().includes(searchDoctor.toLowerCase())
+          doctor.employee_name.toLowerCase().includes(searchDoctor.toLowerCase())
         )
       : [];
     setFilteredDoctor(filtered);
@@ -305,7 +294,7 @@ const handlePatientSelect = (patient) => {
 const handleDoctorSelect = (doctor) => {
   setSelectedDoctor(doctor); // Set the selected patient when it's clicked
   setShowDoctorList(false)
-  setSearchDoctor(doctor.doctor_name); // Reset the search query to close the search list
+  setSearchDoctor(doctor.employee_name); // Reset the search query to close the search list
 };
 
 
@@ -337,13 +326,13 @@ const selectedDateTime = new Date(bookData.appDateTime);
 // Check if the selected doctor is available during the appointment time
 const isDoctorAvailable = (selectedDateTime) => {
   const morningStart = new Date(selectedDateTime);
-  morningStart.setHours(selectedDoctor.morningStartTiming.split(":")[0], selectedDoctor.morningStartTiming.split(":")[1]);
+  morningStart.setHours(selectedDoctor.morning_shift_start_time.split(":")[0], selectedDoctor.morning_shift_start_time.split(":")[1]);
   const morningEnd = new Date(selectedDateTime);
-  morningEnd.setHours(selectedDoctor.morningEndTiming.split(":")[0], selectedDoctor.morningEndTiming.split(":")[1]);
+  morningEnd.setHours(selectedDoctor.morning_shift_end_time.split(":")[0], selectedDoctor.morning_shift_end_time.split(":")[1]);
   const eveningStart = new Date(selectedDateTime);
-  eveningStart.setHours(selectedDoctor.eveningStartTiming.split(":")[0], selectedDoctor.eveningStartTiming.split(":")[1]);
+  eveningStart.setHours(selectedDoctor.evening_shift_start_time.split(":")[0], selectedDoctor.evening_shift_start_time.split(":")[1]);
   const eveningEnd = new Date(selectedDateTime);
-  eveningEnd.setHours(selectedDoctor.eveningEndTiming.split(":")[0], selectedDoctor.eveningEndTiming.split(":")[1]);
+  eveningEnd.setHours(selectedDoctor.evening_shift_end_time.split(":")[0], selectedDoctor.evening_shift_end_time.split(":")[1]);
   
   return (
     (selectedDateTime >= morningStart && selectedDateTime <= morningEnd) ||
@@ -357,41 +346,41 @@ const isDoctorAvailable = (selectedDateTime) => {
     const appointmentDate = new Date(appointment.timing);
     const selectedDate = new Date(bookData.appDateTime);
     
-    return !(appointment.doctorId === selectedDoctor.uid && appointmentDate.getTime() === selectedDate.getTime());
+    return !(appointment.doctorId === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
   });
 
    // Check if the selected appointment date matches with the doctor's block day
-   const blockDays = selectedDoctor.scheduleBlockDays; // Assuming scheduleBlockDays is an array of dates
+  //  const blockDays = selectedDoctor.scheduleBlockDays; // Assuming scheduleBlockDays is an array of dates
 
-   // Convert appointment date to the same format as block days
-   const selectedDate = new Date(bookData.appDateTime);
-   const formattedSelectedDateTime = selectedDate.toLocaleDateString("en-US");
+  //  // Convert appointment date to the same format as block days
+  //  const selectedDate = new Date(bookData.appDateTime);
+  //  const formattedSelectedDateTime = selectedDate.toLocaleDateString("en-US");
    
-   // Check if the appointment date matches any of the block days
-   const isBlockDayMatched = blockDays.some((blockDay) => {
-     const formattedBlockDay = new Date(blockDay).toLocaleDateString("en-US");
-     return formattedBlockDay === formattedSelectedDateTime;
-   });
+  //  // Check if the appointment date matches any of the block days
+  //  const isBlockDayMatched = blockDays.some((blockDay) => {
+  //    const formattedBlockDay = new Date(blockDay).toLocaleDateString("en-US");
+  //    return formattedBlockDay === formattedSelectedDateTime;
+  //  });
    
-   if(isBlockDayMatched){
-    alert ("Doctor is not available in this day");
-    return
-   }
+  //  if(isBlockDayMatched){
+  //   alert ("Doctor is not available in this day");
+  //   return
+  //  }
 
   if (isSlotAvailable) {
     // Slot is available, proceed with booking
     const newAppointment = {
-      branch_name : "vijay nagar",
+      branch_name : "Madan Mahal",
       patient_uhid : selectedPatient.uhid,
       patient_name: selectedPatient.patient_name,
       mobile: selectedPatient.mobileno,
 
-      doctorId: selectedDoctor.uid,
-      doctor_name: selectedDoctor.doctor_name,
+      doctorId: selectedDoctor.employee_ID,
+      doctor_name: selectedDoctor.employee_name,
       appDateTime: bookData.appDateTime,
       treatment: selectedTreatment,
       notes: bookData.notes,
-      status : "apoint",
+      status : "appoint",
       appointment_created_by: "rahul",
       appointment_created_by_emp_id: "10"
     };
@@ -411,21 +400,28 @@ const isDoctorAvailable = (selectedDateTime) => {
     try{
       const response = await axios.post('http://localhost:4000/api/v1/receptionist/book-appointment',newAppointment);
       console.log(response);
+      if(response.data.success){
+        alert(response?.data?.message);
+       }
+       else{
+        alert(response?.data?.message);
+       }
 
    }
    catch(error){
      console.log(error)
+        alert(error?.response?.data?.message);
 
    }
-    setAppointmentData([...appointment_data,newAppointment]);
+    // setAppointmentData([...appointment_data,newAppointment]);
     // Reset form data
     
 
     // Reset selected doctor
     // setSelectedDoctor(null);
 
-    console.log("Appointment booked successfully!");
-    alert("Appointment booked successfully!");
+    // console.log("Appointment booked successfully!");
+    // alert("Appointment booked successfully!");
   } else {
     // Slot is not available
     alert("The selected doctor's slot is already booked at the specified time");
@@ -615,11 +611,11 @@ const isDoctorAvailable = (selectedDateTime) => {
                           
                           <ul className="list-group">
                       {filteredDoctor.map((doctor) => (
-                        <li key={doctor.uid}
-                        className={`list-group-item ${selectedDoctor && selectedDoctor.uid === doctor.uid ? "active" : ""}`} // Add 'active' class if the patient is selected
+                        <li key={doctor.employee_ID}
+                        className={`list-group-item ${selectedDoctor && selectedDoctor.employee_ID === doctor.employee_ID ? "active" : ""}`} // Add 'active' class if the patient is selected
             onClick={() => handleDoctorSelect(doctor)} // Call handlePatientSelect function when the patient is clicked 
                         >
-                          {doctor.doctor_name} {"-"} Department: {doctor.department}
+                          {doctor.employee_name} {"-"} Id: {doctor.employee_ID}
                           {/* Display other patient details as needed */}
                         </li>
                       ))}

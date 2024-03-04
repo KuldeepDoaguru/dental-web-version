@@ -151,17 +151,41 @@ const addPatient = (req, res) => {
 
           // Check if patient already exists
           if (result.length > 0) {
-              return res.status(400).json({ error: "Patient already exists." });
+              return res.status(400).json({success:false, message: "Patient already exists." });
           } else {
-              // Get count of existing patients to generate new ID
-              const countPatientsQuery = "SELECT COUNT(*) as count FROM patient_details";
-              db.query(countPatientsQuery, (countErr, countResult) => {
-                  if (countErr) {
-                      console.error("Error counting patients:", countErr);
-                      return res.status(500).json({ error: "Internal server error" });
-                  }
 
-                  const patientId = generatePatientId(countResult[0].count + 1); // Increment count and generate ID
+
+           // Find the highest empID in the database for the given pattern
+    const highestPatientIDQuery =
+    "SELECT MAX(CAST(SUBSTRING_INDEX(uhid,'_', -1) AS UNSIGNED)) AS maxID FROM patient_details WHERE uhid LIKE ?";
+  const pattern = "DH_%";
+  
+  
+
+  db.query(highestPatientIDQuery, [pattern], (err, result) => {
+    if (err) {
+      console.error("Error getting highest empID:", err);
+      res.status(500).json({ error: "Internal server error" });
+    } else {
+      let nextID = 1;
+      if (result[0].maxID !== null) {
+        nextID = parseInt(result[0].maxID) + 1;
+      }
+     const  newPatientID = `DH_${nextID}`;
+
+
+
+
+              // Get count of existing patients to generate new ID
+              // const countPatientsQuery = "SELECT COUNT(*) as count FROM patient_details";
+              // db.query(countPatientsQuery, (countErr, countResult) => {
+              //     if (countErr) {
+              //         console.error("Error counting patients:", countErr);
+              //         return res.status(500).json({ error: "Internal server error" });
+              //     }
+
+              //     const patientId = generatePatientId(countResult[0].count + 1); 
+                  // Increment count and generate ID
 
                   // Proceed with adding the patient
                   const insertPatientQuery = `
@@ -171,7 +195,7 @@ const addPatient = (req, res) => {
                   `;
 
                   const insertPatientParams = [
-                      patientId, // Add patient ID
+                    newPatientID, // Add patient ID
                       branch_name,
                       patient_Name,
                       dob,
@@ -206,7 +230,7 @@ const addPatient = (req, res) => {
                           `;
                          
                           const bookAppointmentParams = [
-                              patientId,
+                            newPatientID,
                               branch_name,
                               patient_Name,
                               mobile,
@@ -230,13 +254,13 @@ const addPatient = (req, res) => {
                                   return res.status(200).json({
                                       success: true,
                                       message: "Patient and appointment added successfully",
-                                      user: { id: insertResult.insertId, patientId: patientId }
+                                      user: { id: insertResult.insertId, patientId: newPatientID }
                                   });
                               }
                           });
                       }
                   });
-              });
+              }});
           }
       });
   } catch (error) {
@@ -248,6 +272,7 @@ const addPatient = (req, res) => {
       });
   }
 };
+
 
 
 const getPatients = (req,res) =>{
@@ -362,7 +387,7 @@ const bookAppointment = (req,res)=>{
 db.query(bookAppointmentQuery, bookAppointmentParams, (appointmentErr, appointmentResult) => {
   if (appointmentErr) {
       console.error("Error booking appointment:", appointmentErr);
-      return res.status(500).json({ error: "Internal server error" });
+      return res.status(500).json({ success: false , message: "Internal server error" });
   } else {
       console.log("Appointment booked successfully");
       return res.status(200).json({
@@ -384,4 +409,82 @@ db.query(bookAppointmentQuery, bookAppointmentParams, (appointmentErr, appointme
       });
     }
 }
-module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment};
+
+const getAppointments = (req,res) =>{
+
+  try{
+    const branch = req.params.branch;
+    // const sql = 'SELECT * FROM apointments WHERE branch_name = ?';
+    const sql = `
+        SELECT 
+            a.appoint_id,
+            a.patient_name,
+            a.patient_contact,
+            a.assigned_doctor_name,
+            a.assigned_doctor_id,
+            a.appointment_status,
+            a.appointment_dateTime,
+            a.treatment_provided,
+            a.notes,
+            p.dob,
+            p.age,
+            p.weight,
+            p.bloodgroup,
+            p.disease,
+            p.allergy,
+            p.patient_type
+        FROM 
+            apointments AS a
+        JOIN 
+            patient_details AS p ON a.patient_uhid = p.uhid WHERE
+            a.branch_name = ?
+    `;
+
+    db.query(sql,[branch],(err,results) =>{
+      if(err){
+        console.error('Error fetching Patients from MySql:' , err);
+        res.status(500).json({error : "Error fetching appointments"});
+      }
+      else {
+        res.status(200).json({data: results,message : "Appoinmtments fetched successfully"})
+      }
+
+    })
+}
+catch(error){
+  console.error('Error fetching appointments from MySql:' , error);
+  res.status(500).json({
+    success: false,
+    message: "Error in fetched appointments",
+    error: error.message,
+  })
+
+}
+}
+
+const getDoctorDataByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery = 'SELECT * FROM employee_register WHERE branch_name = ? AND employee_designation = "doctor"';
+    db.query(getQuery, [branch], (err, result) => {
+      if (err) {
+        res.status(400).send({status : false, message: "error in fetching doctor" });
+      }
+      else{
+        // Iterate over the result array and delete the password property from each object
+        result.forEach(employee => {
+          delete employee.employee_password;
+        });
+        res.json({ data: result, status: true, message: "successful fetching doctor" });
+      }
+      
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments};

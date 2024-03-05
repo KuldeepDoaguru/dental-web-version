@@ -4,11 +4,14 @@ import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Modal, Button } from 'react-bootstrap';
 import axios from "axios";
+import { useDispatch } from 'react-redux';
+import { toggleTableRefresh } from '../../../../redux/user/userSlice';
+
 
 
 function AddPatient() {
 
-    
+  const dispatch = useDispatch();
   const  [formdata,setFormData ] = useState({})
    const  branch = "Madan Mahal"
   const [searchQuery, setSearchQuery] = useState("");
@@ -359,6 +362,7 @@ console.log(selectedDoctor)
          console.log(response);
          if(response?.data?.success){
           alert(response?.data?.message);
+          dispatch(toggleTableRefresh());
          }
          else{
           alert(response?.data?.message);

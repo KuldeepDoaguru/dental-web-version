@@ -410,6 +410,118 @@ db.query(bookAppointmentQuery, bookAppointmentParams, (appointmentErr, appointme
     }
 }
 
+
+
+const updateAppointment = (req, res) => {
+  try {
+      const { appoint_id,  patient_name, doctorId, doctor_name, appDateTime, treatment, notes, appointment_updated_by, appointment_updated_by_emp_id } = req.body;
+
+      const updated_at = new Date();
+
+      const updateAppointmentQuery = `
+          UPDATE apointments
+          SET 
+             
+             
+              patient_name = ?,  
+              assigned_doctor_name = ?, 
+              assigned_doctor_id = ?, 
+              appointment_dateTime = ?, 
+              treatment_provided = ?,  
+              notes = ?, 
+              appointment_updated_by = ?, 
+              appointment_updated_by_emp_id = ?, 
+              updated_at = ?
+          WHERE 
+              appoint_id = ?
+      `;
+
+      const updateAppointmentParams = [
+        
+          patient_name,
+          doctor_name,
+          doctorId,
+          appDateTime,
+          treatment,
+          notes,
+          appointment_updated_by,
+          appointment_updated_by_emp_id,
+          updated_at,
+          appoint_id
+      ];
+
+      db.query(updateAppointmentQuery, updateAppointmentParams, (appointmentErr, appointmentResult) => {
+          if (appointmentErr) {
+              console.error("Error updating appointment:", appointmentErr);
+              return res.status(500).json({ success: false, message: "Internal server error" });
+          } else {
+              console.log("Appointment updated successfully");
+              return res.status(200).json({
+                  success: true,
+                  message: "Appointment updated successfully",
+              });
+          }
+      });
+  } catch (error) {
+      console.error("Error in updating appointment:", error);
+      return res.status(500).json({
+          success: false,
+          message: "Error in updating appointment",
+          error: error.message,
+      });
+  }
+};
+
+
+
+
+
+
+
+
+
+const updateAppointmentStatus = (req, res) => {
+  try {
+      const { appointmentId, status ,appointment_updated_by,appointment_updated_by_emp_id} = req.body;
+
+      const updated_at = new Date();
+
+      const updateAppointmentQuery = `
+          UPDATE apointments
+          SET appointment_status = ?, updated_at = ?,appointment_updated_by = ?,appointment_updated_by_emp_id = ?
+          WHERE appoint_id = ?
+      `;
+
+      const updateAppointmentParams = [
+          status,
+          updated_at,
+          appointment_updated_by,
+          appointment_updated_by_emp_id,
+          appointmentId
+      ];
+
+      db.query(updateAppointmentQuery, updateAppointmentParams, (appointmentErr, appointmentResult) => {
+          if (appointmentErr) {
+              console.error("Error updating appointment:", appointmentErr);
+              return res.status(500).json({ success: false, message: "Internal server error" });
+          } else {
+              console.log("Appointment updated successfully");
+              return res.status(200).json({
+                  success: true,
+                  message: "Appointment updated successfully",
+              });
+          }
+      });
+  } catch (error) {
+      console.error("Error updating appointment:", error);
+      return res.status(500).json({
+          success: false,
+          message: "Error updating appointment",
+          error: error.message,
+      });
+  }
+}
+
 const getAppointments = (req,res) =>{
 
   try{
@@ -487,4 +599,4 @@ const getDoctorDataByBranch = (req, res) => {
     });
   }
 };
-module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments};
+module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointment};

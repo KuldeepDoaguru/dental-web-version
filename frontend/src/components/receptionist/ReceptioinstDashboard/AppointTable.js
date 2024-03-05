@@ -4,11 +4,18 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Table, Input, Button, Form } from "react-bootstrap";
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTableRefresh } from '../../../redux/user/userSlice';
+import EditAppointment from './EditAppointment';
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const {refreshTable} = useSelector((state) => state.user);
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [selectedAppointment, setSelectedAppointment] = useState("");
+
 
 
   const [filteredData, setFilteredData] = useState([]);
@@ -30,7 +37,27 @@ const AppointTable = () => {
 
   useEffect(()=>{
     getAppointments();
-  },[])
+  },[refreshTable])
+
+  console.log(selectedAppointment)
+   const handleEditAppointment = (appointment)=>{
+          setSelectedAppointment(appointment)
+          setShowEditPopup(true);
+   }
+
+  // Add an async function to handle status change
+const handleStatusChange = async (appointmentId, newStatus) => {
+  try {
+    // Send a PUT request to your backend endpoint to update the status
+    await axios.put(`http://localhost:4000/api/v1/receptionist/update-appointment-status`, { status: newStatus, appointmentId:appointmentId,appointment_updated_by:"mohit",appointment_updated_by_emp_id: "20" });
+    // Optionally, you can re-fetch appointments after successful update
+    getAppointments();
+  } catch (error) {
+    console.error('Error updating status:', error);
+  }
+};
+
+
 
  
 
@@ -238,10 +265,10 @@ patient_type
     Action
   </button>
   <ul className="dropdown-menu">
-  <li><a className="dropdown-item mx-0" href="#">Checked-In</a></li>
-  <li><a className="dropdown-item mx-0" href="#">Checked-Out</a></li>
-  <li><a className="dropdown-item mx-0" href="#">Complete</a></li>
-  <li><a className="dropdown-item mx-0" href="#">Edit Appointment</a></li>
+  <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li>
+  <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Check-Out')}>Check-Out</a></li>
+  <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Complete')}>Complete</a></li>
+  <li><a className="dropdown-item mx-0" onClick={() => handleEditAppointment(patient)}>Edit Appointment</a></li>
     <li><a className="dropdown-item mx-0" href="#">Cancle Appointment</a></li>
   
     <li><a className="dropdown-item mx-0" href="#"></a></li>
@@ -292,6 +319,10 @@ patient_type
                 </div>
       </div>
     </div>
+    {showEditPopup && (
+        <EditAppointment onClose={() => setShowEditPopup(false)} appointmentInfo={selectedAppointment} />
+      )}
+   
     </Wrapper>
   );
 };

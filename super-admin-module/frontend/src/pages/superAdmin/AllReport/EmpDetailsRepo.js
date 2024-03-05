@@ -1,16 +1,69 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Sider from "../../../components/Sider";
 import Header from "../../../components/Header";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import BranchSelector from "../../../components/BranchSelector";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { utils, writeFile } from "xlsx";
 
 const EmpDetailsRepo = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [doctorList, setDoctorList] = useState([]);
+  const [designation, setDesignation] = useState("");
+
+  const getDocDetailsList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getEmployeeDataByBranch/${branch.name}`
+      );
+      console.log(data);
+      setDoctorList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getDocDetailsList();
+  }, []);
 
   const goBack = () => {
     window.history.go(-1);
+  };
+
+  const downloadEmployeeData = async () => {
+    try {
+      const { data } = await axios.post(
+        `http://localhost:7777/api/v1/super-admin/downloadStaffReport/${branch.name}`
+      );
+      console.log(data);
+      // setSelectedEarn(data);
+      if (Array.isArray(data)) {
+        // Create a new workbook
+        const workbook = utils.book_new();
+
+        // Convert the report data to worksheet format
+        const worksheet = utils.json_to_sheet(data);
+
+        utils.book_append_sheet(workbook, worksheet, `Employee Report`);
+        writeFile(workbook, `employee-report.xlsx`);
+        console.log(data);
+      } else {
+        console.error("data is not an array");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -47,7 +100,10 @@ const EmpDetailsRepo = () => {
                       <div className="container mt-3">
                         <div className="d-flex justify-content-between mb-2 mt-4">
                           <div className="d-flex justify-content-between">
-                            <button className="btn btn-warning mx-2">
+                            <button
+                              className="btn btn-warning mx-2"
+                              onClick={downloadEmployeeData}
+                            >
                               Download Report
                             </button>
                           </div>
@@ -63,149 +119,88 @@ const EmpDetailsRepo = () => {
                               <select
                                 class="form-select"
                                 aria-label="Default select example"
+                                value={designation}
+                                onChange={(e) => setDesignation(e.target.value)}
                               >
-                                <option selected>Select Designation</option>
-                                <option value="1">Admin</option>
-                                <option value="2">Doctor</option>
-                                <option value="3">Lab Assistant</option>
-                                <option value="1">Helper</option>
-                                <option value="2">Consultant</option>
-                                <option value="3">Acountant</option>
-                                <option value="1">Receptionist</option>
+                                <option value="">Select-designation</option>
+                                <option value="admin">Admin</option>
+                                <option value="doctor">Doctor</option>
+                                <option value="lab_assistant">
+                                  Lab Assistant
+                                </option>
+                                <option value="helper">Helper</option>
+                                <option value="consultant">Consultant</option>
+                                <option value="accountant">Acountant</option>
+                                <option value="receptionist">
+                                  Receptionist
+                                </option>
                               </select>
                             </div>
                           </div>
                         </div>
-                        <div class="table-responsive rounded">
-                          <table class="table table-bordered rounded shadow">
+                        <div class="table-responsive mt-4">
+                          <table class="table table-bordered">
                             <thead className="table-head">
                               <tr>
-                                <th className="table-sno">EMP ID</th>
-                                <th className="table-small">Branch Name</th>
-                                <th className="table-small">Employee Name</th>
-                                <th>Role</th>
-                                <th>Designation</th>
-                                <th>Salary</th>
-
-                                <th className="table-small">Mobile</th>
-                                <th className="table-small">Email</th>
-                                <th className="table-small">Gender</th>
-                                <th className="table-small">Address</th>
-                                <th>Status</th>
-                                <th className="table-small">View Details</th>
+                                <th className="thead">Emp ID</th>
+                                <th className="thead">Name</th>
+                                <th className="thead">Mobile</th>
+                                <th className="thead">Email</th>
+                                <th className="thead">Designation</th>
+                                <th className="thead">Role</th>
+                                <th className="thead">Salary</th>
+                                <th className="thead">Address</th>
+                                <th>Profile Picture</th>
                               </tr>
                             </thead>
                             <tbody>
-                              <tr className="table-row">
-                                <td className="table-sno">1</td>
-                                <td className="table-small">Madan Mahal</td>
-                                <td className="table-small">Shubham patel</td>
-                                <td>Doctor</td>
-                                <td>Doctor</td>
-                                <td>30000</td>
-                                <td className="table-small">8602161019</td>
-                                <td className="table-small">
-                                  doctor@gmail.com
-                                </td>
-                                <td className="table-small">Male</td>
-                                <td className="table-small">Jabalpur</td>
-                                <td>Active</td>
-                                <td className="table-small">
-                                  <Link to="/doctor-profile">
-                                    <button className="btn btn-warning">
-                                      View Details
-                                    </button>
-                                  </Link>
-                                </td>
-                              </tr>
-                              <tr className="table-row">
-                                <td className="table-sno">1</td>
-                                <td className="table-small">Madan Mahal</td>
-                                <td className="table-small">Shubham patel</td>
-                                <td>Doctor</td>
-                                <td>Doctor</td>
-                                <td>30000</td>
-                                <td className="table-small">8602161019</td>
-                                <td className="table-small">
-                                  doctor@gmail.com
-                                </td>
-                                <td className="table-small">Male</td>
-                                <td className="table-small">Jabalpur</td>
-                                <td>Active</td>
-                                <td className="table-small">
-                                  <Link to="/doctor-profile">
-                                    <button className="btn btn-warning">
-                                      View Details
-                                    </button>
-                                  </Link>
-                                </td>
-                              </tr>
-                              <tr className="table-row">
-                                <td className="table-sno">1</td>
-                                <td className="table-small">Madan Mahal</td>
-                                <td className="table-small">Shubham patel</td>
-                                <td>Doctor</td>
-                                <td>Doctor</td>
-                                <td>30000</td>
-                                <td className="table-small">8602161019</td>
-                                <td className="table-small">
-                                  doctor@gmail.com
-                                </td>
-                                <td className="table-small">Male</td>
-                                <td className="table-small">Jabalpur</td>
-                                <td>Active</td>
-                                <td className="table-small">
-                                  <Link to="/doctor-profile">
-                                    <button className="btn btn-warning">
-                                      View Details
-                                    </button>
-                                  </Link>
-                                </td>
-                              </tr>
-                              <tr className="table-row">
-                                <td className="table-sno">1</td>
-                                <td className="table-small">Madan Mahal</td>
-                                <td className="table-small">Shubham patel</td>
-                                <td>Doctor</td>
-                                <td>Doctor</td>
-                                <td>30000</td>
-                                <td className="table-small">8602161019</td>
-                                <td className="table-small">
-                                  doctor@gmail.com
-                                </td>
-                                <td className="table-small">Male</td>
-                                <td className="table-small">Jabalpur</td>
-                                <td>Active</td>
-                                <td className="table-small">
-                                  <Link to="/doctor-profile">
-                                    <button className="btn btn-warning">
-                                      View Details
-                                    </button>
-                                  </Link>
-                                </td>
-                              </tr>
-                              <tr className="table-row">
-                                <td className="table-sno">1</td>
-                                <td className="table-small">Madan Mahal</td>
-                                <td className="table-small">Shubham patel</td>
-                                <td>Doctor</td>
-                                <td>Doctor</td>
-                                <td>30000</td>
-                                <td className="table-small">8602161019</td>
-                                <td className="table-small">
-                                  doctor@gmail.com
-                                </td>
-                                <td className="table-small">Male</td>
-                                <td className="table-small">Jabalpur</td>
-                                <td>Active</td>
-                                <td className="table-small">
-                                  <Link to="/doctor-profile">
-                                    <button className="btn btn-warning">
-                                      View Details
-                                    </button>
-                                  </Link>
-                                </td>
-                              </tr>
+                              {doctorList
+                                ?.filter((val) => {
+                                  if (designation === "") {
+                                    return true;
+                                  } else if (
+                                    val.employee_designation
+                                      .toLowerCase()
+                                      .includes(designation.toLowerCase())
+                                  ) {
+                                    return val;
+                                  }
+                                })
+                                .map((item) => (
+                                  <>
+                                    <tr className="table-row">
+                                      <td className="thead">
+                                        {item.employee_ID}
+                                      </td>
+                                      <td className="thead">
+                                        {item.employee_name}
+                                      </td>
+                                      <td className="thead">
+                                        {item.employee_mobile}
+                                      </td>
+
+                                      <td className="thead">
+                                        {item.employee_email}
+                                      </td>
+                                      <td className="thead">
+                                        {item.employee_designation}
+                                      </td>
+                                      <td className="thead">
+                                        {item.employee_role}
+                                      </td>
+                                      <td className="thead">{item.salary}</td>
+                                      <td className="thead">{item.address}</td>
+                                      <td>
+                                        <div className="smallImg">
+                                          <img
+                                            src={item.employee_picture}
+                                            alt="profile"
+                                          />
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </>
+                                ))}
                             </tbody>
                           </table>
                         </div>
@@ -233,5 +228,12 @@ const Container = styled.div`
   th {
     background-color: #004aad;
     color: white;
+  }
+
+  .smallImg {
+    img {
+      height: 6rem;
+      width: auto;
+    }
   }
 `;

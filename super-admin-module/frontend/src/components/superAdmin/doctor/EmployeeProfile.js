@@ -64,6 +64,23 @@ const EmployeeProfile = () => {
   console.log(inEmpData);
 
   const handleInputChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    if (type === "checkbox") {
+      setInEmpData((prevEmpData) => ({
+        ...prevEmpData,
+        [name]: checked
+          ? [...prevEmpData[name], value]
+          : prevEmpData[name].filter((item) => item !== value),
+      }));
+    } else {
+      setInEmpData((prevEmpData) => ({
+        ...prevEmpData,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleCheckChange = (event) => {
     const { name, checked } = event.target;
 
     setInEmpData((prevEmpData) => ({
@@ -302,7 +319,7 @@ const EmployeeProfile = () => {
                         </div>
                         <div className="col-lg-4">
                           <label className="text-info">
-                            Allday Shift Start Time
+                            All Day Shift Start Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">
@@ -316,7 +333,7 @@ const EmployeeProfile = () => {
                         </div>
                         <div className="col-lg-4">
                           <label className="text-info">
-                            Allday Shift End Time
+                            All Day Shift End Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">
@@ -407,6 +424,7 @@ const EmployeeProfile = () => {
                         value={inEmpData.empGender}
                         onChange={handleInputChange}
                       >
+                        <option value="">select-option</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                         <option value="other">Other</option>
@@ -442,6 +460,7 @@ const EmployeeProfile = () => {
                         value={inEmpData.empDesignation}
                         onChange={handleInputChange}
                       >
+                        <option value="">select-designation</option>
                         <option value="admin">Admin</option>
                         <option value="receptionist">Receptionist</option>
                         <option value="consultant">Consultant</option>
@@ -496,6 +515,8 @@ const EmployeeProfile = () => {
                         value={inEmpData.status}
                         onChange={handleInputChange}
                       >
+                        <option value="">select-status</option>
+                        <option value="onboard">Onboard</option>
                         <option value="approved">Approved</option>
                         <option value="pending">Pending</option>
                         <option value="rejected">Rejected</option>
@@ -594,22 +615,7 @@ const EmployeeProfile = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                    <div class="mb-3">
-                      <label for="exampleFormControlInput1" class="form-label">
-                        Employee Availability
-                      </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="exampleFormControlInput1"
-                        placeholder={empData[0]?.availability}
-                        name="availability"
-                        value={inEmpData.availability}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
+
                   <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                     <div className="mb-3">
                       <label for="exampleFormControlInput1" class="form-label">
@@ -657,7 +663,7 @@ const EmployeeProfile = () => {
                       id="flexCheckDefault"
                       name="admin"
                       value={inEmpData.empRole}
-                      onChange={handleInputChange}
+                      onChange={handleCheckChange}
                     />
                     <label class="form-check-label" for="flexCheckDefault">
                       Admin
@@ -670,7 +676,7 @@ const EmployeeProfile = () => {
                       id="flexCheckDefault"
                       name="receptionist"
                       value={inEmpData.empRole}
-                      onChange={handleInputChange}
+                      onChange={handleCheckChange}
                     />
                     <label class="form-check-label" for="flexCheckDefault">
                       Receptionist
@@ -683,7 +689,7 @@ const EmployeeProfile = () => {
                       id="flexCheckDefault"
                       name="consultant"
                       value={inEmpData.empRole}
-                      onChange={handleInputChange}
+                      onChange={handleCheckChange}
                     />
                     <label class="form-check-label" for="flexCheckDefault">
                       Consultant
@@ -696,7 +702,7 @@ const EmployeeProfile = () => {
                       id="flexCheckDefault"
                       name="lab attendant"
                       value={inEmpData.empRole}
-                      onChange={handleInputChange}
+                      onChange={handleCheckChange}
                     />
                     <label class="form-check-label" for="flexCheckDefault">
                       Lab Attendent
@@ -709,7 +715,7 @@ const EmployeeProfile = () => {
                       id="flexCheckDefault"
                       name="doctor"
                       value={inEmpData.empRole}
-                      onChange={handleInputChange}
+                      onChange={handleCheckChange}
                     />
                     <label class="form-check-label" for="flexCheckDefault">
                       Doctor

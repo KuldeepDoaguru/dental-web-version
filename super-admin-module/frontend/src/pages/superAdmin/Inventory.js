@@ -77,6 +77,62 @@ const Inventory = () => {
     }
   };
 
+  const downloadInvoice = async (file) => {
+    console.log(file);
+    try {
+      const response = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/downloadBillRecById/${file}`,
+        {
+          responseType: "blob",
+        }
+      );
+
+      let contentType;
+      if (file.endsWith(".pdf")) {
+        contentType = "application/pdf";
+      } else if (file.endsWith(".jpg") || file.endsWith(".jpeg")) {
+        contentType = "image/jpeg";
+      } else if (file.endsWith(".png")) {
+        contentType = "image/png";
+      } else {
+        console.error("Unsupported file format");
+        return;
+      }
+
+      // Create a blob URL and trigger the download
+      const blob = new Blob([response.data], { type: contentType });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = file;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const todayDate = new Date();
+
+  // Get year, month, and date
+  const year = todayDate.getFullYear();
+  const month = String(todayDate.getMonth() + 1).padStart(2, "0"); // Adding 1 to adjust month, padStart ensures 2 digits
+  const date = String(todayDate.getDate()).padStart(2, "0"); // Ensuring 2 digits
+
+  // Format as 'YYYY-MM-DD'
+  const formattedDate = `${year}-${month}-${date}`;
+
+  console.log(formattedDate.slice(0, 7));
+
+  const filterForMonth = invList?.filter((item) => {
+    return (
+      item.purchase_date.split("T")[0].slice(0, 7) === formattedDate.slice(0, 7)
+    );
+  });
+
+  console.log(filterForMonth);
+
   return (
     <>
       <Container>
@@ -201,7 +257,7 @@ const Inventory = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {invList
+                          {filterForMonth
                             ?.filter((val) => {
                               if (keyword === "") {
                                 return true;
@@ -270,9 +326,19 @@ const Inventory = () => {
                                   </td>
                                   <td className="thead">
                                     <div className="d-flex">
-                                      <button className="btn btn-success mx-1">
+                                      <button
+                                        className="btn btn-success mx-1"
+                                        onClick={() =>
+                                          downloadInvoice(
+                                            item.bill_receipt_doc?.split(
+                                              "/reciept_doc/"
+                                            )[1]
+                                          )
+                                        }
+                                      >
                                         Download/Print Reciept
                                       </button>
+
                                       <Link
                                         to={`/edit-invetory/${item.pur_id}`}
                                       >

@@ -45,6 +45,12 @@ const {
   updateBranchDetails,
   updateBillDetailsByBillId,
   getBillBYBillId,
+  downloadBillRecById,
+  downloadEarnReportByTime,
+  downloadExpenseReportByTime,
+  downloadAppointReportByTime,
+  downloadBillingReportByTime,
+  downloadStaffReport,
 } = require("../../controllers/superAdminController/BillSectionController");
 // const multer = require("multer");
 
@@ -136,6 +142,22 @@ router.post("/addLab", addLab);
 router.put("/updateBranchDetails/:bid", updateBranchDetails);
 router.put("/updateBillDetailsByBillId/:bid", updateBillDetailsByBillId);
 router.get("/getBillBYBillId/:bid", getBillBYBillId);
+router.get("/downloadBillRecById/:file", downloadBillRecById);
+router.post("/downloadEarnReportByTime/:branch", downloadEarnReportByTime);
+router.post(
+  "/downloadExpenseReportByTime/:branch",
+  downloadExpenseReportByTime
+);
+router.post(
+  "/downloadAppointReportByTime/:branch",
+  downloadAppointReportByTime
+);
+router.post(
+  "/downloadBillingReportByTime/:branch",
+  downloadBillingReportByTime
+);
+
+router.post("/downloadStaffReport/:branch", downloadStaffReport);
 
 //**************************************************************************************************** */
 module.exports = router;

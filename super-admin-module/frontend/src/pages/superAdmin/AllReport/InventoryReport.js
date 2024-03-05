@@ -1,14 +1,88 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../../../components/Header";
 import Sider from "../../../components/Sider";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import Branches from "../../Branches";
 import BranchSelector from "../../../components/BranchSelector";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { utils, writeFile } from "xlsx";
 
 const InventoryReport = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
   const location = useLocation();
+  const [appointmentList, setAppointmentList] = useState([]);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  const getPurchaseList = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getPurInventoryByBranch/${branch.name}`
+      );
+      setAppointmentList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const todayDate = new Date();
+
+  // Get year, month, and date
+  const year = todayDate.getFullYear();
+  const month = String(todayDate.getMonth() + 1).padStart(2, "0"); // Adding 1 to adjust month, padStart ensures 2 digits
+  const date = String(todayDate.getDate()).padStart(2, "0"); // Ensuring 2 digits
+
+  // Format as 'YYYY-MM-DD'
+  const formattedDate = `${year}-${month}-${date}`;
+
+  console.log(formattedDate.slice(0, 7));
+
+  //filterforexpenses
+  const filterForExpenses = appointmentList?.filter((item) => {
+    return (
+      item.purchase_date.split("T")[0].slice(0, 7) === formattedDate.slice(0, 7)
+    );
+  });
+
+  const downloadExpenseData = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        `http://localhost:7777/api/v1/super-admin/downloadExpenseReportByTime/${branch.name}`,
+        { fromDate: fromDate, toDate: toDate }
+      );
+      console.log(data);
+      // setSelectedEarn(data);
+      if (Array.isArray(data)) {
+        // Create a new workbook
+        const workbook = utils.book_new();
+
+        // Convert the report data to worksheet format
+        const worksheet = utils.json_to_sheet(data);
+
+        utils.book_append_sheet(workbook, worksheet, `Purchase Report`);
+        writeFile(workbook, `${fromDate} - ${toDate}-purchase-report.xlsx`);
+        console.log(data);
+      } else {
+        console.error("data is not an array");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPurchaseList();
+  }, [branch.name]);
 
   const goBack = () => {
     window.history.go(-1);
@@ -47,29 +121,36 @@ const InventoryReport = () => {
                       <div className="container">
                         <div class="table-responsive mt-4">
                           <div className="d-flex justify-content-between mb-2">
-                            <div className="d-flex justify-content-between">
-                              <div>
-                                <input
-                                  type="date"
-                                  name=""
-                                  id=""
-                                  className="p-2 rounded"
-                                />
+                            <form onSubmit={downloadExpenseData}>
+                              <div className="d-flex justify-content-between">
+                                <div>
+                                  <input
+                                    type="date"
+                                    name=""
+                                    id=""
+                                    className="p-2 rounded"
+                                    onChange={(e) =>
+                                      setFromDate(e.target.value)
+                                    }
+                                  />
+                                </div>
+                                <div className="mx-2">To</div>
+                                <div>
+                                  <input
+                                    type="date"
+                                    name=""
+                                    id=""
+                                    className="p-2 rounded"
+                                    onChange={(e) => setToDate(e.target.value)}
+                                  />
+                                </div>
+                                <button className="btn btn-warning mx-2">
+                                  Download Report
+                                </button>
                               </div>
-                              <div className="mx-2">To</div>
-                              <div>
-                                <input
-                                  type="date"
-                                  name=""
-                                  id=""
-                                  className="p-2 rounded"
-                                />
-                              </div>
-                              <button className="btn btn-warning mx-2">
-                                Download Report
-                              </button>
-                            </div>
-                            <div className="d-flex justify-content-between">
+                            </form>
+
+                            {/* <div className="d-flex justify-content-between">
                               <div>
                                 <select
                                   class="form-select"
@@ -101,102 +182,94 @@ const InventoryReport = () => {
                                   <option value="3">Dec</option>
                                 </select>
                               </div>
+                            </div> */}
+                          </div>
+                          <div
+                            className="container-fluid mt-1 rounded"
+                            style={{ overflowX: "auto" }}
+                          >
+                            <div class="table-responsive rounded">
+                              <table class="table table-bordered rounded shadow">
+                                <thead className="table-head">
+                                  <tr>
+                                    <th className="thead">Purchase ID</th>
+                                    <th className="thead">Item Code</th>
+                                    <th className="thead">HSN Code</th>
+                                    <th className="thead">Item Name</th>
+                                    <th className="thead">Item Type</th>
+                                    <th className="thead">MRP</th>
+                                    <th className="thead">Purchase Quantity</th>
+                                    <th className="thead">Discount</th>
+                                    <th className="thead">Total Amount</th>
+                                    <th className="thead">Purchase Date</th>
+
+                                    <th className="thead">Available Stock</th>
+                                    <th className="thead">
+                                      Low Stock Threshhold
+                                    </th>
+                                    <th className="thead">Distributor Name</th>
+                                    <th className="thead">
+                                      Distributor Number
+                                    </th>
+                                    {/* <th
+                              
+                              
+                            >
+                              Edit
+                            </th> */}
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {filterForExpenses?.map((item) => (
+                                    <>
+                                      <tr className="table-row">
+                                        <td className="thead">{item.pur_id}</td>
+                                        <td className="thead">
+                                          {item.item_code}
+                                        </td>
+                                        <td className="thead">
+                                          {item.HSN_code}
+                                        </td>
+                                        <td className="thead">
+                                          {item.item_name}
+                                        </td>
+                                        <td className="thead">
+                                          {item.item_category}
+                                        </td>
+                                        <td className="thead">
+                                          {item.item_mrp}
+                                        </td>
+                                        <td className="thead">
+                                          {item.pur_quantity}
+                                        </td>
+                                        <td className="thead">
+                                          {item.discount}
+                                        </td>
+                                        <td className="thead">
+                                          {item.total_amount}
+                                        </td>
+                                        <td className="thead">
+                                          {item.purchase_date?.split("T")[0]}
+                                        </td>
+                                        <td className="thead">
+                                          {item.available_stock}
+                                        </td>
+                                        <td className="thead">
+                                          {item.low_stock_threshhold}
+                                        </td>
+                                        <td className="thead">
+                                          {item.distributor_name}
+                                        </td>
+                                        <td className="thead">
+                                          {item.distributor_number}
+                                        </td>
+                                      </tr>
+                                    </>
+                                  ))}
+                                </tbody>
+                              </table>
                             </div>
                           </div>
-                          <table class="table table-bordered">
-                            <thead className="table-head">
-                              <tr>
-                                <th>Purchase ID</th>
-                                <th>Branch</th>
-                                <th>Item Name</th>
-                                <th>Item Type</th>
-                                <th>MRP</th>
-                                <th>Quantity</th>
-                                <th>Distributor</th>
-                                <th>Total Amount</th>
-                                <th>Paid Amount</th>
-                                <th>Bill Date</th>
-                                <th>Bill time</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr className="table-row">
-                                <td>pur_01</td>
-                                <td>Madan Mahal</td>
-                                <td>
-                                  Tablet 10 mg Item Code - 101 HSN Code - 101
-                                </td>
-                                <td>Drug</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>Ahuja Medicose</td>
-                                <td>10000</td>
-                                <td>10000</td>
-                                <td>13/02/2024</td>
-                                <td>12:00 pm</td>
-                              </tr>
-                              <tr className="table-row">
-                                <td>pur_01</td>
-                                <td>Madan Mahal</td>
-                                <td>
-                                  Tablet 10 mg Item Code - 101 HSN Code - 101
-                                </td>
-                                <td>Drug</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>Ahuja Medicose</td>
-                                <td>10000</td>
-                                <td>10000</td>
-                                <td>13/02/2024</td>
-                                <td>12:00 pm</td>
-                              </tr>
-                              <tr className="table-row">
-                                <td>pur_01</td>
-                                <td>Madan Mahal</td>
-                                <td>
-                                  Tablet 10 mg Item Code - 101 HSN Code - 101
-                                </td>
-                                <td>Drug</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>Ahuja Medicose</td>
-                                <td>10000</td>
-                                <td>10000</td>
-                                <td>13/02/2024</td>
-                                <td>12:00 pm</td>
-                              </tr>
-                              <tr className="table-row">
-                                <td>pur_01</td>
-                                <td>Madan Mahal</td>
-                                <td>
-                                  Tablet 10 mg Item Code - 101 HSN Code - 101
-                                </td>
-                                <td>Drug</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>Ahuja Medicose</td>
-                                <td>10000</td>
-                                <td>10000</td>
-                                <td>13/02/2024</td>
-                                <td>12:00 pm</td>
-                              </tr>
-                              <tr className="table-row">
-                                <td>pur_01</td>
-                                <td>Madan Mahal</td>
-                                <td>
-                                  Tablet 10 mg Item Code - 101 HSN Code - 101
-                                </td>
-                                <td>Drug</td>
-                                <td>100</td>
-                                <td>10</td>
-                                <td>Ahuja Medicose</td>
-                                <td>10000</td>
-                                <td>10000</td>
-                                <td>13/02/2024</td>
-                                <td>12:00 pm</td>
-                              </tr>
-                            </tbody>
-                          </table>
                         </div>
                       </div>
                     </div>

@@ -116,6 +116,27 @@ const Apointment = () => {
 
   console.log(timeLIneData);
 
+  const todayDate = new Date();
+
+  // Get year, month, and date
+  const year = todayDate.getFullYear();
+  const month = String(todayDate.getMonth() + 1).padStart(2, "0"); // Adding 1 to adjust month, padStart ensures 2 digits
+  const date = String(todayDate.getDate()).padStart(2, "0"); // Ensuring 2 digits
+
+  // Format as 'YYYY-MM-DD'
+  const formattedDate = `${year}-${month}-${date}`;
+
+  console.log(formattedDate.slice(0, 7));
+
+  const filterAppointDataByMonth = appointmentList?.filter((item) => {
+    return (
+      item.apointment_date_time.split("T")[0].slice(0, 7) ===
+      formattedDate.slice(0, 7)
+    );
+  });
+
+  console.log(filterAppointDataByMonth);
+
   return (
     <>
       <Container>
@@ -168,7 +189,7 @@ const Apointment = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {appointmentList?.map((item) => (
+                            {filterAppointDataByMonth?.map((item) => (
                               <>
                                 <tr className="table-row">
                                   <td className="table-sno">

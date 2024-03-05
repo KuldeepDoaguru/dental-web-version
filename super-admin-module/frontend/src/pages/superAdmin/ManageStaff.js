@@ -79,6 +79,17 @@ const ManageStaff = () => {
     }
   };
 
+  const handleCheckChange = (event) => {
+    const { name, checked } = event.target;
+
+    setInEmpData((prevEmpData) => ({
+      ...prevEmpData,
+      empRole: checked
+        ? [...prevEmpData.empRole, name]
+        : prevEmpData.empRole.filter((role) => role !== name),
+    }));
+  };
+
   const getDocDetailsList = async () => {
     try {
       const { data } = await axios.get(
@@ -137,7 +148,8 @@ const ManageStaff = () => {
       );
 
       cogoToast.success("Registration successful!");
-      // navigate("/inventory");
+      getDocDetailsList();
+      closeUpdatePopup();
     } catch (error) {
       console.log(error);
     }
@@ -190,20 +202,11 @@ const ManageStaff = () => {
                           <th className="thead">Emp ID</th>
                           <th className="thead">Name</th>
                           <th className="thead">Mobile</th>
-                          <th className="thead">Gender</th>
                           <th className="thead">Email</th>
                           <th className="thead">Designation</th>
                           <th className="thead">Role</th>
                           <th className="thead">Salary</th>
                           <th className="thead">Address</th>
-                          <th className="thead">Status</th>
-                          <th className="thead">Morning Shift Start Time</th>
-                          <th className="thead">Morning Shift End Time</th>
-                          <th className="thead">Evening Shift Start Time</th>
-                          <th className="thead">Evening Shift End Time</th>
-                          <th className="thead">Allday Shift Start Time</th>
-                          <th className="thead">Allday Shift End Time</th>
-                          <th className="thead">Availability</th>
                           <th>Profile Picture</th>
                           <th className="" style={{ minWidth: "10rem" }}>
                             Actions
@@ -231,7 +234,7 @@ const ManageStaff = () => {
                                 <td className="thead">
                                   {item.employee_mobile}
                                 </td>
-                                <td className="thead">{item.gender}</td>
+
                                 <td className="thead">{item.employee_email}</td>
                                 <td className="thead">
                                   {item.employee_designation}
@@ -239,28 +242,6 @@ const ManageStaff = () => {
                                 <td className="thead">{item.employee_role}</td>
                                 <td className="thead">{item.salary}</td>
                                 <td className="thead">{item.address}</td>
-                                <td className="thead">
-                                  {item.employee_status}
-                                </td>
-                                <td className="thead">
-                                  {item.morning_shift_start_time}
-                                </td>
-                                <td className="thead">
-                                  {item.morning_shift_end_time}
-                                </td>
-                                <td className="thead">
-                                  {item.evening_shift_start_time}
-                                </td>
-                                <td className="thead">
-                                  {item.evening_shift_end_time}
-                                </td>
-                                <td className="thead">
-                                  {item.allday_shift_start_time}
-                                </td>
-                                <td className="thead">
-                                  {item.allday_shift_end_time}
-                                </td>
-                                <td className="thead">{item.availability}</td>
                                 <td>
                                   <div className="smallImg">
                                     <img
@@ -269,12 +250,12 @@ const ManageStaff = () => {
                                     />
                                   </div>
                                 </td>
-                                <td className="" style={{ minWidth: "10rem" }}>
+                                <td className="" style={{ minWidth: "13rem" }}>
                                   <Link
                                     to={`/employee-profile/${item.employee_ID}`}
                                   >
                                     <button className="btn btn-warning">
-                                      Edit
+                                      Edit/View
                                     </button>
                                   </Link>
 
@@ -358,6 +339,7 @@ const ManageStaff = () => {
                           value={inEmpData.empGender}
                           onChange={handleInputChange}
                         >
+                          <option value="">select-option</option>
                           <option value="male">Male</option>
                           <option value="female">Female</option>
                           <option value="other">Other</option>
@@ -399,6 +381,7 @@ const ManageStaff = () => {
                           value={inEmpData.empDesignation}
                           onChange={handleInputChange}
                         >
+                          <option value="">select-designation</option>
                           <option value="admin">Admin</option>
                           <option value="receptionist">Receptionist</option>
                           <option value="consultant">Consultant</option>
@@ -462,6 +445,8 @@ const ManageStaff = () => {
                           value={inEmpData.status}
                           onChange={handleInputChange}
                         >
+                          <option value="">select-status</option>
+                          <option value="onboard">Onboard</option>
                           <option value="approved">Approved</option>
                           <option value="pending">Pending</option>
                           <option value="rejected">Rejected</option>
@@ -584,25 +569,7 @@ const ManageStaff = () => {
                         />
                       </div>
                     </div>
-                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                      <div class="mb-3">
-                        <label
-                          for="exampleFormControlInput1"
-                          class="form-label"
-                        >
-                          Employee Availability
-                        </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="exampleFormControlInput1"
-                          placeholder="Employee Availability"
-                          name="availability"
-                          value={inEmpData.availability}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                    </div>
+
                     <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                       <div className="mb-3">
                         <label
@@ -654,9 +621,9 @@ const ManageStaff = () => {
                         class="form-check-input"
                         type="checkbox"
                         id="flexCheckDefault"
-                        name="empRole"
+                        name="admin"
                         value={inEmpData.empRole}
-                        onChange={handleInputChange}
+                        onChange={handleCheckChange}
                       />
                       <label class="form-check-label" for="flexCheckDefault">
                         Admin
@@ -667,9 +634,9 @@ const ManageStaff = () => {
                         class="form-check-input"
                         type="checkbox"
                         id="flexCheckDefault"
-                        name="empRole"
+                        name="receptionist"
                         value={inEmpData.empRole}
-                        onChange={handleInputChange}
+                        onChange={handleCheckChange}
                       />
                       <label class="form-check-label" for="flexCheckDefault">
                         Receptionist
@@ -680,9 +647,9 @@ const ManageStaff = () => {
                         class="form-check-input"
                         type="checkbox"
                         id="flexCheckDefault"
-                        name="empRole"
+                        name="consultant"
                         value={inEmpData.empRole}
-                        onChange={handleInputChange}
+                        onChange={handleCheckChange}
                       />
                       <label class="form-check-label" for="flexCheckDefault">
                         Consultant
@@ -693,9 +660,9 @@ const ManageStaff = () => {
                         class="form-check-input"
                         type="checkbox"
                         id="flexCheckDefault"
-                        name="empRole"
+                        name="lab attendant"
                         value={inEmpData.empRole}
-                        onChange={handleInputChange}
+                        onChange={handleCheckChange}
                       />
                       <label class="form-check-label" for="flexCheckDefault">
                         Lab Attendent
@@ -706,9 +673,9 @@ const ManageStaff = () => {
                         class="form-check-input"
                         type="checkbox"
                         id="flexCheckDefault"
-                        name="empRole"
+                        name="doctor"
                         value={inEmpData.empRole}
-                        onChange={handleInputChange}
+                        onChange={handleCheckChange}
                       />
                       <label class="form-check-label" for="flexCheckDefault">
                         Doctor

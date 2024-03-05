@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const JWT = require("jsonwebtoken");
 const { db } = require("../../dbConnect/connect");
+const fs = require("fs");
+const path = require("path");
 
 dotenv.config();
 
@@ -816,6 +818,121 @@ const getBillBYBillId = (req, res) => {
   }
 };
 
+const downloadBillRecById = (req, res) => {
+  try {
+    const file = req.params.file;
+
+    const filePath = path.join(__dirname, "../../reciept_doc", file);
+    console.log("File Path:", filePath); // Add this line for debugging
+
+    if (fs.existsSync(filePath)) {
+      res.setHeader("Content-disposition", "attachment; filename=" + file);
+      res.setHeader("Content-type", "application/octet-stream");
+
+      const fileStream = fs.createReadStream(filePath);
+      fileStream.on("error", (error) => {
+        console.error("Error reading file:", error);
+        res.status(500).send("Internal server error");
+      });
+      fileStream.pipe(res);
+    } else {
+      console.log("File not found:", file); // Add this line for debugging
+      res.status(404).send("File not found");
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const downloadEarnReportByTime = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const { fromDate, toDate } = req.body;
+    const selectQuery =
+      "SELECT * FROM patient_bills WHERE branch_name = ? AND payment_date_time >= ? AND payment_date_time <= ?";
+    db.query(selectQuery, [branch, fromDate, toDate], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const downloadExpenseReportByTime = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const { fromDate, toDate } = req.body;
+    const selectQuery =
+      "SELECT * FROM purchase_inventory WHERE branch_name = ? AND purchase_date >= ? AND purchase_date <= ?";
+    db.query(selectQuery, [branch, fromDate, toDate], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const downloadAppointReportByTime = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const { fromDate, toDate } = req.body;
+    const selectQuery =
+      "SELECT * FROM apointments WHERE branch_name = ? AND apointment_date_time >= ? AND apointment_date_time <= ?";
+    db.query(selectQuery, [branch, fromDate, toDate], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const downloadBillingReportByTime = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const { fromDate, toDate } = req.body;
+    const selectQuery =
+      "SELECT * FROM patient_bills WHERE branch_name = ? AND bill_date >= ? AND bill_date <= ?";
+    db.query(selectQuery, [branch, fromDate, toDate], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const downloadStaffReport = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM employee_register WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   makeBills,
   getBillsByBranch,
@@ -836,4 +953,10 @@ module.exports = {
   updateBranchDetails,
   updateBillDetailsByBillId,
   getBillBYBillId,
+  downloadBillRecById,
+  downloadEarnReportByTime,
+  downloadExpenseReportByTime,
+  downloadAppointReportByTime,
+  downloadBillingReportByTime,
+  downloadStaffReport,
 };

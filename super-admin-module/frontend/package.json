@@ -22,7 +22,8 @@
     "react-scripts": "5.0.1",
     "recharts": "^2.9.3",
     "styled-components": "^6.0.8",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "set PORT=8888 && react-scripts start",

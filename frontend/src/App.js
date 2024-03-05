@@ -24,6 +24,7 @@ import CreatePrescrip from "./components/Doctor/Prescription/CreatePrescrip";
 import TPrescription from "./components/Doctor/Prescription/TreatmentPrescription/TPrescription";
 import TPrescriptionDash from "./components/Doctor/Prescription/TreatmentPrescription/TPrescriptionDash";
 import HistoryDashBoard from "./components/Doctor/HistoryFolder/HistoryDashBoard";
+import HeadBar from "./components/Doctor/HeadBar";
 
 function App() {
   return (
@@ -39,7 +40,6 @@ function App() {
       <Route path="/card" element={<Card />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/profileDashboard" element={<ProfileDashboard />} /> 
-      <Route path="/appointTable" element={<AppointTable />} />
       <Route path="/appointTable" element={<AppointTable />} />
       <Route path="/all-appoint" element={<AllAppoint />} />
       <Route path="/Patient-profile" element={<PatientProfile />} />
@@ -57,6 +57,8 @@ function App() {
       <Route path="/TPrescriptionDash" element={<TPrescriptionDash />} />
       <Route path="/TPrescriptionDash" element={<TPrescriptionDash />} />
       <Route path="/HistoryDashBoard" element={<HistoryDashBoard />} />
+      {/* test */}
+      <Route path="/HeadBar" element={<HeadBar />} />
 
       {/* ****************** Doctor Routes End Here ******************* */}
     </Routes>

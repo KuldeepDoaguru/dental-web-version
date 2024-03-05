@@ -1,119 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
+import axios from "axios";
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [appointments, setAppointments] = useState([]);
+  const [page, setPage] = useState(1);
+  const [perPage] = useState(5);
 
-  const Table_data = [
-    {
-      uid: "1",
-      patient: "Mohit Shau",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-      uid: "2",
-      patient: "Umer Qureshi",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-      uid: "3",
-      patient: "Dhani Burma",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-      uid: "4",
-      patient: "Ragni Burma",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-      uid: "5",
-      patient: "Rohit Shau",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-      uid: "6",
-      patient: "Ritin Tiwari",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-      uid: "7",
-      patient: "Dev Ansh Dubey",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-      uid: "8",
-      patient: "Juber",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-      uid: "9",
-      patient: "Mohit Shau",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-      uid: "10",
-      patient: "Mohit Shau",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-  ];
+  const tableAppointmentData = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetails`);
+      setAppointments(res.data.result);
+    } catch (error) {
+      console.error('Error fetching appointments:', error.message);
+    }
+  }
+
+  useEffect(() => {
+    tableAppointmentData();
+  }, [page]);
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    setPage(page + 1);
+  };
 
   const handleChange = (e) => {
     setSearchInput(e.target.value);
   };
 
-  const filteredTable_data = Table_data.filter((data) => {
-    return data.patient.toLowerCase().includes(searchInput.toLowerCase());
-  });
+  const handleAction = async (action, appointId) => {
+    try {
+      // Send a request to update the status in the database
+      await axios.post(`http://localhost:8888/api/doctor/updateAppointmentStatus`, {
+        action,
+        appointId
+      });
+      // Refresh the appointment data after the status is updated
+      tableAppointmentData();
+    } catch (error) {
+      console.error('Error updating appointment status:', error.message);
+    }
+  };
 
-   // Logic to calculate pagination
-   const indexOfLastItem = currentPage * itemsPerPage;
-   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-   const currentItems = filteredTable_data.slice(indexOfFirstItem, indexOfLastItem);
- 
-   // Change page
-   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const filteredTable_data = appointments.filter((data) => {
+    return data.patient_name.toLowerCase().includes(searchInput.toLowerCase());
+  });
 
   return (
     <Wrapper>
@@ -132,34 +70,51 @@ const AppointTable = () => {
               placeholder="Search here"
               onChange={handleChange}
               value={searchInput}
-              className="mb-2 rounded-5"
+              className="mb-2 rounded-5 form-control w-25"
+              id="form12"
             />
           </div>
 
-          <div className="table-responsive">
-            <table className="table table-bordered table-striped">
+          <div className="table-responsive ">
+            <table className="table table-bordered table-striped table-secondary border border-secondary" style={{ overflowX: 'scroll' }}>
               <thead>
                 <tr>
                   <th>Uid</th>
                   <th>Patient Name</th>
-                  <th>Treatment</th>
                   <th>Mobile</th>
                   <th>Timing</th>
+                  <th>Treatment</th>
+                  <th>Blood Group</th>
+                  <th>DOB</th>
+                  <th>Age</th>
+                  <th>Weight</th>
+                  <th>Allergy</th>
+                  <th>Disease</th>
+                  <th>Patient Type</th>
+                  <th>Note</th>
                   <th>Status</th>
                   <th>Type of Action</th>
                 </tr>
               </thead>
               <tbody>
-                {currentItems.map((country, index) => (
+                {filteredTable_data.slice((page - 1) * perPage, page * perPage).map((item, index) => (
                   <tr key={index}>
-                    <td>{country.uid}</td>
-                    <td>{country.patient}</td>
-                    <td>{country.treatment}</td>
-                    <td>{country.mobile}</td>
-                    <td>{country.timing}</td>
-                    <td>{country.status}</td>
+                    <td>{item.appoint_id}</td>
+                    <td>{item.patient_name}</td>
+                    <td>{item.patient_contact}</td>
+                    <td>{item.appointment_dateTime}</td>
+                    <td>{item.treatment_provided}</td>
+                    <td>{item.bloodgroup}</td>
+                    <td>{item.dob}</td>
+                    <td>{item.age}</td>
+                    <td>{item.weight}</td>
+                    <td>{item.allergy}</td>
+                    <td>{item.disease}</td>
+                    <td>{item.patient_type}</td>
+                    <td>{item.notes}</td>
+                    <td>{item.appointment_status}</td>
                     <td>
-                      <div className="dropdown">
+                    <div className="dropdown">
                         <button
                           className="btn btn-secondary dropdown-toggle"
                           type="button"
@@ -170,28 +125,28 @@ const AppointTable = () => {
                         </button>
                         <ul className="dropdown-menu">
                           <li>
-                            <a className="dropdown-item mx-0" href="#">
-                              Checked-In
-                            </a>
+                            <button
+                              className="dropdown-item mx-0"
+                              onClick={() => handleAction('start_treatment', item.appoint_id)}
+                            >
+                              Start Treatment
+                            </button>
                           </li>
                           <li>
-                            <a className="dropdown-item mx-0" href="#">
-                              Checked-Out
-                            </a>
+                            <button
+                              className="dropdown-item mx-0"
+                              onClick={() => handleAction('cancel_treatment', item.appoint_id)}
+                            >
+                              Cancel Treatment
+                            </button>
                           </li>
                           <li>
-                            <a className="dropdown-item mx-0" href="#">
-                              Complete
-                            </a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item mx-0" href="#">
-                              Cancle
-                            </a>
-                          </li>
-
-                          <li>
-                            <a className="dropdown-item mx-0" href="#"></a>
+                            <button
+                              className="dropdown-item mx-0"
+                              onClick={() => handleAction('hold', item.appoint_id)}
+                            >
+                              Hold
+                            </button>
                           </li>
                         </ul>
                       </div>
@@ -200,17 +155,12 @@ const AppointTable = () => {
                 ))}
               </tbody>
             </table>
+            <div>
+              <button onClick={handlePreviousPage} disabled={page === 1} className='btn btn-secondary'>Previous</button>
+              <span className='px-2 fs-5 fw-bolder'>Page {page}</span>
+              <button onClick={handleNextPage} className='btn btn-secondary'>Next</button>
+            </div>
           </div>
-          <nav>
-            <ul className="pagination">
-              <li className="page-item">
-                <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="page-link">Previous</button>
-              </li>
-              <li className="page-item">
-                <button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastItem >= filteredTable_data.length} className="page-link">Next</button>
-              </li>
-            </ul>
-          </nav>
         </div>
       </div>
     </Wrapper>
@@ -240,5 +190,9 @@ const Wrapper = styled.div`
     @media screen and (min-width: 1600px) and (max-width: 3700px) {
       width: 75%;
     }
+  }
+
+  .table-responsive{
+    overflow-x: auto;
   }
 `;

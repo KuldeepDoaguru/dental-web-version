@@ -79,7 +79,7 @@ const Profile = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row mb-3">
                         <div className="col-lg-4">
                             <label className="text-info">Country</label>
                             <div className="shadow-none p-1 bg-light rounded">
@@ -99,6 +99,46 @@ const Profile = () => {
                             </div>
                         </div>
                     </div>
+                    <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label className="text-info">Experience</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">2 Years</p>
+                            </div>
+                        </div>
+                        <div className="col-lg-4">
+                        <label className="text-info">Last Degree</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">B.com</p>
+                            </div>
+                        </div>
+                        <div className="col-lg-4">
+                        <label className="text-info">College Name</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">Mahakousal</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-lg-4">
+                            <label className="text-info">Previous Work Experience</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">AIIMS</p>
+                            </div>
+                        </div>
+                        <div className="col-lg-4">
+                        <label className="text-info">Working Days</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">Mon-Wed</p>
+                            </div>
+                        </div>
+                        <div className="col-lg-4">
+                        <label className="text-info">Working Shift</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">12PM - 2PM</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -109,5 +149,8 @@ const Profile = () => {
 
 export default Profile;
 const Wrapper = styled.div`
-
+img{
+    width: 100%;
+    height: 26rem;
+}
 `;

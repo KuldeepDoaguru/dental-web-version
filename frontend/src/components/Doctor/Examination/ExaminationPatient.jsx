@@ -1650,7 +1650,7 @@ const ExaminationPatientTest = () => {
                       Save & Continue
                     </button>
                   </div>
-                </form>
+                </form> 
               </div>
               <div>
                 <h2>Saved Data</h2>

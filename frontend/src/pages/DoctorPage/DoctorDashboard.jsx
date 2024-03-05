@@ -10,7 +10,7 @@ import AveragePatientChart from "../../components/Doctor/Charts/AveragePatientCh
 const DoctorDashboard = () => {
   return (
     <Wrapper>
-      <HeadBar />
+      <HeadBar/>
 
       <div className="main">
         <div className="container-fluid">
@@ -40,7 +40,52 @@ const DoctorDashboard = () => {
               </div>
               <div className="row d-flex justify-content-around ms-4">
                 <Card />
-                {/* <div className="col-8 col-md-2 my-3 p-0">
+              </div>
+              <div className="row ms-5">
+                <AppointTable />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+
+export default DoctorDashboard;
+
+const Wrapper = styled.div`
+.sc-jiaSJS{
+  @media (min-width: 1024px){
+    width: 64rem;
+  }
+}
+  .main {
+    height: 100%;
+    background-color: #e6ecf1;
+  }
+  .chart {
+    background-color: white;
+    border-radius: 5px;
+  }
+  .blDkbe #sidebar {
+    width: 100%;
+    height: 54rem;
+    background-color: #004aad;
+}
+  /* #hd {
+    height: 44rem;
+
+    @media screen and (max-width: 768px) {
+      height: 68rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1020px) {
+      height: 58rem;
+    }
+  } */
+`;
+
+ {/* <div className="col-8 col-md-2 my-3 p-0">
                   <Card
                     title={"Total Patient"}
                     info={"250"}
@@ -109,48 +154,12 @@ const DoctorDashboard = () => {
                     link={""}
                   />
                 </div> */}
-              </div>
-              <div className="row ms-5">
-                {/* <AppointTable /> */}
+
+{/* <div className="row ms-5">
                 <div className="col-lg-11 col-md-12 col-sm-12">
                   <div className="shadow-sm bg-white rounded mt-5 d-flex flex-column ">
                   <h6 className='ms-4 text-center'>Average Patients Visits</h6>
                   <AveragePatientChart />
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Wrapper>
-  );
-};
-
-export default DoctorDashboard;
-
-const Wrapper = styled.div`
-  .main {
-    height: 100%;
-    background-color: #e6ecf1;
-  }
-  .chart {
-    background-color: white;
-    border-radius: 5px;
-  }
-  .blDkbe #sidebar {
-    width: 100%;
-    height: 54rem;
-    background-color: #004aad;
-}
-  /* #hd {
-    height: 44rem;
-
-    @media screen and (max-width: 768px) {
-      height: 68rem;
-    }
-    @media screen and (min-width: 768px) and (max-width: 1020px) {
-      height: 58rem;
-    }
-  } */
-`;
+              </div> */}

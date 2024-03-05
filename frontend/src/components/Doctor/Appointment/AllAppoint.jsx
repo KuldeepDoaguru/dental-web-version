@@ -4,145 +4,164 @@ import HeadBar from "../HeadBar";
 import Sider from "../SideBar";
 
 const AllAppoint = () => {
-    const [searchInput, setSearchInput] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(12);
-
   const Table_data = [
     {
       uid: "1",
       patient: "Mohit Shau",
       mobile: "9806324245",
-      treatment: "root canal",
       timing: "9:00 Am",
+      treatment: "root canal",
+      bloodgroup: "O +ve",
+      dob: "05/07/1998",
+      age: "25",
+      weight: "70",
+      allergy: "no",
+      disease: "sugar",
+      patienttype: "A",
+      note: "No issue",
       status: "Missed",
       action: "edit",
+      status: ""
     },
     {
       uid: "2",
       patient: "Umer Qureshi",
       mobile: "9806324245",
-      treatment: "root canal",
       timing: "9:00 Am",
+      treatment: "root canal",
+      bloodgroup: "O +ve",
+      dob: "05/07/1998",
+      age: "25",
+      weight: "70",
+      allergy: "no",
+      disease: "sugar",
+      patienttype: "A",
+      note: "No issue",
       status: "Missed",
       action: "edit",
+      status: ""
     },
     {
       uid: "3",
       patient: "Dhani Burma",
       mobile: "9806324245",
-      treatment: "root canal",
       timing: "9:00 Am",
+      treatment: "root canal",
+      bloodgroup: "O +ve",
+      dob: "05/07/1998",
+      age: "25",
+      weight: "70",
+      allergy: "no",
+      disease: "sugar",
+      patienttype: "A",
+      note: "No issue",
       status: "Missed",
       action: "edit",
+      status: ""
     },
     {
       uid: "4",
       patient: "Ragni Burma",
       mobile: "9806324245",
-      treatment: "root canal",
       timing: "9:00 Am",
+      treatment: "root canal",
+      bloodgroup: "O +ve",
+      dob: "05/07/1998",
+      age: "25",
+      weight: "70",
+      allergy: "no",
+      disease: "sugar",
+      patienttype: "A",
+      note: "No issue",
       status: "Missed",
       action: "edit",
+      status: ""
     },
     {
       uid: "5",
       patient: "Rohit Shau",
       mobile: "9806324245",
-      treatment: "root canal",
       timing: "9:00 Am",
+      treatment: "root canal",
+      bloodgroup: "O +ve",
+      dob: "05/07/1998",
+      age: "25",
+      weight: "70",
+      allergy: "no",
+      disease: "sugar",
+      patienttype: "A",
+      note: "No issue",
       status: "Missed",
       action: "edit",
+      status: ""
     },
     {
       uid: "6",
       patient: "Ritin Tiwari",
       mobile: "9806324245",
-      treatment: "root canal",
       timing: "9:00 Am",
+      treatment: "root canal",
+      bloodgroup: "O +ve",
+      dob: "05/07/1998",
+      age: "25",
+      weight: "70",
+      allergy: "no",
+      disease: "sugar",
+      patienttype: "A",
+      note: "No issue",
       status: "Missed",
       action: "edit",
+      status: ""
     },
     {
       uid: "7",
       patient: "Dev Ansh Dubey",
       mobile: "9806324245",
-      treatment: "root canal",
       timing: "9:00 Am",
+      treatment: "root canal",
+      bloodgroup: "O +ve",
+      dob: "05/07/1998",
+      age: "25",
+      weight: "70",
+      allergy: "no",
+      disease: "sugar",
+      patienttype: "A",
+      note: "No issue",
       status: "Missed",
       action: "edit",
-    },
-    {
-      uid: "8",
-      patient: "Juber",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-      uid: "9",
-      patient: "Mohit Shau",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-      uid: "10",
-      patient: "Mohit Shau",
-      mobile: "9806324245",
-      treatment: "root canal",
-      timing: "9:00 Am",
-      status: "Missed",
-      action: "edit",
-    },
-    {
-        uid: "11",
-        patient: "Mohit Shau",
-        mobile: "9806324245",
-        treatment: "root canal",
-        timing: "9:00 Am",
-        status: "Missed",
-        action: "edit",
-      },
-      {
-        uid: "12",
-        patient: "Mohit Shau",
-        mobile: "9806324245",
-        treatment: "root canal",
-        timing: "9:00 Am",
-        status: "Missed",
-        action: "edit",
-      },
-      {
-        uid: "13",
-        patient: "Mohit Shau",
-        mobile: "9806324245",
-        treatment: "root canal",
-        timing: "9:00 Am",
-        status: "Missed",
-        action: "edit",
-      },
+      status: ""
+    }
   ];
+
+  const [searchInput, setSearchInput] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(3);
+  const [currentItems, setCurrentItems] = useState(Table_data); // Your initial data state
+
+
+  const handleAction = (index, action) => {
+    const updatedItems = [...currentItems];
+    updatedItems[index].status = action;
+    setCurrentItems(updatedItems);
+  };
+
 
   const handleChange = (e) => {
     setSearchInput(e.target.value);
+    setCurrentPage(1); // Reset current page when search input changes
   };
-
-  const filteredTable_data = Table_data.filter((data) => {
+  const filteredTableData = Table_data.filter((data) => {
     return data.patient.toLowerCase().includes(searchInput.toLowerCase());
   });
 
-   // Logic to calculate pagination
-   const indexOfLastItem = currentPage * itemsPerPage;
-   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-   const currentItems = filteredTable_data.slice(indexOfFirstItem, indexOfLastItem);
- 
-   // Change page
-   const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // Logic to calculate pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItemsOnPage = filteredTableData.slice(indexOfFirstItem, indexOfLastItem);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <>
       <Container>
@@ -154,101 +173,126 @@ const AllAppoint = () => {
                 <Sider />
               </div>
               <div className="container pt-4">
-        <div className="widget-area-2 proclinic-box-shadow" id="tableres">
-          <div className="d-md-flex justify-content-lg-between ">
-            {" "}
-            <h5 className="widget-title" id="title">
-              Current Appointment
-              <h5 className="d-inline ms-4">
-                Total - {filteredTable_data.length}
-              </h5>
-            </h5>
-            <input
-              type="search"
-              placeholder="Search here"
-              onChange={handleChange}
-              value={searchInput}
-              className="mb-2 rounded-5"
-            />
-          </div>
+                <div className="widget-area-2 proclinic-box-shadow" id="tableres">
+                  <div className="d-md-flex justify-content-lg-between ">
+                    {" "}
+                    <h5 className="widget-title" id="title">
+                      Current Appointment
+                      <h5 className="d-inline ms-4">
+                        Total - {filteredTableData.length}
+                      </h5>
+                    </h5>
+                    <input
+                      type="search"
+                      placeholder="Search here"
+                      onChange={handleChange}
+                      value={searchInput}
+                      className="mb-2 rounded-5"
+                    />
+                  </div>
 
-          <div className="table-responsive">
-            <table className="table table-bordered table-striped">
-              <thead>
-                <tr>
-                  <th>Uid</th>
-                  <th>Patient Name</th>
-                  <th>Treatment</th>
-                  <th>Mobile</th>
-                  <th>Timing</th>
-                  <th>Status</th>
-                  <th>Type of Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentItems.map((country, index) => (
-                  <tr key={index}>
-                    <td>{country.uid}</td>
-                    <td>{country.patient}</td>
-                    <td>{country.treatment}</td>
-                    <td>{country.mobile}</td>
-                    <td>{country.timing}</td>
-                    <td>{country.status}</td>
-                    <td>
-                      <div className="dropdown">
-                        <button
-                          className="btn btn-secondary dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          Action
-                        </button>
-                        <ul className="dropdown-menu">
-                          <li>
-                            <a className="dropdown-item mx-0" href="#">
-                              Checked-In
-                            </a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item mx-0" href="#">
-                              Checked-Out
-                            </a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item mx-0" href="#">
-                              Complete
-                            </a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item mx-0" href="#">
-                              Cancle
-                            </a>
-                          </li>
+                  <div className="table-responsive">
+                    <table className="table table-bordered table-striped">
+                      <thead>
+                        <tr>
+                          <th>Uid</th>
+                          <th>Patient Name</th>
+                          <th>Mobile</th>
+                          <th>Timing</th>
+                          <th>Treatment</th>
+                          <th>Blood Group</th>
+                          <th>DOB</th>
+                          <th>Age</th>
+                          <th>Weight</th>
+                          <th>Allergy</th>
+                          <th>Disease</th>
+                          <th>Patient Type</th>
+                          <th>Note</th>
+                          <th>Status</th>
+                          <th>Type of Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {currentItems.map((country, index) => (
+                          <tr key={index}>
+                            <td>{country.uid}</td>
+                            <td>{country.patient}</td>
+                            <td>{country.mobile}</td>
+                            <td>{country.timing}</td>
+                            <td>{country.treatment}</td>
+                            <td>{country.bloodgroup}</td>
+                            <td>{country.dob}</td>
+                            <td>{country.age}</td>
+                            <td>{country.weight}</td>
+                            <td>{country.allergy}</td>
+                            <td>{country.disease}</td>
+                            <td>{country.patienttype}</td>
+                            <td>{country.note}</td>
+                            <td>{country.status}</td> {/* Display the status */}
+                            <td>
+                              <div className="dropdown">
+                                <button
+                                  className="btn btn-secondary dropdown-toggle"
+                                  type="button"
+                                  data-bs-toggle="dropdown"
+                                  aria-expanded="false"
+                                >
+                                  Action
+                                </button>
+                                <ul className="dropdown-menu">
+                                  <li>
+                                    <button
+                                      className="dropdown-item mx-0"
+                                      onClick={() => handleAction(index, 'Start Treatment')}
+                                    >
+                                      Start Treatment
+                                    </button>
+                                  </li>
+                                  <li>
+                                    <button
+                                      className="dropdown-item mx-0"
+                                      onClick={() => handleAction(index, 'Cancel Treatment')}
+                                    >
+                                      Cancel Treatment
+                                    </button>
+                                  </li>
+                                  <li>
+                                    <button
+                                      className="dropdown-item mx-0"
+                                      onClick={() => handleAction(index, 'Hold')}
+                                    >
+                                      Hold
+                                    </button>
+                                  </li>
+                                </ul>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
 
-                          <li>
-                            <a className="dropdown-item mx-0" href="#"></a>
+                  {/* Pagination */}
+                  {/* <nav>
+                    <ul className="pagination">
+                      {Array.from({ length: Math.ceil(filteredTableData.length / itemsPerPage) }).map(
+                        (_, index) => (
+                          <li
+                            key={index}
+                            className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
+                          >
+                            <button className="page-link" onClick={() => paginate(index + 1)}>
+                              {index + 1}
+                            </button>
                           </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <nav>
-            <ul className="pagination">
-              <li className="page-item">
-                <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} className="page-link">Previous</button>
-              </li>
-              <li className="page-item">
-                <button onClick={() => paginate(currentPage + 1)} disabled={indexOfLastItem >= filteredTable_data.length} className="page-link">Next</button>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
+                        )
+                      )}
+                    </ul>
+                  </nav> */}
+
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
@@ -713,35 +714,49 @@ const PediatricDentalTest = () => {
     );
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-  };
 
-  const handleAddNew = () => {
-    // Push the current inputItem to inputItemList
-    setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
+    // Prepare data to send to the backend
+    const formData = {
+      selectedTeeth: inputItem.selectTeeth.join(", "),
+      disease: inputItem.desease,
+      chiefComplain: inputItem.chiefComplain,
+      advice: inputItem.advice,
+      onExamination: inputItem.onExamination
+    };
 
-    // console.log("Before resetting inputItem:", inputItem);
+    try {
+      const response = await axios.post('http://localhost:8888/api/doctor/dentalPediatric', formData);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
 
-    setInputItem({
-      selectTeeth: [],
-      desease: "",
-      chiefComplain: "",
-      advice: "",
-      onExamination: "",
-    });
+      // Push the current inputItem to inputItemList
+      setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
 
-    console.log("After resetting inputItem:", inputItem);
-
-    // Clear the checked property of all checkboxes
-    setTimeout(() => {
-      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-      checkboxes.forEach((checkbox) => {
-        checkbox.checked = false;
+      // console.log("Before resetting inputItem:", inputItem);
+  
+      setInputItem({
+        selectTeeth: [],
+        desease: "",
+        chiefComplain: "",
+        advice: "",
+        onExamination: "",
       });
-    });
-
-    setSelectedTeeth([]);
+  
+      console.log("After resetting inputItem:", inputItem);
+  
+      // Clear the checked property of all checkboxes
+      setTimeout(() => {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+      });
+  
+      setSelectedTeeth([]);
   };
 
   useEffect(() => {
@@ -819,7 +834,7 @@ const PediatricDentalTest = () => {
           {/* dental chart 20 teeth start */}
           {isLoading ? (
             <div>
-              <div className='text-center'><RiLoader2Fill size={45} className="spin"/></div>
+              <div className='text-center'><RiLoader2Fill size={45} className="spin" /></div>
             </div>
           ) : (
             <>
@@ -1275,14 +1290,14 @@ const PediatricDentalTest = () => {
                   </div>
                   <div className="text-center m-3">
                     <button
-                      type="button"
+                      type="submit"
                       className="btn btn-info text-light mx-3"
-                      onClick={handleAddNew}
+                      // onClick={handleAddNew}
                     >
                       Add New
                     </button>
                     <button
-                      type="submit"
+                      type="button"
                       className="btn btn-info text-light mx-3"
                       onClick={() => window.location.reload()}
                     >
@@ -1299,9 +1314,9 @@ const PediatricDentalTest = () => {
                       {inputItemList.map((item, index) => (
                         <li key={index} className="list-item">
                           {/* Render each item's properties */}
-                          Select Teeth: {item.selectTeeth.join(", ")}, Disease:{" "}
-                          {item.desease}, Chief Complaint: {item.chiefComplain},
-                          Advice: {item.advice}, On Examination:{" "}
+                          Select Teeth: {item.selectTeeth.join(", ")},&nbsp;&nbsp; Disease:{" "}
+                          {item.desease},&nbsp;&nbsp; Chief Complaint: {item.chiefComplain},&nbsp;&nbsp;
+                          Advice: {item.advice},&nbsp;&nbsp; On Examination:{" "}
                           {item.onExamination}
                           <div className="buttons">
                             <button

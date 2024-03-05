@@ -53,7 +53,7 @@ const Sider = () => {
                 </div>
                 <div>
                   <h3 className="d-none d-sm-inline fs-6" id="navleft2">
-                    Appointment
+                    Treatment Que
                   </h3>
                 </div>
               </Link>

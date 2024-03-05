@@ -85,6 +85,12 @@ const HeadBar = () => {
 
 export default HeadBar;
 const Wrapper = styled.div`
+nav{
+  width: 100%;
+  @media (min-width: 820px) and (max-width: 1024px){
+    width: 100%;
+  }
+}
   #userid {
     /* margin-left: -10rem; */
     list-style-type: none;

@@ -2,24 +2,23 @@ const express = require("express");
 const colors = require("colors");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const {authRoutes} = require("./router/authRouter");
 
 dotenv.config();
-// rest object
+// Create Express app
 const app = express();
 
-// middlewares
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// rest api
-app.get("/", (req, res) => {
-  res.send("<h1>Welcome to ecommerce app</h1>");
-});
+// REST API Routes
+app.use("/api/doctor", authRoutes);
 
 // PORT
 const PORT = process.env.PORT || 8888;
 
-// run listen
+// Run server
 app.listen(PORT, () => {
-  console.log(`Server Running on port ${PORT}`.bgCyan.white);
+  console.log(`Server running on port ${PORT}`);
 });

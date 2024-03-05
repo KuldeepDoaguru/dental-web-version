@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const ExaminationDashTwo = () => {
+  const { id } = useParams();
+  console.log(id);
   return (
     <>
       <Wrapper>
@@ -17,8 +19,8 @@ const ExaminationDashTwo = () => {
             <div className="row">
                 <div className="co-lg-12 col-12">
                     <div className="d-flex justify-content-center align-items-center">
-                        <Link to="/ExaminationDashBoardPatient"><div className="dental shadow p-3 bg-body rounded mx-3">Dental-X Chart</div></Link>
-                        <Link to="/ExaminationDashBoardPediatric"><div className="dental shadow p-3 bg-body rounded mx-3">Pediatric Dental-X Chart</div></Link>
+                        <Link to={`/ExaminationDashBoardPatient/${id}`}><div className="dental shadow p-3 bg-body rounded mx-3">Dental-X Chart</div></Link>
+                        <Link to={`/ExaminationDashBoardPediatric/${id}`}><div className="dental shadow p-3 bg-body rounded mx-3">Pediatric Dental-X Chart</div></Link>
                     </div>
                 </div>
             </div>

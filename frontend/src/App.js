@@ -35,8 +35,8 @@ function App() {
       <Route path="/" element={<UniversalLogin />} />
 
       {/* ************** Doctor Routes Start Here ******************* */}
-      
       <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
+      
       <Route path="/card" element={<Card />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/profileDashboard" element={<ProfileDashboard />} /> 
@@ -44,12 +44,12 @@ function App() {
       <Route path="/all-appoint" element={<AllAppoint />} />
       <Route path="/Patient-profile" element={<PatientProfile />} />
       <Route path="/all-patient" element={<AllPatient />} />
-      <Route path="/examination-Dashboard" element={<ExaminationDashBoard />} />
+      <Route path="/examination-Dashboard/:id" element={<ExaminationDashBoard />} />
       <Route path="/PediatricDental" element={<PediatricDental />} />
       <Route path="/ExaminationDashTwo" element={<ExaminationDashTwo />} />
       <Route path="/ExaminationPatient" element={<ExaminationPatient />} />
-      <Route path="/ExaminationDashBoardPatient" element={<ExaminationDashBoardPatient />} />
-      <Route path="/ExaminationDashBoardPediatric" element={<ExaminationDashBoardPediatric />} />
+      <Route path="/ExaminationDashBoardPatient/:id" element={<ExaminationDashBoardPatient />} />
+      <Route path="/ExaminationDashBoardPediatric/:id" element={<ExaminationDashBoardPediatric />} />
       <Route path="/TreatmentDashBoard" element={<TreatmentDashBoard />} />
       <Route path="/PrescriptionDashBoard" element={<PrescriptionDashBoard />} />
       <Route path="/CreatePrescrip" element={<CreatePrescrip />} />

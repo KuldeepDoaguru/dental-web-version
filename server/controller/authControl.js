@@ -1,21 +1,21 @@
 const express = require("express");
 const db = require("../connect.js");
 
-const dentalPediatric = (req, res) =>{
+const dentalPediatric = (req, res) => {
     const data = req.body;
 
-    const sql = 'INSERT INTO dental_examination (selected_teeth, disease, chief_complain, advice, on_examination) VALUES (?, ?, ?, ?, ?)';
-    const values = [data.selectedTeeth, data.disease, data.chiefComplain, data.advice, data.onExamination];
+    const sql = 'INSERT INTO dental_examination (appointment_id, selected_teeth, disease, chief_complain, advice, on_examination) VALUES (?, ?, ?, ?, ?, ?)';
+    const values = [data.appointment_id, data.selectedTeeth, data.disease, data.chiefComplain, data.advice, data.onExamination];
 
     db.query(sql, values, (err, result) => {
         if (err) {
-          console.error('Error inserting data: ' + err.stack);
-          res.status(500).send('Error inserting data');
-          return;
+            console.error('Error inserting data: ', err);
+            res.status(500).send('Error inserting data: ' + err.message);
+            return;
         }
         console.log('Inserted data with ID ' + result.insertId);
         res.status(200).send('Data inserted successfully');
-      });
+    });
 };
 
 const dentalPediatricUpdate = (req, res) => {

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
   const [appointments, setAppointments] = useState([]);
   const [page, setPage] = useState(1);
   const [perPage] = useState(5);
+  const navigate = useNavigate();
 
   const tableAppointmentData = async () => {
     try {
@@ -38,10 +40,28 @@ const AppointTable = () => {
   const handleAction = async (action, appointId) => {
     try {
       // Send a request to update the status in the database
-      await axios.post(`http://localhost:8888/api/doctor/updateAppointmentStatus`, {
+      let requestBody = {
         action,
         appointId
-      });
+      };
+  
+      // If the action is 'cancel_treatment', add the reason to the request body
+      if (action === 'Cancelled') {
+        const cancelReason = prompt("Please provide a reason for cancellation:");
+        if (cancelReason !== null) { // User provided a reason
+          requestBody.reason = cancelReason;
+        } else {
+          // User canceled, do not proceed
+          return;
+        }
+      }
+  
+      await axios.put(`http://localhost:8888/api/doctor/upDateAppointmentStatus`, requestBody);
+  
+      if (action === 'In Treatment') {
+        navigate(`/examination-Dashboard/${appointId}`); // Navigate to treatment page with the appointment ID as a parameter
+      }
+  
       // Refresh the appointment data after the status is updated
       tableAppointmentData();
     } catch (error) {
@@ -127,7 +147,7 @@ const AppointTable = () => {
                           <li>
                             <button
                               className="dropdown-item mx-0"
-                              onClick={() => handleAction('start_treatment', item.appoint_id)}
+                              onClick={() => handleAction('In Treatment', item.appoint_id)}
                             >
                               Start Treatment
                             </button>
@@ -135,7 +155,7 @@ const AppointTable = () => {
                           <li>
                             <button
                               className="dropdown-item mx-0"
-                              onClick={() => handleAction('cancel_treatment', item.appoint_id)}
+                              onClick={() => handleAction('Cancelled', item.appoint_id)}
                             >
                               Cancel Treatment
                             </button>
@@ -143,7 +163,7 @@ const AppointTable = () => {
                           <li>
                             <button
                               className="dropdown-item mx-0"
-                              onClick={() => handleAction('hold', item.appoint_id)}
+                              onClick={() => handleAction('On Hold', item.appoint_id)}
                             >
                               Hold
                             </button>

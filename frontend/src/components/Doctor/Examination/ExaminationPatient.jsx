@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { useNavigate, useParams } from 'react-router-dom';
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { RiLoader2Fill } from "react-icons/ri";
@@ -302,6 +303,8 @@ import rootbtn from "../Assest/Examination Buttons/rootstump1.png";
 import suparabtn from "../Assest/Examination Buttons/Supra erupted1.png";
 
 const ExaminationPatientTest = () => {
+  const { id } = useParams();
+  console.log(id);
   const [selectedTeeth, setSelectedTeeth] = useState([]);
   const [inputItemList, setInputItemList] = useState([]);
   const [inputItem, setInputItem] = useState({
@@ -314,6 +317,7 @@ const ExaminationPatientTest = () => {
   const [selectAllTeeth, setSelectAllTeeth] = useState(false);
   const [isFormFilled, setIsFormFilled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [getPatientData, setGetPatientData] = useState([]);
 
   useEffect(() => {
 
@@ -872,8 +876,49 @@ const ExaminationPatientTest = () => {
     );
   };
 
-  const handleSave = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
+
+    // Prepare data to send to the backend
+    const formData = {
+      selectedTeeth: inputItem.selectTeeth.join(", "),
+      disease: inputItem.desease,
+      chiefComplain: inputItem.chiefComplain,
+      advice: inputItem.advice,
+      onExamination: inputItem.onExamination
+    };
+
+    try {
+      const response = await axios.post('http://localhost:8888/api/doctor/dentalPediatric', formData);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+
+      // Push the current inputItem to inputItemList
+      setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
+
+      // console.log("Before resetting inputItem:", inputItem);
+  
+      setInputItem({
+        selectTeeth: [],
+        desease: "",
+        chiefComplain: "",
+        advice: "",
+        onExamination: "",
+      });
+  
+      console.log("After resetting inputItem:", inputItem);
+  
+      // Clear the checked property of all checkboxes
+      setTimeout(() => {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+      });
+  
+      setSelectedTeeth([]);
   };
 
   const handleAddNew = () => {
@@ -915,7 +960,7 @@ const ExaminationPatientTest = () => {
       e.preventDefault(); // Prevent the default redirection behavior
       alert("You cannot navigate away while the form is filled.");
     } else {
-      navigate('/ExaminationDashBoardPediatric');
+      navigate(`/ExaminationDashBoardPediatric/${id}`);
     }
   }
 
@@ -937,6 +982,20 @@ const ExaminationPatientTest = () => {
     setInputItemList(newList);
   };
 
+  const getPatientDetail = async () =>{
+    try {
+      const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+      setGetPatientData(res.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    getPatientDetail();
+  }, []);
+
+
   return (
     <>
       <Wrapper>
@@ -949,28 +1008,32 @@ const ExaminationPatientTest = () => {
             </div>
           </div>
           <div className="row shadow-sm p-3 mb-3 bg-body rounded">
-            <div className="col-lg-12 d-flex justify-content-between align-items-center">
+            {getPatientData.map((item, index)=>(
+              <>
+            <div key={index} className="col-lg-12 d-flex justify-content-between align-items-center">
               <div className="col-lg-4">
-                <p><strong>UHID</strong> : Patient UHID</p>
+                <p><strong>Appoint ID</strong> : {item.appoint_id}</p>
               </div>
               <div className="col-lg-4">
-                <p><strong>Patient Name</strong> : Patient Complete Name</p>
+                <p><strong>Patient Name</strong> : {item.patient_name}</p>
               </div>
               <div className="col-lg-4">
-                <p><strong>Patient Mobile No.</strong> : 1234567890</p>
-              </div>
-            </div>
-            <div className="col-lg-12 d-flex justify-content-between align-items-center">
-              <div className="col-lg-4">
-                <p className="mb-0"><strong>RGID</strong> : Patient RGID</p>
-              </div>
-              <div className="col-lg-4">
-                <p className="mb-0"><strong>Age</strong> : 25</p>
-              </div>
-              <div className="col-lg-4">
-                <p className="mb-0"><strong>Address</strong> : ABC 195 Address</p>
+                <p><strong>Patient Mobile No.</strong> : {item.patient_contact}</p>
               </div>
             </div>
+            <div key={index + 'secondRow'}  className="col-lg-12 d-flex justify-content-between align-items-center">
+              <div className="col-lg-4">
+                <p className="mb-0"><strong>Blood Group</strong> : {item.bloodgroup}</p>
+              </div>
+              <div className="col-lg-4">
+                <p className="mb-0"><strong>Disease</strong> : {item.disease}</p>
+              </div>
+              <div className="col-lg-4">
+                <p className="mb-0"><strong>Allergy</strong> : {item.allergy}</p>
+              </div>
+            </div>
+            </>
+            ))}
           </div>
           {/* dental chart 32 teeth start */}
           {isLoading ? (

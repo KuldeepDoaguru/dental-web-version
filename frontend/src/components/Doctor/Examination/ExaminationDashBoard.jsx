@@ -2,10 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import HeadBar from "../HeadBar";
 import SideBar from "../SideBar";
+import {useParams } from "react-router-dom";
 import ExaminationDashTwo from "./ExaminationDashTwo";
 
 const ExaminationDashBoard = () => {
-
+  const { id } = useParams();
+  console.log(id);
   return (
     <>
       <Wrapper>

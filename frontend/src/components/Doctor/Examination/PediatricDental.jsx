@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { RiLoader2Fill } from "react-icons/ri";
@@ -195,6 +195,8 @@ import rootbtn from "../Assest/Examination Buttons/rootstump1.png";
 import suparabtn from "../Assest/Examination Buttons/Supra erupted1.png";
 
 const PediatricDentalTest = () => {
+  const { id } = useParams();
+  console.log(id);
   const [selectedTeeth, setSelectedTeeth] = useState([]);
   const [inputItemList, setInputItemList] = useState([]);
   const [inputItem, setInputItem] = useState({
@@ -207,6 +209,7 @@ const PediatricDentalTest = () => {
   const [selectAllTeeth, setSelectAllTeeth] = useState(false);
   const [isFormFilled, setIsFormFilled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [getPatientData, setGetPatientData] = useState([]);
 
   useEffect(() => {
 
@@ -282,22 +285,6 @@ const PediatricDentalTest = () => {
     74: cariesT19,
     75: cariesT20,
   };
-
-  // const caries = () => {
-  //   const newInputItem = {
-  //     ...inputItem,
-  //     desease: inputItem.desease ? inputItem.desease + ", Caries" : "Caries",
-  //   };
-  //   setInputItem(newInputItem);
-
-  //   // Additional logic here if needed
-  //   inputItem.selectTeeth.forEach((toothId) => {
-  //     const toothElement = document.getElementById(`tooth_${toothId}`);
-  //     if (toothElement && toothImageMapping[toothId]) {
-  //       toothElement.src = toothImageMapping[toothId];
-  //     }
-  //   });
-  // };
 
   const caries = () => {
     let updatedDisease;
@@ -719,6 +706,7 @@ const PediatricDentalTest = () => {
 
     // Prepare data to send to the backend
     const formData = {
+      id: id,
       selectedTeeth: inputItem.selectTeeth.join(", "),
       disease: inputItem.desease,
       chiefComplain: inputItem.chiefComplain,
@@ -733,30 +721,30 @@ const PediatricDentalTest = () => {
       console.error('Error:', error);
     }
 
-      // Push the current inputItem to inputItemList
-      setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
+    // Push the current inputItem to inputItemList
+    setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
 
-      // console.log("Before resetting inputItem:", inputItem);
-  
-      setInputItem({
-        selectTeeth: [],
-        desease: "",
-        chiefComplain: "",
-        advice: "",
-        onExamination: "",
+    // console.log("Before resetting inputItem:", inputItem);
+
+    setInputItem({
+      selectTeeth: [],
+      desease: "",
+      chiefComplain: "",
+      advice: "",
+      onExamination: "",
+    });
+
+    console.log("After resetting inputItem:", inputItem);
+
+    // Clear the checked property of all checkboxes
+    setTimeout(() => {
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
       });
-  
-      console.log("After resetting inputItem:", inputItem);
-  
-      // Clear the checked property of all checkboxes
-      setTimeout(() => {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-        checkboxes.forEach((checkbox) => {
-          checkbox.checked = false;
-        });
-      });
-  
-      setSelectedTeeth([]);
+    });
+
+    setSelectedTeeth([]);
   };
 
   useEffect(() => {
@@ -772,7 +760,7 @@ const PediatricDentalTest = () => {
       e.preventDefault(); // Prevent the default redirection behavior
       alert("You cannot navigate away while the form is filled.");
     } else {
-      navigate("/ExaminationDashBoardPatient");
+      navigate(`/ExaminationDashBoardPatient/${id}`);
     }
   };
 
@@ -793,6 +781,21 @@ const PediatricDentalTest = () => {
     newList.splice(index, 1);
     setInputItemList(newList);
   };
+
+  const getPatientDetail = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+      setGetPatientData(res.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getPatientDetail();
+  }, []);
+
+
   return (
     <>
       <Wrapper>
@@ -807,30 +810,36 @@ const PediatricDentalTest = () => {
               </button>
             </div>
           </div>
+
           <div className="row shadow-sm p-3 mb-3 bg-body rounded">
-            <div className="col-lg-12 d-flex justify-content-between align-items-center">
-              <div className="col-lg-4">
-                <p><strong>UHID</strong> : Patient UHID</p>
-              </div>
-              <div className="col-lg-4">
-                <p><strong>Patient Name</strong> : Patient Complete Name</p>
-              </div>
-              <div className="col-lg-4">
-                <p><strong>Patient Mobile No.</strong> : 1234567890</p>
-              </div>
-            </div>
-            <div className="col-lg-12 d-flex justify-content-between align-items-center">
-              <div className="col-lg-4">
-                <p className="mb-0"><strong>RGID</strong> : Patient RGID</p>
-              </div>
-              <div className="col-lg-4">
-                <p className="mb-0"><strong>Age</strong> : 25</p>
-              </div>
-              <div className="col-lg-4">
-                <p className="mb-0"><strong>Address</strong> : ABC 195 Address</p>
-              </div>
-            </div>
+            {getPatientData.map((item, index) => (
+              <>
+                <div key={index} className="col-lg-12 d-flex justify-content-between align-items-center">
+                  <div className="col-lg-4">
+                    <p><strong>Appoint ID</strong> : {item.appoint_id}</p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p><strong>Patient Name</strong> : {item.patient_name}</p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p><strong>Patient Mobile No.</strong> : {item.patient_contact}</p>
+                  </div>
+                </div>
+                <div key={index + 'secondRow'} className="col-lg-12 d-flex justify-content-between align-items-center">
+                  <div className="col-lg-4">
+                    <p className="mb-0"><strong>Blood Group</strong> : {item.bloodgroup}</p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p className="mb-0"><strong>Disease</strong> : {item.disease}</p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p className="mb-0"><strong>Allergy</strong> : {item.allergy}</p>
+                  </div>
+                </div>
+              </>
+            ))}
           </div>
+
           {/* dental chart 20 teeth start */}
           {isLoading ? (
             <div>
@@ -1193,7 +1202,7 @@ const PediatricDentalTest = () => {
             </>)}
           {/* dental chart 20 teeth end */}
 
-          <div className="row mt-5">
+          <div className="row mt-2">
             <div className="col-lg-10 col-10">
               <div className="text-center">
                 <button
@@ -1211,7 +1220,8 @@ const PediatricDentalTest = () => {
               </div>
               <div>
                 <form onSubmit={handleSave}>
-                  <div class="row mt-5">
+                <input type="hidden" name="id" value={id} id="form3Example1" class="form-control" />
+                  <div class="row mt-3">
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
                         <input
@@ -1292,7 +1302,7 @@ const PediatricDentalTest = () => {
                     <button
                       type="submit"
                       className="btn btn-info text-light mx-3"
-                      // onClick={handleAddNew}
+                    // onClick={handleAddNew}
                     >
                       Add New
                     </button>

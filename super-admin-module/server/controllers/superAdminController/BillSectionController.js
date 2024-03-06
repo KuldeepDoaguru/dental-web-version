@@ -625,7 +625,14 @@ const addLab = (req, res) => {
 const updateBranchDetails = (req, res) => {
   try {
     const bid = req.params.bid;
-    const { name, address, contact } = req.body;
+    const {
+      name,
+      address,
+      contact,
+      open_time,
+      close_time,
+      appoint_slot_duration,
+    } = req.body;
     const selectQuery = "SELECT * FROM branches WHERE branch_id = ?";
     db.query(selectQuery, bid, (err, result) => {
       if (err) {
@@ -648,6 +655,21 @@ const updateBranchDetails = (req, res) => {
         if (contact) {
           updateFields.push("branch_contact = ?");
           updateValues.push(contact);
+        }
+
+        if (open_time) {
+          updateFields.push("open_time = ?");
+          updateValues.push(open_time);
+        }
+
+        if (close_time) {
+          updateFields.push("close_time = ?");
+          updateValues.push(close_time);
+        }
+
+        if (appoint_slot_duration) {
+          updateFields.push("appoint_slot_duration = ?");
+          updateValues.push(appoint_slot_duration);
         }
 
         const updateQuery = `UPDATE branches SET ${updateFields.join(

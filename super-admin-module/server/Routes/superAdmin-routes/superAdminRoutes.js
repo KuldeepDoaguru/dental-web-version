@@ -52,6 +52,18 @@ const {
   downloadBillingReportByTime,
   downloadStaffReport,
 } = require("../../controllers/superAdminController/BillSectionController");
+const {
+  getAttendanceDetails,
+  downloadAttendanceReportByTime,
+  getBranchDetailsByBranch,
+  updateBranchCalenderSetting,
+  addBlockDays,
+  getHolidays,
+  updateHolidays,
+  deleteHolidays,
+  addDrugs,
+  getDrugs,
+} = require("../../controllers/superAdminController/attendanceController");
 // const multer = require("multer");
 
 const router = express.Router();
@@ -160,4 +172,20 @@ router.post(
 router.post("/downloadStaffReport/:branch", downloadStaffReport);
 
 //**************************************************************************************************** */
+//Attendance routes
+
+router.get("/getAttendanceDetails/:branch", getAttendanceDetails);
+router.post(
+  "/downloadAttendanceReportByTime/:branch",
+  downloadAttendanceReportByTime
+);
+router.get("/getBranchDetailsByBranch/:branch", getBranchDetailsByBranch);
+router.put("/updateBranchCalenderSetting/:branch", updateBranchCalenderSetting);
+router.post("/addBlockDays", addBlockDays);
+router.get("/getHolidays/:branch", getHolidays);
+router.put("/updateHolidays/:hid", updateHolidays);
+router.delete("/deleteHolidays/:hid", deleteHolidays);
+router.post("/addDrugs", addDrugs);
+router.get("/getDrugs/:branch", getDrugs);
+
 module.exports = router;

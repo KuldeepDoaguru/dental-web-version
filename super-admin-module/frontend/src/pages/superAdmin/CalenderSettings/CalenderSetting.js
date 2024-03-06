@@ -1,13 +1,80 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Sider from "../../../components/Sider";
 import Header from "../../../components/Header";
 import { FaSearch } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import BranchSelector from "../../../components/BranchSelector";
+import axios from "axios";
+import cogoToast from "cogo-toast";
+import { useDispatch, useSelector } from "react-redux";
 
 const CalenderSetting = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const location = useLocation();
   const [showAddBlockDays, setShowAddBlockDays] = useState(false);
   const [showEditBlockDays, setShowEditBlockDays] = useState(false);
+  const [brData, setBrData] = useState([]);
+  const [holidayList, setHolidayList] = useState([]);
+  const [selected, setSelected] = useState();
+  const [upData, setUpData] = useState({
+    open_time: "",
+    close_time: "",
+    appoint_slot_duration: "",
+  });
+  const [holidays, setHolidays] = useState({
+    branch_name: branch.name,
+    holiday_date: "",
+    holiday_time: "",
+    notes: "",
+  });
+  const [upHolidays, setUpHolidays] = useState({
+    holiday_date: "",
+    holiday_time: "",
+    notes: "",
+  });
+
+  const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+
+    if (type === "radio" && checked) {
+      // For radio inputs
+      setUpData({
+        ...upData,
+        appoint_slot_duration: value,
+      });
+    } else if (type === "time") {
+      // For time inputs
+      setUpData({
+        ...upData,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleHoliday = (event) => {
+    const { name, value } = event.target;
+    setHolidays({
+      ...holidays,
+      [name]: value,
+    });
+  };
+
+  const handleHolidayUpdate = (event) => {
+    const { name, value } = event.target;
+    setUpHolidays({
+      ...upHolidays,
+      [name]: value,
+    });
+  };
+
+  console.log(holidays);
 
   const openAddBlockDaysPopup = (index, item) => {
     // setSelectedItem(item);
@@ -15,8 +82,9 @@ const CalenderSetting = () => {
     setShowAddBlockDays(true);
   };
 
-  const openEditBlockDaysPopup = (index, item) => {
-    // setSelectedItem(item);
+  const openEditBlockDaysPopup = (id) => {
+    console.log(id);
+    setSelected(id);
     console.log("open pop up");
     setShowEditBlockDays(true);
   };
@@ -25,6 +93,105 @@ const CalenderSetting = () => {
     setShowAddBlockDays(false);
     setShowEditBlockDays(false);
   };
+
+  const goBack = () => {
+    window.history.go(-1);
+  };
+
+  const getBranchDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getBranchDetailsByBranch/${branch.name}`
+      );
+      setBrData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateBranchDetails = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:7777/api/v1/super-admin/updateBranchCalenderSetting/${branch.name}`,
+        upData
+      );
+      console.log(response);
+      getBranchDetails();
+      cogoToast.success("branch details updated successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getBranchDetails();
+  }, []);
+
+  console.log(brData);
+  console.log(upData);
+
+  const getHolidayList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getHolidays/${branch.name}`
+      );
+      setHolidayList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addHolidays = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:7777/api/v1/super-admin/addBlockDays",
+        holidays
+      );
+      // console.log(response);
+      cogoToast.success("Holiday Added Successfully");
+      closeUpdatePopup();
+      getHolidayList();
+    } catch (error) {
+      console.log(error);
+      cogoToast.error(error.response.data);
+    }
+  };
+
+  const updateHolidetails = async (e) => {
+    e.preventDefault();
+    console.log(selected);
+    try {
+      const response = await axios.put(
+        `http://localhost:7777/api/v1/super-admin/updateHolidays/${selected}`,
+        upHolidays
+      );
+      cogoToast.success("Holiday Added Successfully");
+      closeUpdatePopup();
+      getHolidayList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(selected);
+
+  const deleteHoliday = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:7777/api/v1/super-admin/deleteHolidays/${id}`
+      );
+      cogoToast.success("Holiday Deleted Successfully");
+      getHolidayList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getHolidayList();
+  }, [branch.name]);
 
   return (
     <>
@@ -37,19 +204,9 @@ const CalenderSetting = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    <div className="d-flex">
-                      <div>
-                        <h6>Select Branch : </h6>
-                      </div>
-                      <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
-                        </select>
-                      </div>
-                    </div>
+                    <BranchSelector />
                     <div>
                       {/* <Link to="/superadmin-add-branch">
                           <button className="btn btn-success">
@@ -59,66 +216,124 @@ const CalenderSetting = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
-                  <div className="banner-mid">
+                <div className="container-fluid mt-3">
+                  <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
+                  <div className="banner-mid mt-2">
                     <div>
-                      <h3 className="text-light">Calender Settings</h3>
-                    </div>
-                    <div>
-                      <button className="btn btn-info">Back to settings</button>
+                      <h3 className="text-light text-center">
+                        Clinic Settings
+                      </h3>
                     </div>
                   </div>
-                  <div className="container calender-time">
-                    <h6 className="fw-bold mx-2">Calender Time : </h6>
-                    <input type="time" /> <p className="mx-2">To</p>
-                    <input type="time" />
+                  <div>
+                    <h6 className="text-center mt-2 fw-bold text-success">
+                      Current Timing :{" "}
+                      <span>
+                        Opening Time -{" "}
+                        {brData[0]?.open_time
+                          .split("T")[0]
+                          .split(".")[0]
+                          .slice(0, 5)}
+                      </span>{" "}
+                      To{" "}
+                      <span>
+                        {" "}
+                        Closing Time -{" "}
+                        {brData[0]?.close_time
+                          .split("T")[0]
+                          .split(".")[0]
+                          .slice(0, 5)}
+                      </span>
+                    </h6>
+                    <h6 className="text-center mt-2 fw-bold text-success">
+                      Current Appointment Slot :{" "}
+                      <span>{brData[0]?.appoint_slot_duration}</span>
+                    </h6>
                   </div>
-                  <div className="appointment-slot-time">
-                    <div>
-                      {" "}
-                      <p className="fw-bold">Appointment Slot Time : </p>
+                  <form onSubmit={updateBranchDetails}>
+                    <div className="container calender-time">
+                      <h6 className="fw-bold mx-2">Change Clinic Timing:</h6>
+                      <input
+                        type="time"
+                        className="p-1 rounded"
+                        value={upData.open_time}
+                        onChange={handleChange}
+                        name="open_time" // Add name attribute
+                      />{" "}
+                      <p className="mx-2">To</p>
+                      <input
+                        type="time"
+                        className="p-1 rounded"
+                        value={upData.close_time}
+                        onChange={handleChange}
+                        name="close_time" // Add name attribute
+                      />
                     </div>
-                    <div className="d-flex mx-2">
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="flexRadioDefault"
-                          id="flexRadioDefault1"
-                        />
-                        <label class="form-check-label" for="flexRadioDefault1">
-                          10 min
-                        </label>
+                    <div className="appointment-slot-time">
+                      <div>
+                        {" "}
+                        <p className="fw-bold">Appointment Slot Time:</p>
                       </div>
-                      <div class="form-check mx-2">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="flexRadioDefault"
-                          id="flexRadioDefault2"
-                          checked
-                        />
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          15 min
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="flexRadioDefault"
-                          id="flexRadioDefault2"
-                          checked
-                        />
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          30 min
-                        </label>
+                      <div className="d-flex mx-2">
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            id="flexRadioDefault1" // Add id attribute
+                            name="appoint_slot_duration" // Update name attribute
+                            value="10 min"
+                            onChange={handleChange}
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="flexRadioDefault1" // Use htmlFor instead of for
+                          >
+                            10 min
+                          </label>
+                        </div>
+                        <div className="form-check mx-2">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            id="flexRadioDefault2" // Add id attribute
+                            name="appoint_slot_duration" // Update name attribute
+                            value="15 min"
+                            checked={upData.appoint_slot_duration === "15 min"} // Check based on state
+                            onChange={handleChange}
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="flexRadioDefault2" // Use htmlFor instead of for
+                          >
+                            15 min
+                          </label>
+                        </div>
+                        <div className="form-check">
+                          <input
+                            className="form-check-input"
+                            type="radio"
+                            id="flexRadioDefault3" // Add id attribute
+                            name="appoint_slot_duration" // Update name attribute
+                            value="30 min"
+                            onChange={handleChange}
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="flexRadioDefault3" // Use htmlFor instead of for
+                          >
+                            30 min
+                          </label>
+                        </div>
                       </div>
                     </div>
-                    <div></div>
-                  </div>
+                    <div className="d-flex justify-content-center">
+                      <button className="btn btn-success mx-2">Change</button>
+                    </div>
+                  </form>
 
-                  <div className="container mt-3">
+                  <div className="container-fluid mt-3">
                     <div className="calender-time mb-2">
                       <div>
                         <h6 className="text-dark fw-bold">
@@ -162,93 +377,49 @@ const CalenderSetting = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              15 Feb 2024
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Full Day
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Govt Holiday
-                            </td>
+                          {holidayList?.map((item) => (
+                            <>
+                              <tr className="table-row">
+                                <td
+                                  className="table-sno"
+                                  style={{ width: "10%" }}
+                                >
+                                  {item.holiday_date.split("T")[0]}
+                                </td>
+                                <td
+                                  className="table-small"
+                                  style={{ width: "20%" }}
+                                >
+                                  {item.holiday_time}
+                                </td>
+                                <td
+                                  className="table-small"
+                                  style={{ width: "20%" }}
+                                >
+                                  {item.notes}
+                                </td>
 
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditBlockDaysPopup()}
-                              >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              15 Feb 2024
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Full Day
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Govt Holiday
-                            </td>
-
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditBlockDaysPopup()}
-                              >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              15 Feb 2024
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Full Day
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Govt Holiday
-                            </td>
-
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditBlockDaysPopup()}
-                              >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
+                                <td>
+                                  <button
+                                    className="btn btn-warning"
+                                    onClick={() =>
+                                      openEditBlockDaysPopup(item.holiday_id)
+                                    }
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    className="btn btn-danger mx-1"
+                                    onClick={() =>
+                                      deleteHoliday(item.holiday_id)
+                                    }
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            </>
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -265,47 +436,32 @@ const CalenderSetting = () => {
           >
             <div className="popup">
               <h4 className="text-center">Add Drugs</h4>
-              <form
-                className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
-              >
+              <form className="d-flex flex-column" onSubmit={addHolidays}>
                 <input
                   type="date"
                   placeholder="select date"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="holiday_date"
+                  value={holidays.holiday_date}
+                  onChange={handleHoliday}
                 />
                 <br />
                 <input
                   type="text"
-                  placeholder="Add hours"
+                  placeholder="Add time period"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="holiday_time"
+                  value={holidays.holiday_time}
+                  onChange={handleHoliday}
                 />
                 <br />
                 <input
                   type="text"
                   placeholder="Add Notes"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="notes"
+                  value={holidays.notes}
+                  onChange={handleHoliday}
                 />
                 <br />
 
@@ -336,47 +492,32 @@ const CalenderSetting = () => {
           >
             <div className="popup">
               <h4 className="text-center">Edit Drugs Details</h4>
-              <form
-                className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
-              >
+              <form className="d-flex flex-column" onSubmit={updateHolidetails}>
                 <input
                   type="date"
                   placeholder="select date"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="holiday_date"
+                  value={upHolidays.holiday_date}
+                  onChange={handleHolidayUpdate}
                 />
                 <br />
                 <input
                   type="text"
                   placeholder="Add hours"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="holiday_time"
+                  value={upHolidays.holiday_time}
+                  onChange={handleHolidayUpdate}
                 />
                 <br />
                 <input
                   type="text"
                   placeholder="Add Notes"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="notes"
+                  value={upHolidays.notes}
+                  onChange={handleHolidayUpdate}
                 />
                 <br />
 

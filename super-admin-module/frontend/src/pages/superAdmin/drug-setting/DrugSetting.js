@@ -1,13 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../../components/Header";
 import Sider from "../../../components/Sider";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaSearch } from "react-icons/fa";
+import BranchSelector from "../../../components/BranchSelector";
+import { useDispatch, useSelector } from "react-redux";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import axios from "axios";
 
 const DrugSetting = () => {
   const [showAddDrugs, setShowAddDrugs] = useState(false);
   const [showEditDrugs, setShowEditDrugs] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const location = useLocation();
+  const [getDrugList, setGetDrugList] = useState([]);
+  const [addDrugs, setAddDrugs] = useState({
+    HSN_code: "",
+    item_code: "",
+    drug_name: "",
+    drug_strength: "",
+    instruction: "",
+    branch_name: branch.name,
+  });
+
+  const handleAddDrugs = (event) => {
+    const { name, value } = event.target;
+    setAddDrugs({
+      ...addDrugs,
+      [name]: value,
+    });
+  };
 
   const openAddDrugsPopup = (index, item) => {
     // setSelectedItem(item);
@@ -25,6 +53,39 @@ const DrugSetting = () => {
     setShowAddDrugs(false);
     setShowEditDrugs(false);
   };
+
+  const getDrugsData = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getDrugs/${branch.name}`
+      );
+      setGetDrugList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addDrugData = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:7777/api/v1/super-admin/addDrugs"
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getDrugsData();
+  }, [branch.name]);
+
+  const goBack = () => {
+    window.history.go(-1);
+  };
+
+  console.log(getDrugList);
+  console.log(addDrugs);
+
   return (
     <>
       <Container>
@@ -36,19 +97,9 @@ const DrugSetting = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    <div className="d-flex">
-                      <div>
-                        <h6>Select Branch : </h6>
-                      </div>
-                      <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
-                        </select>
-                      </div>
-                    </div>
+                    <BranchSelector />
                     <div>
                       {/* <Link to="/register-doctor">
                         <button className="btn btn-success">Add Doctor</button>
@@ -56,9 +107,12 @@ const DrugSetting = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
+                  <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
                   <h3 className="text-center">Drug Settings</h3>
-                  <div className="mid-box">
+                  <div className="container-fluid">
                     <div className="row mt-5">
                       <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
                         <input
@@ -72,7 +126,7 @@ const DrugSetting = () => {
                       </div>
                       <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
                         <button
-                          className="btn btn-info"
+                          className="btn btn-info fw-bold"
                           onClick={() => openAddDrugsPopup()}
                         >
                           Add Drugs
@@ -80,7 +134,7 @@ const DrugSetting = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="container mt-3">
+                  <div className="container-fluid mt-3">
                     <div className="banner-mid">
                       <div>
                         <h6 className="text-light">Drug List</h6>
@@ -93,9 +147,9 @@ const DrugSetting = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno" style={{ width: "10%" }}>
-                              Drug ID
-                            </th>
+                            <th className="table-sno">Drug ID</th>
+                            <th>HSN Code</th>
+                            <th>Item Code</th>
                             <th
                               className="table-small"
                               style={{ width: "20%" }}
@@ -108,123 +162,46 @@ const DrugSetting = () => {
                             >
                               Drug Strength
                             </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Instructions
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Actions
-                            </th>
+                            <th className="table-small">Instructions</th>
+                            <th className="table-small">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              1
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Paracetamol
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              400 Mg
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Take Only incase of fever
-                            </td>
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditDrugsPopup()}
-                              >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              1
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Paracetamol
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              400 Mg
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Take Only incase of fever
-                            </td>
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditDrugsPopup()}
-                              >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno" style={{ width: "10%" }}>
-                              1
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Paracetamol
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              400 Mg
-                            </td>
-                            <td
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Take Only incase of fever
-                            </td>
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditDrugsPopup()}
-                              >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
+                          {getDrugList?.map((item) => (
+                            <>
+                              <tr className="table-row">
+                                <td className="table-sno">{item.drug_id}</td>
+                                <td>{item.HSN_code}</td>
+                                <td>{item.item_code}</td>
+                                <td
+                                  className="table-small"
+                                  style={{ width: "20%" }}
+                                >
+                                  {item.drug_name}
+                                </td>
+                                <td
+                                  className="table-small"
+                                  style={{ width: "20%" }}
+                                >
+                                  {item.drug_strength}
+                                </td>
+                                <td className="table-small">
+                                  {item.instruction}
+                                </td>
+                                <td>
+                                  <button
+                                    className="btn btn-warning"
+                                    onClick={() => openEditDrugsPopup()}
+                                  >
+                                    Edit
+                                  </button>
+                                  <button className="btn btn-danger mx-1">
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            </>
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -245,41 +222,47 @@ const DrugSetting = () => {
               >
                 <input
                   type="text"
+                  placeholder="Add HSN Code"
+                  className="rounded p-2"
+                  name="HSN_code"
+                  value={addDrugs.HSN_code}
+                  onChange={handleAddDrugs}
+                />
+                <br />
+                <input
+                  type="text"
+                  placeholder="Add Item Code"
+                  className="rounded p-2"
+                  name="item_code"
+                  value={addDrugs.item_code}
+                  onChange={handleAddDrugs}
+                />
+                <br />
+                <input
+                  type="text"
                   placeholder="Add Drug Name"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="drug_name"
+                  value={addDrugs.drug_name}
+                  onChange={handleAddDrugs}
                 />
                 <br />
                 <input
                   type="text"
                   placeholder="Add strength"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="drug_strength"
+                  value={addDrugs.drug_strength}
+                  onChange={handleAddDrugs}
                 />
                 <br />
                 <input
                   type="text"
                   placeholder="Add Instruction"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="instruction"
+                  value={addDrugs.instruction}
+                  onChange={handleAddDrugs}
                 />
                 <br />
 

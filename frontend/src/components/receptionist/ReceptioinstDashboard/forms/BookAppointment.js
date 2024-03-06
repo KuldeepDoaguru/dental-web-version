@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Select from 'react-select';
 import axios from "axios";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleTableRefresh } from '../../../../redux/user/userSlice';
 
 
 
 function BookAppointment() {
-
-    
+  
+  const dispatch = useDispatch();
+  const {refreshTable,currentUser} = useSelector((state) => state.user);
   const  [formdata,setFormData ] = useState({})
-  const  branch = "Madan Mahal"
+  const  branch = currentUser.branch_name
   const [searchQuery, setSearchQuery] = useState("");
   const [searchDoctor, setSearchDoctor] = useState("");
   const [showDoctorList,setShowDoctorList] = useState(false);
@@ -63,6 +65,10 @@ function BookAppointment() {
      getTreatment();
      getDoctors();
   },[]);
+
+  useEffect(()=>{
+    getPatient();
+  },[refreshTable])
 
 
 
@@ -370,19 +376,16 @@ const isDoctorAvailable = (selectedDateTime) => {
   if (isSlotAvailable) {
     // Slot is available, proceed with booking
     const newAppointment = {
-      branch_name : "Madan Mahal",
+      branch_name : branch,
       patient_uhid : selectedPatient.uhid,
-      patient_name: selectedPatient.patient_name,
-      mobile: selectedPatient.mobileno,
-
       doctorId: selectedDoctor.employee_ID,
       doctor_name: selectedDoctor.employee_name,
       appDateTime: bookData.appDateTime,
       treatment: selectedTreatment,
       notes: bookData.notes,
-      status : "appoint",
-      appointment_created_by: "rahul",
-      appointment_created_by_emp_id: "10"
+      status : "Appoint",
+      appointment_created_by: currentUser.employee_name,
+      appointment_created_by_emp_id: currentUser.employee_ID
     };
   
 
@@ -402,6 +405,7 @@ const isDoctorAvailable = (selectedDateTime) => {
       console.log(response);
       if(response.data.success){
         alert(response?.data?.message);
+        dispatch(toggleTableRefresh());
        }
        else{
         alert(response?.data?.message);
@@ -662,7 +666,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                         
                       </div>
 
-                      <div className="d-flex  mt-4">
+                      {/* <div className="d-flex  mt-4">
                      <div className="col-sm-3 p-0 ">
                        <div className="form-outline">
                          <label className="form-label" for="form6Example1">
@@ -743,7 +747,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                          </label>
                        </div>
                      </div>
-                     </div>
+                     </div> */}
 
                      <div className="formbtn d-flex justify-content-center">
                         <button className="btn btn-success " type="submit" id="btn2">

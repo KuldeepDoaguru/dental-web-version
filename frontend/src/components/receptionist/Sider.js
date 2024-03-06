@@ -1,8 +1,24 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components'
+import { clearUser } from '../../redux/user/userSlice';
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function Sider() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const logout = () =>{
+    // Display a confirmation popup
+    const isConfirmed = window.confirm('Are you sure you want to Logout?');
+ 
+    if (!isConfirmed) {
+      // If the user cancels the deletion, do nothing
+      return;
+    }
+ 
+     dispatch(clearUser())
+     navigate("/")
+   }
   return (
     <Wrapper> 
     <div className=" px-sm-2 px-0 mt-1 " id="sidebar" >
@@ -125,9 +141,9 @@ function Sider() {
                       data-bs-toggle="collapse"
                       className="nav-link px-0 align-middle"
                     >
-                     <i className="fs-4 bi bi-power"></i>
+                     <i className="fs-4 bi bi-power" onClick={logout}></i>
                       <br />
-                      <span className=" d-none d-sm-inline " id="navleft">
+                      <span className=" d-none d-sm-inline " id="navleft" onClick={logout}>
                         Logout
                       </span>{" "}
                     </a>

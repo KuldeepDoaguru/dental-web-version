@@ -23,8 +23,11 @@ import LabSection from './pages/receptionist/LabSection'
 import ReportSection from './pages/receptionist/ReportSection'
 import NewPatient from './pages/receptionist/NewPatient'
 import Inquiry from "./pages/receptionist/Inquiry";
+import { useSelector } from "react-redux";
 
 function App() {
+
+  const user = useSelector((state) => state.user);
   return (
     <Routes>
       
@@ -34,7 +37,7 @@ function App() {
       {/* receptionist routes start */}
       <Route path="/receptionist_login" element={<Login />} />
       <Route path="/receptionist_registration" element={<Registration />} />
-      <Route path='/receptionist-dashboard' Component={Receptionistdash}/>
+      <Route path='/receptionist-dashboard' element={ user.currentUser=== null ? <UniversalLogin/>  : <Receptionistdash/>}/>
     <Route path='/all_patient' Component={AllPatient}/>
     <Route path='/inquiry' element={<Inquiry/>}/>
     <Route path='/patient_profile' Component={PatientProfile}/>

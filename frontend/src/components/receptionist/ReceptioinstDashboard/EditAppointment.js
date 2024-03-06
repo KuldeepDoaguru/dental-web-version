@@ -6,8 +6,13 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import Select from 'react-select';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleTableRefresh } from '../../../redux/user/userSlice';
 
 function EditAppointment({ onClose, appointmentInfo }) {
+  const dispatch = useDispatch();
+  const {currentUser} = useSelector((state) => state.user);
+
   const [show, setShow] = useState(false);
   const [searchDoctor, setSearchDoctor] = useState(appointmentInfo.assigned_doctor_name);
   const [showDoctorList,setShowDoctorList] = useState(false);
@@ -15,7 +20,7 @@ function EditAppointment({ onClose, appointmentInfo }) {
   const [selectedTreatment, setSelectedTreatment] = useState([appointmentInfo.treatment_provided]);
   const [treatments,setTreatment] = useState([]);
   const [doctors,setDoctors] = useState([]);
-  const  branch = "Madan Mahal"
+  const  branch = currentUser.branch_name;
 
   const getTreatment = async () =>{
     try{
@@ -73,8 +78,8 @@ function EditAppointment({ onClose, appointmentInfo }) {
     treatment_provided:appointmentInfo.treatment_provided,
     notes:appointmentInfo.notes,
     appointment_status:appointmentInfo.appointment_status,
-    appointment_updated_by:"mohit",
-    appointment_updated_by_emp_id: "20"
+    appointment_updated_by:currentUser.employee_name,
+    appointment_updated_by_emp_id: currentUser.employee_ID
 
   });
 
@@ -194,7 +199,6 @@ function EditAppointment({ onClose, appointmentInfo }) {
       const newAppointment = {
 
         appoint_id : appointmentInfo.appoint_id,
-        patient_name : appointmentInfo.patient_name,
         appDateTime:data.appointment_dateTime,
         doctor_name:selectedDoctor.employee_name,
         doctorId : selectedDoctor.employee_ID,
@@ -221,6 +225,7 @@ function EditAppointment({ onClose, appointmentInfo }) {
         console.log(response);
         if(response.data.success){
           alert(response?.data?.message);
+          dispatch(toggleTableRefresh());
          }
          else{
           alert(response?.data?.message);

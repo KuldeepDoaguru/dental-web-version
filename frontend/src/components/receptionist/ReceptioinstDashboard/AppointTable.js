@@ -12,7 +12,7 @@ const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const {refreshTable} = useSelector((state) => state.user);
+  const {refreshTable,currentUser} = useSelector((state) => state.user);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState("");
 
@@ -20,7 +20,7 @@ const AppointTable = () => {
 
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const  branch = "Madan Mahal"
+  const  branch = currentUser.branch_name;
   const [appointmentsData,setAppointmentData] = useState([]);
 
   const getAppointments = async ()=>{
@@ -49,7 +49,7 @@ const AppointTable = () => {
 const handleStatusChange = async (appointmentId, newStatus) => {
   try {
     // Send a PUT request to your backend endpoint to update the status
-    await axios.put(`http://localhost:4000/api/v1/receptionist/update-appointment-status`, { status: newStatus, appointmentId:appointmentId,appointment_updated_by:"mohit",appointment_updated_by_emp_id: "20" });
+    await axios.put(`http://localhost:4000/api/v1/receptionist/update-appointment-status`, { status: newStatus, appointmentId:appointmentId,appointment_updated_by:currentUser.employee_name,appointment_updated_by_emp_id: currentUser.employee_ID });
     // Optionally, you can re-fetch appointments after successful update
     getAppointments();
   } catch (error) {
@@ -243,7 +243,7 @@ const handleStatusChange = async (appointmentId, newStatus) => {
             <tr key={index}>
               <td>{patient.appoint_id}</td>
               <td>{patient.patient_name}</td>
-              <td>{patient.patient_contact}</td>
+              <td>{patient.mobileno}</td>
               <td>{patient.appointment_dateTime
 }</td>
               <td>{patient.treatment_provided

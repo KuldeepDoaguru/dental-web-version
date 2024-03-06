@@ -1,5 +1,7 @@
 const {db} = require('../db');
 const dotenv = require('dotenv');
+const bcrypt = require("bcryptjs");
+const JWT = require("jsonwebtoken");
 dotenv.config();
 
 // const addPatient = (req,res) =>{
@@ -224,16 +226,14 @@ const addPatient = (req, res) => {
                       } else {
                           // Proceed with booking appointment
                           const bookAppointmentQuery = `
-                              INSERT INTO apointments (
-                                  patient_uhid, branch_name, patient_name, patient_contact, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status, notes, appointment_created_by, appointment_created_by_emp_id, created_at
-                              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                              INSERT INTO appointments (
+                                  patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status, notes, appointment_created_by, appointment_created_by_emp_id, created_at
+                              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                           `;
                          
                           const bookAppointmentParams = [
                             newPatientID,
                               branch_name,
-                              patient_Name,
-                              mobile,
                               doctor_name,
                               doctorId,
                               appDateTime,
@@ -358,21 +358,19 @@ const getTreatment = (req,res) =>{
 
 const bookAppointment = (req,res)=>{
     try{
-      const { branch_name,patient_uhid, patient_name, mobile, status, doctorId, doctor_name, appDateTime, treatment, notes,patient_added_by, patient_added_by_emp_id } = req.body;
+      const { branch_name,patient_uhid, status, doctorId, doctor_name, appDateTime, treatment, notes,patient_added_by, patient_added_by_emp_id } = req.body;
 
       const created_at = new Date();
 
       const bookAppointmentQuery = `
-      INSERT INTO apointments (
-          patient_uhid, branch_name, patient_name, patient_contact, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status, notes, appointment_created_by, appointment_created_by_emp_id, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO appointments (
+          patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status, notes, appointment_created_by, appointment_created_by_emp_id, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
   const bookAppointmentParams = [
     patient_uhid,
     branch_name,
-    patient_name,
-    mobile,
     doctor_name,
     doctorId,
     appDateTime,
@@ -414,16 +412,16 @@ db.query(bookAppointmentQuery, bookAppointmentParams, (appointmentErr, appointme
 
 const updateAppointment = (req, res) => {
   try {
-      const { appoint_id,  patient_name, doctorId, doctor_name, appDateTime, treatment, notes, appointment_updated_by, appointment_updated_by_emp_id } = req.body;
+      const { appoint_id, doctorId, doctor_name, appDateTime, treatment, notes, appointment_updated_by, appointment_updated_by_emp_id } = req.body;
 
       const updated_at = new Date();
 
       const updateAppointmentQuery = `
-          UPDATE apointments
+          UPDATE appointments
           SET 
              
              
-              patient_name = ?,  
+                
               assigned_doctor_name = ?, 
               assigned_doctor_id = ?, 
               appointment_dateTime = ?, 
@@ -438,7 +436,7 @@ const updateAppointment = (req, res) => {
 
       const updateAppointmentParams = [
         
-          patient_name,
+          
           doctor_name,
           doctorId,
           appDateTime,
@@ -487,7 +485,7 @@ const updateAppointmentStatus = (req, res) => {
       const updated_at = new Date();
 
       const updateAppointmentQuery = `
-          UPDATE apointments
+          UPDATE appointments
           SET appointment_status = ?, updated_at = ?,appointment_updated_by = ?,appointment_updated_by_emp_id = ?
           WHERE appoint_id = ?
       `;
@@ -530,14 +528,14 @@ const getAppointments = (req,res) =>{
     const sql = `
         SELECT 
             a.appoint_id,
-            a.patient_name,
-            a.patient_contact,
             a.assigned_doctor_name,
             a.assigned_doctor_id,
             a.appointment_status,
             a.appointment_dateTime,
             a.treatment_provided,
             a.notes,
+            p.patient_name,
+            p.mobileno,
             p.dob,
             p.age,
             p.weight,
@@ -546,7 +544,7 @@ const getAppointments = (req,res) =>{
             p.allergy,
             p.patient_type
         FROM 
-            apointments AS a
+            appointments AS a
         JOIN 
             patient_details AS p ON a.patient_uhid = p.uhid WHERE
             a.branch_name = ?
@@ -599,4 +597,245 @@ const getDoctorDataByBranch = (req, res) => {
     });
   }
 };
-module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointment};
+
+const getBranch = (req,res) =>{
+  try{
+    const sql = 'SELECT * FROM branches';
+
+    db.query(sql,(err,results) =>{
+      if(err){
+        console.error('Error fetching Branches from MySql:' , err);
+        res.status(500).json({error : "Error fetching Branches"});
+      }
+      else {
+        res.status(200).json({data: results,message : "Branches fetched successfully"})
+      }
+
+    })
+}
+catch(error){
+  console.error('Error fetching Branches from MySql:' , error);
+  res.status(500).json({
+    success: false,
+    message: "Error in fetched Branches",
+    error: error.message,
+  })
+
+}
+}
+
+const LoginReceptionist =  (req, res) => {
+  try {
+    const { email, password,	branch_name } = req.body;
+    if(!branch_name){
+      return res.status(404).json({
+        success : false,
+        message:"Please select branch"
+      })
+    }
+    if (!email || !password) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    db.query(
+      `SELECT * FROM employee_register WHERE employee_email = ?`,
+      [email],
+       (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+          });
+        }
+        if (result.length === 0) {
+          return res.status(500).json({
+            success: false,
+            message:
+              "Email is not registered Please contact team for furthur assistance",
+          });
+        }
+
+        const user = result[0];
+
+        const match = bcrypt.compareSync(password, user.employee_password);
+        if (!match) {
+          return res.status(401).json({
+            success: "false",
+            message: "Invalid password",
+          });
+        }
+
+        if(!user.employee_role.includes("receptionist")){
+          return res.status(401).json({
+            success: "false",
+            message: "Please login with receptionist email",
+          });
+        }
+        if(user.branch_name !== branch_name){
+          return res.status(401).json({
+            success: "false",
+            message: "Please login with your branch",
+          });
+        }
+
+        if(user.employee_status !== "Approved"){
+          return res.status(401).json({
+            success: "false",
+            message: "Your Email is not approved, Please contact team for furthur assistance",
+          });
+        }
+
+      
+
+        const token =  JWT.sign({ id: user.id }, process.env.JWT_SECRET, {
+          expiresIn: "7d",
+        });
+
+        res.status(200).json({
+          success: "true",
+          message: "Login successful",
+          
+          user: {
+            employee_ID: user.employee_ID,
+            email: user.email,
+            branch_name: user.branch_name,
+            employee_name : user.employee_name,
+            employee_mobile : user.employee_mobile,
+            employee_designation : user.employee_designation,
+            employee_picture : user.employee_picture,
+            token: token
+
+          },
+          
+        });
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ success: "false", message: "Login failed", error: error });
+  }
+};
+
+
+const sendOtp = (req, res) => {
+  const { email } = req.body;
+
+  // random otp
+  function generateOTP(length) {
+    const chars = "0123456789";
+    let otp = "";
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      otp += chars[randomIndex];
+    }
+
+    return otp;
+  }
+
+  const OTP = generateOTP(6);
+
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAILSENDER,
+        pass: process.env.EMAILPASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAILSENDER,
+      to: email,
+      subject: "Password Reset OTP",
+      text: `Your OTP for password reset is: ${OTP}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+        return res
+          .status(500)
+          .json("An error occurred while sending the email.");
+      } else {
+        console.log("OTP sent:", info.response);
+
+        const selectQuery = "SELECT * FROM otpcollections WHERE email = ?";
+        db.query(selectQuery, email, (err, result) => {
+          if (err) {
+            res.status(400).json({ success: false, message: err.message });
+          }
+          if (result && result.length > 0) {
+            const updateQuery =
+              "UPDATE otpcollections SET code = ? WHERE email = ?";
+            db.query(updateQuery, [OTP, email], (upErr, upResult) => {
+              if (upErr) {
+                res
+                  .status(400)
+                  .json({ success: false, message: upErr.message });
+              }
+              res.status(200).send(upResult);
+            });
+          } else {
+            // Assuming you have a 'db' object for database operations
+            db.query(
+              "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)",
+              [email, OTP],
+              (err, result) => {
+                if (err) {
+                  console.error(err);
+                  return res
+                    .status(500)
+                    .send({ message: "Failed to store OTP" });
+                }
+
+                res.status(200).json({ message: "OTP sent successfully" });
+              }
+            );
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("An error occurred.");
+  }
+};
+
+const verifyOtp = (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    db.query(
+      "SELECT * FROM otpcollections WHERE email = ? AND code = ?",
+      [email, otp],
+      (err, result) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        }
+        if (result.length > 0) {
+          return res
+            .status(200)
+            .json({ success: true, message: "Otp verification  success" });
+        } else {
+          return res
+            .status(404)
+            .json({ success: false, message: "Invalid email or OTP" });
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+
+module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointment,LoginReceptionist,getBranch};

@@ -4,7 +4,7 @@ import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { Modal, Button } from 'react-bootstrap';
 import axios from "axios";
-import { useDispatch } from 'react-redux';
+import { useDispatch ,useSelector} from 'react-redux';
 import { toggleTableRefresh } from '../../../../redux/user/userSlice';
 
 
@@ -12,8 +12,11 @@ import { toggleTableRefresh } from '../../../../redux/user/userSlice';
 function AddPatient() {
 
   const dispatch = useDispatch();
+  
+  const user = useSelector((state) => state.user);
   const  [formdata,setFormData ] = useState({})
-   const  branch = "Madan Mahal"
+   const  branch = user.currentUser.branch_name;
+   
   const [searchQuery, setSearchQuery] = useState("");
   const [searchDoctor, setSearchDoctor] = useState("");
   const [showDoctorList,setShowDoctorList] = useState(false);
@@ -26,6 +29,33 @@ function AddPatient() {
   const [disease, setDisease] = useState([]);
   const [treatments,setTreatment] = useState([]);
   const [doctors,setDoctors] = useState([]);
+
+  const [patients, setPatients] = useState([]);
+  const [appointmentsData,setAppointmentsData] = useState([]);
+  
+  const getPatient = async () =>{
+    try{
+      const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-Patients');
+      console.log(response);
+      setPatients(response?.data?.data)
+     }
+     catch(error){
+        console.log(error)
+     }
+    
+  }
+
+  
+
+  const getAppointments = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
+      setAppointmentsData(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
 
 
   const getDoctors = async ()=>{
@@ -68,6 +98,8 @@ function AddPatient() {
 
 
   useEffect(()=>{
+    getPatient();
+    getAppointments();
     getDisease();
     getTreatment();
     getDoctors();
@@ -240,8 +272,7 @@ console.log(selectedDoctor)
 
   console.log(bookData)
 
-  console.log(appointment_data)
-
+  console.log(appointmentsData)
   useEffect(()=>{
     const calculateAge = (date) => {
       const dob = new Date(date);
@@ -258,6 +289,7 @@ console.log(selectedDoctor)
     };
     calculateAge(data.dob);
   },[data.dob])
+  console.log(patients)
   
   const handleChange = (e)=>{
       const {name,value} = e.target;
@@ -275,6 +307,11 @@ console.log(selectedDoctor)
       console.log("Please select a doctor");
       return;
     }
+
+    if (patients.some(patient => patient.patient_name === data.patient_Name && patient.mobileno === data.mobile)) {
+      alert("Patient already exists");
+      return;
+  }
 
      // Convert appointment time to Date object
   const selectedDateTime = new Date(data.appDateTime);
@@ -307,12 +344,12 @@ console.log(selectedDoctor)
   
 
    
-    const isSlotAvailable = appointment_data.every((appointment) => {
+    const isSlotAvailable = appointmentsData.every((appointment) => {
       // Check if the appointment is for the selected doctor and if it falls within the same datetime range
-      const appointmentDate = new Date(appointment.timing);
+      const appointmentDate = new Date(appointment.appointment_dateTime);
       const selectedDate = new Date(data.appDateTime);
       
-      return !(appointment.doctorId === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
+      return !(appointment.assigned_doctor_id === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
     });
 
     console.log(isSlotAvailable)
@@ -320,7 +357,7 @@ console.log(selectedDoctor)
     if (isSlotAvailable) {
       // Slot is available, proceed with booking
       const newPatient = {
-        branch_name:"Madan Mahal",
+        branch_name:branch,
         patient_Name: data.patient_Name,
         mobile: data.mobile,
         email: data.email,
@@ -334,7 +371,7 @@ console.log(selectedDoctor)
         address: data.address,
         weight: data.weight,
         allergy: data.allergy,
-        status : "appoint",
+        status : "Appoint",
         disease: selectedDisease.map((option) => option.value).toString(),
         patientType: data.patientType,
         doctorId: selectedDoctor.employee_ID,
@@ -342,38 +379,45 @@ console.log(selectedDoctor)
         appDateTime: data.appDateTime,
         treatment: selectedTreatment,
         notes: data.notes,
-        patient_added_by: "ravi",
-        patient_added_by_emp_id : "11",
+        patient_added_by: user.currentUser.employee_name,
+        patient_added_by_emp_id : user.currentUser.employee_ID,
 
 
       };
 
       if (!isDoctorAvailable(selectedDateTime)) {
         // Doctor is not available at the specified time
-
+       
+        
+        
 
         const confirmation = window.confirm("The selected doctor is not available at the specified time. Do you want to proceed with booking?");
         if (!confirmation) {
           return; // If the user cancels, return early
         } }
 
-      try{
-         const response = await axios.post('http://localhost:4000/api/v1/receptionist/add-patient',newPatient);
-         console.log(response);
-         if(response?.data?.success){
-          alert(response?.data?.message);
-          dispatch(toggleTableRefresh());
-         }
-         else{
-          alert(response?.data?.message);
-         }
 
-      }
-      catch(error){
-        console.log(error)
-        alert(error.response.data.message);
+        try{
+          const response = await axios.post('http://localhost:4000/api/v1/receptionist/add-patient',newPatient);
+          console.log(response);
+          if(response?.data?.success){
+           alert(response?.data?.message);
+           dispatch(toggleTableRefresh());
+          }
+          else{
+           alert(response?.data?.message);
+          }
+ 
+       }
+       catch(error){
+         console.log(error)
+         alert(error.response.data.message);
+ 
+       }
 
-      }
+    
+
+     
   
       // setPatients([...patients, newPatient]);
       // setAppointmentData([...appointment_data,newPatient]);
@@ -794,7 +838,7 @@ const handleDoctorSelect = (doctor) => {
                        </div>
                      </div>
                      
-                    <div className="d-flex  mt-4">
+                    {/* <div className="d-flex  mt-4">
                      <div className="col-sm-3 p-0 ">
                        <div className="form-outline">
                          <label className="form-label" for="form6Example1">
@@ -834,8 +878,8 @@ const handleDoctorSelect = (doctor) => {
                          </label>
                        </div>
                      </div>
-                     </div>
-                     <div className="d-flex ">
+                     </div> */}
+                     {/* <div className="d-flex ">
                      <div className="col-sm-3 p-0">
                        <div className="form-outline">
                          <label className="form-label" for="form6Example1">
@@ -875,7 +919,7 @@ const handleDoctorSelect = (doctor) => {
                          </label>
                        </div>
                      </div>
-                     </div>
+                     </div> */}
 
                    
                    </div>

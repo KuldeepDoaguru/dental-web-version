@@ -126,7 +126,7 @@ const TPrescription = () => {
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
-                        <label class="form-label" htmlFor="duration">Frequency</label>
+                        <label class="form-label" htmlFor="duration">Duration</label>
                         <select id="duration" class="form-control" name="duration" value={formData.duration} onChange={handleInputChange}>
                           <option value="">Choose duration</option>
                           <option value="1 day">1 day</option>

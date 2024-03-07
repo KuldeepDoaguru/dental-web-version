@@ -25,6 +25,7 @@ import TPrescription from "./components/Doctor/Prescription/TreatmentPrescriptio
 import TPrescriptionDash from "./components/Doctor/Prescription/TreatmentPrescription/TPrescriptionDash";
 import HistoryDashBoard from "./components/Doctor/HistoryFolder/HistoryDashBoard";
 import HeadBar from "./components/Doctor/HeadBar";
+import DoctorLogin from "./components/Doctor/Login/DoctorLogin";
 
 function App() {
   return (
@@ -32,9 +33,10 @@ function App() {
       <Route path="/receptionist_login" element={<Login />} />
       <Route path="/receptionist_registration" element={<Registration />} />
       <Route path="/superadmin-dashboard" element={<Dashboard />} />
-      <Route path="/" element={<UniversalLogin />} />
+      <Route path="/UniversalLogin" element={<UniversalLogin />} />
 
       {/* ************** Doctor Routes Start Here ******************* */}
+      <Route path="/" element={<DoctorLogin />} />
       <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
       
       <Route path="/card" element={<Card />} />
@@ -54,7 +56,6 @@ function App() {
       <Route path="/PrescriptionDashBoard" element={<PrescriptionDashBoard />} />
       <Route path="/CreatePrescrip" element={<CreatePrescrip />} />
       <Route path="/TPrescription" element={<TPrescription />} />
-      <Route path="/TPrescriptionDash" element={<TPrescriptionDash />} />
       <Route path="/TPrescriptionDash" element={<TPrescriptionDash />} />
       <Route path="/HistoryDashBoard" element={<HistoryDashBoard />} />
       {/* test */}

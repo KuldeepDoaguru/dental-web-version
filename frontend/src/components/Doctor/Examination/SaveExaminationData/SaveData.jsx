@@ -34,18 +34,23 @@ const SaveData = ({ id }) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+
+    // Handle Update Data
+
     const handleSubmit = async (id, e) => {
         e.preventDefault();
         try {
             const response = await axios.put(`http://localhost:8888/api/doctor/updatedentalPediatric/${id}`, formData);
+            window.location.reload();
             console.log(response.data);
             // Handle success
+          
         } catch (error) {
             console.error('Error:', error);
             // Handle error
         }
     };
-
+    
     const handleModalOpen = (index) => {
         // Set formData with values of the item being edited
         const item = data[index];
@@ -61,6 +66,26 @@ const SaveData = ({ id }) => {
         setModalIndex(index);
     };
 
+      // Handle Delete Data
+
+      const handleDelete = async (id) => {
+        try {
+            const confirmed = window.confirm("Are you sure you want to delete?"); // Show confirmation dialog
+    
+            if (confirmed) {
+                const res = await axios.delete(`http://localhost:8888/api/doctor/deleteDentalPediatric/${id}`);
+                console.log(res.data); // Log response data
+                
+                setData(data.filter(item => item.id !== id)); // Remove deleted item from data
+            }
+        } catch (error) {
+            console.log(error);
+            // Optionally, provide feedback to the user
+            window.alert("An error occurred while deleting the item.");
+        }
+    }
+    
+
     return (
         <Wrapper>
             <div className="container">
@@ -69,15 +94,15 @@ const SaveData = ({ id }) => {
                     <ul className="list">
                         {data.map((item, index) => (
                             <li className="list-item" key={index}>
-                                <div className="d-flex justify-content-start px-2">
+                                
+                                <div className="justify-content-start px-2">
                                     {`SELECTED TEETH : ${item.selected_teeth}, DISEASE : ${item.disease}, CHIEF COMPLAIN : ${item.chief_complain}, ADVICE : ${item.advice}, ON EXAMINATION : ${item.on_examination}`}
                                 </div>
-                                <br />
-                                <div className="d-flex justify-content-end">
+                                <div className="justify-content-end">
                                 <button type="button" className="btn btn-primary justify-content-end" data-bs-toggle="modal" data-bs-target={`#exampleModal-${index}`} onClick={() => handleModalOpen(index)}>
                                     <MdEdit size={20} />
                                 </button>
-                                <button className="btn btn-danger mx-1 justify-content-end"><MdDelete size={20} /></button>
+                                <button className="btn btn-danger mx-1 justify-content-end" onClick={()=>handleDelete(item.id)}><MdDelete size={20} /></button>
                                 </div>
                                 <div className="modal fade" id={`exampleModal-${index}`} tabIndex="-1" aria-labelledby={`exampleModalLabel-${index}`} aria-hidden="true">
                                     <div className="modal-dialog modal-dialog-centered">

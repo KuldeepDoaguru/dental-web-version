@@ -719,6 +719,7 @@ const PediatricDentalTest = () => {
     try {
       const response = await axios.post('http://localhost:8888/api/doctor/dentalPediatric', formData);
       console.log(response.data);
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
@@ -825,7 +826,7 @@ const PediatricDentalTest = () => {
                     <p><strong>Patient Name</strong> : {item.patient_name}</p>
                   </div>
                   <div className="col-lg-4">
-                    <p><strong>Patient Mobile No.</strong> : {item.patient_contact}</p>
+                    <p><strong>Patient Mobile No.</strong> : {item.mobileno}</p>
                   </div>
                 </div>
                 <div key={index + 'secondRow'} className="col-lg-12 d-flex justify-content-between align-items-center">

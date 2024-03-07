@@ -301,12 +301,13 @@ import mobilitybtn from "../Assest/Examination Buttons/mobility.png";
 import periapicalbtn from "../Assest/Examination Buttons/periapical.png";
 import rootbtn from "../Assest/Examination Buttons/rootstump1.png";
 import suparabtn from "../Assest/Examination Buttons/Supra erupted1.png";
+import SaveData from "./SaveExaminationData/SaveData";
 
 const ExaminationPatientTest = () => {
   const { id } = useParams();
   console.log(id);
   const [selectedTeeth, setSelectedTeeth] = useState([]);
-  const [inputItemList, setInputItemList] = useState([]);
+  // const [inputItemList, setInputItemList] = useState([]);
   const [inputItem, setInputItem] = useState({
     appointment_id: id,
     selectTeeth: [],
@@ -893,12 +894,13 @@ const ExaminationPatientTest = () => {
     try {
       const response = await axios.post('http://localhost:8888/api/doctor/dentalPediatric', formData);
       console.log(response.data);
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
 
       // Push the current inputItem to inputItemList
-      setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
+      // setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
 
       // console.log("Before resetting inputItem:", inputItem);
   
@@ -967,23 +969,23 @@ const ExaminationPatientTest = () => {
     }
   }
 
-  const editItem = (index) => {
-    const selectedItem = inputItemList[index]; // Get the item to edit
-    setInputItem({
-      selectTeeth: selectedItem.selectTeeth,
-      desease: selectedItem.desease,
-      chiefComplain: selectedItem.chiefComplain,
-      advice: selectedItem.advice,
-      onExamination: selectedItem.onExamination,
-    });
-  };
+  // const editItem = (index) => {
+  //   const selectedItem = inputItemList[index]; // Get the item to edit
+  //   setInputItem({
+  //     selectTeeth: selectedItem.selectTeeth,
+  //     desease: selectedItem.desease,
+  //     chiefComplain: selectedItem.chiefComplain,
+  //     advice: selectedItem.advice,
+  //     onExamination: selectedItem.onExamination,
+  //   });
+  // };
 
-  const deleteItem = (index) => {
-    // Your logic to delete the item at the given index
-    const newList = [...inputItemList];
-    newList.splice(index, 1);
-    setInputItemList(newList);
-  };
+  // const deleteItem = (index) => {
+  //   // Your logic to delete the item at the given index
+  //   const newList = [...inputItemList];
+  //   newList.splice(index, 1);
+  //   setInputItemList(newList);
+  // };
 
   const getPatientDetail = async () =>{
     try {
@@ -1021,7 +1023,7 @@ const ExaminationPatientTest = () => {
                 <p><strong>Patient Name</strong> : {item.patient_name}</p>
               </div>
               <div className="col-lg-4">
-                <p><strong>Patient Mobile No.</strong> : {item.patient_contact}</p>
+                <p><strong>Patient Mobile No.</strong> : {item.mobileno}</p>
               </div>
             </div>
             <div key={index + 'secondRow'}  className="col-lg-12 d-flex justify-content-between align-items-center">
@@ -1720,18 +1722,19 @@ const ExaminationPatientTest = () => {
                 </form> 
               </div>
               <div>
-                <h2>Saved Data</h2>
+               <SaveData id={id}/>
+                {/* <h2>Saved Data</h2>
                 <div>
                   {inputItemList.length ? (
                     <ul className="list">
                       {inputItemList.map((item, index) => (
                         <li key={index} className="list-item">
                           {/* Render each item's properties */}
-                          Select Teeth: {item.selectTeeth.join(", ")}, Disease:{" "}
+                          {/* Select Teeth: {item.selectTeeth.join(", ")}, Disease:{" "}
                           {item.desease}, Chief Complaint: {item.chiefComplain},
                           Advice: {item.advice}, On Examination:{" "}
-                          {item.onExamination}
-                          <div className="buttons">
+                          {item.onExamination} */}
+                          {/* <div className="buttons">
                             <button
                               className="btn btn-primary mx-1"
                               onClick={() => editItem(index)}
@@ -1753,7 +1756,7 @@ const ExaminationPatientTest = () => {
                       Currently, there is no available data.
                     </p>
                   )}
-                </div>
+                </div> */}
               </div>
             </div>
 

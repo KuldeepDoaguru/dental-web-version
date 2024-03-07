@@ -193,13 +193,15 @@ import mobilitybtn from "../Assest/Examination Buttons/mobility.png";
 import periapicalbtn from "../Assest/Examination Buttons/periapical.png";
 import rootbtn from "../Assest/Examination Buttons/rootstump1.png";
 import suparabtn from "../Assest/Examination Buttons/Supra erupted1.png";
+import SaveData from "./SaveExaminationData/SaveData";
 
 const PediatricDentalTest = () => {
   const { id } = useParams();
   console.log(id);
   const [selectedTeeth, setSelectedTeeth] = useState([]);
-  const [inputItemList, setInputItemList] = useState([]);
+  // const [inputItemList, setInputItemList] = useState([]);
   const [inputItem, setInputItem] = useState({
+    appointment_id: id,
     selectTeeth: [],
     desease: "",
     chiefComplain: "",
@@ -706,7 +708,7 @@ const PediatricDentalTest = () => {
 
     // Prepare data to send to the backend
     const formData = {
-      id: id,
+      appointment_id: id,
       selectedTeeth: inputItem.selectTeeth.join(", "),
       disease: inputItem.desease,
       chiefComplain: inputItem.chiefComplain,
@@ -722,11 +724,12 @@ const PediatricDentalTest = () => {
     }
 
     // Push the current inputItem to inputItemList
-    setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
+    // setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
 
     // console.log("Before resetting inputItem:", inputItem);
 
     setInputItem({
+      appointment_id: id,
       selectTeeth: [],
       desease: "",
       chiefComplain: "",
@@ -764,23 +767,23 @@ const PediatricDentalTest = () => {
     }
   };
 
-  const editItem = (index) => {
-    const selectedItem = inputItemList[index]; // Get the item to edit
-    setInputItem({
-      selectTeeth: selectedItem.selectTeeth,
-      desease: selectedItem.desease,
-      chiefComplain: selectedItem.chiefComplain,
-      advice: selectedItem.advice,
-      onExamination: selectedItem.onExamination,
-    });
-  };
+  // const editItem = (index) => {
+  //   const selectedItem = inputItemList[index]; // Get the item to edit
+  //   setInputItem({
+  //     selectTeeth: selectedItem.selectTeeth,
+  //     desease: selectedItem.desease,
+  //     chiefComplain: selectedItem.chiefComplain,
+  //     advice: selectedItem.advice,
+  //     onExamination: selectedItem.onExamination,
+  //   });
+  // };
 
-  const deleteItem = (index) => {
-    // Your logic to delete the item at the given index
-    const newList = [...inputItemList];
-    newList.splice(index, 1);
-    setInputItemList(newList);
-  };
+  // const deleteItem = (index) => {
+  //   // Your logic to delete the item at the given index
+  //   const newList = [...inputItemList];
+  //   newList.splice(index, 1);
+  //   setInputItemList(newList);
+  // };
 
   const getPatientDetail = async () => {
     try {
@@ -1220,7 +1223,7 @@ const PediatricDentalTest = () => {
               </div>
               <div>
                 <form onSubmit={handleSave}>
-                <input type="hidden" name="id" value={id} id="form3Example1" class="form-control" />
+                <input type="hidden" name="appointment_id" value={inputItem.appointment_id} id="form3Example1" class="form-control" />
                   <div class="row mt-3">
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
@@ -1317,18 +1320,19 @@ const PediatricDentalTest = () => {
                 </form>
               </div>
               <div>
-                <h2>Saved Data</h2>
+                <SaveData id={id}/>
+                {/* <h2>Saved Data</h2>
                 <div>
                   {inputItemList.length ? (
                     <ul className="list">
                       {inputItemList.map((item, index) => (
                         <li key={index} className="list-item">
                           {/* Render each item's properties */}
-                          Select Teeth: {item.selectTeeth.join(", ")},&nbsp;&nbsp; Disease:{" "}
+                          {/* Select Teeth: {item.selectTeeth.join(", ")},&nbsp;&nbsp; Disease:{" "}
                           {item.desease},&nbsp;&nbsp; Chief Complaint: {item.chiefComplain},&nbsp;&nbsp;
                           Advice: {item.advice},&nbsp;&nbsp; On Examination:{" "}
-                          {item.onExamination}
-                          <div className="buttons">
+                          {item.onExamination} */}
+                          {/* <div className="buttons">
                             <button
                               type="button" className="btn btn-primary"
                               onClick={() => editItem(index)}
@@ -1350,7 +1354,7 @@ const PediatricDentalTest = () => {
                       Currently, there is no available data.
                     </p>
                   )}
-                </div>
+                </div>  */}
               </div>
             </div>
 

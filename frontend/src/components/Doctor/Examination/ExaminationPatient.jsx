@@ -308,6 +308,7 @@ const ExaminationPatientTest = () => {
   const [selectedTeeth, setSelectedTeeth] = useState([]);
   const [inputItemList, setInputItemList] = useState([]);
   const [inputItem, setInputItem] = useState({
+    appointment_id: id,
     selectTeeth: [],
     desease: "",
     chiefComplain: "",
@@ -340,7 +341,7 @@ const ExaminationPatientTest = () => {
         : prevSelectedTeeth.filter((val) => val !== toothNumber)
     );
 
-    setInputItem((prevInputItem) => ({
+    setInputItem((prevInputItem) => ({ 
       ...prevInputItem,
       selectTeeth: checked
         ? [...prevInputItem.selectTeeth, toothNumber]
@@ -881,6 +882,7 @@ const ExaminationPatientTest = () => {
 
     // Prepare data to send to the backend
     const formData = {
+      appointment_id: id, 
       selectedTeeth: inputItem.selectTeeth.join(", "),
       disease: inputItem.desease,
       chiefComplain: inputItem.chiefComplain,
@@ -901,6 +903,7 @@ const ExaminationPatientTest = () => {
       // console.log("Before resetting inputItem:", inputItem);
   
       setInputItem({
+        appointment_id: id,
         selectTeeth: [],
         desease: "",
         chiefComplain: "",
@@ -921,32 +924,32 @@ const ExaminationPatientTest = () => {
       setSelectedTeeth([]);
   };
 
-  const handleAddNew = () => {
-    // Push the current inputItem to inputItemList
-    setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
+  // const handleAddNew = () => {
+  //   // Push the current inputItem to inputItemList
+  //   setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
 
-    // console.log("Before resetting inputItem:", inputItem);
+  //   // console.log("Before resetting inputItem:", inputItem);
 
-    setInputItem({
-      selectTeeth: [],
-      desease: "",
-      chiefComplain: "",
-      advice: "",
-      onExamination: "",
-    });
+  //   setInputItem({
+  //     selectTeeth: [],
+  //     desease: "",
+  //     chiefComplain: "",
+  //     advice: "",
+  //     onExamination: "",
+  //   });
 
-    console.log("After resetting inputItem:", inputItem);
+  //   console.log("After resetting inputItem:", inputItem);
 
-    // Clear the checked property of all checkboxes
-    setTimeout(() => {
-      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-      checkboxes.forEach((checkbox) => {
-        checkbox.checked = false;
-      });
-    });
+  //   // Clear the checked property of all checkboxes
+  //   setTimeout(() => {
+  //     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  //     checkboxes.forEach((checkbox) => {
+  //       checkbox.checked = false;
+  //     });
+  //   });
 
-    setSelectedTeeth([]);
-  };
+  //   setSelectedTeeth([]);
+  // };
 
   useEffect(() => {
     setInputItem((prevState) => ({
@@ -1620,6 +1623,7 @@ const ExaminationPatientTest = () => {
               </div>
               <div>
                 <form onSubmit={handleSave}>
+                <input type="hidden" name="appointment_id" value={inputItem.appointment_id} id="form3Example1" class="form-control" />
                   <div class="row mt-5">
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
@@ -1699,14 +1703,14 @@ const ExaminationPatientTest = () => {
                   </div>
                   <div className="text-center m-3">
                     <button
-                      type="button"
+                      type="submit"
                       className="btn btn-info text-light mx-3"
-                      onClick={handleAddNew}
+                      // onClick={handleAddNew}
                     >
                       Add New
                     </button>
                     <button
-                      type="submit"
+                      type="button"
                       className="btn btn-info text-light mx-3"
                       onClick={() => window.location.reload()}
                     >

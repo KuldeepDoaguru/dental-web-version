@@ -5,12 +5,13 @@ const getAppointmentsWithPatientDetails = (req, res) => {
     const sql = `
         SELECT 
             a.appoint_id,
-            a.patient_name,
-            a.patient_contact,
             a.appointment_dateTime,
             a.treatment_provided,
             a.notes,
             a.appointment_status,
+            p.uhid, 
+            p.patient_name,
+            p.mobileno,
             p.dob,
             p.age,
             p.weight,
@@ -19,7 +20,7 @@ const getAppointmentsWithPatientDetails = (req, res) => {
             p.allergy,
             p.patient_type
         FROM 
-            apointments AS a
+        appointments AS a
         JOIN 
             patient_details AS p ON a.patient_uhid = p.uhid
     `;
@@ -41,12 +42,13 @@ const getAppointmentsWithPatientDetailsById = (req, res) => {
     const sql = `
         SELECT 
             a.appoint_id,
-            a.patient_name,
-            a.patient_contact,
             a.appointment_dateTime,
             a.treatment_provided,
             a.notes,
             a.appointment_status,
+            p.uhid, 
+            p.patient_name,
+            p.mobileno,
             p.dob,
             p.age,
             p.weight,
@@ -55,7 +57,7 @@ const getAppointmentsWithPatientDetailsById = (req, res) => {
             p.allergy,
             p.patient_type
         FROM 
-            apointments AS a
+        appointments AS a
         JOIN 
             patient_details AS p ON a.patient_uhid = p.uhid
         WHERE
@@ -74,25 +76,25 @@ const getAppointmentsWithPatientDetailsById = (req, res) => {
     });
 };
 
-const upDateAppointmentStatus = (req, res) =>{
+const upDateAppointmentStatus = (req, res) => {
     const { action, appointId, reason } = req.body;
-    const selectQuery = "SELECT * FROM apointments WHERE appoint_id = ?";
-    db.query(selectQuery, appointId, (err,result)=>{
-        if(err){
-           return res.status(400).json({success:false, message:err.message})
+    const selectQuery = "SELECT * FROM appointments WHERE appoint_id = ?";
+    db.query(selectQuery, appointId, (err, result) => {
+        if (err) {
+            return res.status(400).json({ success: false, message: err.message })
 
         }
-        if(result && result.length > 0){
-            const updateQuery = "UPDATE apointments SET appointment_status = ?, cancel_reason = ? WHERE appoint_id = ?";
-            db.query(updateQuery, [action, reason, appointId],(upErr,upRes)=>{
-                if(upErr){
-                    return res.status(400).json({success:false, message:upErr.message})
-                }else{
+        if (result && result.length > 0) {
+            const updateQuery = "UPDATE appointments SET appointment_status = ?, cancel_reason = ? WHERE appoint_id = ?";
+            db.query(updateQuery, [action, reason, appointId], (upErr, upRes) => {
+                if (upErr) {
+                    return res.status(400).json({ success: false, message: upErr.message })
+                } else {
                     return res.status(200).send(upRes)
                 }
             })
-        }else{
-            res.status(400).json({success:false, message:"appoint ID not valid"})
+        } else {
+            res.status(400).json({ success: false, message: "appoint ID not valid" })
         }
     })
 }
@@ -136,5 +138,5 @@ const getAppointmentById = (req, res) => {
 
 
 
-module.exports = { getAppointTable, getAppointmentById, getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus }; 
+module.exports = { getAppointTable, getAppointmentById, getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus };
 

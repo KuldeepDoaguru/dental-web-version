@@ -121,7 +121,7 @@ const AppointTable = () => {
                   <tr key={index}>
                     <td>{item.appoint_id}</td>
                     <td>{item.patient_name}</td>
-                    <td>{item.patient_contact}</td>
+                    <td>{item.mobileno}</td>
                     <td>{item.appointment_dateTime}</td>
                     <td>{item.treatment_provided}</td>
                     <td>{item.bloodgroup}</td>

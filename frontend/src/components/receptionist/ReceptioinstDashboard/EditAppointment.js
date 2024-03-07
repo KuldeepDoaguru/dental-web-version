@@ -9,7 +9,7 @@ import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTableRefresh } from '../../../redux/user/userSlice';
 
-function EditAppointment({ onClose, appointmentInfo }) {
+function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   const dispatch = useDispatch();
   const {currentUser} = useSelector((state) => state.user);
 
@@ -21,6 +21,56 @@ function EditAppointment({ onClose, appointmentInfo }) {
   const [treatments,setTreatment] = useState([]);
   const [doctors,setDoctors] = useState([]);
   const  branch = currentUser.branch_name;
+
+  // Remove current appointment data from allAppointmentData
+  const filteredAllAppointmentData = allAppointmentData.filter(appointment => appointment.appoint_id !== appointmentInfo.appoint_id);
+
+  
+  // Generate time slots with 15-minute intervals
+  const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 10; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute += 15) {
+        const period = hour < 12 ? "AM" : "PM";
+        const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+        const time = `${formattedHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        slots.push({ value: time, label: `${time} ${period}` });
+      }
+    }
+    return slots;
+  };
+ 
+  const timeSlots = generateTimeSlots();
+
+  // Function to format date in YYYY-MM-DD format
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const [selectedDate, setSelectedDate] = useState(formatDate(new Date(appointmentInfo.appointment_dateTime)));
+
+  
+  useEffect(() => {
+    // Extract the time part from the appointment date time and set it as the selected time
+    const time = appointmentInfo.appointment_dateTime.split('T')[1].substring(0, 5);
+    setData(prevState => ({
+      ...prevState,
+      appointment_dateTime: `${selectedDate}T${time}`
+    }));
+  }, [appointmentInfo.appointment_dateTime]);
+
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value,
+      appointment_dateTime: `${value}T${data.appointment_dateTime.split('T')[1]}` // Update the appointment_dateTime with the new date and existing time
+    });
+    setSelectedDate(value)
+  };
 
   const getTreatment = async () =>{
     try{
@@ -34,7 +84,6 @@ function EditAppointment({ onClose, appointmentInfo }) {
    
 
  }
-
  const getDoctors = async ()=>{
     try{
       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
@@ -109,9 +158,7 @@ function EditAppointment({ onClose, appointmentInfo }) {
     })
   }
 
-  const handleSubmit = (e) =>{
-     
-  }
+ 
 
   const [filteredDoctor,setFilteredDoctor] = useState([]);
 
@@ -168,12 +215,12 @@ function EditAppointment({ onClose, appointmentInfo }) {
   };
   
    
-    const isSlotAvailable = appointment_data.every((appointment) => {
+    const isSlotAvailable = filteredAllAppointmentData.every((appointment) => {
       // Check if the appointment is for the selected doctor and if it falls within the same datetime range
-      const appointmentDate = new Date(appointment.timing);
-      const selectedDate = new Date(data.appDateTime);
+      const appointmentDate = new Date(appointment.appointment_dateTime);
+      const selectedDate = new Date(data.appointment_dateTime);
       
-      return !(appointment.doctorId === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
+      return !(appointment.assigned_doctor_id === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
     });
   
      // Check if the selected appointment date matches with the doctor's block day
@@ -204,8 +251,8 @@ function EditAppointment({ onClose, appointmentInfo }) {
         doctorId : selectedDoctor.employee_ID,
         treatment:selectedTreatment,
         notes:data.notes,
-        appointment_updated_by:"mohit",
-        appointment_updated_by_emp_id: "20"
+        appointment_updated_by:data.appointment_updated_by,
+        appointment_updated_by_emp_id: data.appointment_updated_by_emp_id
       };
     
   
@@ -279,9 +326,37 @@ function EditAppointment({ onClose, appointmentInfo }) {
             <label for="recipient-name" class="col-form-label">Patient Name:</label>
             <input type="text" value={data.patient_name} readOnly class="form-control" id="recipient-name"/>
           </div>
-          <div class="mb-3">
+          {/* <div class="mb-3">
             <label for="message-text" class="col-form-label">Date & Time:</label>
             <input type="datetime-local" value={data.appointment_dateTime} onChange={handleChange} name='appointment_dateTime'  className="form-control" id="recipient-name"/>
+          </div> */}
+          <div class="mb-3">
+          <div className="form-outline">
+                     
+                          <label className="form-label" for="form6Example2">Appointment Date</label>
+      <input
+        type="date"
+        value={selectedDate}
+        className="form-control"
+        // onChange={(e) => setSelectedDate(e.target.value)}
+        onChange={handleDateChange}
+        required
+      />
+                         
+                        </div>
+          </div>
+          <div class="mb-3">
+          <div className="form-outline">
+                        
+                        <label  className="form-label" for="form6Example2">Appointment Time</label>
+      <Select
+        options={timeSlots}
+        required
+        value={timeSlots.find(slot => slot.value === data.appointment_dateTime.split('T')[1])}
+        onChange={(selectedOption) => setData({ ...data, appointment_dateTime: `${selectedDate}T${selectedOption.value}` })}
+      />
+                         
+                        </div>
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Doctor:</label>

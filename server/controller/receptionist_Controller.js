@@ -358,7 +358,7 @@ const getTreatment = (req,res) =>{
 
 const bookAppointment = (req,res)=>{
     try{
-      const { branch_name,patient_uhid, status, doctorId, doctor_name, appDateTime, treatment, notes,patient_added_by, patient_added_by_emp_id } = req.body;
+      const { branch_name,patient_uhid, status, doctorId, doctor_name, appDateTime, treatment, notes,appointment_created_by, appointment_created_by_emp_id} = req.body;
 
       const created_at = new Date();
 
@@ -377,8 +377,8 @@ const bookAppointment = (req,res)=>{
     treatment,
     status,
     notes,
-    patient_added_by,
-    patient_added_by_emp_id,
+    appointment_created_by,
+    appointment_created_by_emp_id,
     created_at
 ];
 

@@ -63,6 +63,21 @@ const {
   deleteHolidays,
   addDrugs,
   getDrugs,
+  updateDrugDetails,
+  deleteDrug,
+  addPrescription,
+  getPrescription,
+  updatePrescriptionDetails,
+  getPrescriptionById,
+  deletePrescription,
+  deleteTreatment,
+  addNotifyCommunication,
+  getNotifyList,
+  updateNotifyTagsDetails,
+  deleteNotifyTags,
+  addSuperAdminNotify,
+  getSuperAdminNotify,
+  markRead,
 } = require("../../controllers/superAdminController/attendanceController");
 // const multer = require("multer");
 
@@ -187,5 +202,20 @@ router.put("/updateHolidays/:hid", updateHolidays);
 router.delete("/deleteHolidays/:hid", deleteHolidays);
 router.post("/addDrugs", addDrugs);
 router.get("/getDrugs/:branch", getDrugs);
+router.put("/updateDrugDetails/:did", updateDrugDetails);
+router.delete("/deleteDrug/:did", deleteDrug);
+router.post("/addPrescription", addPrescription);
+router.get("/getPrescription/:branch", getPrescription);
+router.put("/updatePrescriptionDetails/:prid", updatePrescriptionDetails);
+router.get("/getPrescriptionById/:prid", getPrescriptionById);
+router.delete("/deletePrescription/:prid", deletePrescription);
+router.delete("/deleteTreatment/:tid", deleteTreatment);
+router.post("/addNotifyCommunication", addNotifyCommunication);
+router.get("/getNotifyList", getNotifyList);
+router.put("/updateNotifyTagsDetails/:ntid", updateNotifyTagsDetails);
+router.delete("/deleteNotifyTags/:ntid", deleteNotifyTags);
+router.post("/addSuperAdminNotify", addSuperAdminNotify);
+router.get("/getSuperAdminNotify", getSuperAdminNotify);
+router.put("/markRead/:snid", markRead);
 
 module.exports = router;

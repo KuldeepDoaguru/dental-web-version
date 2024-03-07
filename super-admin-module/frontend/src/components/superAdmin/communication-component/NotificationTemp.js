@@ -69,7 +69,7 @@ const NotificationTemp = () => {
                   </div>
                   <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
                     <button className="btn btn-secondary mx-1">
-                      Hi rahul , Thank you for visiting Dental guru clinic, you
+                      Dear Patient, Thank you for visiting Dental guru clinic, you
                       can reach us at 9856325545 for any queries.
                     </button>
                   </div>
@@ -122,7 +122,7 @@ const NotificationTemp = () => {
                   </div>
                   <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
                     <button className="btn btn-secondary mx-1">
-                      Dear Rahul, your appointment is due at Dental guru clinic
+                      Dear Patient, your appointment is due at Dental guru clinic
                       date 25 oct 2023 at 11 Am,you can reach us at 985632589
                       for any queries.
                     </button>

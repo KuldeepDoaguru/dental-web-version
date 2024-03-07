@@ -61,6 +61,7 @@ const TreatmentSetting = () => {
       console.log(response);
       cogoToast.success("Treatment Addded Successfully");
       closeUpdatePopup();
+      getTreatmentList();
       treatData.treatName = "";
       treatData.treatCost = "";
       treatData.treatDiscount = "";
@@ -93,6 +94,18 @@ const TreatmentSetting = () => {
       cogoToast.success("Treatment updated successfully");
       closeUpdatePopup();
       getTreatmentList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteTreatment = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:7777/api/v1/super-admin/deleteTreatment/${id}`
+      );
+      getTreatmentList();
+      cogoToast.success("Treatment deleted successfully");
     } catch (error) {
       console.log(error);
     }
@@ -220,11 +233,57 @@ const TreatmentSetting = () => {
                                     >
                                       Edit
                                     </button>
-                                    <button className="btn btn-danger mx-1">
+                                    <button
+                                      type="button"
+                                      class="btn btn-danger mx-2"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#exampleModal"
+                                    >
                                       Delete
                                     </button>
                                   </td>
                                 </tr>
+                                <div
+                                  class="modal fade rounded"
+                                  id="exampleModal"
+                                  tabindex="-1"
+                                  aria-labelledby="exampleModalLabel"
+                                  aria-hidden="true"
+                                >
+                                  <div class="modal-dialog rounded">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h1
+                                          class="modal-title fs-5"
+                                          id="exampleModalLabel"
+                                        >
+                                          Are you sure you want to delete this
+                                          data
+                                        </h1>
+                                      </div>
+
+                                      <div class="modal-footer d-flex justify-content-center">
+                                        <button
+                                          type="button"
+                                          class="btn btn-danger"
+                                          data-bs-dismiss="modal"
+                                          onClick={() =>
+                                            deleteTreatment(item.treatment_id)
+                                          }
+                                        >
+                                          Yes
+                                        </button>
+                                        <button
+                                          type="button"
+                                          class="btn btn-secondary"
+                                          data-bs-dismiss="modal"
+                                        >
+                                          Close
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </>
                             ))}
                         </tbody>

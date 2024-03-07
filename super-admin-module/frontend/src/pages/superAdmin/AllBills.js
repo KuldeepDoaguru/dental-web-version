@@ -24,6 +24,8 @@ const AllBills = () => {
   const [selectedItem, setSelectedItem] = useState();
   const [popupVisible, setPopupVisible] = useState(false);
   const [placehold, setPlacehold] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
   const [upData, setUpData] = useState({
     bill_date: "",
     uhid: "",
@@ -132,13 +134,48 @@ const AllBills = () => {
 
   console.log(formattedDate.slice(0, 7));
 
-  const filterBillDataByMonth = listBills?.filter((item) => {
-    return (
-      item.bill_date.split("T")[0].slice(0, 7) === formattedDate.slice(0, 7)
-    );
-  });
+  // const filterBillDataByMonth = listBills?.filter((item) => {
+  //   return (
+  //     item.bill_date.split("T")[0].slice(0, 7) === formattedDate.slice(0, 7)
+  //   );
+  // });
 
-  console.log(filterBillDataByMonth);
+  // console.log(filterBillDataByMonth);
+
+  const totalPages = Math.ceil(listBills.length / itemsPerPage);
+
+  const filterBillDataByMonth = () => {
+    // Filter and paginate appointment data based on currentPage and itemsPerPage
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return listBills
+      .filter(
+        (item) =>
+          item.bill_date.split("T")[0].slice(0, 7) === formattedDate.slice(0, 7)
+      )
+      .slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const renderPaginationButtons = () => {
+    const buttons = [];
+    for (let i = 1; i <= totalPages; i++) {
+      buttons.push(
+        <li key={i}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => handlePageChange(i)}
+          >
+            {i}
+          </button>
+        </li>
+      );
+    }
+    return buttons;
+  };
   return (
     <>
       <Container>
@@ -180,7 +217,7 @@ const AllBills = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {filterBillDataByMonth?.map((item) => (
+                          {filterBillDataByMonth()?.map((item) => (
                             <>
                               <tr className="table-row">
                                 <td className="table-sno">{item.bill_id}</td>
@@ -227,6 +264,29 @@ const AllBills = () => {
                           ))}
                         </tbody>
                       </table>
+                    </div>
+                    <div className="pagination">
+                      <ul>
+                        <li>
+                          <button
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="btn btn-danger"
+                          >
+                            Previous
+                          </button>
+                        </li>
+                        {renderPaginationButtons()}
+                        <li>
+                          <button
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="btn btn-info"
+                          >
+                            Next
+                          </button>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -505,5 +565,18 @@ const Container = styled.div`
     background-color: #22a6b3;
     font-weight: bold;
     color: white;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: flex-end;
+    ul {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      li {
+        list-style: none;
+      }
+    }
   }
 `;

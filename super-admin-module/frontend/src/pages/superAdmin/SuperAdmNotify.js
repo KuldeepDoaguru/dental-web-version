@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import { Link } from "react-router-dom";
+import BranchSelector from "../../components/BranchSelector";
 
 const SuperAdmNotify = () => {
   return (
@@ -16,19 +17,9 @@ const SuperAdmNotify = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    <div className="d-flex">
-                      <div>
-                        <h6>Select Branch : </h6>
-                      </div>
-                      <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
-                        </select>
-                      </div>
-                    </div>
+                    <BranchSelector />
                     <div>
                       {/* <Link to="/register-doctor">
                         <button className="btn btn-success">Add Doctor</button>
@@ -36,7 +27,7 @@ const SuperAdmNotify = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <h3 className="text-center">Notification List</h3>
                   <div className="container mt-3">
                     <ul>

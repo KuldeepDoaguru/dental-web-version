@@ -14,6 +14,8 @@ const Apointment = () => {
   console.log(`User Name: ${branch.name}`);
   const [appointmentList, setAppointmentList] = useState([]);
   const [timeLIneData, setTimeLineData] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
   const [updateData, setUpdateData] = useState({
     branch: branch.name,
     patientName: "",
@@ -128,12 +130,50 @@ const Apointment = () => {
 
   console.log(formattedDate.slice(0, 7));
 
-  const filterAppointDataByMonth = appointmentList?.filter((item) => {
-    return (
-      item.apointment_date_time.split("T")[0].slice(0, 7) ===
-      formattedDate.slice(0, 7)
-    );
-  });
+  // const filterAppointDataByMonth = appointmentList?.filter((item) => {
+  //   return (
+  //     item.apointment_date_time.split("T")[0].slice(0, 7) ===
+  //     formattedDate.slice(0, 7)
+  //   );
+  // });
+
+  // console.log(filterAppointDataByMonth);
+
+  const totalPages = Math.ceil(appointmentList.length / itemsPerPage);
+
+  const filterAppointDataByMonth = () => {
+    // Filter and paginate appointment data based on currentPage and itemsPerPage
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return appointmentList
+      .filter(
+        (item) =>
+          item.apointment_date_time.split("T")[0].slice(0, 7) ===
+          formattedDate.slice(0, 7)
+      )
+      .slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const renderPaginationButtons = () => {
+    const buttons = [];
+    for (let i = 1; i <= totalPages; i++) {
+      buttons.push(
+        <li key={i}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => handlePageChange(i)}
+          >
+            {i}
+          </button>
+        </li>
+      );
+    }
+    return buttons;
+  };
 
   console.log(filterAppointDataByMonth);
 
@@ -166,14 +206,6 @@ const Apointment = () => {
                               <th className="table-small">Patient Name</th>
                               <th className="table-small">Contact Number</th>
                               <th className="table-small">Assigned Doctor</th>
-                              {/* <th className="table-small">
-                                Treatment Provided
-                              </th> */}
-                              {/* <th className="table-small">Treatment Status</th>
-                              <th className="table-small">Payment Status</th>
-                              <th className="table-small">
-                                Payment Date & Time
-                              </th> */}
 
                               <th className="table-small">Appointed by</th>
                               <th className="table-small">Updated by</th>
@@ -189,7 +221,7 @@ const Apointment = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {filterAppointDataByMonth?.map((item) => (
+                            {filterAppointDataByMonth()?.map((item) => (
                               <>
                                 <tr className="table-row">
                                   <td className="table-sno">
@@ -203,19 +235,7 @@ const Apointment = () => {
                                   <td className="table-small">
                                     {item.assigned_doctor}
                                   </td>
-                                  {/* <td className="table-small">
-                                    {item.treatment_provided}
-                                  </td>
-                                  <td className="table-small">
-                                    {item.treatment_status}
-                                  </td>
-                                  <td className="table-small">
-                                    {item.payment_status}
-                                  </td>
-                                  <td className="table-small">
-                                    {item.payment_date_time?.split("T")[0]}{" "}
-                                    {item.payment_date_time?.split("T")[1]}
-                                  </td> */}
+
                                   <td className="table-small">
                                     {item.appointed_by}
                                   </td>
@@ -253,6 +273,29 @@ const Apointment = () => {
                             ))}
                           </tbody>
                         </table>
+                      </div>
+                      <div className="pagination">
+                        <ul>
+                          <li>
+                            <button
+                              onClick={() => handlePageChange(currentPage - 1)}
+                              disabled={currentPage === 1}
+                              className="btn btn-danger"
+                            >
+                              Previous
+                            </button>
+                          </li>
+                          {renderPaginationButtons()}
+                          <li>
+                            <button
+                              onClick={() => handlePageChange(currentPage + 1)}
+                              disabled={currentPage === totalPages}
+                              className="btn btn-info"
+                            >
+                              Next
+                            </button>
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -432,5 +475,18 @@ const Container = styled.div`
 
   label {
     font-weight: bold;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: flex-end;
+    ul {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      li {
+        list-style: none;
+      }
+    }
   }
 `;

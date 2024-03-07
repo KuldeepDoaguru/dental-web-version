@@ -1,13 +1,63 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Sider from "../../../components/Sider";
 import Header from "../../../components/Header";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
+import BranchSelector from "../../../components/BranchSelector";
+import { useDispatch, useSelector } from "react-redux";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import axios from "axios";
+import cogoToast from "cogo-toast";
 
 const PrescriptionTemplate = () => {
   const [showAddPreTemp, setShowAddPreTemp] = useState(false);
   const [showEditPreTemp, setShowEditPreTemp] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const location = useLocation();
+  const [getPresList, setGetPresList] = useState([]);
+  const [selected, setSelected] = useState();
+  const [pressById, setPressById] = useState([]);
+  const [addPres, setAddPres] = useState({
+    branch_name: branch.name,
+    medicine_name: "",
+    dosage: "",
+    frequency: "",
+    duration: "",
+    notes: "",
+  });
+
+  const [upPres, setUpPres] = useState({
+    medicine_name: "",
+    dosage: "",
+    frequency: "",
+    duration: "",
+    notes: "",
+  });
+
+  const handleAddPres = (event) => {
+    const { name, value } = event.target;
+    setAddPres({
+      ...addPres,
+      [name]: value,
+    });
+  };
+
+  const handleUpdatePres = (event) => {
+    const { name, value } = event.target;
+    setUpPres({
+      ...upPres,
+      [name]: value,
+    });
+  };
+
+  console.log(addPres);
+  console.log(upPres);
 
   const openAddPreTempPopup = (index, item) => {
     // setSelectedItem(item);
@@ -15,8 +65,8 @@ const PrescriptionTemplate = () => {
     setShowAddPreTemp(true);
   };
 
-  const openEditPreTempPopup = (index, item) => {
-    // setSelectedItem(item);
+  const openEditPreTempPopup = (id) => {
+    setSelected(id);
     console.log("open pop up");
     setShowEditPreTemp(true);
   };
@@ -25,6 +75,86 @@ const PrescriptionTemplate = () => {
     setShowAddPreTemp(false);
     setShowEditPreTemp(false);
   };
+
+  const goBack = () => {
+    window.history.go(-1);
+  };
+
+  const getPrescriptionDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getPrescription/${branch.name}`
+      );
+      setGetPresList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addPrescriptionDetails = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:7777/api/v1/super-admin/addPrescription",
+        addPres
+      );
+      closeUpdatePopup();
+      getPrescriptionDetails();
+      cogoToast.success("prescription details added successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getPresDetailsById = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:7777/api/v1/super-admin/getPrescriptionById/${selected}`
+      );
+      setPressById(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updatePresData = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:7777/api/v1/super-admin/updatePrescriptionDetails/${selected}`,
+        upPres
+      );
+      closeUpdatePopup();
+      getPrescriptionDetails();
+      cogoToast.success("prescription details updated successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deletePrescription = async (id) => {
+    alert("hello");
+    try {
+      const response = await axios.delete(
+        `http://localhost:7777/api/v1/super-admin/deletePrescription/${id}`
+      );
+      getPrescriptionDetails();
+      cogoToast.success("prescription deleted successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPrescriptionDetails();
+  }, [branch.name]);
+
+  console.log(pressById);
+  console.log(selected);
+
+  useEffect(() => {
+    getPresDetailsById();
+  }, [selected]);
 
   return (
     <>
@@ -37,19 +167,9 @@ const PrescriptionTemplate = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    <div className="d-flex">
-                      <div>
-                        <h6>Select Branch : </h6>
-                      </div>
-                      <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
-                        </select>
-                      </div>
-                    </div>
+                    <BranchSelector />
                     <div>
                       {/* <Link to="/superadmin-add-branch">
                           <button className="btn btn-success">
@@ -59,12 +179,15 @@ const PrescriptionTemplate = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
+                  <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
                   <h3 className="text-center">
                     {" "}
                     Prescription Template Settings
                   </h3>
-                  <div className="mid-box">
+                  <div className="container-fluid">
                     <div className="row mt-5">
                       <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
                         <input
@@ -86,7 +209,7 @@ const PrescriptionTemplate = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="container mt-3">
+                  <div className="container-fluid mt-3">
                     <div className="banner-mid">
                       <div>
                         <h6 className="text-light">
@@ -101,75 +224,91 @@ const PrescriptionTemplate = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno">Template ID</th>
-                            <th className="table-small">Template Name</th>
-                            <th className="table-small">Drug</th>
-                            <th className="table-small">Strength</th>
-                            <th className="table-small">Instructions</th>
+                            <th className="table-sno">Prescription ID</th>
+                            <th className="table-small">Medicine Name</th>
+                            <th className="table-small">Dosage</th>
+                            <th className="table-small">Frequency</th>
+                            <th className="table-small">Duration</th>
+                            <th>Note</th>
                             <th className="table-small">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Maleria</td>
-                            <td className="table-small">Paracetamol</td>
-                            <td className="table-small">400 Mg</td>
-                            <td className="table-small">
-                              Take Only incase of fever
-                            </td>
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditPreTempPopup()}
+                          {getPresList?.map((item) => (
+                            <>
+                              <tr className="table-row">
+                                <td className="table-sno">{item.pr_id}</td>
+                                <td className="table-small">
+                                  {item.medicine_name}
+                                </td>
+                                <td className="table-small">{item.dosage}</td>
+                                <td className="table-small">
+                                  {item.frequency}
+                                </td>
+                                <td className="table-small">{item.duration}</td>
+                                <td>{item.notes}</td>
+                                <td>
+                                  <button
+                                    className="btn btn-warning"
+                                    onClick={() =>
+                                      openEditPreTempPopup(item.pr_id)
+                                    }
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger mx-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                              <div
+                                class="modal fade rounded"
+                                id="exampleModal"
+                                tabindex="-1"
+                                aria-labelledby="exampleModalLabel"
+                                aria-hidden="true"
                               >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Maleria</td>
-                            <td className="table-small">Paracetamol</td>
-                            <td className="table-small">400 Mg</td>
-                            <td className="table-small">
-                              Take Only incase of fever
-                            </td>
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditPreTempPopup()}
-                              >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td className="table-sno">1</td>
-                            <td className="table-small">Maleria</td>
-                            <td className="table-small">Paracetamol</td>
-                            <td className="table-small">400 Mg</td>
-                            <td className="table-small">
-                              Take Only incase of fever
-                            </td>
-                            <td>
-                              <button
-                                className="btn btn-warning"
-                                onClick={() => openEditPreTempPopup()}
-                              >
-                                Edit
-                              </button>
-                              <button className="btn btn-danger mx-1">
-                                Delete
-                              </button>
-                            </td>
-                          </tr>
+                                <div class="modal-dialog rounded">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1
+                                        class="modal-title fs-5"
+                                        id="exampleModalLabel"
+                                      >
+                                        Are you sure you want to delete this
+                                        data
+                                      </h1>
+                                    </div>
+
+                                    <div class="modal-footer d-flex justify-content-center">
+                                      <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        data-bs-dismiss="modal"
+                                        onClick={() =>
+                                          deletePrescription(item.pr_id)
+                                        }
+                                      >
+                                        Yes
+                                      </button>
+                                      <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal"
+                                      >
+                                        Close
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          ))}
                         </tbody>
                       </table>
                     </div>
@@ -186,58 +325,51 @@ const PrescriptionTemplate = () => {
               <h4 className="text-center">Add Prescription Template</h4>
               <form
                 className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
+                onSubmit={addPrescriptionDetails}
               >
                 <input
                   type="text"
-                  placeholder="Add Template Name"
+                  placeholder="Prescription Name"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="medicine_name"
+                  value={addPres.medicine_name}
+                  onChange={handleAddPres}
                 />
                 <br />
                 <input
                   type="text"
-                  placeholder="Add Drug Name"
+                  placeholder="Add dosage"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="dosage"
+                  value={addPres.dosage}
+                  onChange={handleAddPres}
                 />
                 <br />
                 <input
                   type="text"
-                  placeholder="Add Strength"
+                  placeholder="Add frequency"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="frequency"
+                  value={addPres.frequency}
+                  onChange={handleAddPres}
                 />
                 <br />
                 <input
                   type="text"
-                  placeholder="Add Instruction"
+                  placeholder="Add duration"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="duration"
+                  value={addPres.duration}
+                  onChange={handleAddPres}
+                />
+                <br />
+                <input
+                  type="text"
+                  placeholder="Add notes"
+                  className="rounded p-2"
+                  name="notes"
+                  value={addPres.notes}
+                  onChange={handleAddPres}
                 />
                 <br />
 
@@ -266,60 +398,50 @@ const PrescriptionTemplate = () => {
           <div className={`popup-container${showEditPreTemp ? " active" : ""}`}>
             <div className="popup">
               <h4 className="text-center">Edit Prescription Template</h4>
-              <form
-                className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
-              >
+              <form className="d-flex flex-column" onSubmit={updatePresData}>
                 <input
                   type="text"
-                  placeholder="Update Template Name"
+                  placeholder={pressById[0]?.medicine_name}
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="medicine_name"
+                  value={upPres.medicine_name}
+                  onChange={handleUpdatePres}
                 />
                 <br />
                 <input
                   type="text"
-                  placeholder="Update Drug Name"
+                  placeholder={pressById[0]?.dosage}
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="dosage"
+                  value={upPres.dosage}
+                  onChange={handleUpdatePres}
                 />
                 <br />
                 <input
                   type="text"
-                  placeholder="Update strength"
+                  placeholder={pressById[0]?.frequency}
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="frequency"
+                  value={upPres.frequency}
+                  onChange={handleUpdatePres}
                 />
                 <br />
                 <input
                   type="text"
-                  placeholder="Update Instruction"
+                  placeholder={pressById[0]?.duration}
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="duration"
+                  value={upPres.duration}
+                  onChange={handleUpdatePres}
+                />
+                <br />
+                <input
+                  type="text"
+                  placeholder={pressById[0]?.notes}
+                  className="rounded p-2"
+                  name="notes"
+                  value={upPres.notes}
+                  onChange={handleUpdatePres}
                 />
                 <br />
 

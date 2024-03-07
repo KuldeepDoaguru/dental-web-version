@@ -8,6 +8,7 @@ import BranchSelector from "../../../components/BranchSelector";
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import axios from "axios";
+import cogoToast from "cogo-toast";
 
 const DrugSetting = () => {
   const [showAddDrugs, setShowAddDrugs] = useState(false);
@@ -20,6 +21,7 @@ const DrugSetting = () => {
   console.log(`User Name: ${branch.name}`);
   const location = useLocation();
   const [getDrugList, setGetDrugList] = useState([]);
+  const [selected, setSelected] = useState();
   const [addDrugs, setAddDrugs] = useState({
     HSN_code: "",
     item_code: "",
@@ -27,6 +29,13 @@ const DrugSetting = () => {
     drug_strength: "",
     instruction: "",
     branch_name: branch.name,
+  });
+  const [upaAddDrugs, setUpAddDrugs] = useState({
+    HSN_code: "",
+    item_code: "",
+    drug_name: "",
+    drug_strength: "",
+    instruction: "",
   });
 
   const handleAddDrugs = (event) => {
@@ -37,14 +46,22 @@ const DrugSetting = () => {
     });
   };
 
+  const handleUpdateDrugs = (event) => {
+    const { name, value } = event.target;
+    setUpAddDrugs({
+      ...upaAddDrugs,
+      [name]: value,
+    });
+  };
+
   const openAddDrugsPopup = (index, item) => {
     // setSelectedItem(item);
     console.log("open pop up");
     setShowAddDrugs(true);
   };
 
-  const openEditDrugsPopup = (index, item) => {
-    // setSelectedItem(item);
+  const openEditDrugsPopup = (id) => {
+    setSelected(id);
     console.log("open pop up");
     setShowEditDrugs(true);
   };
@@ -65,11 +82,45 @@ const DrugSetting = () => {
     }
   };
 
-  const addDrugData = async () => {
+  const addDrugData = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/v1/super-admin/addDrugs"
+        "http://localhost:7777/api/v1/super-admin/addDrugs",
+        addDrugs
       );
+      console.log(response);
+      closeUpdatePopup();
+      getDrugsData();
+      cogoToast.success("drugs details updated successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateDrugDetails = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:7777/api/v1/super-admin/updateDrugDetails/${selected}`,
+        upaAddDrugs
+      );
+      closeUpdatePopup();
+      console.log(response);
+      getDrugsData();
+      cogoToast.success("drugs details updated successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteDrug = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:7777/api/v1/super-admin/deleteDrug/${id}`
+      );
+      getDrugsData();
+      cogoToast.success("drugs details deleted successfully");
     } catch (error) {
       console.log(error);
     }
@@ -191,15 +242,61 @@ const DrugSetting = () => {
                                 <td>
                                   <button
                                     className="btn btn-warning"
-                                    onClick={() => openEditDrugsPopup()}
+                                    onClick={() =>
+                                      openEditDrugsPopup(item.drug_id)
+                                    }
                                   >
                                     Edit
                                   </button>
-                                  <button className="btn btn-danger mx-1">
+                                  <button
+                                    type="button"
+                                    class="btn btn-danger mx-2"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal"
+                                  >
                                     Delete
                                   </button>
                                 </td>
                               </tr>
+                              <div
+                                class="modal fade rounded"
+                                id="exampleModal"
+                                tabindex="-1"
+                                aria-labelledby="exampleModalLabel"
+                                aria-hidden="true"
+                              >
+                                <div class="modal-dialog rounded">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h1
+                                        class="modal-title fs-5"
+                                        id="exampleModalLabel"
+                                      >
+                                        Are you sure you want to delete this
+                                        data
+                                      </h1>
+                                    </div>
+
+                                    <div class="modal-footer d-flex justify-content-center">
+                                      <button
+                                        type="button"
+                                        class="btn btn-danger"
+                                        data-bs-dismiss="modal"
+                                        onClick={() => deleteDrug(item.drug_id)}
+                                      >
+                                        Yes
+                                      </button>
+                                      <button
+                                        type="button"
+                                        class="btn btn-secondary"
+                                        data-bs-dismiss="modal"
+                                      >
+                                        Close
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </>
                           ))}
                         </tbody>
@@ -216,10 +313,7 @@ const DrugSetting = () => {
           <div className={`popup-container${showAddDrugs ? " active" : ""}`}>
             <div className="popup">
               <h4 className="text-center">Add Drugs</h4>
-              <form
-                className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
-              >
+              <form className="d-flex flex-column" onSubmit={addDrugData}>
                 <input
                   type="text"
                   placeholder="Add HSN Code"
@@ -291,47 +385,50 @@ const DrugSetting = () => {
           <div className={`popup-container${showEditDrugs ? " active" : ""}`}>
             <div className="popup">
               <h4 className="text-center">Edit Drugs Details</h4>
-              <form
-                className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
-              >
+              <form className="d-flex flex-column" onSubmit={updateDrugDetails}>
                 <input
                   type="text"
-                  placeholder="Update Drug Name"
+                  placeholder="Add HSN Code"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="HSN_code"
+                  value={upaAddDrugs.HSN_code}
+                  onChange={handleUpdateDrugs}
                 />
                 <br />
                 <input
                   type="text"
-                  placeholder="Update strength"
+                  placeholder="Add Item Code"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="item_code"
+                  value={upaAddDrugs.item_code}
+                  onChange={handleUpdateDrugs}
                 />
                 <br />
                 <input
                   type="text"
-                  placeholder="Update Instruction"
+                  placeholder="Add Drug Name"
                   className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
+                  name="drug_name"
+                  value={upaAddDrugs.drug_name}
+                  onChange={handleUpdateDrugs}
+                />
+                <br />
+                <input
+                  type="text"
+                  placeholder="Add strength"
+                  className="rounded p-2"
+                  name="drug_strength"
+                  value={upaAddDrugs.drug_strength}
+                  onChange={handleUpdateDrugs}
+                />
+                <br />
+                <input
+                  type="text"
+                  placeholder="Add Instruction"
+                  className="rounded p-2"
+                  name="instruction"
+                  value={upaAddDrugs.instruction}
+                  onChange={handleUpdateDrugs}
                 />
                 <br />
 

@@ -7,6 +7,7 @@ import { Nav } from "react-bootstrap";
 import AppointmentNotify from "../../../components/superAdmin/communication-component/AppointmentNotify";
 import NotificationTemp from "../../../components/superAdmin/communication-component/NotificationTemp";
 import AddNewTemplate from "../../../components/superAdmin/communication-component/AddNewTemplate";
+import BranchSelector from "../../../components/BranchSelector";
 
 const CommunicationSetting = () => {
   const initialTab = localStorage.getItem("selectedTab") || "tab1";
@@ -23,19 +24,9 @@ const CommunicationSetting = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    <div className="d-flex">
-                      <div>
-                        <h6>Select Branch : </h6>
-                      </div>
-                      <div>
-                        <select name="branch" id="branch" className="mx-2">
-                          <option value="Madan Mahal">Madan Mahal</option>
-                          <option value="Madan Mahal">Ranjhi</option>
-                        </select>
-                      </div>
-                    </div>
+                    <BranchSelector />
                     <div>
                       {/* <Link to="/superadmin-add-branch">
                           <button className="btn btn-success">
@@ -45,14 +36,14 @@ const CommunicationSetting = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container mt-3">
+                <div className="container-fluid mt-3">
                   <div className="container-fluid">
                     <div className="row mt-3">
                       {/* <div className="col-1"></div> */}
 
                       <div className="col-12">
                         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                          <div class="container d-flex justify-content-center">
+                          <div class="container-fluid d-flex justify-content-center">
                             <h2 className="">Communication Settings</h2>
                           </div>
                         </nav>
@@ -72,7 +63,7 @@ const CommunicationSetting = () => {
                                 Appointment Notification
                               </Nav.Link>
                             </Nav.Item>
-                            <Nav.Item>
+                            {/* <Nav.Item>
                               <Nav.Link
                                 eventKey="tab2"
                                 className="navlink mx-2"
@@ -84,7 +75,7 @@ const CommunicationSetting = () => {
                               <Nav.Link eventKey="tab3" className="navlink">
                                 Add New Template
                               </Nav.Link>
-                            </Nav.Item>
+                            </Nav.Item> */}
                           </div>
                         </Nav>
                         <div className="flex-grow-1 p-3 mainback">

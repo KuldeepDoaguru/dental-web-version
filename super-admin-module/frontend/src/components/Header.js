@@ -1,11 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import dental_logo from "../images/dentalnew.png";
 import { AiFillBell } from "react-icons/ai";
 import { FaUserAlt } from "react-icons/fa";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoSettings } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+
 const Header = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [notifyList, setNotifyList] = useState([]);
+
+  const getNotifyDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:7777/api/v1/super-admin/getSuperAdminNotify"
+      );
+      setNotifyList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateMarkRead = async (id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:7777/api/v1/super-admin/markRead/${id}`
+      );
+      getNotifyDetails();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const logoutHandler = () => {
+    try {
+      localStorage.removeItem("userData");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getNotifyDetails();
+  }, []);
+
+  console.log(notifyList);
+
+  const filterForRead = notifyList?.filter((item) => {
+    return item.status === "unread";
+  });
+  console.log(filterForRead);
+
   return (
     <Wrapper>
       <div>
@@ -69,9 +123,9 @@ const Header = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <a className="dropdown-item" href="/">
+                      <button className="dropdown-item" onClick={logoutHandler}>
                         Logout
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </li>
@@ -87,200 +141,45 @@ const Header = () => {
                     <AiFillBell className="icon" />
                   </a>
                   <ul className="dropdown-menu third-dropdown">
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
-                    <li>
-                      <hr className="dropdown-divider" />
-                    </li>
-                    <li>
-                      <Link
-                        className="dropdown-item"
-                        to="/super-admin-notification"
-                      >
-                        Admin Added New Doctor - Approve the doctor
-                      </Link>
-                    </li>
+                    {filterForRead?.slice(-10).map((item) => {
+                      return (
+                        <>
+                          <li key={item.id}>
+                            <div className="d-flex p-3 justify-content-between">
+                              <div className="right-noti">
+                                <h4>
+                                  <a
+                                    href={item.open}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    {item.title}
+                                  </a>
+                                </h4>
+                                <p>{item.event_msg}</p>
+                              </div>
+                            </div>
+                            <div className="mx-2">
+                              <button
+                                className="btn btn-info"
+                                onClick={() => updateMarkRead(item.event_id)}
+                              >
+                                Mark as Read
+                              </button>
+                              <Link
+                                to="/super-admin-notification"
+                                className="mx-2"
+                              >
+                                <button className="btn btn-info">
+                                  view all
+                                </button>
+                              </Link>
+                            </div>
+                          </li>
+                          <hr />
+                        </>
+                      );
+                    })}
                   </ul>
                 </li>
               </ul>
@@ -347,5 +246,15 @@ const Wrapper = styled.div`
     left: -27rem;
     overflow-y: auto;
     max-height: calc(100vh - 100px);
+  }
+
+  .right-noti {
+    a {
+      text-decoration: none;
+      color: black;
+      &:hover {
+        color: #004aad;
+      }
+    }
   }
 `;

@@ -21,6 +21,47 @@ function BookAppointment() {
   const [selectedTreatment, setSelectedTreatment] = useState([]);
   const [patients, setPatients] = useState([]);
   const [treatments,setTreatment] = useState([]);
+  const [appointmentsData,setAppointmentsData] = useState([]);
+ 
+  
+  // Generate time slots with 15-minute intervals
+  const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 10; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute += 15) {
+        const period = hour < 12 ? "AM" : "PM";
+        const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+        const time = `${formattedHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        slots.push({ value: time, label: `${time} ${period}` });
+      }
+    }
+    return slots;
+  };
+ 
+  const timeSlots = generateTimeSlots();
+
+  // Function to format date in YYYY-MM-DD format
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const [selectedDate, setSelectedDate] = useState(formatDate(new Date()));
+
+
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    setBookData({
+      ...bookData,
+      [name]: value,
+      appDateTime: `${value}T${bookData.appDateTime.split('T')[1]}` // Update the appointment_dateTime with the new date and existing time
+    });
+    setSelectedDate(value)
+  };
+
+
 
   const getPatient = async () =>{
     try{
@@ -32,6 +73,17 @@ function BookAppointment() {
         console.log(error)
      }
     
+  }
+
+  
+  const getAppointments = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
+      setAppointmentsData(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
   }
 
   const getTreatment = async () =>{
@@ -64,10 +116,12 @@ function BookAppointment() {
      getPatient();
      getTreatment();
      getDoctors();
+     getAppointments();
   },[]);
 
   useEffect(()=>{
     getPatient();
+    getAppointments();
   },[refreshTable])
 
 
@@ -100,7 +154,7 @@ function BookAppointment() {
   const [bookData,setBookData] = useState(
     { branch_name:"", patient_Name:"",mobile: "", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"", appointment_created_by:"",appointment_updated_by:"",appointment_created_by_emp_id	:"", appointment_updated_by_emp_id	:""}
   ) 
-
+  console.log(bookData)
   // const doctors = [
   //   { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:["2024/02/21","2024/02/20","2024/02/19"],lunchTime: ""},
   //   { uid :"10", doctor_name:"Dr Rajiv",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"12:00",eveningStartTiming:"18:00" ,eveningEndTiming:"22:00", scheduleBlockDays:"2024/02/21",lunchTime: ""},
@@ -262,7 +316,7 @@ console.log(selectedDoctor)
 
   console.log(bookData)
 
-  console.log(appointment_data)
+
 
   useEffect(()=>{
     const calculateAge = (date) => {
@@ -347,12 +401,12 @@ const isDoctorAvailable = (selectedDateTime) => {
 };
 
  
-  const isSlotAvailable = appointment_data.every((appointment) => {
+  const isSlotAvailable = appointmentsData.every((appointment) => {
     // Check if the appointment is for the selected doctor and if it falls within the same datetime range
-    const appointmentDate = new Date(appointment.timing);
+    const appointmentDate = new Date(appointment.appointment_dateTime);
     const selectedDate = new Date(bookData.appDateTime);
     
-    return !(appointment.doctorId === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
+    return !(appointment.assigned_doctor_id === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
   });
 
    // Check if the selected appointment date matches with the doctor's block day
@@ -576,7 +630,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                       </div>
                       <div className="col-sm-6 ">
                         <div className="form-outline">
-                        <label className="form-label" for="form6Example2">
+                        {/* <label className="form-label" for="form6Example2">
                             Date&Time
                           </label>
                           <input
@@ -587,7 +641,28 @@ const isDoctorAvailable = (selectedDateTime) => {
                             onChange={(e)=>handleBookChange(e)}
                             required
                            
-                          />
+                          /> */}
+                          <label className="form-label" for="form6Example2">Appointment Date</label>
+      <input
+        type="date"
+        value={selectedDate}
+        className="form-control"
+        onChange={handleDateChange}
+        required
+      />
+                         
+                        </div>
+                      </div>
+                      <div className="col-sm-6 ">
+                        <div className="form-outline">
+                        
+                        <label  className="form-label" for="form6Example2">Appointment Time</label>
+      <Select
+        options={timeSlots}
+        required
+        value={timeSlots.find(slot => slot.value === bookData.appDateTime.split('T')[1])}
+        onChange={(selectedOption) => setBookData({ ...bookData, appDateTime: `${selectedDate}T${selectedOption.value}` })}
+      />
                          
                         </div>
                       </div>
@@ -639,10 +714,12 @@ const isDoctorAvailable = (selectedDateTime) => {
                           <Select
         id="treatment"
         name="treatment"
+        required
         options={treatments}
         value={selectedTreatment ? { value: selectedTreatment, label: selectedTreatment } : null}
         onChange={handleChangeTreatment}
-        required
+        
+        
       />
                           
                         </div>
@@ -663,7 +740,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                         </div>
                       </div>
                       <div className="col-sm-6">
-                        
+                     
                       </div>
 
                       {/* <div className="d-flex  mt-4">

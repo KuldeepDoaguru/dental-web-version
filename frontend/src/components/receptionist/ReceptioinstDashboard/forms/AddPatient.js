@@ -32,6 +32,42 @@ function AddPatient() {
 
   const [patients, setPatients] = useState([]);
   const [appointmentsData,setAppointmentsData] = useState([]);
+
+   // Generate time slots with 15-minute intervals
+   const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 10; hour < 24; hour++) {
+      for (let minute = 0; minute < 60; minute += 15) {
+        const period = hour < 12 ? "AM" : "PM";
+        const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+        const time = `${formattedHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+        slots.push({ value: time, label: `${time} ${period}` });
+      }
+    }
+    return slots;
+  };
+ 
+  const timeSlots = generateTimeSlots();
+
+  // Function to format date in YYYY-MM-DD format
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const [selectedDate, setSelectedDate] = useState(formatDate(new Date()));
+
+  const handleDateChange = (e) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value,
+      appDateTime: `${value}T${data.appDateTime.split('T')[1]}` // Update the appointment_dateTime with the new date and existing time
+    });
+    setSelectedDate(value)
+  };
   
   const getPatient = async () =>{
     try{
@@ -233,13 +269,6 @@ const handleChangeDisease = (newValue, actionMeta) => {
 
     
   ]);
-
- 
-
-  
-
-console.log(selectedDoctor)
-
   
   const [filteredDoctor,setFilteredDoctor] = useState([]);
 
@@ -289,7 +318,7 @@ console.log(selectedDoctor)
     };
     calculateAge(data.dob);
   },[data.dob])
-  console.log(patients)
+  console.log(data)
   
   const handleChange = (e)=>{
       const {name,value} = e.target;
@@ -352,7 +381,7 @@ console.log(selectedDoctor)
       return !(appointment.assigned_doctor_id === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
     });
 
-    console.log(isSlotAvailable)
+
   
     if (isSlotAvailable) {
       // Slot is available, proceed with booking
@@ -788,7 +817,7 @@ const handleDoctorSelect = (doctor) => {
                        </div>
                      
                      </div>
-                     <div className="col-sm-6 ">
+                     {/* <div className="col-sm-6 ">
                        <div className="form-outline">
                        <label className="form-label" for="form6Example2">
                            Date&Time
@@ -804,7 +833,7 @@ const handleDoctorSelect = (doctor) => {
                          />
                         
                        </div>
-                     </div>
+                     </div> */}
                      
                     
                      <div className="col-sm-6">
@@ -822,6 +851,45 @@ const handleDoctorSelect = (doctor) => {
                          
                        </div>
                      </div>
+
+                     <div className="col-sm-6 ">
+                        <div className="form-outline">
+                        {/* <label className="form-label" for="form6Example2">
+                            Date&Time
+                          </label>
+                          <input
+                            type="datetime-local"
+                            id="form6Example2"
+                            className="form-control"
+                            name="appDateTime"
+                            onChange={(e)=>handleBookChange(e)}
+                            required
+                           
+                          /> */}
+                          <label className="form-label" for="form6Example2">Appointment Date</label>
+      <input
+        type="date"
+        value={selectedDate}
+        className="form-control"
+        onChange={handleDateChange}
+        required
+      />
+                         
+                        </div>
+                      </div>
+                      <div className="col-sm-6 ">
+                        <div className="form-outline">
+                        
+                        <label  className="form-label" for="form6Example2">Appointment Time</label>
+      <Select
+        options={timeSlots}
+        required
+        value={timeSlots.find(slot => slot.value === data.appDateTime.split('T')[1])}
+        onChange={(selectedOption) => setData({ ...data, appDateTime: `${selectedDate}T${selectedOption.value}` })}
+      />
+                         
+                        </div>
+                      </div>
                      <div className="col-sm-6">
                        <div className="form-outline">
                        <label className="form-label" for="form6Example1">

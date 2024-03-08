@@ -7,6 +7,8 @@ import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTableRefresh } from '../../../redux/user/userSlice';
 import EditAppointment from './EditAppointment';
+import { FaArrowCircleLeft } from "react-icons/fa";
+import { FaArrowCircleRight } from "react-icons/fa";
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -15,6 +17,7 @@ const AppointTable = () => {
   const {refreshTable,currentUser} = useSelector((state) => state.user);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Initialize with today's date
 
 
 
@@ -22,6 +25,17 @@ const AppointTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const  branch = currentUser.branch_name;
   const [appointmentsData,setAppointmentData] = useState([]);
+
+  const [selectedDateAppData,setSelectedDateAppData] = useState([]);
+
+  useEffect(()=>{
+
+    const filteredResults = appointmentsData.filter((row) =>
+        
+         row.appointment_dateTime.includes(selectedDate)
+      );
+    setSelectedDateAppData(filteredResults)
+  },[appointmentsData,selectedDate])
 
   const getAppointments = async ()=>{
     try{
@@ -39,12 +53,20 @@ const AppointTable = () => {
     getAppointments();
   },[refreshTable])
 
-  console.log(selectedAppointment)
+ 
    const handleEditAppointment = (appointment)=>{
           setSelectedAppointment(appointment)
           setShowEditPopup(true);
    }
 
+
+   const handleDateChange = (increment) => {
+    return () => {
+      const currentDate = new Date(selectedDate);
+      currentDate.setDate(currentDate.getDate() + increment);
+      setSelectedDate(currentDate.toISOString().split('T')[0]);
+    };
+  };
   // Add an async function to handle status change
 const handleStatusChange = async (appointmentId, newStatus) => {
   try {
@@ -77,7 +99,8 @@ const handleStatusChange = async (appointmentId, newStatus) => {
       setCurrentPage(1); // Reset to the first page when searching
   
       const filteredResults = appointmentsData.filter((row) =>
-        row.patient_name.toLowerCase().includes(searchTerm)
+        row.patient_name.toLowerCase().includes(searchTerm) 
+        && row.appointment_dateTime.includes(selectedDate)
       );
   
       setFilteredData(filteredResults);
@@ -93,10 +116,10 @@ const handleStatusChange = async (appointmentId, newStatus) => {
   // Pagination functions
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : appointmentsData.slice(indexOfFirstRow, indexOfLastRow);
+  const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : selectedDateAppData.slice(indexOfFirstRow, indexOfLastRow);
 
 
-  const totalPages = Math.ceil(appointmentsData.length / rowsPerPage);
+  const totalPages = Math.ceil(selectedDateAppData.length / rowsPerPage);
 
   const paginate = (pageNumber) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
@@ -105,7 +128,7 @@ const handleStatusChange = async (appointmentId, newStatus) => {
   };
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(appointmentsData.length / rowsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(selectedDateAppData.length / rowsPerPage); i++) {
     pageNumbers.push(i);
   }
 
@@ -176,11 +199,19 @@ const handleStatusChange = async (appointmentId, newStatus) => {
   
       <div className="widget-area-2 proclinic-box-shadow" id="tableres">
        <div className="d-flex justify-content-between align-items-center">
-        
-         <h5 className="widget-title" id="title">
-        Appointment for 16-10-2023
+         <div className="d-flex justify-content-center align-items-center">
+         <h5  className=" me-4  widget-title" id="title">
+       Appointment for 
         
         </h5>
+        <FaArrowCircleLeft style={{ fontSize: '35px' , padding: "3px",cursor:"pointer" }} onClick={handleDateChange(-1)} />
+        <input type="date" className="form-control w-50"   value={selectedDate} onChange={(e)=>setSelectedDate(e.target.value)}/>
+        <FaArrowCircleRight style={{ fontSize: '35px',  padding: "3px" ,cursor:"pointer"}} onClick={handleDateChange(1)}/>
+         </div>
+         
+        <div >
+        
+        </div>
         <Form.Group
                       controlId="rowsPerPageSelect"
                       style={{ display: "flex" }}
@@ -269,7 +300,7 @@ patient_type
   <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Check-Out')}>Check-Out</a></li>
   <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Complete')}>Complete</a></li>
   <li><a className="dropdown-item mx-0" onClick={() => handleEditAppointment(patient)}>Edit Appointment</a></li>
-    <li><a className="dropdown-item mx-0" href="#">Cancle Appointment</a></li>
+    <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Cancle')}>Cancle Appointment</a></li>
   
     <li><a className="dropdown-item mx-0" href="#"></a></li>
  
@@ -292,7 +323,7 @@ patient_type
                           
                         >
                          {/* Showing Page {currentPage} of {totalPages} from {data?.length} entries */}
-                       {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {appointmentsData?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {appointmentsData?.length} entries</> }  
+                       {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {selectedDateAppData?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {selectedDateAppData?.length} entries</> }  
 
                         </h4></div>
                     <div className="col-lg-3 col-md-3 col-sm-12 col-12">
@@ -308,7 +339,7 @@ patient_type
                       
                         <Button
                           onClick={() => paginate(currentPage + 1)}
-                          disabled={indexOfLastRow >= appointmentsData.length}
+                          disabled={indexOfLastRow >= selectedDateAppData.length}
                           variant="success"
                         >
                           Next
@@ -320,7 +351,7 @@ patient_type
       </div>
     </div>
     {showEditPopup && (
-        <EditAppointment onClose={() => setShowEditPopup(false)} appointmentInfo={selectedAppointment} />
+        <EditAppointment onClose={() => setShowEditPopup(false)} appointmentInfo={selectedAppointment} allAppointmentData={appointmentsData}/>
       )}
    
     </Wrapper>
@@ -339,6 +370,9 @@ const Wrapper = styled.div`
     }
   }
   #title {
+
+    white-space: nowrap; /* Prevent text wrapping */
+  
     @media screen and (max-width: 768px) {
       margin-top: 20px;
     }

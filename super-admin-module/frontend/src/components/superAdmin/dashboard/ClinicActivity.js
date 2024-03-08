@@ -72,18 +72,18 @@ const ClinicActivity = () => {
     console.log("Formatted Time:", typeof formattedTime);
     console.log(
       "Appointment Time:",
-      item?.apointment_date_time?.split("T")[1]?.split(":")[0]
+      item?.appointment_dateTime?.split("T")[1]?.split(":")[0]
     );
 
     const difference =
-      formattedTime - item?.apointment_date_time?.split("T")[1]?.split(":")[0];
+      formattedTime - item?.appointment_dateTime?.split("T")[1]?.split(":")[0];
     console.log("Difference:", difference); // Log the difference
     return difference.toString();
   });
 
   console.log(getLife);
   console.log(
-    appointmentList[0]?.apointment_date_time.split("T")[1]?.split(":")[0]
+    appointmentList[0]?.appointment_dateTime.split("T")[1]?.split(":")[0]
   );
 
   //patient details
@@ -103,7 +103,7 @@ const ClinicActivity = () => {
 
   console.log(patDetails);
   console.log(
-    appointmentList[0]?.apointment_date_time.split("T")[1]?.split(":")[0]
+    appointmentList[0]?.appointment_dateTime.split("T")[1]?.split(":")[0]
   );
 
   useEffect(() => {
@@ -116,10 +116,10 @@ const ClinicActivity = () => {
   //filter for day wise Appointment
   const filterAppointment = appointmentList?.filter((item) => {
     if (currentDate) {
-      return item.apointment_date_time?.split("T")[0] === currentDate;
+      return item.appointment_dateTime?.split("T")[0] === currentDate;
     } else {
       return (
-        item.apointment_date_time?.split("T")[0] === todayDate?.split("T")[0]
+        item.appointment_dateTime?.split("T")[0] === todayDate?.split("T")[0]
       );
     }
   });
@@ -130,12 +130,12 @@ const ClinicActivity = () => {
   const filterTreatment = appointmentList?.filter((item) => {
     if (currentDate) {
       return (
-        item.apointment_date_time?.split("T")[0] === currentDate &&
+        item.appointment_dateTime?.split("T")[0] === currentDate &&
         item.treatment_status === "Treated"
       );
     } else {
       return (
-        item.apointment_date_time?.split("T")[0] === todayDate?.split("T")[0] &&
+        item.appointment_dateTime?.split("T")[0] === todayDate?.split("T")[0] &&
         item.treatment_status === "Treated"
       );
     }
@@ -147,12 +147,12 @@ const ClinicActivity = () => {
   const filterBilling = appointmentList?.filter((item) => {
     if (currentDate) {
       return (
-        item.apointment_date_time?.split("T")[0] === currentDate &&
+        item.appointment_dateTime?.split("T")[0] === currentDate &&
         item.payment_status === "success"
       );
     }
     return (
-      item.apointment_date_time?.split("T")[0] === todayDate?.split("T")[0] &&
+      item.appointment_dateTime?.split("T")[0] === todayDate?.split("T")[0] &&
       item.payment_status === "success"
     );
   });
@@ -309,12 +309,12 @@ const ClinicActivity = () => {
                           </h4>
                         </div>
                         <div>
-                          {item.apointment_date_time.split("T")[0] ===
+                          {item.appointment_dateTime.split("T")[0] ===
                           formattedDate ? (
                             <>
                               <p className="fw-bold">
                                 {formattedTime -
-                                  item.apointment_date_time
+                                  item.appointment_dateTime
                                     .split("T")[1]
                                     ?.split(":")[0]}{" "}
                                 Hours ago
@@ -322,7 +322,7 @@ const ClinicActivity = () => {
                             </>
                           ) : (
                             <>
-                              <p>{item.apointment_date_time.split("T")[0]}</p>
+                              <p>{item.appointment_dateTime.split("T")[0]}</p>
                             </>
                           )}
                         </div>
@@ -354,12 +354,12 @@ const ClinicActivity = () => {
                           </h4>
                         </div>
                         <div>
-                          {item.apointment_date_time.split("T")[0] ===
+                          {item.appointment_dateTime.split("T")[0] ===
                           formattedDate ? (
                             <>
                               <p className="fw-bold">
                                 {formattedTime -
-                                  item.apointment_date_time
+                                  item.appointment_dateTime
                                     .split("T")[1]
                                     ?.split(":")[0]}{" "}
                                 Hours ago
@@ -367,7 +367,7 @@ const ClinicActivity = () => {
                             </>
                           ) : (
                             <>
-                              <p>{item.apointment_date_time.split("T")[0]}</p>
+                              <p>{item.appointment_dateTime.split("T")[0]}</p>
                             </>
                           )}
                         </div>
@@ -398,12 +398,12 @@ const ClinicActivity = () => {
                           </h4>
                         </div>
                         <div>
-                          {item.apointment_date_time.split("T")[0] ===
+                          {item.appointment_dateTime.split("T")[0] ===
                           formattedDate ? (
                             <>
                               <p className="fw-bold">
                                 {formattedTime -
-                                  item.apointment_date_time
+                                  item.appointment_dateTime
                                     .split("T")[1]
                                     ?.split(":")[0]}{" "}
                                 Hours ago
@@ -411,7 +411,7 @@ const ClinicActivity = () => {
                             </>
                           ) : (
                             <>
-                              <p>{item.apointment_date_time.split("T")[0]}</p>
+                              <p>{item.appointment_dateTime.split("T")[0]}</p>
                             </>
                           )}
                         </div>

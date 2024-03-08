@@ -11,6 +11,7 @@ const Card = () => {
   const [availableEmp, setAvailableEmp] = useState([]);
   const [billTot, setBillTot] = useState();
 
+  console.log(branch.name);
   const getAppointList = async () => {
     try {
       const response = await axios.get(
@@ -52,7 +53,7 @@ const Card = () => {
 
   //filterForPatAppointToday
   const filterForPatAppointToday = appointmentList?.filter(
-    (item) => item.apointment_date_time.split("T")[0] === formattedDate
+    (item) => item.appointment_dateTime.split("T")[0] === formattedDate
   );
 
   console.log(filterForPatAppointToday);
@@ -61,7 +62,7 @@ const Card = () => {
   const filterForPatTreatToday = appointmentList?.filter(
     (item) =>
       item.treatment_status === "Treated" &&
-      item.apointment_date_time.split("T")[0] === formattedDate
+      item.appointment_dateTime.split("T")[0] === formattedDate
   );
 
   console.log(filterForPatTreatToday);
@@ -87,11 +88,11 @@ const Card = () => {
   console.log(filterForEmpPresentToday);
 
   //filter for today's earning
-  console.log(appointmentList[0]?.apointment_date_time?.split("T")[0]);
+  console.log(appointmentList[0]?.appointment_dateTime?.split("T")[0]);
   const filterForEarningToday = appointmentList?.filter(
     (item) =>
       item.payment_status === "success" &&
-      item.apointment_date_time?.split("T")[0] === formattedDate
+      item.appointment_dateTime?.split("T")[0] === formattedDate
   );
 
   // console.log(filterForEarningToday);
@@ -116,9 +117,9 @@ const Card = () => {
     <>
       <Container>
         <div className="row d-flex justify-content-around">
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-4 my-3 p-0">
             <div className="card">
-              <div className="card-body d-flex justify-content-center flex-column">
+              <div className="card-body d-flex justify-content-center flex-column align-items-center">
                 <div>
                   <i className="bi bi-people-fill icon"></i>
                 </div>
@@ -130,9 +131,9 @@ const Card = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-4 my-3 p-0">
             <div className="card">
-              <div className="card-body d-flex justify-content-center flex-column">
+              <div className="card-body d-flex justify-content-center flex-column align-items-center">
                 <div>
                   <i className="bi bi-people-fill icon"></i>
                 </div>
@@ -144,9 +145,9 @@ const Card = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-4 my-3 p-0">
             <div className="card">
-              <div className="card-body d-flex justify-content-center flex-column">
+              <div className="card-body d-flex justify-content-center flex-column align-items-center">
                 <div>
                   <i className="bi bi-people-fill icon"></i>
                 </div>
@@ -158,9 +159,9 @@ const Card = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-4 my-3 p-0">
             <div className="card">
-              <div className="card-body d-flex justify-content-center flex-column">
+              <div className="card-body d-flex justify-content-center flex-column align-items-center">
                 <div>
                   <i className="bi bi-people-fill icon"></i>
                 </div>
@@ -172,9 +173,9 @@ const Card = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-4 my-3 p-0">
             <div className="card">
-              <div className="card-body d-flex justify-content-center flex-column">
+              <div className="card-body d-flex justify-content-center flex-column align-items-center">
                 <div>
                   <i className="bi bi-people-fill icon"></i>
                 </div>

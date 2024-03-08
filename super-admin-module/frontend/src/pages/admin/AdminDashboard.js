@@ -76,7 +76,7 @@ const AdminDashboard = () => {
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">
-                      Total apointments this month
+                      Total appointments this month
                     </h3>
                     <TotalApsTMAdmin />
                   </div>

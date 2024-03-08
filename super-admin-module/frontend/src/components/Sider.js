@@ -30,10 +30,13 @@ const Sider = () => {
                 )}`}
               >
                 <div>
-                  <i className="fs-4 bi bi-house-door-fill"></i>
+                  <i className="fs-4 bi bi-house-door-fill "></i>
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
+                  <h3
+                    className=" d-none d-sm-inline fs-6 icon-view"
+                    id="navleft1"
+                  >
                     Dashboard
                   </h3>
                 </div>
@@ -49,7 +52,10 @@ const Sider = () => {
                   <FaCodeBranch className="fs-4 bi bi-house-door-fill" />
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
+                  <h3
+                    className=" d-none d-sm-inline fs-6 icon-view"
+                    id="navleft1"
+                  >
                     Branch
                   </h3>
                 </div>
@@ -64,10 +70,13 @@ const Sider = () => {
                 )}`}
               >
                 <div>
-                  <i className="fs-4 bi bi-table"></i>
+                  <i className="fs-4 bi bi-table "></i>
                 </div>
                 <div>
-                  <h3 className="d-none d-sm-inline fs-6" id="navleft2">
+                  <h3
+                    className="d-none d-sm-inline fs-6 icon-view"
+                    id="navleft2"
+                  >
                     Appointment
                   </h3>
                 </div>
@@ -83,7 +92,10 @@ const Sider = () => {
                   <i className="fs-4 bi bi-receipt-cutoff"></i>
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                  <h3
+                    className=" d-none d-sm-inline fs-6 icon-view"
+                    id="navleft"
+                  >
                     Bills
                   </h3>
                 </div>
@@ -99,7 +111,10 @@ const Sider = () => {
                   <MdOutlineInventory className="fs-4 bi bi-house-door-fill" />
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                  <h3
+                    className=" d-none d-sm-inline fs-6 icon-view"
+                    id="navleft"
+                  >
                     Inventory
                   </h3>
                 </div>
@@ -115,7 +130,10 @@ const Sider = () => {
                   <MdOutlineSick className="fs-4 bi bi-house-door-fill" />
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                  <h3
+                    className=" d-none d-sm-inline fs-6 icon-view"
+                    id="navleft"
+                  >
                     Patient
                   </h3>
                 </div>
@@ -148,7 +166,10 @@ const Sider = () => {
                   <IoIosPeople className="fs-4 bi bi-camera-video" />
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                  <h3
+                    className=" d-none d-sm-inline fs-6 icon-view"
+                    id="navleft"
+                  >
                     Manage Staff
                   </h3>
                 </div>
@@ -164,7 +185,10 @@ const Sider = () => {
                   <i className="fs-4 bi bi-file-medical"></i>
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                  <h3
+                    className=" d-none d-sm-inline fs-6 icon-view"
+                    id="navleft"
+                  >
                     Lab
                   </h3>
                 </div>
@@ -182,7 +206,10 @@ const Sider = () => {
                   <TbReportSearch className="fs-4 bi bi-camera-video" />
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                  <h3
+                    className=" d-none d-sm-inline fs-6 icon-view"
+                    id="navleft"
+                  >
                     Report
                   </h3>
                 </div>
@@ -218,11 +245,11 @@ const Wrapper = styled.div`
     height: 150rem;
     background-color: #004aad;
     @media screen and (max-width: 768px) {
-      width: 3rem;
+      width: 100%;
       height: 212rem;
     }
     @media screen and (min-width: 768px) and (max-width: 1020px) {
-      width: 5rem;
+      width: 100%;
       height: 151rem;
     }
   }
@@ -249,5 +276,11 @@ const Wrapper = styled.div`
     padding: 1rem;
     box-shadow: 1px 0px 30px #0e67dd;
     border-radius: 10px;
+  }
+
+  .icon-view {
+    @media (max-width: 900px) {
+      display: none !important;
+    }
   }
 `;

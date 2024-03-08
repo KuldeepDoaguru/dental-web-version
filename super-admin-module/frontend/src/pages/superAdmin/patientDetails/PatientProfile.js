@@ -61,17 +61,17 @@ const PatientProfile = () => {
       <Header />
 
       <div className="row mrgnzero">
-        <div className="col-lg-1 col-1" id="sider">
+        <div className="col-lg-1 col-md-1 col-1" id="sider">
           <Sider />
         </div>
-        <div className="col-lg-11 col-11">
+        <div className="col-lg-11 col-md-11 col-11">
           <div className="container-fluid mt-3">
             <div className="d-flex justify-content-between">
               <BranchSelector />
             </div>
           </div>
           <div className="row g-2">
-            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
               <h1 className="mt-3">{patientData[0]?.patient_name}</h1>
 
               <div className="mt-5">
@@ -83,10 +83,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>UHID :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">{patientData[0]?.uhid}</span>
                           </div>
                         </div>
@@ -95,10 +95,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Gender :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">{patientData[0]?.gender}</span>
                           </div>
                         </div>
@@ -107,10 +107,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Email :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">{patientData[0]?.emailid}</span>
                           </div>
                         </div>
@@ -119,10 +119,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>DOB :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">{patientData[0]?.dob}</span>
                           </div>
                         </div>
@@ -131,10 +131,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Address :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">{patientData[0]?.address}</span>
                           </div>
                         </div>
@@ -143,10 +143,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Adhaar Number :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">{patientData[0]?.adharno}</span>
                           </div>
                         </div>
@@ -155,10 +155,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Marital Status :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">
                               {patientData[0]?.maritalstatus}
                             </span>
@@ -169,10 +169,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Blood Group :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">
                               {patientData[0]?.bloodgroup}
                             </span>
@@ -183,10 +183,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Mobile :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">{patientData[0]?.mobileno}</span>
                           </div>
                         </div>
@@ -195,10 +195,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Father Name :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">
                               {patientData[0]?.fathername}
                             </span>
@@ -209,10 +209,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Mother Name :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">
                               {patientData[0]?.mothername}
                             </span>
@@ -223,10 +223,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Husband Name :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">
                               {patientData[0]?.husbandname}
                             </span>
@@ -237,10 +237,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Patient Type :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">
                               {patientData[0]?.patient_type}
                             </span>
@@ -251,10 +251,10 @@ const PatientProfile = () => {
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-5">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
                             <strong>Registration Branch :</strong>
                           </div>
-                          <div className="col-7">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">
                               {patientData[0]?.branch_name}
                             </span>
@@ -282,7 +282,7 @@ const PatientProfile = () => {
                 </div>
               </div>
             </div>
-            <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12 col-sm-12">
+            <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 col-sm-12">
               <div className="mrgtop">
                 <Navbar />
               </div>

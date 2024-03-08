@@ -51,6 +51,11 @@ const Header = () => {
 
   useEffect(() => {
     getNotifyDetails();
+    const intervalId = setInterval(getNotifyDetails, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   console.log(notifyList);
@@ -105,7 +110,7 @@ const Header = () => {
                 </li>
                 <li className="nav-item dropdown mx-3" id="userid">
                   <a
-                    className="nav-link dropdown-toggle"
+                    className="nav-link"
                     href="/"
                     role="button"
                     data-bs-toggle="dropdown"
@@ -132,13 +137,14 @@ const Header = () => {
 
                 <li className="nav-item dropdown" id="bell">
                   <a
-                    className="nav-link dropdown-toggle"
+                    className="nav-link"
                     href="/"
                     role="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     <AiFillBell className="icon" />
+                    <div className="nav-cart-count">{filterForRead.length}</div>
                   </a>
                   <ul className="dropdown-menu third-dropdown">
                     {filterForRead?.slice(-10).map((item) => {
@@ -246,6 +252,13 @@ const Wrapper = styled.div`
     left: -27rem;
     overflow-y: auto;
     max-height: calc(100vh - 100px);
+    @media screen and (max-width: 900px) {
+      width: 500px;
+      left: 0rem;
+      overflow-y: auto;
+      max-height: calc(100vh - 100px);
+      position: absolute;
+    }
   }
 
   .right-noti {
@@ -255,6 +268,31 @@ const Wrapper = styled.div`
       &:hover {
         color: #004aad;
       }
+    }
+  }
+
+  .nav-cart-count {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -40px;
+    margin-left: 0px;
+    border-radius: 11px;
+    font-size: 14px;
+    background: red;
+    color: white;
+    @media screen and (max-width: 900px) {
+      margin-left: -11px;
+    }
+  }
+
+  .navbar-nav {
+    @media (max-width: 900px) {
+      display: flex;
+      flex-direction: row;
+      margin-top: 2rem;
     }
   }
 `;

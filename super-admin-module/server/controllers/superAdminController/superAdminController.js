@@ -506,7 +506,7 @@ const makeAppointents = (req, res) => {
       appointed_by,
     } = req.body;
 
-    const insertQuery = `INSERT INTO apointments (uhid, branch_name, patient_name, dob, gender, maritalstatus, patient_contact,
+    const insertQuery = `INSERT INTO appointments (uhid, branch_name, patient_name, dob, gender, maritalstatus, patient_contact,
       assigned_doctor, treatment_provided, treatment_status, payment_status, payment_date_time, appointed_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
     const insertValues = [
@@ -539,17 +539,19 @@ const makeAppointents = (req, res) => {
 const appointmentData = (req, res) => {
   const branchName = req.params.branch;
   try {
-    const getQuery = "SELECT * FROM apointments WHERE branch_name = ?";
+    const getQuery =
+      "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid WHERE appointments.branch_name = ?";
     db.query(getQuery, branchName, (err, result) => {
       if (err) {
-        res
-          .status(400)
-          .json({ success: false, message: "error getting appointment" });
+        console.error("Error retrieving appointment:", err); // Log the error for debugging
+        return res
+          .status(500)
+          .json({ success: false, message: "Error getting appointment" });
       }
       res.status(200).send(result);
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in try-catch block:", error); // Log any synchronous errors
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
@@ -568,7 +570,7 @@ const updateAppointData = (req, res) => {
       updatedBy,
     } = req.body;
 
-    const selectQuery = "SELECT * FROM apointments WHERE appoint_id";
+    const selectQuery = "SELECT * FROM appointments WHERE appoint_id";
     db.query(selectQuery, appointId, (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });
@@ -603,7 +605,7 @@ const updateAppointData = (req, res) => {
         }
 
         if (appointDateTime) {
-          updateFields.push("apointment_date_time = ?");
+          updateFields.push("appointment_dateTime = ?");
           updateValues.push(appointDateTime);
         }
         if (appointment_status) {
@@ -614,7 +616,7 @@ const updateAppointData = (req, res) => {
           updateFields.push("updated_by = ?");
           updateValues.push(updatedBy);
         }
-        const updateQuery = `UPDATE apointments SET ${updateFields.join(
+        const updateQuery = `UPDATE appointments SET ${updateFields.join(
           ", "
         )} WHERE appoint_id = ?`;
 
@@ -647,7 +649,7 @@ const updateAppointData = (req, res) => {
 const deleteAppointData = (req, res) => {
   try {
     const appointID = req.params.id;
-    const deleteQuery = "DELETE FROM apointments WHERE appoint_id = ?";
+    const deleteQuery = "DELETE FROM appointments WHERE appoint_id = ?";
     db.query(deleteQuery, appointID, (err, result) => {
       if (err) {
         res.status(500).json({ success: false, message: err.message });

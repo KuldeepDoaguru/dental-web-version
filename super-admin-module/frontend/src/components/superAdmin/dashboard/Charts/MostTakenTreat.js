@@ -65,7 +65,7 @@ const MostTakenTreat = () => {
 
     // console.log(formatByBranch);
     const filterForMonthlyAppointments = appointmentList?.filter((item) =>
-      item.apointment_date_time?.split("T")[0]?.includes(formattedDate)
+      item.appointment_dateTime?.split("T")[0]?.includes(formattedDate)
     );
 
     if (filterForMonthlyAppointments.length > 0) {

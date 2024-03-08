@@ -123,17 +123,18 @@ const UniversalLogin = () => {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                   />
-
-                  <button type="submit" className="btn btn-success mt-2 mb-2">
-                    Login
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger mt-2"
-                    onClick={onClose}
-                  >
-                    Cancel
-                  </button>
+                  <div className="d-flex">
+                    <button type="submit" className="btn btn-success mt-2 mb-2">
+                      Login
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-danger mt-2 mx-2"
+                      onClick={onClose}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>
@@ -145,16 +146,13 @@ const UniversalLogin = () => {
   return (
     <>
       <Container>
-        <section className="vh-100">
-          <div className="container h-100 ">
-            <div className="row d-flex justify-content-center align-items-center h-100">
-              <div className="col-lg-12 col-xl-11">
-                <div className="text-black cardstyle shadow">
-                  <div className="card-body p-md-5">
-                    <div className="row justify-content-center">
-                      <div className="col-md-10 col-lg-6 col-xl-5 order-2">
-                        <div className="d-flex justify-content-end">
-                          {/* <select
+        <div className="d-flex justify-content-center">
+          <div className="text-black cardstyle shadow">
+            <div className="card-body p-md-5">
+              <div className="row justify-content-center">
+                <div className="col-md-10 col-lg-6 col-xl-5 col-12 order-2">
+                  <div className="d-flex justify-content-end">
+                    {/* <select
                             name="role"
                             id=""
                             className="p-2 rounded shadow select-style"
@@ -168,87 +166,74 @@ const UniversalLogin = () => {
                             <option value="doctor">Doctor</option>
                             <option value="accountant">Accountant</option>
                           </select> */}
-                        </div>
-                        <p className="text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                          Login
-                        </p>
+                  </div>
+                  <p className="text-center h4 fw-bold mb-5 mx-1 mt-4">Login</p>
 
-                        <form className="mx-1 mx-md-4" onSubmit={adminLogin}>
-                          <div className="d-flex flex-row align-items-center mb-4">
-                            <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                            <div className="form-outline flex-fill mb-0">
-                              <label
-                                className="form-label"
-                                for="form3Example3c"
-                              >
-                                Email
-                              </label>
-                              <input
-                                type="email"
-                                name="email"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="form-control"
-                                placeholder="email"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="d-flex flex-row align-items-center mb-4">
-                            <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-                            <div className="form-outline flex-fill mb-0">
-                              <label
-                                className="form-label"
-                                for="form3Example4c"
-                              >
-                                Password
-                              </label>
-                              <input
-                                name="password"
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="form-control"
-                                placeholder="password"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="col-5 ms-3">
-                            <p>
-                              <Link to="/receptionist_registration">
-                                Forgot Password?
-                              </Link>
-                            </p>
-                          </div>
-
-                          <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                            {/* <Link to="/superadmin-dashboard"></Link> */}
-                            <button
-                              type="submit"
-                              className="btn btn-primary btn-lg"
-                            >
-                              Login
-                            </button>
-                          </div>
-                        </form>
-                      </div>
-                      <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1">
-                        <img
-                          src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1708075638/dental%20guru/Login-page_1_cwadmt.png"
-                          className="img-fluid"
-                          alt="Sample"
+                  <form className="mx-1" onSubmit={adminLogin}>
+                    <div className="d-flex flex-row align-items-center mb-4">
+                      <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                      <div className="form-outline flex-fill mb-0">
+                        <label className="form-label" for="form3Example3c">
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          id="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="form-control"
+                          placeholder="email"
                         />
                       </div>
                     </div>
-                  </div>
+
+                    <div className="d-flex flex-row align-items-center mb-4">
+                      <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
+                      <div className="form-outline flex-fill mb-0">
+                        <label className="form-label" for="form3Example4c">
+                          Password
+                        </label>
+                        <input
+                          name="password"
+                          type="password"
+                          id="password"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="form-control"
+                          placeholder="password"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-5 ms-3">
+                      <p>
+                        <Link to="/receptionist_registration">
+                          Forgot Password?
+                        </Link>
+                      </p>
+                    </div>
+
+                    <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                      {/* <Link to="/superadmin-dashboard"></Link> */}
+                      <button type="submit" className="btn btn-primary btn-lg">
+                        Login
+                      </button>
+                    </div>
+                  </form>
+                </div>
+                <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1">
+                  <img
+                    src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1708075638/dental%20guru/Login-page_1_cwadmt.png"
+                    className="img-fluid img-fr"
+                    alt="Sample"
+                  />
                 </div>
               </div>
             </div>
           </div>
-        </section>
+        </div>
+
         {popupVisible && <Popup email={email} onClose={closeUpdatePopup} />}
       </Container>
     </>
@@ -259,6 +244,10 @@ export default UniversalLogin;
 const Container = styled.div`
   .cardstyle {
     border-radius: 25px;
+    height: 100%;
+    width: 80%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
     background-color: #d7f3f0 !important;
   }
 
@@ -296,5 +285,10 @@ const Container = styled.div`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .img-fr {
+    height: 100%;
+    width: auto;
   }
 `;

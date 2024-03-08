@@ -58,9 +58,9 @@ const Appointment = () => {
                   {patAppointDetails?.map((item) => (
                     <>
                       <tr>
-                        <td>{item.apointment_date_time?.split("T")[0]}</td>
+                        <td>{item.appointment_dateTime?.split("T")[0]}</td>
                         <td>
-                          {item.apointment_date_time
+                          {item.appointment_dateTime
                             ?.split("T")[1]
                             .split(".")[0]
                             .slice(0, 5)}
@@ -121,5 +121,8 @@ const Wrapper = styled.div`
 
   .cont-box {
     width: 68rem;
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
   }
 `;

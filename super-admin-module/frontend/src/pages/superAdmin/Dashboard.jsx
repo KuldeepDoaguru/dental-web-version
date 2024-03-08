@@ -32,10 +32,10 @@ const Dashboard = () => {
       <div className="main">
         <div className="container-fluid">
           <div className="row flex-nowrap ">
-            <div className="col-lg-1 col-1 p-0">
+            <div className="col-lg-1 col-md-2 col-1 p-0">
               <Sider />
             </div>
-            <div className="col-lg-11 col-11 ps-0">
+            <div className="col-lg-11 col-md-9 col-11 ps-0">
               <div className="row d-flex justify-content-between mx-3">
                 <div className="col-12 col-md-4 mt-4">
                   <BranchSelector />
@@ -88,30 +88,30 @@ const Dashboard = () => {
               <Card />
               <div className="container-fluid pb-3">
                 <div className="row g-5 mt-3">
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Treatment this month</h3>
                     <MostTakenTreat />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Patient visits this month</h3>
                     <PatientStatisticChart />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">
-                      Total apointments this month
+                      Total appointments this month
                     </h3>
                     <NewRegPatient />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">New Patient this Month</h3>
 
                     <AppointmentChart />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Earning report this month</h3>
                     <EarningChart />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Expense report this month</h3>
                     <ExpenseChart />
                   </div>

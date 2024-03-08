@@ -47,7 +47,7 @@ const AppointmentReport = () => {
 
   const filterAppointDataByMonth = appointmentList?.filter((item) => {
     return (
-      item.apointment_date_time.split("T")[0].slice(0, 7) ===
+      item.appointment_dateTime.split("T")[0].slice(0, 7) ===
       formattedDate.slice(0, 7)
     );
   });
@@ -242,10 +242,10 @@ const AppointmentReport = () => {
                                         </td>
                                         <td>{item.patient_name}</td>
                                         <td className="table-small">
-                                          {item.patient_contact}
+                                          {item.mobileno}
                                         </td>
                                         <td className="table-small">
-                                          {item.assigned_doctor}
+                                          {item.assigned_doctor_name}
                                         </td>
                                         {/* <td className="table-small">
                                     {item.treatment_provided}
@@ -261,7 +261,7 @@ const AppointmentReport = () => {
                                     {item.payment_date_time?.split("T")[1]}
                                   </td> */}
                                         <td className="table-small">
-                                          {item.appointed_by}
+                                          {item.appointment_created_by}
                                         </td>
                                         <td className="table-small">
                                           {item.updated_by
@@ -270,12 +270,12 @@ const AppointmentReport = () => {
                                         </td>
                                         <td className="table-small">
                                           {
-                                            item.apointment_date_time?.split(
+                                            item.appointment_dateTime?.split(
                                               "T"
                                             )[0]
                                           }{" "}
                                           {
-                                            item.apointment_date_time?.split(
+                                            item.appointment_dateTime?.split(
                                               "T"
                                             )[1]
                                           }

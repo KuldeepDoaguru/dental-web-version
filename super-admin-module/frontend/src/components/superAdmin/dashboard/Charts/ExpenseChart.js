@@ -132,7 +132,7 @@ const ExpenseChart = () => {
 
   // Group appointments by date and count appointments for each day
   // const dailyAppointments = filterForPayStatus?.reduce((acc, appointment) => {
-  //   const date = appointment.apointment_date_time.split("T")[0];
+  //   const date = appointment.appointment_dateTime.split("T")[0];
   //   acc[date] = acc[date] ? acc[date] + 1 : 1;
   //   return acc;
   // }, {});
@@ -167,7 +167,7 @@ const ExpenseChart = () => {
       <Container>
         <div className="container-fluid mt-4" id="main">
           <BarChart
-            width={450}
+            width={400}
             height={300}
             data={data}
             margin={{
@@ -210,5 +210,7 @@ const Container = styled.div`
     border-radius: 5px;
     padding: 2rem;
     box-shadow: 0px 2px 18px #bdbaba;
+    display: flex;
+    justify-content: center;
   }
 `;

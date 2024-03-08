@@ -49,7 +49,7 @@ const PatientStatisticChart = () => {
 
   // Group appointments by date and count appointments for each day
   const dailyAppointments = filterByTreated.reduce((acc, appointment) => {
-    const date = appointment.apointment_date_time.split("T")[0];
+    const date = appointment.appointment_dateTime.split("T")[0];
     acc[date] = acc[date] ? acc[date] + 1 : 1;
     return acc;
   }, {});
@@ -103,6 +103,10 @@ const Wrapper = styled.div`
     border-radius: 5px;
     padding: 2rem;
     box-shadow: 0px 2px 18px #bdbaba;
+    display: flex;
+    justify-content: center;
+    display: flex;
+    justify-content: center;
   }
   @media screen and (max-width: 768px) {
     padding: 20px;

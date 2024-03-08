@@ -101,9 +101,9 @@ const Overview = () => {
 
   const filterForPrevAndNextAppointment = patAppointDetails?.reduce(
     (acc, item) => {
-      if (item.apointment_date_time?.split("T")[0] < formattedDate) {
+      if (item.appointment_dateTime?.split("T")[0] < formattedDate) {
         acc.prevAppointment = item;
-      } else if (item.apointment_date_time?.split("T")[0] >= formattedDate) {
+      } else if (item.appointment_dateTime?.split("T")[0] >= formattedDate) {
         acc.nextAppointment = item;
       }
       return acc;
@@ -118,16 +118,16 @@ const Overview = () => {
   );
   console.log(
     "Next Appointment:",
-    filterForPrevAndNextAppointment.nextAppointment?.apointment_date_time
+    filterForPrevAndNextAppointment.nextAppointment?.appointment_dateTime
   );
 
   const nextAppoint =
-    filterForPrevAndNextAppointment.nextAppointment?.apointment_date_time?.split(
+    filterForPrevAndNextAppointment.nextAppointment?.appointment_dateTime?.split(
       "T"
     )[0];
 
   const prevAppoint =
-    filterForPrevAndNextAppointment.prevAppointment?.apointment_date_time?.split(
+    filterForPrevAndNextAppointment.prevAppointment?.appointment_dateTime?.split(
       "T"
     )[0];
 
@@ -177,7 +177,7 @@ const Overview = () => {
                     {patAppointDetails?.slice(-3).map((item) => (
                       <>
                         <tr>
-                          <td>{item.apointment_date_time?.split("T")[0]}</td>
+                          <td>{item.appointment_dateTime?.split("T")[0]}</td>
                           <td>{item.assigned_doctor}</td>
                         </tr>
                       </>
@@ -198,7 +198,7 @@ const Overview = () => {
                   <tbody>
                     {patAppointDetails?.slice(-3).map((item) => (
                       <tr>
-                        <td>{item.apointment_date_time?.split("T")[0]}</td>
+                        <td>{item.appointment_dateTime?.split("T")[0]}</td>
                         <td>{item.treatment_provided}</td>
                         <td>{item.assigned_doctor}</td>
                       </tr>
@@ -346,5 +346,8 @@ const Container = styled.div`
   }
   #app {
     width: 65rem;
+    @media screen and (max-width: 768px) {
+      width: 100%;
+    }
   }
 `;

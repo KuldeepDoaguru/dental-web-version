@@ -494,7 +494,7 @@ const getPatientBillByBranchAndId = (req, res) => {
 const getAppointmentByBranchAndId = (req, res) => {
   try {
     const pid = req.params.pid;
-    const selectQuery = "SELECT * FROM apointments WHERE uhid = ?";
+    const selectQuery = "SELECT * FROM appointments WHERE uhid = ?";
     db.query(selectQuery, [pid], (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });
@@ -908,7 +908,7 @@ const downloadAppointReportByTime = (req, res) => {
     const branch = req.params.branch;
     const { fromDate, toDate } = req.body;
     const selectQuery =
-      "SELECT * FROM apointments WHERE branch_name = ? AND apointment_date_time >= ? AND apointment_date_time <= ?";
+      "SELECT * FROM appointments WHERE branch_name = ? AND appointment_dateTime >= ? AND appointment_dateTime <= ?";
     db.query(selectQuery, [branch, fromDate, toDate], (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });

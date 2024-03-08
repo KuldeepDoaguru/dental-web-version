@@ -139,7 +139,7 @@ const AppointmentNotify = () => {
           {getNotify?.map((item) => (
             <>
               <div className="row mt-2">
-                <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                   <div className="container">
                     <div className="row">
                       <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
@@ -155,8 +155,8 @@ const AppointmentNotify = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                  <div className="d-flex">
+                <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-5 col-sm-12 col-12">
+                  <div className="d-flex mrgn-mobile">
                     <div class="form-check">
                       <input
                         class="form-check-input"
@@ -204,8 +204,8 @@ const AppointmentNotify = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
-                  <div className="d-flex">
+                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-12 col-12">
+                  <div className="d-flex mrgn-mobile">
                     <button
                       className="btn btn-warning fw-bold p-2"
                       onClick={() => openEditPreTempPopup(item.notify_id)}
@@ -472,5 +472,11 @@ const Container = styled.div`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .mrgn-mobile {
+    @media screen and (max-width: 900px) {
+      margin-top: 1rem;
+    }
   }
 `;

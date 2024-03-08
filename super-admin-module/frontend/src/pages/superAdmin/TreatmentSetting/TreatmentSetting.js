@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Sider from "../../../components/Sider";
 import Header from "../../../components/Header";
@@ -7,8 +7,10 @@ import { FaSearch } from "react-icons/fa";
 import BranchSelector from "../../../components/BranchSelector";
 import axios from "axios";
 import cogoToast from "cogo-toast";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const TreatmentSetting = () => {
+  const location = useLocation();
   const [showAddTreatments, setShowAddTreatments] = useState(false);
   const [showEditTreatments, setShowEditTreatments] = useState(false);
   const [keyword, setkeyword] = useState("");
@@ -116,6 +118,10 @@ const TreatmentSetting = () => {
   }, []);
 
   console.log(trID);
+
+  const goBack = () => {
+    window.history.go(-1);
+  };
   return (
     <Container>
       <Header />
@@ -130,6 +136,9 @@ const TreatmentSetting = () => {
                 <BranchSelector />
               </div>
               <div className="container-fluid mt-3">
+                <button className="btn btn-success" onClick={goBack}>
+                  <IoMdArrowRoundBack /> Back
+                </button>
                 <div className="container-fluid">
                   <div className="row mt-3">
                     {/* <div className="col-1"></div> */}

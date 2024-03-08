@@ -124,10 +124,10 @@ const EditInventory = () => {
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-nowrap ">
-              <div className="col-lg-1 col-1 p-0">
+              <div className="col-lg-1 col-md-1 col-1 p-0">
                 <Sider />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-md-11 col-11 ps-0 mx-2">
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <BranchSelector />

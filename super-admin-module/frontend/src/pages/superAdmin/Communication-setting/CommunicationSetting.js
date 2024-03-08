@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Sider from "../../../components/Sider";
 import Header from "../../../components/Header";
@@ -8,10 +8,16 @@ import AppointmentNotify from "../../../components/superAdmin/communication-comp
 import NotificationTemp from "../../../components/superAdmin/communication-component/NotificationTemp";
 import AddNewTemplate from "../../../components/superAdmin/communication-component/AddNewTemplate";
 import BranchSelector from "../../../components/BranchSelector";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const CommunicationSetting = () => {
   const initialTab = localStorage.getItem("selectedTab") || "tab1";
   const [selectedTab, setSelectedTab] = useState(initialTab);
+  const location = useLocation();
+
+  const goBack = () => {
+    window.history.go(-1);
+  };
 
   return (
     <>
@@ -37,6 +43,9 @@ const CommunicationSetting = () => {
                   </div>
                 </div>
                 <div className="container-fluid mt-3">
+                  <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
                   <div className="container-fluid">
                     <div className="row mt-3">
                       {/* <div className="col-1"></div> */}

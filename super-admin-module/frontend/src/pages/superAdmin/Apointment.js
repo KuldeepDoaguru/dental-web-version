@@ -132,7 +132,7 @@ const Apointment = () => {
 
   // const filterAppointDataByMonth = appointmentList?.filter((item) => {
   //   return (
-  //     item.apointment_date_time.split("T")[0].slice(0, 7) ===
+  //     item.appointment_dateTime.split("T")[0].slice(0, 7) ===
   //     formattedDate.slice(0, 7)
   //   );
   // });
@@ -148,7 +148,7 @@ const Apointment = () => {
     return appointmentList
       .filter(
         (item) =>
-          item.apointment_date_time.split("T")[0].slice(0, 7) ===
+          item.appointment_dateTime.split("T")[0].slice(0, 7) ===
           formattedDate.slice(0, 7)
       )
       .slice(startIndex, endIndex);
@@ -227,24 +227,26 @@ const Apointment = () => {
                                   <td className="table-sno">
                                     {item.appoint_id}
                                   </td>
-                                  <td className="table-small">{item.uhid}</td>
+                                  <td className="table-small">
+                                    {item.patient_uhid}
+                                  </td>
                                   <td>{item.patient_name}</td>
                                   <td className="table-small">
-                                    {item.patient_contact}
+                                    {item.mobileno}
                                   </td>
                                   <td className="table-small">
-                                    {item.assigned_doctor}
+                                    {item.assigned_doctor_name}
                                   </td>
 
                                   <td className="table-small">
-                                    {item.appointed_by}
+                                    {item.appointment_created_by}
                                   </td>
                                   <td className="table-small">
                                     {item.updated_by ? item.updated_by : "-"}
                                   </td>
                                   <td className="table-small">
-                                    {item.apointment_date_time?.split("T")[0]}{" "}
-                                    {item.apointment_date_time?.split("T")[1]}
+                                    {item.appointment_dateTime?.split("T")[0]}{" "}
+                                    {item.appointment_dateTime?.split("T")[1]}
                                   </td>
                                   <td>{item.appointment_status}</td>
                                   <td>{item.cancel_reason}</td>

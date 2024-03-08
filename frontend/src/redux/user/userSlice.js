@@ -4,6 +4,7 @@ const initialState = {
     currentUser: null,
     loading: false,
     error: false,
+    refreshData: false
 };
 
 const userSlice = createSlice({
@@ -27,9 +28,12 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = false;
         },
+        toggleDataRefresh: (state) =>{
+            state.refreshData=!state.refreshData;
+        }
     }
 });
 
-export const { signInStart, signInSuccess, signInFailure, logout } = userSlice.actions;
+export const { signInStart, signInSuccess, signInFailure, logout, toggleDataRefresh } = userSlice.actions;
 
 export default userSlice.reducer;

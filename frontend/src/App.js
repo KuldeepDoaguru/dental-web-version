@@ -52,7 +52,7 @@ function App() {
       <Route path="/ExaminationPatient" element={<ExaminationPatient />} />
       <Route path="/ExaminationDashBoardPatient/:id" element={<ExaminationDashBoardPatient />} />
       <Route path="/ExaminationDashBoardPediatric/:id" element={<ExaminationDashBoardPediatric />} />
-      <Route path="/TreatmentDashBoard" element={<TreatmentDashBoard />} />
+      <Route path="/TreatmentDashBoard/:id" element={<TreatmentDashBoard />} />
       <Route path="/PrescriptionDashBoard" element={<PrescriptionDashBoard />} />
       <Route path="/CreatePrescrip" element={<CreatePrescrip />} />
       <Route path="/TPrescription" element={<TPrescription />} />

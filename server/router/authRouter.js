@@ -3,6 +3,7 @@ const db = require("../connect.js");
 const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric } = require("../controller/authControl.js");
 const { getAppointTable, getAppointmentById, getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus } = require("../controller/authAppointTable.js");
 const { getBranch, LoginDoctor } = require("../controller/authBranch.js");
+const { getTreatmentList } = require("../controller/authTreatment.js");
 
 const router = express.Router();
 
@@ -31,6 +32,12 @@ router.get("/get-branches", getBranch);
 router.post("/doctor-login", LoginDoctor);
 
 // Branch Routes END here......
+
+// Treatment List Routes START here......
+
+router.get("/treatmentLists", getTreatmentList)
+
+// Treatment List Routes END here......
 
 
 module.exports = { authRoutes: router };

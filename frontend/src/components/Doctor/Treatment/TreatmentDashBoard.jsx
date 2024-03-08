@@ -3,9 +3,11 @@ import styled from "styled-components";
 import HeadBar from "../HeadBar";
 import SideBar from "../SideBar";
 import Treat from "./Treat";
+import {useParams } from "react-router-dom";
 
 const TreatmentDashBoard = () => {
-
+  const { id } = useParams();
+  console.log(id);
   return (
     <>
       <Wrapper>

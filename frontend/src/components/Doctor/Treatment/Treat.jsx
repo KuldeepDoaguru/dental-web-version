@@ -1,67 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { IoMdArrowDropright } from "react-icons/io";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import { GrFormNextLink } from "react-icons/gr";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 const Treat = () => {
-  const [inputs, setInputs] = useState({
-    input1: "",
-    input2: "",
-    input3: 0,
-    input4: "",
-    input5: "",
-    input6: "",
-    input7: "",
+  const { id } = useParams();
+  console.log(id);
+  const [getPatientData, setGetPatientData] = useState([]);
+  const [treatments, setTreatments] = useState([]);
+  const [selectedTreatment, setSelectedTreatment] = useState('');
+  const [inputValues, setInputValues] = useState({
+    cost: '',
+    discount: ''
   });
-  const [filteredOptions, setFilteredOptions] = useState([]);
-  const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputs((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    const filtered = options.filter((option) =>
-      option.toLowerCase().startsWith(value.toLowerCase())
-    );
-    setFilteredOptions(filtered);
-    setShowDropdown(!!value); // Show dropdown only if there's a search query
-    console.log(inputs);
-
-    let quantity = 0;
-
-    if (name === "input2") {
-      const trimmedValues = value.split(",").map((v) => v.trim()); // Split values by comma and trim
-      const distinctValues = trimmedValues.filter((v) => v !== ""); // Filter out empty values
-      quantity = distinctValues.length; // Count distinct values
-    }
-
-    // if (name === "input4") {
-    //   const multiplier = parseFloat(value) || 0; // Parse input4 value
-    //   const input3Value = parseFloat(inputs.input3) || 0; // Parse input3 value
-    //   const result = input3Value * multiplier; // Calculate the result
-    //   setInputs((prevInputs) => ({
-    //     ...prevInputs,
-    //     input4: result.toFixed(2), // Update input4 with the result of multiplication
-    //   }));
-    // }
-
-    setInputs({ ...inputs, [name]: value, input3: quantity });
-
-    setShowDropdown(!!value); // Show dropdown only if there's a search query
-
-  };
-
-  const handleSelect = (option) => {
-    setInputs({ ...inputs, input1: option });
-    setFilteredOptions([]);
-    setShowDropdown(false); // Hide dropdown after selecting an option
-  };
 
   const options = [
     "Dental Cleanings",
@@ -106,6 +62,60 @@ const Treat = () => {
     "Temporary Dental Repairs",
   ];
 
+  // Get Treatment List START
+  const getTreatmentList = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8888/api/doctor/treatmentLists`);
+      // console.log(res.data.data);
+      setTreatments(res.data.data);
+    } catch (error) {
+      console.log('Error fetching treatments:', error);
+    }
+  };
+
+  useEffect(() => {
+    getTreatmentList();
+  }, [])
+
+  const handleTreatmentChange = (e) => {
+    const selectedValue = e.target.value;
+    setSelectedTreatment(selectedValue);
+
+    const selectedTreatmentData = treatments.find(t => t.treatment_name === selectedValue);
+    if (selectedTreatmentData) {
+      setInputValues({
+        cost: selectedTreatmentData.treatment_cost,
+        discount: selectedTreatmentData.treatment_discount
+      });
+    }
+  }
+  // Get Treatment List END
+
+  // Calculate  Discount and Cost START
+
+  const calculateTotal = () => {
+    const cost = parseFloat(inputValues.cost);
+    const discount = parseFloat(inputValues.discount);
+    return (cost - discount).toFixed(2);
+  };
+
+  // Calculate  Discount and Cost END
+
+  // Get Patient Details START
+  const getPatientDetail = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+      setGetPatientData(res.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPatientDetail();
+  }, []);
+  // Get Patient Details END
+
   return (
     <>
       <Wrapper>
@@ -115,43 +125,33 @@ const Treat = () => {
               <p className="fs-1 shadow-none p-2 mb-4 bg-light rounded">Treatment Procedure</p>
             </div>
           </div>
-          <div className="row shadow-sm p-3 mb-4 bg-body rounded ProfileDetails">
-            <div className="col-lg-12 d-flex justify-content-between align-items-center ProfileDetailsMain">
-              <div className="col-lg-4 col-md-4 col-sm-4">
-                <p>
-                  <strong className="bold">UHID</strong> : Patient UHID
-                </p>
-              </div>
-              <div className="col-lg-4 col-md-4 col-sm-4">
-                <p>
-                  <strong className="bold">Patient Name</strong> : Patient
-                  Complete Name
-                </p>
-              </div>
-              <div className="col-lg-4 col-md-4 col-sm-4">
-                <p>
-                  <strong className="bold">Patient Mobile No.</strong> :
-                  1234567890
-                </p>
-              </div>
-            </div>
-            <div className="col-lg-12 d-flex justify-content-between align-items-center">
-              <div className="col-lg-4 col-md-4 col-sm-4">
-                <p className="mb-0">
-                  <strong>RGID</strong> : Patient RGID
-                </p>
-              </div>
-              <div className="col-lg-4 col-md-4 col-sm-4">
-                <p className="mb-0">
-                  <strong>Age</strong> : 25
-                </p>
-              </div>
-              <div className="col-lg-4 col-md-4 col-sm-4">
-                <p className="mb-0">
-                  <strong>Address</strong> : ABC 195 Address
-                </p>
-              </div>
-            </div>
+          <div className="row shadow-sm p-3 mb-3 bg-body rounded">
+            {getPatientData.map((item, index) => (
+              <>
+                <div key={index} className="col-lg-12 d-flex justify-content-between align-items-center">
+                  <div className="col-lg-4">
+                    <p><strong>Appoint ID</strong> : {item.appoint_id}</p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p><strong>Patient Name</strong> : {item.patient_name}</p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p><strong>Patient Mobile No.</strong> : {item.mobileno}</p>
+                  </div>
+                </div>
+                <div key={index + 'secondRow'} className="col-lg-12 d-flex justify-content-between align-items-center">
+                  <div className="col-lg-4">
+                    <p className="mb-0"><strong>Blood Group</strong> : {item.bloodgroup}</p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p className="mb-0"><strong>Disease</strong> : {item.disease}</p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p className="mb-0"><strong>Allergy</strong> : {item.allergy}</p>
+                  </div>
+                </div>
+              </>
+            ))}
           </div>
           <div className="row shadow-sm p-4 mb-3 bg-white rounded">
             <form>
@@ -161,27 +161,12 @@ const Treat = () => {
                     className="col-md-4 w-100"
                     style={{ position: "relative" }}
                   >
-                    <input
-                      type="search"
-                      name="input1"
-                      className="shadow-none p-1 bg-light rounded border-0"
-                      value={inputs.input1}
-                      onChange={handleChange}
-                      placeholder="Dental Treatments"
-                    />
-                    {showDropdown && (
-                      <ul className="list-group">
-                        {filteredOptions.map((option, index) => (
-                          <li
-                            key={index}
-                            className="list-group-item"
-                            onClick={() => handleSelect(option)}
-                          >
-                            {option}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    <select className="shadow-none p-1 bg-light rounded border-0" value={selectedTreatment} onChange={handleTreatmentChange}>
+                      <option value="" disabled selected>Choose Treatment</option>
+                      {Array.isArray(treatments) && treatments.map(treatment => (
+                        <option key={treatment.treatment_id} value={treatment.treatment_name}>{treatment.treatment_name}</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
                 <div className="row">
@@ -190,8 +175,7 @@ const Treat = () => {
                       type="text"
                       name="input2"
                       className="shadow-none p-1 bg-light rounded border-0"
-                      value={inputs.input2}
-                      onChange={handleChange}
+                      // value={inputs.input2}                      
                       placeholder="Number of Tooth"
                     />
                   </div>
@@ -202,8 +186,7 @@ const Treat = () => {
                       type="text"
                       name="input3"
                       className="shadow-none p-1 bg-light rounded border-0"
-                      value={inputs.input3}
-                      onChange={handleChange}
+                      // value={inputs.input3}                      
                       readOnly
                       placeholder="Quantity"
                     />
@@ -217,8 +200,7 @@ const Treat = () => {
                       type="text"
                       name="input4"
                       className="shadow-none p-1 bg-light rounded border-0"
-                      value={inputs.input4}
-                      onChange={handleChange}
+                      value={inputValues.cost}
                       placeholder="Cost Amount"
                     />
                   </div>
@@ -229,8 +211,7 @@ const Treat = () => {
                       type="text"
                       name="input5"
                       className="shadow-none p-1 bg-light rounded border-0"
-                      value={inputs.input5}
-                      onChange={handleChange}
+                      value={inputValues.discount}
                       placeholder="Discount Amount"
                     />
                   </div>
@@ -241,8 +222,7 @@ const Treat = () => {
                       type="text"
                       name="input6"
                       className="shadow-none p-1 bg-light rounded border-0"
-                      value={inputs.input6}
-                      onChange={handleChange}
+                      value={calculateTotal()}                     
                       placeholder="Total Amount"
                     />
                   </div>
@@ -255,8 +235,7 @@ const Treat = () => {
                       type="text"
                       name="input7"
                       className="shadow-none p-1 bg-light rounded border-0"
-                      value={inputs.input7}
-                      onChange={handleChange}
+                      // value={inputs.input7}                    
                       placeholder="Add some more details"
                     />
                   </div>
@@ -293,16 +272,16 @@ const Treat = () => {
                     <td>100</td>
                     <td>1900</td>
                     <td colspan="2">
-                      <button className="btn btn-primary"><CiEdit size={25}/></button>
+                      <button className="btn btn-primary"><CiEdit size={25} /></button>
                       &nbsp;
-                      <button className="btn btn-danger mx-1"><MdDeleteOutline size={25}/></button>
+                      <button className="btn btn-danger mx-1"><MdDeleteOutline size={25} /></button>
                     </td>
                   </tr>
                 </tbody>
               </table>
               <div className="d-flex justify-content-center align-items-center">
-                <button className="btn btn-info text-light" onClick={()=>navigate("/TPrescriptionDash")}>
-                  Next <GrFormNextLink size={25}/>
+                <button className="btn btn-info text-light" onClick={() => navigate("/TPrescriptionDash")}>
+                  Next <GrFormNextLink size={25} />
                 </button>
               </div>
             </div>

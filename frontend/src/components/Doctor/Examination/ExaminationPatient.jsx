@@ -5,6 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { RiLoader2Fill } from "react-icons/ri";
+import { useDispatch } from 'react-redux';
+import { toggleDataRefresh } from '../../../redux/user/userSlice'; 
 import teeth18 from "../Assest/teeth1.png";
 import teeth17 from "../Assest/teeth2.png";
 import teeth16 from "../Assest/teeth3.png";
@@ -320,6 +322,7 @@ const ExaminationPatientTest = () => {
   const [isFormFilled, setIsFormFilled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [getPatientData, setGetPatientData] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
 
@@ -894,7 +897,8 @@ const ExaminationPatientTest = () => {
     try {
       const response = await axios.post('http://localhost:8888/api/doctor/dentalPediatric', formData);
       console.log(response.data);
-      window.location.reload();
+      dispatch(toggleDataRefresh());
+      // window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
@@ -999,6 +1003,10 @@ const ExaminationPatientTest = () => {
   useEffect(()=>{
     getPatientDetail();
   }, []);
+
+  const handleSaveContinue = () =>{
+    navigate(`/TreatmentDashBoard/${id}`); 
+  }
 
 
   return (
@@ -1714,7 +1722,7 @@ const ExaminationPatientTest = () => {
                     <button
                       type="button"
                       className="btn btn-info text-light mx-3"
-                      onClick={() => window.location.reload()}
+                      onClick={handleSaveContinue}
                     >
                       Save & Continue
                     </button>

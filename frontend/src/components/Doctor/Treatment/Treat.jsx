@@ -11,12 +11,10 @@ const Treat = () => {
   const { id } = useParams();
   console.log(id);
   const [getPatientData, setGetPatientData] = useState([]);
+  const [getExamTeeth, setGetExamTeeth] = useState([]);
   const [treatments, setTreatments] = useState([]);
   const [selectedTreatment, setSelectedTreatment] = useState('');
-  const [inputValues, setInputValues] = useState({
-    cost: '',
-    discount: ''
-  });
+  const [inputValues, setInputValues] = useState();
   const navigate = useNavigate();
 
   const options = [
@@ -76,28 +74,68 @@ const Treat = () => {
   useEffect(() => {
     getTreatmentList();
   }, [])
+  // first function
+  // const handleTreatmentChange = (e) => {
+  //   const selectedValue = e.target.value;
+  //   setSelectedTreatment(selectedValue);
 
-  const handleTreatmentChange = (e) => {
+  //   const selectedTreatmentData = treatments.find(t => t.treatment_name === selectedValue);
+  //   if (selectedTreatmentData) {
+  //     setInputValues({
+  //       cost: selectedTreatmentData.treatment_cost,
+  //       discount: selectedTreatmentData.treatment_discount
+  //     });
+  //   }
+  // }
+
+  const handleTreatmentChange = (e, index) => {
     const selectedValue = e.target.value;
-    setSelectedTreatment(selectedValue);
+    const updatedSelectedTreatments = [...selectedTreatment];
+    updatedSelectedTreatments[index] = selectedValue;
+    setSelectedTreatment(updatedSelectedTreatments);
 
     const selectedTreatmentData = treatments.find(t => t.treatment_name === selectedValue);
     if (selectedTreatmentData) {
-      setInputValues({
+      const updatedInputValues = [...inputValues];
+      updatedInputValues[index] = {
         cost: selectedTreatmentData.treatment_cost,
-        discount: selectedTreatmentData.treatment_discount
-      });
+        discount: updatedInputValues[index]?.discount || selectedTreatmentData.treatment_discount // Use treatment discount if not already set
+      };
+      setInputValues(updatedInputValues);
     }
-  }
+
+  };
+
+  useEffect(() => {
+    setInputValues(Array(getExamTeeth.length).fill({ cost: '', discount: '' }));
+  }, [getExamTeeth]);
+
+  const handleDiscountChange = (e, index) => {
+    const { value } = e.target;
+    const updatedInputValues = [...inputValues];
+    updatedInputValues[index] = {
+      ...updatedInputValues[index],
+      discount: value
+    };
+    setInputValues(updatedInputValues);
+  };
+
   // Get Treatment List END
 
   // Calculate  Discount and Cost START
 
-  const calculateTotal = () => {
-    const cost = parseFloat(inputValues.cost);
-    const discount = parseFloat(inputValues.discount);
-    return (cost - discount).toFixed(2);
+  const calculateTotal = (index) => {
+    // Get the input values for the specific tooth using the index
+    const cost = parseFloat(inputValues[index]?.cost || 0);
+    const discount = parseFloat(inputValues[index]?.discount || 0);
+
+    // Calculate total after discount for the specific tooth
+    const totalAfterDiscount = cost - discount;
+
+    // Return total after discount for the specific tooth
+    return totalAfterDiscount.toFixed(2);
   };
+
 
   // Calculate  Discount and Cost END
 
@@ -115,6 +153,47 @@ const Treat = () => {
     getPatientDetail();
   }, []);
   // Get Patient Details END
+
+  // Get Examintion Teeth Details START
+
+  const getExamintionTeeth = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8888/api/doctor/getDentalDataByID/${id}`);
+      setGetExamTeeth(res.data);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getExamintionTeeth();
+  }, []);
+
+
+  // Get Examintion Teeth Details END
+
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+    try {
+      // Map the inputValues array to the format expected by the backend
+      const treatmentData = getExamTeeth.map((item, index) => ({
+        dental_treatment: selectedTreatment[index],
+        no_teeth: item.selected_teeth,
+        qty: inputValues[index]?.quantity, // Assuming you have a quantity property in inputValues
+        cost_amt: inputValues[index]?.cost,
+        disc_amt: inputValues[index]?.discount,
+        total_amt: calculateTotal(index),
+        note: '', // Add note here if available
+      }));
+
+      const response = await axios.post(`http://localhost:8888/api/doctor/insertTreatmentData/${id}`, treatmentData);
+      console.log(response.data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <>
@@ -153,8 +232,10 @@ const Treat = () => {
               </>
             ))}
           </div>
-          <div className="row shadow-sm p-4 mb-3 bg-white rounded">
+          {/* <div className="row shadow-sm p-4 mb-3 bg-white rounded" >
             <form>
+          {getExamTeeth.map((item, index)=>{
+            <div key={index}>
               <div className="d-flex justify-content-between align-items-center p-2">
                 <div className="row">
                   <div
@@ -175,8 +256,8 @@ const Treat = () => {
                       type="text"
                       name="input2"
                       className="shadow-none p-1 bg-light rounded border-0"
-                      // value={inputs.input2}                      
-                      placeholder="Number of Tooth"
+                      value={item.selected_teeth}                      
+                      placeholder="Teeth Number"
                     />
                   </div>
                 </div>
@@ -212,6 +293,7 @@ const Treat = () => {
                       name="input5"
                       className="shadow-none p-1 bg-light rounded border-0"
                       value={inputValues.discount}
+                      onChange={(e) => setInputValues({ ...inputValues, discount: e.target.value })}
                       placeholder="Discount Amount"
                     />
                   </div>
@@ -246,8 +328,107 @@ const Treat = () => {
                   Continue <IoMdArrowDropright size={25} />
                 </button>
               </div>
+              </div>
+          })}
+            </form>
+          </div> */}
+          <div className="row shadow-sm p-4 mb-3 bg-light rounded">
+            <form onSubmit={handleSubmit}>
+              {getExamTeeth.map((item, index) => (
+                <div className="shadow-sm p-3 mb-5 bg-white rounded" key={index}>
+                  <div className="d-flex justify-content-between align-items-center p-2">
+                    <div className="row">
+                      <div className="col-md-4 w-100" style={{ position: "relative" }}>
+                        <select name="dental_treatment" className="shadow-sm p-1 bg-light rounded border-0" value={selectedTreatment[index] || ''} onChange={(e) => handleTreatmentChange(e, index)}>
+                          <option value="" disabled selected>Choose Treatment</option>
+                          {Array.isArray(treatments) && treatments.map(treatment => (
+                            <option key={treatment.treatment_id} value={treatment.treatment_name}>{treatment.treatment_name}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <input
+                          type="text"
+                          name="no_teeth"
+                          className="shadow-none p-1 bg-light rounded border-0"
+                          value={item.selected_teeth}
+                          placeholder="Teeth Number"
+                        />
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <input
+                          type="text"
+                          name="qty"
+                          className="shadow-none p-1 bg-light rounded border-0"
+                          readOnly
+                          placeholder="Quantity"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-between align-items-center p-2">
+                    <div className="row">
+                      <div className="col-md-4">
+                        <input
+                          type="text"
+                          name="cost_amt"
+                          className="shadow-none p-1 bg-light rounded border-0"
+                          value={inputValues[index]?.cost || ''}
+                          placeholder="Cost Amount"
+                        />
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <input
+                          type="text"
+                          name="disc_amt"
+                          className="shadow-none p-1 bg-light rounded border-0"
+                          value={inputValues[index]?.discount || ''}
+                          onChange={(e) => handleDiscountChange(e, index)}
+                          placeholder="Discount Amount"
+                        />
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <input
+                          type="text"
+                          name="total_amt"
+                          className="shadow-none p-1 bg-light rounded border-0"
+                          value={calculateTotal(index)}
+                          placeholder="Total Amount"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-evenly align-items-center p-2">
+                    <div className="row">
+                      <div className="col-md-8">
+                        <textarea
+                          type="text"
+                          name="note"
+                          className="shadow-none p-1 bg-light rounded border-0"
+                          // value={inputs.input7}
+                          placeholder="Add some more details"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-center align-items-center">
+                    <button className="btn btn-info text-light">
+                      Continue <IoMdArrowDropright size={25} />
+                    </button>
+                  </div>
+                </div>
+              ))}
             </form>
           </div>
+
           <div className="row">
             <div className="shadow-sm p-4 bg-white rounded">
               <table class="table">

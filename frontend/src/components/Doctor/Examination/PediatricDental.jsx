@@ -804,7 +804,8 @@ const PediatricDentalTest = () => {
 
 
   const handleSaveContinue = () =>{
-    navigate(`/TreatmentDashBoard/${id}`); 
+    // navigate(`/TreatmentDashBoard/${id}`); 
+    navigate(`/NewTreatment/${id}`); 
   }
 
 

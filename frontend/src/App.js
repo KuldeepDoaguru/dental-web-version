@@ -26,6 +26,8 @@ import TPrescriptionDash from "./components/Doctor/Prescription/TreatmentPrescri
 import HistoryDashBoard from "./components/Doctor/HistoryFolder/HistoryDashBoard";
 import HeadBar from "./components/Doctor/HeadBar";
 import DoctorLogin from "./components/Doctor/Login/DoctorLogin";
+import NewTreatment from "./components/Doctor/Treatment/NewTreatment";
+import TreatmentForm from "./components/Doctor/Treatment/TreatmentForm";
 
 function App() {
   return (
@@ -53,6 +55,8 @@ function App() {
       <Route path="/ExaminationDashBoardPatient/:id" element={<ExaminationDashBoardPatient />} />
       <Route path="/ExaminationDashBoardPediatric/:id" element={<ExaminationDashBoardPediatric />} />
       <Route path="/TreatmentDashBoard/:id" element={<TreatmentDashBoard />} />
+      <Route path="/NewTreatment/:id" element={<NewTreatment />} />
+      <Route path="/treatProducer/:id/:appointment_id" element={<TreatmentForm />} />
       <Route path="/PrescriptionDashBoard" element={<PrescriptionDashBoard />} />
       <Route path="/CreatePrescrip" element={<CreatePrescrip />} />
       <Route path="/TPrescription" element={<TPrescription />} />

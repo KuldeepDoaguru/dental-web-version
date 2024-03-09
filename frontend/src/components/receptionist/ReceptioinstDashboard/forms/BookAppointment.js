@@ -7,6 +7,7 @@ import { toggleTableRefresh } from '../../../../redux/user/userSlice';
 
 
 
+
 function BookAppointment() {
   
   const dispatch = useDispatch();
@@ -22,6 +23,53 @@ function BookAppointment() {
   const [patients, setPatients] = useState([]);
   const [treatments,setTreatment] = useState([]);
   const [appointmentsData,setAppointmentsData] = useState([]);
+  const [branchDetail,setBranchDetail] = useState([]);
+  const [weekOffDay,setWeekOffDay] = useState("");
+
+  const  handleWeekOfDay = (day)=>{
+        if(day == "sunday"){
+          setWeekOffDay(0);
+        }
+        else if (day == "monday"){
+          setWeekOffDay(1);
+        }
+       
+        else if (day == "tuesday"){
+          setWeekOffDay(2);
+        }
+        else if (day == "wednesday"){
+          setWeekOffDay(3);
+        }
+        else if (day == "thursday"){
+          setWeekOffDay(4);
+        }
+        else if (day == "friday"){
+          setWeekOffDay(5);
+        }
+        else if (day == "saturday"){
+          setWeekOffDay(6);
+        }
+        else{
+          setWeekOffDay("")
+        }
+  }
+
+  // Function to check if the given date is a week off day
+  // const isWeekOffDay = (date) => {
+  //   const dayOfWeek = date.getDay(); // Get the day of the week (0 for Sunday, 1 for Monday, etc.)
+  //   return dayOfWeek === weekOffDay;
+  // };
+
+  const getBranchDetail = async ()=>{
+    try{
+       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
+       console.log(response)
+       setBranchDetail(response.data.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
  
   
   // Generate time slots with 15-minute intervals
@@ -47,7 +95,7 @@ function BookAppointment() {
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
-
+ 
   const [selectedDate, setSelectedDate] = useState(formatDate(new Date()));
 
 
@@ -117,17 +165,35 @@ function BookAppointment() {
      getTreatment();
      getDoctors();
      getAppointments();
+     getDoctorsWithLeave();
+     getBranchDetail();
+     
   },[]);
+  useEffect(()=>{
+    handleWeekOfDay(branchDetail[0]?.week_off);
+  },[branchDetail]);
 
   useEffect(()=>{
     getPatient();
     getAppointments();
   },[refreshTable])
 
+console.log(branchDetail)
+
+ const [doctorWithLeave,setDoctorWithLeave] = useState([]);
+  const getDoctorsWithLeave = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      setDoctorWithLeave(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  console.log(weekOffDay)
 
 
- 
-  
   
 
 
@@ -270,6 +336,35 @@ function BookAppointment() {
   
   
 console.log(selectedDoctor)
+const [availableDoctorOnDate,setAvailableDoctorOnDate] = useState([]);
+
+
+useEffect(() => {
+  setSearchDoctor("");
+  setSelectedDoctor(null)
+  
+  const selectedDateTime = new Date(selectedDate);
+  
+  const filteredDoctors = doctors.filter(doctor => {
+    // Find all leave entries for the current doctor
+    const doctorLeaveEntries = doctorWithLeave.filter(doc => doc.employee_ID === doctor.employee_ID);
+    
+    // If the doctor has leave entries, check if the selected date falls within any of them
+    if (doctorLeaveEntries.length > 0) {
+      return !doctorLeaveEntries.some(entry => {
+        const leaveDates = entry.leave_dates.split(',');
+        return leaveDates.includes(selectedDateTime.toISOString().split('T')[0]);
+      });
+    }
+
+    // If the doctor has no leave entries, include them in the filtered array
+    return true;
+  });
+
+  setAvailableDoctorOnDate(filteredDoctors);
+}, [selectedDate, doctorWithLeave, doctors]);
+
+console.log(availableDoctorOnDate);
 
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [filteredDoctor,setFilteredDoctor] = useState([]);
@@ -300,8 +395,9 @@ console.log(selectedDoctor)
 
   useEffect(() => {
     // Filter patients based on the search query if there's a search query, otherwise set an empty array
+    
     const filtered = showDoctorList
-      ? doctors.filter((doctor) =>
+      ? availableDoctorOnDate.filter((doctor) =>
           doctor.employee_name.toLowerCase().includes(searchDoctor.toLowerCase())
         )
       : [];
@@ -376,8 +472,15 @@ const handleDoctorSelect = (doctor) => {
 
    // Check if the selected doctor is null
    if (!selectedDoctor) {
+    alert("Please select doctor from the list")
     console.log("Please select a doctor");
     return;
+  }
+
+  const selectedDay = new Date(selectedDate).getDay();
+  if(selectedDay === weekOffDay){
+     alert("Selected date is a week off day. Please choose another date.");
+     return ;
   }
 
    // Convert appointment time to Date object
@@ -689,7 +792,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                           <div >
                           
                           <ul className="list-group">
-                      {filteredDoctor.map((doctor) => (
+                      {searchDoctor && filteredDoctor.map((doctor) => (
                         <li key={doctor.employee_ID}
                         className={`list-group-item ${selectedDoctor && selectedDoctor.employee_ID === doctor.employee_ID ? "active" : ""}`} // Add 'active' class if the patient is selected
             onClick={() => handleDoctorSelect(doctor)} // Call handlePatientSelect function when the patient is clicked 

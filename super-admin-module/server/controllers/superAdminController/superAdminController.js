@@ -1,9 +1,9 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
-const { db } = require("../../dbConnect/connect");
 const JWT = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const { db } = require("../../dbConnect/connect");
 
 dotenv.config();
 
@@ -491,38 +491,39 @@ const getBranch = (req, res) => {
 const makeAppointents = (req, res) => {
   try {
     const {
-      uhid,
+      patient_uhid,
       branch_name,
-      patient_name,
-      dob,
-      gender,
-      maritalstatus,
-      patient_contact,
-      assigned_doctor,
+      assigned_doctor_name,
+      assigned_doctor_id,
+      appointment_dateTime,
+      notes,
       treatment_provided,
-      treatment_status,
-      payment_status,
-      payment_date_time,
-      appointed_by,
+      appointment_created_by,
+      appointment_created_by_emp_id,
+      appointment_updated_by,
+      appointment_updated_by_emp_id,
+      appointment_status,
+      cancel_reason,
+      created_at,
     } = req.body;
 
-    const insertQuery = `INSERT INTO appointments (uhid, branch_name, patient_name, dob, gender, maritalstatus, patient_contact,
-      assigned_doctor, treatment_provided, treatment_status, payment_status, payment_date_time, appointed_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    const insertQuery = `INSERT INTO appointments (	patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, 	notes,  treatment_provided, appointment_created_by, appointment_created_by_emp_id, appointment_updated_by, appointment_updated_by_emp_id, appointment_status, cancel_reason, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`;
 
     const insertValues = [
-      uhid,
+      patient_uhid,
       branch_name,
-      patient_name,
-      dob,
-      gender,
-      maritalstatus,
-      patient_contact,
-      assigned_doctor,
+      assigned_doctor_name,
+      assigned_doctor_id,
+      appointment_dateTime,
+      notes,
       treatment_provided,
-      treatment_status,
-      payment_status,
-      payment_date_time,
-      appointed_by,
+      appointment_created_by,
+      appointment_created_by_emp_id,
+      appointment_updated_by,
+      appointment_updated_by_emp_id,
+      appointment_status,
+      cancel_reason,
+      created_at,
     ];
     db.query(insertQuery, insertValues, (err, results) => {
       if (err) {
@@ -560,14 +561,19 @@ const updateAppointData = (req, res) => {
   try {
     const appointId = req.params.id;
     const {
-      branch,
-      patientName,
-      patientNumber,
-      assignedDoc,
-      appointedBy,
-      appointDateTime,
+      patient_uhid,
+      branch_name,
+      assigned_doctor_name,
+      assigned_doctor_id,
+      appointment_dateTime,
+      notes,
+      treatment_provided,
+      appointment_created_by,
+      appointment_created_by_emp_id,
+      appointment_updated_by,
+      appointment_updated_by_emp_id,
       appointment_status,
-      updatedBy,
+      cancel_reason,
     } = req.body;
 
     const selectQuery = "SELECT * FROM appointments WHERE appoint_id";
@@ -579,43 +585,69 @@ const updateAppointData = (req, res) => {
         const updateFields = [];
         const updateValues = [];
 
-        if (branch) {
+        if (patient_uhid) {
+          updateFields.push("patient_uhid = ?");
+          updateValues.push(patient_uhid);
+        }
+
+        if (branch_name) {
           updateFields.push("branch_name = ?");
-          updateValues.push(branch);
+          updateValues.push(branch_name);
         }
 
-        if (patientName) {
-          updateFields.push("patient_name = ?");
-          updateValues.push(patientName);
+        if (assigned_doctor_name) {
+          updateFields.push("assigned_doctor_name = ?");
+          updateValues.push(assigned_doctor_name);
         }
 
-        if (patientNumber) {
-          updateFields.push("patient_contact = ?");
-          updateValues.push(patientNumber);
+        if (assigned_doctor_id) {
+          updateFields.push("assigned_doctor_id = ?");
+          updateValues.push(assigned_doctor_id);
         }
 
-        if (assignedDoc) {
-          updateFields.push("assigned_doctor = ?");
-          updateValues.push(assignedDoc);
-        }
-
-        if (appointedBy) {
-          updateFields.push("appointed_by = ?");
-          updateValues.push(appointedBy);
-        }
-
-        if (appointDateTime) {
+        if (appointment_dateTime) {
           updateFields.push("appointment_dateTime = ?");
-          updateValues.push(appointDateTime);
+          updateValues.push(appointment_dateTime);
         }
+
+        if (notes) {
+          updateFields.push("notes = ?");
+          updateValues.push(notes);
+        }
+        if (treatment_provided) {
+          updateFields.push("treatment_provided = ?");
+          updateValues.push(treatment_provided);
+        }
+        if (appointment_created_by) {
+          updateFields.push("appointment_created_by = ?");
+          updateValues.push(appointment_created_by);
+        }
+
+        if (appointment_created_by_emp_id) {
+          updateFields.push("appointment_created_by_emp_id = ?");
+          updateValues.push(appointment_created_by_emp_id);
+        }
+
+        if (appointment_updated_by) {
+          updateFields.push("appointment_updated_by = ?");
+          updateValues.push(appointment_updated_by);
+        }
+
+        if (appointment_updated_by_emp_id) {
+          updateFields.push("appointment_updated_by_emp_id = ?");
+          updateValues.push(appointment_updated_by_emp_id);
+        }
+
         if (appointment_status) {
           updateFields.push("appointment_status = ?");
           updateValues.push(appointment_status);
         }
-        if (updatedBy) {
-          updateFields.push("updated_by = ?");
-          updateValues.push(updatedBy);
+
+        if (cancel_reason) {
+          updateFields.push("cancel_reason = ?");
+          updateValues.push(cancel_reason);
         }
+
         const updateQuery = `UPDATE appointments SET ${updateFields.join(
           ", "
         )} WHERE appoint_id = ?`;

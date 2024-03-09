@@ -575,7 +575,7 @@ catch(error){
 const getDoctorDataByBranch = (req, res) => {
   try {
     const branch = req.params.branch;
-    const getQuery = 'SELECT * FROM employee_register WHERE branch_name = ? AND employee_designation = "doctor"';
+    const getQuery = 'SELECT * FROM employee_register WHERE branch_name = ? AND employee_designation = "doctor" AND employee_status = "Approved"';
     db.query(getQuery, [branch], (err, result) => {
       if (err) {
         res.status(400).send({status : false, message: "error in fetching doctor" });
@@ -623,6 +623,69 @@ catch(error){
 
 }
 }
+
+const getBranchDetail = (req,res) =>{
+  try{
+    const branch = req.params.branch;
+    const sql = 'SELECT * FROM branches WHERE branch_name = ?';
+
+    db.query(sql,[branch],(err,results) =>{
+      if(err){
+        console.error('Error fetching Branches from MySql:' , err);
+        res.status(500).json({error : "Error fetching Branches"});
+      }
+      else {
+        res.status(200).json({data: results,message : "Branches fetched successfully"})
+      }
+
+    })
+}
+catch(error){
+  console.error('Error fetching Branches from MySql:' , error);
+  res.status(500).json({
+    success: false,
+    message: "Error in fetched Branches",
+    error: error.message,
+  })
+
+}
+}
+
+const getDoctorDataByBranchWithLeave = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery = 'SELECT * FROM employee_register WHERE branch_name = ? AND employee_designation = "doctor"';
+    const sql = `
+        SELECT 
+         l.*,
+            d.employee_name
+        FROM 
+        employee_leave  AS l
+        LEFT JOIN 
+        employee_register  AS d ON d.employee_ID = l.employee_ID WHERE
+            d.branch_name = ? AND d.employee_designation = "doctor" AND l.leave_status = "Approved"
+    `;
+    db.query(sql, [branch], (err, result) => {
+      if (err) {
+        res.status(400).send({status : false, message: "error in fetching doctor" });
+      }
+      else{
+        // Iterate over the result array and delete the password property from each object
+        result.forEach(employee => {
+          delete employee.employee_password;
+        });
+        res.json({ data: result, status: true, message: "successful fetching doctor" });
+      }
+      
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
 
 const LoginReceptionist =  (req, res) => {
   try {
@@ -838,4 +901,4 @@ const verifyOtp = (req, res) => {
 };
 
 
-module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointment,LoginReceptionist,getBranch};
+module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail};

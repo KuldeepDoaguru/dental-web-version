@@ -132,6 +132,19 @@ function AddPatient() {
 
  }
 
+ const [doctorWithLeave,setDoctorWithLeave] = useState([]);
+  const getDoctorsWithLeave = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      setDoctorWithLeave(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  console.log(doctorWithLeave);
+
 
   useEffect(()=>{
     getPatient();
@@ -139,6 +152,7 @@ function AddPatient() {
     getDisease();
     getTreatment();
     getDoctors();
+    getDoctorsWithLeave();
   },[])
 
   // const disease1 = [
@@ -280,13 +294,37 @@ const handleChangeDisease = (newValue, actionMeta) => {
   //   setFilteredPatients(filtered);
   // }, [searchQuery, patients]);
 
+  const [availableDoctorOnDate,setAvailableDoctorOnDate] = useState([]);
+  useEffect(() => {
+    setSearchDoctor("");
+    setSelectedDoctor(null)
+    
+    const selectedDateTime = new Date(selectedDate);
+    
+    const filteredDoctors = doctors.filter(doctor => {
+      // Find all leave entries for the current doctor
+      const doctorLeaveEntries = doctorWithLeave.filter(doc => doc.employee_ID === doctor.employee_ID);
+      
+      // If the doctor has leave entries, check if the selected date falls within any of them
+      if (doctorLeaveEntries.length > 0) {
+        return !doctorLeaveEntries.some(entry => {
+          const leaveDates = entry.leave_dates.split(',');
+          return leaveDates.includes(selectedDateTime.toISOString().split('T')[0]);
+        });
+      }
   
+      // If the doctor has no leave entries, include them in the filtered array
+      return true;
+    });
+  
+    setAvailableDoctorOnDate(filteredDoctors);
+  }, [selectedDate, doctorWithLeave, doctors]);
 
  
   useEffect(() => {
     // Filter patients based on the search query if there's a search query, otherwise set an empty array
     const filtered = showDoctorList
-      ? doctors.filter((doctor) =>
+      ? availableDoctorOnDate.filter((doctor) =>
           doctor.employee_name.toLowerCase().includes(searchDoctor.toLowerCase())
         )
       : [];
@@ -333,6 +371,7 @@ const handleChangeDisease = (newValue, actionMeta) => {
   
     // Check if the selected doctor is null
     if (!selectedDoctor) {
+      alert("Please select doctor from the list")
       console.log("Please select a doctor");
       return;
     }
@@ -776,6 +815,44 @@ const handleDoctorSelect = (doctor) => {
                 
                    
                    <div className="row">
+                   <div className="col-sm-6 ">
+                        <div className="form-outline">
+                        {/* <label className="form-label" for="form6Example2">
+                            Date&Time
+                          </label>
+                          <input
+                            type="datetime-local"
+                            id="form6Example2"
+                            className="form-control"
+                            name="appDateTime"
+                            onChange={(e)=>handleBookChange(e)}
+                            required
+                           
+                          /> */}
+                          <label className="form-label" for="form6Example2">Appointment Date</label>
+      <input
+        type="date"
+        value={selectedDate}
+        className="form-control"
+        onChange={handleDateChange}
+        required
+      />
+                         
+                        </div>
+                      </div>
+                      <div className="col-sm-6 ">
+                        <div className="form-outline">
+                        
+                        <label  className="form-label" for="form6Example2">Appointment Time</label>
+      <Select
+        options={timeSlots}
+        required
+        value={timeSlots.find(slot => slot.value === data.appDateTime.split('T')[1])}
+        onChange={(selectedOption) => setData({ ...data, appDateTime: `${selectedDate}T${selectedOption.value}` })}
+      />
+                         
+                        </div>
+                      </div>
                    <div className="col-sm-6">
                        <div className="form-outline">
 
@@ -800,7 +877,7 @@ const handleDoctorSelect = (doctor) => {
                          <div >
                          
                          <ul className="list-group">
-                     {filteredDoctor.map((doctor) => (
+                     {searchDoctor && filteredDoctor.map((doctor) => (
                        <li key={doctor.employee_ID}
                        className={`list-group-item ${selectedDoctor && selectedDoctor.employee_ID === doctor.employee_ID ? "active" : ""}`} // Add 'active' class if the patient is selected
            onClick={() => handleDoctorSelect(doctor)} // Call handlePatientSelect function when the patient is clicked 
@@ -852,44 +929,7 @@ const handleDoctorSelect = (doctor) => {
                        </div>
                      </div>
 
-                     <div className="col-sm-6 ">
-                        <div className="form-outline">
-                        {/* <label className="form-label" for="form6Example2">
-                            Date&Time
-                          </label>
-                          <input
-                            type="datetime-local"
-                            id="form6Example2"
-                            className="form-control"
-                            name="appDateTime"
-                            onChange={(e)=>handleBookChange(e)}
-                            required
-                           
-                          /> */}
-                          <label className="form-label" for="form6Example2">Appointment Date</label>
-      <input
-        type="date"
-        value={selectedDate}
-        className="form-control"
-        onChange={handleDateChange}
-        required
-      />
-                         
-                        </div>
-                      </div>
-                      <div className="col-sm-6 ">
-                        <div className="form-outline">
-                        
-                        <label  className="form-label" for="form6Example2">Appointment Time</label>
-      <Select
-        options={timeSlots}
-        required
-        value={timeSlots.find(slot => slot.value === data.appDateTime.split('T')[1])}
-        onChange={(selectedOption) => setData({ ...data, appDateTime: `${selectedDate}T${selectedOption.value}` })}
-      />
-                         
-                        </div>
-                      </div>
+                   
                      <div className="col-sm-6">
                        <div className="form-outline">
                        <label className="form-label" for="form6Example1">

@@ -98,6 +98,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
      
      getTreatment();
      getDoctors();
+     getDoctorsWithLeave();
   },[]);
 
   useEffect(() => {
@@ -165,7 +166,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   useEffect(() => {
     // Filter patients based on the search query if there's a search query, otherwise set an empty array
     const filtered = showDoctorList
-      ? doctors.filter((doctor) =>
+      ? availableDoctorOnDate.filter((doctor) =>
           doctor.employee_name.toLowerCase().includes(searchDoctor.toLowerCase())
         )
       : [];
@@ -303,6 +304,51 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [doctorWithLeave,setDoctorWithLeave] = useState([]);
+  const getDoctorsWithLeave = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      setDoctorWithLeave(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+
+  const [availableDoctorOnDate,setAvailableDoctorOnDate] = useState([]);
+
+
+useEffect(() => {
+  
+  
+  
+  const selectedDateTime = new Date(selectedDate);
+  
+  const filteredDoctors = doctors.filter(doctor => {
+    // Find all leave entries for the current doctor
+    const doctorLeaveEntries = doctorWithLeave.filter(doc => doc.employee_ID === doctor.employee_ID);
+    
+    // If the doctor has leave entries, check if the selected date falls within any of them
+    if (doctorLeaveEntries.length > 0) {
+      return !doctorLeaveEntries.some(entry => {
+        const leaveDates = entry.leave_dates.split(',');
+        return leaveDates.includes(selectedDateTime.toISOString().split('T')[0]);
+      });
+    }
+
+    // If the doctor has no leave entries, include them in the filtered array
+    return true;
+  });
+
+  setAvailableDoctorOnDate(filteredDoctors);
+}, [selectedDate, doctorWithLeave, doctors]);
+
+useEffect(()=>{
+  setSearchDoctor("")
+},[selectedDate])
+
+
   console.log(appointmentInfo)
 
   return (
@@ -361,13 +407,14 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Doctor:</label>
             <input type="text" value={searchDoctor}
+            
                     onChange={handleSearchDoctor}
                     required  name='assigned_doctor_name' class="form-control" id="recipient-name"/>
                      <DoctorList>
                           <div >
                           
                           <ul className="list-group">
-                      {filteredDoctor.map((doctor) => (
+                      {searchDoctor && filteredDoctor.map((doctor) => (
                         <li key={doctor.employee_ID}
                         className={`list-group-item ${selectedDoctor && selectedDoctor.employee_ID === doctor.employee_ID ? "active" : ""}`} // Add 'active' class if the patient is selected
             onClick={() => handleDoctorSelect(doctor)} // Call handlePatientSelect function when the patient is clicked 

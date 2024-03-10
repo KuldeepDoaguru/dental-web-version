@@ -78,6 +78,34 @@ const handleStatusChange = async (appointmentId, newStatus) => {
     console.error('Error updating status:', error);
   }
 };
+const handleStatusCancel = async (appointmentId, newStatus) => {
+
+    //  // If the action is 'cancel_treatment', add the reason to the request body
+       let reason ;
+      const cancelReason = prompt("Please provide a reason for cancellation:");
+      if (cancelReason !== null) { // User provided a reason
+        reason = cancelReason;
+        if(!reason){
+          alert("Please provide a reason for cancellation")
+          return;
+        }
+      } 
+      else{
+        return;
+      }
+
+  
+    
+  try {
+    // Send a PUT request to your backend endpoint to update the status
+    await axios.put(`http://localhost:4000/api/v1/receptionist/update-appointment-status-cancel`, { status: newStatus, 
+    cancelReason: reason, appointmentId:appointmentId,appointment_updated_by:currentUser.employee_name,appointment_updated_by_emp_id: currentUser.employee_ID });
+    // Optionally, you can re-fetch appointments after successful update
+    getAppointments();
+  } catch (error) {
+    console.error('Error updating status:', error);
+  }
+};
 
 
 
@@ -254,6 +282,7 @@ const handleStatusChange = async (appointmentId, newStatus) => {
           <thead>
           <tr>
             <th>A.Id</th>
+            <th>P.Id</th>
             <th>Patient Name</th>
             <th>Mobile</th>
             <th>Timing</th>
@@ -273,6 +302,7 @@ const handleStatusChange = async (appointmentId, newStatus) => {
           {currentRows.map((patient, index) => (
             <tr key={index}>
               <td>{patient.appoint_id}</td>
+              <td>{patient.uhid}</td>
               <td>{patient.patient_name}</td>
               <td>{patient.mobileno}</td>
               <td>{patient.appointment_dateTime
@@ -296,11 +326,14 @@ patient_type
     Action
   </button>
   <ul className="dropdown-menu">
-  <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li>
-  <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Check-Out')}>Check-Out</a></li>
-  <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Complete')}>Complete</a></li>
-  <li><a className="dropdown-item mx-0" onClick={() => handleEditAppointment(patient)}>Edit Appointment</a></li>
-    <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Cancle')}>Cancle Appointment</a></li>
+    {patient.appointment_status !== "Check-In" &&  <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li>}
+  {/* <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li> */}
+  {/* <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Check-Out')}>Check-Out</a></li>
+  <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Complete')}>Complete</a></li> */}
+   {patient.appointment_status !== "Check-In" &&   <li><a className="dropdown-item mx-0" onClick={() => handleEditAppointment(patient)}>Edit Appointment</a></li>}
+   {patient.appointment_status !== "Check-In" &&    <li><a className="dropdown-item mx-0" onClick={() => handleStatusCancel(patient.appoint_id, 'Cancel')}>Cancel Appointment</a></li>}
+   
+   
   
     <li><a className="dropdown-item mx-0" href="#"></a></li>
  

@@ -44,8 +44,8 @@ const NewTreatment = () => {
 
     // Get Examintion Teeth Details END
 
-    const handleNavigate = (id, appointment_id) => {
-        navigate(`/treatProducer/${id}/${appointment_id}`);
+    const handleNavigate = (id, appointment_id, selected_teeth) => {
+        navigate(`/treatProducer/${id}/${appointment_id}`, {state: { selected_teeth } });
     }
 
     return (
@@ -108,7 +108,8 @@ const NewTreatment = () => {
                                     <p className="text-dark text-center mb-0 fs-4">{item.disease}</p>
                                 </div>
                                 <div className="col-lg-4 text-center">
-                                    <button className="btn btn-secondary" onClick={() => handleNavigate(item.id, item.appointment_id)}>Start</button>
+                                    <button className="btn btn-secondary" onClick={() => handleNavigate(item.id, item.appointment_id, item.selected_teeth
+)}>Start</button>
                                 </div>
                             </div>
                         </div>

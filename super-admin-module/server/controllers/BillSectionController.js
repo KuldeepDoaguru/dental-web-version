@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const JWT = require("jsonwebtoken");
-const { db } = require("../../dbConnect/connect");
+const { db } = require("../dbConnect/connect");
 const fs = require("fs");
 const path = require("path");
 
@@ -20,11 +20,17 @@ const makeBills = (req, res) => {
       patient_name,
       patient_mobile,
       patient_email,
+      assigned_doctor,
       treatment,
       treatment_status,
       drugs_quantity,
       total_amount,
+      net_amount,
+      tax_percent,
+      tax_amount,
+      discount,
       paid_amount,
+      pending_amount,
       payment_status,
       payment_date_time,
     } = req.body;
@@ -47,7 +53,7 @@ const makeBills = (req, res) => {
     }
 
     const insertQuery =
-      "INSERT INTO patient_bills (bill_date, uhid, branch_name, patient_name, patient_mobile, patient_email, treatment, treatment_status, drugs_quantity, total_amount, paid_amount, payment_status, payment_date_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO patient_bills (bill_date, uhid, branch_name, patient_name, patient_mobile, patient_email,assigned_doctor, treatment,        treatment_status, drugs_quantity, total_amount, net_amount, tax_percent, tax_amount, discount, paid_amount, pending_amount,        payment_status, payment_date_time) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?)";
 
     const insertParams = [
       bill_date,
@@ -56,11 +62,17 @@ const makeBills = (req, res) => {
       patient_name,
       patient_mobile,
       patient_email,
+      assigned_doctor,
       treatment,
       treatment_status,
       drugs_quantity,
       total_amount,
+      net_amount,
+      tax_percent,
+      tax_amount,
+      discount,
       paid_amount,
+      pending_amount,
       payment_status,
       payment_date_time,
     ];
@@ -844,7 +856,7 @@ const downloadBillRecById = (req, res) => {
   try {
     const file = req.params.file;
 
-    const filePath = path.join(__dirname, "../../reciept_doc", file);
+    const filePath = path.join(__dirname, "../reciept_doc", file);
     console.log("File Path:", filePath); // Add this line for debugging
 
     if (fs.existsSync(filePath)) {

@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
-const { db } = require("../../dbConnect/connect");
+const { db } = require("../dbConnect/connect");
 
 dotenv.config();
 
@@ -723,32 +723,31 @@ const addTreatment = (req, res) => {
     const selectQuery = "SELECT * FROM treatment_list WHERE treatment_name = ?";
     db.query(selectQuery, [treatName], (err, result) => {
       if (err) {
-        res.status(500).json({ success: false, error: err.message });
-      } else {
-        if (result.length > 0) {
-          return res
-            .status(400)
-            .send(result.message, "Treatment already exists");
-        } else {
-          const InsertQuery = `INSERT INTO treatment_list (treatment_name,	treatment_cost,	treatment_discount) VALUES (?, ?, ?)`;
+        return res.status(500).json({ success: false, error: err.message });
+      }
+      if (result.length > 0) {
+        return res.status(400).send("Treatment already exists");
+      }
 
-          const InsertUserParams = [treatName, treatCost, treatDiscount];
-          db.query(InsertQuery, InsertUserParams, (errInsert, resultInsert) => {
-            if (errInsert) {
-              res.status(400).json({
-                success: false,
-                message: "error while inserting treatment",
-              });
-            } else {
-              res.status(200).send(resultInsert);
-            }
+      const insertQuery = `INSERT INTO treatment_list (treatment_name, treatment_cost, treatment_discount) VALUES (?, ?, ?)`;
+      const insertUserParams = [treatName, treatCost, treatDiscount];
+
+      db.query(insertQuery, insertUserParams, (errInsert, resultInsert) => {
+        if (errInsert) {
+          return res.status(500).json({
+            success: false,
+            message: "Error while inserting treatment",
+            error: errInsert.message,
           });
         }
-      }
+        res
+          .status(200)
+          .json({ success: true, message: "Treatment added successfully" });
+      });
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ success: false, message: "Internal server error" });
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 

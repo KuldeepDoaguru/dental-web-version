@@ -23,7 +23,7 @@ const {
   deleteAppointData,
   getEmployeeDataByBranch,
   getEmployeeDataByBranchAndId,
-} = require("../../controllers/superAdminController/superAdminController");
+} = require("../controllers/superAdminController");
 const {
   makeBills,
   getBillsByBranch,
@@ -51,7 +51,7 @@ const {
   downloadAppointReportByTime,
   downloadBillingReportByTime,
   downloadStaffReport,
-} = require("../../controllers/superAdminController/BillSectionController");
+} = require("../controllers/BillSectionController");
 const {
   getAttendanceDetails,
   downloadAttendanceReportByTime,
@@ -78,7 +78,7 @@ const {
   addSuperAdminNotify,
   getSuperAdminNotify,
   markRead,
-} = require("../../controllers/superAdminController/attendanceController");
+} = require("../controllers/attendanceController");
 // const multer = require("multer");
 
 const router = express.Router();

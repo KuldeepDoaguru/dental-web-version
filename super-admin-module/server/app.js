@@ -5,8 +5,7 @@ const cors = require("cors");
 const { join, dirname } = require("path");
 const { fileURLToPath } = require("url");
 const bodyParser = require("body-parser");
-const superAdminRoutes = require("./Routes/superAdmin-routes/superAdminRoutes");
-
+const superAdminRoutes = require("./Routes/superAdminRoutes");
 
 dotenv.config();
 // rest object

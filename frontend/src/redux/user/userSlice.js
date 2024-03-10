@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     currentUser : null,
     refreshTable: false, // Add a new state for managing table refresh
+    
 }
 
 const userSlice = createSlice({
@@ -18,7 +19,8 @@ const userSlice = createSlice({
         },
         toggleTableRefresh: (state) => {
             state.refreshTable = !state.refreshTable;
-        },
+        }
+        
     }
 
 })

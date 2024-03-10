@@ -116,6 +116,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { setUser } from '../redux/user/userSlice';
 
+
 const UniversalLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -180,8 +181,8 @@ console.log(selectedBranch)
       setLocalhost(response.data);
       if (response.data.success === "true") {
         // sendOtp();
-        alert("login successful")
-        dispatch(setUser(response.data.user))
+        alert("login successful");
+        dispatch(setUser(response.data.user));
         navigate("/receptionist-dashboard");
         // setPopupVisible(true);
       } else {

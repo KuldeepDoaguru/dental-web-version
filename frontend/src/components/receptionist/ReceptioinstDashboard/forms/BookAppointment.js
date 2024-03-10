@@ -12,7 +12,6 @@ function BookAppointment() {
   
   const dispatch = useDispatch();
   const {refreshTable,currentUser} = useSelector((state) => state.user);
-  const  [formdata,setFormData ] = useState({})
   const  branch = currentUser.branch_name
   const [searchQuery, setSearchQuery] = useState("");
   const [searchDoctor, setSearchDoctor] = useState("");

@@ -1,16 +1,59 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Header from '../../components/receptionist/Header'
 import Sider from '../../components/receptionist/Sider'
 import { Link } from 'react-router-dom'
 import { Table, Input, Button, Form } from "react-bootstrap";
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import EditPatientDetails from '../../components/receptionist/AllPatients/EditPatientDetails'
 function AllPatient() {
   
+  const {refreshTable,currentUser} = useSelector((state) => state.user);
+  const  branch = currentUser.branch_name
+  const [patients, setPatients] = useState([]);
+  const [appointmentsData,setAppointmentsData] = useState([]);
+  const [showEditPatientPopup, setShowEditPatientPopup] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const getPatient = async () =>{
+    try{
+      const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-Patients');
+      console.log(response);
+      setPatients(response?.data?.data)
+     }
+     catch(error){
+        console.log(error)
+     }
+    
+  }
+
+  const getAppointments = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
+      setAppointmentsData(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  useEffect(()=>{
+    getPatient();
+    getAppointments();
+    
+ },[]);
+
+ const handleEditPatient = (Patient)=>{
+  setSelectedPatient(Patient);
+  setShowEditPatientPopup(true);
+}
+
 
   const Table_data = [
     { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
@@ -41,7 +84,6 @@ function AllPatient() {
     
   ];
 
-  console.log(Table_data)
 
 
   // Searching function
@@ -50,8 +92,8 @@ function AllPatient() {
     setSearchTerm(searchTerm);
     setCurrentPage(1); // Reset to the first page when searching
 
-    const filteredResults = Table_data.filter((row) =>
-      row.patient.toLowerCase().includes(searchTerm)
+    const filteredResults = patients.filter((row) =>
+      row.patient_name.toLowerCase().includes(searchTerm)
     );
 
     setFilteredData(filteredResults);
@@ -67,10 +109,10 @@ const handleRowsPerPageChange = (event) => {
 // Pagination functions
 const indexOfLastRow = currentPage * rowsPerPage;
 const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : Table_data.slice(indexOfFirstRow, indexOfLastRow);
+const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : patients.slice(indexOfFirstRow, indexOfLastRow);
 
 
-const totalPages = Math.ceil(Table_data.length / rowsPerPage);
+const totalPages = Math.ceil(patients.length / rowsPerPage);
 
 const paginate = (pageNumber) => {
   if (pageNumber > 0 && pageNumber <= totalPages) {
@@ -79,7 +121,7 @@ const paginate = (pageNumber) => {
 };
 
 const pageNumbers = [];
-for (let i = 1; i <= Math.ceil(Table_data.length / rowsPerPage); i++) {
+for (let i = 1; i <= Math.ceil(patients.length / rowsPerPage); i++) {
   pageNumbers.push(i);
 }
 
@@ -185,9 +227,9 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                       </Form.Control>
                     </Form.Group>
     </div>
-    <div><h5>Total Patients - {Table_data.length}</h5></div>
+    <div><h5>Total Patients - {patients.length}</h5></div>
     
-<div class="dropdown" id='drop'>
+{/* <div class="dropdown" id='drop'>
   
   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
   Filter Patient by Bill Status
@@ -198,7 +240,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
     <li><a class="dropdown-item" href="#">Paid</a></li>
     <li><a class="dropdown-item" href="#">All</a></li>
   </ul>
-</div>
+</div> */}
   </div>
 </nav>  
    </div>
@@ -216,6 +258,8 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                             <th>Phone Number</th>
                             <th>Email</th>
                             <th>Gender</th>
+                            <th>Age</th>
+                            <th>Patient Type</th>
                             <th>Address</th>
                             <th>Appointment</th>
                             <th>Action</th>
@@ -224,17 +268,29 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                         <tbody>
                           {currentRows.map((data,index)=>(
                              <tr key={index}>
-                             <td><Link to='/patient_profile'>{data.uid}</Link></td>
-                             <td>{data.patient}</td>
-                             <td>{data.mobile}</td>
-                             <td>{data.email}</td>
+                             <td><Link to='/patient_profile'>{data.uhid}</Link></td>
+                             <td>{data.patient_name}</td>
+                             <td>{data.mobileno}</td>
+                             <td>{data.emailid}</td>
  
                              <td>{data.gender}</td>
+                             <td>{data.age}</td>
+                             <td>{data.patient_type}</td>
                              <td>
                              {data.address}
                              </td>
                              <td><div>Last Appointment- {data.last_appointments}</div><div>Upcoming Appointment- {data.last_appointments}</div></td>
-                             <td>View Bills </td>
+                             <td ><div className='dropdown'>
+                             <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Action
+  </button>
+  <ul className="dropdown-menu">
+   
+  <li><a className="dropdown-item mx-0" onClick={()=>handleEditPatient(data)}>Edit Patient details</a></li> 
+  
+ 
+  </ul>
+  </div></td>
                            </tr>
                           ))}
                           
@@ -289,7 +345,9 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
   </div>
    </div>
    </div>
-       
+   {showEditPatientPopup && (
+        <EditPatientDetails onClose={() => setShowEditPatientPopup(false)} patientInfo={selectedPatient} />
+      )} 
  
     </Wrapper>
   )

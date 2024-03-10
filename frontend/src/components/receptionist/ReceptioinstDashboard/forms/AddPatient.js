@@ -14,10 +14,8 @@ function AddPatient() {
   const dispatch = useDispatch();
   
   const user = useSelector((state) => state.user);
-  const  [formdata,setFormData ] = useState({})
    const  branch = user.currentUser.branch_name;
    
-  const [searchQuery, setSearchQuery] = useState("");
   const [searchDoctor, setSearchDoctor] = useState("");
   const [showDoctorList,setShowDoctorList] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null); // State to store the selected Doctor
@@ -32,6 +30,48 @@ function AddPatient() {
 
   const [patients, setPatients] = useState([]);
   const [appointmentsData,setAppointmentsData] = useState([]);
+  const [branchDetail,setBranchDetail] = useState([]);
+
+  const getBranchDetail = async ()=>{
+    try{
+       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
+       console.log(response)
+       setBranchDetail(response.data.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  const [weekOffDay,setWeekOffDay] = useState("");
+
+  const  handleWeekOfDay = (day)=>{
+        if(day == "sunday"){
+          setWeekOffDay(0);
+        }
+        else if (day == "monday"){
+          setWeekOffDay(1);
+        }
+       
+        else if (day == "tuesday"){
+          setWeekOffDay(2);
+        }
+        else if (day == "wednesday"){
+          setWeekOffDay(3);
+        }
+        else if (day == "thursday"){
+          setWeekOffDay(4);
+        }
+        else if (day == "friday"){
+          setWeekOffDay(5);
+        }
+        else if (day == "saturday"){
+          setWeekOffDay(6);
+        }
+        else{
+          setWeekOffDay("")
+        }
+  }
 
    // Generate time slots with 15-minute intervals
    const generateTimeSlots = () => {
@@ -153,7 +193,12 @@ function AddPatient() {
     getTreatment();
     getDoctors();
     getDoctorsWithLeave();
-  },[])
+    getBranchDetail();
+  },[]);
+
+  useEffect(()=>{
+    handleWeekOfDay(branchDetail[0]?.week_off);
+  },[branchDetail]);
 
   // const disease1 = [
   //   { value: 'No Disease', label: 'No disease' },
@@ -375,6 +420,12 @@ const handleChangeDisease = (newValue, actionMeta) => {
       console.log("Please select a doctor");
       return;
     }
+
+    const selectedDay = new Date(selectedDate).getDay();
+  if(selectedDay === weekOffDay){
+     alert("Selected date is a week off day. Please choose another date.");
+     return ;
+  }
 
     if (patients.some(patient => patient.patient_name === data.patient_Name && patient.mobileno === data.mobile)) {
       alert("Patient already exists");

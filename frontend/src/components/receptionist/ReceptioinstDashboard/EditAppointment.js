@@ -25,6 +25,49 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   // Remove current appointment data from allAppointmentData
   const filteredAllAppointmentData = allAppointmentData.filter(appointment => appointment.appoint_id !== appointmentInfo.appoint_id);
 
+  const [branchDetail,setBranchDetail] = useState([]);
+
+  const getBranchDetail = async ()=>{
+    try{
+       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
+       console.log(response)
+       setBranchDetail(response.data.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  const [weekOffDay,setWeekOffDay] = useState("");
+
+  const  handleWeekOfDay = (day)=>{
+        if(day == "sunday"){
+          setWeekOffDay(0);
+        }
+        else if (day == "monday"){
+          setWeekOffDay(1);
+        }
+       
+        else if (day == "tuesday"){
+          setWeekOffDay(2);
+        }
+        else if (day == "wednesday"){
+          setWeekOffDay(3);
+        }
+        else if (day == "thursday"){
+          setWeekOffDay(4);
+        }
+        else if (day == "friday"){
+          setWeekOffDay(5);
+        }
+        else if (day == "saturday"){
+          setWeekOffDay(6);
+        }
+        else{
+          setWeekOffDay("")
+        }
+  }
+
   
   // Generate time slots with 15-minute intervals
   const generateTimeSlots = () => {
@@ -99,7 +142,12 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
      getTreatment();
      getDoctors();
      getDoctorsWithLeave();
+     getBranchDetail();
   },[]);
+
+  useEffect(()=>{
+    handleWeekOfDay(branchDetail[0]?.week_off);
+  },[branchDetail]);
 
   useEffect(() => {
     // Find the doctor object that matches the assigned doctor name or id from the appointmentInfo
@@ -133,7 +181,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
 
   });
 
-  console.log(data)
+ 
 
   const [appointment_data,setAppointmentData] = useState([
     { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:45",status:"Missed",action:"edit"},
@@ -193,6 +241,12 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
         alert("Please select a doctor");
       console.log("Please select a doctor");
       return;
+    }
+
+    const selectedDay = new Date(selectedDate).getDay();
+    if(selectedDay === weekOffDay){
+       alert("Selected date is a week off day. Please choose another date.");
+       return ;
     }
   
      // Convert appointment time to Date object

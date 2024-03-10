@@ -520,6 +520,49 @@ const updateAppointmentStatus = (req, res) => {
   }
 }
 
+const updateAppointmentStatusCancel = (req, res) => {
+  try {
+      const { appointmentId, status ,cancelReason, appointment_updated_by,appointment_updated_by_emp_id} = req.body;
+
+      const updated_at = new Date();
+
+      const updateAppointmentQuery = `
+          UPDATE appointments
+          SET appointment_status = ?, updated_at = ?,appointment_updated_by = ?,cancel_reason = ?, appointment_updated_by_emp_id = ?
+          WHERE appoint_id = ?
+      `;
+
+      const updateAppointmentParams = [
+          status,
+          updated_at,
+          appointment_updated_by,
+          cancelReason,
+          appointment_updated_by_emp_id,
+          appointmentId
+      ];
+
+      db.query(updateAppointmentQuery, updateAppointmentParams, (appointmentErr, appointmentResult) => {
+          if (appointmentErr) {
+              console.error("Error updating appointment:", appointmentErr);
+              return res.status(500).json({ success: false, message: "Internal server error" });
+          } else {
+              console.log("Appointment updated successfully");
+              return res.status(200).json({
+                  success: true,
+                  message: "Appointment updated successfully",
+              });
+          }
+      });
+  } catch (error) {
+      console.error("Error updating appointment:", error);
+      return res.status(500).json({
+          success: false,
+          message: "Error updating appointment",
+          error: error.message,
+      });
+  }
+}
+
 const getAppointments = (req,res) =>{
 
   try{
@@ -534,6 +577,7 @@ const getAppointments = (req,res) =>{
             a.appointment_dateTime,
             a.treatment_provided,
             a.notes,
+            p.uhid,
             p.patient_name,
             p.mobileno,
             p.dob,
@@ -901,4 +945,4 @@ const verifyOtp = (req, res) => {
 };
 
 
-module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail};
+module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail};

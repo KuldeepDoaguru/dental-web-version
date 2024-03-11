@@ -23,7 +23,7 @@ function AllPatient() {
 
   const getPatient = async () =>{
     try{
-      const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-Patients');
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`);
       console.log(response);
       setPatients(response?.data?.data)
      }
@@ -47,7 +47,7 @@ function AllPatient() {
     getPatient();
     getAppointments();
     
- },[]);
+ },[refreshTable]);
 
  const handleEditPatient = (Patient)=>{
   setSelectedPatient(Patient);
@@ -55,34 +55,6 @@ function AllPatient() {
 }
 
 
-  const Table_data = [
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Rahul sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    { uid :"1", patient:"Mohit sahu",mobile: "9806324245",email: "patinet@gmail.com",gender: "Male",address: "Ranital gate no. 4 , jabalpur",last_appointments: "2022-03-25", upcoming_appointment:"2022-03-25"},
-    
-    
-  ];
 
 
 
@@ -93,7 +65,7 @@ function AllPatient() {
     setCurrentPage(1); // Reset to the first page when searching
 
     const filteredResults = patients.filter((row) =>
-      row.patient_name.toLowerCase().includes(searchTerm)
+      row.patient_name.toLowerCase().includes(searchTerm) || row.mobileno.includes(searchTerm)
     );
 
     setFilteredData(filteredResults);
@@ -200,7 +172,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
             <h6 className='mx-3 my-0'>Search By Patient</h6>
   <div class="container-fluid" id='cont'>
     <form class="navbar1 " >
-      <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name Or Moblie Or Email" aria-label="Search" onChange={handleSearch}
+      <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name Or Moblie" aria-label="Search" onChange={handleSearch}
         value={searchTerm}/>
       {/* <button class="btn btn-outline-success" type="submit">Search</button> */}
     </form>
@@ -311,7 +283,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                           
                         >
                          {/* Showing Page {currentPage} of {totalPages} from {data?.length} entries */}
-                       {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {Table_data?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {Table_data?.length} entries</> }  
+                       {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {patients?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {patients?.length} entries</> }  
 
                         </h4></div>
                     <div className="col-lg-3 col-md-3 col-sm-12 col-12">
@@ -327,7 +299,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                       
                         <Button
                           onClick={() => paginate(currentPage + 1)}
-                          disabled={indexOfLastRow >= Table_data.length}
+                          disabled={indexOfLastRow >= patients.length}
                           variant="success"
                         >
                           Next
@@ -346,7 +318,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
    </div>
    </div>
    {showEditPatientPopup && (
-        <EditPatientDetails onClose={() => setShowEditPatientPopup(false)} patientInfo={selectedPatient} />
+        <EditPatientDetails onClose={() => setShowEditPatientPopup(false)} patientInfo={selectedPatient} allPatientData={patients} />
       )} 
  
     </Wrapper>

@@ -24,7 +24,8 @@ function BookAppointment() {
   const [appointmentsData,setAppointmentsData] = useState([]);
   const [branchDetail,setBranchDetail] = useState([]);
   const [weekOffDay,setWeekOffDay] = useState("");
-
+  const [branchHolidays,setBranchHolidays] = useState([]);
+  console.log(branchHolidays)
   const  handleWeekOfDay = (day)=>{
         if(day == "sunday"){
           setWeekOffDay(0);
@@ -69,13 +70,23 @@ function BookAppointment() {
       console.log(error)
     }
   }
+  const getBranchHolidays = async ()=>{
+    try{
+       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-holidays/${branch}`)
+       console.log(response)
+       setBranchHolidays(response.data.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
  
   
   // Generate time slots with 15-minute intervals
   const generateTimeSlots = () => {
     const slots = [];
-    for (let hour = 10; hour < 24; hour++) {
-      for (let minute = 0; minute < 60; minute += 15) {
+    for (let hour = branchDetail[0]?.open_time.split(":")[0]; hour < branchDetail[0]?.close_time.split(":")[0]; hour++) {
+      for (let minute = 0; minute < 60; minute += parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])) {
         const period = hour < 12 ? "AM" : "PM";
         const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
         const time = `${formattedHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
@@ -84,7 +95,7 @@ function BookAppointment() {
     }
     return slots;
   };
- 
+  console.log(branchDetail[0]?.appoint_slot_duration.split(" ")[0])
   const timeSlots = generateTimeSlots();
 
   // Function to format date in YYYY-MM-DD format
@@ -112,7 +123,7 @@ function BookAppointment() {
 
   const getPatient = async () =>{
     try{
-      const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-Patients');
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`);
       console.log(response);
       setPatients(response?.data?.data)
      }
@@ -166,6 +177,7 @@ function BookAppointment() {
      getAppointments();
      getDoctorsWithLeave();
      getBranchDetail();
+     getBranchHolidays();
      
   },[]);
   useEffect(()=>{
@@ -380,7 +392,7 @@ console.log(availableDoctorOnDate);
     // Filter patients based on the search query if there's a search query, otherwise set an empty array
     const filtered = searchQuery
       ? patients.filter((patient) =>
-          patient.patient_name.toLowerCase().includes(searchQuery.toLowerCase())
+          patient.patient_name.toLowerCase().includes(searchQuery.toLowerCase()) || patient.mobileno.includes(searchQuery)
         )
       : [];
     setFilteredPatients(filtered);
@@ -484,6 +496,48 @@ const handleDoctorSelect = (doctor) => {
 
    // Convert appointment time to Date object
 const selectedDateTime = new Date(bookData.appDateTime);
+
+// const isBranchHoliday = branchHolidays.some(holiday => {
+//      let holidayDate = new Date(holiday.holiday_date);
+//        if(holidayDate == selectedDate) {
+//         const holidayStart = new Date(selectedDateTime);
+//         holidayStart.setHours(holiday?.holiday_start_time?.split(":")[0], holiday?.holiday_start_time?.split(":")[1]);
+//         const holidayEnd = new Date(selectedDateTime);
+//         holidayEnd.setHours(holiday?.holiday_end_time?.split(":")[0], holiday?.holiday_end_time?.split(":")[1]);
+//         return (
+//           (selectedDateTime >= holidayStart && selectedDateTime <= holidayEnd)
+//         )
+//        }
+//  })
+
+const isBranchHoliday = branchHolidays.some(holiday => {
+  let holidayDate = new Date(holiday.holiday_date);
+  holidayDate = new Date(holidayDate.getFullYear(), holidayDate.getMonth(), holidayDate.getDate());
+  const compareDateandTime = new Date(bookData.appDateTime);
+  // Convert selectedDateTime to full date
+  let selectedDateTime = new Date(bookData.appDateTime);
+  selectedDateTime = new Date(selectedDateTime.getFullYear(), selectedDateTime.getMonth(), selectedDateTime.getDate());
+  console.log(holidayDate.getTime(),selectedDateTime.getTime())
+  if (holidayDate.getTime() === selectedDateTime.getTime()) {
+      
+      const holidayStart = new Date(selectedDateTime);
+      holidayStart.setHours(holiday?.holiday_start_time?.split(":")[0], holiday?.holiday_start_time?.split(":")[1]);
+      const holidayEnd = new Date(selectedDateTime);
+      holidayEnd.setHours(holiday?.holiday_end_time?.split(":")[0], holiday?.holiday_end_time?.split(":")[1]);
+
+      console.log(holidayStart , holidayEnd , compareDateandTime)
+      console.log((compareDateandTime >= holidayStart && compareDateandTime <= holidayEnd))
+      return (
+          (compareDateandTime >= holidayStart && compareDateandTime <= holidayEnd)
+      )
+  }
+  return false; // If holidayDate doesn't match selectedDate, return false
+})
+
+ if(isBranchHoliday){
+   alert(`Selected date is branch holiday please selected other date`)
+   return
+ }
 
 // Check if the selected doctor is available during the appointment time
 const isDoctorAvailable = (selectedDateTime) => {
@@ -705,7 +759,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                         className={`list-group-item ${selectedPatient && selectedPatient.uhid === patient.uhid ? "active" : ""}`} // Add 'active' class if the patient is selected
             onClick={() => handlePatientSelect(patient)} // Call handlePatientSelect function when the patient is clicked 
                         >
-                          {patient.patient_name}{"-"} Mobile : {patient.mobileno}
+                     {patient.uhid} {"-"}{patient.patient_name}{"-"} Mobile : {patient.mobileno}
                           {/* Display other patient details as needed */}
                         </li>
                       ))}

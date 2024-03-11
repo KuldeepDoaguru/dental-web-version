@@ -10,15 +10,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleTableRefresh } from '../../../redux/user/userSlice';
 import CreatableSelect from 'react-select/creatable';
 
-function EditPatientDetails({ onClose, patientInfo, allAppointmentData }) {
+function EditPatientDetails({ onClose, patientInfo, allPatientData }) {
   const dispatch = useDispatch();
-  const {currentUser} = useSelector((state) => state.user);
+  const {currentUser,refreshTable} = useSelector((state) => state.user);
 
   const [show, setShow] = useState(false);
   const [selectedDisease, setSelectedDisease] = useState([]);
   const [inputDisease, setInputDisease] = useState('');
   const [disease, setDisease] = useState([]);
-  
+    
+     
+   // Remove current patient data from allAppointmentData
+    const filteredPatient = allPatientData.filter(patient => patient.uhid !== patientInfo.uhid)
+ console.log(filteredPatient)
   const [data, setData] = useState({
     patientId : patientInfo.uhid,
     patient_Name: patientInfo.patient_name,
@@ -57,9 +61,43 @@ function EditPatientDetails({ onClose, patientInfo, allAppointmentData }) {
     getDisease();
  },[])
 
+ useEffect(() => {
+  // Initialize selected diseases based on props
+  if (patientInfo.disease && patientInfo.disease.length > 0) {
+    const disease = patientInfo.disease.split(",");
+    const selected = disease.map(d => ({
+      value: d, // Assuming 'd' is the value of disease
+      label: d // Assuming 'd' is the label of disease
+    }));
+    setSelectedDisease(selected);
+    
+    
+  }
+}, [patientInfo]);
+
+console.log(selectedDisease);
+
+useEffect(()=>{
+  const calculateAge = (date) => {
+    const dob = new Date(date);
+    const now = new Date();
+    let years = now.getFullYear() - dob.getFullYear();
+    
+    // Adjust for leap years
+    const dobThisYear = new Date(now.getFullYear(), dob.getMonth(), dob.getDate());
+    if (now < dobThisYear) {
+      years--;
+    }
+    
+    setData({...data, age: years});
+  };
+  calculateAge(data.dob);
+},[data.dob])
+
  const handleChangeDisease = (newValue, actionMeta) => {
   
     setSelectedDisease(newValue);
+    
     if (actionMeta.action === 'create-option') {
       // If a new option is created, add it to the list of options
       const newOption = { value: newValue[newValue.length - 1].value, label: newValue[newValue.length - 1].label };
@@ -75,6 +113,49 @@ function EditPatientDetails({ onClose, patientInfo, allAppointmentData }) {
     })
   }
 
+ const handleSubmit = async (e)=>{
+  e.preventDefault();
+    
+
+
+  const isPatientExist = filteredPatient.some(patient => (
+    patient.patient_name === data.patient_Name && patient.mobileno === data.mobile
+  ) )
+
+  if (isPatientExist) {
+    alert("Patient already exists with the same name and mobile number.");
+    return;
+  }
+
+
+   // Updating the data object with the selected diseases
+   const updatedData = {
+    ...data,
+    disease: selectedDisease.map((option) => option.value).toString()
+  };
+   
+  try{
+    const response = await axios.put('http://localhost:4000/api/v1/receptionist/update-patient-details', updatedData);
+    console.log(response);
+    if(response.data.success){
+      alert(response?.data?.message);
+      dispatch(toggleTableRefresh());
+      onClose();
+     }
+     else{
+      alert(response?.data?.message);
+     }
+
+ }
+ catch(error){
+   console.log(error)
+      alert(error?.response?.data?.message);
+
+ }
+ }
+   
+ 
+
   return (
     <>
    <Wrapper className="container">
@@ -87,7 +168,7 @@ function EditPatientDetails({ onClose, patientInfo, allAppointmentData }) {
         </Modal.Header>
         <Modal.Body>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Patient Id</label>
             <input type="text" class="form-control" readOnly value={data.patientId} id="recipient-name"/>
@@ -313,7 +394,7 @@ function EditPatientDetails({ onClose, patientInfo, allAppointmentData }) {
     </select>
           </div>
          
-        <button type="button" class="btn btn-primary">Edit</button>
+        <button type="submit" class="btn btn-primary">Edit</button>
         </form>
         </Modal.Body>
         <Modal.Footer>

@@ -77,7 +77,7 @@ function AddPatient() {
    const generateTimeSlots = () => {
     const slots = [];
     for (let hour = 10; hour < 24; hour++) {
-      for (let minute = 0; minute < 60; minute += 15) {
+      for (let minute = 0; minute < 60; minute += parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])) {
         const period = hour < 12 ? "AM" : "PM";
         const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
         const time = `${formattedHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
@@ -111,7 +111,7 @@ function AddPatient() {
   
   const getPatient = async () =>{
     try{
-      const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-Patients');
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`);
       console.log(response);
       setPatients(response?.data?.data)
      }
@@ -295,6 +295,7 @@ const handleChangeDisease = (newValue, actionMeta) => {
     
   ) 
 
+  console.log(data)
 
   const [bookData,setBookData] = useState({
     patient_uid :"", patient_Name:"",status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"",
@@ -401,7 +402,6 @@ const handleChangeDisease = (newValue, actionMeta) => {
     };
     calculateAge(data.dob);
   },[data.dob])
-  console.log(data)
   
   const handleChange = (e)=>{
       const {name,value} = e.target;

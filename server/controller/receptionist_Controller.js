@@ -273,14 +273,77 @@ const addPatient = (req, res) => {
   }
 };
 
+const updatePatientDetails = (req, res) => {
+  try {
+    const {  patientId,patient_Name, mobile, email, gender, aadhaar_no, contact_Person, contact_Person_Name, blood_Group, dob, age, weight, allergy, disease, patientType, address,  patient_updated_by, patient_updated_by_emp_id } = req.body;
+
+      const updated_at = new Date();
+
+      const updatePatientQuery = `
+          UPDATE patient_details
+          SET 
+             
+             
+                
+           patient_name = ?,dob = ?, age = ?, weight = ?, gender = ? , bloodgroup = ?, mobileno = ?, emailid = ? , contact_person = ?, contact_person_name = ?, allergy = ?, disease = ? , address = ? , patient_type = ? , aadhaar_no = ? , patient_updated_by = ? , patient_updated_by_emp_id = ?, updated_at = ?
+          WHERE 
+              uhid = ?
+      `;
+
+      const updatePatientParams = [
+        patient_Name,
+                      dob,
+                      age,
+                      weight,
+                      gender,
+                      blood_Group,
+                      mobile,
+                      email,
+                      contact_Person,
+                      contact_Person_Name,
+                      allergy,
+                      disease,
+                      address,
+                      patientType,
+                      aadhaar_no,
+                      patient_updated_by,
+                      patient_updated_by_emp_id,
+                      updated_at,
+                      patientId
+          
+         
+      ];
+
+      db.query(updatePatientQuery, updatePatientParams, (Err, appointmentResult) => {
+          if (Err) {
+              console.error("Error updating Patient:", Err);
+              return res.status(500).json({ success: false, message: "Internal server error" });
+          } else {
+              console.log("Patient updated successfully");
+              return res.status(200).json({
+                  success: true,
+                  message: "Patient updated successfully",
+              });
+          }
+      });
+  } catch (error) {
+      console.error("Error in updating Patient:", error);
+      return res.status(500).json({
+          success: false,
+          message: "Error in updating Patient",
+          error: error.message,
+      });
+  }
+};
+
 
 
 const getPatients = (req,res) =>{
-   
+  const branch = req.params.branch;
   try{
-       const sql = 'SELECT * FROM patient_details';
+       const sql = 'SELECT * FROM patient_details WHERE branch_name = ?';
 
-       db.query(sql,(err,results) =>{
+       db.query(sql,[branch],(err,results) =>{
          if(err){
            console.error('Error fetching Patients from MySql:' , err);
            res.status(500).json({error : "Error fetching Patients"});
@@ -695,6 +758,33 @@ catch(error){
 }
 }
 
+const getBranchHoliday = (req,res) =>{
+  try{
+    const branch = req.params.branch;
+    const sql = 'SELECT * FROM holidays WHERE branch_name = ?';
+
+    db.query(sql,[branch],(err,results) =>{
+      if(err){
+        console.error('Error fetching Branch Holidays from MySql:' , err);
+        res.status(500).json({error : "Error fetching Branch Holidays"});
+      }
+      else {
+        res.status(200).json({data: results,message : "Branch Holidays fetched successfully"})
+      }
+
+    })
+}
+catch(error){
+  console.error('Error fetching Branch Holidays from MySql:' , error);
+  res.status(500).json({
+    success: false,
+    message: "Error in fetched Branch Holidays",
+    error: error.message,
+  })
+
+}
+}
+
 const getDoctorDataByBranchWithLeave = (req, res) => {
   try {
     const branch = req.params.branch;
@@ -945,4 +1035,4 @@ const verifyOtp = (req, res) => {
 };
 
 
-module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail};
+module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail , updatePatientDetails ,getBranchHoliday};

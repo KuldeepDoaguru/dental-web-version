@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { FaArrowCircleLeft } from "react-icons/fa";
+import { FaArrowCircleRight } from "react-icons/fa";
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -14,6 +16,7 @@ const AppointTable = () => {
     try {
       const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetails`);
       setAppointments(res.data.result);
+      console.log(res.data.result);
     } catch (error) {
       console.error('Error fetching appointments:', error.message);
     }
@@ -44,7 +47,7 @@ const AppointTable = () => {
         action,
         appointId
       };
-  
+
       // If the action is 'cancel_treatment', add the reason to the request body
       if (action === 'Cancelled') {
         const cancelReason = prompt("Please provide a reason for cancellation:");
@@ -55,13 +58,13 @@ const AppointTable = () => {
           return;
         }
       }
-  
+
       await axios.put(`http://localhost:8888/api/doctor/upDateAppointmentStatus`, requestBody);
-  
+
       if (action === 'In Treatment') {
         navigate(`/examination-Dashboard/${appointId}`); // Navigate to treatment page with the appointment ID as a parameter
       }
-  
+
       // Refresh the appointment data after the status is updated
       tableAppointmentData();
     } catch (error) {
@@ -75,7 +78,7 @@ const AppointTable = () => {
 
   return (
     <Wrapper>
-      <div className="container pt-4">
+      <div className="container-fluid pt-4">
         <div className="widget-area-2 proclinic-box-shadow" id="tableres">
           <div className="d-md-flex justify-content-lg-between ">
             {" "}
@@ -83,7 +86,7 @@ const AppointTable = () => {
               Current Appointment
               <h5 className="d-inline ms-4">
                 Total - {filteredTable_data.length}
-              </h5>
+              </h5> 
             </h5>
             <input
               type="search"
@@ -96,10 +99,11 @@ const AppointTable = () => {
           </div>
 
           <div className="table-responsive ">
-            <table className="table table-bordered table-striped table-secondary border border-secondary" style={{ overflowX: 'scroll' }}>
+            <table className="table table-bordered table-striped border" style={{ overflowX: 'scroll' }}>
               <thead>
                 <tr>
-                  <th>Uid</th>
+                  <th>A.Id</th>
+                  <th>P.Id</th>
                   <th>Patient Name</th>
                   <th>Mobile</th>
                   <th>Timing</th>
@@ -120,6 +124,7 @@ const AppointTable = () => {
                 {filteredTable_data.slice((page - 1) * perPage, page * perPage).map((item, index) => (
                   <tr key={index}>
                     <td>{item.appoint_id}</td>
+                    <td>{item.uhid}</td>
                     <td>{item.patient_name}</td>
                     <td>{item.mobileno}</td>
                     <td>{item.appointment_dateTime}</td>
@@ -134,7 +139,7 @@ const AppointTable = () => {
                     <td>{item.notes}</td>
                     <td>{item.appointment_status}</td>
                     <td>
-                    <div className="dropdown">
+                      <div className="dropdown">
                         <button
                           className="btn btn-secondary dropdown-toggle"
                           type="button"
@@ -189,6 +194,7 @@ const AppointTable = () => {
 
 export default AppointTable;
 const Wrapper = styled.div`
+overflow-x: hidden;
   #tableres {
     margin-top: 0rem;
     @media screen and (max-width: 768px) {
@@ -206,7 +212,7 @@ const Wrapper = styled.div`
 
   #btn1 {
     width: 100%;
-
+    
     @media screen and (min-width: 1600px) and (max-width: 3700px) {
       width: 75%;
     }
@@ -214,5 +220,16 @@ const Wrapper = styled.div`
 
   .table-responsive{
     overflow-x: auto;
+  }
+  th{
+    background: #0dcaf0;
+    white-space: nowrap;
+    @media screen and (min-width: 1999px) and (max-width: 2186px) {
+      font-size: 18px;
+    }
+    @media screen and (min-width: 1024px) and (max-width: 1998px) {
+      font-size: 15px;
+      width:5rem;
+    }
   }
 `;

@@ -41,7 +41,7 @@ const DoctorDashboard = () => {
               <div className="row d-flex justify-content-around ms-4">
                 <Card />
               </div>
-              <div className="row ms-5">
+              <div className="row ms-3 w-100">
                 <AppointTable />
               </div>
             </div>
@@ -55,6 +55,7 @@ const DoctorDashboard = () => {
 export default DoctorDashboard;
 
 const Wrapper = styled.div`
+overflow-x: hidden;
 .sc-jiaSJS{
   @media (min-width: 1024px){
     width: 64rem;

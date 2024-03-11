@@ -4,38 +4,38 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { FaTooth } from "react-icons/fa";
 
+
 const TreatmentForm = () => {
     const { id, appointment_id } = useParams();
     console.log(id);
     console.log(appointment_id);
     const navigate = useNavigate();
 
-     // Access teeth number from location state --START--
-     const locationState = useLocation().state;
-     console.log(locationState);
- 
-     // Extract teeth number from location state
-     const teethNumber = locationState && typeof locationState.selected_teeth === 'object'
-         ? locationState.selected_teeth.selected_teeth
-         : locationState.selected_teeth;
-     console.log(teethNumber);
- 
-     const teethNumberLength = teethNumber ? teethNumber.split(',').length : 0;
-     console.log('Length:', teethNumberLength);
- 
-     // Access teeth number & Quantity --END--
+    // Access teeth number from location state --START--
+    const locationState = useLocation().state;
+    console.log(locationState);
 
+    // Extract teeth number from location state
+    const teethNumber = locationState && typeof locationState.selected_teeth === 'object'
+        ? locationState.selected_teeth.selected_teeth
+        : locationState.selected_teeth;
+    console.log(teethNumber);
+
+    const teethNumberLength = teethNumber ? teethNumber.split(',').length : 0;
+    console.log('Length:', teethNumberLength);
+
+    // Access teeth number & Quantity --END--
+
+    const [treatments, setTreatments] = useState([]);
     const [formData, setFormData] = useState({
         dental_treatment: '',
         no_teeth: teethNumber || '',
-        qty: teethNumberLength.toString() || '', 
+        qty: teethNumberLength.toString() || '',
         cost_amt: '',
         disc_amt: '',
         total_amt: '',
         note: ''
     });
-
-   
 
     // Send Treatment Data to the Server....
 
@@ -56,10 +56,12 @@ const TreatmentForm = () => {
                     no_teeth: '',
                     qty: '',
                     cost_amt: '',
+                    original_cost_amt: '',
                     disc_amt: '',
                     total_amt: '',
                     note: ''
                 });
+                navigate(`/TreatmentDashBoard/${appointment_id}`)
             } else {
                 console.error('Failed to insert treatment details. Server returned status:', res.status);
             }
@@ -67,6 +69,66 @@ const TreatmentForm = () => {
             console.error('Failed to insert treatment details:', error);
         }
     };
+
+    // Get Treatment List START
+    const getTreatmentList = async () => {
+        try {
+            const res = await axios.get(`http://localhost:8888/api/doctor/treatmentLists`);
+            console.log(res.data.data);
+            setTreatments(res.data.data);
+        } catch (error) {
+            console.log('Error fetching treatments:', error);
+        }
+    };
+
+    useEffect(() => {
+        getTreatmentList();
+    }, [])
+
+    // const handleTreatmentSelect = (e) => {
+    //     const selectedTreatment = e.target.value;
+    //     const selectedTreatmentObject = treatments.find(treatment => treatment.treatment_name === selectedTreatment)
+    //     if (selectedTreatmentObject) {
+    //         const costAmt = parseFloat(selectedTreatmentObject.treatment_cost || 0);
+    //         const discAmt = parseFloat(selectedTreatmentObject.treatment_discount || 0);
+    //         const newTotalAmt = (costAmt - discAmt).toString();
+    //         setFormData({
+    //             ...formData,
+    //             dental_treatment: selectedTreatmentObject.treatment_name,
+    //             cost_amt: selectedTreatmentObject.treatment_cost,
+    //             disc_amt: selectedTreatmentObject.treatment_discount,
+    //             total_amt: newTotalAmt
+    //         });
+    //     }
+    // }
+
+    const handleTreatmentSelect = (e) => {
+        const selectedTreatment = e.target.value;
+        const selectedTreatmentObject = treatments.find(treatment => treatment.treatment_name === selectedTreatment)
+        if (selectedTreatmentObject) {
+            const costAmt = parseFloat(selectedTreatmentObject.treatment_cost || 0);
+            const discPercentage = parseFloat(selectedTreatmentObject.treatment_discount || 0);
+            const qty = parseFloat(formData.qty || 0);
+            // const newCostAmt = (qty * costAmt).toString(); // Multiply quantity with cost amount
+            // const originalCostAmt = selectedTreatmentObject.treatment_cost;
+            // const newTotalAmt = (newCostAmt - discAmt).toString();
+            const discAmt = (costAmt * (discPercentage / 100)) * qty;
+
+            // Calculate the new cost amount after applying the discount
+            const newCostAmt = (qty * costAmt).toString(); // Multiply quantity with cost amount
+
+            // Calculate the total amount after discount
+            const newTotalAmt = (newCostAmt - discAmt).toString();
+            setFormData({
+                ...formData,
+                dental_treatment: selectedTreatmentObject.treatment_name,
+                original_cost_amt: selectedTreatmentObject.treatment_cost,
+                cost_amt: newCostAmt,
+                disc_amt: selectedTreatmentObject.treatment_discount,
+                total_amt: newTotalAmt
+            });
+        }
+    }
 
     return (
         <>
@@ -85,14 +147,22 @@ const TreatmentForm = () => {
                                         className="col-md-4 w-100"
                                         style={{ position: "relative" }}
                                     >
-                                        <input
+                                        {/* <input
                                             type="text"
                                             name="dental_treatment"
                                             className="shadow-none p-1 bg-light rounded border-0"
                                             value={formData.dental_treatment}
                                             placeholder="Treatment Name"
                                             onChange={handleChange}
-                                        />
+                                        /> */}
+
+                                        <select name="dental_treatment" className="form-select shadow-none p-1 bg-light rounded border-0" value={formData.dental_treatment}
+                                            onChange={handleTreatmentSelect}>
+                                            <option value="" className="text-center">--Choose Treatment--</option>
+                                            {treatments.map((treatment => (
+                                                <option className="text-center" key={treatment.id} value={treatment.treatment_name}>{treatment.treatment_name}</option>
+                                            )))}
+                                        </select>
                                     </div>
                                 </div>
                                 <div className="row">
@@ -127,6 +197,18 @@ const TreatmentForm = () => {
                                             type="text"
                                             name="cost_amt"
                                             className="shadow-none p-1 bg-light rounded border-0"
+                                            value={`Original: ${formData.original_cost_amt}`} // Displaying both values
+                                            placeholder="Cost Amount"
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-4">
+                                        <input
+                                            type="text"
+                                            name="cost_amt"
+                                            className="shadow-none p-1 bg-light rounded border-0"
                                             value={formData.cost_amt}
                                             placeholder="Cost Amount"
                                             onChange={handleChange}
@@ -145,6 +227,8 @@ const TreatmentForm = () => {
                                         />
                                     </div>
                                 </div>
+                            </div>
+                            <div className="d-flex justify-content-evenly align-items-center p-2">
                                 <div className="row">
                                     <div className="col-md-4">
                                         <input
@@ -157,8 +241,6 @@ const TreatmentForm = () => {
                                         />
                                     </div>
                                 </div>
-                            </div>
-                            <div className="d-flex justify-content-evenly align-items-center p-2">
                                 <div className="row">
                                     <div className="col-md-8">
                                         <textarea
@@ -183,10 +265,13 @@ const TreatmentForm = () => {
             </Wrapper>
         </>
     )
-}
+};
 
 export default TreatmentForm;
 const Wrapper = styled.div`
+.sc-eKzuse{
+    width: 100%;
+}
 .list-group {
     position: absolute;
     z-index: 10;
@@ -195,6 +280,18 @@ const Wrapper = styled.div`
     overflow-y: auto;
   }
   input {
+    width: 22rem;
+    @media (min-width: 280px) and (max-width: 460px) {
+      width: 5rem;
+    }
+    @media (min-width: 461px) and (max-width: 820px) {
+      width: 13rem;
+    }
+    @media (min-width: 821px) and (max-width: 1024px) {
+      width: 17rem;
+    }
+  }
+  select{
     width: 22rem;
     @media (min-width: 280px) and (max-width: 460px) {
       width: 5rem;
@@ -222,3 +319,4 @@ const Wrapper = styled.div`
     }
   }
 `;
+

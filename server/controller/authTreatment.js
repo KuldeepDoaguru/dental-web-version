@@ -19,13 +19,13 @@ const getTreatmentList = (req, res) => {
 const insertTreatmentData = (req, res) => {
     const examId = req.params.exam_id;
     const appointmentId = req.params.appointment_id;
-    const { dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, note } = req.body;
+    const { dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, note, original_cost_amt } = req.body;
 
     try {
         // Insert treatment details into the database
         db.query(
-            'INSERT INTO dental_treatment (exam_id, appointment_id, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [examId, appointmentId, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, note],
+            'INSERT INTO dental_treatment (exam_id, appointment_id, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, note, original_cost_amt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [examId, appointmentId, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, note, original_cost_amt],
             (error, result) => {
                 if (error) {
                     console.error('Error inserting treatment details:', error);
@@ -64,6 +64,64 @@ const getExamDataIdbyAppointId = (req, res) => {
     })
 };
 
+const getTreatmentData = (req, res) => {
+    const appointmentId = req.params.appointment_id;
+
+    const sql = `SELECT * FROM dental_treatment WHERE appointment_id = ?`;
+
+    db.query(sql, [appointmentId], (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(400).json({ success: false, message: "Error retrieving treatment data" })
+        } else {
+            console.log(results);
+            return res.status(200).json({ success: true, data: results });
+        }
+    })
+};
+
+const updateTreatmentData = (req, res) => {
+    const treatmentId = req.params.id; // Assuming you're passing the treatment ID in the route
+
+    // Extract treatment data from request body
+    const { dental_treatment, no_teeth, qty, cost_amt, original_cost_amt, disc_amt, total_amt, note } = req.body;
+
+    // Construct SQL query to update treatment data
+    const sql = `UPDATE dental_treatment 
+                 SET dental_treatment = ?, no_teeth = ?, qty = ?, cost_amt = ?, original_cost_amt = ?, disc_amt = ?, total_amt = ?, note = ?
+                 WHERE id = ?`;
+
+    // Execute the SQL query
+    db.query(sql, [dental_treatment, no_teeth, qty, cost_amt, original_cost_amt, disc_amt, total_amt, note, treatmentId], (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(400).json({ success: false, message: "Error updating treatment data" });
+        } else {
+            console.log(results);
+            return res.status(200).json({ success: true, message: "Treatment data updated successfully", results });
+        }
+    });
+};
+
+const deleteTreatmentData = (req, res) => {
+    const treatmentId = req.params.id; // Assuming you're passing the treatment ID in the route
+
+    // Construct SQL query to delete treatment data
+    const sql = `DELETE FROM dental_treatment WHERE id = ?`;
+
+    // Execute the SQL query
+    db.query(sql, [treatmentId], (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(400).json({ success: false, message: "Error deleting treatment data" });
+        } else {
+            console.log(results);
+            return res.status(200).json({ success: true, message: "Treatment data deleted successfully", results });
+        }
+    });
+};
 
 
-module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId }; 
+
+
+module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData }; 

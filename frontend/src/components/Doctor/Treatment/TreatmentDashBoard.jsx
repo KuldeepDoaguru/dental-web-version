@@ -2,8 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import HeadBar from "../HeadBar";
 import SideBar from "../SideBar";
-import Treat from "./Treat";
 import {useParams } from "react-router-dom";
+import NewTreatment from "./NewTreatment";
 
 const TreatmentDashBoard = () => {
   const { id } = useParams();
@@ -19,8 +19,8 @@ const TreatmentDashBoard = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SideBar />
               </div>
-              <div className="col-lg-11 col-11 ps-0 m-4">
-                <Treat />
+              <div className="col-lg-11 col-11 ps-0 m-2">
+                <NewTreatment />
               </div>
             </div>
           </div>
@@ -31,4 +31,6 @@ const TreatmentDashBoard = () => {
 };
 
 export default TreatmentDashBoard;
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+overflow: hidden;
+`;

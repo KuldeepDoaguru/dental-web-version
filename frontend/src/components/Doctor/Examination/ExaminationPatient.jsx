@@ -1005,8 +1005,7 @@ const ExaminationPatientTest = () => {
   }, []);
 
   const handleSaveContinue = () =>{
-    navigate(`/NewTreatment/${id}`); 
-    // navigate(`/TreatmentDashBoard/${id}`); 
+    navigate(`/TreatmentDashBoard/${id}`); 
   }
 
 

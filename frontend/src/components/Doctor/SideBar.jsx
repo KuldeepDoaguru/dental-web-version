@@ -40,8 +40,8 @@ const Sider = () => {
                 </div>
               </Link>
             </li>
-            <hr/>
-            <li>
+            {/* <hr/> */}
+            {/* <li>
               <Link
                 to="/all-appoint"
                 className={`link-div ${getSidebarClass(
@@ -57,9 +57,9 @@ const Sider = () => {
                   </h3>
                 </div>
               </Link>
-            </li>
-            <hr />
-            <li>
+            </li> */}
+            {/* <hr /> */}
+            {/* <li>
               <Link
                 to="/examination-Dashboard"
                 className={`link-div ${getSidebarClass(
@@ -75,9 +75,9 @@ const Sider = () => {
                   </h3>
                 </div>
               </Link>
-            </li>
-            <hr />
-            <li>
+            </li> */}
+            {/* <hr /> */}
+            {/* <li>
               <Link
                 to="/TreatmentDashBoard"
                 className={`link-div ${getSidebarClass("/TreatmentDashBoard")}`}
@@ -91,7 +91,7 @@ const Sider = () => {
                   </h3>
                 </div>
               </Link>
-            </li>
+            </li> */}
             {/* <hr />
             <li>
               <Link
@@ -115,7 +115,7 @@ const Sider = () => {
                 className={`link-div ${getSidebarClass("/CreatePrescrip")}`}
               >
                 <div>
-                  <AiOutlineAccountBook className="fs-1 bi bi-house-door-fill"/>
+                  <AiOutlineAccountBook className="bi bi-house-door-fill" size={35}/>
                 </div>
                 <div>
                   <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
@@ -188,7 +188,7 @@ const Sider = () => {
               </Link>
             </li>
             <hr /> */}
-            <li>
+            {/* <li>
               <div className={`link-div ${getSidebarClass("/settings")}`}>
                 <div>
                   <i className="fs-4 bi bi-gear"></i>
@@ -199,17 +199,18 @@ const Sider = () => {
                   </h3>
                 </div>
               </div>
-            </li>
-            <hr />
+            </li> */}
+            {/* <hr /> */}
             <li>
               <div className="link-div">
                 <div>
                   <i className="fs-4 bi bi-power"></i>
                 </div>
-                <div>
-                  <button className="btn btn-danger d-none d-sm-inline">
+                <div className="text-light">
+                Logout
+                  {/* <button className="btn btn-danger d-none d-sm-inline">
                     Logout
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </li>

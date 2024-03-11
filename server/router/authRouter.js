@@ -3,7 +3,7 @@ const db = require("../connect.js");
 const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric } = require("../controller/authControl.js");
 const { getAppointTable, getAppointmentById, getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus } = require("../controller/authAppointTable.js");
 const { getBranch, LoginDoctor } = require("../controller/authBranch.js");
-const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId } = require("../controller/authTreatment.js");
+const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData } = require("../controller/authTreatment.js");
 
 const router = express.Router();
 
@@ -38,6 +38,9 @@ router.post("/doctor-login", LoginDoctor);
 router.get("/treatmentLists", getTreatmentList);
 router.post("/insertTreatmentData/:exam_id/:appointment_id", insertTreatmentData);
 router.get("/getExamDataIdbyAppointId/:id/:appointment_id", getExamDataIdbyAppointId);
+router.get("/getTreatmentData/:appointment_id", getTreatmentData);
+router.put('/updateTreatmentData/:id', updateTreatmentData);
+router.delete('/deleteTreatmentData/:id', deleteTreatmentData);
 
 // Treatment List Routes END here......
 

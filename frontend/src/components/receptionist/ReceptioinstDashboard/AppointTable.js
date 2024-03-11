@@ -127,7 +127,7 @@ const handleStatusCancel = async (appointmentId, newStatus) => {
       setCurrentPage(1); // Reset to the first page when searching
   
       const filteredResults = appointmentsData.filter((row) =>
-        row.patient_name.toLowerCase().includes(searchTerm) 
+        row.patient_name.toLowerCase().includes(searchTerm) || row.mobileno.includes(searchTerm) 
         && row.appointment_dateTime.includes(selectedDate)
       );
   
@@ -268,7 +268,7 @@ const handleStatusCancel = async (appointmentId, newStatus) => {
         
         <input
         type="search"
-        placeholder="Search here"
+        placeholder="Search Patient"
         onChange={handleSearch}
         value={searchTerm}
         className='mb-2 rounded-5 p-2 form-control'

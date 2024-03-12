@@ -410,17 +410,21 @@ const superAdminLoginUser = async (req, res) => {
 
         const user = result[0];
         console.log(user);
-        // const match = await bcrypt.compare(password, user.password);
-        if (password !== user.super_password) {
+        const match = await bcrypt.compare(password, user.super_password);
+        if (!match) {
           return res.status(200).json({
             success: "false",
             message: "Invalid password",
           });
         }
 
-        const token = await JWT.sign({ id: user.id }, process.env.JWT_SECRET, {
-          expiresIn: "7d",
-        });
+        const token = await JWT.sign(
+          { id: user.sa_id },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "7d",
+          }
+        );
 
         res.status(200).json({
           success: "true",
@@ -1014,6 +1018,44 @@ const getEmployeeComplainByBranch = (req, res) => {
   }
 };
 
+const resetPassword = (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const selectQuery = "SELECT * FROM super_admin WHERE super_email = ?";
+
+    db.query(selectQuery, email, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length) {
+        const saltRounds = 10;
+        const hashedPassword = bcrypt.hashSync(password, saltRounds);
+        console.log(hashedPassword);
+        const updateQuery = `UPDATE super_admin SET super_password = ? WHERE super_email = ?`;
+        db.query(updateQuery, [hashedPassword, email], (err, result) => {
+          if (err) {
+            return res
+              .status(400)
+              .json({ success: false, message: err.message });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "Details updated successfully",
+            });
+          }
+        });
+      } else {
+        return res
+          .status(404)
+          .json({ success: false, message: "email not found" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   EnrollEmployee,
   EditEmployeeDetails,
@@ -1036,4 +1078,5 @@ module.exports = {
   updateAppointData,
   deleteAppointData,
   getEmployeeDataByBranch,
+  resetPassword,
 };

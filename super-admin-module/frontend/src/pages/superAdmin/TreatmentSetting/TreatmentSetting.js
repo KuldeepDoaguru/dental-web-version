@@ -57,7 +57,7 @@ const TreatmentSetting = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/v1/super-admin/addTreatment",
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addTreatment",
         treatData
       );
       console.log(response);
@@ -75,7 +75,7 @@ const TreatmentSetting = () => {
   const getTreatmentList = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/v1/super-admin/getTreatmentList"
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getTreatmentList"
       );
       console.log(data);
       setTreatList(data);
@@ -88,7 +88,7 @@ const TreatmentSetting = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:7777/api/v1/super-admin/updateTreatmentDetails/${id}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateTreatmentDetails/${id}`,
         treatData
       );
 
@@ -104,7 +104,7 @@ const TreatmentSetting = () => {
   const deleteTreatment = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:7777/api/v1/super-admin/deleteTreatment/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteTreatment/${id}`
       );
       getTreatmentList();
       cogoToast.success("Treatment deleted successfully");

@@ -80,7 +80,7 @@ const PatientStatisticChart = () => {
               <Legend />
               <Bar
                 dataKey="pv"
-                fill="#004aad"
+                fill="#1abc9c"
                 activeBar={<Rectangle fill="pink" stroke="blue" />}
               />
               <Bar

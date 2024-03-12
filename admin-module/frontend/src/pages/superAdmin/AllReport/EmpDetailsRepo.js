@@ -255,7 +255,7 @@ const Container = styled.div`
     color: white;
   }
   th {
-    background-color: #004aad;
+    background-color: #1abc9c;
     color: white;
   }
 `;

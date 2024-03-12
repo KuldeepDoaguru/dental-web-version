@@ -81,7 +81,7 @@ function AveragePatientChart() {
               <Line
                 type="monotone"
                 dataKey="pv"
-                stroke="#004aad"
+                stroke="#1abc9c"
                 activeDot={{ r: 8 }}
               />
               <Line type="monotone" dataKey="uv" stroke="#257042" />

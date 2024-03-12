@@ -150,10 +150,10 @@ const ClinicSetting = () => {
 export default ClinicSetting;
 const Container = styled.div`
   nav {
-    background-color: #004aad;
+    background-color: #1abc9c;
   }
   .card {
-    background-color: #004aad;
+    background-color: #1abc9c;
     height: 8rem;
     &:hover {
       background-color: #000;

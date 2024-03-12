@@ -23,6 +23,7 @@ const {
   deleteAppointData,
   getEmployeeDataByBranch,
   getEmployeeDataByBranchAndId,
+  resetPassword,
 } = require("../controllers/superAdminController");
 const {
   makeBills,
@@ -78,6 +79,9 @@ const {
   addSuperAdminNotify,
   getSuperAdminNotify,
   markRead,
+  getComplainById,
+  updateComplaints,
+  downloadEmployeeComplaintReport,
 } = require("../controllers/attendanceController");
 // const multer = require("multer");
 
@@ -135,6 +139,7 @@ router.post("/addEmployeeComplain", addEmployeeComplain);
 router.get("/getEmployeeComplainByBranch/:branch", getEmployeeComplainByBranch);
 router.put("/updateAppointData/:id", updateAppointData);
 router.delete("/deleteAppointData/:id", deleteAppointData);
+router.put("/resetPassword", resetPassword);
 
 // ************************************************************************************************
 //bill and inventory routes
@@ -217,5 +222,11 @@ router.delete("/deleteNotifyTags/:ntid", deleteNotifyTags);
 router.post("/addSuperAdminNotify", addSuperAdminNotify);
 router.get("/getSuperAdminNotify", getSuperAdminNotify);
 router.put("/markRead/:snid", markRead);
+router.get("/getComplainById/:cid", getComplainById);
+router.put("/updateComplaints/:cid", updateComplaints);
+router.post(
+  "/downloadEmployeeComplaintReport/:branch",
+  downloadEmployeeComplaintReport
+);
 
 module.exports = router;

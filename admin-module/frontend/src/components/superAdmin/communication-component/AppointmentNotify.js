@@ -281,7 +281,7 @@ const AppointmentNotify = () => {
 export default AppointmentNotify;
 const Container = styled.div`
   .savebtn {
-    background-color: #004aad;
+    background-color: #1abc9c;
     border: none;
     color: white;
   }

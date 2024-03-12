@@ -51,6 +51,6 @@ const FinancialReportHead = () => {
 export default FinancialReportHead;
 const Container = styled.div`
   nav {
-    background-color: #004aad;
+    background-color: #1abc9c;
   }
 `;

@@ -76,6 +76,8 @@ import { setBranch } from "./redux/slices/BranchSlicer";
 import EmployeeProfile from "./components/superAdmin/doctor/EmployeeProfile";
 import PatientDetailsLIst from "./pages/superAdmin/patientDetails/PatientDetailsLIst";
 import PatientProfile from "./pages/superAdmin/patientDetails/PatientProfile";
+import EmpComplaintsReport from "./pages/superAdmin/AllReport/EmpComplaintsReport";
+import PasswordReset from "./pages/PasswordReset";
 
 const App = () => {
   const storedUserData = localStorage.getItem("userData");
@@ -145,9 +147,11 @@ const App = () => {
         <Route path="/lab-task-report" element={<LabTaskReport />} />
         <Route path="/manage-staff" element={<ManageStaff />} />
         <Route path="/super-admin-notification" element={<SuperAdmNotify />} />
-        <Route path="/complaint-page" element={<ComplaintPage />} />
+        <Route path="/complaint-page/:cid" element={<ComplaintPage />} />
         <Route path="/patient-list" element={<PatientDetailsLIst />} />
         <Route path="/patient-profile/:pid" element={<PatientProfile />} />
+        <Route path="/emp-complaints-list" element={<EmpComplaintsReport />} />
+        <Route path="/password-reset" element={<PasswordReset />} />
         <Route path="*" element={<ErrorPage />} />
 
         {/* super admin routes end  */}

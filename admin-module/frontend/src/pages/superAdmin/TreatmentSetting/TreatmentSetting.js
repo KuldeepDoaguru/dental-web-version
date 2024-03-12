@@ -407,7 +407,7 @@ const Container = styled.div`
   }
 
   .banner-mid {
-    background-color: #004aad;
+    background-color: #1abc9c;
     padding: 1rem;
     display: flex;
     justify-content: space-between;

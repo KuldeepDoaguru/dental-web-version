@@ -492,11 +492,11 @@ const ClinicActivity = () => {
 export default ClinicActivity;
 const Container = styled.div`
   .nav-link {
-    color: #004aad;
+    color: #1abc9c;
   }
 
   .nav-pills .nav-link.active {
-    background-color: #004aad;
+    background-color: #1abc9c;
   }
 
   ul {

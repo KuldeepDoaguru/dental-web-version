@@ -62,7 +62,7 @@ const Dashboard = () => {
                     />
                     <button
                       className="btn btn-primary"
-                      style={{ backgroundColor: "#004aad" }}
+                      style={{ backgroundColor: "#1abc9c" }}
                       type="submit"
                     >
                       Search

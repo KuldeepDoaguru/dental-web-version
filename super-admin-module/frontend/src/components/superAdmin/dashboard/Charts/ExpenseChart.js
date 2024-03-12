@@ -107,7 +107,7 @@ const ExpenseChart = () => {
     const getAppointList = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/v1/super-admin/getPurInventoryByBranch/${branch.name}`
+          `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPurInventoryByBranch/${branch.name}`
         );
         setAppointmentList(response.data);
       } catch (error) {

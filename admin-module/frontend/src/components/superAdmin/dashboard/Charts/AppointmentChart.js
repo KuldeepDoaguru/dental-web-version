@@ -81,7 +81,7 @@ const AppointmentChart = () => {
                   type="monotone"
                   dataKey="uv"
                   stroke="#257042"
-                  fill="#004aad"
+                  fill="#1abc9c"
                 />
               </AreaChart>
             </div>

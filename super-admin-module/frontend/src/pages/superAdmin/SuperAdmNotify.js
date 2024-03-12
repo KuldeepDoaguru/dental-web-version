@@ -20,7 +20,7 @@ const SuperAdmNotify = () => {
   const getNotifyDetails = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/v1/super-admin/getSuperAdminNotify"
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getSuperAdminNotify"
       );
       setNotifyList(data);
     } catch (error) {
@@ -31,7 +31,7 @@ const SuperAdmNotify = () => {
   const updateMarkRead = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:7777/api/v1/super-admin/markRead/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/markRead/${id}`
       );
       getNotifyDetails();
     } catch (error) {

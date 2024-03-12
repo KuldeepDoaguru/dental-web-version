@@ -83,7 +83,7 @@ const PrescriptionTemplate = () => {
   const getPrescriptionDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPrescription/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescription/${branch.name}`
       );
       setGetPresList(data);
     } catch (error) {
@@ -95,7 +95,7 @@ const PrescriptionTemplate = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/v1/super-admin/addPrescription",
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addPrescription",
         addPres
       );
       closeUpdatePopup();
@@ -109,7 +109,7 @@ const PrescriptionTemplate = () => {
   const getPresDetailsById = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPrescriptionById/${selected}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescriptionById/${selected}`
       );
       setPressById(data);
     } catch (error) {
@@ -121,7 +121,7 @@ const PrescriptionTemplate = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:7777/api/v1/super-admin/updatePrescriptionDetails/${selected}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updatePrescriptionDetails/${selected}`,
         upPres
       );
       closeUpdatePopup();
@@ -136,7 +136,7 @@ const PrescriptionTemplate = () => {
     alert("hello");
     try {
       const response = await axios.delete(
-        `http://localhost:7777/api/v1/super-admin/deletePrescription/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deletePrescription/${id}`
       );
       getPrescriptionDetails();
       cogoToast.success("prescription deleted successfully");

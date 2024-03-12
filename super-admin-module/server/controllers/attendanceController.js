@@ -122,7 +122,14 @@ const updateBranchCalenderSetting = (req, res) => {
 
 const addBlockDays = (req, res) => {
   try {
-    const { branch_name, holiday_date, holiday_time, notes } = req.body;
+    const {
+      branch_name,
+      holiday_name,
+      holiday_date,
+      holiday_start_time,
+      holiday_end_time,
+      notes,
+    } = req.body;
     const selectQuery = "SELECT * FROM holidays WHERE holiday_date = ?";
     db.query(selectQuery, holiday_date, (err, result) => {
       if (err) {
@@ -132,10 +139,17 @@ const addBlockDays = (req, res) => {
         return res.status(400).send("Holiday already exists");
       } else {
         const insertQuery =
-          "INSERT INTO holidays (branch_name, holiday_date, holiday_time, notes) VALUES (?,?,?,?)";
+          "INSERT INTO holidays (branch_name, holiday_name, holiday_date, holiday_start_time, holiday_end_time, notes) VALUES (?,?,?,?,?,?)";
         db.query(
           insertQuery,
-          [branch_name, holiday_date, holiday_time, notes],
+          [
+            branch_name,
+            holiday_name,
+            holiday_date,
+            holiday_start_time,
+            holiday_end_time,
+            notes,
+          ],
           (err, result) => {
             if (err) {
               return res
@@ -172,7 +186,13 @@ const getHolidays = (req, res) => {
 const updateHolidays = (req, res) => {
   try {
     const hid = req.params.hid;
-    const { holiday_date, holiday_time, notes } = req.body;
+    const {
+      holiday_name,
+      holiday_date,
+      holiday_start_time,
+      holiday_end_time,
+      notes,
+    } = req.body;
     const selectQuery = "SELECT * FROM holidays WHERE holiday_id = ?";
     db.query(selectQuery, hid, (err, result) => {
       if (err) {
@@ -182,14 +202,24 @@ const updateHolidays = (req, res) => {
         const updateFields = [];
         const updateValues = [];
 
+        if (holiday_name) {
+          updateFields.push("holiday_name = ?");
+          updateValues.push(holiday_name);
+        }
+
         if (holiday_date) {
           updateFields.push("holiday_date = ?");
           updateValues.push(holiday_date);
         }
 
-        if (holiday_time) {
-          updateFields.push("holiday_time = ?");
-          updateValues.push(holiday_time);
+        if (holiday_start_time) {
+          updateFields.push("holiday_start_time = ?");
+          updateValues.push(holiday_start_time);
+        }
+
+        if (holiday_end_time) {
+          updateFields.push("holiday_end_time = ?");
+          updateValues.push(holiday_end_time);
         }
 
         if (notes) {
@@ -768,6 +798,94 @@ const markRead = (req, res) => {
   }
 };
 
+const getComplainById = (req, res) => {
+  try {
+    const cid = req.params.cid;
+    const selectQuery =
+      "SELECT * FROM employee_complaints WHERE complain_id = ?";
+    db.query(selectQuery, cid, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const updateComplaints = (req, res) => {
+  try {
+    const cid = req.params.cid;
+    const { status, solved_on } = req.body;
+    const selectQuery =
+      "SELECT * FROM employee_complaints WHERE complain_id = ?";
+    db.query(selectQuery, cid, (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateFields = [];
+        const updateValues = [];
+
+        if (status) {
+          updateFields.push("status = ?");
+          updateValues.push(status);
+        }
+
+        if (solved_on) {
+          updateFields.push("solved_on = ?");
+          updateValues.push(solved_on);
+        }
+
+        const updateQuery = `UPDATE employee_complaints SET ${updateFields.join(
+          ", "
+        )} WHERE complain_id = ?`;
+
+        db.query(updateQuery, [...updateValues, cid], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Failed to update details",
+            });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "Complain updated successfully",
+            });
+          }
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "ID not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const downloadEmployeeComplaintReport = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery =
+      "SELECT * FROM employee_complaints WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getAttendanceDetails,
   downloadAttendanceReportByTime,
@@ -794,4 +912,7 @@ module.exports = {
   addSuperAdminNotify,
   getSuperAdminNotify,
   markRead,
+  getComplainById,
+  updateComplaints,
+  downloadEmployeeComplaintReport,
 };

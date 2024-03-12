@@ -72,7 +72,7 @@ const Card = () => {
 export default Card;
 const Wrapper = styled.div`
   .card {
-    background: #004aad;
+    background: #1abc9c;
     padding: 1rem;
     width: 100%;
     box-shadow: 1px 2px 8px black;

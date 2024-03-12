@@ -72,7 +72,7 @@ const AdminNotify = () => {
 export default AdminNotify;
 const Container = styled.div`
   th {
-    background-color: #004aad;
+    background-color: #1abc9c;
     color: white;
   }
   .li-div {
@@ -82,7 +82,7 @@ const Container = styled.div`
     border: none;
     box-shadow: 0px 0px 10px darkgrey;
     border-radius: 10px;
-    color: #004aad;
+    color: #1abc9c;
     font-weight: bold;
     &:hover {
       background-color: #000;

@@ -15,10 +15,10 @@ export const FinancialCard = () => {
 
             <div className="col-11 mt-4">
               <div class="row d-flex justify-content-between">
-
                 <div class="col-xl-3 col-lg-3 col-md-5 card mt-4">
                   <div className="icon fs-1 text-light">
-                    <FaHandHoldingDollar /></div>
+                    <FaHandHoldingDollar />
+                  </div>
                   <div class="card-body fs-1 text-light ms-5">INR 25000</div>
 
                   <div class="card-footer text-light"> EARNINGS</div>
@@ -98,10 +98,10 @@ export default FinancialCard;
 
 const Container = styled.div`
   .report {
-    background-color: #004aad;
+    background-color: #1abc9c;
   }
 
   .card {
-    background-color: #004aad;
+    background-color: #1abc9c;
   }
 `;

@@ -20,7 +20,7 @@ const AppointmentReport = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAppointmentData/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`
       );
       console.log(response);
       setAppointmentList(response.data);
@@ -62,7 +62,7 @@ const AppointmentReport = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `http://localhost:7777/api/v1/super-admin/downloadAppointReportByTime/${branch.name}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadAppointReportByTime/${branch.name}`,
         { fromDate: fromDate, toDate: toDate }
       );
       console.log(data);

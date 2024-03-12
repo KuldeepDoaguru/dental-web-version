@@ -1,9 +1,117 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { IoPeople } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const AdminCards = () => {
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [appointmentList, setAppointmentList] = useState([]);
+  const [availableEmp, setAvailableEmp] = useState([]);
+
+  const getAppointList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/admin/getAppointmentData/${branch.name}`
+      );
+      console.log(data);
+      setAppointmentList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getEmployeeAvailable = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/admin/getAvailableEmp/${branch.name}`
+      );
+      // console.log(data);
+      setAvailableEmp(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAppointList();
+    getEmployeeAvailable();
+  }, []);
+
+  console.log(appointmentList);
+  //filter for patient treated today card
+  const getDate = new Date();
+  const year = getDate.getFullYear();
+  const month = String(getDate.getMonth() + 1).padStart(2, "0");
+  const day = String(getDate.getDate()).padStart(2, "0");
+
+  const formattedDate = `${year}-${month}-${day}`;
+  console.log(formattedDate);
+
+  //filterForPatAppointToday
+  const filterForPatAppointToday = appointmentList?.filter(
+    (item) => item.appointment_dateTime.split("T")[0] === formattedDate
+  );
+
+  console.log(filterForPatAppointToday);
+
+  //filter for patient treated today
+  const filterForPatTreatToday = appointmentList?.filter(
+    (item) =>
+      item.treatment_status === "Treated" &&
+      item.appointment_dateTime.split("T")[0] === formattedDate
+  );
+
+  console.log(filterForPatTreatToday);
+
+  //filter for today's earning
+  console.log(appointmentList[0]?.appointment_dateTime?.split("T")[0]);
+  const filterForEarningToday = appointmentList?.filter(
+    (item) =>
+      item.payment_status === "success" &&
+      item.appointment_dateTime?.split("T")[0] === formattedDate
+  );
+
+  // console.log(filterForEarningToday);
+
+  const totalPrice = () => {
+    try {
+      let total = 0;
+      filterForEarningToday.forEach((item) => {
+        total = total + parseFloat(item.bill_amount);
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+  const totalValue = totalPrice();
+
+  //filter for available doctor
+  console.log(availableEmp[0]?.date.split("T")[0]);
+  const filterForEmpAVToday = availableEmp?.filter(
+    (item) =>
+      item.availability === "yes" &&
+      item.date.split("T")[0] === formattedDate &&
+      item.employee_designation === "doctor"
+  );
+
+  console.log(filterForEmpAVToday);
+
+  //filter for present employee today
+  console.log(availableEmp[0]?.date.split("T")[0]);
+  const filterForEmpPresentToday = availableEmp?.filter(
+    (item) =>
+      item.availability === "yes" && item.date.split("T")[0] === formattedDate
+  );
+
+  console.log(filterForEmpPresentToday);
+
   return (
     <>
       <Container>
@@ -16,7 +124,7 @@ const AdminCards = () => {
                 </div>
                 <div className="cardtext">
                   <h5 className="card-title">Patient Today</h5>
-                  <p className="card-text">250</p>
+                  <p className="card-text">{filterForPatTreatToday.length}</p>
                 </div>
               </div>
             </div>
@@ -30,7 +138,7 @@ const AdminCards = () => {
                 </div>
                 <div className="cardtext">
                   <h5 className="card-title">Employees Present Today</h5>
-                  <p className="card-text">25</p>
+                  <p className="card-text">{filterForEmpPresentToday.length}</p>
                 </div>
               </div>
             </div>
@@ -44,7 +152,7 @@ const AdminCards = () => {
                 </div>
                 <div className="cardtext">
                   <h5 className="card-title">Earnings Today</h5>
-                  <p className="card-text">25000</p>
+                  <p className="card-text">{totalValue}</p>
                 </div>
               </div>
             </div>
@@ -58,7 +166,7 @@ const AdminCards = () => {
                 </div>
                 <div className="cardtext">
                   <h5 className="card-title">Available Doctors Today</h5>
-                  <p className="card-text">15</p>
+                  <p className="card-text">{filterForEmpAVToday.length}</p>
                 </div>
               </div>
             </div>
@@ -73,7 +181,7 @@ const AdminCards = () => {
 
                 <div className="cardtext">
                   <h5 className="card-title">Today's Appointments</h5>
-                  <p className="card-text">56</p>
+                  <p className="card-text">{filterForPatAppointToday.length}</p>
                 </div>
               </div>
             </div>

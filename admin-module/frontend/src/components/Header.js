@@ -332,7 +332,7 @@ const Wrapper = styled.div`
     }
   }
   .navbar {
-    background-color: #004aad;
+    background-color: #1abc9c;
     box-shadow: 1px 1px 6px black;
   }
 

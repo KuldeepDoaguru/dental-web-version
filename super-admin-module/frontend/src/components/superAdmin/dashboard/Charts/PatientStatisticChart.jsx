@@ -26,7 +26,7 @@ const PatientStatisticChart = () => {
     const getAppointList = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7777/api/v1/super-admin/getAppointmentData/${branch.name}`
+          `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`
         );
         setAppointmentList(response.data);
       } catch (error) {

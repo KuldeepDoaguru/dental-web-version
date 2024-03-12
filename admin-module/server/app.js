@@ -2,7 +2,7 @@ const express = require("express");
 const colors = require("colors");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const adminRoutes = require("./Routes/Admin-routes/adminRoutes");
+const adminRoutes = require("./Routes/adminRoutes");
 
 dotenv.config();
 // rest object

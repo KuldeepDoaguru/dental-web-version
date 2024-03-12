@@ -64,7 +64,7 @@ const AppointmentNotify = () => {
   const getNotifyList = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:7777/api/v1/super-admin/getNotifyList"
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getNotifyList"
       );
 
       setGetNotify(data);
@@ -77,7 +77,7 @@ const AppointmentNotify = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/v1/super-admin/addNotifyCommunication",
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addNotifyCommunication",
         notiDetails
       );
       closeUpdatePopup();
@@ -92,7 +92,7 @@ const AppointmentNotify = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:7777/api/v1/super-admin/updateNotifyTagsDetails/${selected}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateNotifyTagsDetails/${selected}`,
         upNotiDetails
       );
       closeUpdatePopup();
@@ -106,7 +106,7 @@ const AppointmentNotify = () => {
   const deleteNotifyTags = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:7777/api/v1/super-admin/deleteNotifyTags/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteNotifyTags/${id}`
       );
       getNotifyList();
       cogoToast.success("data deleted successfully");

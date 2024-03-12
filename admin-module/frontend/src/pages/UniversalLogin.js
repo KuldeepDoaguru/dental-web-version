@@ -1,15 +1,79 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { setBranch } from "../redux/slices/BranchSlicer";
+import { setUser } from "../redux/slices/UserSlicer";
+import cogoToast from "cogo-toast";
 
 const UniversalLogin = () => {
-  const [role, setRole] = useState("select-role");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [branchList, setBranchList] = useState(null);
+  const [selectedBranch, setSelectedBranch] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const HandleChange = (event) => {
-    setRole(event.target.value);
+  // const HandleChange = (event) => {
+  //   setBranchList(event.target.value);
+  // };
+
+  const getBranchList = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8888/api/v1/admin/getBranch"
+      );
+      console.log(response.data);
+      setBranchList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  console.log(role);
+  const branchData = {
+    name:
+      selectedBranch ||
+      (branchList?.length > 0 ? branchList[0].branch_name : ""),
+  };
+  localStorage.setItem("branchName", JSON.stringify(branchData));
+  dispatch(setBranch(branchData));
+
+  const adminLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/v1/admin/adminLoginUser",
+        {
+          email,
+          password,
+          branch_name: selectedBranch,
+        }
+      );
+      console.log(response.data.user.employee_ID);
+      const userData = {
+        name: response.data.user.email,
+        id: response.data.user.employee_ID,
+      };
+      localStorage.setItem("userData", JSON.stringify(userData));
+      dispatch(setUser(userData));
+      cogoToast.success("Login Successful");
+      navigate("/admin-dashboard");
+    } catch (error) {
+      console.log("Axios error:", error);
+      cogoToast.error(error.response.data.message);
+    }
+  };
+
+  console.log(branchList);
+  useEffect(() => {
+    getBranchList();
+  }, []);
 
   return (
     <>
@@ -24,25 +88,30 @@ const UniversalLogin = () => {
                       <div className="col-md-10 col-lg-6 col-xl-5 order-2">
                         <div className="d-flex justify-content-end">
                           <select
-                            name="role"
-                            id=""
-                            className="p-2 rounded shadow select-style"
-                            value={role}
-                            onChange={HandleChange}
+                            name="branch"
+                            id="branch"
+                            className="mx-2 p-2 rounded shadow select-style"
+                            value={selectedBranch}
+                            onChange={(e) => setSelectedBranch(e.target.value)}
                           >
-                            <option value="select-role">role</option>
-                            <option value="super-admin">Super Admin</option>
-                            <option value="admin">Admin</option>
-                            <option value="receptionist">Receptionist</option>
-                            <option value="doctor">Doctor</option>
-                            <option value="accountant">Accountant</option>
+                            <option value="" className="fw-bold">
+                              select-branch
+                            </option>
+                            {branchList?.map((branch) => (
+                              <option
+                                key={branch.branch_name}
+                                value={branch.branch_name}
+                              >
+                                {branch.branch_name}
+                              </option>
+                            ))}
                           </select>
                         </div>
                         <p className="text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4">
                           Login
                         </p>
 
-                        <form className="mx-1 mx-md-4">
+                        <form className="mx-1 mx-md-4" onSubmit={adminLogin}>
                           <div className="d-flex flex-row align-items-center mb-4">
                             <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
                             <div className="form-outline flex-fill mb-0">
@@ -54,7 +123,10 @@ const UniversalLogin = () => {
                               </label>
                               <input
                                 type="email"
-                                id="form3Example3c"
+                                name="email"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className="form-control"
                                 placeholder="email"
                               />
@@ -71,8 +143,11 @@ const UniversalLogin = () => {
                                 Password
                               </label>
                               <input
+                                name="password"
                                 type="password"
-                                id="form3Example4c"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 className="form-control"
                                 placeholder="password"
                               />
@@ -81,30 +156,17 @@ const UniversalLogin = () => {
 
                           <div className="col-5 ms-3">
                             <p>
-                              <Link to="/receptionist_registration">
-                                Forgot Password?
-                              </Link>
+                              <Link to="/password-reset">Forgot Password?</Link>
                             </p>
                           </div>
 
                           <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                            <Link
-                              to={
-                                (role === "admin" && "/admin-dashboard") ||
-                                (role === "super-admin" &&
-                                  "/superadmin-dashboard") ||
-                                (role === "receptionist" && "*") ||
-                                (role === "doctor" && "*") ||
-                                (role === "accountant" && "*")
-                              }
+                            <button
+                              type="submit"
+                              className="btn btn-primary btn-lg"
                             >
-                              <button
-                                type="button"
-                                className="btn btn-primary btn-lg"
-                              >
-                                Login
-                              </button>
-                            </Link>
+                              Login
+                            </button>
                           </div>
                           <div className="col-sm-12 col-md-10 text-center ms-4">
                             <p>

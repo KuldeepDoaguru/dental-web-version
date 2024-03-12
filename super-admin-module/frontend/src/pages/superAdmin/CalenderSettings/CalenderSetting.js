@@ -30,13 +30,17 @@ const CalenderSetting = () => {
   });
   const [holidays, setHolidays] = useState({
     branch_name: branch.name,
+    holiday_name: "",
     holiday_date: "",
-    holiday_time: "",
+    holiday_start_time: "",
+    holiday_end_time: "",
     notes: "",
   });
   const [upHolidays, setUpHolidays] = useState({
+    holiday_name: "",
     holiday_date: "",
-    holiday_time: "",
+    holiday_start_time: "",
+    holiday_end_time: "",
     notes: "",
   });
 
@@ -101,7 +105,7 @@ const CalenderSetting = () => {
   const getBranchDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getBranchDetailsByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getBranchDetailsByBranch/${branch.name}`
       );
       setBrData(data);
     } catch (error) {
@@ -113,7 +117,7 @@ const CalenderSetting = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:7777/api/v1/super-admin/updateBranchCalenderSetting/${branch.name}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateBranchCalenderSetting/${branch.name}`,
         upData
       );
       console.log(response);
@@ -134,7 +138,7 @@ const CalenderSetting = () => {
   const getHolidayList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getHolidays/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getHolidays/${branch.name}`
       );
       setHolidayList(data);
     } catch (error) {
@@ -146,7 +150,7 @@ const CalenderSetting = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/v1/super-admin/addBlockDays",
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addBlockDays",
         holidays
       );
       // console.log(response);
@@ -164,7 +168,7 @@ const CalenderSetting = () => {
     console.log(selected);
     try {
       const response = await axios.put(
-        `http://localhost:7777/api/v1/super-admin/updateHolidays/${selected}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateHolidays/${selected}`,
         upHolidays
       );
       cogoToast.success("Holiday Added Successfully");
@@ -180,7 +184,7 @@ const CalenderSetting = () => {
   const deleteHoliday = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:7777/api/v1/super-admin/deleteHolidays/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteHolidays/${id}`
       );
       cogoToast.success("Holiday Deleted Successfully");
       getHolidayList();
@@ -353,51 +357,29 @@ const CalenderSetting = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno" style={{ width: "10%" }}>
-                              Block Days
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Block Time
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "20%" }}
-                            >
-                              Notes
-                            </th>
-                            <th
-                              className="table-small"
-                              style={{ width: "10%" }}
-                            >
-                              Actions
-                            </th>
+                            <th className="table-sno">Holiday Name</th>
+                            <th className="table-small">Date</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th className="table-small">Notes</th>
+                            <th className="table-small">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
                           {holidayList?.map((item) => (
                             <>
                               <tr className="table-row">
-                                <td
-                                  className="table-sno"
-                                  style={{ width: "10%" }}
-                                >
+                                <td>{item.holiday_name}</td>
+                                <td className="table-sno">
                                   {item.holiday_date.split("T")[0]}
                                 </td>
-                                <td
-                                  className="table-small"
-                                  style={{ width: "20%" }}
-                                >
-                                  {item.holiday_time}
+                                <td className="table-small">
+                                  {item.holiday_start_time}
                                 </td>
-                                <td
-                                  className="table-small"
-                                  style={{ width: "20%" }}
-                                >
-                                  {item.notes}
+                                <td className="table-small">
+                                  {item.holiday_end_time}
                                 </td>
+                                <td className="table-small">{item.notes}</td>
 
                                 <td>
                                   <button
@@ -438,6 +420,15 @@ const CalenderSetting = () => {
               <h4 className="text-center">Add Drugs</h4>
               <form className="d-flex flex-column" onSubmit={addHolidays}>
                 <input
+                  type="text"
+                  placeholder="holiday name"
+                  className="rounded p-2"
+                  name="holiday_name"
+                  value={holidays.holiday_name}
+                  onChange={handleHoliday}
+                />
+                <br />
+                <input
                   type="date"
                   placeholder="select date"
                   className="rounded p-2"
@@ -447,11 +438,20 @@ const CalenderSetting = () => {
                 />
                 <br />
                 <input
-                  type="text"
-                  placeholder="Add time period"
+                  type="time"
+                  placeholder="Add start time"
                   className="rounded p-2"
-                  name="holiday_time"
-                  value={holidays.holiday_time}
+                  name="holiday_start_time"
+                  value={holidays.holiday_start_time}
+                  onChange={handleHoliday}
+                />
+                <br />
+                <input
+                  type="time"
+                  placeholder="Add end time"
+                  className="rounded p-2"
+                  name="holiday_end_time"
+                  value={holidays.holiday_end_time}
                   onChange={handleHoliday}
                 />
                 <br />
@@ -494,6 +494,15 @@ const CalenderSetting = () => {
               <h4 className="text-center">Edit Drugs Details</h4>
               <form className="d-flex flex-column" onSubmit={updateHolidetails}>
                 <input
+                  type="text"
+                  placeholder="holiday name"
+                  className="rounded p-2"
+                  name="holiday_name"
+                  value={upHolidays.holiday_name}
+                  onChange={handleHolidayUpdate}
+                />
+                <br />
+                <input
                   type="date"
                   placeholder="select date"
                   className="rounded p-2"
@@ -503,11 +512,20 @@ const CalenderSetting = () => {
                 />
                 <br />
                 <input
-                  type="text"
-                  placeholder="Add hours"
+                  type="time"
+                  placeholder="Add start time"
                   className="rounded p-2"
-                  name="holiday_time"
-                  value={upHolidays.holiday_time}
+                  name="holiday_start_time"
+                  value={upHolidays.holiday_start_time}
+                  onChange={handleHolidayUpdate}
+                />
+                <br />
+                <input
+                  type="time"
+                  placeholder="Add end time"
+                  className="rounded p-2"
+                  name="holiday_end_time"
+                  value={upHolidays.holiday_end_time}
                   onChange={handleHolidayUpdate}
                 />
                 <br />

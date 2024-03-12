@@ -24,7 +24,7 @@ const BillingReport = () => {
   const getBillDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getBillsByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getBillsByBranch/${branch.name}`
       );
       console.log(data);
       setListBills(data);
@@ -61,7 +61,7 @@ const BillingReport = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `http://localhost:7777/api/v1/super-admin/downloadBillingReportByTime/${branch.name}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadBillingReportByTime/${branch.name}`,
         { fromDate: fromDate, toDate: toDate }
       );
       console.log(data);

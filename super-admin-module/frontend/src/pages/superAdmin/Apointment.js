@@ -50,7 +50,7 @@ const Apointment = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAppointmentData/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`
       );
       console.log(response);
       setAppointmentList(response.data);
@@ -71,7 +71,7 @@ const Apointment = () => {
     console.log(updateData);
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/v1/super-admin/insertTimelineEvent",
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/insertTimelineEvent",
         {
           type: "appointment",
           description: "apointment scheduled",
@@ -89,7 +89,7 @@ const Apointment = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:7777/api/v1/super-admin/updateAppointData/${id}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateAppointData/${id}`,
         updateData
       );
       console.log(response);
@@ -106,7 +106,7 @@ const Apointment = () => {
   const deleteAppointment = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:7777/api/v1/super-admin/deleteAppointData/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteAppointData/${id}`
       );
       console.log(response);
       cogoToast.success("Appointment Deleted Successfully");

@@ -87,7 +87,7 @@ export default Card;
 
 const Container = styled.div`
   .card {
-    background: #004aad;
+    background: #1abc9c;
     height: 9.5rem;
     border: none;
     box-shadow: 1px 2px 8px black;

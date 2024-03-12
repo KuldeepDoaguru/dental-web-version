@@ -16,7 +16,7 @@ const ComplaintsEmp = () => {
   const getEmpComByBranch = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getEmployeeComplainByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getEmployeeComplainByBranch/${branch.name}`
       );
       console.log(data);
       setComplaints(data);
@@ -67,7 +67,7 @@ const ComplaintsEmp = () => {
                       </td>
                       <td>{item.pending_since ? item.pending_since : "-"}</td>
                       <td>
-                        <Link to="/complaint-page">
+                        <Link to={`/complaint-page/${item.complain_id}`}>
                           <button className="btn btn-dark">
                             View Complaint
                           </button>

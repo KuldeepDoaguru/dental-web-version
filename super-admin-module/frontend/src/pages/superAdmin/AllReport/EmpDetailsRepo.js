@@ -24,7 +24,7 @@ const EmpDetailsRepo = () => {
   const getDocDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getEmployeeDataByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getEmployeeDataByBranch/${branch.name}`
       );
       console.log(data);
       setDoctorList(data);
@@ -44,7 +44,7 @@ const EmpDetailsRepo = () => {
   const downloadEmployeeData = async () => {
     try {
       const { data } = await axios.post(
-        `http://localhost:7777/api/v1/super-admin/downloadStaffReport/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadStaffReport/${branch.name}`
       );
       console.log(data);
       // setSelectedEarn(data);

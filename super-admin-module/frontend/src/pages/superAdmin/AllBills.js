@@ -59,7 +59,7 @@ const AllBills = () => {
   const getBillDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getBillsByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getBillsByBranch/${branch.name}`
       );
       console.log(data);
       setListBills(data);
@@ -71,7 +71,7 @@ const AllBills = () => {
   const deleteBillData = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:7777/api/v1/super-admin/deleteBills/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteBills/${id}`
       );
       console.log(response);
       cogoToast.success("Appointment Deleted Successfully");
@@ -84,7 +84,7 @@ const AllBills = () => {
   const getBillDetailsByBid = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getBillBYBillId/${selectedItem}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getBillBYBillId/${selectedItem}`
       );
       setPlacehold(data);
     } catch (error) {
@@ -96,7 +96,7 @@ const AllBills = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:7777/api/v1/super-admin/updateBillDetailsByBillId/${selectedItem}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateBillDetailsByBillId/${selectedItem}`,
         upData
       );
       console.log(response);

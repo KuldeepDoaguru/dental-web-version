@@ -74,7 +74,7 @@ const DrugSetting = () => {
   const getDrugsData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getDrugs/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getDrugs/${branch.name}`
       );
       setGetDrugList(data);
     } catch (error) {
@@ -86,7 +86,7 @@ const DrugSetting = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/v1/super-admin/addDrugs",
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addDrugs",
         addDrugs
       );
       console.log(response);
@@ -102,7 +102,7 @@ const DrugSetting = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:7777/api/v1/super-admin/updateDrugDetails/${selected}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateDrugDetails/${selected}`,
         upaAddDrugs
       );
       closeUpdatePopup();
@@ -117,7 +117,7 @@ const DrugSetting = () => {
   const deleteDrug = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:7777/api/v1/super-admin/deleteDrug/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteDrug/${id}`
       );
       getDrugsData();
       cogoToast.success("drugs details deleted successfully");

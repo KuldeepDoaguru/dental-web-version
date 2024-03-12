@@ -21,7 +21,7 @@ const Overview = () => {
   const getPresDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPrescriptionDetailsById/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescriptionDetailsById/${pid}`
       );
       setPresData(data);
     } catch (error) {
@@ -32,7 +32,7 @@ const Overview = () => {
   const getPendingBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
       );
       console.log(data);
       setPatPendingBill(data);
@@ -44,7 +44,7 @@ const Overview = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAppointmentByBranchAndId/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentByBranchAndId/${pid}`
       );
       console.log(data);
       setPatAppointDetails(data);
@@ -56,7 +56,7 @@ const Overview = () => {
   const getExamineDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/examinDetailsByPatId/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/examinDetailsByPatId/${pid}`
       );
       setExmData(data);
     } catch (error) {

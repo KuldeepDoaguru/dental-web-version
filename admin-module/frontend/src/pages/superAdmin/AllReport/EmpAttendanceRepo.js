@@ -356,7 +356,7 @@ const Container = styled.div`
   .table {
     overflow-x: auto;
     th {
-      background-color: #004aad;
+      background-color: #1abc9c;
       color: white;
     }
     td {

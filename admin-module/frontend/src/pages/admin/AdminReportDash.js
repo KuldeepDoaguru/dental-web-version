@@ -155,7 +155,7 @@ const AdminReportDash = () => {
 export default AdminReportDash;
 const Container = styled.div`
   nav {
-    background-color: #004aad;
+    background-color: #1abc9c;
   }
   .card {
     background-color: #1abc9c;

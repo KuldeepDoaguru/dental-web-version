@@ -1,8 +1,36 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const AdminComplaintsSec = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [complaints, setComplaints] = useState([]);
+
+  const getEmpComByBranch = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/admin/getEmployeeComplainByBranch/${branch.name}`
+      );
+      console.log(data);
+      setComplaints(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getEmpComByBranch();
+  }, [branch.name]);
+
+  console.log(complaints);
+
   return (
     <>
       <Container>
@@ -23,193 +51,31 @@ const AdminComplaintsSec = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="table-row">
-                  <td className="table-sno">1</td>
+                {complaints?.map((item) => (
+                  <>
+                    <tr className="table-row">
+                      <td className="table-sno">{item.emp_id}</td>
 
-                  <td className="table-small">Shubham patel</td>
-                  <td className="table-small">
-                    We are not getting tea 10 times in a day
-                  </td>
-                  <td className="table-small">12/12/2024 12:00pm</td>
-                  <td>solved</td>
-                  <td>12/12/2024</td>
-                  <td>9 Days</td>
-                  <td>
-                    <Link to="/admin-complaint-page">
-                      <button className="btn btn-dark">View Complaint</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr className="table-row">
-                  <td className="table-sno">1</td>
-
-                  <td className="table-small">Shubham patel</td>
-                  <td className="table-small">
-                    We are not getting tea 10 times in a day
-                  </td>
-                  <td className="table-small">12/12/2024 12:00pm</td>
-                  <td>solved</td>
-                  <td>12/12/2024</td>
-                  <td>9 Days</td>
-                  <td>
-                    <Link to="/admin-complaint-page">
-                      <button className="btn btn-dark">View Complaint</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr className="table-row">
-                  <td className="table-sno">1</td>
-
-                  <td className="table-small">Shubham patel</td>
-                  <td className="table-small">
-                    We are not getting tea 10 times in a day
-                  </td>
-                  <td className="table-small">12/12/2024 12:00pm</td>
-                  <td>solved</td>
-                  <td>12/12/2024</td>
-                  <td>9 Days</td>
-                  <td>
-                    <Link to="/admin-complaint-page">
-                      <button className="btn btn-dark">View Complaint</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr className="table-row">
-                  <td className="table-sno">1</td>
-
-                  <td className="table-small">Shubham patel</td>
-                  <td className="table-small">
-                    We are not getting tea 10 times in a day
-                  </td>
-                  <td className="table-small">12/12/2024 12:00pm</td>
-                  <td>solved</td>
-                  <td>12/12/2024</td>
-                  <td>9 Days</td>
-                  <td>
-                    <Link to="/admin-complaint-page">
-                      <button className="btn btn-dark">View Complaint</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr className="table-row">
-                  <td className="table-sno">1</td>
-
-                  <td className="table-small">Shubham patel</td>
-                  <td className="table-small">
-                    We are not getting tea 10 times in a day
-                  </td>
-                  <td className="table-small">12/12/2024 12:00pm</td>
-                  <td>solved</td>
-                  <td>12/12/2024</td>
-                  <td>9 Days</td>
-                  <td>
-                    <Link to="/admin-complaint-page">
-                      <button className="btn btn-dark">View Complaint</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr className="table-row">
-                  <td className="table-sno">1</td>
-
-                  <td className="table-small">Shubham patel</td>
-                  <td className="table-small">
-                    We are not getting tea 10 times in a day
-                  </td>
-                  <td className="table-small">12/12/2024 12:00pm</td>
-                  <td>solved</td>
-                  <td>12/12/2024</td>
-                  <td>9 Days</td>
-                  <td>
-                    <Link to="/admin-complaint-page">
-                      <button className="btn btn-dark">View Complaint</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr className="table-row">
-                  <td className="table-sno">1</td>
-
-                  <td className="table-small">Shubham patel</td>
-                  <td className="table-small">
-                    We are not getting tea 10 times in a day
-                  </td>
-                  <td className="table-small">12/12/2024 12:00pm</td>
-                  <td>solved</td>
-                  <td>12/12/2024</td>
-                  <td>9 Days</td>
-                  <td>
-                    <Link to="/admin-complaint-page">
-                      <button className="btn btn-dark">View Complaint</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr className="table-row">
-                  <td className="table-sno">1</td>
-
-                  <td className="table-small">Shubham patel</td>
-                  <td className="table-small">
-                    We are not getting tea 10 times in a day
-                  </td>
-                  <td className="table-small">12/12/2024 12:00pm</td>
-                  <td>solved</td>
-                  <td>12/12/2024</td>
-                  <td>9 Days</td>
-                  <td>
-                    <Link to="/admin-complaint-page">
-                      <button className="btn btn-dark">View Complaint</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr className="table-row">
-                  <td className="table-sno">1</td>
-
-                  <td className="table-small">Shubham patel</td>
-                  <td className="table-small">
-                    We are not getting tea 10 times in a day
-                  </td>
-                  <td className="table-small">12/12/2024 12:00pm</td>
-                  <td>solved</td>
-                  <td>12/12/2024</td>
-                  <td>9 Days</td>
-                  <td>
-                    <Link to="/admin-complaint-page">
-                      <button className="btn btn-dark">View Complaint</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr className="table-row">
-                  <td className="table-sno">1</td>
-
-                  <td className="table-small">Shubham patel</td>
-                  <td className="table-small">
-                    We are not getting tea 10 times in a day
-                  </td>
-                  <td className="table-small">12/12/2024 12:00pm</td>
-                  <td>solved</td>
-                  <td>12/12/2024</td>
-                  <td>9 Days</td>
-                  <td>
-                    <Link to="/admin-complaint-page">
-                      <button className="btn btn-dark">View Complaint</button>
-                    </Link>
-                  </td>
-                </tr>
-                <tr className="table-row">
-                  <td className="table-sno">1</td>
-
-                  <td className="table-small">Shubham patel</td>
-                  <td className="table-small">
-                    We are not getting tea 10 times in a day
-                  </td>
-                  <td className="table-small">12/12/2024 12:00pm</td>
-                  <td>solved</td>
-                  <td>12/12/2024</td>
-                  <td>9 Days</td>
-                  <td>
-                    <Link to="/admin-complaint-page">
-                      <button className="btn btn-dark">View Complaint</button>
-                    </Link>
-                  </td>
-                </tr>
+                      <td className="table-small">{item.employee_name}</td>
+                      <td className="table-small">{item.complain}</td>
+                      <td className="table-small">
+                        {item.rec_on?.split("T")[0]}
+                      </td>
+                      <td>{item.status}</td>
+                      <td>
+                        {item.solved_on ? item.solved_on?.split("T")[0] : "-"}
+                      </td>
+                      <td>{item.pending_since ? item.pending_since : "-"}</td>
+                      <td>
+                        <Link to={`/complaint-page/${item.complain_id}`}>
+                          <button className="btn btn-dark">
+                            View Complaint
+                          </button>
+                        </Link>
+                      </td>
+                    </tr>
+                  </>
+                ))}
               </tbody>
             </table>
           </div>

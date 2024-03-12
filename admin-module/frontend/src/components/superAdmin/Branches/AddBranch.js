@@ -97,7 +97,7 @@ export default AddBranch;
 const Container = styled.div`
   .branch-form {
     width: 100%;
-    background-color: #004aad;
+    background-color: #1abc9c;
     padding: 2rem;
   }
   .input-div {

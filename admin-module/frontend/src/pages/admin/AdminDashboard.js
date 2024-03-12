@@ -25,8 +25,18 @@ import EarnTMAdmin from "../../components/Admin/admin-charts/EarnTMAdmin";
 import ExpenseTMAdmin from "../../components/Admin/admin-charts/ExpenseTMAdmin";
 import AdminClinicAct from "../../components/Admin/dashboard/AdminClinicAct";
 import AdminComplaintsSec from "../../components/Admin/dashboard/AdminComplaintsSec";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+
   return (
     <Wrapper>
       <HeaderAdmin />
@@ -39,13 +49,13 @@ const AdminDashboard = () => {
             </div>
             <div className="col-lg-11 col-11 ps-0">
               <div className="row d-flex justify-content-between mx-3">
-                <div className="col-12 col-md-4 mt-4">
+                <div className="col-xl-6 col-lg-6 col-12 col-md-6 mt-4">
                   <h3> Welcome to DentalGuru! </h3>
                   <p className="fs-4 fw-bold">
-                    Admin Dashboard - Madan Mahal Branch
+                    Admin Dashboard - {branch.name} Branch
                   </p>
                 </div>
-                <div className="col-12 col-md-4 my-3">
+                <div className="col-xl-6 col-lg-6 col-12 col-md-6 my-3">
                   <form className="d-flex ms-auto my-sm" role="search">
                     <input
                       className="form-control me-2"
@@ -81,9 +91,7 @@ const AdminDashboard = () => {
                     <TotalApsTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                    <h3 className="text-center">
-                      New Registered Patient this Month
-                    </h3>
+                    <h3 className="text-center">New Patient this Month</h3>
 
                     <NewPatientTMAdmin />
                   </div>

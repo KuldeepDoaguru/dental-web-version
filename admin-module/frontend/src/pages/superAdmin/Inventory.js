@@ -283,7 +283,7 @@ const Inventory = () => {
 export default Inventory;
 const Container = styled.div`
   th {
-    background-color: #004aad;
+    background-color: #1abc9c;
     color: white;
   }
 

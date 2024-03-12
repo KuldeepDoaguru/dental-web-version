@@ -28,7 +28,7 @@ const Inventory = () => {
   const getPurchaseList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPurInventoryByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPurInventoryByBranch/${branch.name}`
       );
       console.log(data);
       setInvList(data);
@@ -67,7 +67,7 @@ const Inventory = () => {
   const deletePurInvDetails = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:7777/api/v1/super-admin/deletePurInvoice/${branch.name}/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deletePurInvoice/${branch.name}/${id}`
       );
       console.log(response);
       cogoToast.success("Successfully Deleted the Data");
@@ -81,7 +81,7 @@ const Inventory = () => {
     console.log(file);
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/downloadBillRecById/${file}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadBillRecById/${file}`,
         {
           responseType: "blob",
         }

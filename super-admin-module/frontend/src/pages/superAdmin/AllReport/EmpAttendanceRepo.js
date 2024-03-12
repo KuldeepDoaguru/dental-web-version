@@ -90,7 +90,7 @@ const EmpAttendanceRepo = () => {
   const getAttendDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAttendanceDetails/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAttendanceDetails/${branch.name}`
       );
 
       setAttendRepo(data);
@@ -109,7 +109,7 @@ const EmpAttendanceRepo = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `http://localhost:7777/api/v1/super-admin/downloadAttendanceReportByTime/${branch.name}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadAttendanceReportByTime/${branch.name}`,
         { fromDate: fromDate, toDate: toDate }
       );
       console.log(data);

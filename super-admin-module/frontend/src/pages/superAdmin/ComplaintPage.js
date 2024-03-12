@@ -1,16 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const ComplaintPage = () => {
+  const cid = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [complain, setComplain] = useState([]);
+
+  console.log(cid.cid);
+
+  const getComplaints = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getComplainById/${cid.cid}`
+      );
+      setComplain(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const goBack = () => {
     window.history.go(-1);
   };
+
+  useEffect(() => {
+    getComplaints();
+  }, []);
+
+  console.log(complain);
   return (
     <>
       <Container>
@@ -29,29 +59,20 @@ const ComplaintPage = () => {
                   <h3 className="text-center">Complaint Details</h3>
                   <div className="container-fluid mt-3">
                     <div className="container box-com shadow">
-                      <h2>Employee Name : Shubham Singh</h2>
+                      <h2>Employee Name : {complain[0]?.employee_name}</h2>
                       <p>
-                        <strong>Complaint : </strong>I am having so many bugs in
-                        my code I am having so many bugs in my code I am having
-                        so many bugs in my code I am having so many bugs in my
-                        code I am having so many bugs in my code I am having so
-                        many bugs in my code I am having so many bugs in my code
-                        I am having so many bugs in my code I am having so many
-                        bugs in my code I am having so many bugs in my code I am
-                        having so many bugs in my code I am having so many bugs
-                        in my code I am having so many bugs in my code I am
-                        having so many bugs in my code I am having so many bugs
-                        in my code I am having so many bugs in my code I am
-                        having so many bugs in my code I am having so many bugs
-                        in my code I am having so many bugs in my code I am
-                        having so many bugs in my code I am having so many bugs
-                        in my code I am having so many bugs in my code I am
-                        having so many bugs in my code I am having so many bugs
-                        in my code I am having so many bugs in
+                        <strong>Complaint : </strong>
+                        {complain[0]?.complain}
                       </p>
-                      <h4>Received ON : 12/12/2024 12:00PM</h4>
-                      <h4>Status : Solved</h4>
-                      <h4>Pending Since : 9 Days</h4>
+                      <h4>
+                        Received ON : {complain[0]?.rec_on.split("T")[0]} -{" "}
+                        {complain[0]?.rec_on
+                          .split("T")[1]
+                          .split(".")[0]
+                          .slice(0, 5)}
+                      </h4>
+                      <h4>Status : {complain[0]?.status}</h4>
+                      <h4>Pending Since : {complain[0]?.pending_since}</h4>
                       <button className="btn btn-warning fw-bold fs-4">
                         update Status
                       </button>

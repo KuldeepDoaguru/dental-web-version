@@ -109,7 +109,7 @@ const EmployeeProfile = () => {
   const getEmployeeData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getEmployeeDetails/${branch.name}/${eid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getEmployeeDetails/${branch.name}/${eid}`
       );
       console.log(data);
       setEmpData(data);
@@ -136,7 +136,7 @@ const EmployeeProfile = () => {
       console.log(inEmpData, empProfilePicture);
 
       const response = await axios.put(
-        `http://localhost:7777/api/v1/super-admin/editEmployeeDetails/${branch.name}/${eid}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/editEmployeeDetails/${branch.name}/${eid}`,
         formData,
         {
           headers: {

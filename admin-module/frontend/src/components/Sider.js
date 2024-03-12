@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { MdOutlineInventory } from "react-icons/md";
+import { MdOutlineInventory, MdOutlineSick } from "react-icons/md";
 import { FaCodeBranch } from "react-icons/fa";
 import { TbReportSearch } from "react-icons/tb";
 import { IoIosPeople } from "react-icons/io";
@@ -108,15 +108,18 @@ const Sider = () => {
             <hr />
             <li>
               <Link
-                to="/doctor_section"
-                className={`link-div ${getSidebarClass("/doctor_section")}`}
+                to="/patient-list"
+                className={`link-div ${getSidebarClass("/patient-list")}`}
               >
                 <div>
-                  <i className="fs-4 bi bi-person-fill"></i>
+                  <MdOutlineSick className="fs-4 bi bi-house-door-fill" />
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                    Doctor
+                  <h3
+                    className=" d-none d-sm-inline fs-6 icon-view"
+                    id="navleft"
+                  >
+                    Patient
                   </h3>
                 </div>
               </Link>
@@ -200,7 +203,7 @@ const Wrapper = styled.div`
   #sidebar {
     width: 100%;
     height: 130rem;
-    background-color: #004aad;
+    background-color: #1abc9c;
     @media screen and (max-width: 768px) {
       width: 3rem;
       height: 212rem;

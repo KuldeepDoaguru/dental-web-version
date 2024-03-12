@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { MdOutlineInventory } from "react-icons/md";
+import { MdOutlineInventory, MdOutlineSick } from "react-icons/md";
 import { FaCodeBranch } from "react-icons/fa";
 import { TbReportSearch } from "react-icons/tb";
 import { IoIosPeople } from "react-icons/io";
@@ -92,17 +92,18 @@ const SiderAdmin = () => {
               <hr />
               <li>
                 <Link
-                  to="/admin-doctor_section"
-                  className={`link-div ${getSidebarClass(
-                    "/admin-doctor_section"
-                  )}`}
+                  to="/patient-list"
+                  className={`link-div ${getSidebarClass("/patient-list")}`}
                 >
                   <div>
-                    <i className="fs-4 bi bi-person-fill"></i>
+                    <MdOutlineSick className="fs-4 bi bi-house-door-fill" />
                   </div>
                   <div>
-                    <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                      Doctor
+                    <h3
+                      className=" d-none d-sm-inline fs-6 icon-view"
+                      id="navleft"
+                    >
+                      Patient
                     </h3>
                   </div>
                 </Link>

@@ -19,7 +19,7 @@ const UniversalLogin = () => {
   const sendOtp = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/v1/super-admin/sendOtp",
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/sendOtp",
         {
           email,
         }
@@ -33,7 +33,7 @@ const UniversalLogin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:7777/api/v1/super-admin/adminLoginUser",
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/adminLoginUser",
         {
           email,
           password,
@@ -79,7 +79,7 @@ const UniversalLogin = () => {
       e.preventDefault();
       try {
         const response = await axios.post(
-          "http://localhost:7777/api/v1/super-admin/verifyOtp",
+          "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/verifyOtp",
           {
             email,
             otp,
@@ -208,9 +208,7 @@ const UniversalLogin = () => {
 
                     <div className="col-5 ms-3">
                       <p>
-                        <Link to="/receptionist_registration">
-                          Forgot Password?
-                        </Link>
+                        <Link to="/password-reset">Forgot Password?</Link>
                       </p>
                     </div>
 

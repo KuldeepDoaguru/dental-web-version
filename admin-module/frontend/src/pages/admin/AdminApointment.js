@@ -1,22 +1,186 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import { Link } from "react-router-dom";
-import HeaderAdmin from "./HeaderAdmin";
+// import BranchSelector from "../../components/BranchSelector";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import cogoToast from "cogo-toast";
 import SiderAdmin from "./SiderAdmin";
+import HeaderAdmin from "./HeaderAdmin";
 
 const AdminApointment = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [appointmentList, setAppointmentList] = useState([]);
+  const [timeLIneData, setTimeLineData] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
+  const [updateData, setUpdateData] = useState({
+    branch: branch.name,
+    patientName: "",
+    patContact: "",
+    assignedDoc: "",
+    appointedBy: "",
+    appointDateTime: "",
+    updatedBy: user.name,
+    appointment_status: "",
+  });
+  const [selectedItem, setSelectedItem] = useState();
 
-  const openUpdatePopup = (index, item) => {
-    // setSelectedItem(item);
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setUpdateData({
+      ...updateData,
+      [name]: value,
+    });
+  };
+
+  const openUpdatePopup = (id) => {
+    console.log(id);
+    setSelectedItem(id);
     setShowPopup(true);
+    // updateAppData(e, id);
   };
 
   const closeUpdatePopup = () => {
     setShowPopup(false);
   };
+
+  const getAppointList = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8888/api/v1/admin/getAppointmentData/${branch.name}`
+      );
+      console.log(response);
+      setAppointmentList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAppointList();
+  }, [branch.name]);
+
+  console.log(appointmentList);
+  console.log(updateData);
+  console.log(selectedItem);
+
+  const timelineData = async (id) => {
+    console.log(updateData);
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/v1/admin/insertTimelineEvent",
+        {
+          type: "appointment",
+          description: "apointment scheduled",
+          branch: branch.name,
+          patientId: id,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateAppData = async (e, id) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:8888/api/v1/admin/updateAppointData/${id}`,
+        updateData
+      );
+      console.log(response);
+      setTimeLineData(response);
+      closeUpdatePopup();
+      timelineData(id);
+      cogoToast.success("Appointment Details Updated Successfully");
+      getAppointList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteAppointment = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8888/api/v1/admin/deleteAppointData/${id}`
+      );
+      console.log(response);
+      cogoToast.success("Appointment Deleted Successfully");
+      getAppointList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(timeLIneData);
+
+  const todayDate = new Date();
+
+  // Get year, month, and date
+  const year = todayDate.getFullYear();
+  const month = String(todayDate.getMonth() + 1).padStart(2, "0"); // Adding 1 to adjust month, padStart ensures 2 digits
+  const date = String(todayDate.getDate()).padStart(2, "0"); // Ensuring 2 digits
+
+  // Format as 'YYYY-MM-DD'
+  const formattedDate = `${year}-${month}-${date}`;
+
+  console.log(formattedDate.slice(0, 7));
+
+  // const filterAppointDataByMonth = appointmentList?.filter((item) => {
+  //   return (
+  //     item.appointment_dateTime.split("T")[0].slice(0, 7) ===
+  //     formattedDate.slice(0, 7)
+  //   );
+  // });
+
+  // console.log(filterAppointDataByMonth);
+
+  const totalPages = Math.ceil(appointmentList.length / itemsPerPage);
+
+  const filterAppointDataByMonth = () => {
+    // Filter and paginate appointment data based on currentPage and itemsPerPage
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return appointmentList
+      .filter(
+        (item) =>
+          item.appointment_dateTime.split("T")[0].slice(0, 7) ===
+          formattedDate.slice(0, 7)
+      )
+      .slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const renderPaginationButtons = () => {
+    const buttons = [];
+    for (let i = 1; i <= totalPages; i++) {
+      buttons.push(
+        <li key={i}>
+          <button
+            className="btn btn-secondary"
+            onClick={() => handlePageChange(i)}
+          >
+            {i}
+          </button>
+        </li>
+      );
+    }
+    return buttons;
+  };
+
+  console.log(filterAppointDataByMonth);
 
   return (
     <>
@@ -31,211 +195,114 @@ const AdminApointment = () => {
               <div className="col-lg-11 col-11 ps-0">
                 <div className="row d-flex justify-content-between mx-3">
                   <div className="col-12 col-md-12 mt-4">
+                    <div className="d-flex justify-content-between">
+                      {/* <BranchSelector /> */}
+                    </div>
+
                     <h2 className="text-center"> Appointment Details </h2>
                     <div className="container-fluid mt-3">
                       <div class="table-responsive rounded">
                         <table class="table table-bordered rounded shadow">
                           <thead className="table-head">
                             <tr>
-                              <th className="table-sno">SN</th>
+                              <th className="table-sno">Appointment ID</th>
                               <th>Patient UHID</th>
 
                               <th className="table-small">Patient Name</th>
                               <th className="table-small">Contact Number</th>
                               <th className="table-small">Assigned Doctor</th>
+
+                              <th className="table-small">Appointed by</th>
+                              <th className="table-small">Updated by</th>
                               <th className="table-small">
                                 Appointment Date & Time
                               </th>
-                              <th className="table-small">Appointed by</th>
-
-                              <th className="table-small">Treatment Status</th>
-                              <th className="table-small">Payment Status</th>
                               <th className="table-small">
-                                Payment Date & Time
+                                Appointment Status
                               </th>
-
-                              <th className="table-small">Updated by</th>
-                              <th className="table-small">
-                                Treatment Provided
-                              </th>
-
-                              <th className="table-small">Edit</th>
-                              <th className="table-small">Delete</th>
+                              <th>Cancel Reason</th>
+                              {/* <th className="table-small">Edit</th>
+                              <th className="table-small">Delete</th> */}
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="table-row">
-                              <td className="table-sno">1</td>
-                              <td className="table-small">Shubham</td>
-                              <td>007</td>
-                              <td className="table-small">Dev ansh</td>
-                              <td className="table-small">8602161019</td>
-                              <td className="table-small">Treated</td>
-                              <td className="table-small">Payment Complete</td>
-                              <td className="table-small">
-                                12/12/2024 12:00PM
-                              </td>
+                            {filterAppointDataByMonth()?.map((item) => (
+                              <>
+                                <tr className="table-row">
+                                  <td className="table-sno">
+                                    {item.appoint_id}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.patient_uhid}
+                                  </td>
+                                  <td>{item.patient_name}</td>
+                                  <td className="table-small">
+                                    {item.mobileno}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.assigned_doctor_name}
+                                  </td>
 
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">09-02-2024</td>
-                              <td className="table-small">
-                                <button className="btn btn-info">
-                                  View Treatment
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button
-                                  className="btn btn-warning"
-                                  onClick={() => openUpdatePopup()}
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button className="btn btn-danger">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
-                            <tr className="table-row">
-                              <td className="table-sno">1</td>
-                              <td className="table-small">Shubham</td>
-                              <td>007</td>
-                              <td className="table-small">Dev ansh</td>
-                              <td className="table-small">8602161019</td>
-                              <td className="table-small">Treated</td>
-                              <td className="table-small">Payment Complete</td>
-                              <td className="table-small">
-                                12/12/2024 12:00PM
-                              </td>
-
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">09-02-2024</td>
-                              <td className="table-small">
-                                <button className="btn btn-info">
-                                  View Treatment
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button
-                                  className="btn btn-warning"
-                                  onClick={() => openUpdatePopup()}
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button className="btn btn-danger">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
-                            <tr className="table-row">
-                              <td className="table-sno">1</td>
-                              <td className="table-small">Shubham</td>
-                              <td>007</td>
-                              <td className="table-small">Dev ansh</td>
-                              <td className="table-small">8602161019</td>
-                              <td className="table-small">Treated</td>
-                              <td className="table-small">Payment Complete</td>
-                              <td className="table-small">
-                                12/12/2024 12:00PM
-                              </td>
-
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">09-02-2024</td>
-                              <td className="table-small">
-                                <button className="btn btn-info">
-                                  View Treatment
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button
-                                  className="btn btn-warning"
-                                  onClick={() => openUpdatePopup()}
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button className="btn btn-danger">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
-                            <tr className="table-row">
-                              <td className="table-sno">1</td>
-                              <td className="table-small">Shubham</td>
-                              <td>007</td>
-                              <td className="table-small">Dev ansh</td>
-                              <td className="table-small">8602161019</td>
-                              <td className="table-small">Treated</td>
-                              <td className="table-small">Payment Complete</td>
-                              <td className="table-small">
-                                12/12/2024 12:00PM
-                              </td>
-
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">09-02-2024</td>
-                              <td className="table-small">
-                                <button className="btn btn-info">
-                                  View Treatment
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button
-                                  className="btn btn-warning"
-                                  onClick={() => openUpdatePopup()}
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button className="btn btn-danger">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
-                            <tr className="table-row">
-                              <td className="table-sno">1</td>
-                              <td className="table-small">Shubham</td>
-                              <td>007</td>
-                              <td className="table-small">Dev ansh</td>
-                              <td className="table-small">8602161019</td>
-                              <td className="table-small">Treated</td>
-                              <td className="table-small">Payment Complete</td>
-                              <td className="table-small">
-                                12/12/2024 12:00PM
-                              </td>
-
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">mohit</td>
-                              <td className="table-small">09-02-2024</td>
-                              <td className="table-small">
-                                <button className="btn btn-info">
-                                  View Treatment
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button
-                                  className="btn btn-warning"
-                                  onClick={() => openUpdatePopup()}
-                                >
-                                  Edit
-                                </button>
-                              </td>
-                              <td className="table-small">
-                                <button className="btn btn-danger">
-                                  Delete
-                                </button>
-                              </td>
-                            </tr>
+                                  <td className="table-small">
+                                    {item.appointment_created_by}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.updated_by ? item.updated_by : "-"}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.appointment_dateTime?.split("T")[0]}{" "}
+                                    {item.appointment_dateTime?.split("T")[1]}
+                                  </td>
+                                  <td>{item.appointment_status}</td>
+                                  <td>{item.cancel_reason}</td>
+                                  {/* <td className="table-small">
+                                    <button
+                                      className="btn btn-warning"
+                                      onClick={() =>
+                                        openUpdatePopup(item.appoint_id)
+                                      }
+                                    >
+                                      Edit
+                                    </button>
+                                  </td>
+                                  <td className="table-small">
+                                    <button
+                                      className="btn btn-danger"
+                                      onClick={() =>
+                                        deleteAppointment(item.appoint_id)
+                                      }
+                                    >
+                                      Delete
+                                    </button>
+                                  </td> */}
+                                </tr>
+                              </>
+                            ))}
                           </tbody>
                         </table>
+                      </div>
+                      <div className="pagination">
+                        <ul>
+                          <li>
+                            <button
+                              onClick={() => handlePageChange(currentPage - 1)}
+                              disabled={currentPage === 1}
+                              className="btn btn-danger"
+                            >
+                              Previous
+                            </button>
+                          </li>
+                          {renderPaginationButtons()}
+                          <li>
+                            <button
+                              onClick={() => handlePageChange(currentPage + 1)}
+                              disabled={currentPage === totalPages}
+                              className="btn btn-info"
+                            >
+                              Next
+                            </button>
+                          </li>
+                        </ul>
                       </div>
                     </div>
                   </div>
@@ -243,160 +310,121 @@ const AdminApointment = () => {
               </div>
             </div>
           </div>
-          {/* pop-up for edit appointment */}
+          {/* ******************************************************************************************* */}
+          {/* pop-up for creating notice */}
           <div className={`popup-container${showPopup ? " active" : ""}`}>
             <div className="popup">
-              <h2 className="text-center fw-bold">Update Apointment Details</h2>
-              <hr />
+              <h2>Update Apointment Details</h2>
               <form
                 className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
+                onSubmit={(e) => updateAppData(e, selectedItem)}
               >
                 <div className="d-flex">
-                  <div class="d-flex flex-column input-group mb-3">
-                    <label htmlFor="">Update Patient UHID</label>
-                    <input
+                  <div className="d-flex flex-column input-group mb-3">
+                    <label htmlFor="">Select Branch</label>
+                    <select
                       type="text"
-                      placeholder="update Patient UHID"
-                      className="rounded p-1 shadow"
-                      // value={noticeData.linkURL}
-                      // onChange={(e) =>
-                      //   setNoticeData({
-                      //     ...noticeData,
-                      //     linkURL: e.target.value,
-                      //   })
-                      // }
-                    />
+                      placeholder="branch name"
+                      className="rounded p-1"
+                    >
+                      <option value={branch.name}>{branch.name}</option>
+                    </select>
                   </div>
-                  <div class="d-flex flex-column input-group mb-3 mx-2">
+                  <div className="input-group mb-3 mx-2">
                     <label htmlFor="">Update Patient Name</label>
                     <input
                       type="text"
-                      placeholder="update Patient Name"
-                      className="rounded p-1 shadow"
-                      // value={noticeData.linkURL}
-                      // onChange={(e) =>
-                      //   setNoticeData({
-                      //     ...noticeData,
-                      //     linkURL: e.target.value,
-                      //   })
-                      // }
+                      name="patientName"
+                      // placeholder={appointmentList[]}
+                      className="rounded p-1 w-100"
+                      value={updateData.patientName}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
+
                 <div className="d-flex">
-                  <div class="d-flex flex-column input-group mb-3">
-                    <label htmlFor="">Update Patient contact</label>
+                  <div className="d-flex flex-column input-group mb-3">
+                    <label htmlFor="">Update Patient Number</label>
                     <input
                       type="text"
-                      placeholder="update Patient contact"
-                      className="rounded p-1 shadow"
-                      // value={noticeData.linkURL}
-                      // onChange={(e) =>
-                      //   setNoticeData({
-                      //     ...noticeData,
-                      //     linkURL: e.target.value,
-                      //   })
-                      // }
+                      placeholder="update Patient contact number"
+                      className="rounded p-1 w-100"
+                      name="patContact"
+                      value={updateData.patContact}
+                      onChange={handleInputChange}
                     />
                   </div>
-                  <div class="d-flex flex-column input-group mb-3 mx-2">
-                    <label htmlFor="">Asigned Doctor</label>
+                  <div className="input-group mb-3 mx-2">
+                    <label htmlFor="">Update Assigned Doctor</label>
                     <select
-                      type="text"
-                      placeholder=""
-                      className="rounded p-1 shadow"
-                      // value={noticeData.linkURL}
-                      // onChange={(e) =>
-                      //   setNoticeData({
-                      //     ...noticeData,
-                      //     linkURL: e.target.value,
-                      //   })
-                      // }
+                      id=""
+                      className="rounded p-1 w-100"
+                      name="assignedDoc"
+                      value={updateData.assignedDoc}
+                      onChange={handleInputChange}
                     >
-                      <option value="Shubham singh">Shubham singh</option>
-                      <option value="Mohit singh">Mohit singh</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="d-flex">
-                  <div class="d-flex flex-column input-group mb-3">
-                    <label htmlFor="">Apointment Date and Time</label>
-                    <input
-                      type="date"
-                      placeholder="Apointment Date and Time"
-                      className="rounded p-1 shadow"
-                      // value={noticeData.linkURL}
-                      // onChange={(e) =>
-                      //   setNoticeData({
-                      //     ...noticeData,
-                      //     linkURL: e.target.value,
-                      //   })
-                      // }
-                    />
-                  </div>
-                  <div class="d-flex flex-column input-group mb-3 mx-2">
-                    <label htmlFor="">Treatment Status</label>
-                    <select name="" id="" className="rounded p-1 shadow">
-                      <option value="">Treated</option>
-                      <option value="">Hold</option>
-                      <option value="">Pending</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="d-flex">
-                  <div class="d-flex flex-column input-group mb-3">
-                    <label htmlFor="">Payment Status</label>
-                    <select name="" id="" className="rounded p-1 shadow">
-                      <option value="">Success</option>
-                      <option value="">Pending</option>
-                    </select>
-                  </div>
-                  <div class="d-flex flex-column input-group mb-3 mx-2">
-                    <label htmlFor="">Payment date and time</label>
-                    <input
-                      type="date"
-                      placeholder="Payment date and time"
-                      className="rounded p-1 shadow"
-                      // value={noticeData.linkURL}
-                      // onChange={(e) =>
-                      //   setNoticeData({
-                      //     ...noticeData,
-                      //     linkURL: e.target.value,
-                      //   })
-                      // }
-                    />
-                  </div>
-                </div>
-                <div className="d-flex">
-                  <div class="d-flex flex-column input-group mb-3">
-                    <label htmlFor="">Appointed by</label>
-                    <select name="" id="" className="rounded p-1 shadow">
-                      <option value="">Mohit</option>
-                      <option value="">Shubham</option>
-                      <option value="">Naman</option>
-                    </select>
-                  </div>
-                  <div class="d-flex flex-column input-group mb-3 mx-2">
-                    <label htmlFor="">Updated by</label>
-                    <select name="" id="" className="rounded p-1 shadow">
-                      <option value="">Mohit</option>
-                      <option value="">Shubham</option>
-                      <option value="">Naman</option>
+                      <option value="dev">dev</option>
+                      <option value="mohit">mohit</option>
                     </select>
                   </div>
                 </div>
 
-                <div className="d-flex justify-content-end">
-                  <button
-                    type="submit"
-                    className="btn btn-success mt-2 fw-bold shadow"
-                  >
+                <div className="d-flex">
+                  <div className="input-group mb-3">
+                    <label htmlFor="">Appointed by</label>
+                    <input
+                      type="text"
+                      placeholder="Appointed by"
+                      className="rounded p-1 w-100"
+                      name="appointedBy"
+                      value={updateData.appointedBy}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="input-group mb-3 mx-2">
+                    <label htmlFor="">Appointment Date & Time</label>
+                    <input
+                      type="date"
+                      placeholder="update Patient Name"
+                      className="rounded p-1 w-100"
+                      name="appointDateTime"
+                      value={updateData.appointDateTime}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="d-flex">
+                  <div className="input-group mb-3">
+                    <label htmlFor="">Updated by</label>
+                    <input
+                      type="text"
+                      placeholder="updated by"
+                      className="rounded p-1 w-100"
+                      name="updatedBy"
+                      value={updateData.updatedBy}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="input-group mb-3 mx-2">
+                    <label htmlFor="">Appointment Status</label>
+                    <input
+                      type="text"
+                      placeholder="update Patient Name"
+                      className="rounded p-1 w-100"
+                      name="appointment_status"
+                      value={updateData.appointment_status}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className="d-flex justify-content-evenly">
+                  <button type="submit" className="btn btn-success mt-2">
                     update
                   </button>
                   <button
                     type="button"
-                    className="btn btn-danger mt-2 mx-2 fw-bold shadow"
+                    className="btn btn-danger mt-2"
                     onClick={closeUpdatePopup}
                   >
                     Cancel
@@ -406,7 +434,8 @@ const AdminApointment = () => {
             </div>
           </div>
 
-          {/* popup for edit appointment */}
+          {/* popup for updating notice */}
+          {/* **************************************************************************************************** */}
         </div>
       </Container>
     </>
@@ -434,15 +463,14 @@ const Container = styled.div`
 
   .popup {
     background-color: white;
-    padding: 4rem;
-    width: 50%;
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
   th {
     background-color: #1abc9c;
-    color: #000;
+    color: white;
   }
 
   .select-style {
@@ -454,5 +482,18 @@ const Container = styled.div`
 
   label {
     font-weight: bold;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: flex-end;
+    ul {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      li {
+        list-style: none;
+      }
+    }
   }
 `;

@@ -14,11 +14,11 @@ const Card = () => {
   console.log(branch.name);
   const getAppointList = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAppointmentData/${branch.name}`
+      const { data } = await axios.get(
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`
       );
-      console.log(response.data);
-      setAppointmentList(response.data);
+      console.log(data);
+      setAppointmentList(data);
     } catch (error) {
       console.log(error);
     }
@@ -27,7 +27,7 @@ const Card = () => {
   const getEmployeeAvailable = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAvailableEmp/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAvailableEmp/${branch.name}`
       );
       // console.log(data);
       setAvailableEmp(data);

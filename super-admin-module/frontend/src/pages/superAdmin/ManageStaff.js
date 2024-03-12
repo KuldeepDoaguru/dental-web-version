@@ -93,7 +93,7 @@ const ManageStaff = () => {
   const getDocDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getEmployeeDataByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getEmployeeDataByBranch/${branch.name}`
       );
       console.log(data);
       setDoctorList(data);
@@ -138,7 +138,7 @@ const ManageStaff = () => {
       console.log(inEmpData, empProfilePicture);
 
       const { data } = await axios.post(
-        "http://localhost:7777/api/v1/super-admin/enroll-employee",
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/enroll-employee",
         formData,
         {
           headers: {

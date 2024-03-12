@@ -19,7 +19,7 @@ const DoctorList = () => {
   const getDocDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getEmployeeDetails/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getEmployeeDetails/${branch.name}`
       );
       console.log(data);
       setDoctorList(data);
@@ -70,7 +70,7 @@ const DoctorList = () => {
                             <th className="table-small">Gender</th>
                             <th className="table-small">Address</th>
                             <th className="table-small">Salary</th>
-                           <th></th>
+                            <th></th>
                             <th className="table-small">View Details</th>
                           </tr>
                         </thead>

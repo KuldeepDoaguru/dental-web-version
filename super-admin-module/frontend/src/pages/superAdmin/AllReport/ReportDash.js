@@ -143,6 +143,17 @@ const ReportDash = () => {
                                 </div>
                               </Link>
                             </div>
+                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                              <Link to="/emp-complaints-list">
+                                <div className="card">
+                                  <div class="card-body">
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Employee Complaints Report
+                                    </h4>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
                           </div>
                         </div>
                       </div>

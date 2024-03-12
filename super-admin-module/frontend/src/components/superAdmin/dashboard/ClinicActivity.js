@@ -28,7 +28,7 @@ const ClinicActivity = () => {
     console.log(branch.name);
     try {
       const response = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAppointmentData/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`
       );
       setAppointmentList(response.data);
     } catch (error) {
@@ -44,7 +44,7 @@ const ClinicActivity = () => {
   const getPatdetailsByBranch = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPatientDetailsByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientDetailsByBranch/${branch.name}`
       );
       console.log(data);
       setPatDetails(data);

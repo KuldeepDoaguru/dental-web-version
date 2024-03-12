@@ -38,7 +38,7 @@ const Branches = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:7777/api/v1/super-admin/updateBranchDetails/${id}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateBranchDetails/${id}`,
         upData
       );
       console.log(response);
@@ -57,7 +57,7 @@ const Branches = () => {
   const getBranchList = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:7777/api/v1/super-admin/getBranch"
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getBranch"
       );
       console.log(response.data);
       setBranchList(response.data);

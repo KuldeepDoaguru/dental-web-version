@@ -365,6 +365,34 @@ const getPatients = (req,res) =>{
   }
 }
 
+const getPatientById = (req, res) => {
+  const patientId = req.params.patientId;
+  const branch = req.params.branch;
+  try {
+    const sql = 'SELECT * FROM patient_details WHERE uhid = ? AND branch_name = ?';
+
+    db.query(sql, [patientId,branch], (err, results) => {
+      if (err) {
+        console.error('Error fetching patient from MySql:', err);
+        res.status(500).json({ error: "Error fetching patient" });
+      } else {
+        if (results.length === 0) {
+          res.status(404).json({ message: "Patient not found" });
+        } else {
+          res.status(200).json({success: true, data: results[0], message: "Patient fetched successfully" });
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching patient from MySql:', error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetching patient",
+      error: error.message,
+    });
+  }
+};
+
 
 const getDisease = (req,res) =>{
    
@@ -1035,4 +1063,4 @@ const verifyOtp = (req, res) => {
 };
 
 
-module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail , updatePatientDetails ,getBranchHoliday};
+module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail , updatePatientDetails ,getBranchHoliday , getPatientById};

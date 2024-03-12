@@ -1,12 +1,13 @@
 
 const express = require("express");
-const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday } = require("../controller/receptionist_Controller");
+const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById } = require("../controller/receptionist_Controller");
 const router = express.Router();
 
 router.post('/add-patient',addPatient);
 router.get('/get-disease',getDisease);
 router.get('/get-treatments',getTreatment);
 router.get('/get-Patients/:branch',getPatients);
+router.get('/get-Patient-by-id/:branch/:patientId',getPatientById);
 router.get('/get-branches',getBranch);
 router.get('/get-branch-detail/:branch',getBranchDetail);
 router.get('/get-branch-holidays/:branch',getBranchHoliday);

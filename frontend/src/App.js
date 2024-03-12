@@ -40,7 +40,7 @@ function App() {
       <Route path='/receptionist-dashboard' element={ user.currentUser=== null ? <UniversalLogin/>  : <Receptionistdash/>}/>
     <Route path='/all_patient' Component={AllPatient}/>
     <Route path='/inquiry' element={<Inquiry/>}/>
-    <Route path='/patient_profile' Component={PatientProfile}/>
+    <Route path='/patient_profile/:pid' Component={PatientProfile}/>
     <Route path='/appointment' Component={AppointmentSection}/>
     <Route path='/edit_appointment' Component={EditPopup}/>
     <Route path='/modify_appointment' Component={ModifyPopup}/>

@@ -240,7 +240,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                         <tbody>
                           {currentRows.map((data,index)=>(
                              <tr key={index}>
-                             <td><Link to='/patient_profile'>{data.uhid}</Link></td>
+                             <td><Link to={`/patient_profile/${data.uhid}`}>{data.uhid}</Link></td>
                              <td>{data.patient_name}</td>
                              <td>{data.mobileno}</td>
                              <td>{data.emailid}</td>

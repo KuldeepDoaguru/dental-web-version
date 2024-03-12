@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 import { AiFillDelete } from "react-icons/ai";
 import { RiLoader2Fill } from "react-icons/ri";
 
 const TPrescription = () => {
+  const { id } = useParams();
+  console.log(id);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     medicineName: '',
     dosage: '',
@@ -25,11 +29,11 @@ const TPrescription = () => {
     });
     console.log(formData);
 
-     // Generate suggestions based on previous input
-     const filteredSuggestions = tableData
-     .filter(data => data.medicineName.toLowerCase().includes(value.toLowerCase()))
-     .map(data => data.medicineName);
-   setSuggestions(filteredSuggestions);
+    // Generate suggestions based on previous input
+    const filteredSuggestions = tableData
+      .filter(data => data.medicineName.toLowerCase().includes(value.toLowerCase()))
+      .map(data => data.medicineName);
+    setSuggestions(filteredSuggestions);
   };
 
   const handleButtonAdd = () => {
@@ -157,41 +161,41 @@ const TPrescription = () => {
           </div>
         </div>
 
-        {loading ?(
+        {loading ? (
           <>
-          <div className='text-center'><RiLoader2Fill size={35} className="spin"/></div>
-          </>  
-        ): (
+            <div className='text-center'><RiLoader2Fill size={35} className="spin" /></div>
+          </>
+        ) : (
           <div className="container">
-          <div className="row">
-            <table class="table">
-              <thead className='table-success rounded'>
-                <tr>
-                  <th scope="col">Medicine Name</th>
-                  <th scope="col">Dosage</th>
-                  <th scope="col">Frequency</th>
-                  <th scope="col">Duration</th>
-                  <th scope="col">Note</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tableData.map((data, index) => (
-                  <tr key={index}>
-                    <td>{data.medicineName}</td>
-                    <td>{data.dosage}</td>
-                    <td>{data.frequency}</td>
-                    <td>{data.duration}</td>
-                    <td>{data.note}</td>
-                    <td>
-                      <button className='btn btn-danger' onClick={() => handleDelete(index)}><AiFillDelete size={20} /></button>
-                    </td>
+            <div className="row">
+              <table class="table">
+                <thead className='table-success rounded'>
+                  <tr>
+                    <th scope="col">Medicine Name</th>
+                    <th scope="col">Dosage</th>
+                    <th scope="col">Frequency</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Note</th>
+                    <th scope="col">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {tableData.map((data, index) => (
+                    <tr key={index}>
+                      <td>{data.medicineName}</td>
+                      <td>{data.dosage}</td>
+                      <td>{data.frequency}</td>
+                      <td>{data.duration}</td>
+                      <td>{data.note}</td>
+                      <td>
+                        <button className='btn btn-danger' onClick={() => handleDelete(index)}><AiFillDelete size={20} /></button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
         )}
       </Wrapper>
     </>

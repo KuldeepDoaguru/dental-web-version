@@ -29,6 +29,7 @@ import DoctorLogin from "./components/Doctor/Login/DoctorLogin";
 import NewTreatment from "./components/Doctor/Treatment/NewTreatment";
 import TreatmentForm from "./components/Doctor/Treatment/TreatmentForm";
 import TreatmentDashTwo from "./components/Doctor/Treatment/TreatmentDashTwo";
+import NewTreatPrescription from "./components/Doctor/Prescription/TreatmentPrescription/NewTreatPrescription";
 
 function App() {
   return (
@@ -59,11 +60,11 @@ function App() {
       <Route path="/NewTreatment/:id" element={<NewTreatment />} />
       <Route path="/treatProducer/:id/:appointment_id" element={<TreatmentForm />} />
       <Route path="/treatmentDashTwo/:id/:appointment_id" element={<TreatmentDashTwo />} />
-
+      <Route path="/NewTreatPrescription/:id" element={<NewTreatPrescription />} />
       <Route path="/PrescriptionDashBoard" element={<PrescriptionDashBoard />} />
       <Route path="/CreatePrescrip" element={<CreatePrescrip />} />
       <Route path="/TPrescription" element={<TPrescription />} />
-      <Route path="/TPrescriptionDash" element={<TPrescriptionDash />} />
+      <Route path="/TPrescriptionDash/:id" element={<TPrescriptionDash />} />
       <Route path="/HistoryDashBoard" element={<HistoryDashBoard />} />
       {/* test */}
       <Route path="/HeadBar" element={<HeadBar />} />

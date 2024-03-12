@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { MdMedicalServices } from "react-icons/md";
+import { FaHandHoldingMedical } from "react-icons/fa";
+import NewTreatmentTable from "./NewTreatmentTable";
 
 const NewTreatment = () => {
     const { id } = useParams();
@@ -136,64 +137,14 @@ const NewTreatment = () => {
                                 </div><span>|</span>
                                 <div className="col-lg-2 text-center">
                                     <button className="btn btn-secondary" onClick={() => handleNavigate(item.id, item.appointment_id, item.selected_teeth
-                                    )}><MdMedicalServices size={25} /></button>
+                                    )}><FaHandHoldingMedical size={25} /></button>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
-                <div className="container">
-                <div className="row">
-                        <div className="d-flex justify-content-center align-items-center mt-4">
-                            <p className="fs-1 shadow-none p-2 mb-4 bg-light rounded">Treatment Table </p>
-                        </div>
-                    </div>
-                    <table class="table table-bordered table-striped border">
-                        <thead>
-                            <tr>
-                                <th>Treatment</th>
-                                <th>Teeth No.</th>
-                                <th>Qty</th>
-                                <th>Treatment Cost</th>
-                                <th>Cost * Qty</th>
-                                <th>Discount</th>
-                                <th>Final Cost</th>
-                                <th>Note</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                                <td>@fat</td>
-                                <td>@fat</td>
-                                <td>@fat</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                                <td>@twitter</td>
-                                <td>@twitter</td>
-                                <td>@twitter</td>
-                                <td>@twitter</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div>
+                    <NewTreatmentTable />
                 </div>
             </Wrapper>
         </>

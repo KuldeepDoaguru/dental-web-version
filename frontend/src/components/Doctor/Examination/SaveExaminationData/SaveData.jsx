@@ -100,84 +100,84 @@ const SaveData = ({ id }) => {
                 <div className="row">
                     <h2>Saved Data</h2>
                     {data.length > 0 ? (
-                    <div className="table-responsive ">
-                        <table className="table table-bordered table-striped table-secondary border border-secondary">
-                            <thead>
-                                <tr>
-                                    <th>SELECTED TEETH</th>
-                                    <th>DISEASE</th>
-                                    <th>CHIEF COMPLAIN</th>
-                                    <th>ADVICE</th>
-                                    <th>ON EXAMINATION</th>
-                                    <th>EDIT ACTION</th>
-                                    <th>DELETE ACTION</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {data.map((item, index) => (
-                                    <tr key={index}>
-                                        <td>{item.selected_teeth}</td>
-                                        <td>{item.disease}</td>
-                                        <td>{item.chief_complain}</td>
-                                        <td>{item.advice}</td>
-                                        <td>{item.on_examination}</td>
-                                        <td> <button type="button" className="btn btn-primary justify-content-end" data-bs-toggle="modal" data-bs-target={`#exampleModal-${index}`} onClick={() => handleModalOpen(index)}>
-                                    <MdEdit size={20} />
-                                </button></td>
-                                        <td><button className="btn btn-danger mx-1 justify-content-end" onClick={()=>handleDelete(item.id)}><MdDelete size={20} /></button></td>
-                                        <div className="modal fade" id={`exampleModal-${index}`} tabIndex="-1" aria-labelledby={`exampleModalLabel-${index}`} aria-hidden="true">
-                                    <div className="modal-dialog modal-dialog-centered">
-                                        <div className="modal-content">
-                                            <div className="modal-header">
-                                                <h1 className="modal-title fs-5" id={`exampleModalLabel-${index}`}>Update Data</h1>
-                                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div className="modal-body">
-                                            <form onSubmit={(e) => handleSubmit(item.id, e)}>
-                                                    <div data-mdb-input-init class="form-outline mb-4">
-                                                            <input type="text" id="form2Example1"
-                                                            name="id" value={formData.id} class="form-control" onChange={handleChange} placeholder="id" readOnly/>
-                                                        </div>
-
-                                                        <div data-mdb-input-init class="form-outline mb-4">
-                                                            <input type="text" id="form2Example1"
-                                                            name="selectedTeeth" value={formData.selectedTeeth} class="form-control" onChange={handleChange} placeholder="Selected Teeth"/>
-                                                        </div>
-
-                                                        <div data-mdb-input-init class="form-outline mb-4">
-                                                            <input type="text" id="form2Example2"
-                                                            name="disease" value={formData.disease} class="form-control" onChange={handleChange} placeholder="Enter Disease"/>
-                                                        </div>
-
-                                                        <div data-mdb-input-init class="form-outline mb-4">
-                                                            <input type="text" id="form2Example2"
-                                                            name="chiefComplain" value={formData.chiefComplain} class="form-control" onChange={handleChange} placeholder="Enter Chief Complain"/>
-                                                        </div>
-
-                                                        <div data-mdb-input-init class="form-outline mb-4">
-                                                            <input type="text" id="form2Example2"
-                                                            name="advice" value={formData.advice} class="form-control" onChange={handleChange} placeholder="Enter Advice "/>
-                                                        </div>
-
-                                                        <div data-mdb-input-init class="form-outline mb-4">
-                                                            <input type="text" id="form2Example2"
-                                                            name="onExamination" value={formData.onExamination} class="form-control" onChange={handleChange} placeholder="Enter ON Examination"/>
-                                                        </div>
-
-                                                        <div className="text-center">
-                                                        <button class="btn btn-secondary" data-bs-dismiss="modal">Update</button>
-                                                        </div>
-                                                    </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div className="table-responsive ">
+                            <table className="table table-bordered table-striped table-secondary border border-secondary">
+                                <thead>
+                                    <tr>
+                                        <th>SELECTED TEETH</th>
+                                        <th>DISEASE</th>
+                                        <th>CHIEF COMPLAIN</th>
+                                        <th>ADVICE</th>
+                                        <th>ON EXAMINATION</th>
+                                        <th>EDIT ACTION</th>
+                                        <th>DELETE ACTION</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                    ): (
+                                </thead>
+                                <tbody>
+                                    {data.map((item, index) => (
+                                        <tr key={index}>
+                                            <td>{item.selected_teeth}</td>
+                                            <td>{item.disease}</td>
+                                            <td>{item.chief_complain}</td>
+                                            <td>{item.advice}</td>
+                                            <td>{item.on_examination}</td>
+                                            <td> <button type="button" className="btn btn-primary justify-content-end" data-bs-toggle="modal" data-bs-target={`#exampleModal-${index}`} onClick={() => handleModalOpen(index)}>
+                                                <MdEdit size={20} />
+                                            </button></td>
+                                            <td><button className="btn btn-danger mx-1 justify-content-end" onClick={() => handleDelete(item.id)}><MdDelete size={20} /></button></td>
+                                            <div className="modal fade" id={`exampleModal-${index}`} tabIndex="-1" aria-labelledby={`exampleModalLabel-${index}`} aria-hidden="true">
+                                                <div className="modal-dialog modal-dialog-centered">
+                                                    <div className="modal-content">
+                                                        <div className="modal-header">
+                                                            <h1 className="modal-title fs-5" id={`exampleModalLabel-${index}`}>Update Data</h1>
+                                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div className="modal-body">
+                                                            <form onSubmit={(e) => handleSubmit(item.id, e)}>
+                                                                <div data-mdb-input-init class="form-outline mb-4">
+                                                                    <input type="text" id="form2Example1"
+                                                                        name="id" value={formData.id} class="form-control" onChange={handleChange} placeholder="id" readOnly />
+                                                                </div>
+
+                                                                <div data-mdb-input-init class="form-outline mb-4">
+                                                                    <input type="text" id="form2Example1"
+                                                                        name="selectedTeeth" value={formData.selectedTeeth} class="form-control" onChange={handleChange} placeholder="Selected Teeth" />
+                                                                </div>
+
+                                                                <div data-mdb-input-init class="form-outline mb-4">
+                                                                    <input type="text" id="form2Example2"
+                                                                        name="disease" value={formData.disease} class="form-control" onChange={handleChange} placeholder="Enter Disease" />
+                                                                </div>
+
+                                                                <div data-mdb-input-init class="form-outline mb-4">
+                                                                    <input type="text" id="form2Example2"
+                                                                        name="chiefComplain" value={formData.chiefComplain} class="form-control" onChange={handleChange} placeholder="Enter Chief Complain" />
+                                                                </div>
+
+                                                                <div data-mdb-input-init class="form-outline mb-4">
+                                                                    <input type="text" id="form2Example2"
+                                                                        name="advice" value={formData.advice} class="form-control" onChange={handleChange} placeholder="Enter Advice " />
+                                                                </div>
+
+                                                                <div data-mdb-input-init class="form-outline mb-4">
+                                                                    <input type="text" id="form2Example2"
+                                                                        name="onExamination" value={formData.onExamination} class="form-control" onChange={handleChange} placeholder="Enter ON Examination" />
+                                                                </div>
+
+                                                                <div className="text-center">
+                                                                    <button class="btn btn-secondary" data-bs-dismiss="modal">Update</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
                         <p>There is no saved data.</p>
                     )}
                 </div>

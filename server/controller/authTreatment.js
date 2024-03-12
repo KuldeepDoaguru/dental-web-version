@@ -121,7 +121,21 @@ const deleteTreatmentData = (req, res) => {
     });
 };
 
+const insertTreatPrescription = (req, res) => {
+    const { medicine_name, dosage, frequency, duration, note } = req.body;
+
+    const sql = 'INSERT INTO dental_prescription (medicine_name, dosage, frequency, duration, note) VALUES (?, ?, ?, ?, ?)';
+
+    db.query(sql, [medicine_name, dosage, frequency, duration, note], (err, result) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            res.status(200).json({ message: 'User inserted successfully', id: result.insertId });
+        }
+    })
+}
 
 
 
-module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData }; 
+
+module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription }; 

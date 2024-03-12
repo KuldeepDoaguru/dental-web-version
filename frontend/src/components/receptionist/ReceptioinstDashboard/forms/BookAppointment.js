@@ -85,19 +85,43 @@ function BookAppointment() {
   // Generate time slots with 15-minute intervals
   const generateTimeSlots = () => {
     const slots = [];
-    for (let hour = branchDetail[0]?.open_time.split(":")[0]; hour < branchDetail[0]?.close_time.split(":")[0]; hour++) {
-      for (let minute = 0; minute < 60; minute += parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])) {
+    // for (let hour = branchDetail[0]?.open_time.split(":")[0]; hour < branchDetail[0]?.close_time.split(":")[0]; hour++) {
+    //   for (let minute = 0; minute < 60; minute += parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])) {
+    //     const period = hour < 12 ? "AM" : "PM";
+    //     const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+    //     const time = `${formattedHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    //     slots.push({ value: time, label: `${time} ${period}` });
+    //   }
+    // }
+  //   for (let hour = parseInt(branchDetail[0]?.open_time.split(":")[0]); hour < parseInt(branchDetail[0]?.close_time.split(":")[0]); hour++) {
+  //     for (let minute = 0; minute < 60; minute += parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])) {
+  //         const formattedHour = hour.toString().padStart(2, '0');
+  //         const formattedMinute = minute.toString().padStart(2, '0');
+  //         const time = `${formattedHour}:${formattedMinute}`;
+  //         slots.push({ value: time, label: time });
+  //     }
+  // }
+
+  for (let hour = parseInt(branchDetail[0]?.open_time.split(":")[0]); hour < parseInt(branchDetail[0]?.close_time.split(":")[0]); hour++) {
+    for (let minute = 0; minute < 60; minute += parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])) {
+        const formattedHour24 = hour.toString().padStart(2, '0');
+        const formattedMinute = minute.toString().padStart(2, '0');
+
+        // Convert hour to 12-hour format for label
         const period = hour < 12 ? "AM" : "PM";
-        const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
-        const time = `${formattedHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-        slots.push({ value: time, label: `${time} ${period}` });
-      }
+        const formattedHour12 = ((hour + 11) % 12 + 1).toString().padStart(2, '0');
+
+        const time24 = `${formattedHour24}:${formattedMinute}`;
+        const time12 = `${formattedHour12}:${formattedMinute} ${period}`;
+        
+        slots.push({ value: time24, label: time12 });
     }
+}
     return slots;
   };
-  console.log(branchDetail[0]?.appoint_slot_duration.split(" ")[0])
+ 
   const timeSlots = generateTimeSlots();
-
+  
   // Function to format date in YYYY-MM-DD format
   const formatDate = (date) => {
     const year = date.getFullYear();
@@ -107,7 +131,7 @@ function BookAppointment() {
   };
  
   const [selectedDate, setSelectedDate] = useState(formatDate(new Date()));
-
+  
 
   const handleDateChange = (e) => {
     const { name, value } = e.target;
@@ -232,6 +256,7 @@ console.log(branchDetail)
     { branch_name:"", patient_Name:"",mobile: "", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"", appointment_created_by:"",appointment_updated_by:"",appointment_created_by_emp_id	:"", appointment_updated_by_emp_id	:""}
   ) 
   console.log(bookData)
+  console.log(bookData.appDateTime)
   // const doctors = [
   //   { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:["2024/02/21","2024/02/20","2024/02/19"],lunchTime: ""},
   //   { uid :"10", doctor_name:"Dr Rajiv",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"12:00",eveningStartTiming:"18:00" ,eveningEndTiming:"22:00", scheduleBlockDays:"2024/02/21",lunchTime: ""},
@@ -346,7 +371,6 @@ console.log(branchDetail)
 
   
   
-console.log(selectedDoctor)
 const [availableDoctorOnDate,setAvailableDoctorOnDate] = useState([]);
 
 
@@ -509,11 +533,12 @@ const selectedDateTime = new Date(bookData.appDateTime);
 //         )
 //        }
 //  })
-
+ 
 const isBranchHoliday = branchHolidays.some(holiday => {
   let holidayDate = new Date(holiday.holiday_date);
   holidayDate = new Date(holidayDate.getFullYear(), holidayDate.getMonth(), holidayDate.getDate());
   const compareDateandTime = new Date(bookData.appDateTime);
+  // const time24h = formatToFullDate24Hour(compareDateandTime);
   // Convert selectedDateTime to full date
   let selectedDateTime = new Date(bookData.appDateTime);
   selectedDateTime = new Date(selectedDateTime.getFullYear(), selectedDateTime.getMonth(), selectedDateTime.getDate());

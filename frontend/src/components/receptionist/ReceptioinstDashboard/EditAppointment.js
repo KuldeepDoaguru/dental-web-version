@@ -21,6 +21,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   const [treatments,setTreatment] = useState([]);
   const [doctors,setDoctors] = useState([]);
   const  branch = currentUser.branch_name;
+  const [branchHolidays,setBranchHolidays] = useState([]);
 
   // Remove current appointment data from allAppointmentData
   const filteredAllAppointmentData = allAppointmentData.filter(appointment => appointment.appoint_id !== appointmentInfo.appoint_id);
@@ -32,6 +33,17 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
        const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
        console.log(response)
        setBranchDetail(response.data.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  const getBranchHolidays = async ()=>{
+    try{
+       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-holidays/${branch}`)
+       console.log(response)
+       setBranchHolidays(response.data.data)
     }
     catch(error){
       console.log(error)
@@ -72,14 +84,21 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   // Generate time slots with 15-minute intervals
   const generateTimeSlots = () => {
     const slots = [];
-    for (let hour = 10; hour < 24; hour++) {
+    for (let hour = parseInt(branchDetail[0]?.open_time.split(":")[0]); hour < parseInt(branchDetail[0]?.close_time.split(":")[0]); hour++) {
       for (let minute = 0; minute < 60; minute += parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])) {
-        const period = hour < 12 ? "AM" : "PM";
-        const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
-        const time = `${formattedHour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-        slots.push({ value: time, label: `${time} ${period}` });
+          const formattedHour24 = hour.toString().padStart(2, '0');
+          const formattedMinute = minute.toString().padStart(2, '0');
+  
+          // Convert hour to 12-hour format for label
+          const period = hour < 12 ? "AM" : "PM";
+          const formattedHour12 = ((hour + 11) % 12 + 1).toString().padStart(2, '0');
+  
+          const time24 = `${formattedHour24}:${formattedMinute}`;
+          const time12 = `${formattedHour12}:${formattedMinute} ${period}`;
+          
+          slots.push({ value: time24, label: time12 });
       }
-    }
+  }
     return slots;
   };
  
@@ -143,6 +162,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
      getDoctors();
      getDoctorsWithLeave();
      getBranchDetail();
+     getBranchHolidays();
   },[]);
 
   useEffect(()=>{
@@ -251,6 +271,36 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   
      // Convert appointment time to Date object
   const selectedDateTime = new Date(data.appointment_dateTime);
+
+  const isBranchHoliday = branchHolidays.some(holiday => {
+    let holidayDate = new Date(holiday.holiday_date);
+    holidayDate = new Date(holidayDate.getFullYear(), holidayDate.getMonth(), holidayDate.getDate());
+    const compareDateandTime = new Date(data.appointment_dateTime);
+    // const time24h = formatToFullDate24Hour(compareDateandTime);
+    // Convert selectedDateTime to full date
+    let selectedDateTime = new Date(data.appointment_dateTime);
+    selectedDateTime = new Date(selectedDateTime.getFullYear(), selectedDateTime.getMonth(), selectedDateTime.getDate());
+    console.log(holidayDate.getTime(),selectedDateTime.getTime())
+    if (holidayDate.getTime() === selectedDateTime.getTime()) {
+        
+        const holidayStart = new Date(selectedDateTime);
+        holidayStart.setHours(holiday?.holiday_start_time?.split(":")[0], holiday?.holiday_start_time?.split(":")[1]);
+        const holidayEnd = new Date(selectedDateTime);
+        holidayEnd.setHours(holiday?.holiday_end_time?.split(":")[0], holiday?.holiday_end_time?.split(":")[1]);
+  
+        console.log(holidayStart , holidayEnd , compareDateandTime)
+        console.log((compareDateandTime >= holidayStart && compareDateandTime <= holidayEnd))
+        return (
+            (compareDateandTime >= holidayStart && compareDateandTime <= holidayEnd)
+        )
+    }
+    return false; // If holidayDate doesn't match selectedDate, return false
+  })
+  
+   if(isBranchHoliday){
+     alert(`Selected date is branch holiday please selected other date`)
+     return
+   }
   
   // Check if the selected doctor is available during the appointment time
   const isDoctorAvailable = (selectedDateTime) => {

@@ -12,6 +12,7 @@ import { FaArrowCircleRight } from "react-icons/fa";
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
+  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const {refreshTable,currentUser} = useSelector((state) => state.user);
@@ -74,6 +75,7 @@ const handleStatusChange = async (appointmentId, newStatus) => {
     await axios.put(`http://localhost:4000/api/v1/receptionist/update-appointment-status`, { status: newStatus, appointmentId:appointmentId,appointment_updated_by:currentUser.employee_name,appointment_updated_by_emp_id: currentUser.employee_ID });
     // Optionally, you can re-fetch appointments after successful update
     getAppointments();
+    dispatch(toggleTableRefresh());
   } catch (error) {
     console.error('Error updating status:', error);
   }
@@ -102,6 +104,7 @@ const handleStatusCancel = async (appointmentId, newStatus) => {
     cancelReason: reason, appointmentId:appointmentId,appointment_updated_by:currentUser.employee_name,appointment_updated_by_emp_id: currentUser.employee_ID });
     // Optionally, you can re-fetch appointments after successful update
     getAppointments();
+    dispatch(toggleTableRefresh());
   } catch (error) {
     console.error('Error updating status:', error);
   }
@@ -393,6 +396,7 @@ patient_type
 
 export default AppointTable;
 const Wrapper = styled.div`
+ 
   #tableres {
     margin-top: 0rem;
     @media screen and (max-width: 768px) {
@@ -420,5 +424,11 @@ const Wrapper = styled.div`
   }
   th{
     background-color: teal;
+  }
+  .table-responsive{
+    
+  }
+  .dropdown-item {
+  
   }
 `;

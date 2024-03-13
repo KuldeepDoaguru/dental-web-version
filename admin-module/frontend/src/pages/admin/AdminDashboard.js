@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Card from "../../components/superAdmin/dashboard/Card";
 import AveragePatientChart from "../../components/superAdmin/dashboard/Charts/AveragePatientChart";
@@ -26,7 +26,8 @@ import ExpenseTMAdmin from "../../components/Admin/admin-charts/ExpenseTMAdmin";
 import AdminClinicAct from "../../components/Admin/dashboard/AdminClinicAct";
 import AdminComplaintsSec from "../../components/Admin/dashboard/AdminComplaintsSec";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import routesConfig from "./RoutesConfig";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,8 @@ const AdminDashboard = () => {
   console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
   console.log(`User Name: ${branch.name}`);
+  const searchData = routesConfig;
+  const [keyword, setkeyword] = useState("");
 
   return (
     <Wrapper>
@@ -44,10 +47,10 @@ const AdminDashboard = () => {
       <div className="main">
         <div className="container-fluid">
           <div className="row flex-nowrap ">
-            <div className="col-lg-1 col-1 p-0">
+            <div className="col-lg-1 col-md-2 col-1 p-0">
               <SiderAdmin />
             </div>
-            <div className="col-lg-11 col-11 ps-0">
+            <div className="col-lg-11 col-md-10 col-11 ps-0">
               <div className="row d-flex justify-content-between mx-3">
                 <div className="col-xl-6 col-lg-6 col-12 col-md-6 mt-4">
                   <h3> Welcome to DentalGuru! </h3>
@@ -62,6 +65,8 @@ const AdminDashboard = () => {
                       type="search"
                       placeholder="Search"
                       aria-label="Search"
+                      value={keyword}
+                      onChange={(e) => setkeyword(e.target.value.toLowerCase())}
                     />
                     <button
                       className="btn btn-primary"
@@ -71,35 +76,52 @@ const AdminDashboard = () => {
                       Search
                     </button>
                   </form>
+                  <div className="suedo-shado">
+                    <ul className="bg-light">
+                      {keyword &&
+                        searchData
+                          ?.filter((val) =>
+                            val.title.toLowerCase().includes(keyword)
+                          )
+                          ?.map((item, index) => (
+                            <>
+                              <li key={index}>
+                                <Link to={item.path}>{item.title}</Link>
+                              </li>
+                              <hr />
+                            </>
+                          ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
               <AdminCards />
               <div className="container-fluid pb-3">
                 <div className="row g-5 mt-3">
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Treatment this month</h3>
                     <TreatmentTMAdmin />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Patient visits this month</h3>
                     <PatientVisTMAdmin />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">
                       Total apointments this month
                     </h3>
                     <TotalApsTMAdmin />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">New Patient this Month</h3>
 
                     <NewPatientTMAdmin />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Earning report this month</h3>
                     <EarnTMAdmin />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Expense report this month</h3>
                     <ExpenseTMAdmin />
                   </div>
@@ -156,5 +178,19 @@ const Wrapper = styled.div`
     background-color: #22a6b3;
     font-weight: bold;
     color: white;
+  }
+
+  .suedo-shado {
+    position: absolute;
+    width: 20rem;
+    z-index: 9999;
+    a {
+      text-decoration: none;
+      font-weight: bold;
+      color: #22a6b3;
+    }
+    li {
+      list-style: none;
+    }
   }
 `;

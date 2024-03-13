@@ -18,7 +18,7 @@ const Bill = () => {
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientBillByBranchAndId/${pid}`
       );
       console.log(data);
       setBillData(data);

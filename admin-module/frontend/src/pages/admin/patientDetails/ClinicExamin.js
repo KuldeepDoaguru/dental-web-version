@@ -17,7 +17,7 @@ const ClinicExamin = () => {
   const getExamineDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/examinDetailsByPatId/${pid}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/examinDetailsByPatId/${pid}`
       );
       setExmData(data);
     } catch (error) {

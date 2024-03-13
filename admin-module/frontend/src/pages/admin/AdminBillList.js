@@ -61,7 +61,7 @@ const AdminBillList = () => {
   const getBillDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/admin/getBillsByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getBillsByBranch/${branch.name}`
       );
       console.log(data);
       setListBills(data);
@@ -73,7 +73,7 @@ const AdminBillList = () => {
   const deleteBillData = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8888/api/v1/admin/deleteBills/${id}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/deleteBills/${id}`
       );
       console.log(response);
       cogoToast.success("Appointment Deleted Successfully");
@@ -86,7 +86,7 @@ const AdminBillList = () => {
   const getBillDetailsByBid = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/admin/getBillBYBillId/${selectedItem}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getBillBYBillId/${selectedItem}`
       );
       setPlacehold(data);
     } catch (error) {
@@ -98,7 +98,7 @@ const AdminBillList = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8888/api/v1/admin/updateBillDetailsByBillId/${selectedItem}`,
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/updateBillDetailsByBillId/${selectedItem}`,
         upData
       );
       console.log(response);
@@ -185,12 +185,12 @@ const AdminBillList = () => {
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-nowrap ">
-              <div className="col-lg-1 col-md-1 col-1 p-0">
+              <div className="col-lg-1 col-md-2 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-md-11 col-11 ps-0">
+              <div className="col-lg-11 col-md-10 col-11 ps-0">
                 <div className="container-fluid mt-3">
-                  <div className="d-flex justify-content-between mx-2">
+                  <div className="d-flex justify-content-between">
                     {/* <BranchSelector /> */}
                   </div>
                 </div>
@@ -560,7 +560,7 @@ const Container = styled.div`
   }
 
   th {
-    background-color: #004aad;
+    background-color: #1abc9c;
     color: white;
   }
 

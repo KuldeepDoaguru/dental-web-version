@@ -107,7 +107,7 @@ const ExpenseTMAdmin = () => {
     const getAppointList = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8888/api/v1/admin/getPurInventoryByBranch/${branch.name}`
+          `https://dentalguruadmin.doaguru.com//api/v1/admin/getPurInventoryByBranch/${branch.name}`
         );
         setAppointmentList(response.data);
       } catch (error) {

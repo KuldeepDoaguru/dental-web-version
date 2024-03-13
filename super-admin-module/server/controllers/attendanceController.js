@@ -737,15 +737,19 @@ const deleteNotifyTags = (req, res) => {
 
 const addSuperAdminNotify = (req, res) => {
   try {
-    const { title, event_msg, open, status } = req.body;
+    const { title, branch, event_msg, open, status } = req.body;
     const insertQuery =
-      "INSERT INTO employee_timeline (title, event_msg,	open,	status) VALUES (?,?,?,?)";
-    db.query(insertQuery, [title, event_msg, open, status], (err, result) => {
-      if (err) {
-        res.status(400).json({ success: false, message: err.message });
+      "INSERT INTO employee_timeline (title, branch_name, event_msg,	open,	status) VALUES (?,?,?,?, ?)";
+    db.query(
+      insertQuery,
+      [title, branch, event_msg, open, status],
+      (err, result) => {
+        if (err) {
+          res.status(400).json({ success: false, message: err.message });
+        }
+        res.status(200).send(result);
       }
-      res.status(200).send(result);
-    });
+    );
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: error.message });

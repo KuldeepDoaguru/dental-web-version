@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
+// import Sider from "../../../components/Sider";
+// import Header from "../../../components/Header";
 import { Nav } from "react-bootstrap";
+// import BranchSelector from "../../../components/BranchSelector";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import HeaderAdmin from "../HeaderAdmin";
 import SiderAdmin from "../SiderAdmin";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import AdminAppointNotify from "../../../components/Admin/AdminCommunication/AdminAppointNotify";
 import AdminNotifyTemp from "../../../components/Admin/AdminCommunication/AdminNotifyTemp";
-import AdminAddNewTemp from "../../../components/Admin/AdminCommunication/AdminAddNewTemp";
 
 const AdminCommunicationSetting = () => {
   const initialTab = localStorage.getItem("selectedTab") || "tab1";
@@ -30,6 +31,18 @@ const AdminCommunicationSetting = () => {
               </div>
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container-fluid mt-3">
+                  <div className="d-flex justify-content-between">
+                    {/* <BranchSelector /> */}
+                    <div>
+                      {/* <Link to="/superadmin-add-branch">
+                          <button className="btn btn-success">
+                            Add Branch
+                          </button>
+                        </Link> */}
+                    </div>
+                  </div>
+                </div>
+                <div className="container-fluid mt-3">
                   <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
                   </button>
@@ -39,7 +52,7 @@ const AdminCommunicationSetting = () => {
 
                       <div className="col-12">
                         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                          <div class="container d-flex justify-content-center">
+                          <div class="container-fluid d-flex justify-content-center">
                             <h2 className="">Communication Settings</h2>
                           </div>
                         </nav>
@@ -59,7 +72,7 @@ const AdminCommunicationSetting = () => {
                                 Appointment Notification
                               </Nav.Link>
                             </Nav.Item>
-                            <Nav.Item>
+                            {/* <Nav.Item>
                               <Nav.Link
                                 eventKey="tab2"
                                 className="navlink mx-2"
@@ -71,13 +84,11 @@ const AdminCommunicationSetting = () => {
                               <Nav.Link eventKey="tab3" className="navlink">
                                 Add New Template
                               </Nav.Link>
-                            </Nav.Item>
+                            </Nav.Item> */}
                           </div>
                         </Nav>
                         <div className="flex-grow-1 p-3 mainback">
-                          {selectedTab === "tab1" && <AdminAppointNotify />}
-                          {selectedTab === "tab2" && <AdminNotifyTemp />}
-                          {selectedTab === "tab3" && <AdminAddNewTemp />}
+                          {selectedTab === "tab1" && <AdminNotifyTemp />}
                         </div>
                       </div>
                       {/* nav-items-ends */}
@@ -106,6 +117,5 @@ const Container = styled.div`
     background-color: #e0e0e0;
     border-radius: 1rem;
     box-shadow: 0px 0px 5px #b1b1b1;
-    font-weight: bold;
   }
 `;

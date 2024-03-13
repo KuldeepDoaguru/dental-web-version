@@ -14,7 +14,7 @@ const AdminCards = () => {
   const getAppointList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/admin/getAppointmentData/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${branch.name}`
       );
       console.log(data);
       setAppointmentList(data);
@@ -26,7 +26,7 @@ const AdminCards = () => {
   const getEmployeeAvailable = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/admin/getAvailableEmp/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAvailableEmp/${branch.name}`
       );
       // console.log(data);
       setAvailableEmp(data);
@@ -116,7 +116,7 @@ const AdminCards = () => {
     <>
       <Container>
         <div className="row d-flex justify-content-around">
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-3 my-3 p-0">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column">
                 <div>
@@ -130,7 +130,7 @@ const AdminCards = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-3 my-3 p-0 mx-2">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column">
                 <div>
@@ -144,7 +144,7 @@ const AdminCards = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-3 my-3 p-0">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column">
                 <div>
@@ -158,7 +158,7 @@ const AdminCards = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-3 my-3 p-0 mx-2">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column">
                 <div>
@@ -172,7 +172,7 @@ const AdminCards = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-3 my-3 p-0">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column">
                 <div>

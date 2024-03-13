@@ -16,7 +16,7 @@ const AdminComplaintsSec = () => {
   const getEmpComByBranch = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/admin/getEmployeeComplainByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeComplainByBranch/${branch.name}`
       );
       console.log(data);
       setComplaints(data);

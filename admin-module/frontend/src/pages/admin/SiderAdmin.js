@@ -31,7 +31,10 @@ const SiderAdmin = () => {
                     <i className="fs-4 bi bi-house-door-fill"></i>
                   </div>
                   <div>
-                    <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
+                    <h3
+                      className=" d-none d-sm-inline fs-6 icon-view icon-view"
+                      id="navleft1"
+                    >
                       Dashboard
                     </h3>
                   </div>
@@ -49,7 +52,10 @@ const SiderAdmin = () => {
                     <i className="fs-4 bi bi-table"></i>
                   </div>
                   <div>
-                    <h3 className="d-none d-sm-inline fs-6" id="navleft2">
+                    <h3
+                      className="d-none d-sm-inline fs-6 icon-view"
+                      id="navleft2"
+                    >
                       Appointment
                     </h3>
                   </div>
@@ -67,7 +73,10 @@ const SiderAdmin = () => {
                     <i className="fs-4 bi bi-receipt-cutoff"></i>
                   </div>
                   <div>
-                    <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                    <h3
+                      className=" d-none d-sm-inline fs-6 icon-view"
+                      id="navleft"
+                    >
                       Bills
                     </h3>
                   </div>
@@ -83,7 +92,10 @@ const SiderAdmin = () => {
                     <MdOutlineInventory className="fs-4 bi bi-house-door-fill" />
                   </div>
                   <div>
-                    <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                    <h3
+                      className="d-none d-sm-inline fs-6 icon-view"
+                      id="navleft"
+                    >
                       Inventory
                     </h3>
                   </div>
@@ -100,7 +112,7 @@ const SiderAdmin = () => {
                   </div>
                   <div>
                     <h3
-                      className=" d-none d-sm-inline fs-6 icon-view"
+                      className=" d-none d-sm-inline fs-6 icon-view icon-view"
                       id="navleft"
                     >
                       Patient
@@ -111,17 +123,18 @@ const SiderAdmin = () => {
               <hr />
               <li>
                 <Link
-                  to="/admin-manage-staff"
-                  className={`link-div ${getSidebarClass(
-                    "/admin-manage-staff"
-                  )}`}
+                  to="/manage-staff"
+                  className={`link-div ${getSidebarClass("/manage-staff")}`}
                 >
                   <div>
                     {/* <i className="fs-4 bi bi-camera-video"></i> */}
                     <IoIosPeople className="fs-4 bi bi-camera-video" />
                   </div>
                   <div>
-                    <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                    <h3
+                      className=" d-none d-sm-inline fs-6 icon-view"
+                      id="navleft"
+                    >
                       Manage Staff
                     </h3>
                   </div>
@@ -139,7 +152,10 @@ const SiderAdmin = () => {
                     <i className="fs-4 bi bi-file-medical"></i>
                   </div>
                   <div>
-                    <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                    <h3
+                      className=" d-none d-sm-inline fs-6 icon-view"
+                      id="navleft"
+                    >
                       Lab
                     </h3>
                   </div>
@@ -159,7 +175,10 @@ const SiderAdmin = () => {
                     <TbReportSearch className="fs-4 bi bi-camera-video" />
                   </div>
                   <div>
-                    <h3 className=" d-none d-sm-inline fs-6" id="navleft">
+                    <h3
+                      className=" d-none d-sm-inline fs-6 icon-view"
+                      id="navleft"
+                    >
                       Report
                     </h3>
                   </div>
@@ -190,17 +209,20 @@ const Container = styled.div`
     font-size: 12px;
     margin-left: -0.2rem;
     color: #000;
+    @media (max-width: 900px) {
+      display: none !important;
+    }
   }
   #sidebar {
     width: 100%;
     height: 160rem;
     background-color: #1abc9c;
     @media screen and (max-width: 768px) {
-      width: 3rem;
+      width: fit-content;
       height: 212rem;
     }
     @media screen and (min-width: 768px) and (max-width: 1020px) {
-      width: 5rem;
+      width: fit-content;
       height: 151rem;
     }
   }
@@ -226,5 +248,11 @@ const Container = styled.div`
     background-color: #9af5c996;
     padding: 1rem;
     box-shadow: 0px 0px 16px #9af5c996;
+  }
+
+  .icon-view {
+    @media (max-width: 900px) {
+      display: none !important;
+    }
   }
 `;

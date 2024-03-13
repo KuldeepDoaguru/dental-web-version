@@ -24,7 +24,7 @@ const AdminPatientLIst = () => {
   const getPatByBranch = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/admin/getPatientDetailsByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientDetailsByBranch/${branch.name}`
       );
       console.log(data);
       setPatList(data);
@@ -46,10 +46,10 @@ const AdminPatientLIst = () => {
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-nowrap ">
-              <div className="col-lg-1 col-md-1 col-1 p-0">
+              <div className="col-lg-1 col-md-2 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-md-11 col-11 ps-0 mx-2">
+              <div className="col-lg-11 col-md-10 col-11 ps-0">
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     {/* <BranchSelector /> */}
@@ -94,7 +94,7 @@ const AdminPatientLIst = () => {
                           <th className="thead sticky">Patient Type</th>
                           <th className="thead sticky">Address</th>
                           <th className="thead sticky">Adhaar Number</th>
-                          <th className="" style={{ minWidth: "10rem" }}>
+                          <th className="sticky" style={{ minWidth: "10rem" }}>
                             Actions
                           </th>
                         </tr>

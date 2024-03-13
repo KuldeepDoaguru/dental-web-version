@@ -1,49 +1,11 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Registration from "./components/receptionist/Registration";
-import Login from "./components/receptionist/Login";
+
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Dashboard from "./pages/superAdmin/Dashboard";
-import Chart from "./components/superAdmin/dashboard/Charts/AveragePatientChart";
-import Header from "./components/Header";
-import Sider from "./components/Sider";
 import UniversalLogin from "./pages/UniversalLogin";
-import Apointment from "./pages/superAdmin/Apointment";
-import Branches from "./pages/Branches";
-import AddBranch from "./components/superAdmin/Branches/AddBranch";
-import AllBills from "./pages/superAdmin/AllBills";
-import Inventory from "./pages/superAdmin/Inventory";
-import DoctorList from "./pages/superAdmin/DoctorList";
-import SuperAdProfile from "./components/superAdmin/SuperAdProfile";
-import DoctorProfile from "./components/superAdmin/doctor/DoctorProfile";
-import AddInventory from "./components/superAdmin/inventory-comp/AddInventory";
-import EditInventory from "./components/superAdmin/inventory-comp/EditInventory";
-import AddDoctor from "./components/superAdmin/doctor/AddDoctor";
-import ClinicSetting from "./pages/superAdmin/ClinicSetting";
-import LabSetting from "./pages/superAdmin/settings/LabSetting";
-import FinancialReportCard from "./pages/superAdmin/FinancialReport/FinancialReportCard";
-import ManageStaff from "./pages/superAdmin/ManageStaff";
-import DrugSetting from "./pages/superAdmin/drug-setting/DrugSetting";
-import PrescriptionTemplate from "./pages/superAdmin/Prescription-Templates/PrescriptionTemplate";
-import CalenderSetting from "./pages/superAdmin/CalenderSettings/CalenderSetting";
-import TreatmentSetting from "./pages/superAdmin/TreatmentSetting/TreatmentSetting";
-import CommunicationSetting from "./pages/superAdmin/Communication-setting/CommunicationSetting";
-import ReportDash from "./pages/superAdmin/AllReport/ReportDash";
-import AppointmentReport from "./pages/superAdmin/AllReport/AppointmentReport";
-import BillingReport from "./pages/superAdmin/AllReport/BillingReport";
-import InventoryReport from "./pages/superAdmin/AllReport/InventoryReport";
-import EmpAttendanceRepo from "./pages/superAdmin/AllReport/EmpAttendanceRepo";
-import EmpDetailsRepo from "./pages/superAdmin/AllReport/EmpDetailsRepo";
-import LabDetailsReport from "./pages/superAdmin/AllReport/LabDetailsReport";
-import LabTestReport from "./pages/superAdmin/AllReport/LabTestReport";
-import LabTaskReport from "./pages/superAdmin/AllReport/LabTaskReport";
-import SuperAdmNotify from "./pages/superAdmin/SuperAdmNotify";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import { useState } from "react";
 import ErrorPage from "./pages/ErrorPage";
 import ClinicSetAdmin from "./pages/admin/ClinicSetAdmin";
 import AdminProfile from "./components/Admin/AdminProfile";
-import AdminNotify from "./pages/admin/AdminNotify";
 import AdminApointment from "./pages/admin/AdminApointment";
 import AdminBillList from "./pages/admin/AdminBillList";
 import AdminInventory from "./pages/admin/AdminInventory";
@@ -69,13 +31,14 @@ import AdminCommunicationSetting from "./pages/admin/AdminClinicSetting/AdminCom
 import AdminPrescriptTemp from "./pages/admin/AdminClinicSetting/AdminPrescriptTemp";
 import AdminTreatSetting from "./pages/admin/AdminClinicSetting/AdminTreatSetting";
 import AdminComplaintPage from "./components/Admin/dashboard/AdminComplaintPage";
-import ComplaintPage from "./pages/superAdmin/ComplaintPage";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./redux/slices/UserSlicer";
 import PasswordReset from "./pages/admin/PasswordReset";
 import { setBranch } from "./redux/slices/BranchSlicer";
 import AdminPatientLIst from "./pages/admin/AdminPatientLIst";
 import AdminPatientProfile from "./pages/admin/AdminPatientProfile";
+import AdminEmployeeProfile from "./pages/admin/AdminEmployeeProfile";
+import AdminNotification from "./pages/admin/AdminNotification";
 
 const App = () => {
   const storedUserData = localStorage.getItem("userData");
@@ -101,7 +64,7 @@ const App = () => {
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/admin-clinic-setting" element={<ClinicSetAdmin />} />
         <Route path="/admin-profile" element={<AdminProfile />} />
-        <Route path="/admin-notification" element={<AdminNotify />} />
+        <Route path="/admin-notification" element={<AdminNotification />} />
         <Route path="/admin-appointment" element={<AdminApointment />} />
         <Route path="/admin-bill_section" element={<AdminBillList />} />
         <Route path="/admin-inventory" element={<AdminInventory />} />
@@ -112,7 +75,11 @@ const App = () => {
         />
         <Route path="/admin-doctor_section" element={<AdminDocSection />} />
         <Route path="/admin-doctor-profile" element={<AdminDocProfile />} />
-        <Route path="/admin-manage-staff" element={<AdminManageStaff />} />
+        <Route path="/manage-staff" element={<AdminManageStaff />} />
+        <Route
+          path="/employee-profile/:eid"
+          element={<AdminEmployeeProfile />}
+        />
         <Route path="/admin-lab-setting" element={<AdminLabSetting />} />
         <Route path="/admin-reports-dashboard" element={<AdminReportDash />} />
         <Route

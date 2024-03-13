@@ -107,7 +107,7 @@ const NewPatientTMAdmin = () => {
     const getAppointList = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8888/api/v1/admin/getPatientDetailsByBranch/${branch.name}`
+          `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientDetailsByBranch/${branch.name}`
         );
         setAppointmentList(response.data);
       } catch (error) {

@@ -30,7 +30,7 @@ const AdminInventory = () => {
   const getPurchaseList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/admin/getPurInventoryByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPurInventoryByBranch/${branch.name}`
       );
       console.log(data);
       setInvList(data);
@@ -69,7 +69,7 @@ const AdminInventory = () => {
   const deletePurInvDetails = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8888/api/v1/admin/deletePurInvoice/${branch.name}/${id}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/deletePurInvoice/${branch.name}/${id}`
       );
       console.log(response);
       cogoToast.success("Successfully Deleted the Data");
@@ -83,7 +83,7 @@ const AdminInventory = () => {
     console.log(file);
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/v1/admin/downloadBillRecById/${file}`,
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/downloadBillRecById/${file}`,
         {
           responseType: "blob",
         }
@@ -142,10 +142,10 @@ const AdminInventory = () => {
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-nowrap ">
-              <div className="col-lg-1 col-md-1 col-1 p-0">
+              <div className="col-lg-1 col-md-2 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-md-11 col-11 ps-0 mx-2">
+              <div className="col-lg-11 col-md-10 col-11 ps-0">
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between mx-2">
                     {/* <BranchSelector /> */}
@@ -420,7 +420,7 @@ const AdminInventory = () => {
 export default AdminInventory;
 const Container = styled.div`
   th {
-    background-color: #004aad;
+    background-color: #1abc9c;
     color: white;
   }
 

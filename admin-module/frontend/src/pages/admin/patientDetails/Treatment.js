@@ -18,7 +18,7 @@ const Treatment = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentByBranchAndId/${pid}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentByBranchAndId/${pid}`
       );
       console.log(data);
       setPatAppointDetails(data);

@@ -25,7 +25,7 @@ const AdminPatientProfile = () => {
   const patientProfileData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/admin/getPatientDataByBranchAndId/${pid}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientDataByBranchAndId/${pid}`
       );
       console.log(data);
       setPatientData(data);
@@ -37,7 +37,7 @@ const AdminPatientProfile = () => {
   const getOngoingTreat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/admin/getPatientBillByBranchAndId/${pid}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientBillByBranchAndId/${pid}`
       );
       console.log(data);
       setOngoingTreat(data);
@@ -65,10 +65,10 @@ const AdminPatientProfile = () => {
       <HeaderAdmin />
 
       <div className="row mrgnzero">
-        <div className="col-lg-1 col-md-1 col-1" id="sider">
+        <div className="col-lg-1 col-md-2 col-1" id="sider">
           <SiderAdmin />
         </div>
-        <div className="col-lg-11 col-md-11 col-11">
+        <div className="col-lg-11 col-md-10 col-11">
           <div className="container-fluid mt-3">
             <div className="d-flex justify-content-between">
               {/* <BranchSelector /> */}

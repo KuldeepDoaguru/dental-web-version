@@ -32,23 +32,40 @@ const getBranch = (req, res) => {
 const EnrollEmployee = async (req, res) => {
   try {
     const {
+      branch,
       empName,
       empMobile,
-      empEmail,
       empGender,
+      empEmail,
       empDesignation,
-      password,
-      empRole,
       empSalary,
       empAddress,
       status,
+      morningShiftStartTime,
+      morningShiftEndTime,
+      eveningShiftStartTime,
+      eveningShiftEndTime,
+      allDayShiftStartTime,
+      allDayShiftEndTime,
+      working_days,
+      password,
+      empRole,
+      availability,
     } = req.body;
+
+    const empProfilePicture = req.file;
+    console.log(empProfilePicture, "pro");
+
+    const imageUrl = `http://localhost:${PORT}/empProfilePicture/${empProfilePicture?.filename}`;
+
+    console.log("profilePicture: 770", imageUrl);
 
     console.log(req.body);
     console.log(password, "23");
 
     // Validations
     const requiredFields = [
+      branch,
       empName,
       empMobile,
       empEmail,
@@ -102,22 +119,32 @@ const EnrollEmployee = async (req, res) => {
               // User not found, proceed with registration
               const insertUserQuery = `
                     INSERT INTO employee_register (
-                      employee_ID, employee_name,	employee_mobile, employee_email, gender, employee_designation,	employee_password,	employee_role, salary, address,	employee_status
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                      employee_ID, branch_name, employee_name,	employee_mobile, employee_email, gender, employee_designation,	employee_password, working_days,	employee_role, salary, address,	employee_status, morning_shift_start_time, morning_shift_end_time, evening_shift_start_time, evening_shift_end_time, allday_shift_start_time, allday_shift_end_time, availability, employee_picture
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                   `;
 
               const insertUserParams = [
                 newEmpID,
+                branch,
                 empName,
                 empMobile,
                 empEmail,
-                gender,
+                empGender,
                 empDesignation,
                 hashedPassword,
+                working_days,
                 empRole,
                 empSalary,
                 empAddress,
                 status,
+                morningShiftStartTime,
+                morningShiftEndTime,
+                eveningShiftStartTime,
+                eveningShiftEndTime,
+                allDayShiftStartTime,
+                allDayShiftEndTime,
+                availability,
+                imageUrl,
               ];
 
               db.query(
@@ -169,22 +196,43 @@ const getEmployeeData = (req, res) => {
   }
 };
 
-const EditEmployeeDetails = async (req, res) => {
+const editEmployeeDetails = (req, res) => {
   try {
-    const empId = req.params.emp_id;
+    const branch = req.params.branch;
+    const empId = req.params.empID;
     const {
       empName,
       empMobile,
-      empEmail,
       empGender,
+      empEmail,
       empDesignation,
-      empRole,
       empSalary,
       empAddress,
+      status,
+      morningShiftStartTime,
+      morningShiftEndTime,
+      eveningShiftStartTime,
+      eveningShiftEndTime,
+      allDayShiftStartTime,
+      allDayShiftEndTime,
+      working_days,
+      password,
+      empRole,
+      availability,
     } = req.body;
 
-    const getQuery = `SELECT * FROM employee_register WHERE employee_ID = ?`;
-    db.query(getQuery, [empId], (err, result) => {
+    const empProfilePicture = req.file;
+    console.log(empProfilePicture, "pro");
+
+    const imageUrl = `http://localhost:${PORT}/empProfilePicture/${empProfilePicture?.filename}`;
+
+    console.log("profilePicture: 770", imageUrl);
+
+    console.log(req.body);
+    console.log(password, "23");
+
+    const getQuery = `SELECT * FROM employee_register WHERE branch_name = ? AND employee_ID = ?`;
+    db.query(getQuery, [branch, empId], (err, result) => {
       if (err) {
         return res.status(500).json({
           success: false,
@@ -233,23 +281,83 @@ const EditEmployeeDetails = async (req, res) => {
           updateFields.push("address = ?");
           updateValues.push(empAddress);
         }
+
+        if (status) {
+          updateFields.push("employee_status = ?");
+          updateValues.push(status);
+        }
+
+        if (morningShiftStartTime) {
+          updateFields.push("morning_shift_start_time = ?");
+          updateValues.push(morningShiftStartTime);
+        }
+
+        if (morningShiftEndTime) {
+          updateFields.push("morning_shift_end_time = ?");
+          updateValues.push(morningShiftEndTime);
+        }
+
+        if (eveningShiftStartTime) {
+          updateFields.push("evening_shift_start_time = ?");
+          updateValues.push(eveningShiftStartTime);
+        }
+
+        if (eveningShiftEndTime) {
+          updateFields.push("evening_shift_end_time = ?");
+          updateValues.push(eveningShiftEndTime);
+        }
+
+        if (allDayShiftStartTime) {
+          updateFields.push("allday_shift_start_time = ?");
+          updateValues.push(allDayShiftStartTime);
+        }
+
+        if (allDayShiftEndTime) {
+          updateFields.push("allday_shift_end_time = ?");
+          updateValues.push(allDayShiftEndTime);
+        }
+
+        if (working_days) {
+          updateFields.push("working_days = ?");
+          updateValues.push(working_days);
+        }
+
+        if (password) {
+          updateFields.push("employee_password = ?");
+          updateValues.push(password);
+        }
+
+        if (availability) {
+          updateFields.push("availability = ?");
+          updateValues.push(availability);
+        }
+
+        if (empProfilePicture) {
+          updateFields.push("employee_picture = ?");
+          updateValues.push(imageUrl);
+        }
+
         const updateQuery = `UPDATE employee_register SET ${updateFields.join(
           ", "
-        )} WHERE employee_ID = ?`;
+        )} WHERE branch_name = ? AND employee_ID = ?`;
 
-        db.query(updateQuery, [...updateValues, empId], (err, result) => {
-          if (err) {
-            return res.status(500).json({
-              success: false,
-              message: "Failed to update details",
-            });
-          } else {
-            return res.status(200).json({
-              success: true,
-              message: "Details updated successfully",
-            });
+        db.query(
+          updateQuery,
+          [...updateValues, branch, empId],
+          (err, result) => {
+            if (err) {
+              return res.status(500).json({
+                success: false,
+                message: "Failed to update details",
+              });
+            } else {
+              return res.status(200).json({
+                success: true,
+                message: "Details updated successfully",
+              });
+            }
           }
-        });
+        );
       } else {
         return res.status(404).json({
           success: false,
@@ -259,10 +367,7 @@ const EditEmployeeDetails = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
+    res.status(400).json({ success: false, message: "Internal Server Error" });
   }
 };
 
@@ -976,7 +1081,7 @@ const downloadBillRecById = (req, res) => {
 module.exports = {
   getBranch,
   EnrollEmployee,
-  EditEmployeeDetails,
+  editEmployeeDetails,
   getEmployeeData,
   adminLoginUser,
   sendOtp,

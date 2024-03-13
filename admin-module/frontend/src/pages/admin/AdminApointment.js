@@ -55,7 +55,7 @@ const AdminApointment = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/v1/admin/getAppointmentData/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${branch.name}`
       );
       console.log(response);
       setAppointmentList(response.data);
@@ -76,7 +76,7 @@ const AdminApointment = () => {
     console.log(updateData);
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/v1/admin/insertTimelineEvent",
+        "https://dentalguruadmin.doaguru.com//api/v1/admin/insertTimelineEvent",
         {
           type: "appointment",
           description: "apointment scheduled",
@@ -94,7 +94,7 @@ const AdminApointment = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8888/api/v1/admin/updateAppointData/${id}`,
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/updateAppointData/${id}`,
         updateData
       );
       console.log(response);
@@ -111,7 +111,7 @@ const AdminApointment = () => {
   const deleteAppointment = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:8888/api/v1/admin/deleteAppointData/${id}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/deleteAppointData/${id}`
       );
       console.log(response);
       cogoToast.success("Appointment Deleted Successfully");
@@ -189,11 +189,11 @@ const AdminApointment = () => {
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-nowrap ">
-              <div className="col-lg-1 col-1 p-0">
+              <div className="col-lg-1 col-md-2 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
-                <div className="row d-flex justify-content-between mx-3">
+              <div className="col-lg-11 col-md-10 col-11 ps-0">
+                <div className="row d-flex justify-content-between">
                   <div className="col-12 col-md-12 mt-4">
                     <div className="d-flex justify-content-between">
                       {/* <BranchSelector /> */}

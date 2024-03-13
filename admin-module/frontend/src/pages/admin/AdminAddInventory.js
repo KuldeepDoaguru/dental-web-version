@@ -82,7 +82,7 @@ const AdminAddInventory = () => {
     console.log(recData, reciept_doc);
     try {
       const { data } = await axios.post(
-        "http://localhost:8888/api/v1/admin/purchaseInventory",
+        "https://dentalguruadmin.doaguru.com//api/v1/admin/purchaseInventory",
         formData,
         {
           headers: {
@@ -410,7 +410,7 @@ const Container = styled.div`
 
   label {
     font-weight: bold;
-    color: #004aad;
+    color: #1abc9c;
   }
 
   .box-input {
@@ -418,16 +418,16 @@ const Container = styled.div`
   }
 
   input {
-    border: 1px solid #004aad;
+    border: 1px solid #1abc9c;
   }
   .input-group {
     h4 {
-      color: #004aad;
+      color: #1abc9c;
     }
   }
 
   .btnbox {
-    background-color: #004aad;
+    background-color: #1abc9c;
     color: white;
   }
 `;

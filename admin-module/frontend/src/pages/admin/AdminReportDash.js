@@ -12,10 +12,10 @@ const AdminReportDash = () => {
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-nowrap ">
-              <div className="col-lg-1 col-1 p-0">
+              <div className="col-lg-1 col-md-2 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-md-10 col-11 ps-0">
                 <div className="container-fluid mt-3">
                   <div className="container-fluid">
                     <div className="row mt-3">

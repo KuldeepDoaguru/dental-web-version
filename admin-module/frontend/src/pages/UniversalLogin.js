@@ -27,7 +27,7 @@ const UniversalLogin = () => {
   const getBranchList = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8888/api/v1/admin/getBranch"
+        "https://dentalguruadmin.doaguru.com//api/v1/admin/getBranch"
       );
       console.log(response.data);
       setBranchList(response.data);
@@ -48,7 +48,7 @@ const UniversalLogin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/v1/admin/adminLoginUser",
+        "https://dentalguruadmin.doaguru.com//api/v1/admin/adminLoginUser",
         {
           email,
           password,

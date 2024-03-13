@@ -18,7 +18,7 @@ const Payment = () => {
   const getPaymentDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPaymentDetailsByPatId/${pid}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPaymentDetailsByPatId/${pid}`
       );
       setPayData(data);
     } catch (error) {

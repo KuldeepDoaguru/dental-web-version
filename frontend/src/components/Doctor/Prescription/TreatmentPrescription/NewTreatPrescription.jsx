@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { IoMdAdd } from "react-icons/io";
+import CreatableSelect from 'react-select/creatable';
+import { FaPrescriptionBottleMedical } from "react-icons/fa6";
+import { FaLocationArrow } from "react-icons/fa6";
 
 const NewTreatPrescription = () => {
     const { id } = useParams();
@@ -11,6 +14,16 @@ const NewTreatPrescription = () => {
     const [getPatientData, setGetPatientData] = useState([]);
     const [getExaminData, setGetExaminData] = useState([]);
     const [getTreatData, setGetTreatData] = useState([]);
+    const [prescriptionData, setPrescriptionData] = useState({
+        medicine_name: [],
+        dosage: '',
+        frequency: '',
+        duration: '',
+        note: ''
+    });
+    const [medicineOptions, setMedicineOptions] = useState([]);
+    const [getTreatMedicine, setGetTreatMedicine] = useState([]);
+    // console.log(prescriptionData)
 
     // Get Patient Details START
     const getPatientDetail = async () => {
@@ -58,6 +71,99 @@ const NewTreatPrescription = () => {
         getTreatDetail();
     }, []);
     // Get Patient Treatment Details END
+
+    // Insert Medical Prescription Data START
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setPrescriptionData({ ...prescriptionData, [name]: value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(`http://localhost:8888/api/doctor/insertTreatPrescription/${id}`, prescriptionData);
+            console.log(response.data);
+            window.location.reload();
+            // setGetTreatMedicine([...getTreatMedicine, response.data]);
+            // Handle success, maybe show a success message
+            setPrescriptionData({
+                medicine_name: [],
+                dosage: '',
+                frequency: '',
+                duration: '',
+                note: ''
+            })
+        } catch (error) {
+            console.error('Error:', error.response.data);
+            alert('Error:', error.response.data)
+            // Handle error, maybe show an error message
+        }
+    };
+
+    const handleMedicineChange = (selectedOptions) => {
+        const selectedValues = selectedOptions.map(option => option.value);
+        setPrescriptionData({ ...prescriptionData, medicine_name: selectedValues });
+    };
+    
+
+    const handleCreateMedicine = (newValue) => {
+        const newOption = { value: newValue, label: newValue };
+        setMedicineOptions([...medicineOptions, newOption]);
+        setPrescriptionData({ ...prescriptionData, medicine_name: [...prescriptionData.medicine_name, newValue] });
+    };
+
+    useEffect(() => {
+        const fetchMedicineOptions = async () => {
+            try {
+                const response = await axios.get('http://localhost:8888/api/doctor/getMedicineData');
+                const options = response.data.map(medicine => ({ value: medicine, label: medicine }));
+                setMedicineOptions(options);
+            } catch (error) {
+                console.error('Error fetching medicine options:', error);
+            }
+        };
+        fetchMedicineOptions();
+    }, []);
+    // Insert Medical Prescription Data END
+
+    // Get Treatment Medical Prescription Data START
+    const getTreatPrescriptionByAppointId = async () =>{
+        try {
+            const res = await axios.get(`http://localhost:8888/api/doctor/getTreatPrescriptionByAppointId/${id}`);
+            setGetTreatMedicine(res.data);
+            console.log(res.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(()=>{
+        getTreatPrescriptionByAppointId()
+    }, [])
+    // Get Treatment Medical Prescription Data END
+
+    const handledelete = async (id) => {
+        console.log(id);
+        try {
+            const confirmed = window.confirm("Are you sure you want to delete?"); // Show confirmation dialog
+
+            if (confirmed) {
+                const res = await axios.delete(`http://localhost:8888/api/doctor/deleteTreatPrescriptionById/${id}`);
+                console.log(res.data); // Log response data
+
+                setGetTreatMedicine(getTreatMedicine.filter(item => item.id !== id)); // Remove deleted item from data
+            }
+        } catch (error) {
+            console.log(error);
+            // Optionally, provide feedback to the user
+            window.alert("An error occurred while deleting the item.");
+        }
+    }
+
+    const handleNavigate = () =>{
+        navigate(`/ViewTreatPrescription/${id}`)
+    }
+
     return (
         <>
             <Wrapper>
@@ -227,24 +333,31 @@ const NewTreatPrescription = () => {
                 </div>
                 <div className="container">
                     <div className="row shadow-sm p-3 mb-3 bg-body rounded">
-                        <form>
-                            <div class="row">
-                                <div class="col">
-                                    <div data-mdb-input-init class="form-outline">
-                                        <label class="form-label" htmlFor="medicineName">Medicine Name</label>
-                                        <input type="text" id="medicineName" class="form-control" name="medicineName" />
+                        <form onSubmit={handleSubmit}>
+                            <div className="row">
+                                <div className="col">
+                                    <div data-mdb-input-init className="form-outline">
+                                        <label>Medicine Name</label>
+                                        <CreatableSelect
+                                            options={medicineOptions}
+                                            isMulti
+                                            onChange={handleMedicineChange}
+                                            onCreateOption={handleCreateMedicine}
+                                            value={prescriptionData.medicine_name.map(medicine => ({ value: medicine, label: medicine }))}
+                                            placeholder="Select medicine..."
+                                        />
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div data-mdb-input-init class="form-outline">
-                                        <label class="form-label" htmlFor="dosage">Dosage</label>
-                                        <input type="text" id="dosage" class="form-control" name="dosage" />
+                                <div className="col">
+                                    <div data-mdb-input-init className="form-outline">
+                                        <label>Dosage</label>
+                                        <input type="text" id="dosage" className="form-control" name="dosage" value={prescriptionData.dosage} onChange={handleChange} />
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div data-mdb-input-init class="form-outline">
-                                        <label class="form-label" htmlFor="frequency">Frequency</label>
-                                        <select id="frequency" class="form-control" name="frequency">
+                                <div className="col">
+                                    <div data-mdb-input-init className="form-outline">
+                                        <label>Frequency</label>
+                                        <select id="frequency" className="form-control" name="frequency" value={prescriptionData.frequency} onChange={handleChange}>
                                             <option value="">Choose frequency</option>
                                             <option value="1-1-1(TDS)">1-1-1(TDS)</option>
                                             <option value="1-1-0(BD)">1-1-0(BD)</option>
@@ -257,10 +370,10 @@ const NewTreatPrescription = () => {
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div data-mdb-input-init class="form-outline">
-                                        <label class="form-label" htmlFor="duration">Duration</label>
-                                        <select id="duration" class="form-control" name="duration">
+                                <div className="col">
+                                    <div data-mdb-input-init className="form-outline">
+                                        <label>Duration</label>
+                                        <select id="duration" className="form-control" name="duration" value={prescriptionData.duration} onChange={handleChange}>
                                             <option value="">Choose duration</option>
                                             <option value="1 day">1 day</option>
                                             <option value="2 days">2 days</option>
@@ -276,14 +389,14 @@ const NewTreatPrescription = () => {
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div data-mdb-input-init class="form-outline">
-                                        <label class="form-label" htmlFor="note">Note</label>
-                                        <input type="text" id="note" class="form-control" name="note" />
+                                <div className="col">
+                                    <div data-mdb-input-init className="form-outline">
+                                        <label>Note</label>
+                                        <input type="text" id="note" className="form-control" name="note" value={prescriptionData.note} onChange={handleChange} />
                                     </div>
                                 </div>
                             </div>
-                            <button className='btn btn-secondary fs-5 mt-4'>Add<IoMdAdd size={20} /></button>
+                            <button className="btn btn-secondary fs-5 mt-4" type="submit">Add<IoMdAdd size={20} /></button>
                         </form>
                     </div>
                 </div>
@@ -292,26 +405,38 @@ const NewTreatPrescription = () => {
             <div className='text-center'><RiLoader2Fill size={35} className="spin" /></div>
           </>
         ) : ( */}
-          <div className="container">
-            <div className="row">
-              <table class="table">
-                <thead className='table-success rounded'>
-                  <tr>
-                    <th scope="col">Medicine Name</th>
-                    <th scope="col">Dosage</th>
-                    <th scope="col">Frequency</th>
-                    <th scope="col">Duration</th>
-                    <th scope="col">Note</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  
-                </tbody>
-              </table>
-            </div>
-          </div>
-        {/* )} */}
+                <div className="container">
+                    <div className="row">
+                        <table class="table">
+                            <thead className='table-success rounded'>
+                                <tr>
+                                    <th scope="col">Medicine Name</th>
+                                    <th scope="col">Dosage</th>
+                                    <th scope="col">Frequency</th>
+                                    <th scope="col">Duration</th>
+                                    <th scope="col">Note</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {getTreatMedicine.map((item, index)=>(
+                                    <tr key={index}>
+                                        <td>{item.medicine_name}</td>
+                                        <td>{item.dosage}</td>
+                                        <td>{item.frequency}</td>
+                                        <td>{item.duration}</td>
+                                        <td>{item.note}</td>
+                                        <td><button className="btn btn-danger" onClick={()=>handledelete(item.id)}><FaPrescriptionBottleMedical size={22}/></button></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div className="text-center mb-3">
+                <button className="btn btn-info fs-5 text-light" onClick={handleNavigate}>Save & Continue <FaLocationArrow size={25}/></button>
+                </div>
+                {/* )} */}
             </Wrapper>
         </>
     )

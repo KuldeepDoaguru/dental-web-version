@@ -3,7 +3,7 @@ const db = require("../connect.js");
 const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric } = require("../controller/authControl.js");
 const { getAppointTable, getAppointmentById, getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus } = require("../controller/authAppointTable.js");
 const { getBranch, LoginDoctor } = require("../controller/authBranch.js");
-const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription } = require("../controller/authTreatment.js");
+const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById } = require("../controller/authTreatment.js");
 
 const router = express.Router();
 
@@ -44,7 +44,14 @@ router.delete('/deleteTreatmentData/:id', deleteTreatmentData);
 
 // Treatment List Routes END here......
 
-router.post('/insertTreatPrescription', insertTreatPrescription);
+// Medical Prescription Routes START here......
+
+router.post('/insertTreatPrescription/:appoint_id', insertTreatPrescription);
+router.get('/getMedicineData', getMedicineData);
+router.get('/getTreatPrescriptionByAppointId/:appoint_id', getTreatPrescriptionByAppointId);
+router.delete('/deleteTreatPrescriptionById/:id', deleteTreatPrescriptionById);
+
+// Medical Prescription Routes END here......
 
 
 module.exports = { authRoutes: router };

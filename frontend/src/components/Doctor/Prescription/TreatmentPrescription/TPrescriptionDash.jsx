@@ -1,11 +1,14 @@
 import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import Sider from "../../SideBar";
 import HeadBar from "../../HeadBar";
-import TPrescription from "./TPrescription";
+import NewTreatPrescription from "./NewTreatPrescription";
 
 const TPrescriptionDash = () => {
-
+  const { id } = useParams();
+    console.log(id);
+    const navigate = useNavigate();
   return (
     <>
       <Wrapper>
@@ -17,8 +20,8 @@ const TPrescriptionDash = () => {
               <div className="col-lg-1 col-1 p-0">
                 <Sider />
               </div>
-              <div className="col-lg-11 col-11 ps-0 m-4">
-                <TPrescription />
+              <div className="col-lg-11 col-11 ps-0">
+                <NewTreatPrescription />
               </div>
             </div>
           </div>

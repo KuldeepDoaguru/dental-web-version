@@ -74,7 +74,6 @@ const getTreatmentData = (req, res) => {
             console.log(err);
             return res.status(400).json({ success: false, message: "Error retrieving treatment data" })
         } else {
-            console.log(results);
             return res.status(200).json({ success: true, data: results });
         }
     })
@@ -123,14 +122,58 @@ const deleteTreatmentData = (req, res) => {
 
 const insertTreatPrescription = (req, res) => {
     const { medicine_name, dosage, frequency, duration, note } = req.body;
+    const { appoint_id } = req.params;
 
-    const sql = 'INSERT INTO dental_prescription (medicine_name, dosage, frequency, duration, note) VALUES (?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO dental_prescription (appoint_id, medicine_name, dosage, frequency, duration, note) VALUES (?, ?, ?, ?, ?, ?)';
 
-    db.query(sql, [medicine_name, dosage, frequency, duration, note], (err, result) => {
+    db.query(sql, [appoint_id, medicine_name, dosage, frequency, duration, note], (err, result) => {
         if (err) {
             res.status(500).json({ error: err.message });
         } else {
-            res.status(200).json({ message: 'User inserted successfully', id: result.insertId });
+            res.status(200).json({ message: 'Prescription inserted successfully', id: result.insertId });
+        }
+    });
+};
+
+const getMedicineData = (req, res) => {
+    const sql = 'SELECT item_name FROM purchase_inventory';
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            // Extract the column data from the result array
+            const columnData = result.map(row => row.item_name);
+            res.status(200).json(columnData);
+        }
+    });
+};
+
+const getTreatPrescriptionByAppointId = (req, res) => {
+    const { appoint_id } = req.params;
+
+    const sql = 'SELECT * FROM dental_prescription WHERE appoint_id = ?';
+
+    db.query(sql, [appoint_id], (err, results) => {
+        if (err) {
+            res.status(500).json({ error: err.message });
+        } else {
+            res.status(200).json(results);
+        }
+    });
+};
+
+const deleteTreatPrescriptionById = (req, res) =>{
+    const { id } = req.params;
+
+    const sql = `DELETE FROM dental_prescription WHERE id = ?`
+
+    db.query(sql, [id], (err, result)=>{
+        if(err){
+            console.log(err);
+            return res.status(400).json({success:  false, error: "Failed to Delete"});
+        }else{
+            return res.status(200).json({success:  true, message: 'Prescription deleted successfully', affectedRows: result.affectedRows })
         }
     })
 }
@@ -138,4 +181,4 @@ const insertTreatPrescription = (req, res) => {
 
 
 
-module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription }; 
+module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById }; 

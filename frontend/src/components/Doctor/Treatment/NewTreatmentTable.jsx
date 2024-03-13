@@ -90,7 +90,7 @@ const NewTreatmentTable = () => {
     }
 
     const handleNavigate = () =>{
-        navigate(`/NewTreatPrescription/${id}`)
+        navigate(`/TPrescriptionDash/${id}`)
     }
 
 

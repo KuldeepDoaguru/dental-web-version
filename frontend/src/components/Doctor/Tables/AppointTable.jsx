@@ -49,7 +49,7 @@ const AppointTable = () => {
       };
 
       // If the action is 'cancel_treatment', add the reason to the request body
-      if (action === 'Cancelled') {
+      if (action === 'Cancel') {
         const cancelReason = prompt("Please provide a reason for cancellation:");
         if (cancelReason !== null) { // User provided a reason
           requestBody.reason = cancelReason;
@@ -160,7 +160,7 @@ const AppointTable = () => {
                           <li>
                             <button
                               className="dropdown-item mx-0"
-                              onClick={() => handleAction('Cancelled', item.appoint_id)}
+                              onClick={() => handleAction('Cancel', item.appoint_id)}
                             >
                               Cancel Treatment
                             </button>

@@ -7,7 +7,7 @@ const initialState = {
     refreshData: false
 };
 
-const userSlice = createSlice({
+const userSlice = createSlice({ 
     name: 'user',
     initialState,
     reducers: {

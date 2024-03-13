@@ -32,5 +32,5 @@ const TreatmentDashBoard = () => {
 
 export default TreatmentDashBoard;
 const Wrapper = styled.div`
-overflow: hidden;
+overflow-x: hidden;
 `;

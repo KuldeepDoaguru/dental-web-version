@@ -14,6 +14,7 @@ function AddPatient() {
   const dispatch = useDispatch();
   
   const user = useSelector((state) => state.user);
+  const {refreshTable} = useSelector((state) => state.user);
    const  branch = user.currentUser.branch_name;
    
   const [searchDoctor, setSearchDoctor] = useState("");
@@ -215,6 +216,11 @@ function AddPatient() {
     getBranchDetail();
     getBranchHolidays();
   },[]);
+
+  useEffect(()=>{
+    getPatient();
+    getAppointments();
+  },[refreshTable])
 
   useEffect(()=>{
     handleWeekOfDay(branchDetail[0]?.week_off);
@@ -441,6 +447,12 @@ const handleChangeDisease = (newValue, actionMeta) => {
       return;
     }
 
+    if(selectedTreatment?.length == 0){
+      alert("Please select treatment")
+      console.log("Please select treatment");
+      return;
+    }
+
     const selectedDay = new Date(selectedDate).getDay();
   if(selectedDay === weekOffDay){
      alert("Selected date is a week off day. Please choose another date.");
@@ -517,8 +529,11 @@ const handleChangeDisease = (newValue, actionMeta) => {
       // Check if the appointment is for the selected doctor and if it falls within the same datetime range
       const appointmentDate = new Date(appointment.appointment_dateTime);
       const selectedDate = new Date(data.appDateTime);
+
+       // Check if the appointment status is 'Cancel'
+    const isCanceled = appointment.appointment_status !== 'Cancel';
       
-      return !(appointment.assigned_doctor_id === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
+      return !(appointment.assigned_doctor_id === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime() && isCanceled);
     });
 
 

@@ -511,6 +511,11 @@ const handleDoctorSelect = (doctor) => {
     console.log("Please select a doctor");
     return;
   }
+  if(selectedTreatment?.length == 0){
+    alert("Please select treatment")
+    console.log("Please select treatment");
+    return;
+  }
 
   const selectedDay = new Date(selectedDate).getDay();
   if(selectedDay === weekOffDay){
@@ -586,9 +591,30 @@ const isDoctorAvailable = (selectedDateTime) => {
     // Check if the appointment is for the selected doctor and if it falls within the same datetime range
     const appointmentDate = new Date(appointment.appointment_dateTime);
     const selectedDate = new Date(bookData.appDateTime);
+
+    // Check if the appointment status is 'Cancel'
+    const isCanceled = appointment.appointment_status !== 'Cancel';
     
-    return !(appointment.assigned_doctor_id === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
+    return !(appointment.assigned_doctor_id === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime() && isCanceled);
   });
+
+  // const isSlotAvailable = appointmentsData.every((appointment) => {
+  //   // Check if the appointment is for the selected doctor and if it falls within the same datetime range
+  //   const appointmentDate = new Date(appointment.appointment_dateTime);
+  //   const selectedDate = new Date(bookData.appDateTime);
+    
+  //   // Check if the appointment is for the selected doctor
+  //   const isForSelectedDoctor = appointment.assigned_doctor_id === selectedDoctor.employee_ID;
+  
+  //   // Check if the appointment is within the same datetime range
+  //   const isWithinSameDateTime = appointmentDate.getTime() === selectedDate.getTime();
+  
+  //   // Check if the appointment status is 'Cancel'
+  //   const isCanceled = appointment.appointment_status === 'Cancel';
+  
+  //   // Return true if the appointment is canceled and for the selected doctor within the same datetime range
+  //   return isForSelectedDoctor && isWithinSameDateTime && isCanceled;
+  // });
 
    // Check if the selected appointment date matches with the doctor's block day
   //  const blockDays = selectedDoctor.scheduleBlockDays; // Assuming scheduleBlockDays is an array of dates

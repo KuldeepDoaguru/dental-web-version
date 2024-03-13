@@ -148,7 +148,7 @@ const addPatient = (req, res) => {
       db.query(checkPatientQuery, [mobile, patient_Name], (err, result) => {
           if (err) {
               console.error("Error checking if user exists in MySQL:", err);
-              return res.status(500).json({ error: "Internal server error" });
+              return res.status(500).json({ error: "Internal server error" ,message :  "Internal server error"});
           }
 
           // Check if patient already exists
@@ -167,7 +167,7 @@ const addPatient = (req, res) => {
   db.query(highestPatientIDQuery, [pattern], (err, result) => {
     if (err) {
       console.error("Error getting highest empID:", err);
-      res.status(500).json({ error: "Internal server error" });
+      res.status(500).json({ error: "Internal server error" , message :  "Internal server error"});
     } else {
       let nextID = 1;
       if (result[0].maxID !== null) {
@@ -222,7 +222,7 @@ const addPatient = (req, res) => {
                   db.query(insertPatientQuery, insertPatientParams, (insertErr, insertResult) => {
                       if (insertErr) {
                           console.error("Error inserting patient:", insertErr);
-                          return res.status(500).json({ error: "Internal server error" });
+                          return res.status(500).json({ error: "Internal server error" , message :  "Internal server error"});
                       } else {
                           // Proceed with booking appointment
                           const bookAppointmentQuery = `
@@ -248,7 +248,7 @@ const addPatient = (req, res) => {
                           db.query(bookAppointmentQuery, bookAppointmentParams, (appointmentErr, appointmentResult) => {
                               if (appointmentErr) {
                                   console.error("Error booking appointment:", appointmentErr);
-                                  return res.status(500).json({ error: "Internal server error" });
+                                  return res.status(500).json({ error: "Internal server error" ,message :  "Internal server error"});
                               } else {
                                   console.log("Appointment booked successfully");
                                   return res.status(200).json({

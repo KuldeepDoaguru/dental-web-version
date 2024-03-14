@@ -329,12 +329,12 @@ patient_type
     Action
   </button>
   <ul className="dropdown-menu">
-    {patient.appointment_status !== "Check-In" &&  <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li>}
+    {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel"  &&   <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li>}
   {/* <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li> */}
   {/* <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Check-Out')}>Check-Out</a></li>
   <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Complete')}>Complete</a></li> */}
-   {patient.appointment_status !== "Check-In" &&   <li><a className="dropdown-item mx-0" onClick={() => handleEditAppointment(patient)}>Edit Appointment</a></li>}
-   {patient.appointment_status !== "Check-In" &&    <li><a className="dropdown-item mx-0" onClick={() => handleStatusCancel(patient.appoint_id, 'Cancel')}>Cancel Appointment</a></li>}
+   {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" &&   <li><a className="dropdown-item mx-0" onClick={() => handleEditAppointment(patient)}>Edit Appointment</a></li>}
+   {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" &&    <li><a className="dropdown-item mx-0" onClick={() => handleStatusCancel(patient.appoint_id, 'Cancel')}>Cancel Appointment</a></li>}
    
    
   

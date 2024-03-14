@@ -55,11 +55,11 @@ const data = [
   },
 ];
 
-const NewPatientTMAdmin = () => {
+const AppointmentChart = () => {
   return (
     <>
       <Container>
-        <div className="container-fluid mt-4" id="main">
+        <div className="container-fluid mt-4 ms-4 " id="main">
           <div className="row">
             <div className="col-12 d-flex justify-content-center">
               <AreaChart
@@ -81,7 +81,7 @@ const NewPatientTMAdmin = () => {
                   type="monotone"
                   dataKey="uv"
                   stroke="#257042"
-                  fill="#000"
+                  fill="#004aad"
                 />
               </AreaChart>
             </div>
@@ -92,10 +92,10 @@ const NewPatientTMAdmin = () => {
   );
 };
 
-export default NewPatientTMAdmin;
+export default AppointmentChart;
 const Container = styled.div`
   #main {
-    background-color: #1abc9c;
+    background-color: #c9dbf4;
     width: 100%;
     border-radius: 5px;
     padding: 2rem;

@@ -1,8 +1,7 @@
 import React, { PureComponent } from "react";
 import {
-  BarChart,
-  Bar,
-  Rectangle,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -12,58 +11,89 @@ import {
 } from "recharts";
 import styled from "styled-components";
 
-const PatientStatisticChart = () => {
+function AveragePatientChart() {
   const data = [
     {
-      name: "Page A",
+      name: "Years",
       uv: 4000,
       pv: 2400,
       amt: 2400,
     },
     {
-      name: "Page B",
+      name: "2014",
       uv: 3000,
       pv: 1398,
       amt: 2210,
     },
     {
-      name: "Page C",
+      name: "2015",
       uv: 2000,
       pv: 9800,
       amt: 2290,
     },
     {
-      name: "Page D",
+      name: "2016",
       uv: 2780,
       pv: 3908,
       amt: 2000,
     },
     {
-      name: "Page E",
+      name: "2017",
       uv: 1890,
       pv: 4800,
       amt: 2181,
     },
     {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Page G",
+      name: "2018",
       uv: 3490,
       pv: 4300,
       amt: 2100,
     },
+    {
+      name: "2019",
+      uv: 3490,
+      pv: 4300,
+      amt: 2100,
+    },
+    {
+      name: "2020",
+      uv: 5090,
+      pv: 7300,
+      amt: 7100,
+    },
+    {
+      name: "2021",
+      uv: 5090,
+      pv: 7300,
+      amt: 7100,
+    },
+    {
+      name: "2022",
+      uv: 5090,
+      pv: 7300,
+      amt: 7100,
+    },
+    {
+      name: "2023",
+      uv: 5090,
+      pv: 7300,
+      amt: 7100,
+    },
+    {
+      name: "2024",
+      uv: 5090,
+      pv: 7300,
+      amt: 7100,
+    },
   ];
+
   return (
     <Wrapper>
       <div className="container-fluid mt-4" id="main">
         <div className="row">
-          <div className="col-12 d-flex justify-content-center">
-            <BarChart
-              width={500}
+          <div className="d-flex justify-content-center">
+            <LineChart
+              width={350}
               height={300}
               data={data}
               margin={{
@@ -78,36 +108,33 @@ const PatientStatisticChart = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar
+              <Line
+                type="monotone"
                 dataKey="pv"
-                fill="#004aad"
-                activeBar={<Rectangle fill="pink" stroke="blue" />}
+                stroke="#004aad"
+                activeDot={{ r: 8 }}
               />
-              <Bar
-                dataKey="uv"
-                fill="#257042"
-                activeBar={<Rectangle fill="gold" stroke="purple" />}
-              />
-            </BarChart>
+              <Line type="monotone" dataKey="uv" stroke="#257042" />
+            </LineChart>
           </div>
         </div>
       </div>
     </Wrapper>
   );
-};
+}
 
-export default PatientStatisticChart;
+export default AveragePatientChart;
 
 const Wrapper = styled.div`
   #main {
-    background-color: #55efc4;
+    background-color: #c7ecee;
     width: 100%;
     border-radius: 5px;
     padding: 2rem;
     box-shadow: 0px 2px 18px #bdbaba;
   }
+
   @media screen and (max-width: 768px) {
-    padding: 20px;
     font-size: small;
   }
 `;

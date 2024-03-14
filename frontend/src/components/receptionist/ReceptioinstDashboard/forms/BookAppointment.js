@@ -25,6 +25,7 @@ function BookAppointment() {
   const [branchDetail,setBranchDetail] = useState([]);
   const [weekOffDay,setWeekOffDay] = useState("");
   const [branchHolidays,setBranchHolidays] = useState([]);
+  const minDate = new Date();
   console.log(branchHolidays)
   const  handleWeekOfDay = (day)=>{
         if(day == "sunday"){
@@ -377,7 +378,10 @@ const [availableDoctorOnDate,setAvailableDoctorOnDate] = useState([]);
 useEffect(() => {
   setSearchDoctor("");
   setSelectedDoctor(null)
-  
+  if (!selectedDate){
+      
+    return
+  }
   const selectedDateTime = new Date(selectedDate);
   
   const filteredDoctors = doctors.filter(doctor => {
@@ -855,6 +859,7 @@ const isDoctorAvailable = (selectedDateTime) => {
         value={selectedDate}
         className="form-control"
         onChange={handleDateChange}
+        min={formatDate(new Date())}
         required
       />
                          

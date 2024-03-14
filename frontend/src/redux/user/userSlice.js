@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createSelector } from '@reduxjs/toolkit';
 
 const initialState = {
     currentUser: null,
@@ -7,7 +8,7 @@ const initialState = {
     refreshData: false
 };
 
-const userSlice = createSlice({ 
+const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
@@ -28,11 +29,18 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = false;
         },
-        toggleDataRefresh: (state) =>{
-            state.refreshData=!state.refreshData;
+        toggleDataRefresh: (state) => {
+            state.refreshData = !state.refreshData;
         }
     }
 });
+
+const selectUser = (state) => state.user;
+
+export const selectCurrentUser = createSelector(
+    [selectUser],
+    (user) => user.currentUser
+);
 
 export const { signInStart, signInSuccess, signInFailure, logout, toggleDataRefresh } = userSlice.actions;
 

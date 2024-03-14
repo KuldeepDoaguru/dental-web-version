@@ -11,6 +11,8 @@ const AppointTable = () => {
   const [page, setPage] = useState(1);
   const [perPage] = useState(5);
   const navigate = useNavigate();
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+
 
   const tableAppointmentData = async () => {
     try {
@@ -72,7 +74,18 @@ const AppointTable = () => {
     }
   };
 
-  const filteredTable_data = appointments.filter((data) => {
+  const handleDateChange = (increment) => {
+    return () => {
+      const currentDate = new Date(selectedDate);
+      currentDate.setDate(currentDate.getDate() + increment);
+      setSelectedDate(currentDate.toISOString().split('T')[0]);
+    };
+  };
+
+  // Filter appointments based on selected date
+  const filteredTableData = appointments.filter((data) => {
+    return data.appointment_dateTime.includes(selectedDate);
+  }).filter((data) => {
     return data.patient_name.toLowerCase().includes(searchInput.toLowerCase());
   });
 
@@ -85,9 +98,10 @@ const AppointTable = () => {
             <h5 className="widget-title" id="title">
               Current Appointment
               <h5 className="d-inline ms-4">
-                Total - {filteredTable_data.length}
-              </h5> 
+                Total - {filteredTableData.length}
+              </h5>
             </h5>
+
             <input
               type="search"
               placeholder="Search here"
@@ -96,99 +110,114 @@ const AppointTable = () => {
               className="mb-2 rounded-5 form-control w-25"
               id="form12"
             />
-          </div>
 
-          <div className="table-responsive ">
-            <table className="table table-bordered table-striped border" style={{ overflowX: 'scroll' }}>
-              <thead>
-                <tr>
-                  <th>A.Id</th>
-                  <th>P.Id</th>
-                  <th>Patient Name</th>
-                  <th>Mobile</th>
-                  <th>Timing</th>
-                  <th>Treatment</th>
-                  <th>Blood Group</th>
-                  <th>DOB</th>
-                  <th>Age</th>
-                  <th>Weight</th>
-                  <th>Allergy</th>
-                  <th>Disease</th>
-                  <th>Patient Type</th>
-                  <th>Note</th>
-                  <th>Status</th>
-                  <th>Type of Action</th>
+            <FaArrowCircleLeft
+              style={{ fontSize: '35px', padding: '3px', cursor: 'pointer' }}
+              onClick={handleDateChange(-1)}
+            />
+            <input
+              type="date"
+              className="form-control w-50"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+            />
+            <FaArrowCircleRight
+              style={{ fontSize: '35px', padding: '3px', cursor: 'pointer' }}
+              onClick={handleDateChange(1)}
+            />
+        </div>
+
+        <div className="table-responsive ">
+          <table className="table table-bordered table-striped border" style={{ overflowX: 'scroll' }}>
+            <thead>
+              <tr>
+                <th>A.Id</th>
+                <th>P.Id</th>
+                <th>Patient Name</th>
+                <th>Mobile</th>
+                <th>Timing</th>
+                <th>Treatment</th>
+                <th>Blood Group</th>
+                <th>DOB</th>
+                <th>Age</th>
+                <th>Weight</th>
+                <th>Allergy</th>
+                <th>Disease</th>
+                <th>Patient Type</th>
+                <th>Note</th>
+                <th>Status</th>
+                <th>Type of Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredTableData.slice((page - 1) * perPage, page * perPage).map((item, index) => (
+                <tr key={index}>
+                  <td>{item.appoint_id}</td>
+                  <td>{item.uhid}</td>
+                  <td>{item.patient_name}</td>
+                  <td>{item.mobileno}</td>
+                  <td>{item.appointment_dateTime}</td>
+                  <td>{item.treatment_provided}</td>
+                  <td>{item.bloodgroup}</td>
+                  <td>{item.dob}</td>
+                  <td>{item.age}</td>
+                  <td>{item.weight}</td>
+                  <td>{item.allergy}</td>
+                  <td>{item.disease}</td>
+                  <td>{item.patient_type}</td>
+                  <td>{item.notes}</td>
+                  <td>{item.appointment_status}</td>
+                  <td>
+                    <div className="dropdown">
+                      <button
+                        className="btn btn-secondary dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Action
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <button
+                            className="dropdown-item mx-0"
+                            onClick={() => handleAction('In Treatment', item.appoint_id)}
+                          >
+                            Start Treatment
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item mx-0"
+                            onClick={() => handleAction('Cancel', item.appoint_id)}
+                          >
+                            Cancel Treatment
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item mx-0"
+                            onClick={() => handleAction('On Hold', item.appoint_id)}
+                          >
+                            Hold
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {filteredTable_data.slice((page - 1) * perPage, page * perPage).map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.appoint_id}</td>
-                    <td>{item.uhid}</td>
-                    <td>{item.patient_name}</td>
-                    <td>{item.mobileno}</td>
-                    <td>{item.appointment_dateTime}</td>
-                    <td>{item.treatment_provided}</td>
-                    <td>{item.bloodgroup}</td>
-                    <td>{item.dob}</td>
-                    <td>{item.age}</td>
-                    <td>{item.weight}</td>
-                    <td>{item.allergy}</td>
-                    <td>{item.disease}</td>
-                    <td>{item.patient_type}</td>
-                    <td>{item.notes}</td>
-                    <td>{item.appointment_status}</td>
-                    <td>
-                      <div className="dropdown">
-                        <button
-                          className="btn btn-secondary dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          Action
-                        </button>
-                        <ul className="dropdown-menu">
-                          <li>
-                            <button
-                              className="dropdown-item mx-0"
-                              onClick={() => handleAction('In Treatment', item.appoint_id)}
-                            >
-                              Start Treatment
-                            </button>
-                          </li>
-                          <li>
-                            <button
-                              className="dropdown-item mx-0"
-                              onClick={() => handleAction('Cancel', item.appoint_id)}
-                            >
-                              Cancel Treatment
-                            </button>
-                          </li>
-                          <li>
-                            <button
-                              className="dropdown-item mx-0"
-                              onClick={() => handleAction('On Hold', item.appoint_id)}
-                            >
-                              Hold
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div>
-              <button onClick={handlePreviousPage} disabled={page === 1} className='btn btn-secondary'>Previous</button>
-              <span className='px-2 fs-5 fw-bolder'>Page {page}</span>
-              <button onClick={handleNextPage} className='btn btn-secondary'>Next</button>
-            </div>
+              ))}
+            </tbody>
+          </table>
+          <div>
+            <button onClick={handlePreviousPage} disabled={page === 1} className='btn btn-secondary'>Previous</button>
+            <span className='px-2 fs-5 fw-bolder'>Page {page}</span>
+            <button onClick={handleNextPage} className='btn btn-secondary'>Next</button>
           </div>
         </div>
       </div>
-    </Wrapper>
+    </div>
+    </Wrapper >
   );
 };
 

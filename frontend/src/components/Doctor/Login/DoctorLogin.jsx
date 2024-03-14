@@ -69,7 +69,7 @@ console.log(selectedBranch)
       setLocalhost(response.data);
       if (response.data.success === "true") {
         // sendOtp();
-        alert("login successful")
+        // alert("login successful")
         dispatch(signInSuccess(response.data.user))
         navigate("/doctor-dashboard");
         // setPopupVisible(true);

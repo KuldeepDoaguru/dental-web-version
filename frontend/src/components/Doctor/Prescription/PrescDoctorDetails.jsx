@@ -14,7 +14,7 @@ const PrescDoctorDetails = () => {
                             <p>(BDS, Dental Surgeon)</p>
                         </div>
                         <div className="text-start">
-                            <h5>Mobile Number</h5>
+                            <h4>Mobile Number</h4>
                             <p className='m-0'>8989870070</p>
                             <p className='m-0'>abhi1940@gmail.com</p>
                         </div>
@@ -28,4 +28,6 @@ const PrescDoctorDetails = () => {
 }
 
 export default PrescDoctorDetails;
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+
+`;

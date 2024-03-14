@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleTableRefresh } from '../../../redux/user/userSlice';
+import axios from "axios";
 
 function Doctor() {
   
@@ -7,177 +10,296 @@ function Doctor() {
   const [searchQuery, setSearchQuery] = useState("");
   const [timeSlots, setTimeSlots] = useState([]);
 
-  
-  
-  const doctors = [
-    { uid :"1", doctor_name:"Dr Umer Qureshi",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur", morningStartTiming:"10:00" ,morningEndTiming:"14:00",eveningStartTiming:"18:00" ,eveningEndTiming:"21:00",  scheduleBlockDays:"20/02/2024",lunchTime: ""},
-    { uid :"10", doctor_name:"Dr Rajiv",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"12:00",eveningStartTiming:"18:00" ,eveningEndTiming:"22:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
-    { uid :"2", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/02/2024",lunchTime: ""},
-    { uid :"4", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"5", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"6", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"7", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"02/04/2024",lunchTime: ""},
-    { uid :"8", doctor_name:"Dr Ajay",department:"ortho", mobile: "9806324245", email:"doctor@gmail.com",gender:"Male",address:"Ranital Gate no.4 Jabalpur" ,morningStartTiming:"10:00" ,morningEndTiming:"18:00",eveningStartTiming:"10:00" ,eveningEndTiming:"18:00", scheduleBlockDays:"20/02/2024",lunchTime: ""}
+  const dispatch = useDispatch();
+  const {refreshTable,currentUser} = useSelector((state) => state.user);
+  const  branch = currentUser.branch_name
+  const [patients, setPatients] = useState([]);
+  const [doctors,setDoctors] = useState([]);
+  const [appointmentsData,setAppointmentsData] = useState([]);
+  const [branchDetail,setBranchDetail] = useState([]);
+  const [weekOffDay,setWeekOffDay] = useState("");
+  const [branchHolidays,setBranchHolidays] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState(null); // State to store the selected Doctor
+  const [searchDoctor, setSearchDoctor] = useState("");
+
+ 
+  const filteredAppointmentData = appointmentsData.filter(appointment => 
+       appointment.appointment_status !== "Cancel"
+  )
+  console.log(filteredAppointmentData);
+
+  const  handleWeekOfDay = (day)=>{
+    if(day == "sunday"){
+      setWeekOffDay(0);
+    }
+    else if (day == "monday"){
+      setWeekOffDay(1);
+    }
+   
+    else if (day == "tuesday"){
+      setWeekOffDay(2);
+    }
+    else if (day == "wednesday"){
+      setWeekOffDay(3);
+    }
+    else if (day == "thursday"){
+      setWeekOffDay(4);
+    }
+    else if (day == "friday"){
+      setWeekOffDay(5);
+    }
+    else if (day == "saturday"){
+      setWeekOffDay(6);
+    }
+    else{
+      setWeekOffDay("")
+    }
+}
+
+  // Function to format date in YYYY-MM-DD format
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+ 
+  const [selectedDate, setSelectedDate] = useState(formatDate(new Date()));
+
+  const getDoctors = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
+      setDoctors(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  const getPatient = async () =>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`);
+      console.log(response);
+      setPatients(response?.data?.data)
+     }
+     catch(error){
+        console.log(error)
+     }
     
+  }
 
-  ];
-
-  const appointment_data = [
-    { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:45",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau", doctorId:"1",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:00",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau", doctorId:"1" ,doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T11:30",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctorId:"2", doctor:"Dr Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T12:30",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T12:45",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctorId:"2", doctor:"Dr Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T10:45",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T12:00",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctorId:"1", doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T13:00",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctorId:"2", doctor:"Dr Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T13:00",status:"Missed",action:"edit"},
-
-    
-  ];
   
-  const [availableDoctor,setAvailableDoctor] = useState();
+  const getAppointments = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
+      setAppointmentsData(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  const [doctorWithLeave,setDoctorWithLeave] = useState([]);
+  const getDoctorsWithLeave = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      setDoctorWithLeave(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
+  const getBranchDetail = async ()=>{
+    try{
+       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
+       console.log(response)
+       setBranchDetail(response.data.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+  const getBranchHolidays = async ()=>{
+    try{
+       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-holidays/${branch}`)
+       console.log(response)
+       setBranchHolidays(response.data.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+ 
+
+  useEffect(()=>{
+    getPatient();
+    
+    getDoctors();
+    getAppointments();
+    getDoctorsWithLeave();
+    getBranchDetail();
+    getBranchHolidays();
+    handleGenrateSlots();
+    filterDoctor();
+    
+ },[]);
+
+ useEffect(()=>{
+  handleWeekOfDay(branchDetail[0]?.week_off);
+},[branchDetail]);
+
+useEffect(()=>{
+  getPatient();
+  getAppointments();
+  handleGenrateSlots();
+},[refreshTable])
+
+
+
+useEffect(()=>{
+  handleGenrateSlots();
+},[selectedDate])
+const [availableDoctorOnDate,setAvailableDoctorOnDate] = useState([]);
+
+
+useEffect(() => {
+  setSearchDoctor("");
+  setSelectedDoctor(null)
+  if(!selectedDate){
+   setSelectedDate(formatDate(new Date()))
+    
+  }
+  
+  const selectedDateTime = new Date(selectedDate);
+  
+  const filteredDoctors = doctors.filter(doctor => {
+    // Find all leave entries for the current doctor
+    const doctorLeaveEntries = doctorWithLeave.filter(doc => doc.employee_ID === doctor.employee_ID);
+    
+    // If the doctor has leave entries, check if the selected date falls within any of them
+    if (doctorLeaveEntries.length > 0) {
+      return !doctorLeaveEntries.some(entry => {
+        const leaveDates = entry.leave_dates.split(',');
+        return leaveDates.includes(selectedDateTime);
+      });
+    }
+
+    // If the doctor has no leave entries, include them in the filtered array
+    return true;
+  });
+
+  setAvailableDoctorOnDate(filteredDoctors);
+}, [selectedDate, doctorWithLeave, doctors]);
+
+
+const handleGenrateSlots = () => {
+  // Clear any previous time slots
+  setTimeSlots([]);
+ console.log(selectedDate)
+  // Loop through each doctor to generate time slots
+  availableDoctorOnDate.forEach((doctor) => {
+
+    // for genrate morning time slots
+    const morningStartTime = new Date(selectedDate);
+    const morningEndTime = new Date(selectedDate);
+    const [morningStartHour, morningStartMinute] = doctor.morning_shift_start_time.split(":").map(Number);
+    const [morningEndHour, MorningEndMinute] = doctor.morning_shift_end_time.split(":").map(Number);
+
+    // Set start and end time
+    morningStartTime.setHours(morningStartHour, morningStartMinute, 0);
+    morningEndTime.setHours(morningEndHour, MorningEndMinute, 0);
+
+    const morningSlots = [];
+    let currentTime = new Date(morningStartTime);
+
+    // Generate time slots every 15 minutes within doctor's start and end time
+    while (currentTime < morningEndTime) {
+      const timeSlot = currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      const dateTimeSlot = `${selectedDate} ${timeSlot}`; // Concatenate date and time
+      morningSlots.push(dateTimeSlot);
+      currentTime.setMinutes(currentTime.getMinutes() + parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])); // Add 15 minutes
+    }
+
+    // for genrate evening time slots
+    const eveningStartTime = new Date(selectedDate);
+    const eveningEndTime = new Date(selectedDate);
+    const [eveningStartHour, eveningStartMinute] = doctor.evening_shift_start_time.split(":").map(Number);
+    const [eveningEndHour, eveningEndMinute] = doctor.evening_shift_end_time.split(":").map(Number);
+
+    // Set start and end time
+    eveningStartTime.setHours(eveningStartHour, eveningStartMinute, 0);
+    eveningEndTime.setHours(eveningEndHour, eveningEndMinute, 0);
+
+    const eveningSlots = [];
+    let currentTime1 = new Date(eveningStartTime);
+
+    // Generate time slots every 15 minutes within doctor's start and end time
+    while (currentTime1 < eveningEndTime) {
+      const timeSlot = currentTime1.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      const dateTimeSlot = `${selectedDate} ${timeSlot}`; // Concatenate date and time
+      eveningSlots.push(dateTimeSlot);
+      currentTime1.setMinutes(currentTime1.getMinutes() + parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])); // Add 15 minutes
+    }
+
+    // Add time slots for the current doctor to the state
+    setTimeSlots(prevSlots => [...prevSlots, {doctorId:doctor.employee_ID, doctorName: doctor.employee_name, morningSlots ,eveningSlots }]);
+  });
+};
+
+
+
+useEffect(() => {
+  // Call handleGenrateSlots when availableDoctorOnDate changes
+  handleGenrateSlots();
+}, [availableDoctorOnDate]);
+
 
   const [filteredDoctor,setFilteredDoctor] = useState();
 
-  const filterDoctor = ()=>{
-    const filteredDoctors = doctors.filter((doctor) => {
-      const [day, month, year] = doctor.scheduleBlockDays.split("/");
-      const doctorDateString = `${year}-${month}-${day}`;
-      console.log(doctorDateString);
-      console.log(date);
-      // return doctorDateString !== date;
-      return doctorDateString != date && doctor.doctor_name.toLowerCase().includes(searchQuery.toLowerCase());
-    });
-
-    setAvailableDoctor(filteredDoctors)
-    setFilteredDoctor(filteredDoctor)
-    
-  }
-  console.log(availableDoctor)
- 
-
-    // Function to format the date from "YYYY-MM-DD" to "DD-MM-YYYY"
-    const formatDate = (dateString) => {
-      const [year, month, day] = dateString.split("-");
-      return `${day}-${month}-${year}`;
-    };
-
-    const handleSearchChange = (e) => {
-      setSearchQuery(e.target.value);
-    };
-
-   
-  
-
-  
-
-
-   
- 
-
-    useEffect(()=>{
-      filterDoctor();
-    },[date,searchQuery])
-
-    // gerate time slots
-    // const handleGenrateSlots = (selectedDate) => {
-    //   // Clear any previous time slots
-    //   setTimeSlots([]);
-    
-    //   // Loop through each doctor to generate time slots
-    //   doctors.forEach((doctor) => {
-    //     const startTime = new Date(date);
-    //     const endTime = new Date(date);
-    //     const [startHour, startMinute] = doctor.morningStartTiming.split(":").map(Number);
-    //     const [endHour, endMinute] = doctor.morningEndTiming.split(":").map(Number);
-    
-    //     // Set start and end time
-    //     startTime.setHours(startHour, startMinute, 0);
-    //     endTime.setHours(endHour, endMinute, 0);
-    
-    //     const slots = [];
-    //     let currentTime = new Date(startTime);
-    
-    //     // Generate time slots every 15 minutes within doctor's start and end time
-    //     while (currentTime < endTime) {
-    //       const timeSlot = currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    //       const dateTimeSlot = `${date} ${timeSlot}`; // Concatenate date and time
-    //       slots.push(dateTimeSlot);
-    //       currentTime.setMinutes(currentTime.getMinutes() + 15); // Add 15 minutes
-    //     }
-    
-    //     // Add time slots for the current doctor to the state
-    //     setTimeSlots(prevSlots => [...prevSlots, {doctorId:doctor.uid, doctorName: doctor.doctor_name, slots }]);
-    //   });
-    // };
-
-    const handleGenrateSlots = (selectedDate) => {
-      // Clear any previous time slots
-      setTimeSlots([]);
-    
-      // Loop through each doctor to generate time slots
-      doctors.forEach((doctor) => {
-
-        // for genrate morning time slots
-        const morningStartTime = new Date(date);
-        const morningEndTime = new Date(date);
-        const [morningStartHour, morningStartMinute] = doctor.morningStartTiming.split(":").map(Number);
-        const [morningEndHour, MorningEndMinute] = doctor.morningEndTiming.split(":").map(Number);
-    
-        // Set start and end time
-        morningStartTime.setHours(morningStartHour, morningStartMinute, 0);
-        morningEndTime.setHours(morningEndHour, MorningEndMinute, 0);
-    
-        const morningSlots = [];
-        let currentTime = new Date(morningStartTime);
-    
-        // Generate time slots every 15 minutes within doctor's start and end time
-        while (currentTime < morningEndTime) {
-          const timeSlot = currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-          const dateTimeSlot = `${date} ${timeSlot}`; // Concatenate date and time
-          morningSlots.push(dateTimeSlot);
-          currentTime.setMinutes(currentTime.getMinutes() + 15); // Add 15 minutes
-        }
-
-        // for genrate evening time slots
-        const eveningStartTime = new Date(date);
-        const eveningEndTime = new Date(date);
-        const [eveningStartHour, eveningStartMinute] = doctor.eveningStartTiming.split(":").map(Number);
-        const [eveningEndHour, eveningEndMinute] = doctor.eveningEndTiming.split(":").map(Number);
-    
-        // Set start and end time
-        eveningStartTime.setHours(eveningStartHour, eveningStartMinute, 0);
-        eveningEndTime.setHours(eveningEndHour, eveningEndMinute, 0);
-    
-        const eveningSlots = [];
-        let currentTime1 = new Date(eveningStartTime);
-    
-        // Generate time slots every 15 minutes within doctor's start and end time
-        while (currentTime1 < eveningEndTime) {
-          const timeSlot = currentTime1.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-          const dateTimeSlot = `${date} ${timeSlot}`; // Concatenate date and time
-          eveningSlots.push(dateTimeSlot);
-          currentTime1.setMinutes(currentTime1.getMinutes() + 15); // Add 15 minutes
-        }
-    
-        // Add time slots for the current doctor to the state
-        setTimeSlots(prevSlots => [...prevSlots, {doctorId:doctor.uid, doctorName: doctor.doctor_name, morningSlots ,eveningSlots }]);
+  const filterDoctor = () => {
+    if (searchDoctor.trim() !== "") {
+      const filteredDoctors = availableDoctorOnDate.filter((doctor) => {
+        return doctor.employee_name.toLowerCase().includes(searchDoctor.toLowerCase());
       });
+      setFilteredDoctor(filteredDoctors);
+    } else {
+      setFilteredDoctor(availableDoctorOnDate);
+    }
+  
+    
+  };
+
+ 
+    const handleSearchChange = (e) => {
+      setSearchDoctor(e.target.value);
     };
 
-    useEffect(()=>{
-         handleGenrateSlots();
-    },[date])
+    useEffect(() => {
+      filterDoctor();
+    }, [searchDoctor,availableDoctorOnDate]);
+  
+
+
+
+   
+
+    
+
+ 
 
     console.log(timeSlots)
-
+    console.log(appointmentsData)
+    
   return (
     <Wrapper>
       <div className="widget-area-2 proclinic-box-shadow rounded bg-white px-1 me-2">
-        <h3 className="widget-title text-center">Doctor Available for {formatDate(date)}</h3>
+        <h3 className="widget-title text-center">Doctor Available for {selectedDate}</h3>
         <div className="d-flex px-2 gap-1">
-        <input type="date" class="form-control mr-sm-2 mt-3 mb-2 w-75 m-auto"   value={date} onChange={(e)=>setDate(e.target.value)}/>
+        <input type="date" 
+         class="form-control mr-sm-2 mt-3 mb-2 w-75 m-auto"
+         min={formatDate(new Date())} // Set min attribute to today's date   
+         value={selectedDate} onChange={(e)=>setSelectedDate(e.target.value)}/>
         <input class="form-control mr-sm-2 mt-3 mb-2 w-75 m-auto" type="search" placeholder="Search Doctor" aria-label="Search"  onChange={handleSearchChange}/>
         </div>
       
@@ -194,43 +316,48 @@ function Doctor() {
               </tr>
             </thead>
             <tbody>
-              {availableDoctor?.map((doctor,index)=>{
+              {filteredDoctor?.map((doctor,index)=>{
     // Filter appointment data for the current doctor
-    const doctorAppointments = appointment_data.filter(
-      (appointment) => appointment.doctorId === doctor.uid && 
-      appointment.timing.includes(date)
+    const doctorAppointments = filteredAppointmentData.filter(
+      (appointment) => appointment.assigned_doctor_id === doctor.employee_ID && 
+      appointment.appointment_dateTime.includes(selectedDate)
     );
-
+     
     // Find the time slots for the current doctor from the timeSlots state
-const doctorTimeSlots = timeSlots.find(slot => slot.doctorId === doctor.uid);
+const doctorTimeSlots = timeSlots.find(slot => slot.doctorId === doctor.employee_ID);
+
+
 
 // Filter out morning time slots where there are no overlapping appointments
-const availableMorningSlots = doctorTimeSlots.morningSlots.filter(slot => {
+const availableMorningSlots = doctorTimeSlots?.morningSlots.filter(slot => {
   // Check if any appointment overlaps with the current slot
   return !doctorAppointments.some(appointment => {
     const slotTime = new Date(slot).getTime();
-    const appointmentTime = new Date(appointment.timing).getTime();
+    const appointmentTime = new Date(appointment.appointment_dateTime).getTime();
     // Check if the appointment timing overlaps with the current slot
+    console.log(new Date(slot));
+    console.log(new Date(appointment.appointment_dateTime));
     return appointmentTime === slotTime;
   });
  
 });
 // Filter out evening time slots where there are no overlapping appointments
-const availableEveningSlots = doctorTimeSlots.eveningSlots.filter(slot => {
+const availableEveningSlots = doctorTimeSlots?.eveningSlots.filter(slot => {
   // Check if any appointment overlaps with the current slot
   return !doctorAppointments.some(appointment => {
     const slotTime = new Date(slot).getTime();
-    const appointmentTime = new Date(appointment.timing).getTime();
+    const appointmentTime = new Date(appointment.appointment_dateTime).getTime();
     // Check if the appointment timing overlaps with the current slot
+    
     return appointmentTime === slotTime;
   });
  
 });
-console.log(availableEveningSlots)
+
     return (
       <tr key={index}>
         <td>{index + 1}</td>
-        <td>{doctor.doctor_name}</td>
+        <td>{doctor.employee_name}</td>
         <td>{doctorAppointments.length}</td> {/* Display number of appointments */}
         <td>
          

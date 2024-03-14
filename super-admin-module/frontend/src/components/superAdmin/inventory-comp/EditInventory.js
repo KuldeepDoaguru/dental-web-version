@@ -49,12 +49,12 @@ const EditInventory = () => {
   console.log(reciept_doc);
 
   const handleInputChange = (event) => {
-    const { name, value, type, checked } = event.target;
+    const { name, value } = event.target;
 
     // Use spread syntax to update only the changed field
     setUpdateData((prevRecData) => ({
       ...prevRecData,
-      [name]: type === "radio" || type === "checkbox" ? checked : value,
+      [name]: value,
       total_amount:
         name === "item_mrp" || name === "pur_quantity" || name === "discount"
           ? (name === "item_mrp"
@@ -111,7 +111,7 @@ const EditInventory = () => {
           },
         }
       );
-      cogoToast.success("Registration successful!");
+      cogoToast.success("Details updated successful!");
       navigate("/inventory");
     } catch (error) {
       console.log(error);

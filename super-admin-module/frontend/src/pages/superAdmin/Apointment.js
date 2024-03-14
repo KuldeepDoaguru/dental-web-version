@@ -12,6 +12,8 @@ const Apointment = () => {
   const [showPopup, setShowPopup] = useState(false);
   const branch = useSelector((state) => state.branch);
   console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   const [appointmentList, setAppointmentList] = useState([]);
   const [timeLIneData, setTimeLineData] = useState();
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +25,7 @@ const Apointment = () => {
     assignedDoc: "",
     appointedBy: "",
     appointDateTime: "",
-    updatedBy: "",
+    updatedBy: user.id,
     appointment_status: "",
   });
   const [selectedItem, setSelectedItem] = useState();
@@ -216,7 +218,7 @@ const Apointment = () => {
                                 Appointment Status
                               </th>
                               <th>Cancel Reason</th>
-                              <th className="table-small">Edit</th>
+                              {/* <th className="table-small">Edit</th> */}
                               <th className="table-small">Delete</th>
                             </tr>
                           </thead>
@@ -250,16 +252,16 @@ const Apointment = () => {
                                   </td>
                                   <td>{item.appointment_status}</td>
                                   <td>{item.cancel_reason}</td>
-                                  <td className="table-small">
+                                  {/* <td className="table-small">
                                     <button
                                       className="btn btn-warning"
                                       onClick={() =>
                                         openUpdatePopup(item.appoint_id)
                                       }
                                     >
-                                      Edit
+                                      update
                                     </button>
-                                  </td>
+                                  </td> */}
                                   <td className="table-small">
                                     <button
                                       className="btn btn-danger"
@@ -325,7 +327,7 @@ const Apointment = () => {
                       <option value={branch.name}>{branch.name}</option>
                     </select>
                   </div>
-                  <div className="input-group mb-3 mx-2">
+                  {/* <div className="input-group mb-3 mx-2">
                     <label htmlFor="">Update Patient Name</label>
                     <input
                       type="text"
@@ -335,10 +337,10 @@ const Apointment = () => {
                       value={updateData.patientName}
                       onChange={handleInputChange}
                     />
-                  </div>
+                  </div> */}
                 </div>
 
-                <div className="d-flex">
+                {/* <div className="d-flex">
                   <div className="d-flex flex-column input-group mb-3">
                     <label htmlFor="">Update Patient Number</label>
                     <input
@@ -363,9 +365,9 @@ const Apointment = () => {
                       <option value="mohit">mohit</option>
                     </select>
                   </div>
-                </div>
+                </div> */}
 
-                <div className="d-flex">
+                {/* <div className="d-flex">
                   <div className="input-group mb-3">
                     <label htmlFor="">Appointed by</label>
                     <input
@@ -388,7 +390,7 @@ const Apointment = () => {
                       onChange={handleInputChange}
                     />
                   </div>
-                </div>
+                </div> */}
                 <div className="d-flex">
                   <div className="input-group mb-3">
                     <label htmlFor="">Updated by</label>

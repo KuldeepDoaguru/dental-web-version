@@ -43,7 +43,7 @@ const UniversalLogin = () => {
       console.log(response.data);
       // cogoToast.success(response.data.message);
       setLocalhost(response.data);
-      if (response.data.success === "true") {
+      if (response.data.success === true) {
         sendOtp();
         cogoToast.success("OTP sent Successfully");
         setPopupVisible(true);
@@ -181,6 +181,7 @@ const UniversalLogin = () => {
                           name="email"
                           id="email"
                           value={email}
+                          required
                           onChange={(e) => setEmail(e.target.value)}
                           className="form-control"
                           placeholder="email"
@@ -198,6 +199,7 @@ const UniversalLogin = () => {
                           name="password"
                           type="password"
                           id="password"
+                          required
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           className="form-control"

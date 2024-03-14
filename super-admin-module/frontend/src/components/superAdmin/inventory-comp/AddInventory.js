@@ -45,21 +45,38 @@ const AddInventory = () => {
     }
   };
   console.log(reciept_doc);
+  console.log(recData);
+
+  // const handleInputChange = (event) => {
+  //   const { name, value, type, checked } = event.target;
+
+  //   // Use spread syntax to update only the changed field
+  //   setRecData((prevRecData) => ({
+  //     ...prevRecData,
+  //     [name]: type === "radio" || type === "checkbox" ? checked : value,
+  //     total_amount:
+  //       name === "item_mrp" || name === "pur_quantity" || name === "discount"
+  //         ? (name === "item_mrp" ? value : recData.item_mrp) *
+  //             (name === "pur_quantity" ? value : recData.pur_quantity) -
+  //           (name === "discount" ? value : recData.discount)
+  //         : prevRecData.total_amount,
+  //     available_stock: name === "pur_quantity" ? value : recData.pur_quantity,
+  //   }));
+  // };
 
   const handleInputChange = (event) => {
-    const { name, value, type, checked } = event.target;
+    const { name, value } = event.target;
 
     // Use spread syntax to update only the changed field
     setRecData((prevRecData) => ({
       ...prevRecData,
-      [name]: type === "radio" || type === "checkbox" ? checked : value,
+      [name]: value,
       total_amount:
-        name === "item_mrp" || name === "pur_quantity" || name === "discount"
-          ? (name === "item_mrp" ? value : recData.item_mrp) *
-              (name === "pur_quantity" ? value : recData.pur_quantity) -
-            (name === "discount" ? value : recData.discount)
-          : prevRecData.total_amount,
-      available_stock: name === "pur_quantity" ? value : recData.pur_quantity,
+        (name === "item_mrp" ? value : prevRecData.item_mrp) *
+          (name === "pur_quantity" ? value : prevRecData.pur_quantity) -
+        (name === "discount" ? value : prevRecData.discount),
+      available_stock:
+        name === "pur_quantity" ? value : prevRecData.pur_quantity,
     }));
   };
 
@@ -137,6 +154,7 @@ const AddInventory = () => {
                               class="p-1 w-100 rounded"
                               name="item_code"
                               placeholder="Item Code"
+                              required
                               value={recData.item_code}
                               onChange={handleInputChange}
                             />
@@ -152,6 +170,7 @@ const AddInventory = () => {
                               type="text"
                               class="p-1 w-100 rounded"
                               placeholder="Item Name"
+                              required
                               name="item_name"
                               value={recData.item_name}
                               onChange={handleInputChange}
@@ -171,6 +190,7 @@ const AddInventory = () => {
                               class="p-1 w-100 rounded"
                               placeholder="HSN Code"
                               name="HSN_code"
+                              required
                               value={recData.HSN_code}
                               onChange={handleInputChange}
                             />
@@ -183,6 +203,7 @@ const AddInventory = () => {
                               type="date"
                               class="p-1 w-100 rounded"
                               placeholder="purchase date"
+                              required
                               name="purchase_date"
                               value={recData.purchase_date}
                               onChange={handleInputChange}
@@ -212,7 +233,6 @@ const AddInventory = () => {
                               id="Supplies"
                               value="Supplies"
                               onChange={handleInputChange}
-                              checked
                             />
                             <label class="form-check-label" for="Supplies">
                               Supplies
@@ -246,6 +266,7 @@ const AddInventory = () => {
                               class="p-1 w-100 rounded"
                               placeholder="Item MRP"
                               name="item_mrp"
+                              required
                               value={recData.item_mrp}
                               onChange={handleInputChange}
                             />
@@ -259,6 +280,7 @@ const AddInventory = () => {
                               class="p-1 w-100 rounded"
                               placeholder="purchase quantity"
                               name="pur_quantity"
+                              required
                               value={recData.pur_quantity}
                               onChange={handleInputChange}
                             />
@@ -277,6 +299,7 @@ const AddInventory = () => {
                               class="p-1 w-100 rounded"
                               placeholder="Low Stock Threshold"
                               name="low_stock_threshhold"
+                              required
                               value={recData.low_stock_threshhold}
                               onChange={handleInputChange}
                             />
@@ -313,6 +336,7 @@ const AddInventory = () => {
                               type="text"
                               class="p-1 w-100 rounded"
                               placeholder="distributor_name"
+                              required
                               name="distributor_name"
                               value={recData.distributor_name}
                               onChange={handleInputChange}
@@ -332,6 +356,7 @@ const AddInventory = () => {
                               class="p-1 w-100 rounded"
                               maxLength={10}
                               placeholder="distributor number"
+                              required
                               name="distributor_number"
                               value={recData.distributor_number}
                               onChange={handleInputChange}
@@ -346,6 +371,7 @@ const AddInventory = () => {
                               class="p-1 w-100 rounded"
                               placeholder="discount"
                               name="discount"
+                              required
                               value={recData.discount}
                               onChange={handleInputChange}
                             />

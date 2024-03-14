@@ -175,7 +175,7 @@ const Sider = () => {
                 </div>
               </Link>
             </li>
-            <hr />
+            {/* <hr />
             <li>
               <Link
                 to="/lab-setting"
@@ -193,7 +193,7 @@ const Sider = () => {
                   </h3>
                 </div>
               </Link>
-            </li>
+            </li> */}
             <hr />
 
             <li>

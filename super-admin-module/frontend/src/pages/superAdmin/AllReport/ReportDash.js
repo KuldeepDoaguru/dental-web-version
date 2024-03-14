@@ -110,7 +110,7 @@ const ReportDash = () => {
                                 </div>
                               </Link>
                             </div>
-                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                            {/* <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/lab-details-report">
                                 <div className="card">
                                   <div class="card-body">
@@ -142,7 +142,7 @@ const ReportDash = () => {
                                   </div>
                                 </div>
                               </Link>
-                            </div>
+                            </div> */}
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/emp-complaints-list">
                                 <div className="card">

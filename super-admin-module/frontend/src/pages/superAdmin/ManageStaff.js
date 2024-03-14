@@ -259,9 +259,9 @@ const ManageStaff = () => {
                                     </button>
                                   </Link>
 
-                                  <button className="btn btn-danger mx-1">
+                                  {/* <button className="btn btn-danger mx-1">
                                     Delete
-                                  </button>
+                                  </button> */}
                                 </td>
                               </tr>
                             </>

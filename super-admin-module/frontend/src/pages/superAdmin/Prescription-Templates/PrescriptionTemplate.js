@@ -21,6 +21,7 @@ const PrescriptionTemplate = () => {
   console.log(`User Name: ${branch.name}`);
   const location = useLocation();
   const [getPresList, setGetPresList] = useState([]);
+  const [keyword, setkeyword] = useState("");
   const [selected, setSelected] = useState();
   const [pressById, setPressById] = useState([]);
   const [addPres, setAddPres] = useState({
@@ -194,6 +195,10 @@ const PrescriptionTemplate = () => {
                           type="text"
                           placeholder="search here"
                           className="inputser"
+                          value={keyword}
+                          onChange={(e) =>
+                            setkeyword(e.target.value.toLowerCase())
+                          }
                         />
                         <button className="mx-2 btn btn-info">
                           <FaSearch />
@@ -234,81 +239,95 @@ const PrescriptionTemplate = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {getPresList?.map((item) => (
-                            <>
-                              <tr className="table-row">
-                                <td className="table-sno">{item.pr_id}</td>
-                                <td className="table-small">
-                                  {item.medicine_name}
-                                </td>
-                                <td className="table-small">{item.dosage}</td>
-                                <td className="table-small">
-                                  {item.frequency}
-                                </td>
-                                <td className="table-small">{item.duration}</td>
-                                <td>{item.notes}</td>
-                                <td>
-                                  <button
-                                    className="btn btn-warning"
-                                    onClick={() =>
-                                      openEditPreTempPopup(item.pr_id)
-                                    }
-                                  >
-                                    Edit
-                                  </button>
-                                  <button
-                                    type="button"
-                                    class="btn btn-danger mx-2"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal"
-                                  >
-                                    Delete
-                                  </button>
-                                </td>
-                              </tr>
-                              <div
-                                class="modal fade rounded"
-                                id="exampleModal"
-                                tabindex="-1"
-                                aria-labelledby="exampleModalLabel"
-                                aria-hidden="true"
-                              >
-                                <div class="modal-dialog rounded">
-                                  <div class="modal-content">
-                                    <div class="modal-header">
-                                      <h1
-                                        class="modal-title fs-5"
-                                        id="exampleModalLabel"
-                                      >
-                                        Are you sure you want to delete this
-                                        data
-                                      </h1>
-                                    </div>
+                          {getPresList
+                            ?.filter((val) => {
+                              if (keyword === "") {
+                                return true;
+                              } else if (
+                                val.medicine_name
+                                  .toLowerCase()
+                                  .includes(keyword.toLowerCase())
+                              ) {
+                                return val;
+                              }
+                            })
+                            .map((item) => (
+                              <>
+                                <tr className="table-row">
+                                  <td className="table-sno">{item.pr_id}</td>
+                                  <td className="table-small">
+                                    {item.medicine_name}
+                                  </td>
+                                  <td className="table-small">{item.dosage}</td>
+                                  <td className="table-small">
+                                    {item.frequency}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.duration}
+                                  </td>
+                                  <td>{item.notes}</td>
+                                  <td>
+                                    <button
+                                      className="btn btn-warning"
+                                      onClick={() =>
+                                        openEditPreTempPopup(item.pr_id)
+                                      }
+                                    >
+                                      Edit
+                                    </button>
+                                    <button
+                                      type="button"
+                                      class="btn btn-danger mx-2"
+                                      data-bs-toggle="modal"
+                                      data-bs-target="#exampleModal"
+                                    >
+                                      Delete
+                                    </button>
+                                  </td>
+                                </tr>
+                                <div
+                                  class="modal fade rounded"
+                                  id="exampleModal"
+                                  tabindex="-1"
+                                  aria-labelledby="exampleModalLabel"
+                                  aria-hidden="true"
+                                >
+                                  <div class="modal-dialog rounded">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h1
+                                          class="modal-title fs-5"
+                                          id="exampleModalLabel"
+                                        >
+                                          Are you sure you want to delete this
+                                          data
+                                        </h1>
+                                      </div>
 
-                                    <div class="modal-footer d-flex justify-content-center">
-                                      <button
-                                        type="button"
-                                        class="btn btn-danger"
-                                        data-bs-dismiss="modal"
-                                        onClick={() =>
-                                          deletePrescription(item.pr_id)
-                                        }
-                                      >
-                                        Yes
-                                      </button>
-                                      <button
-                                        type="button"
-                                        class="btn btn-secondary"
-                                        data-bs-dismiss="modal"
-                                      >
-                                        Close
-                                      </button>
+                                      <div class="modal-footer d-flex justify-content-center">
+                                        <button
+                                          type="button"
+                                          class="btn btn-danger"
+                                          data-bs-dismiss="modal"
+                                          onClick={() =>
+                                            deletePrescription(item.pr_id)
+                                          }
+                                        >
+                                          Confirm
+                                        </button>
+                                        <button
+                                          type="button"
+                                          class="btn btn-secondary"
+                                          data-bs-dismiss="modal"
+                                        >
+                                          Close
+                                        </button>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            </>
-                          ))}
+                              </>
+                            ))}
                         </tbody>
                       </table>
                     </div>

@@ -88,30 +88,30 @@ const Dashboard = () => {
               <Card />
               <div className="container-fluid pb-3">
                 <div className="row g-5 mt-3">
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Treatment this month</h3>
                     <MostTakenTreat />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Patient visits this month</h3>
                     <PatientStatisticChart />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">
                       Total appointments this month
                     </h3>
                     <NewRegPatient />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">New Patient this Month</h3>
 
                     <AppointmentChart />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Earning report this month</h3>
                     <EarningChart />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Expense report this month</h3>
                     <ExpenseChart />
                   </div>

@@ -63,7 +63,7 @@ const ClinicSetting = () => {
                         {/* <div className="col-1"></div> */}
                         <div className="col-12">
                           <div class="row g-5">
-                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                            {/* <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/lab-setting">
                                 <div className="card">
                                   <div class="card-body d-flex justify-content-center text-light align-items-center">
@@ -71,7 +71,7 @@ const ClinicSetting = () => {
                                   </div>
                                 </div>
                               </Link>
-                            </div>
+                            </div> */}
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
                               <Link to="/calender-setting">

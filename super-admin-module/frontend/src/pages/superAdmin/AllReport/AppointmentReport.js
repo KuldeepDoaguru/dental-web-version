@@ -85,6 +85,7 @@ const AppointmentReport = () => {
     }
   };
 
+  console.log(fromDate, "-To-", toDate);
   return (
     <>
       <Container>

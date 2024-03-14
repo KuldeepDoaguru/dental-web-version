@@ -194,100 +194,121 @@ const AllBills = () => {
                 </div>
                 <div className="container-fluid mt-3">
                   <h3 className="text-center">Bill List</h3>
+                  <hr />
                   <div className="container-fluid mt-3">
-                    <div class="table-responsive rounded">
-                      <table class="table table-bordered rounded shadow">
-                        <thead className="table-head">
-                          <tr>
-                            <th className="table-sno">Bill ID</th>
-                            <th>Bill Date</th>
-                            <th className="table-small">Patient UHID</th>
-                            <th className="table-small">Patient Name</th>
-                            <th className="table-small">Patient Mobile</th>
-                            <th className="table-small">Patient Email</th>
-                            <th className="table-small">Treatment</th>
-                            <th className="table-small">Treatment Status</th>
-                            <th className="table-small">Drugs with Quantity</th>
-                            <th className="table-small">Total Amount</th>
-                            <th>Paid Amount</th>
-                            <th>Payment Status</th>
-                            <th>Payment Date & Time</th>
-                            <th>Edit Details</th>
-                            <th className="table-small">Delete</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {filterBillDataByMonth()?.map((item) => (
-                            <>
-                              <tr className="table-row">
-                                <td className="table-sno">{item.bill_id}</td>
-                                <td className="table-small">
-                                  {item.bill_date?.split("T")[0]}
-                                </td>
-                                <td className="table-small">{item.uhid}</td>
-                                <td className="table-small">
-                                  {item.patient_name}
-                                </td>
-                                <td>{item.patient_mobile}</td>
-                                <td>{item.patient_email}</td>
-                                <td>{item.treatment}</td>
-                                <td>{item.treatment_status}</td>
-                                <td>{item.drugs_quantity}</td>
-                                <td className="table-small">
-                                  {item.total_amount}
-                                </td>
-                                <td className="table-small">
-                                  {item.paid_amount}
-                                </td>
-                                <td>{item.payment_status}</td>
-                                <td>{item.payment_date_time}</td>
-                                <td className="table-small">
-                                  <button
-                                    className="btn btn-warning fw-bold"
-                                    onClick={() =>
-                                      openUpdatePopup(item.bill_id)
-                                    }
-                                  >
-                                    Edit
-                                  </button>
-                                </td>
-                                <td className="table-small">
-                                  <button
-                                    className="btn btn-danger"
-                                    onClick={() => deleteBillData(item.bill_id)}
-                                  >
-                                    Delete
-                                  </button>
-                                </td>
+                    {filterBillDataByMonth?.length > 0 ? (
+                      <>
+                        <div class="table-responsive rounded">
+                          <table class="table table-bordered rounded shadow">
+                            <thead className="table-head">
+                              <tr>
+                                <th className="table-sno">Bill ID</th>
+                                <th>Bill Date</th>
+                                <th className="table-small">Patient UHID</th>
+                                <th className="table-small">Patient Name</th>
+                                <th className="table-small">Patient Mobile</th>
+                                <th className="table-small">Patient Email</th>
+                                <th className="table-small">Treatment</th>
+                                <th className="table-small">
+                                  Treatment Status
+                                </th>
+                                <th className="table-small">
+                                  Drugs with Quantity
+                                </th>
+                                <th className="table-small">Total Amount</th>
+                                <th>Paid Amount</th>
+                                <th>Payment Status</th>
+                                <th>Payment Date & Time</th>
+                                <th>Edit Details</th>
+                                <th className="table-small">Delete</th>
                               </tr>
-                            </>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="pagination">
-                      <ul>
-                        <li>
-                          <button
-                            onClick={() => handlePageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
-                            className="btn btn-danger"
-                          >
-                            Previous
-                          </button>
-                        </li>
-                        {renderPaginationButtons()}
-                        <li>
-                          <button
-                            onClick={() => handlePageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                            className="btn btn-info"
-                          >
-                            Next
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
+                            </thead>
+                            <tbody>
+                              {filterBillDataByMonth()?.map((item) => (
+                                <>
+                                  <tr className="table-row">
+                                    <td className="table-sno">
+                                      {item.bill_id}
+                                    </td>
+                                    <td className="table-small">
+                                      {item.bill_date?.split("T")[0]}
+                                    </td>
+                                    <td className="table-small">{item.uhid}</td>
+                                    <td className="table-small">
+                                      {item.patient_name}
+                                    </td>
+                                    <td>{item.patient_mobile}</td>
+                                    <td>{item.patient_email}</td>
+                                    <td>{item.treatment}</td>
+                                    <td>{item.treatment_status}</td>
+                                    <td>{item.drugs_quantity}</td>
+                                    <td className="table-small">
+                                      {item.total_amount}
+                                    </td>
+                                    <td className="table-small">
+                                      {item.paid_amount}
+                                    </td>
+                                    <td>{item.payment_status}</td>
+                                    <td>{item.payment_date_time}</td>
+                                    <td className="table-small">
+                                      <button
+                                        className="btn btn-warning fw-bold"
+                                        onClick={() =>
+                                          openUpdatePopup(item.bill_id)
+                                        }
+                                      >
+                                        Edit
+                                      </button>
+                                    </td>
+                                    <td className="table-small">
+                                      <button
+                                        className="btn btn-danger"
+                                        onClick={() =>
+                                          deleteBillData(item.bill_id)
+                                        }
+                                      >
+                                        Delete
+                                      </button>
+                                    </td>
+                                  </tr>
+                                </>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                        <div className="pagination">
+                          <ul>
+                            <li>
+                              <button
+                                onClick={() =>
+                                  handlePageChange(currentPage - 1)
+                                }
+                                disabled={currentPage === 1}
+                                className="btn btn-danger"
+                              >
+                                Previous
+                              </button>
+                            </li>
+                            {renderPaginationButtons()}
+                            <li>
+                              <button
+                                onClick={() =>
+                                  handlePageChange(currentPage + 1)
+                                }
+                                disabled={currentPage === totalPages}
+                                className="btn btn-info"
+                              >
+                                Next
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <h1>No Bill Found</h1>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

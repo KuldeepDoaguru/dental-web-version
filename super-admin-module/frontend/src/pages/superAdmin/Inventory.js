@@ -336,7 +336,7 @@ const Inventory = () => {
                                           )
                                         }
                                       >
-                                        Download/Print Reciept
+                                        Download Reciept
                                       </button>
 
                                       <Link

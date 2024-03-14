@@ -125,7 +125,11 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   }, [appointmentInfo.appointment_dateTime]);
 
   const handleDateChange = (e) => {
+    
     const { name, value } = e.target;
+    if(!value){
+      return
+    }
     setData({
       ...data,
       [name]: value,
@@ -263,6 +267,8 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
       return;
     }
 
+    
+
     const selectedDay = new Date(selectedDate).getDay();
     if(selectedDay === weekOffDay){
        alert("Selected date is a week off day. Please choose another date.");
@@ -324,8 +330,10 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
       // Check if the appointment is for the selected doctor and if it falls within the same datetime range
       const appointmentDate = new Date(appointment.appointment_dateTime);
       const selectedDate = new Date(data.appointment_dateTime);
+
+      const isCanceled = appointment.appointment_status !== 'Cancel';
       
-      return !(appointment.assigned_doctor_id === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime());
+      return !(appointment.assigned_doctor_id === selectedDoctor.employee_ID && appointmentDate.getTime() === selectedDate.getTime() && isCanceled);
     });
   
      // Check if the selected appointment date matches with the doctor's block day
@@ -490,6 +498,7 @@ useEffect(()=>{
         className="form-control"
         // onChange={(e) => setSelectedDate(e.target.value)}
         onChange={handleDateChange}
+        min={formatDate(new Date())}
         required
       />
                          

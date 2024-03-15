@@ -8,8 +8,12 @@ import Cards from "../components/Dashboard/Cards";
 import Header from "../components/Header";
 import AveragePatientChart from "../components/Dashboard/Charts/AveragePatientChart";
 import EarningChart from "../components/Dashboard/Charts/EarningChart";
+import ExpenseChart from "../components/Dashboard/Charts/ExpenseChart";
 // import EarningChart from "../../components/superAdmin/dashboard/Charts/EarningChart";
 // import Cards from "../../components/Accountant/Cards";
+import Detail from './../components/Bill/Detail';
+import Editbill from './../components/Bill/Editbill';
+import Makepayment from './../components/Bill/Makepayment';
 
 
 const Accountant_Dashboard = () => {
@@ -67,16 +71,16 @@ const Accountant_Dashboard = () => {
                 <div className="row g-4 mt-3 ">
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">Monthly Earning</h3>
-                    <AveragePatientChart />
+                    <ExpenseChart />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">Monthly Expence</h3>
-                    <AveragePatientChart />
+                    <ExpenseChart />
                   </div>
 
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">Monthly Purchase</h3>
-                    <EarningChart />
+                    <ExpenseChart/>
                   </div>
 
                 
@@ -115,49 +119,69 @@ const Accountant_Dashboard = () => {
            <td>1944</td>
            <td>Pending</td>
            
-           <td>
-           <div class="dropdown">
+           <td><div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action
   </button>
-
+  <ul class="dropdown-menu">
+  <li><a class="dropdown-item mx-0" href="#"><Detail/></a></li>
+    <li><a class="dropdown-item mx-0 " href="#"><Editbill/></a></li>
+  
+    <li><a class="dropdown-item mx-0" href="#"><Makepayment/></a></li>
+  
+  </ul>
 </div>
-           </td>
+</td> 
 
          </tr>
          <tr>
-         <td>Rahul Kumar</td>
-           <td>B56778</td>
-           <td>Root Canal</td>
-           <td>Dr.Umer Qureshi</td>
-           <td>4000</td>
-           <td>400</td>
-           <td>0%</td>
+         
+         <td>DH19</td>
+           <td>RG5</td>
+           <td>Mohit Sahu</td>
+           <td>698525455</td>
+           <td>22-1-24</td>
+           <td>1944</td>
+           <td>Pending</td>
            
-           <td>      <div class="dropdown">
+           <td><div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action
   </button>
- 
-</div></td>
+  <ul class="dropdown-menu">
+  <li><a class="dropdown-item mx-0" href="#"><Detail/></a></li>
+    <li><a class="dropdown-item mx-0 " href="#"><Editbill/></a></li>
+  
+    <li><a class="dropdown-item mx-0" href="#"><Makepayment/></a></li>
+  
+  </ul>
+</div>
+</td> 
 
          </tr>
         
             <tr>
-            <td>Rahul Kumar</td>
-           <td>B56778</td>
-           <td>Root Canal</td>
-           <td>Dr.Umer Qureshi</td>
-           <td>4000</td>
-           <td>400</td>
-           <td>0%</td>
+            <td>DH19</td>
+           <td>RG5</td>
+           <td>Mohit Sahu</td>
+           <td>698525455</td>
+           <td>22-1-24</td>
+           <td>1944</td>
+           <td>Pending</td>
            
-           <td>      <div class="dropdown">
+           <td><div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action
   </button>
+  <ul class="dropdown-menu">
+  <li><a class="dropdown-item mx-0" href="#"><Detail/></a></li>
+    <li><a class="dropdown-item mx-0 " href="#"><Editbill/></a></li>
   
-</div></td>
+    <li><a class="dropdown-item mx-0" href="#"><Makepayment/></a></li>
+  
+  </ul>
+</div>
+</td> 
 
          </tr>
         
@@ -201,49 +225,67 @@ const Accountant_Dashboard = () => {
            <td>1944</td>
            <td>Pending</td>
            
-           <td>
-           <div class="dropdown">
+          <td><div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action
   </button>
-
+  <ul class="dropdown-menu">
+  <li><a class="dropdown-item mx-0" href="#"><Detail/></a></li>
+    <li><a class="dropdown-item mx-0 " href="#"><Editbill/></a></li>
+  
+    <li><a class="dropdown-item mx-0" href="#"><Makepayment/></a></li>
+  
+  </ul>
 </div>
-           </td>
+</td> 
 
          </tr>
          <tr>
-         <td>Rahul Kumar</td>
-           <td>B56778</td>
-           <td>Root Canal</td>
-           <td>Dr.Umer Qureshi</td>
-           <td>4000</td>
-           <td>400</td>
-           <td>0%</td>
+         <td>DH19</td>
+           <td>RG5</td>
+           <td>Mohit Sahu</td>
+           <td>698525455</td>
+           <td>22-1-24</td>
+           <td>1944</td>
+           <td>Pending</td>
            
-           <td>      <div class="dropdown">
+           <td>     <div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action
   </button>
- 
+  <ul class="dropdown-menu">
+  <li><a class="dropdown-item mx-0" href="#"><Detail/></a></li>
+    <li><a class="dropdown-item mx-0 " href="#"><Editbill/></a></li>
+  
+    <li><a class="dropdown-item mx-0" href="#"><Makepayment/></a></li>
+  
+  </ul>
 </div></td>
 
          </tr>
         
             <tr>
-            <td>Rahul Kumar</td>
-           <td>B56778</td>
-           <td>Root Canal</td>
-           <td>Dr.Umer Qureshi</td>
-           <td>4000</td>
-           <td>400</td>
-           <td>0%</td>
+            <td>DH19</td>
+           <td>RG5</td>
+           <td>Mohit Sahu</td>
+           <td>698525455</td>
+           <td>22-1-24</td>
+           <td>1944</td>
+           <td>Pending</td>
            
-           <td>      <div class="dropdown">
+           <td><div class="dropdown">
   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action
   </button>
+  <ul class="dropdown-menu">
+  <li><a class="dropdown-item mx-0" href="#"><Detail/></a></li>
+    <li><a class="dropdown-item mx-0 " href="#"><Editbill/></a></li>
   
-</div></td>
+    <li><a class="dropdown-item mx-0" href="#"><Makepayment/></a></li>
+  
+  </ul>
+</div>
+</td> 
 
          </tr>
         

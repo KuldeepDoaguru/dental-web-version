@@ -14,76 +14,46 @@ import styled from "styled-components";
 function AveragePatientChart() {
   const data = [
     {
-      name: "Years",
+      name: "Page A",
       uv: 4000,
       pv: 2400,
       amt: 2400,
     },
     {
-      name: "2014",
+      name: "Page B",
       uv: 3000,
       pv: 1398,
       amt: 2210,
     },
     {
-      name: "2015",
+      name: "Page C",
       uv: 2000,
       pv: 9800,
       amt: 2290,
     },
     {
-      name: "2016",
+      name: "Page D",
       uv: 2780,
       pv: 3908,
       amt: 2000,
     },
     {
-      name: "2017",
+      name: "Page E",
       uv: 1890,
       pv: 4800,
       amt: 2181,
     },
     {
-      name: "2018",
+      name: "Page F",
+      uv: 2390,
+      pv: 3800,
+      amt: 2500,
+    },
+    {
+      name: "Page G",
       uv: 3490,
       pv: 4300,
       amt: 2100,
-    },
-    {
-      name: "2019",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-    {
-      name: "2020",
-      uv: 5090,
-      pv: 7300,
-      amt: 7100,
-    },
-    {
-      name: "2021",
-      uv: 5090,
-      pv: 7300,
-      amt: 7100,
-    },
-    {
-      name: "2022",
-      uv: 5090,
-      pv: 7300,
-      amt: 7100,
-    },
-    {
-      name: "2023",
-      uv: 5090,
-      pv: 7300,
-      amt: 7100,
-    },
-    {
-      name: "2024",
-      uv: 5090,
-      pv: 7300,
-      amt: 7100,
     },
   ];
 

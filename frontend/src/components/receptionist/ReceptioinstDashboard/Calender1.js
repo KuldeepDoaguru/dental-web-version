@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Calendar from 'react-calendar';
 import "react-calendar/dist/Calendar.css";
 import { IoArrowBackCircle } from "react-icons/io5";
-
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
@@ -11,6 +11,7 @@ import Detail from '../Bill/Detail';
 import AppDetail from './AppDetails';
 import Popup from '../Appointment/Popup';
 import AppDetails from '../Appointment/AppDetail';
+import axios from 'axios';
 
 
 
@@ -21,13 +22,71 @@ function Calender1() {
   const [isDisplay,setIsDisplay] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState("");
-
+  const {refreshTable,currentUser} = useSelector((state) => state.user);
+  const  branch = currentUser.branch_name;
+  const [branchDetail,setBranchDetail] = useState([]);
+  const [doctors,setDoctors] = useState([]);
+  const [appointmentsData,setAppointmentsData] = useState([]);
+  const [weekOffDay,setWeekOffDay] = useState("");
+  const [branchHolidays,setBranchHolidays] = useState([]);
   // const [date,setDate] = useState("");
   // Add timeSlots state
-const [timeSlots, setTimeSlots] = useState([]);
-const [doctorName,setDoctorName] = useState("Dr Umer Qureshi");
 
-console.log(value.toLocaleDateString());
+  const filteredAppointmentData = appointmentsData.filter(appointment => 
+    appointment.appointment_status !== "Cancel"
+)
+const [selectedDoctor, setSelectedDoctor] = useState(null); // State to store the selected Doctor
+const [timeSlots, setTimeSlots] = useState([]);
+
+
+const getBranchDetail = async ()=>{
+  try{
+     const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
+     console.log(response)
+     setBranchDetail(response.data.data)
+  }
+  catch(error){
+    console.log(error)
+  }
+}
+
+const getDoctors = async ()=>{
+  try{
+    const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
+    setDoctors(response?.data?.data)
+  }
+  catch(error){
+    console.log(error)
+  }
+}
+const getAppointments = async ()=>{
+  try{
+    const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
+    setAppointmentsData(response?.data?.data)
+  }
+  catch(error){
+    console.log(error)
+  }
+}
+
+useEffect(()=>{
+ getBranchDetail();
+ getAppointments();
+ getDoctors();
+},[])
+useEffect(()=>{
+ 
+ getAppointments();
+ getDoctors();
+},[refreshTable])
+
+ // Set the selectedDoctor to the ID of the first doctor when doctors state updates
+ useEffect(() => {
+  if (doctors.length > 0) {
+    setSelectedDoctor(doctors[0].employee_ID); // Select the first doctor by default
+  }
+}, [doctors]);
+
 
 
 // Update handleDayClick function
@@ -38,9 +97,9 @@ const handleDayClick = (selectedDate) => {
 
   // Generate time slots from 10 am to 8 pm
   const startTime = new Date(selectedDate);
-  startTime.setHours(10, 0, 0); // Set start time to 10:00 AM
+  startTime.setHours(parseInt(branchDetail[0]?.open_time.split(":")[0]), 0, 0); // Set start time to 10:00 AM
   const endTime = new Date(selectedDate);
-  endTime.setHours(20, 0, 0); // Set end time to 8:00 PM
+  endTime.setHours(parseInt(branchDetail[0]?.close_time.split(":")[0]), 0, 0); // Set end time to 8:00 PM
 
   const slots = [];
   let currentTime = new Date(startTime);
@@ -50,7 +109,7 @@ const handleDayClick = (selectedDate) => {
     const timeSlot = currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
     const dateTimeSlot = `${selectedDate.toLocaleDateString()} ${timeSlot}`; // Concatenate date and time
     slots.push(dateTimeSlot);
-    currentTime.setMinutes(currentTime.getMinutes() + 15); // Add 15 minutes
+    currentTime.setMinutes(currentTime.getMinutes() + parseInt(branchDetail[0]?.appoint_slot_duration.split(" "))); // Add 15 minutes
   }
 
   // Update state with the generated time slots
@@ -62,11 +121,10 @@ const handleDayClick = (selectedDate) => {
 const handleTimeSlotClick = (timeSlot) => {
   // Find the appointment associated with the clicked time slot
   const slotTime = new Date(timeSlot);
-  const clickedAppointment = appointment_data.find(appointment => {
+  const clickedAppointment = filteredAppointmentData.find(appointment => {
     // Convert the appointment timing to match the format of time slots
-    const appointmentTime = new Date(appointment.timing);
-    console.log(appointmentTime)
-    console.log(slotTime)
+    const appointmentTime = new Date(appointment.appointment_dateTime);
+   
     return (
 
       
@@ -76,7 +134,7 @@ const handleTimeSlotClick = (timeSlot) => {
       appointmentTime.getHours() === slotTime.getHours() &&
       appointmentTime.getMinutes() === slotTime.getMinutes() && 
 
-      appointment.doctor === doctorName // Check if doctor's name matches
+      appointment.assigned_doctor_id === selectedDoctor // Check if doctor's name matches
 
 
          
@@ -125,11 +183,10 @@ const getCellStyle = (time) => {
   const slotTime = new Date(time);
 
   // Find any appointment that matches the time slot
-  const appointment = appointment_data.find(appointment => {
+  const appointment = filteredAppointmentData.find(appointment => {
     // Convert the appointment timing to match the format of time slots
-    const appointmentTime = new Date(appointment.timing);
-    console.log(appointmentTime)
-    console.log(slotTime)
+    const appointmentTime = new Date(appointment.appointment_dateTime);
+   
     return (
 
       
@@ -139,7 +196,7 @@ const getCellStyle = (time) => {
       appointmentTime.getHours() === slotTime.getHours() &&
       appointmentTime.getMinutes() === slotTime.getMinutes() && 
 
-      appointment.doctor === doctorName // Check if doctor's name matches
+      appointment.assigned_doctor_id === selectedDoctor // Check if doctor's name matches
 
 
          
@@ -148,7 +205,6 @@ const getCellStyle = (time) => {
 
     );
   });
-  console.log(appointment)
   // If there's no appointment at this time, return default class
   if (!appointment) {
     return 'bg-warning';
@@ -181,22 +237,6 @@ const divideIntoColumns = (timeSlots, columns) => {
 const columns = 10;
 const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
 
-  const appointment_data = [
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:45",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:00",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T11:30",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr. Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T12:30",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T12:45",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-17T10:00",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr. Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T10:45",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T12:00",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr Umer Qureshi",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T13:00",status:"Missed",action:"edit"},
-    { uid :"1", patient:"Mohit Shau",doctor:"Dr. Ajay",mobile: "9806324245", treatment:"root canal",timing:"2024-02-18T13:00",status:"Missed",action:"edit"},
-
-    
-  ];
-
-
   
   const formatDate = (date) => {
     const offset = date.getTimezoneOffset(); // Get the time zone offset in minutes
@@ -204,19 +244,6 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
     return adjustedDate.toISOString().split('T')[0]; // Return the ISO string in "yyyy-mm-dd" format
   }
 
-//  useEffect(()=>{
-//    setDate(formatDate(value))
-//  },[value]);
-
- 
-
- 
-
-
-console.log(timeSlots)
- console.log(value) 
-  
-  console.log(value)
   return (
    <Wrapper>
     <div><h6 className='text-center'>View summary by date
@@ -228,15 +255,17 @@ console.log(timeSlots)
     </div>
   
   
-  <div className={isDisplay?"d-block" : "d-none"}>
+  <div className={isDisplay?"d-block time-slots" : "d-none"}>
     <div className=' mx-auto
      mt-1 mb-1 d-flex justify-content-around'>
       <div className='w-50'><span className='backIcon' onClick={()=>{setIsDisplay(false)}}><IoArrowBackCircle /></span></div>
-   <div className='w-50'> <select className="form-select" onChange={(e) => setDoctorName(e.target.value)} >
-      <option value="Dr Umer Qureshi">Dr Umer Qureshi</option>
-      <option value="Dr. Ajay">Dr. Ajay</option>
+   <div className='w-50'> <select className="form-select" onChange={(e) => setSelectedDoctor(e.target.value)} >
+      {doctors.map((doctor) => (
+        <option value={doctor.employee_ID}>{doctor.employee_name}</option>
+      ))} 
+      {/* <option value="Dr. Ajay">Dr. Ajay</option>
       <option value="Dr. Vijay">Dr. Vijay</option>
-      <option value="Dr. Mohit">Dr. Mohit</option>
+      <option value="Dr. Mohit">Dr. Mohit</option> */}
       
      
     </select>
@@ -255,7 +284,7 @@ console.log(timeSlots)
     
   <div className="table-responsive" id="tab">
            
-          <table className="table table-bordered table-striped">
+          <table className="table table-bordered">
           
             <tbody>
 
@@ -382,6 +411,9 @@ border-radius: 5px;
       line-height: 1rem;
     }
 }
+.time-slots{
+  height: 28.8rem;
+}
 .backIcon{
  font-size: 30px;
 
@@ -390,6 +422,7 @@ td{
   padding-top: 3px;
   padding-bottom: 3px;
   border-radius: 7px;
+  white-space: nowrap; 
 }
    
    ` 

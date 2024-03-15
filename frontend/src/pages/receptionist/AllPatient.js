@@ -65,7 +65,7 @@ function AllPatient() {
     setCurrentPage(1); // Reset to the first page when searching
 
     const filteredResults = patients.filter((row) =>
-      row.patient_name.toLowerCase().includes(searchTerm) || row.mobileno.includes(searchTerm)
+      row.patient_name.toLowerCase().includes(searchTerm) || row.mobileno.includes(searchTerm) || row.uhid.toLowerCase().includes(searchTerm)
     );
 
     setFilteredData(filteredResults);

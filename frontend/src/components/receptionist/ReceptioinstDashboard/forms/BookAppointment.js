@@ -420,7 +420,7 @@ console.log(availableDoctorOnDate);
     // Filter patients based on the search query if there's a search query, otherwise set an empty array
     const filtered = searchQuery
       ? patients.filter((patient) =>
-          patient.patient_name.toLowerCase().includes(searchQuery.toLowerCase()) || patient.mobileno.includes(searchQuery)
+          patient.patient_name.toLowerCase().includes(searchQuery.toLowerCase()) || patient.mobileno.includes(searchQuery) || patient.uhid.toLowerCase().includes(searchQuery.toLowerCase())
         )
       : [];
     setFilteredPatients(filtered);
@@ -802,7 +802,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                   <input
                     class="form-control mr-sm-2 mt-3 mb-2 m-auto"
                     type="search"
-                    placeholder="Search Patient Name or Mobile"
+                    placeholder="Search Patient Name or Mobile or ID"
                     aria-label="Search"
                     value={searchQuery}
                     onChange={handleSearch}

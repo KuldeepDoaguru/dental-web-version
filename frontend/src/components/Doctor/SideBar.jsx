@@ -7,6 +7,10 @@ import { AiOutlineAccountBook } from "react-icons/ai";
 import { SiCodereview } from "react-icons/si";
 // import { ImLab } from "react-icons/im";
 import { FaHistory } from "react-icons/fa";
+import { IoHome } from "react-icons/io5";
+import { ImSwitch } from "react-icons/im";
+import { IoPeople } from "react-icons/io5";
+import { CiMedicalClipboard } from "react-icons/ci";
 
 const Sider = () => {
   const location = useLocation();
@@ -31,7 +35,8 @@ const Sider = () => {
                 )}`}
               >
                 <div>
-                  <i className="fs-4 bi bi-house-door-fill"></i>
+                  {/* <i className="fs-4 bi bi-house-door-fill"></i> */}
+                  <IoHome className="icon"/>
                 </div>
                 <div>
                   <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
@@ -115,7 +120,8 @@ const Sider = () => {
                 className={`link-div ${getSidebarClass("/CreatePrescrip")}`}
               >
                 <div>
-                  <AiOutlineAccountBook className="bi bi-house-door-fill" size={35}/>
+                  {/* <AiOutlineAccountBook className="icon"/> */}
+                  <CiMedicalClipboard className="icon"/>
                 </div>
                 <div>
                   <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
@@ -124,18 +130,34 @@ const Sider = () => {
                 </div>
               </Link>
             </li>
-            <hr/>
+            {/* <hr/>
             <li>
               <Link
                 to="/HistoryDashBoard"
                 className={`link-div ${getSidebarClass("/HistoryDashBoard")}`}
               >
                 <div>
-                  <FaHistory className="fs-4 bi bi-house-door-fill" />
+                  <FaHistory className="icon" />
                 </div>
                 <div>
                   <h3 className=" d-none d-sm-inline fs-6" id="navleft">
                     History
+                  </h3>
+                </div>
+              </Link>
+            </li> */}
+             <hr/>
+            <li>
+              <Link
+                to="/all-patient"
+                className={`link-div ${getSidebarClass("/all-patient")}`}
+              >
+                <div>
+                <IoPeople className="icon" />
+                </div>
+                <div>
+                <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
+                     AllPatient
                   </h3>
                 </div>
               </Link>
@@ -204,7 +226,8 @@ const Sider = () => {
             <li>
               <div className="link-div">
                 <div>
-                  <i className="fs-4 bi bi-power"></i>
+                  {/* <i className="fs-4 bi bi-power"></i> */}
+                  <ImSwitch className="icon"/>
                 </div>
                 <div className="text-light">
                 Logout
@@ -247,9 +270,9 @@ const Wrapper = styled.div`
       width: 3rem;
       height: 212rem;
     }
-    @media screen and (min-width: 768px) and (max-width: 1020px) {
-      width: 5rem;
-      height: 151rem;
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+      width: 7rem;
+      height: 110rem;
     }
   }
   .bi {
@@ -274,5 +297,12 @@ const Wrapper = styled.div`
     background-color:  #8ae6ff;
     padding: 1rem;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  }
+  .icon{
+    color: white;
+    font-size: 2rem;
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+      font-size: 1.5rem;
+    }
   }
 `;

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
 
-const AppointTable = () => {
+const ModifyAppointTable = () => {
     const [searchInput, setSearchInput] = useState("");
     const [appointments, setAppointments] = useState([]);
     const [filterTableData, setFilterTableData] = useState([]);
@@ -216,7 +216,7 @@ const AppointTable = () => {
     );
 };
 
-export default AppointTable;
+export default ModifyAppointTable;
 
 const Wrapper = styled.div`
   overflow-x: hidden;
@@ -256,10 +256,5 @@ const Wrapper = styled.div`
       font-size: 15px;
       width:5rem;
     }
-  }
-  .table{
-    box-shadow: 1px -1px 11px 2px rgba(128,128,128,0.78);
--webkit-box-shadow: 1px -1px 11px 2px rgba(128,128,128,0.78);
--moz-box-shadow: 1px -1px 11px 2px rgba(128,128,128,0.78);
   }
 `;

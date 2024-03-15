@@ -20,11 +20,12 @@ const DoctorDashboard = () => {
             </div>
             <div className="col-lg-11 col-11 ps-0">
               <div className="row d-flex justify-content-between mx-3">
-                <div className="col-12 col-md-4 ">
-                  <h3> Welcome to Dental Guru</h3>
-                  <p>Clinic Doctor Dashboard</p>
+                {/* <div className="col-12 col-md-4 "> */}
+                <div className="col-12 col-lg-12 text-center mt-3">
+                  <h3> Welcome To Dental Guru</h3>
+                  <p> Doctor Dashboard</p>
                 </div>
-                <div className="col-12 col-md-4 my-3">
+                {/* <div className="col-12 col-md-4 my-3">
                   <form className="d-flex ms-auto my-sm" role="search">
                     <input
                       className="form-control me-2"
@@ -36,10 +37,10 @@ const DoctorDashboard = () => {
                       Search
                     </button>
                   </form>
-                </div>
+                </div> */}
               </div>
               <div className="row d-flex justify-content-around ms-4">
-                <Card />
+                {/* <Card /> */}
               </div>
               <div className="row ms-3 w-100">
                 <AppointTable />
@@ -74,16 +75,14 @@ overflow-x: hidden;
     height: 54rem;
     background-color: #004aad;
 }
-  /* #hd {
-    height: 44rem;
-
-    @media screen and (max-width: 768px) {
-      height: 68rem;
-    }
-    @media screen and (min-width: 768px) and (max-width: 1020px) {
-      height: 58rem;
-    }
-  } */
+ h3{
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+ }
+ p{
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 1.5rem;
+ }
 `;
 
  {/* <div className="col-8 col-md-2 my-3 p-0">

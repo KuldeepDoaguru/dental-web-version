@@ -5,6 +5,7 @@ import SideBar from "../SideBar";
 import {useParams } from "react-router-dom";
 import ExaminationDashTwo from "./ExaminationDashTwo";
 
+
 const ExaminationDashBoard = () => {
   const { id } = useParams();
   console.log(id);
@@ -31,4 +32,6 @@ const ExaminationDashBoard = () => {
 };
 
 export default ExaminationDashBoard;
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+background-color: #f0f8ff;
+`;

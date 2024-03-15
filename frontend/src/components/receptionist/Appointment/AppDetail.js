@@ -25,37 +25,49 @@ function AppDetails({ onClose, slotInfo }) {
         <Modal.Body>
 
         <form>
+        <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Appointment Id:</label>
+            <input type="text" class="form-control" id="recipient-name" readOnly value={slotInfo.appoint_id}/>
+          </div>
+        <div class="mb-3">
+            <label for="recipient-name" class="col-form-label">Patient Id:</label>
+            <input type="text" class="form-control" id="recipient-name" readOnly value={slotInfo.uhid}/>
+          </div>
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Patient Name:</label>
-            <input type="text" class="form-control" id="recipient-name" readOnly value={slotInfo.patient}/>
+            <input type="text" class="form-control" id="recipient-name" readOnly value={slotInfo.patient_name}/>
           </div>
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Status</label>
-            <input type="text" class="form-control" id="recipient-name" readOnly value={slotInfo.status}/>
+            <input type="text" class="form-control" id="recipient-name" readOnly value={slotInfo.appointment_status}/>
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Date & Time:</label>
-            <input type="text"  value={slotInfo.timing} class="form-control" id="recipient-name" readOnly />
+            <input type="text"  value={slotInfo.appointment_dateTime} class="form-control" id="recipient-name" readOnly />
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Mobile No.</label>
-            <input type="text"  value={slotInfo.mobile} class="form-control" id="recipient-name" readOnly />
+            <input type="text"  value={slotInfo.mobileno} class="form-control" id="recipient-name" readOnly />
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Treatment</label>
-            <input type="text"  value={slotInfo.treatment} class="form-control" id="recipient-name" readOnly />
+            <input type="text"  value={slotInfo.treatment_provided} class="form-control" id="recipient-name" readOnly />
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Doctor:</label>
-            <input type="text" class="form-control" id="recipient-name" value={slotInfo.doctor} readOnly/>
+            <input type="text" class="form-control" id="recipient-name" value={slotInfo.assigned_doctor_name} readOnly/>
           </div>
           {/* <div class="mb-3">
             <label for="message-text" class="col-form-label">Add Treatment:</label>
             <input type="text" class="form-control" id="recipient-name"/>
           </div> */}
           <div class="mb-3">
+            <label for="message-text" class="col-form-label">Patient type:</label>
+            <input type="text" class="form-control" id="recipient-name"  value={slotInfo.patient_type} readOnly/>
+          </div>
+          <div class="mb-3">
             <label for="message-text" class="col-form-label">Notes:</label>
-            <input type="text" class="form-control" id="recipient-name"/>
+            <input type="text" class="form-control" id="recipient-name"  value={slotInfo.notes} readOnly/>
           </div>
         {/* <button type="button" class="btn btn-primary">Book Appointment</button> */}
         </form>

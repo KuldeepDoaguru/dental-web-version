@@ -1,0 +1,45 @@
+import React from "react";
+import styled from "styled-components";
+import Header from "../Header";
+import Sider from "../Sider";
+import RightSider from "../RightSider";
+
+import AllStaffSalar from "./AllStaffSalar";
+import BranchDetails from "../BranchDetails";
+
+const StaffSalary = () => {
+  return (
+    <>
+      <Container>
+        <Header />
+        <div className="main">
+          <div className="container-fluid">
+            <div className="row d-flex justify-content-between">
+              <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 p-0">
+                <Sider />
+              </div>
+              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-2 p-0">
+                <div className="container-fluid">
+                  <div className="row">
+                    <BranchDetails />
+                    <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-8 col-sm-8">
+                      <AllStaffSalar />
+                    </div>
+
+                    <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-8 col-2 p-0">
+                      <RightSider />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+    </>
+  );
+};
+
+export default StaffSalary;
+
+const Container = styled.div``;

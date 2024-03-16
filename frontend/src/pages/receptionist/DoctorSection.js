@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom'
 import { Table, Input, Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios'
+import Toast from 'react-bootstrap/Toast';
+import moment from 'moment';
 
 function DoctorSection() {
 
@@ -21,6 +23,7 @@ function DoctorSection() {
   
   const [doctorWithLeave,setDoctorWithLeave] = useState([]);
 
+ 
   const getDoctorsWithLeave = async ()=>{
     try{
       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors-with-leave/${branch}`);
@@ -178,7 +181,16 @@ const convertToAMPM = (time) => {
     return null;
   });
 
+   // Define a function to format the date
+const formatDate = (dateString) => {
+  // Parse the date string using Moment.js
+  const dateObject = moment(dateString, 'YYYY-MM-DD');
 
+  // Format the date using the desired format
+  const formattedDate = dateObject.format('DD-MM-YYYY');
+
+  return formattedDate;
+};
   
   return (
     <Wrapper>
@@ -263,13 +275,27 @@ const convertToAMPM = (time) => {
                           </td>
                           {/* <td><Link to='/doctor_profile'>View Details</Link></td> */}
                           <td>
-                          {doctorWithLeave
-    .filter((doctor) => doctor.employee_ID === data.employee_ID)
-    .map((doctor) => 
-      doctor.leave_dates.split(",")
-        .filter((leaveDate) => new Date(leaveDate) >= new Date()).join(", ") // Filter out leave dates less than today's date
-        
+                          <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    View Leave
+  </button> 
+  <ul className="dropdown-menu">
+    {doctorWithLeave
+      .filter((doctor) => doctor.employee_ID === data.employee_ID)
+      .map((doctor) => 
+        doctor.leave_dates.split(",").filter((leaveDate) => new Date(leaveDate) >= new Date()).map((leaveDate, index) => (
+          <li key={index}>
+             {formatDate(leaveDate)}
+          </li>
+        ))
+      )
+    }
+    {doctorWithLeave.filter((doctor) => doctor.employee_ID === data.employee_ID).length === 0 && (
+      <li>No leave</li>
     )}
+  </ul>
+
+  
+                          
                           </td>
                         </tr>
                       ))}
@@ -351,5 +377,6 @@ const Wrapper = styled.div`
 td{
   padding: 1rem;
 }
+
 
 `

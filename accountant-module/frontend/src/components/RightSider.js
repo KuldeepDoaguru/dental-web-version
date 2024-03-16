@@ -15,73 +15,16 @@ const RightSider = () => {
           <div className="container-fluid mt-5">
             <div className="row mt-4">
               <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div
-                  className="rounded pb-3"
-                  style={{
-                    backgroundColor: "#FFA600",
-                  }}
-                >
+                <div className="rounded pb-3 rightcont shadow">
                   <div className="d-flex flex-column pt-3 px-4">
                     <Link to="/AccountantSalaryMain" target="_blank">
                       <div class="d-flex gap-3 align-items-center">
                         <div className="">
-                          <FaHandHoldingDollar className="fs-2 text-dark" />
+                          <FaHandHoldingDollar className="fs-2 text-light" />
                         </div>
                         <div className="mt-2">
-                          <h3 class="d-sm-inline fs-5 text-dark">Accountend</h3>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="container-fluid mt-4 ">
-            <div className="row ">
-              <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div
-                  className="rounded pb-3"
-                  style={{
-                    backgroundColor: "#FFA600",
-                  }}
-                >
-                  <div className="d-flex flex-column pt-3 px-4">
-                    <Link to="/DoctorMainSalary" target="_blank">
-                      <div class="d-flex gap-3 align-items-center">
-                        <div className="">
-                          <FaUserDoctor className="fs-2 text-dark" />
-                        </div>
-                        <div className="mt-2">
-                          <h3 class="d-sm-inline fs-5 text-dark">Doctors</h3>
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="container-fluid mt-4 ">
-            <div className="row ">
-              <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div
-                  className="rounded pb-3"
-                  style={{
-                    backgroundColor: "#FFA600",
-                  }}
-                >
-                  <div className="d-flex flex-column pt-3 px-4">
-                    <Link to="/ReceptionistSalaryMain" target="_blank">
-                      <div class="d-flex gap-3 align-items-center">
-                        <div className="">
-                          <FaHospitalUser className="fs-2 text-dark" />
-                        </div>
-                        <div className="mt-2">
-                          <h3 class="d-sm-inline fs-5 text-dark">
-                            Receptionist
+                          <h3 class="d-sm-inline fs-5 text-light">
+                            Accountants
                           </h3>
                         </div>
                       </div>
@@ -95,20 +38,15 @@ const RightSider = () => {
           <div className="container-fluid mt-4 ">
             <div className="row ">
               <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div
-                  className="rounded pb-3"
-                  style={{
-                    backgroundColor: "#FFA600",
-                  }}
-                >
+                <div className="rounded pb-3 rightcont shadow">
                   <div className="d-flex flex-column pt-3 px-4">
-                    <Link to="/NurseMainSalary" target="_blank">
+                    <Link to="/DoctorMainSalary" target="_blank">
                       <div class="d-flex gap-3 align-items-center">
                         <div className="">
-                          <GiNurseFemale className="fs-2 text-dark" />
+                          <FaUserDoctor className="fs-2 text-light" />
                         </div>
                         <div className="mt-2">
-                          <h3 class="d-sm-inline fs-5 text-dark">Nurse</h3>
+                          <h3 class="d-sm-inline fs-5 text-light">Doctors</h3>
                         </div>
                       </div>
                     </Link>
@@ -121,20 +59,17 @@ const RightSider = () => {
           <div className="container-fluid mt-4 ">
             <div className="row ">
               <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                <div
-                  className="rounded pb-3"
-                  style={{
-                    backgroundColor: "#FFA600",
-                  }}
-                >
+                <div className="rounded pb-3 rightcont shadow">
                   <div className="d-flex flex-column pt-3 px-4">
-                    <Link to="/OtherMainSalary" target="_blank">
+                    <Link to="/ReceptionistSalaryMain" target="_blank">
                       <div class="d-flex gap-3 align-items-center">
                         <div className="">
-                          <GrUserWorker className="fs-2 text-dark" />
+                          <FaHospitalUser className="fs-2 text-light" />
                         </div>
                         <div className="mt-2">
-                          <h3 class="d-sm-inline fs-5 text-dark">Others</h3>
+                          <h3 class="d-sm-inline fs-5 text-light">
+                            Receptionists
+                          </h3>
                         </div>
                       </div>
                     </Link>
@@ -144,26 +79,26 @@ const RightSider = () => {
             </div>
           </div>
 
-          {/* <div className="container-fluid mt-4 ">
-          <div className="row ">
-            <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-              <div className="rounded bg-warning pb-3">
-                <div className="d-flex flex-column pt-3 px-4">
-                  <Link to="/OtherMainSalary" target="_blank">
-                    <div class="d-flex gap-3 align-items-center">
-                      <div className="">
-                        <FaHandHoldingDollar className="fs-2 text-dark" />
+          <div className="container-fluid mt-4 ">
+            <div className="row ">
+              <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                <div className="rounded pb-3 rightcont shadow">
+                  <div className="d-flex flex-column pt-3 px-4">
+                    <Link to="/OtherMainSalary" target="_blank">
+                      <div class="d-flex gap-3 align-items-center">
+                        <div className="">
+                          <GrUserWorker className="fs-2 text-light" />
+                        </div>
+                        <div className="mt-2">
+                          <h3 class="d-sm-inline fs-5 text-light">Admins</h3>
+                        </div>
                       </div>
-                      <div className="mt-2">
-                        <h3 class="d-sm-inline fs-5 text-dark">Others</h3>
-                      </div>
-                    </div>
-                  </Link>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div> */}
         </div>
       </Wrapper>
     </>
@@ -192,22 +127,10 @@ const Wrapper = styled.div`
     width: 100%;
     height: 4rem;
     background-color: #004aad;
-    /* @media screen and (max-width: 768px) {
-      width: 3rem;
-      height: 212rem;
-    }
-    @media screen and (min-width: 768px) and (max-width: 1020px) {
-      width: 5rem;
-      height: 151rem;
-    } */
   }
   .bi {
     background-color: #fbceb1;
   }
-
-  /* li:hover {
-    color: red;
-  } */
 
   .link-div {
     display: flex;
@@ -222,5 +145,9 @@ const Wrapper = styled.div`
   .active-nav {
     background-color: red;
     padding: 1rem;
+  }
+
+  .rightcont {
+    background: #201658;
   }
 `;

@@ -97,137 +97,127 @@ const PaySlip = () => {
           </div>
         </div>
 
-        <div className="container-fluid  mt-5">
-          <div className="row d-flex justify-content-center ">
-            <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-10">
-              <div class="table-responsive rounded">
-                <table class="table table-bordered rounded shadow">
-                  <thead className="table-head">
-                    <tr>
-                      <th className="table-sno" style={{ width: "20%" }}>
-                        Earnings
-                      </th>
-                      <th className="table-small" style={{ width: "20%" }}>
-                        {" "}
-                        Amounts
-                      </th>
+        <div className="container  mt-5">
+          <div className="">
+            <div class="table-responsive rounded">
+              <table class="table table-bordered rounded shadow">
+                <thead className="table-head">
+                  <tr>
+                    <th className="table-sno" style={{ width: "20%" }}>
+                      Earnings
+                    </th>
+                    <th className="table-small" style={{ width: "20%" }}>
+                      {" "}
+                      Amounts
+                    </th>
 
-                      <th className="table-small" style={{ width: "20%" }}>
-                        Deduction
-                      </th>
-                      <th className="table-small" style={{ width: "20%" }}>
-                        Amounts
-                      </th>
-                    </tr>
-                  </thead>
+                    <th className="table-small" style={{ width: "20%" }}>
+                      Deduction
+                    </th>
+                    <th className="table-small" style={{ width: "20%" }}>
+                      Amounts
+                    </th>
+                  </tr>
+                </thead>
 
-                  <tbody>
-                    <tr className="table-row">
-                      <td className="table-sno" style={{ width: "20%" }}>
-                        Basic
-                      </td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        ₹ 33,333.00
-                      </td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        Income Tex
-                      </td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        0
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tbody>
-                    <tr className="table-row">
-                      <td className="table-sno" style={{ width: "20%" }}>
-                        House Rent Allowance
-                      </td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        ₹ 16,667.00
-                      </td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        Provident Fund
-                      </td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        ₹ 4,000.00
-                      </td>
-                    </tr>
-                  </tbody>
+                <tbody>
+                  <tr className="table-row">
+                    <td className="table-sno" style={{ width: "20%" }}>
+                      Basic
+                    </td>
+                    <td className="table-small" style={{ width: "20%" }}>
+                      ₹ 33,333.00
+                    </td>
+                    <td className="table-small" style={{ width: "20%" }}>
+                      Income Tex
+                    </td>
+                    <td className="table-small" style={{ width: "20%" }}>
+                      0
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr className="table-row">
+                    <td className="table-sno" style={{ width: "20%" }}>
+                      House Rent Allowance
+                    </td>
+                    <td className="table-small" style={{ width: "20%" }}>
+                      ₹ 16,667.00
+                    </td>
+                    <td className="table-small" style={{ width: "20%" }}>
+                      Provident Fund
+                    </td>
+                    <td className="table-small" style={{ width: "20%" }}>
+                      ₹ 4,000.00
+                    </td>
+                  </tr>
+                </tbody>
 
-                  <tbody>
-                    <tr className="table-row">
-                      <td className="table-sno" style={{ width: "10%" }}></td>
-                      <td className="table-small" style={{ width: "20%" }}></td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        Professional Tax
-                      </td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        ₹ 2,00.00
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tbody>
-                    <tr className="table-row">
-                      <td className="table-sno" style={{ width: "10%" }}>
-                        Gross Earnings
-                      </td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        ₹ 50,000.00
-                      </td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        Total Deductions
-                      </td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        ₹ 4,200.00
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                <tbody>
+                  <tr className="table-row">
+                    <td className="table-sno" style={{ width: "10%" }}></td>
+                    <td className="table-small" style={{ width: "20%" }}></td>
+                    <td className="table-small" style={{ width: "20%" }}>
+                      Professional Tax
+                    </td>
+                    <td className="table-small" style={{ width: "20%" }}>
+                      ₹ 2,00.00
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr className="table-row">
+                    <td className="table-sno" style={{ width: "10%" }}>
+                      Gross Earnings
+                    </td>
+                    <td className="table-small" style={{ width: "20%" }}>
+                      ₹ 50,000.00
+                    </td>
+                    <td className="table-small" style={{ width: "20%" }}>
+                      Total Deductions
+                    </td>
+                    <td className="table-small" style={{ width: "20%" }}>
+                      ₹ 4,200.00
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
 
-        <div className="container-fluid">
-          <div className="row d-flex justify-content-center ">
-            <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-10">
-              <div class="table-responsive">
-                <table class="table table-bordered rounded shadow">
-                  <tbody>
-                    <tr className="table-row">
-                      <td className="table-sno" style={{ width: "83%" }}>
-                        <h5>TOTAL NET PAYABLE</h5>
-                        <p>Gross Earnings - Total Deductions</p>
-                      </td>
-                      <td className="table-small" style={{ width: "17%" }}>
-                        ₹ 45,800.00
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+        <div className="container">
+          <div class="table-responsive">
+            <table class="table table-bordered rounded shadow">
+              <tbody>
+                <tr className="table-row">
+                  <td className="table-sno" style={{ width: "83%" }}>
+                    <h5>TOTAL NET PAYABLE</h5>
+                    <p>Gross Earnings - Total Deductions</p>
+                  </td>
+                  <td className="table-small" style={{ width: "17%" }}>
+                    ₹ 45,800.00
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div className="container-fluid">
-          <div className="row d-flex justify-content-center ">
-            <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-10">
-              <div class="table-responsive">
-                <table class="table table-bordered rounded shadow">
-                  <tbody>
-                    <tr className="table-row">
-                      <td className="table-sno">
-                        <p>
-                          Amount In Words: Indian Rupee Fourt-Five Thousand
-                          Eight Hundred Only
-                        </p>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+        <div className="container">
+          <div class="table-responsive">
+            <table class="table table-bordered rounded shadow">
+              <tbody>
+                <tr className="table-row">
+                  <td className="table-sno">
+                    <p>
+                      Amount In Words: Indian Rupee Fourt-Five Thousand Eight
+                      Hundred Only
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 

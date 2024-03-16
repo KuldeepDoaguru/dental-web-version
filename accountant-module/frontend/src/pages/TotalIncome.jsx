@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Header from "../Header";
-import Sider from "../Sider";
 import { PiStethoscopeBold } from "react-icons/pi";
 import { MdOutlineHealthAndSafety } from "react-icons/md";
 import { LiaXRaySolid } from "react-icons/lia";
 import { GiMicroscope } from "react-icons/gi";
 import { GiMedicines } from "react-icons/gi";
-import BranchDetails from "../BranchDetails";
+import BranchDetails from "../components/BranchDetails";
+import Header from "../components/Header";
+import Sider from "../components/Sider";
 
-const TodayIncome = () => {
+const TotalIncome = () => {
+  const [designation, setDesignation] = useState("");
+  const [keyword, setkeyword] = useState("");
+
   return (
     <>
       <Container>
@@ -23,9 +26,28 @@ const TodayIncome = () => {
 
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10">
                 <BranchDetails />
+                <div className="container Heading mt-4 d-flex justify-content-start">
+                  {/* <h2>Weekly Income</h2> */}
+                  <div className="d-flex justify-content-between">
+                    <div>
+                      <h4>Select Period :</h4>
+                    </div>
 
-                <div className="Heading mt-4 d-flex justify-content-center">
-                  <h2>Today Income</h2>
+                    <div className="mx-2">
+                      <select
+                        class="form-select"
+                        aria-label="Default select example"
+                        value={designation}
+                        onChange={(e) => setDesignation(e.target.value)}
+                      >
+                        <option value="">Select-period</option>
+                        <option value="today">Today</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="row d-flex justify-content-around mt-4">
@@ -133,67 +155,49 @@ const TodayIncome = () => {
                       </thead>
                       <tbody>
                         <tr className="table-row">
-                          <td>01/04/2024</td>
-                          <td>4000</td>
-                          <td>50000</td>
-                          <td>6000</td>
-                          <td>8000</td>
-                          <td>40000</td>
-                          <td>108000</td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>02/04/2024</td>
-                          <td>4000</td>
-                          <td>50000</td>
-                          <td>6000</td>
-                          <td>8000</td>
-                          <td>40000</td>
-                          <td>108000</td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>03/04/2024</td>
-                          <td>4000</td>
-                          <td>50000</td>
-                          <td>6000</td>
-                          <td>8000</td>
-                          <td>40000</td>
-                          <td>108000</td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>04/04/2024</td>
-                          <td>4000</td>
-                          <td>50000</td>
-                          <td>6000</td>
-                          <td>8000</td>
-                          <td>40000</td>
-                          <td>108000</td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>05/04/2024</td>
-                          <td>4000</td>
-                          <td>50000</td>
-                          <td>6000</td>
-                          <td>8000</td>
-                          <td>40000</td>
-                          <td>108000</td>
-                        </tr>
-                        <tr className="table-row">
-                          <td>06/04/2024</td>
-                          <td>4000</td>
-                          <td>50000</td>
-                          <td>6000</td>
-                          <td>8000</td>
-                          <td>40000</td>
-                          <td>108000</td>
-                        </tr>
-                        <tr className="table-row">
                           <td>07/04/2024</td>
-                          <td>4000</td>
-                          <td>50000</td>
-                          <td>6000</td>
+                          <td>28000</td>
+                          <td>350000</td>
+                          <td>42000</td>
+                          <td>64000</td>
+                          <td>280000</td>
+                          <td>872000</td>
+                        </tr>
+                        <tr className="table-row">
+                          <td>14/04/2024</td>
+                          <td>28000</td>
+                          <td>350000</td>
+                          <td>42000</td>
+                          <td>64000</td>
+                          <td>280000</td>
+                          <td>872000</td>
+                        </tr>
+                        <tr className="table-row">
+                          <td>21/04/2024</td>
+                          <td>28000</td>
+                          <td>350000</td>
+                          <td>42000</td>
+                          <td>64000</td>
+                          <td>280000</td>
+                          <td>872000</td>
+                        </tr>
+                        <tr className="table-row">
+                          <td>28/04/2024</td>
+                          <td>28000</td>
+                          <td>350000</td>
+                          <td>42000</td>
+                          <td>64000</td>
+                          <td>280000</td>
+                          <td>872000</td>
+                        </tr>
+                        <tr className="table-row">
+                          <td>30/04/2024</td>
                           <td>8000</td>
-                          <td>40000</td>
-                          <td>108000</td>
+                          <td>100000</td>
+                          <td>12000</td>
+                          <td>16000</td>
+                          <td>80000</td>
+                          <td>216000</td>
                         </tr>
                       </tbody>
                     </table>
@@ -208,7 +212,7 @@ const TodayIncome = () => {
   );
 };
 
-export default TodayIncome;
+export default TotalIncome;
 
 const Container = styled.div`
   .popup-container {
@@ -266,10 +270,5 @@ const Container = styled.div`
     p {
       color: white;
     }
-  }
-
-  .editbtn {
-    background: #201658;
-    color: white;
   }
 `;

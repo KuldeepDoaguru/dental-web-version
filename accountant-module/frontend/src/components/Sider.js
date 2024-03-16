@@ -38,10 +38,10 @@ const Sider = () => {
               >
                 <div className="link-div">
                   <FaHandHoldingDollar className="fs-1 bi bi-house-door-fill" />
-                </div>{" "}
+                </div>
                 <h3 className="text-center fs-6 text-light">
                   Earning <IoMdArrowDropdown />
-                </h3>{" "}
+                </h3>
               </a>
               <ul
                 className="nav flex-column collapse"
@@ -114,10 +114,10 @@ const Sider = () => {
               >
                 <div className="link-div">
                   <LiaFileInvoiceDollarSolid className="fs-1 bi bi-house-door-fill" />
-                </div>{" "}
+                </div>
                 <h3 class="d-none d-sm-inline fs-6 text-light">
                   Expense <IoMdArrowDropdown />
-                </h3>{" "}
+                </h3>
               </Link>
               <ul
                 class="collapse nav flex-column"
@@ -126,7 +126,6 @@ const Sider = () => {
               >
                 <li class="w-100">
                   <Link to="/StaffSalary" class="nav-link px-0">
-                    {" "}
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
@@ -139,7 +138,6 @@ const Sider = () => {
 
                 <li>
                   <Link to="/VoucherCreater" class="nav-link px-0">
-                    {" "}
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
@@ -152,7 +150,6 @@ const Sider = () => {
 
                 <li>
                   <Link to="/VoucherList" class="nav-link px-0">
-                    {" "}
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
@@ -165,47 +162,46 @@ const Sider = () => {
 
                 <li>
                   <Link to="/NewPurchase" class="nav-link px-0">
-                    {" "}
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
                     >
                       New Purchase
-                    </span>{" "}
+                    </span>
                   </Link>
                   <hr />
                 </li>
 
-                <li>
+                {/* <li>
                   <Link to="/DueByUs" class="nav-link px-0">
-                    {" "}
+                    
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
                     >
                       Due Payment
-                    </span>{" "}
+                    </span>
                   </Link>
                   <hr />
-                </li>
+                </li> */}
 
-                <li>
+                {/* <li>
                   <Link to="/PaidByUs" class="nav-link px-0">
-                    {" "}
+                    
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
                     >
                       Paid Payment
-                    </span>{" "}
+                    </span>
                   </Link>
                   <hr />
-                </li>
+                </li> */}
               </ul>
             </li>
             <hr />
 
-            <li className="">
+            {/* <li className="">
               <Link
                 to="#submenu4"
                 data-bs-toggle="collapse"
@@ -213,10 +209,10 @@ const Sider = () => {
               >
                 <div className="link-div">
                   <FaCommentsDollar className="fs-1 bi bi-house-door-fill" />
-                </div>{" "}
+                </div>
                 <h3 class="d-none d-sm-inline fs-6 text-light">
                   Total Income <IoMdArrowDropdown />
-                </h3>{" "}
+                </h3>
               </Link>
               <ul
                 class="collapse nav flex-column ms-1"
@@ -225,7 +221,7 @@ const Sider = () => {
               >
                 <li class="w-100">
                   <Link to="/TodayIncome" class="nav-link px-0">
-                    {" "}
+                    
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
@@ -238,7 +234,7 @@ const Sider = () => {
 
                 <li>
                   <Link to="/WeeklyIncome" class="nav-link px-0">
-                    {" "}
+                    
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
@@ -251,7 +247,7 @@ const Sider = () => {
 
                 <li>
                   <Link to="/Monthly" class="nav-link px-0">
-                    {" "}
+                    
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
@@ -264,17 +260,27 @@ const Sider = () => {
 
                 <li>
                   <Link to="/Yearly" class="nav-link px-0">
-                    {" "}
+                    
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
                     >
                       Annual Income
-                    </span>{" "}
+                    </span>
                   </Link>
                   <hr />
                 </li>
               </ul>
+            </li>
+            <hr /> */}
+
+            <li class="nav-item link-div">
+              <Link to="/total-income" class="nav-link px-0 align-middle">
+                <div className="link-div">
+                  <FaCommentsDollar className="fs-1 bi bi-house-door-fill" />
+                </div>
+                <h3 class="d-none d-sm-inline fs-6 text-light">Total Income</h3>
+              </Link>
             </li>
             <hr />
 
@@ -282,10 +288,10 @@ const Sider = () => {
               <Link to="/bill_section" class="nav-link px-0 align-middle ">
                 <div className="link-div">
                   <i className="fs-2 bi bi-receipt-cutoff ms-3"></i>
-                </div>{" "}
+                </div>
                 <h3 class="d-none d-sm-inline fs-6 text-light">
                   Create Invoice
-                </h3>{" "}
+                </h3>
               </Link>
             </li>
             <hr />

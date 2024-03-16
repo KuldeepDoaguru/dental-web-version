@@ -47,7 +47,7 @@ const Cards = () => {
                   <LiaMicroscopeSolid />
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title text-light">Pathology Income</h5>
+                  <h5 className="card-title text-light">Treatment Income</h5>
                   <p className="card-text text-light fw-semibold">2500</p>
                 </div>
               </div>

@@ -10,6 +10,7 @@ import { TbBasketQuestion } from "react-icons/tb";
 import BranchDetails from "../BranchDetails";
 import Editbill from "../Bill/Editbill";
 import EditNewPurchase from "../EditNewPurchase";
+import { Link } from "react-router-dom";
 const NewPurchase = () => {
   return (
     <>
@@ -118,372 +119,133 @@ const NewPurchase = () => {
                 <div className="container-fluid mt-4">
                   <div className="row flex-nowrap ">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-12 ps-0">
-                      <div className="container mt-4">
+                      <div className="container-fluid mt-4">
                         <h2 className="text-center">All Purchase Items List</h2>
-                        <div className="container mt-5">
+                        <div className="container-fluid mt-5">
                           <div class="table-responsive rounded">
                             <table class="table table-bordered rounded shadow">
                               <thead className="table-head">
                                 <tr>
-                                  <th
-                                    className="table-sno"
-                                    style={{ width: "2%" }}
-                                  >
-                                    SN
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "18%" }}
-                                  >
-                                    Item Name
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Vander
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Quantity
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
+                                  <th className="table-sno">SN</th>
+                                  <th className="table-small">Item Name</th>
+                                  <th className="table-small">Vander</th>
+                                  <th className="table-small">Quantity</th>
+                                  <th className="table-small">
                                     Per Items Price
                                   </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Total Amount
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "5%" }}
-                                  >
-                                    Gst %
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Discount
-                                  </th>
+                                  <th className="table-small">Total Amount</th>
+                                  <th className="table-small">Gst %</th>
+                                  <th className="table-small">Discount</th>
 
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Net price
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Paid Amount
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Due Amount
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Paid Date
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Bill Date
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Action
-                                  </th>
+                                  <th className="table-small">Net price</th>
+                                  <th className="table-small">Paid Amount</th>
+                                  <th className="table-small">Due Amount</th>
+                                  <th className="table-small">Paid Date</th>
+                                  <th className="table-small">Bill Date</th>
+                                  <th className="table-small">Action</th>
                                 </tr>
                               </thead>
 
                               <tbody>
                                 <tr className="table-row">
-                                  <td
-                                    className="table-sno"
-                                    style={{ width: "10%" }}
-                                  >
-                                    1
-                                  </td>
+                                  <td className="table-sno">1</td>
 
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Machine
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    L&T
-                                  </td>
+                                  <td className="table-small">Machine</td>
+                                  <td className="table-small">L&T</td>
 
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    4
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    40000
-                                  </td>
+                                  <td className="table-small">4</td>
+                                  <td className="table-small">40000</td>
 
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    160000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    18%
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    8.4%
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    193000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    100000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    93000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/01
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/04
-                                  </td>
+                                  <td className="table-small">160000</td>
+                                  <td className="table-small">18%</td>
+                                  <td className="table-small">8.4%</td>
+                                  <td className="table-small">193000</td>
+                                  <td className="table-small">100000</td>
+                                  <td className="table-small">93000</td>
+                                  <td className="table-small">01/01</td>
+                                  <td className="table-small">01/04</td>
 
                                   <td>
-                                    <EditNewPurchase />
+                                    <div className="d-flex justify-content-center align-items-center">
+                                      <EditNewPurchase />
+                                      <Link
+                                        to="/PaidByUs"
+                                        class="nav-link px-0"
+                                      >
+                                        <button className="btn btn-warning">
+                                          View Bill
+                                        </button>
+                                      </Link>
+                                    </div>
                                   </td>
                                 </tr>
                               </tbody>
 
                               <tbody>
                                 <tr className="table-row">
-                                  <td
-                                    className="table-sno"
-                                    style={{ width: "10%" }}
-                                  >
-                                    1
-                                  </td>
+                                  <td className="table-sno">1</td>
 
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Machine
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    L&T
-                                  </td>
+                                  <td className="table-small">Machine</td>
+                                  <td className="table-small">L&T</td>
 
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    4
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    40000
-                                  </td>
+                                  <td className="table-small">4</td>
+                                  <td className="table-small">40000</td>
 
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    160000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    18%
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    8.4%
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    193000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    100000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    93000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/01
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/04
-                                  </td>
+                                  <td className="table-small">160000</td>
+                                  <td className="table-small">18%</td>
+                                  <td className="table-small">8.4%</td>
+                                  <td className="table-small">193000</td>
+                                  <td className="table-small">100000</td>
+                                  <td className="table-small">93000</td>
+                                  <td className="table-small">01/01</td>
+                                  <td className="table-small">01/04</td>
 
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    <EditNewPurchase />
+                                  <td className="table-small">
+                                    <div className="d-flex justify-content-center align-items-center">
+                                      <EditNewPurchase />
+                                      <Link
+                                        to="/PaidByUs"
+                                        class="nav-link px-0"
+                                      >
+                                        <button className="btn btn-warning">
+                                          View Bill
+                                        </button>
+                                      </Link>
+                                    </div>
                                   </td>
                                 </tr>
                               </tbody>
                               <tbody>
                                 <tr className="table-row">
-                                  <td
-                                    className="table-sno"
-                                    style={{ width: "10%" }}
-                                  >
-                                    1
-                                  </td>
+                                  <td className="table-sno">1</td>
 
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Machine
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    L&T
-                                  </td>
+                                  <td className="table-small">Machine</td>
+                                  <td className="table-small">L&T</td>
 
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    4
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    40000
-                                  </td>
+                                  <td className="table-small">4</td>
+                                  <td className="table-small">40000</td>
 
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    160000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    18%
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    8.4%
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    193000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    100000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    93000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/01
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/04
-                                  </td>
+                                  <td className="table-small">160000</td>
+                                  <td className="table-small">18%</td>
+                                  <td className="table-small">8.4%</td>
+                                  <td className="table-small">193000</td>
+                                  <td className="table-small">100000</td>
+                                  <td className="table-small">93000</td>
+                                  <td className="table-small">01/01</td>
+                                  <td className="table-small">01/04</td>
 
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    <EditNewPurchase />
+                                  <td className="table-small">
+                                    <div className="d-flex justify-content-center align-items-center">
+                                      <EditNewPurchase />
+                                      <Link
+                                        to="/PaidByUs"
+                                        class="nav-link px-0"
+                                      >
+                                        <button className="btn btn-warning">
+                                          View Bill
+                                        </button>
+                                      </Link>
+                                    </div>
                                   </td>
                                 </tr>
                               </tbody>

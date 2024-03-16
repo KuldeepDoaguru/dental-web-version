@@ -58,6 +58,8 @@ import PatintPaidPaymentPrint from "./pages/PatintPaidPaymentPrint";
 import Payment from "./pages/Payment";
 import Cards from "./components/Accountant/Cards";
 import ErrorPage from "./pages/ErrorPage";
+import TotalIncome from "./pages/TotalIncome";
+import AccountantProfile from "./pages/AccountantProfile";
 
 function App() {
   return (
@@ -78,10 +80,10 @@ function App() {
       <Route path="/StaffSalary" element={<StaffSalary />} />
       <Route path="/VoucherCreater" element={<VoucherCreater />} />
       <Route path="/VoucherList" element={<VoucherList />} />
-      <Route path="/Monthly" element={<Monthly />} />
+      {/* <Route path="/Monthly" element={<Monthly />} /> */}
       <Route path="/TodayIncome" element={<TodayIncome />} />
-      <Route path="/WeeklyIncome" element={<WeeklyIncome />} />
-      <Route path="/Yearly" element={<Yearly />} />
+      {/* <Route path="/WeeklyIncome" element={<WeeklyIncome />} />
+      <Route path="/Yearly" element={<Yearly />} /> */}
       <Route path="/RightSider" element={<RightSider />} />
       <Route path="/DoctorSalary" element={<DoctorSalary />} />
       <Route path="/DoctorMainSalary" element={<DoctorMainSalary />} />
@@ -128,6 +130,8 @@ function App() {
         element={<PatintPaidPaymentPrint />}
       />
       <Route path="/Payment" element={<Payment />} />
+      <Route path="/total-income" element={<TotalIncome />} />
+      <Route path="/accountant-profile" element={<AccountantProfile />} />
       <Route path="*" element={<ErrorPage />} />
       {/*Acountend  routes end  */}
     </Routes>

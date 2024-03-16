@@ -22,13 +22,13 @@ const StaffSalary = () => {
                 <div className="container-fluid">
                   <div className="row">
                     <BranchDetails />
-                    <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-8 col-sm-8">
+                    <div className="">
                       <AllStaffSalar />
                     </div>
 
-                    <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-8 col-2 p-0">
+                    {/* <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-8 col-2 p-0">
                       <RightSider />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

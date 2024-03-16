@@ -25,75 +25,134 @@ function Editbill() {
             </Modal.Header>
             <Modal.Body>
               <form>
-                <div class="mb-3">
-                  <label for="recipient-name" class="col-form-label">
-                    UHID:
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
+                <div className="container">
+                  <div className="row">
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-12 col-12">
+                      <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">
+                          UHID:
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="recipient-name"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-12 col-12">
+                      <div class="mb-3">
+                        <label for="message-text" class="col-form-label">
+                          RGID:
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="recipient-name"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-12 col-12">
+                      <div class="mb-3">
+                        <label for="message-text" class="col-form-label">
+                          Patient Name:
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="recipient-name"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-12 col-12">
+                      <div class="mb-3">
+                        <label for="message-text" class="col-form-label">
+                          Date:
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="recipient-name"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-12 col-12">
+                      <div class="mb-3">
+                        <label for="message-text" class="col-form-label">
+                          Treatment Amount
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="recipient-name"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-12 col-12">
+                      {" "}
+                      <div class="mb-3">
+                        <label for="message-text" class="col-form-label">
+                          Payme:
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="recipient-name"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-12 col-12">
+                      <div class="mb-3">
+                        <label for="message-text" class="col-form-label">
+                          Bill Amount:
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="recipient-name"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-12 col-12">
+                      <div class="mb-3">
+                        <label for="message-text" class="col-form-label">
+                          Pending:
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="recipient-name"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-12 col-12">
+                      <div class="mb-3">
+                        <label for="message-text" class="col-form-label">
+                          Paid:
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="recipient-name"
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-12 col-12">
+                      <div class="mb-3">
+                        <label for="message-text" class="col-form-label">
+                          Billing Status:
+                        </label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="recipient-name"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-primary">
+                    Update
+                  </button>
                 </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">
-                    RGID:
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
-                </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">
-                    Patient Name:
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
-                </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">
-                    Moblie No :
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
-                </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">
-                    Date:
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
-                </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">
-                    Treatment Amount
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
-                </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">
-                    Payme:
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
-                </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">
-                    Bill Amount:
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
-                </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">
-                    Pending:
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
-                </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">
-                    Paid:
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
-                </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">
-                    Billing Status:
-                  </label>
-                  <input type="text" class="form-control" id="recipient-name" />
-                </div>
-                <button type="button" class="btn btn-primary">
-                  Edit
-                </button>
               </form>
             </Modal.Body>
             <Modal.Footer>
@@ -109,4 +168,8 @@ function Editbill() {
 }
 
 export default Editbill;
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  .modal {
+    width: 80% !important;
+  }
+`;

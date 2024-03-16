@@ -182,42 +182,22 @@ const VoucherPaidListPrint = () => {
         <div className="container-fluid">
           <div className="row d-flex justify-content-center ">
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-              <div class="table-responsive">
-                <table class="table table-bordered rounded shadow">
-                  <tbody>
-                    <tr className="table-row">
-                      <td className="table-sno">
-                        <td className="table-sno" style={{ width: "60%" }}>
-                          <h6>
-                            Rupees (in Words) : Indian Rupee One Thousand Two
-                            Hundred Fifty Only
-                          </h6>
-                        </td>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div className="d-flex justify-content-start">
+                <h6 className="fw-bold">
+                  Rupees (in Words) : Indian Rupee One Thousand Two Hundred
+                  Fifty Only
+                </h6>
               </div>
             </div>
             <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4">
-              <div class="table-responsive">
-                <table class="table table-bordered rounded shadow">
-                  <tbody>
-                    <tr className="table-row">
-                      <td className="table-sno">
-                        <td className="table-small" style={{ width: "40%" }}>
-                          <p>Receiver's Signature</p>
-                        </td>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div className="d-flex justify-content-end">
+                <p className="fw-bold">Receiver's Signature</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="d-flex justify-content-center mb-5 mt-3 ms-5">
+        <div className="d-flex justify-content-center mb-5 mt-5 ms-5">
           <div className="table-small">
             <button
               className="btn btn-print text-light px-5 py-3"

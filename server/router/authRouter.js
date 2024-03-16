@@ -4,8 +4,8 @@ const multer = require('multer');
 const path = require('path');
 const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric } = require("../controller/authControl.js");
 const { getAppointTable, getAppointmentById, getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus } = require("../controller/authAppointTable.js");
-const { getBranch, LoginDoctor } = require("../controller/authBranch.js");
-const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById } = require("../controller/authTreatment.js");
+const { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId } = require("../controller/authBranch.js");
+const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM } = require("../controller/authTreatment.js");
 const { uploadImage, getUploadedImages } = require("../controller/authContrimg.js");
 
 const router = express.Router();
@@ -15,7 +15,7 @@ const router = express.Router();
 router.post("/dentalPediatric", dentalPediatric);
 router.put("/updatedentalPediatric/:id", updateDentalPediatric);
 router.get("/getDentalDataByID/:appointmentId", getDentalDataByID);
-router.delete("/deleteDentalPediatric/:id", deleteDentalPediatric);
+router.delete("/deleteDentalPediatric/:id", deleteDentalPediatric); 
 
 // Examination  Routes END here......
 
@@ -44,6 +44,10 @@ router.get("/getExamDataIdbyAppointId/:id/:appointment_id", getExamDataIdbyAppoi
 router.get("/getTreatmentData/:appointment_id", getTreatmentData);
 router.put('/updateTreatmentData/:id', updateTreatmentData);
 router.delete('/deleteTreatmentData/:id', deleteTreatmentData);
+
+// test purpose
+
+router.get("/getTreatmentDatasum/:appointment_id", getTreatmentDataSUM);
 
 // Treatment List Routes END here......
 
@@ -74,6 +78,11 @@ router.post('/uploadImage', upload.fields([{ name: 'header', maxCount: 1 }, { na
 router.get('/getUploadedImages', getUploadedImages);
 
 // Prescription Image Routes END here......
+
+// Bill Routes START here......
+router.get('/bill-patient-data', billPatientData);
+router.get('/bill-patient-data/:appoint_id', billPatientDataByAppId);
+// Bill Routes END here......
 
 
 module.exports = { authRoutes: router };

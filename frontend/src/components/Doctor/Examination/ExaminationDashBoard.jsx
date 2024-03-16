@@ -20,7 +20,7 @@ const ExaminationDashBoard = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SideBar />
               </div>
-              <div className="col-lg-11 col-11 ps-0 m-2">
+              <div className="col-lg-11 col-11 ps-0">
                 <ExaminationDashTwo /> 
               </div>
             </div>

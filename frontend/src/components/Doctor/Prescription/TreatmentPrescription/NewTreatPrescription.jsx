@@ -23,6 +23,7 @@ const NewTreatPrescription = () => {
     });
     const [medicineOptions, setMedicineOptions] = useState([]);
     const [getTreatMedicine, setGetTreatMedicine] = useState([]);
+    const [getSum, setGetSum] = useState(0);
     // console.log(prescriptionData)
 
     // Get Patient Details START
@@ -104,7 +105,7 @@ const NewTreatPrescription = () => {
         const selectedValues = selectedOptions.map(option => option.value);
         setPrescriptionData({ ...prescriptionData, medicine_name: selectedValues });
     };
-    
+
 
     const handleCreateMedicine = (newValue) => {
         const newOption = { value: newValue, label: newValue };
@@ -127,17 +128,18 @@ const NewTreatPrescription = () => {
     // Insert Medical Prescription Data END
 
     // Get Treatment Medical Prescription Data START
-    const getTreatPrescriptionByAppointId = async () =>{
+    const getTreatPrescriptionByAppointId = async () => {
         try {
             const res = await axios.get(`http://localhost:8888/api/doctor/getTreatPrescriptionByAppointId/${id}`);
             setGetTreatMedicine(res.data);
             console.log(res.data);
+            setGetSum(res.data)
         } catch (error) {
             console.log(error);
         }
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         getTreatPrescriptionByAppointId()
     }, [])
     // Get Treatment Medical Prescription Data END
@@ -160,9 +162,22 @@ const NewTreatPrescription = () => {
         }
     }
 
-    const handleNavigate = () =>{
+    const handleNavigate = () => {
         navigate(`/ViewTreatPrescription/${id}`)
     }
+
+    const grandTotal = async (id) => {
+        try {
+            const res = await axios.get(`http://localhost:8888/api/doctor/getTreatmentDatasum/${id}`);
+            setGetSum(res.data.total_amount);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        grandTotal(id);
+    }, []);
 
     return (
         <>
@@ -260,7 +275,7 @@ const NewTreatPrescription = () => {
                     </div>
                 </div>
                 <div className="container">
-                    <div className="row shadow-sm p-3 mb-3 bg-body rounded">
+                    <div className="row shadow-sm p-3 mb-1 bg-body rounded">
                         <fieldset>
                             <legend className="">Patient Treatment Details</legend>
                             <div className="d-flex justify-content-between align-items-center col-lg-12 " style={{ background: "#0dcaf0", borderRadius: "5px" }}>
@@ -329,6 +344,12 @@ const NewTreatPrescription = () => {
                                 </>
                             ))}
                         </fieldset>
+                    </div>
+                    <div className="row shadow-sm mb-3 bg-body rounded">
+                        <div className="d-flex justify-content-evenly align-items-center">
+                            <p className="m-0 fs-5 fw-bold">Grand Total: </p>
+                            <p className="m-0 fs-5 fw-bold">{getSum} </p>
+                        </div>
                     </div>
                 </div>
                 <div className="container">
@@ -419,14 +440,14 @@ const NewTreatPrescription = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {getTreatMedicine.map((item, index)=>(
+                                {getTreatMedicine.map((item, index) => (
                                     <tr key={index}>
                                         <td>{item.medicine_name}</td>
                                         <td>{item.dosage}</td>
                                         <td>{item.frequency}</td>
                                         <td>{item.duration}</td>
                                         <td>{item.note}</td>
-                                        <td><button className="btn btn-danger" onClick={()=>handledelete(item.id)}><FaPrescriptionBottleMedical size={22}/></button></td>
+                                        <td><button className="btn btn-danger" onClick={() => handledelete(item.id)}><FaPrescriptionBottleMedical size={22} /></button></td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -434,7 +455,7 @@ const NewTreatPrescription = () => {
                     </div>
                 </div>
                 <div className="text-center mb-3">
-                <button className="btn btn-info fs-5 text-light" onClick={handleNavigate}>Save & Continue <FaLocationArrow size={25}/></button>
+                    <button className="btn btn-info fs-5 text-light" onClick={handleNavigate}>Save & Continue <FaLocationArrow size={25} /></button>
                 </div>
                 {/* )} */}
             </Wrapper>

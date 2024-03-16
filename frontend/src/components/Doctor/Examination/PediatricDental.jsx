@@ -7,6 +7,7 @@ import { MdDelete } from "react-icons/md";
 import { RiLoader2Fill } from "react-icons/ri";
 import { useDispatch } from 'react-redux';
 import { toggleDataRefresh } from '../../../redux/user/userSlice'; 
+import { GiFastBackwardButton } from "react-icons/gi";
 import teeth18 from "../Assest/teeth1.png";
 import teeth16 from "../Assest/teeth3.png";
 import teeth13 from "../Assest/teeth6.png";
@@ -815,6 +816,7 @@ const PediatricDentalTest = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-12 text-start p-3">
+            <button className="btn btn-secondary mx-3" onClick={()=>window.history.back()}><GiFastBackwardButton size={21}/></button>
               <button
                 className="btn btn-info text-light"
                 onClick={handleRedirect}

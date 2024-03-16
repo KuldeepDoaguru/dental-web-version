@@ -179,6 +179,27 @@ const deleteTreatPrescriptionById = (req, res) =>{
 }
 
 
+// For testing purpose
+
+const getTreatmentDataSUM = (req, res) => {
+    const appointmentId = req.params.appointment_id;
+
+    const sql = `SELECT SUM(total_amt) AS total_amount FROM dental_treatment WHERE appointment_id = ?`;
+
+    db.query(sql, [appointmentId], (err, results) => {
+        if (err) {
+            console.log(err);
+            return res.status(400).json({ success: false, message: "Error retrieving treatment data" })
+        } else {
+            // Assuming there's always a single row returned with the sum
+            const totalAmount = results[0].total_amount;
+            return res.status(200).json({ success: true, total_amount: totalAmount });
+        }
+    })
+};
 
 
-module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById }; 
+
+
+
+module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM }; 

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { FaHandHoldingMedical } from "react-icons/fa";
 import NewTreatmentTable from "./NewTreatmentTable";
+import { GiFastBackwardButton } from "react-icons/gi";
 
 const NewTreatment = () => {
     const { id } = useParams();
@@ -53,14 +54,18 @@ const NewTreatment = () => {
     return (
         <>
             <Wrapper>
-                <div className="container">
-                    <div className="row">
-                        <div className="d-flex justify-content-center align-items-center mt-4">
-                            <p className="fs-1 shadow-none p-2 mb-4 bg-light rounded">Treatment Procedure</p>
+                <div className="container main">
+                    <div className="row justify-content-center"> {/* Center the content horizontally */}
+                        <div className="text-start"> {/* Center the content inside this column */}
+                            <button className="btn btn-secondary mb-2" onClick={() => window.history.back()}>
+                                <GiFastBackwardButton size={22} />
+                            </button>
+                            <p className="fs-1 shadow-none p-2 bg-light rounded text-center">Treatment Procedure</p>
                         </div>
                     </div>
                 </div>
-                <div className="container">
+
+                <div className="container patient">
                     <div className="row shadow-sm p-3 mb-3 bg-body rounded">
                         {getPatientData.map((item, index) => (
                             <>
@@ -168,5 +173,21 @@ span{
 th{
     background: #0dcaf0;
     white-space: nowrap;
+  }
+  .main{
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+      width: 41rem;
+    }
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 31rem;
+    }
+  }
+  .patient{
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+      width: 53rem;
+    }
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 37rem;
+    }
   }
 `;

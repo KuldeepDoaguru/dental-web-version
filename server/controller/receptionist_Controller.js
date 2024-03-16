@@ -710,7 +710,7 @@ catch(error){
 const getDoctorDataByBranch = (req, res) => {
   try {
     const branch = req.params.branch;
-    const getQuery = 'SELECT * FROM employee_register WHERE branch_name = ? AND employee_designation = "doctor" AND employee_status = "Approved"';
+    const getQuery = 'SELECT * FROM employee_register WHERE branch_name = ? AND employee_role LIKE "%doctor%" AND employee_status = "Approved"';
     db.query(getQuery, [branch], (err, result) => {
       if (err) {
         res.status(400).send({status : false, message: "error in fetching doctor" });
@@ -813,10 +813,213 @@ catch(error){
 }
 }
 
+const addInquiry = (req,res)=>{
+  try{
+    const {
+      branch,
+      patientName,
+      mobile,
+      email,
+      gender,
+      age,
+      address,
+      notes,
+      doctorId,
+      doctorName,
+    } = req.body;
+
+    const created_at = new Date();
+
+    const addInquiryQuery = `
+    INSERT INTO inquiries (
+      branch,
+      patient_name,
+      mobile,
+      email,
+      gender,
+      age,
+      address,
+      notes,
+      doctorId,
+      doctorName,
+      created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+`;
+
+const addInquiryParams = [
+      branch,
+      patientName,
+      mobile,
+      email,
+      gender,
+      age,
+      address,
+      notes,
+      doctorId,
+      doctorName,
+      created_at
+];
+
+db.query(addInquiryQuery, addInquiryParams, (err, Result) => {
+if (err) {
+    console.error("Error booking Inquiry add:", err);
+    return res.status(500).json({ success: false , message: "Internal server error" });
+} else {
+    console.log("Inquiry add successfully");
+    return res.status(200).json({
+        success: true,
+        message: "Inquiry add successfully",
+        
+    });
+}
+});
+
+
+  }
+  catch(error){
+    console.error("Error in Inquiry add:", error);
+    return res.status(500).json({
+        success: false,
+        message: "Error in Inquiry add",
+        error: error.message,
+    });
+  }
+}
+
+const updateInquiry = (req, res) => {
+  try {
+    const {
+      id, // ID of the inquiry to update
+      patientName,
+      mobile,
+      email,
+      gender,
+      age,
+      address,
+      notes,
+      doctorId,
+      doctorName,
+    } = req.body;
+
+    const updated_at = new Date();
+
+    const updateInquiryQuery = `
+      UPDATE inquiries 
+      SET 
+        
+        patient_name = ?, 
+        mobile = ?, 
+        email = ?, 
+        gender = ?, 
+        age = ?, 
+        address = ?, 
+        notes = ?, 
+        doctorId = ?, 
+        doctorName = ?, 
+        updated_at = ?
+      WHERE 
+        id = ?
+    `;
+
+    const updateInquiryParams = [
+     
+      patientName,
+      mobile,
+      email,
+      gender,
+      age,
+      address,
+      notes,
+      doctorId,
+      doctorName,
+      updated_at,
+      id,
+    ];
+
+    db.query(updateInquiryQuery, updateInquiryParams, (err, result) => {
+      if (err) {
+        console.error("Error updating inquiry:", err);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+      } else {
+        console.log("Inquiry updated successfully");
+        return res.status(200).json({
+          success: true,
+          message: "Inquiry updated successfully",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error in updating inquiry:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in updating inquiry",
+      error: error.message,
+    });
+  }
+};
+
+const deleteInquiry = (req, res) => {
+  try {
+    const id = req.params.id;
+   console.log(id)
+    const deleteInquiryQuery = `
+      DELETE FROM inquiries 
+      WHERE id = ?
+    `;
+
+    db.query(deleteInquiryQuery, [id], (err, result) => {
+      if (err) {
+        console.error("Error deleting inquiry:", err);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+      } else {
+        console.log("Inquiry deleted successfully");
+        return res.status(200).json({
+          success: true,
+          message: "Inquiry deleted successfully",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error in deleting inquiry:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in deleting inquiry",
+      error: error.message,
+    });
+  }
+};
+
+const getInquiries = (req,res) =>{
+  const branch = req.params.branch;
+  try{
+       const sql = 'SELECT * FROM inquiries WHERE branch = ?';
+
+       db.query(sql,[branch],(err,results) =>{
+         if(err){
+           console.error('Error fetching inquiries from MySql:' , err);
+           res.status(500).json({error : "Error fetching inquiries"});
+         }
+         else {
+           res.status(200).json({data: results,message : "inquiries fetched successfully"})
+         }
+
+       })
+  }
+  catch(error){
+     console.error('Error fetching inquiries from MySql:' , error);
+     res.status(500).json({
+       success: false,
+       message: "Error in fetched inquiries",
+       error: error.message,
+     })
+   
+  }
+}
+
 const getDoctorDataByBranchWithLeave = (req, res) => {
   try {
     const branch = req.params.branch;
-    const getQuery = 'SELECT * FROM employee_register WHERE branch_name = ? AND employee_designation = "doctor"';
+    const getQuery = 'SELECT * FROM employee_register WHERE branch_name = ? AND employee_role LIKE "%doctor%"';
     const sql = `
         SELECT 
          l.*,
@@ -1063,4 +1266,4 @@ const verifyOtp = (req, res) => {
 };
 
 
-module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail , updatePatientDetails ,getBranchHoliday , getPatientById};
+module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail , updatePatientDetails ,getBranchHoliday , getPatientById,addInquiry,getInquiries,updateInquiry,deleteInquiry};

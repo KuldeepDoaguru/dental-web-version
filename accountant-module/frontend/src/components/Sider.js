@@ -5,6 +5,7 @@ import { FaHandHoldingDollar } from "react-icons/fa6";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { FaCommentsDollar } from "react-icons/fa6";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { MdOutlineSecurity } from "react-icons/md";
 
 const Sider = () => {
   return (
@@ -23,6 +24,17 @@ const Sider = () => {
                 <div d-flex justify-content-center>
                   <h3 class=" d-none d-sm-inline fs-6 text-light">Dashboard</h3>
                 </div>
+              </Link>
+            </li>
+            <hr />
+            <li className="">
+              <Link to="/security-amount" class="nav-link px-0 align-middle ">
+                <div className="link-div">
+                  <MdOutlineSecurity className="fs-3 text-white" />
+                </div>
+                <h3 class="d-none d-sm-inline fs-6 text-light">
+                  Security Amount
+                </h3>
               </Link>
             </li>
             <hr />

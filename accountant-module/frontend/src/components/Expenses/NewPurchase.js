@@ -1,258 +1,380 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useLocation, useNavigate } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import cogoToast from "cogo-toast";
 import Header from "../Header";
 import Sider from "../Sider";
-import { GiNuclearWaste } from "react-icons/gi";
-import { GiFrontTeeth } from "react-icons/gi";
-import { FaTeeth } from "react-icons/fa6";
-import { MdOutlineAddShoppingCart } from "react-icons/md";
-import { TbBasketQuestion } from "react-icons/tb";
 import BranchDetails from "../BranchDetails";
-import Editbill from "../Bill/Editbill";
-import EditNewPurchase from "../EditNewPurchase";
-import { Link } from "react-router-dom";
+
 const NewPurchase = () => {
+  const goBack = () => {
+    window.history.go(-1);
+  };
+
   return (
     <>
       <Container>
         <Header />
-        <div className="main">
+        <div className="">
           <div className="container-fluid">
-            <div className="row flex-nowrap ">
-              <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 p-0">
+            <div className="row">
+              <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 col-2 p-0">
                 <Sider />
               </div>
-              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10">
-                <BranchDetails />
-
-                <div className="Heading mt-4 d-flex justify-content-center">
-                  <h2>New Purchase</h2>
-                </div>
-
-                <div className="row d-flex justify-content-around mt-4">
-                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
-                    <div className="card">
-                      <div className="card-body d-flex justify-content-center flex-column mb-3">
-                        <div className="text-light fs-1">
-                          <GiNuclearWaste />
-                        </div>
-                        <div className="cardtext">
-                          <h5 className="card-title text-light">
-                            Machine Stock
-                          </h5>
-                          <p className="card-text text-light fw-semibold">4</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
-                    <div className="card">
-                      <div className="card-body d-flex justify-content-center flex-column mb-3">
-                        <div className="text-light fs-1">
-                          <GiFrontTeeth />
-                        </div>
-                        <div className="cardtext">
-                          <h5 className="card-title text-light">
-                            Braces Stock
-                          </h5>
-                          <p className="card-text text-light fw-semibold">
-                            250
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
-                    <div className="card">
-                      <div className="card-body d-flex justify-content-center flex-column mb-3">
-                        <div className="text-light fs-1">
-                          <FaTeeth />
-                        </div>
-                        <div className="cardtext">
-                          <h5 className="card-title text-light">
-                            Artificial Teeth Stock
-                          </h5>
-                          <p className="card-text text-light fw-semibold">
-                            2500
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
-                    <div className="card">
-                      <div className="card-body d-flex justify-content-center flex-column mb-3">
-                        <div className="text-light fs-1">
-                          <MdOutlineAddShoppingCart />
-                        </div>
-                        <div className="cardtext">
-                          <h5 className="card-title text-light">
-                            Other Items Stock
-                          </h5>
-                          <p className="card-text text-light fw-semibold">15</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
-                    <div className="card">
-                      <div className="card-body d-flex justify-content-center flex-column">
-                        <div>
-                          <TbBasketQuestion className="fs-1 text-light" />
-                        </div>
-
-                        <div className="cardtext">
-                          <h5 className="card-title text-light">
-                            Out Of Stock
-                          </h5>
-                          <p className="card-text text-light fw-semibold">09</p>
-                        </div>
-                      </div>
-                    </div>
+              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10 col-10 ps-0">
+                <div className="container-fluid mt-3">
+                  <div className="">
+                    <BranchDetails />
                   </div>
                 </div>
-
-                <div className="container-fluid mt-4">
-                  <div className="row flex-nowrap ">
-                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-12 ps-0">
-                      <div className="container-fluid mt-4">
-                        <h2 className="text-center">All Purchase Items List</h2>
-                        <div className="container-fluid mt-5">
-                          <div class="table-responsive rounded">
-                            <table class="table table-bordered rounded shadow">
-                              <thead className="table-head">
-                                <tr>
-                                  <th className="table-sno">SN</th>
-                                  <th className="table-small">Item Name</th>
-                                  <th className="table-small">Vander</th>
-                                  <th className="table-small">Quantity</th>
-                                  <th className="table-small">
-                                    Per Items Price
-                                  </th>
-                                  <th className="table-small">Total Amount</th>
-                                  <th className="table-small">Gst %</th>
-                                  <th className="table-small">Discount</th>
-
-                                  <th className="table-small">Net price</th>
-                                  <th className="table-small">Paid Amount</th>
-                                  <th className="table-small">Due Amount</th>
-                                  <th className="table-small">Paid Date</th>
-                                  <th className="table-small">Bill Date</th>
-                                  <th className="table-small">Action</th>
-                                </tr>
-                              </thead>
-
-                              <tbody>
-                                <tr className="table-row">
-                                  <td className="table-sno">1</td>
-
-                                  <td className="table-small">Machine</td>
-                                  <td className="table-small">L&T</td>
-
-                                  <td className="table-small">4</td>
-                                  <td className="table-small">40000</td>
-
-                                  <td className="table-small">160000</td>
-                                  <td className="table-small">18%</td>
-                                  <td className="table-small">8.4%</td>
-                                  <td className="table-small">193000</td>
-                                  <td className="table-small">100000</td>
-                                  <td className="table-small">93000</td>
-                                  <td className="table-small">01/01</td>
-                                  <td className="table-small">01/04</td>
-
-                                  <td>
-                                    <div className="d-flex justify-content-center align-items-center">
-                                      <EditNewPurchase />
-                                      <Link
-                                        to="/PaidByUs"
-                                        class="nav-link px-0"
-                                      >
-                                        <button className="btn btn-warning">
-                                          View Bill
-                                        </button>
-                                      </Link>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-
-                              <tbody>
-                                <tr className="table-row">
-                                  <td className="table-sno">1</td>
-
-                                  <td className="table-small">Machine</td>
-                                  <td className="table-small">L&T</td>
-
-                                  <td className="table-small">4</td>
-                                  <td className="table-small">40000</td>
-
-                                  <td className="table-small">160000</td>
-                                  <td className="table-small">18%</td>
-                                  <td className="table-small">8.4%</td>
-                                  <td className="table-small">193000</td>
-                                  <td className="table-small">100000</td>
-                                  <td className="table-small">93000</td>
-                                  <td className="table-small">01/01</td>
-                                  <td className="table-small">01/04</td>
-
-                                  <td className="table-small">
-                                    <div className="d-flex justify-content-center align-items-center">
-                                      <EditNewPurchase />
-                                      <Link
-                                        to="/PaidByUs"
-                                        class="nav-link px-0"
-                                      >
-                                        <button className="btn btn-warning">
-                                          View Bill
-                                        </button>
-                                      </Link>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                              <tbody>
-                                <tr className="table-row">
-                                  <td className="table-sno">1</td>
-
-                                  <td className="table-small">Machine</td>
-                                  <td className="table-small">L&T</td>
-
-                                  <td className="table-small">4</td>
-                                  <td className="table-small">40000</td>
-
-                                  <td className="table-small">160000</td>
-                                  <td className="table-small">18%</td>
-                                  <td className="table-small">8.4%</td>
-                                  <td className="table-small">193000</td>
-                                  <td className="table-small">100000</td>
-                                  <td className="table-small">93000</td>
-                                  <td className="table-small">01/01</td>
-                                  <td className="table-small">01/04</td>
-
-                                  <td className="table-small">
-                                    <div className="d-flex justify-content-center align-items-center">
-                                      <EditNewPurchase />
-                                      <Link
-                                        to="/PaidByUs"
-                                        class="nav-link px-0"
-                                      >
-                                        <button className="btn btn-warning">
-                                          View Bill
-                                        </button>
-                                      </Link>
-                                    </div>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
+                <div className="container-fluid mt-3">
+                  <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
+                  <h3 className="text-center">Add Inventory Item</h3>
+                  <hr />
+                  <div className="container-fluid mt-3">
+                    <div className="box-input">
+                      <form
+                        action=""
+                        className=""
+                        enctype="multipart/form-data"
+                        // onSubmit={addPurchaseDetails}
+                      >
+                        <div class="container-fluid d-flex justify-content-start mt-2 pl-0">
+                          <h5>Category : </h5>
+                          <div class="form-check mx-2">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="item_category"
+                              id="drug"
+                              // value="Drug"
+                              // onChange={handleInputChange}
+                            />
+                            <label class="form-check-label" for="drug">
+                              Drug
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="item_category"
+                              id="Supplies"
+                              // value="Supplies"
+                              // onChange={handleInputChange}
+                              checked
+                            />
+                            <label class="form-check-label" for="Supplies">
+                              Supplies
+                            </label>
+                          </div>
+                          <div class="form-check mx-2">
+                            <input
+                              class="form-check-input"
+                              type="radio"
+                              name="item_category"
+                              id="Equipment"
+                              // value="Equipment"
+                              // onChange={handleInputChange}
+                            />
+                            <label class="form-check-label" for="Equipment">
+                              Equipment
+                            </label>
                           </div>
                         </div>
-                      </div>
+                        <div className="container-fluid">
+                          <div className="row">
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Item Code
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  name="item_code"
+                                  placeholder="Item Code"
+                                  // value={recData.item_code}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label rounded"
+                                >
+                                  Item Name
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="Item Name"
+                                  name="item_name"
+                                  // value={recData.item_name}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  HSN Code
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="HSN Code"
+                                  name="HSN_code"
+                                  // value={recData.HSN_code}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  HSN Code
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="HSN Code"
+                                  name="HSN_code"
+                                  // value={recData.HSN_code}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  HSN Code
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="HSN Code"
+                                  name="HSN_code"
+                                  // value={recData.HSN_code}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Purchase Date
+                                </label>
+                                <input
+                                  type="date"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="purchase date"
+                                  name="purchase_date"
+                                  // value={recData.purchase_date}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  MRP
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="Item MRP"
+                                  name="item_mrp"
+                                  // value={recData.item_mrp}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Purchase Quantity
+                                </label>
+                                <input
+                                  type="number"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="purchase quantity"
+                                  name="pur_quantity"
+                                  // value={recData.pur_quantity}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Low Stock Threshold
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="Low Stock Threshold"
+                                  name="low_stock_threshhold"
+                                  // value={recData.low_stock_threshhold}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3 mx-2">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Reciept Document
+                                </label>
+                                <input
+                                  type="file"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="available stock"
+                                  accept=".pdf, .jpg, .jpeg, .png"
+                                  required
+                                  name="reciept_doc"
+                                  // onChange={handleReciept_doc}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Branch
+                                </label>
+                                <select name="" id="" class="p-1 w-100 rounded">
+                                  <option value="">branch</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Distributor Name
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="distributor_name"
+                                  name="distributor_name"
+                                  // value={recData.distributor_name}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Distributor Number
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  maxLength={10}
+                                  placeholder="distributor number"
+                                  name="distributor_number"
+                                  // value={recData.distributor_number}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Discount
+                                </label>
+                                <input
+                                  type="number"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="discount"
+                                  name="discount"
+                                  // value={recData.discount}
+                                  // onChange={handleInputChange}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mt-3">
+                                {/* <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Total Amount
+                            </label> */}
+                                <h4 class="text-center p-1 w-100 rounded">
+                                  Available Stock : 10
+                                </h4>
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mt-3">
+                                {/* <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Total Amount
+                            </label> */}
+                                <h4 class="text-center p-1 w-100 rounded">
+                                  Total Amount :10000
+                                </h4>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="d-flex justify-content-start mt-2">
+                          <button
+                            className="btn btn-info btnbox fw-bold shadow"
+                            type="submit"
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -266,39 +388,38 @@ const NewPurchase = () => {
 };
 
 export default NewPurchase;
-
 const Container = styled.div`
-  .card {
-    background: #201658;
-    height: 9.5rem;
+  .select-style {
     border: none;
-    box-shadow: 1px 2px 8px black;
-    &:hover {
-      background: #9b59b6;
-    }
-  }
-
-  .icon {
-    font-size: 40px;
-    /* align-items: start; */
+    background-color: #201658;
+    font-weight: bold;
     color: white;
-    /* display: flex; */
-  }
-  .card-body {
-    text-align: center;
-    padding: 5px;
-  }
-  .card-link {
-    text-decoration: none;
-    font-size: small;
   }
 
-  .cardtext {
-    h5 {
-      color: white;
-    }
-    p {
-      color: white;
+  label {
+    font-weight: bold;
+    color: #201658;
+  }
+
+  .box-input {
+    width: 100%;
+  }
+
+  input {
+    border: 1px solid #201658;
+  }
+  .input-group {
+    h4 {
+      color: #201658;
     }
   }
+
+  .btnbox {
+    background-color: #201658;
+    color: white;
+  }
+
+  /* .container-fluid {
+    padding-left: 0rem;
+  } */
 `;

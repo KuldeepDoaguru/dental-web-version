@@ -60,6 +60,7 @@ import Cards from "./components/Accountant/Cards";
 import ErrorPage from "./pages/ErrorPage";
 import TotalIncome from "./pages/TotalIncome";
 import AccountantProfile from "./pages/AccountantProfile";
+import SecurityAmount from "./pages/SecurityAmount";
 
 function App() {
   return (
@@ -132,6 +133,7 @@ function App() {
       <Route path="/Payment" element={<Payment />} />
       <Route path="/total-income" element={<TotalIncome />} />
       <Route path="/accountant-profile" element={<AccountantProfile />} />
+      <Route path="/security-amount" element={<SecurityAmount />} />
       <Route path="*" element={<ErrorPage />} />
       {/*Acountend  routes end  */}
     </Routes>

@@ -1,6 +1,6 @@
 
 const express = require("express");
-const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry } = require("../controller/receptionist_Controller");
+const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById } = require("../controller/receptionist_Controller");
 const router = express.Router();
 
 router.post('/add-patient',addPatient);
@@ -8,6 +8,7 @@ router.get('/get-disease',getDisease);
 router.get('/get-treatments',getTreatment);
 router.get('/get-Patients/:branch',getPatients);
 router.get('/get-Patient-by-id/:branch/:patientId',getPatientById);
+router.get('/get-appointment-by-id/:branch/:appointmentId',getAppointmentById);
 router.get('/get-branches',getBranch);
 router.get('/get-branch-detail/:branch',getBranchDetail);
 router.get('/get-branch-holidays/:branch',getBranchHoliday);
@@ -24,5 +25,6 @@ router.post('/add-inquiry',addInquiry);
 router.get('/get-inquiries/:branch',getInquiries);
 router.put('/update-inquiry',updateInquiry);
 router.delete('/delete-inquiry/:id',deleteInquiry);
+
 
 module.exports = router;

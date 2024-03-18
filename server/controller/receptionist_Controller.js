@@ -449,14 +449,14 @@ const getTreatment = (req,res) =>{
 
 const bookAppointment = (req,res)=>{
     try{
-      const { branch_name,patient_uhid, status, doctorId, doctor_name, appDateTime, treatment, notes,appointment_created_by, appointment_created_by_emp_id} = req.body;
+      const { branch_name,patient_uhid, status, doctorId, doctor_name, appDateTime, treatment, opd_amount , payment_Mode, transaction_Id, payment_Status, notes,appointment_created_by, appointment_created_by_emp_id} = req.body;
 
       const created_at = new Date();
 
       const bookAppointmentQuery = `
       INSERT INTO appointments (
-          patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status, notes, appointment_created_by, appointment_created_by_emp_id, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status,opd_amount, payment_Mode, transaction_Id, payment_Status,  notes, appointment_created_by, appointment_created_by_emp_id, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)
   `;
 
   const bookAppointmentParams = [
@@ -467,6 +467,10 @@ const bookAppointment = (req,res)=>{
     appDateTime,
     treatment,
     status,
+    opd_amount ,
+    payment_Mode,
+    transaction_Id,
+    payment_Status,
     notes,
     appointment_created_by,
     appointment_created_by_emp_id,
@@ -480,6 +484,7 @@ db.query(bookAppointmentQuery, bookAppointmentParams, (appointmentErr, appointme
   } else {
       console.log("Appointment booked successfully");
       return res.status(200).json({
+          data: appointmentResult,
           success: true,
           message: "Appointment Booked successfully",
           
@@ -667,6 +672,12 @@ const getAppointments = (req,res) =>{
             a.appointment_status,
             a.appointment_dateTime,
             a.treatment_provided,
+            a.opd_amount,
+            a.payment_Mode,
+            a.transaction_Id,
+            a.payment_Status,
+            a.appointment_created_by,
+            a.appointment_created_by_emp_id,
             a.notes,
             p.uhid,
             p.patient_name,
@@ -706,6 +717,69 @@ catch(error){
 
 }
 }
+
+const getAppointmentById = (req, res) => {
+  try {
+    const appointmentId = req.params.appointmentId;
+    const branch = req.params.branch;
+    const sql = `
+      SELECT 
+        a.branch_name,
+        a.appoint_id,
+        a.assigned_doctor_name,
+        a.assigned_doctor_id,
+        a.appointment_status,
+        a.appointment_dateTime,
+        a.treatment_provided,
+        a.opd_amount,
+        a.payment_Mode,
+        a.transaction_Id,
+        a.payment_Status,
+        a.appointment_created_by,
+        a.appointment_created_by_emp_id,
+        a.notes,
+        p.uhid,
+        p.patient_name,
+        p.mobileno,
+        p.dob,
+        p.age,
+        p.weight,
+        p.bloodgroup,
+        p.disease,
+        p.allergy,
+        p.patient_type,
+        p.address,
+        p.gender
+      FROM 
+        appointments AS a
+      JOIN 
+        patient_details AS p ON a.patient_uhid = p.uhid 
+      WHERE
+      a.appoint_id = ? AND
+      a.branch_name = ?
+    `;
+
+    db.query(sql, [appointmentId, branch], (err, results) => {
+      if (err) {
+        console.error('Error fetching appointment from MySql:', err);
+        res.status(500).json({ error: "Error fetching appointment" });
+      } else {
+        if (results.length === 0) {
+          res.status(404).json({ message: "Appointment not found" });
+        } else {
+          res.status(200).json({ data: results[0], message: "Appointment fetched successfully" });
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching appointment from MySql:', error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetching appointment",
+      error: error.message,
+    });
+  }
+};
 
 const getDoctorDataByBranch = (req, res) => {
   try {
@@ -1266,4 +1340,4 @@ const verifyOtp = (req, res) => {
 };
 
 
-module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail , updatePatientDetails ,getBranchHoliday , getPatientById,addInquiry,getInquiries,updateInquiry,deleteInquiry};
+module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail , updatePatientDetails ,getBranchHoliday , getPatientById,addInquiry,getInquiries,updateInquiry,deleteInquiry,getAppointmentById};

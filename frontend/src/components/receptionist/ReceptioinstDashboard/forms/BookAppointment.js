@@ -4,12 +4,13 @@ import Select from 'react-select';
 import axios from "axios";
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTableRefresh } from '../../../../redux/user/userSlice';
+import { useNavigate } from "react-router-dom";
 
 
 
 
 function BookAppointment() {
-  
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const {refreshTable,currentUser} = useSelector((state) => state.user);
   const  branch = currentUser.branch_name
@@ -25,6 +26,7 @@ function BookAppointment() {
   const [branchDetail,setBranchDetail] = useState([]);
   const [weekOffDay,setWeekOffDay] = useState("");
   const [branchHolidays,setBranchHolidays] = useState([]);
+  const opdCost = treatments?.filter((treatment) => treatment?.treatment_name === "OPD")[0]?.treatment_cost;
   const minDate = new Date();
   console.log(branchHolidays)
   const  handleWeekOfDay = (day)=>{
@@ -144,7 +146,7 @@ function BookAppointment() {
     setSelectedDate(value)
   };
 
-
+console.log(treatments)
 
   const getPatient = async () =>{
     try{
@@ -254,7 +256,8 @@ console.log(branchDetail)
 
 
   const [bookData,setBookData] = useState(
-    { branch_name:"", patient_Name:"",mobile: "", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"", appointment_created_by:"",appointment_updated_by:"",appointment_created_by_emp_id	:"", appointment_updated_by_emp_id	:""}
+    { branch_name:"", patient_Name:"",mobile: "", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",
+    opd_amount : "", payment_Mode:"", transaction_Id:"", payment_Status:"", notes:"", appointment_created_by:"",appointment_updated_by:"",appointment_created_by_emp_id	:"", appointment_updated_by_emp_id	:""}
   ) 
   console.log(bookData)
   console.log(bookData.appDateTime)
@@ -527,6 +530,11 @@ const handleDoctorSelect = (doctor) => {
      return ;
   }
 
+  if(bookData.payment_Status === "unpaid"){
+    alert("Please paid the OPD amount to book appointment");
+    return
+  }
+
    // Convert appointment time to Date object
 const selectedDateTime = new Date(bookData.appDateTime);
 
@@ -649,7 +657,11 @@ const isDoctorAvailable = (selectedDateTime) => {
       treatment: selectedTreatment,
       notes: bookData.notes,
       status : "Appoint",
-      appointment_created_by: currentUser.employee_name,
+      opd_amount : opdCost,
+       payment_Mode:bookData.payment_Mode,
+        transaction_Id:bookData.transaction_Id,
+         payment_Status:bookData.payment_Status,
+   appointment_created_by: currentUser.employee_name,
       appointment_created_by_emp_id: currentUser.employee_ID
     };
   
@@ -671,9 +683,12 @@ const isDoctorAvailable = (selectedDateTime) => {
       if(response.data.success){
         alert(response?.data?.message);
         dispatch(toggleTableRefresh());
+        navigate(`/print_Opd_Reciept/${response?.data?.data?.insertId}`)
        }
        else{
         alert(response?.data?.message);
+        
+        console.log(response.data);
        }
 
    }
@@ -794,54 +809,56 @@ const isDoctorAvailable = (selectedDateTime) => {
  
   return (
     <Wrapper>
-                <form onSubmit={handleBookAppointment}>
-                <ul className="list-group">
-                 
-                  <li className="list-group-item">
-                 
-                  <input
-                    class="form-control mr-sm-2 mt-3 mb-2 m-auto"
-                    type="search"
-                    placeholder="Search Patient Name or Mobile or ID"
-                    aria-label="Search"
-                    value={searchQuery}
-                    onChange={handleSearch}
-                  />
-                   <PatientList>
-                   <ul className="list-group" >
-                      {filteredPatients.map((patient) => (
-                        <li key={patient.uid}
-                        className={`list-group-item ${selectedPatient && selectedPatient.uhid === patient.uhid ? "active" : ""}`} // Add 'active' class if the patient is selected
-            onClick={() => handlePatientSelect(patient)} // Call handlePatientSelect function when the patient is clicked 
-                        >
-                     {patient.uhid} {"-"}{patient.patient_name}{"-"} Mobile : {patient.mobileno}
-                          {/* Display other patient details as needed */}
-                        </li>
-                      ))}
-                    </ul>
-                    </PatientList>
-                    
-                    <div className="row mt-5">
-                      <div className="col-sm-6">
-                        <div className="form-outline" id="form1">
-                        <label className="form-label" for="form6Example1">
-                            Patient name
-                          </label>
-                          <input
-                            type="text"
-                            id="form6Example1"
-                            className="form-control"
-                            value={selectedPatient ? selectedPatient.patient_name : ""}
-                            required
-                          />
-                          
+      <form onSubmit={handleBookAppointment}>
+        <ul className="list-group">
+          <li className="list-group-item">
+            <input
+              class="form-control mr-sm-2 mt-3 mb-2 m-auto"
+              type="search"
+              placeholder="Search Patient Name or Mobile or ID"
+              aria-label="Search"
+              value={searchQuery}
+              onChange={handleSearch}
+            />
+            <PatientList>
+              <ul className="list-group">
+                {filteredPatients.map((patient) => (
+                  <li
+                    key={patient.uid}
+                    className={`list-group-item ${
+                      selectedPatient && selectedPatient.uhid === patient.uhid
+                        ? "active"
+                        : ""
+                    }`} // Add 'active' class if the patient is selected
+                    onClick={() => handlePatientSelect(patient)} // Call handlePatientSelect function when the patient is clicked
+                  >
+                    {patient.uhid} {"-"}
+                    {patient.patient_name}
+                    {"-"} Mobile : {patient.mobileno}
+                    {/* Display other patient details as needed */}
+                  </li>
+                ))}
+              </ul>
+            </PatientList>
 
-                         
-                        </div>
-                      </div>
-                      <div className="col-sm-6 ">
-                        <div className="form-outline">
-                        {/* <label className="form-label" for="form6Example2">
+            <div className="row mt-5">
+              <div className="col-sm-6">
+                <div className="form-outline" id="form1">
+                  <label className="form-label" for="form6Example1">
+                    Patient name
+                  </label>
+                  <input
+                    type="text"
+                    id="form6Example1"
+                    className="form-control"
+                    value={selectedPatient ? selectedPatient.patient_name : ""}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6 ">
+                <div className="form-outline">
+                  {/* <label className="form-label" for="form6Example2">
                             Date&Time
                           </label>
                           <input
@@ -853,109 +870,190 @@ const isDoctorAvailable = (selectedDateTime) => {
                             required
                            
                           /> */}
-                          <label className="form-label" for="form6Example2">Appointment Date</label>
-      <input
-        type="date"
-        value={selectedDate}
-        className="form-control"
-        onChange={handleDateChange}
-        min={formatDate(new Date())}
-        required
-      />
-                         
-                        </div>
-                      </div>
-                      <div className="col-sm-6 ">
-                        <div className="form-outline">
-                        
-                        <label  className="form-label" for="form6Example2">Appointment Time</label>
-      <Select
-        options={timeSlots}
-        required
-        value={timeSlots.find(slot => slot.value === bookData.appDateTime.split('T')[1])}
-        onChange={(selectedOption) => setBookData({ ...bookData, appDateTime: `${selectedDate}T${selectedOption.value}` })}
-      />
-                         
-                        </div>
-                      </div>
-                      
-                      <div className="col-sm-6">
-                        <div className="form-outline">
+                  <label className="form-label" for="form6Example2">
+                    Appointment Date
+                  </label>
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    className="form-control"
+                    onChange={handleDateChange}
+                    min={formatDate(new Date())}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6 ">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example2">
+                    Appointment Time
+                  </label>
+                  <Select
+                    options={timeSlots}
+                    required
+                    value={timeSlots.find(
+                      (slot) =>
+                        slot.value === bookData.appDateTime.split("T")[1]
+                    )}
+                    onChange={(selectedOption) =>
+                      setBookData({
+                        ...bookData,
+                        appDateTime: `${selectedDate}T${selectedOption.value}`,
+                      })
+                    }
+                  />
+                </div>
+              </div>
 
-                        <label className="form-label" for="form6Example1">
-                            Doctor
-                          </label>
-                          
-                          <input
-                            type="search"
-                            id="form6Example1"
-                            className="form-control"
-                            value={searchDoctor}
+              <div className="col-sm-6">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example1">
+                    Doctor
+                  </label>
+
+                  <input
+                    type="search"
+                    id="form6Example1"
+                    className="form-control"
+                    value={searchDoctor}
                     onChange={handleSearchDoctor}
                     required
-                    
-                  
-
-                          />
-                          <DoctorList>
-                          <div >
-                          
-                          <ul className="list-group">
-                      {searchDoctor && filteredDoctor.map((doctor) => (
-                        <li key={doctor.employee_ID}
-                        className={`list-group-item ${selectedDoctor && selectedDoctor.employee_ID === doctor.employee_ID ? "active" : ""}`} // Add 'active' class if the patient is selected
-            onClick={() => handleDoctorSelect(doctor)} // Call handlePatientSelect function when the patient is clicked 
-                        >
-                          {doctor.employee_name} {"-"} Id: {doctor.employee_ID}
-                          {/* Display other patient details as needed */}
-                        </li>
-                      ))}
-                    </ul>
-
+                  />
+                  <DoctorList>
+                    <div>
+                      <ul className="list-group">
+                        {searchDoctor &&
+                          filteredDoctor.map((doctor) => (
+                            <li
+                              key={doctor.employee_ID}
+                              className={`list-group-item ${
+                                selectedDoctor &&
+                                selectedDoctor.employee_ID ===
+                                  doctor.employee_ID
+                                  ? "active"
+                                  : ""
+                              }`} // Add 'active' class if the patient is selected
+                              onClick={() => handleDoctorSelect(doctor)} // Call handlePatientSelect function when the patient is clicked
+                            >
+                              {doctor.employee_name} {"-"} Id:{" "}
+                              {doctor.employee_ID}
+                              {/* Display other patient details as needed */}
+                            </li>
+                          ))}
+                      </ul>
                     </div>
-                    </DoctorList>
-                          
-                        </div>
-                      
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-outline" id="form1">
-                        <label className="form-label" for="form6Example2">
-                            Add Treatment
-                          </label>
-                          <Select
-        id="treatment"
-        name="treatment"
-        required
-        options={treatments}
-        value={selectedTreatment ? { value: selectedTreatment, label: selectedTreatment } : null}
-        onChange={handleChangeTreatment}
-        
-        
-      />
-                          
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                        <div className="form-outline">
-                        <label className="form-label" for="form6Example1">
-                            Notes
-                          </label>
-                          <input
-                            type="text"
-                            id="form6Example1"
-                            className="form-control"
-                            onChange={handleBookChange}
-                            name="notes"
-                          />
-                         
-                        </div>
-                      </div>
-                      <div className="col-sm-6">
-                     
-                      </div>
+                  </DoctorList>
+                </div>
+              </div>
+              <div className="col-sm-6">
+                <div className="form-outline" id="form1">
+                  <label className="form-label" for="form6Example2">
+                    Add Treatment
+                  </label>
+                  <Select
+                    id="treatment"
+                    name="treatment"
+                    required
+                    options={treatments}
+                    value={
+                      selectedTreatment
+                        ? { value: selectedTreatment, label: selectedTreatment }
+                        : null
+                    }
+                    onChange={handleChangeTreatment}
+                  />
+                </div>
+              </div>
+             {selectedTreatment === "OPD" &&
+             <>
+              <div className="col-sm-6">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example1">
+                    OPD Amount
+                  </label>
+                  <input
+                    type="text"
+                    id="form6Example1"
+                    className="form-control"
+                    onChange={handleBookChange}
+                    name="opd_amount"
+                    required
+                    readOnly
+                    value={opdCost}
+                    
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example1">Payment Mode</label>
+                  <select
+                    className="form-select"
+                    id="paymentMode"
+                    name="payment_Mode"
+                    onChange={handleBookChange}
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="cash">Cash</option>
+                    <option value="online">Online</option>
+                   
+                  </select>
+                </div>
+              </div>
+            {bookData.payment_Mode === "online" &&   <div className="col-sm-6">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example1">
+                    Transaction Id
+                  </label>
+                  <input
+                    type="text"
+                    id="form6Example1"
+                    className="form-control"
+                    onChange={handleBookChange}
+                    name="transaction_Id"
+                    required
+                  />
+                </div>
+              </div>
+              }
+              <div className="col-sm-6">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example1">Payment Status</label>
+                  <select
+                    className="form-select"
+                    id="payment_Status"
+                    name="payment_Status"
+                    onChange={handleBookChange}
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="paid">Paid</option>
+                    <option value="unpaid">Unpaid</option>
+                   
+                  </select>
+                </div>
+              </div>
+              </>
+}
 
-                      {/* <div className="d-flex  mt-4">
+              <div className="col-sm-6">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example1">
+                    Notes
+                  </label>
+                  <input
+                    type="text"
+                    id="form6Example1"
+                    className="form-control"
+                    onChange={handleBookChange}
+                    name="notes"
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6"></div>
+
+              {/* <div className="d-flex  mt-4">
                      <div className="col-sm-3 p-0 ">
                        <div className="form-outline">
                          <label className="form-label" for="form6Example1">
@@ -1038,17 +1136,16 @@ const isDoctorAvailable = (selectedDateTime) => {
                      </div>
                      </div> */}
 
-                     <div className="formbtn d-flex justify-content-center">
-                        <button className="btn btn-success " type="submit" id="btn2">
-                          {" "}
-                          Book Appointment
-                        </button>
-                        </div>
-                    </div>
-                    
-                  </li>
-                </ul>
-                </form>      
+              <div className="formbtn d-flex justify-content-center">
+                <button className="btn btn-success " type="submit" id="btn2">
+                  {" "}
+                  Book Appointment
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </form>
     </Wrapper>
   );
 }

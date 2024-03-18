@@ -69,7 +69,7 @@ function Card() {
             <i className="bi bi-currency-exchange  h1 float-end"></i>
               <div className="">
                 <h6 className="card-title" style={{ color: "black " }}>
-                Collection
+               OPD Collection
                 </h6>
 
                 <p className=" h6 text-center text-dark">  <i className="bi bi-currency-rupee"></i>5200</p>

@@ -265,6 +265,22 @@ const Sider = () => {
             <hr />
             <li>
               <Link
+                to="/all_patient"
+                className={`link-div ${getSidebarClass("/all_patient")}`}
+              >
+                <div>
+                <i className="bi bi-people-fill h1"></i>
+                </div>
+                <div>
+                  <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
+                  Patients
+                  </h3>
+                </div>
+              </Link>
+            </li>
+            <hr />
+            <li>
+              <Link
                 to="/inquiry"
                 className={`link-div ${getSidebarClass("/inquiry")}`}
               >
@@ -313,7 +329,7 @@ const Sider = () => {
             </li>
           
             <hr /> */}
-            <li>
+            {/* <li>
               <Link
                 to="/video"
                 className={`link-div ${getSidebarClass("/video")}`}
@@ -329,7 +345,7 @@ const Sider = () => {
               </Link>
             </li>
           
-            <hr />
+            <hr /> */}
             
           
             <li>

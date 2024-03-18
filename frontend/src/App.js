@@ -31,6 +31,7 @@ import TreatmentForm from "./components/Doctor/Treatment/TreatmentForm";
 import TreatmentDashTwo from "./components/Doctor/Treatment/TreatmentDashTwo";
 import NewTreatPrescription from "./components/Doctor/Prescription/TreatmentPrescription/NewTreatPrescription";
 import ViewTreatPrescription from "./components/Doctor/Prescription/TreatmentPrescription/ViewTreatPrescription";
+import TreatSuggestDashs from "./components/Doctor/Treatment Suggestion/TreatSuggestDashs";
 
 function App() {
   return (
@@ -68,6 +69,7 @@ function App() {
       <Route path="/TPrescriptionDash/:id" element={<TPrescriptionDash />} />
       <Route path="/HistoryDashBoard" element={<HistoryDashBoard />} />
       <Route path="/ViewTreatPrescription/:id" element={<ViewTreatPrescription />} />
+      <Route path="/treatmentSuggestion" element={<TreatSuggestDashs />} />
       {/* test */}
       <Route path="/HeadBar" element={<HeadBar />} />
 

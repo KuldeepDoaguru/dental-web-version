@@ -229,7 +229,7 @@ const billPatientDataByAppId = (req, res) => {
 
         res.status(200).json({ success: true, data: results });
     });
-};
+}; 
 
 
 module.exports = { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId }; 

@@ -5,9 +5,12 @@ const getTreatmentList = (req, res) => {
     const sql = `SELECT * FROM treatment_list`;
     db.query(sql, (err, results) => {
         if (!err) {
+        
+            const sanitizedResults = results.filter(result => result.treatment_id !== 5);
+
             return res.status(200).send({
                 code: 'success',
-                data: results
+                data: sanitizedResults
             });
         } else {
             console.error(`Error while performing query ${sql}`, err);

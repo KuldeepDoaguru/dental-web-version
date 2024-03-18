@@ -6,6 +6,8 @@ import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { FaCommentsDollar } from "react-icons/fa6";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { MdOutlineSecurity } from "react-icons/md";
+import { BsFileEarmarkPerson } from "react-icons/bs";
+import { TbReport } from "react-icons/tb";
 
 const Sider = () => {
   return (
@@ -34,6 +36,17 @@ const Sider = () => {
                 </div>
                 <h3 class="d-none d-sm-inline fs-6 text-light">
                   Security Amount
+                </h3>
+              </Link>
+            </li>
+            <hr />
+            <li className="">
+              <Link to="/bill_section" class="nav-link px-0 align-middle ">
+                <div className="link-div">
+                  <i className="fs-2 bi bi-receipt-cutoff ms-3"></i>
+                </div>
+                <h3 class="d-none d-sm-inline fs-6 text-light">
+                  Create Invoice
                 </h3>
               </Link>
             </li>
@@ -87,14 +100,14 @@ const Sider = () => {
                   <hr />
                 </li> */}
 
-                <li>
+                {/* <li>
                   <Link to="/PharmacyMainIncome" className="nav-link px-0">
                     <span className="d-none d-sm-inline text-light fs-6">
                       Pharmacy Income
                     </span>
                   </Link>
                   <hr />
-                </li>
+                </li> */}
 
                 <li>
                   <Link to="/PatientsDue" className="nav-link px-0">
@@ -183,108 +196,9 @@ const Sider = () => {
                   </Link>
                   <hr />
                 </li>
-
-                {/* <li>
-                  <Link to="/DueByUs" class="nav-link px-0">
-                    
-                    <span
-                      class="d-none d-sm-inline text-light fs-6"
-                      target="_blank"
-                    >
-                      Due Payment
-                    </span>
-                  </Link>
-                  <hr />
-                </li> */}
-
-                {/* <li>
-                  <Link to="/PaidByUs" class="nav-link px-0">
-                    
-                    <span
-                      class="d-none d-sm-inline text-light fs-6"
-                      target="_blank"
-                    >
-                      Paid Payment
-                    </span>
-                  </Link>
-                  <hr />
-                </li> */}
               </ul>
             </li>
             <hr />
-
-            {/* <li className="">
-              <Link
-                to="#submenu4"
-                data-bs-toggle="collapse"
-                class="nav-link px-0 align-middle"
-              >
-                <div className="link-div">
-                  <FaCommentsDollar className="fs-1 bi bi-house-door-fill" />
-                </div>
-                <h3 class="d-none d-sm-inline fs-6 text-light">
-                  Total Income <IoMdArrowDropdown />
-                </h3>
-              </Link>
-              <ul
-                class="collapse nav flex-column ms-1"
-                id="submenu4"
-                data-bs-parent="#menu"
-              >
-                <li class="w-100">
-                  <Link to="/TodayIncome" class="nav-link px-0">
-                    
-                    <span
-                      class="d-none d-sm-inline text-light fs-6"
-                      target="_blank"
-                    >
-                      Today Income
-                    </span>
-                  </Link>
-                  <hr />
-                </li>
-
-                <li>
-                  <Link to="/WeeklyIncome" class="nav-link px-0">
-                    
-                    <span
-                      class="d-none d-sm-inline text-light fs-6"
-                      target="_blank"
-                    >
-                      Weekly Income
-                    </span>
-                  </Link>
-                  <hr />
-                </li>
-
-                <li>
-                  <Link to="/Monthly" class="nav-link px-0">
-                    
-                    <span
-                      class="d-none d-sm-inline text-light fs-6"
-                      target="_blank"
-                    >
-                      Monthly Income
-                    </span>
-                  </Link>
-                  <hr />
-                </li>
-
-                <li>
-                  <Link to="/Yearly" class="nav-link px-0">
-                    
-                    <span
-                      class="d-none d-sm-inline text-light fs-6"
-                      target="_blank"
-                    >
-                      Annual Income
-                    </span>
-                  </Link>
-                  <hr />
-                </li>
-              </ul>
-            </li>
-            <hr /> */}
 
             <li class="nav-item link-div">
               <Link to="/total-income" class="nav-link px-0 align-middle">
@@ -297,27 +211,38 @@ const Sider = () => {
             <hr />
 
             <li className="">
-              <Link to="/bill_section" class="nav-link px-0 align-middle ">
-                <div className="link-div">
-                  <i className="fs-2 bi bi-receipt-cutoff ms-3"></i>
-                </div>
-                <h3 class="d-none d-sm-inline fs-6 text-light">
-                  Create Invoice
-                </h3>
-              </Link>
-            </li>
-            <hr />
-
-            <li className="">
               <div className={`link-div ${"/settings"}`}>
-                <Link to="/clinic-setting" class="nav-link px-0 align-middle ">
+                <Link
+                  to="/attendance-leave"
+                  class="nav-link px-0 align-middle "
+                >
                   <div className="link-div">
                     <div className="">
-                      <i className="fs-2 bi bi-gear"></i>
+                      <BsFileEarmarkPerson className="fs-2 text-white" />
                     </div>
                     <div>
                       <h3 className=" d-none d-sm-inline fs-6 text-light">
-                        Settings
+                        Attendance
+                      </h3>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </li>
+            <hr />
+            <li className="">
+              <div className={`link-div ${"/settings"}`}>
+                <Link
+                  to="/account-report-dashboard"
+                  class="nav-link px-0 align-middle "
+                >
+                  <div className="link-div">
+                    <div className="">
+                      <TbReport className="fs-2 text-white" />
+                    </div>
+                    <div>
+                      <h3 className=" d-none d-sm-inline fs-6 text-light">
+                        Reports
                       </h3>
                     </div>
                   </div>

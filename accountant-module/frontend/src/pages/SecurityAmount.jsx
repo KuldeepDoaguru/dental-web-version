@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Header from "../components/Header";
 import Sider from "../components/Sider";
 import BranchDetails from "../components/BranchDetails";
+import MakeRefund from "../components/btModal/MakeRefund";
 
 const SecurityAmount = () => {
   return (
@@ -107,7 +108,7 @@ const SecurityAmount = () => {
                               for="exampleFormControlInput1"
                               class="form-label"
                             >
-                              Assigned Doctor
+                              Patient Mobile
                             </label>
                             <input
                               type="text"
@@ -125,7 +126,7 @@ const SecurityAmount = () => {
                               for="exampleFormControlInput1"
                               class="form-label"
                             >
-                              Patient Mobile
+                              Assigned Doctor
                             </label>
                             <input
                               type="text"
@@ -137,6 +138,7 @@ const SecurityAmount = () => {
                             />
                           </div>
                         </div>
+
                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
                           <div class="input-group mb-3">
                             <label
@@ -174,58 +176,54 @@ const SecurityAmount = () => {
                           <tr>
                             <th>Date</th>
                             <th>Appointment ID</th>
-                            <th>Treatment Income</th>
-                            <th>Radiology Income</th>
-                            <th>Pathology Income</th>
-                            <th>Pharmacy Income</th>
-                            <th>Total Income</th>
+                            <th>UHID</th>
+                            <th>Patient Name</th>
+                            <th>Patient Number</th>
+                            <th>Assigned Doctor</th>
+                            <th>Security Amount</th>
+                            <th>Payment Status</th>
+                            <th>Refund</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr className="table-row">
                             <td>07/04/2024</td>
-                            <td>28000</td>
-                            <td>350000</td>
-                            <td>42000</td>
-                            <td>64000</td>
-                            <td>280000</td>
-                            <td>872000</td>
-                          </tr>
-                          <tr className="table-row">
-                            <td>14/04/2024</td>
-                            <td>28000</td>
-                            <td>350000</td>
-                            <td>42000</td>
-                            <td>64000</td>
-                            <td>280000</td>
-                            <td>872000</td>
-                          </tr>
-                          <tr className="table-row">
-                            <td>21/04/2024</td>
-                            <td>28000</td>
-                            <td>350000</td>
-                            <td>42000</td>
-                            <td>64000</td>
-                            <td>280000</td>
-                            <td>872000</td>
-                          </tr>
-                          <tr className="table-row">
-                            <td>28/04/2024</td>
-                            <td>28000</td>
-                            <td>350000</td>
-                            <td>42000</td>
-                            <td>64000</td>
-                            <td>280000</td>
-                            <td>872000</td>
-                          </tr>
-                          <tr className="table-row">
-                            <td>30/04/2024</td>
+                            <td>1</td>
+                            <td>DHID007</td>
+                            <td>Shubham Singh</td>
+                            <td>8602161019</td>
+                            <td>Mohit sahu</td>
                             <td>8000</td>
-                            <td>100000</td>
-                            <td>12000</td>
-                            <td>16000</td>
-                            <td>80000</td>
-                            <td>216000</td>
+                            <td>Success</td>
+                            <td>
+                              <MakeRefund />
+                            </td>
+                          </tr>
+                          <tr className="table-row">
+                            <td>07/04/2024</td>
+                            <td>1</td>
+                            <td>DHID007</td>
+                            <td>Shubham Singh</td>
+                            <td>8602161019</td>
+                            <td>Mohit sahu</td>
+                            <td>8000</td>
+                            <td>Success</td>
+                            <td>
+                              <MakeRefund />
+                            </td>
+                          </tr>
+                          <tr className="table-row">
+                            <td>07/04/2024</td>
+                            <td>1</td>
+                            <td>DHID007</td>
+                            <td>Shubham Singh</td>
+                            <td>8602161019</td>
+                            <td>Mohit sahu</td>
+                            <td>8000</td>
+                            <td>Success</td>
+                            <td>
+                              <MakeRefund />
+                            </td>
                           </tr>
                         </tbody>
                       </table>

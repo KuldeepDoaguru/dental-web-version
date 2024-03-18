@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { AiFillBell } from "react-icons/ai";
 import { FaUserAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { BsFileEarmarkPerson } from "react-icons/bs";
 
 const Header = () => {
   return (
@@ -42,6 +43,18 @@ const Header = () => {
               id="navbarSupportedContent"
             >
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li className="nav-item mx-2" id="bell">
+                  <button
+                    type="button"
+                    class="btn"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    style={{ padding: "0rem" }}
+                    title="Mark Attendance"
+                  >
+                    <BsFileEarmarkPerson className="icon" />
+                  </button>
+                </li>
                 <li className="nav-item dropdown" id="userid">
                   <a
                     className="nav-link dropdown-toggle"

@@ -72,10 +72,10 @@ const AllBills = () => {
                             <h4>8602161019</h4>
                           </div>
                           <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <h4>Patient Email :</h4>
+                            <h4>Assigned Doctor :</h4>
                           </div>
                           <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                            <h4>shubham@gmail.com</h4>
+                            <h4>shubham</h4>
                           </div>
                         </div>
                       </div>

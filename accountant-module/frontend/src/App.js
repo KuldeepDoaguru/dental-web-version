@@ -61,6 +61,18 @@ import ErrorPage from "./pages/ErrorPage";
 import TotalIncome from "./pages/TotalIncome";
 import AccountantProfile from "./pages/AccountantProfile";
 import SecurityAmount from "./pages/SecurityAmount";
+import AccountReportDash from "./pages/AccountReportDash";
+import SecAmountReport from "./pages/AllReport/SecAmountReport";
+import InvoiceReport from "./pages/AllReport/InvoiceReport";
+import IncomeReports from "./pages/AllReport/OpdReportDownload";
+import OpdReportDownload from "./pages/AllReport/OpdReportDownload";
+import TreatIncomeDownload from "./pages/AllReport/TreatIncomeDownload";
+import DuePaymentReport from "./pages/AllReport/DuePaymentReport";
+import PaidPaymentReport from "./pages/AllReport/PaidPaymentReport";
+import StaffSalaryReport from "./pages/AllReport/StaffSalaryReport";
+import VoucherReport from "./pages/AllReport/VoucherReport";
+import PurchaseReport from "./pages/AllReport/PurchaseReport";
+import AttendanceLeave from "./pages/AttendanceLeave";
 
 function App() {
   return (
@@ -134,6 +146,17 @@ function App() {
       <Route path="/total-income" element={<TotalIncome />} />
       <Route path="/accountant-profile" element={<AccountantProfile />} />
       <Route path="/security-amount" element={<SecurityAmount />} />
+      <Route path="/account-report-dashboard" element={<AccountReportDash />} />
+      <Route path="/security-amount-report" element={<SecAmountReport />} />
+      <Route path="/invoice-report" element={<InvoiceReport />} />
+      <Route path="/opd-income-report" element={<OpdReportDownload />} />
+      <Route path="/treat-income-report" element={<TreatIncomeDownload />} />
+      <Route path="/due-payment-report" element={<DuePaymentReport />} />
+      <Route path="/paid-payment-report" element={<PaidPaymentReport />} />
+      <Route path="/staff-salary-report" element={<StaffSalaryReport />} />
+      <Route path="/voucher-report" element={<VoucherReport />} />
+      <Route path="/purchase-report" element={<PurchaseReport />} />
+      <Route path="/attendance-leave" element={<AttendanceLeave />} />
       <Route path="*" element={<ErrorPage />} />
       {/*Acountend  routes end  */}
     </Routes>

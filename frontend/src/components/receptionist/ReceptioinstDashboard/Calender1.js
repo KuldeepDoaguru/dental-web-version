@@ -77,7 +77,7 @@ useEffect(()=>{
 useEffect(()=>{
  
  getAppointments();
- getDoctors();
+ 
 },[refreshTable])
 
  // Set the selectedDoctor to the ID of the first doctor when doctors state updates

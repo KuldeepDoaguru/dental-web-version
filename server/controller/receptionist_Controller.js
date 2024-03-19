@@ -1135,6 +1135,27 @@ const getDoctorDataByBranchWithLeave = (req, res) => {
   }
 };
 
+const insertTimelineEvent = (req, res) => {
+  try {
+    const { type, description, branch, patientId } = req.body;
+    const insertQuery =
+      "INSERT INTO patient_timeline (event_type,	event_description,	branch_name,	uhid	) VALUES (?,?,?,?)";
+    db.query(
+      insertQuery,
+      [type, description, branch, patientId],
+      (err, result) => {
+        if (err) {
+          res.status(400).json({ success: false, message: err.message });
+        }
+        res.status(200).json({ success: true, result: result });
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 const LoginReceptionist =  (req, res) => {
   try {
     const { email, password,	branch_name } = req.body;
@@ -1349,4 +1370,4 @@ const verifyOtp = (req, res) => {
 };
 
 
-module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail , updatePatientDetails ,getBranchHoliday , getPatientById,addInquiry,getInquiries,updateInquiry,deleteInquiry,getAppointmentById};
+module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail , updatePatientDetails ,getBranchHoliday , getPatientById,addInquiry,getInquiries,updateInquiry,deleteInquiry,getAppointmentById,insertTimelineEvent};

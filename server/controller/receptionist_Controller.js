@@ -131,7 +131,8 @@ dotenv.config();
 
 const addPatient = (req, res) => {
   try {
-      const { branch_name, patient_Name, mobile, email, gender, aadhaar_no, contact_Person, contact_Person_Name, blood_Group, dob, age, weight, allergy, disease, patientType, status, doctorId, doctor_name, appDateTime, treatment, notes, address, patient_added_by, patient_added_by_emp_id } = req.body;
+      const { branch_name, patient_Name, mobile, email, gender, aadhaar_no, contact_Person, contact_Person_Name, blood_Group, dob, age, weight, allergy, disease, patientType, status, doctorId, doctor_name, appDateTime, treatment,
+        opd_amount , payment_Mode, transaction_Id, payment_Status, notes, address, patient_added_by, patient_added_by_emp_id } = req.body;
 
       const created_at = new Date();
 
@@ -227,22 +228,26 @@ const addPatient = (req, res) => {
                           // Proceed with booking appointment
                           const bookAppointmentQuery = `
                               INSERT INTO appointments (
-                                  patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status, notes, appointment_created_by, appointment_created_by_emp_id, created_at
-                              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                  patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status,opd_amount, payment_Mode, transaction_Id, payment_Status, notes, appointment_created_by, appointment_created_by_emp_id, created_at
+                              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)
                           `;
                          
                           const bookAppointmentParams = [
                             newPatientID,
-                              branch_name,
-                              doctor_name,
-                              doctorId,
-                              appDateTime,
-                              treatment,
-                              status,
-                              notes,
-                              patient_added_by,
-                              patient_added_by_emp_id,
-                              created_at
+                            branch_name,
+                            doctor_name,
+                            doctorId,
+                            appDateTime,
+                            treatment,
+                            status,
+                            opd_amount,
+                            payment_Mode,
+                            transaction_Id,
+                            payment_Status,
+                            notes,
+                            patient_added_by,
+                            patient_added_by_emp_id,
+                            created_at,
                           ];
 
                           db.query(bookAppointmentQuery, bookAppointmentParams, (appointmentErr, appointmentResult) => {
@@ -254,7 +259,9 @@ const addPatient = (req, res) => {
                                   return res.status(200).json({
                                       success: true,
                                       message: "Patient and appointment added successfully",
-                                      user: { id: insertResult.insertId, patientId: newPatientID }
+                                      data : appointmentResult ,
+                                      treatment : treatment,
+                                      user: { id: insertResult.insertId, patientId: newPatientID}
                                   });
                               }
                           });
@@ -485,6 +492,7 @@ db.query(bookAppointmentQuery, bookAppointmentParams, (appointmentErr, appointme
       console.log("Appointment booked successfully");
       return res.status(200).json({
           data: appointmentResult,
+          treatment : treatment,
           success: true,
           message: "Appointment Booked successfully",
           
@@ -738,6 +746,7 @@ const getAppointmentById = (req, res) => {
         a.appointment_created_by,
         a.appointment_created_by_emp_id,
         a.notes,
+        a.created_at,
         p.uhid,
         p.patient_name,
         p.mobileno,

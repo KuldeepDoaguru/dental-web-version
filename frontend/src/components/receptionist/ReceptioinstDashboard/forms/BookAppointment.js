@@ -5,6 +5,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTableRefresh } from '../../../../redux/user/userSlice';
 import { useNavigate } from "react-router-dom";
+import cogoToast from "cogo-toast";
 
 
 
@@ -28,7 +29,22 @@ function BookAppointment() {
   const [branchHolidays,setBranchHolidays] = useState([]);
   const opdCost = treatments?.filter((treatment) => treatment?.treatment_name === "OPD")[0]?.treatment_cost;
   const minDate = new Date();
-  console.log(branchHolidays)
+ 
+  
+  const [opdAmount, setOpdAmount] = useState(opdCost); // State to store the OPD amount, initialized with opdCost
+
+  
+ // Update opdAmount when opdCost changes
+ useEffect(() => {
+  setOpdAmount(opdCost);
+}, [opdCost]);
+
+// Handle change in opdAmount
+const handleOpdAmountChange = (e) => {
+  setOpdAmount(e.target.value);
+};
+
+
   const  handleWeekOfDay = (day)=>{
         if(day == "sunday"){
           setWeekOffDay(0);
@@ -411,13 +427,7 @@ console.log(availableDoctorOnDate);
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [filteredDoctor,setFilteredDoctor] = useState([]);
 
-  // useEffect(() => {
-  //   // Filter patients based on the search query
-  //   const filtered = patients.filter((patient) =>
-  //     data.patient_Name.toLowerCase().includes(searchQuery.toLowerCase())
-  //   );
-  //   setFilteredPatients(filtered);
-  // }, [searchQuery, patients]);
+  
 
   useEffect(() => {
     // Filter patients based on the search query if there's a search query, otherwise set an empty array
@@ -451,11 +461,6 @@ console.log(availableDoctorOnDate);
     setSearchDoctor(e.target.value);
   };
 
-
-  console.log(bookData)
-
-
-
   useEffect(()=>{
     const calculateAge = (date) => {
       const dob = new Date(date);
@@ -480,9 +485,6 @@ console.log(availableDoctorOnDate);
         [name]: value
       });
   }
-
-
-
 
 
 const handlePatientSelect = (patient) => {
@@ -657,7 +659,7 @@ const isDoctorAvailable = (selectedDateTime) => {
       treatment: selectedTreatment,
       notes: bookData.notes,
       status : "Appoint",
-      opd_amount : opdCost,
+      opd_amount : selectedTreatment === "OPD" ? opdAmount : "0" , 
        payment_Mode:bookData.payment_Mode,
         transaction_Id:bookData.transaction_Id,
          payment_Status:bookData.payment_Status,
@@ -683,7 +685,9 @@ const isDoctorAvailable = (selectedDateTime) => {
       if(response.data.success){
         alert(response?.data?.message);
         dispatch(toggleTableRefresh());
-        navigate(`/print_Opd_Reciept/${response?.data?.data?.insertId}`)
+        console.log(response?.data?.data)
+        if(response?.data?.treatment === "OPD"){
+        navigate(`/print_Opd_Reciept/${response?.data?.data?.insertId}`)}
        }
        else{
         alert(response?.data?.message);
@@ -852,6 +856,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                     id="form6Example1"
                     className="form-control"
                     value={selectedPatient ? selectedPatient.patient_name : ""}
+                    onChange={()=>cogoToast.error("Please search patient form search bar and select")}
                     required
                   />
                 </div>
@@ -975,11 +980,11 @@ const isDoctorAvailable = (selectedDateTime) => {
                     type="text"
                     id="form6Example1"
                     className="form-control"
-                    onChange={handleBookChange}
+                    onChange={handleOpdAmountChange}
                     name="opd_amount"
                     required
-                    readOnly
-                    value={opdCost}
+                  
+                    value={opdAmount}
                     
                   />
                 </div>

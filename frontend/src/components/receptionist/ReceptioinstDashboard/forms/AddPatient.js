@@ -6,13 +6,14 @@ import { Modal, Button } from 'react-bootstrap';
 import axios from "axios";
 import { useDispatch ,useSelector} from 'react-redux';
 import { toggleTableRefresh } from '../../../../redux/user/userSlice';
+import { useNavigate } from "react-router-dom";
 
 
 
 function AddPatient() {
 
   const dispatch = useDispatch();
-  
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const {refreshTable} = useSelector((state) => state.user);
    const  branch = user.currentUser.branch_name;
@@ -33,6 +34,26 @@ function AddPatient() {
   const [appointmentsData,setAppointmentsData] = useState([]);
   const [branchDetail,setBranchDetail] = useState([]);
   const [branchHolidays,setBranchHolidays] = useState([]);
+
+  const opdCost = treatments?.filter((treatment) => treatment?.treatment_name === "OPD")[0]?.treatment_cost;
+  
+ 
+  
+  const [opdAmount, setOpdAmount] = useState(opdCost); // State to store the OPD amount, initialized with opdCost
+
+  
+ // Update opdAmount when opdCost changes
+ useEffect(() => {
+  setOpdAmount(opdCost);
+}, [opdCost]);
+
+// Handle change in opdAmount
+const handleOpdAmountChange = (e) => {
+  setOpdAmount(e.target.value);
+};
+
+
+
 
   const getBranchDetail = async ()=>{
     try{
@@ -317,15 +338,12 @@ const handleChangeDisease = (newValue, actionMeta) => {
 
   
   const [data,setData] = useState(
-    { branch_name:"", patient_Name:"",mobile: "",email: "",gender: "", aadhaar_no:"", contact_Person : "" , contact_Person_Name: "", blood_Group : "" , dob : "", age : "",weight:"",allergy:"",disease:"", patientType:"", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"",  address: "", patient_added_by:"",patient_updated_by:"",patient_added_by_emp_id:"", patient_updated_by_emp_id:""}
+    { branch_name:"", patient_Name:"",mobile: "",email: "",gender: "", aadhaar_no:"", contact_Person : "" , contact_Person_Name: "", blood_Group : "" , dob : "", age : "",weight:"",allergy:"",disease:"", patientType:"", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",opd_amount : "", payment_Mode:"", transaction_Id:"", payment_Status:"",notes:"",  address: "", patient_added_by:"",patient_updated_by:"",patient_added_by_emp_id:"", patient_updated_by_emp_id:""}
     
   ) 
 
   console.log(data)
 
-  const [bookData,setBookData] = useState({
-    patient_uid :"", patient_Name:"",status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",notes:"",
-  }) 
 
   
   
@@ -385,7 +403,7 @@ const handleChangeDisease = (newValue, actionMeta) => {
   };
 
 
-  console.log(bookData)
+
 
   console.log(appointmentsData)
   useEffect(()=>{
@@ -438,6 +456,11 @@ const handleChangeDisease = (newValue, actionMeta) => {
     if (patients.some(patient => patient.patient_name === data.patient_Name && patient.mobileno === data.mobile)) {
       alert("Patient already exists");
       return;
+  }
+
+  if(data.payment_Status === "unpaid"){
+    alert("Please paid the OPD amount to book appointment");
+    return
   }
 
      // Convert appointment time to Date object
@@ -538,6 +561,10 @@ const handleChangeDisease = (newValue, actionMeta) => {
         doctor_name: selectedDoctor.employee_name,
         appDateTime: data.appDateTime,
         treatment: selectedTreatment,
+        opd_amount : selectedTreatment === "OPD" ? opdAmount : "0" ,
+       payment_Mode:data.payment_Mode,
+        transaction_Id:data.transaction_Id,
+         payment_Status:data.payment_Status,
         notes: data.notes,
         patient_added_by: user.currentUser.employee_name,
         patient_added_by_emp_id : user.currentUser.employee_ID,
@@ -563,6 +590,8 @@ const handleChangeDisease = (newValue, actionMeta) => {
           if(response?.data?.success){
            alert(response?.data?.message);
            dispatch(toggleTableRefresh());
+           if(response?.data?.treatment === "OPD"){
+            navigate(`/print_Opd_Reciept/${response?.data?.data?.insertId}`)}
           }
           else{
            alert(response?.data?.message);
@@ -631,13 +660,7 @@ const handleDoctorSelect = (doctor) => {
   console.log(selectedDoctor)
 
 
-  const handleBookChange = (e)=>{
-    const {name,value} = e.target;
-    setBookData({
-      ...bookData,
-      [name]: value
-    });
-}
+  
  
   return (
     <Wrapper>
@@ -1021,6 +1044,79 @@ const handleDoctorSelect = (doctor) => {
                          
                        </div>
                      </div>
+
+                     {selectedTreatment === "OPD" &&
+             <>
+              <div className="col-sm-6">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example1">
+                    OPD Amount
+                  </label>
+                  <input
+                    type="text"
+                    id="form6Example1"
+                    className="form-control"
+                    onChange={handleOpdAmountChange}
+                    name="opd_amount"
+                    required
+                  
+                    value={opdAmount}
+                    
+                  />
+                </div>
+              </div>
+              <div className="col-sm-6">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example1">Payment Mode</label>
+                  <select
+                    className="form-select"
+                    id="paymentMode"
+                    name="payment_Mode"
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="cash">Cash</option>
+                    <option value="online">Online</option>
+                   
+                  </select>
+                </div>
+              </div>
+            {data.payment_Mode === "online" &&   <div className="col-sm-6">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example1">
+                    Transaction Id
+                  </label>
+                  <input
+                    type="text"
+                    id="form6Example1"
+                    className="form-control"
+                    onChange={handleChange}
+                    name="transaction_Id"
+                    required
+                  />
+                </div>
+              </div>
+              }
+              <div className="col-sm-6">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example1">Payment Status</label>
+                  <select
+                    className="form-select"
+                    id="payment_Status"
+                    name="payment_Status"
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">Select</option>
+                    <option value="paid">Paid</option>
+                    <option value="unpaid">Unpaid</option>
+                   
+                  </select>
+                </div>
+              </div>
+              </>
+}
 
                    
                      <div className="col-sm-6">

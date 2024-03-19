@@ -29,6 +29,17 @@ const AppointTable = () => {
 
   const [selectedDateAppData,setSelectedDateAppData] = useState([]);
 
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      dispatch(toggleTableRefresh());
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [dispatch]);
+
+
+
   useEffect(()=>{
 
     const filteredResults = appointmentsData.filter((row) =>
@@ -338,7 +349,7 @@ patient_type
    
    
   
-    <li><a className="dropdown-item mx-0" href="#"></a></li>
+    
  
   </ul>
 </div></td>

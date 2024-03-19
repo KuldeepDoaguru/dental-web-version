@@ -110,25 +110,22 @@ const PrintOpdBill = () => {
                   <th className='text-start'>Appointment Id</th>
                   <td className='text-capitalize'>{": "}{data?.appoint_id}</td>
 
-                  {data?.opd_number ? (
-  <>
+                  
+  
     <th scope="col" className='text-start'>Patient id</th>
-    <td  className='text-capitalize'>{": "}{data?.patient_uhid}</td>
+    <td  className='text-capitalize'>{": "}{data?.uhid}</td>
     
-  </>
-):  <>
 <th scope="col" className='text-start'>Branch Name</th>
 <td  className='text-capitalize'>{": "}{data?.branch_name}</td>
 
-</>}
-                <th scope="col" className='text-start pe-5'>Mobile No</th>
-    <td  className='text-capitalize'>{": "}{data?.mobileno}</td>
+
+                
                 </tr>
                 <tr>
                   <th scope="col" className='text-start'>Name</th>
                   <td  className='text-capitalize'>{": "}{data?.patient_name}</td>
-                  <th scope="col" className='text-start'>Age</th>
-                  <td  className='text-capitalize'>{": "}{data?.age}</td>
+                  <th scope="col" className='text-start pe-5'>Mobile No</th>
+    <td  className='text-capitalize'>{": "}{data?.mobileno}</td>
                   <th scope="col" className='text-start'>Gender</th>
                   <td  className='text-capitalize'>{": "}{data?.gender}</td>
                 </tr>
@@ -137,16 +134,18 @@ const PrintOpdBill = () => {
                   <td  className='text-capitalize'>{": "}{data?.patient_type}</td>
                   
                   
-                  <th scope="col" className='text-start'>D.O.A</th>
-                  <td  className='text-capitalize'>{": "}{data?.appointment_dateTime ? moment(data?.appointment_dateTime).format('DD/MM/YYYY') : ""}</td>
-                  <th scope="col" className='text-start'>Blood Group</th>
-                  <td  className='text-capitalize'>{": "}{data?.bloodgroup}</td>
+                  <th scope="col" className='text-start'>Appointment</th>
+                  <td  className='text-capitalize'>{": "}{data?.appointment_dateTime ? moment(data?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A') : ""}</td>
+                  {/* <th scope="col" className='text-start'>Blood Group</th>
+                  <td  className='text-capitalize'>{": "}{data?.bloodgroup}</td> */}
+                  <th scope="col" className='text-start'>Age</th>
+                  <td  className='text-capitalize'>{": "}{data?.age}</td>
                 </tr>
                 <tr>
                   <th scope="col" className='text-start'>Doctor Name</th>
                   <td  className='text-capitalize'>{": "}{data?.assigned_doctor_name}</td>
-                  <th scope="col" className='text-start'>Date</th>
-                  <td  className='text-capitalize'>{": "}{data?.bill_date ? moment(data?.bill_date).format('DD/MM/YYYY') : ""}</td>
+                  <th scope="col" className='text-start'> Date</th>
+                  <td  className='text-capitalize'>{": "}{data?.created_at ? moment(data?.created_at).format('DD/MM/YYYY') : ""}</td>
                   <th scope="col" className='text-start'>Payment Mode</th>
                   <td  className='text-capitalize'>{": "}{data.payment_Mode}</td>
                   

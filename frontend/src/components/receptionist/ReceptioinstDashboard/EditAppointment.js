@@ -256,6 +256,23 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
     setSearchDoctor(doctor.employee_name); // Reset the search query to close the search list
   };
 
+  const timelineData = async (id) => {
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/receptionist/insertTimelineEvent",
+        {
+          type: "Edit Appointment",
+          description: "Edit Appointment",
+          branch: branch,
+          patientId: id,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleEditAppointment = async (e) =>{
     
     e.preventDefault();
@@ -386,6 +403,8 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
         if(response.data.success){
           alert(response?.data?.message);
           dispatch(toggleTableRefresh());
+          timelineData(appointmentInfo.uhid)
+          
          }
          else{
           alert(response?.data?.message);

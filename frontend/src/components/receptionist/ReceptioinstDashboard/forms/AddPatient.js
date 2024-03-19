@@ -430,6 +430,24 @@ const handleChangeDisease = (newValue, actionMeta) => {
         [name]: value
       });
   }
+ 
+  const timelineData = async (id) => {
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/receptionist/insertTimelineEvent",
+        {
+          type: "Add Patient",
+          description: "Add Patient and Appointment scheduled",
+          branch: branch,
+          patientId: id,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -590,6 +608,7 @@ const handleChangeDisease = (newValue, actionMeta) => {
           if(response?.data?.success){
            alert(response?.data?.message);
            dispatch(toggleTableRefresh());
+           timelineData(response?.data?.user?.patientId)
            if(response?.data?.treatment === "OPD"){
             navigate(`/print_Opd_Reciept/${response?.data?.data?.insertId}`)}
           }

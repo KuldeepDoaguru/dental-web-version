@@ -510,6 +510,24 @@ const handleDoctorSelect = (doctor) => {
     });
 }
 
+const timelineData = async (id) => {
+  
+  try {
+    const response = await axios.post(
+      "http://localhost:4000/api/v1/receptionist/insertTimelineEvent",
+      {
+        type: "Appointment",
+        description: "Appointment scheduled",
+        branch: branch,
+        patientId: id,
+      }
+    );
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
  const handleBookAppointment = async (e) =>{
     
   e.preventDefault();
@@ -685,6 +703,7 @@ const isDoctorAvailable = (selectedDateTime) => {
       if(response.data.success){
         alert(response?.data?.message);
         dispatch(toggleTableRefresh());
+        timelineData(selectedPatient.uhid);
         console.log(response?.data?.data)
         if(response?.data?.treatment === "OPD"){
         navigate(`/print_Opd_Reciept/${response?.data?.data?.insertId}`)}

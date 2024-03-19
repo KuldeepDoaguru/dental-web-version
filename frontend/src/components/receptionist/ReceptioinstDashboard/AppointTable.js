@@ -9,6 +9,7 @@ import { toggleTableRefresh } from '../../../redux/user/userSlice';
 import EditAppointment from './EditAppointment';
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
+import moment from 'moment';
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -41,8 +42,11 @@ const AppointTable = () => {
 
 
   useEffect(()=>{
+    const sortedAppointments = appointmentsData.sort((a, b) => {
+      return a.appointment_dateTime.localeCompare(b.appointment_dateTime);
+    });
 
-    const filteredResults = appointmentsData.filter((row) =>
+    const filteredResults = sortedAppointments.filter((row) =>
         
          row.appointment_dateTime.includes(selectedDate)
       );
@@ -64,6 +68,7 @@ const AppointTable = () => {
   useEffect(()=>{
     getAppointments();
   },[refreshTable])
+  
 
  
    const handleEditAppointment = (appointment)=>{
@@ -319,8 +324,7 @@ const handleStatusCancel = async (appointmentId, newStatus) => {
               <td>{patient.uhid}</td>
               <td>{patient.patient_name}</td>
               <td>{patient.mobileno}</td>
-              <td>{patient.appointment_dateTime
-}</td>
+              <td>{patient?.appointment_dateTime ? moment(patient?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('hh:mm A') : ""}</td>
               <td>{patient.treatment_provided
 }</td>
               <td>{patient.assigned_doctor_name

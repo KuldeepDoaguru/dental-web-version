@@ -898,8 +898,8 @@ const ExaminationPatientTest = () => {
     try {
       const response = await axios.post('http://localhost:8888/api/doctor/dentalPediatric', formData);
       console.log(response.data);
-      dispatch(toggleDataRefresh());
-      // window.location.reload();
+      // dispatch(toggleDataRefresh());
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
@@ -1006,7 +1006,8 @@ const ExaminationPatientTest = () => {
   }, []);
 
   const handleSaveContinue = () =>{
-    navigate(`/TreatmentDashBoard/${id}`); 
+    // navigate(`/TreatmentDashBoard/${id}`); 
+    navigate(`/treatmentSuggestion/${id}`); 
   }
 
 

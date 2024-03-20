@@ -47,10 +47,9 @@ const SaveData = ({ id }) => {
         e.preventDefault();
         try {
             const response = await axios.put(`http://localhost:8888/api/doctor/updatedentalPediatric/${id}`, formData);
-            // Handle success
             console.log(response.data);
             window.location.reload();
-            // Dispatch the action to toggle data refresh
+
             // dispatch(toggleDataRefresh());
 
         } catch (error) {
@@ -96,7 +95,7 @@ const SaveData = ({ id }) => {
 
     return (
         <Wrapper>
-            <div className="container">
+            <div className="container"> 
                 <div className="row">
                     <h2>Saved Data</h2>
                     {data.length > 0 ? (

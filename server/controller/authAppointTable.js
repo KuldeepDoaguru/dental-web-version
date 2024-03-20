@@ -100,43 +100,5 @@ const upDateAppointmentStatus = (req, res) => {
 }
 
 
-//............ Currently START not use API's........
-
-const getAppointTable = (req, res) => {
-    const sql = "SELECT * FROM apointments";
-
-    db.query(sql, (err, result) => {
-        if (err) {
-            console.error('Error executing query in Appointment Table: ' + err.stack);
-            return res.status(500).json({ error: 'Internal server error' });
-        } else {
-            console.log(`Query executed successfully in appointment table`);
-            return res.status(200).json({ message: "Get Data Appointment Table", result });
-        }
-    })
-};
-
-const getAppointmentById = (req, res) => {
-    const appointmentId = req.params.id; // Extracting appointment ID from URL parameters
-    const sql = `SELECT * FROM apointments WHERE appoint_id = ?`; // Using placeholder for appointment ID
-
-    db.query(sql, [appointmentId], (err, result) => {
-        if (err) {
-            console.error('Error executing query in Appointment Table: ' + err.stack);
-            return res.status(500).json({ error: 'Internal server error' });
-        } else {
-            if (result.length === 0) {
-                return res.status(404).json({ message: "Appointment not found" });
-            }
-            console.log(`Query executed successfully in appointment table`);
-            return res.status(200).json({ message: "Get Data Appointment Table", result });
-        }
-    });
-};
-
-//.......... Currently END not use API's............
-
-
-
-module.exports = { getAppointTable, getAppointmentById, getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus };
+module.exports = { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus };
 

@@ -69,7 +69,7 @@ function App() {
       <Route path="/TPrescriptionDash/:id" element={<TPrescriptionDash />} />
       <Route path="/HistoryDashBoard" element={<HistoryDashBoard />} />
       <Route path="/ViewTreatPrescription/:id" element={<ViewTreatPrescription />} />
-      <Route path="/treatmentSuggestion" element={<TreatSuggestDashs />} />
+      <Route path="/treatmentSuggestion/:id" element={<TreatSuggestDashs />} />
       {/* test */}
       <Route path="/HeadBar" element={<HeadBar />} />
 

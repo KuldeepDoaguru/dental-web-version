@@ -72,33 +72,19 @@ const deleteDentalPediatric = (req, res) =>{
     })
 }
 
+const insertTreatSuggest = (req, res) =>{
+    const {appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result} = req.body;
 
+    const sql =  `INSERT INTO treat_suggest (appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result) VALUES(?,?,?,?,?,?)`;
 
-// .........These START API's not used currently..........
-
-const dentalPediatricUpdate = (req, res) => {
-    const data = req.body;
-    const id = req.params.id; // Extract ID from URL parameters
-
-    const sql = `
-        UPDATE dental_examination 
-        SET disease = ?, chief_complain = ?, advice = ?, on_examination = ?
-        WHERE id = ?
-    `;
-    const values = [data.disease, data.chiefComplain, data.advice, data.onExamination, id];
-
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error updating data: ' + err.stack);
-            res.status(500).send('Error updating data');
-            return;
+    db.query(sql, [ appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result], (err, result)=>{
+        if(err){
+            return res.status(400).json({success: false, message: err})
+        }else{
+            return res.status(201).json({success: true, message:"Insertion Successful!", result});
         }
-        console.log('Updated data for ID ' + id);
-        res.status(200).send('Data updated successfully');
-    });
-};
-
-// ......These START API's not used currently.......
+    })
+}
 
 
-module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric}; 
+module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest}; 

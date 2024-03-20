@@ -57,6 +57,7 @@
 // `
 
 import axios from "axios";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -65,24 +66,24 @@ import styled from "styled-components";
 const Timeline = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
+  const {currentUser} = useSelector((state) => state.user);
+
+  const  branch = currentUser.branch_name;
   
   const [patTimeline, setPatTimeline] = useState([]);
 
   const getTimelineDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPatientTimeline/${pid}`
+        `http://localhost:4000/api/v1/receptionist/getPatientTimeline/${branch}/${pid}`
       );
       console.log(data);
-      setPatTimeline(data);
+      setPatTimeline(data?.data);
     } catch (error) {
       console.log(error);
     }
   };
+  console.log(patTimeline)
 
   useEffect(() => {
     getTimelineDetails();
@@ -108,10 +109,10 @@ const Timeline = () => {
                 {patTimeline?.map((item) => (
                   <>
                     <tr>
-                      <td>{item.event_date?.split("T")[0]}</td>
-                      <td>{item.event_time.split(".")[0]}</td>
-                      <td>{item.event_type}</td>
-                      <td>{item.event_description}</td>
+                      <td>{moment(item?.event_date).format('DD/MM/YYYY') }</td>
+                      <td>{item?.event_time.split(".")[0]}</td>
+                      <td>{item?.event_type}</td>
+                      <td>{item?.event_description}</td>
                     </tr>
                   </>
                 ))}

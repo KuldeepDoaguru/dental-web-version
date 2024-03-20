@@ -432,7 +432,7 @@ console.log(branch)
                       <div>
                         <div className="row">
                           <div className="col-xl-5 col-lg-5 col-md-6 col-12">
-                            <strong>Registration Branch :</strong>
+                            <strong>Branch :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">

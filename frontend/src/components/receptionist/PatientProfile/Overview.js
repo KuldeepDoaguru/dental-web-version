@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -17,6 +18,9 @@ const Overview = () => {
   const [exmData, setExmData] = useState([]);
 
   const [presData, setPresData] = useState([]);
+  const [nextAppoint, setNextAppoint] = useState(null);
+const [prevAppoint, setPrevAppoint] = useState(null);
+const [sortedAppointments,setSortedAppointments] = useState([]);
 
   const getPresDetails = async () => {
     try {
@@ -44,10 +48,10 @@ const Overview = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAppointmentByBranchAndId/${pid}`
+        `http://localhost:4000/api/v1/receptionist/getAllAppointmentByPatientId/${branch}/${pid}`
       );
       console.log(data);
-      setPatAppointDetails(data);
+      setPatAppointDetails(data?.data);
     } catch (error) {
       console.log(error);
     }
@@ -75,8 +79,7 @@ const Overview = () => {
     getExamineDetails();
   }, []);
 
-  console.log(patPendingBill);
-  console.log(patAppointDetails);
+  
   const filterForPendingAmount = patPendingBill?.filter((item) => {
     return item.payment_status === "Pending";
   });
@@ -84,52 +87,80 @@ const Overview = () => {
     return accumulator + item.total_amount;
   }, 0);
 
-  console.log(total);
-  console.log(filterForPendingAmount);
+ 
 
   const todayDate = new Date();
 
   // Get year, month, and date
-  const year = todayDate.getFullYear();
-  const month = String(todayDate.getMonth() + 1).padStart(2, "0"); // Adding 1 to adjust month, padStart ensures 2 digits
-  const date = String(todayDate.getDate()).padStart(2, "0"); // Ensuring 2 digits
+  // const year = todayDate.getFullYear();
+  // const month = String(todayDate.getMonth() + 1).padStart(2, "0"); // Adding 1 to adjust month, padStart ensures 2 digits
+  // const date = String(todayDate.getDate()).padStart(2, "0"); // Ensuring 2 digits
 
-  // Format as 'YYYY-MM-DD'
-  const formattedDate = `${year}-${month}-${date}`;
+  // // Format as 'YYYY-MM-DD'
+  // const formattedDate = `${year}-${month}-${date}`;
 
-  console.log(formattedDate);
 
-  const filterForPrevAndNextAppointment = patAppointDetails?.reduce(
-    (acc, item) => {
-      if (item.appointment_dateTime?.split("T")[0] < formattedDate) {
-        acc.prevAppointment = item;
-      } else if (item.appointment_dateTime?.split("T")[0] >= formattedDate) {
-        acc.nextAppointment = item;
+  // const filterForPrevAndNextAppointment = patAppointDetails?.reduce(
+  //   (acc, item) => {
+  //     if (item.appointment_dateTime?.split("T")[0] < formattedDate) {
+  //       acc.prevAppointment = item;
+  //     } else if (item.appointment_dateTime?.split("T")[0] >= formattedDate) {
+  //       acc.nextAppointment = item;
+  //     }
+  //     return acc;
+  //   },
+
+  //   { prevAppointment: null, nextAppointment: null }
+  // );
+
+  // console.log(
+  //   "Previous Appointment:",
+  //   filterForPrevAndNextAppointment.prevAppointment
+  // );
+  // console.log(
+  //   "Next Appointment:",
+  //   filterForPrevAndNextAppointment.nextAppointment?.appointment_dateTime
+  // );
+
+  // const nextAppoint =
+  //   filterForPrevAndNextAppointment.nextAppointment?.appointment_dateTime?.split(
+  //     "T"
+  //   )[0];
+
+  // const prevAppoint =
+  //   filterForPrevAndNextAppointment.prevAppointment?.appointment_dateTime?.split(
+  //     "T"
+  //   )[0];
+
+  useEffect(() => {
+    // Sort appointments by date
+    const sortedAppointments = patAppointDetails.sort((a, b) => {
+      return new Date(a.appointment_dateTime) - new Date(b.appointment_dateTime);
+    });
+    setSortedAppointments(sortedAppointments)
+    // Find last and next appointment
+    let prevAppointment = null;
+    let nextAppointment = null;
+    for (let i = 0; i < sortedAppointments.length; i++) {
+      const appointmentDate = new Date(sortedAppointments[i].appointment_dateTime);
+      if (appointmentDate < todayDate) {
+        prevAppointment = sortedAppointments[i];
+      } else if (appointmentDate >= todayDate && !nextAppointment) {
+        nextAppointment = sortedAppointments[i];
+        break;
       }
-      return acc;
-    },
-
-    { prevAppointment: null, nextAppointment: null }
-  );
-
-  console.log(
-    "Previous Appointment:",
-    filterForPrevAndNextAppointment.prevAppointment
-  );
-  console.log(
-    "Next Appointment:",
-    filterForPrevAndNextAppointment.nextAppointment?.appointment_dateTime
-  );
-
-  const nextAppoint =
-    filterForPrevAndNextAppointment.nextAppointment?.appointment_dateTime?.split(
-      "T"
-    )[0];
-
-  const prevAppoint =
-    filterForPrevAndNextAppointment.prevAppointment?.appointment_dateTime?.split(
-      "T"
-    )[0];
+    }
+  
+    console.log("Previous Appointment:", prevAppointment);
+    console.log("Next Appointment:", nextAppointment);
+  
+    const nextAppointDate = nextAppointment ?  moment(nextAppointment?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A')  : null;
+    const prevAppointDate = prevAppointment ? moment(prevAppointment?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A') : null;
+  
+    // Set state variables for next and previous appointments
+    setNextAppoint(nextAppointDate);
+    setPrevAppoint(prevAppointDate);
+  }, [patAppointDetails]);
 
   return (
     <>
@@ -138,8 +169,9 @@ const Overview = () => {
           <div className="col-lg-4" id="tableresponsive1">
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
+              <p className="text-center">Last Appointment</p>
                 <h5>{prevAppoint}</h5>
-                <p>Last Appointment</p>
+                
               </div>
             </div>
           </div>
@@ -147,8 +179,9 @@ const Overview = () => {
             {" "}
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
+              <p className="text-center">Next Appointment</p>
                 <h5>{nextAppoint}</h5>
-                <p>Next Appointment</p>
+               
               </div>
             </div>
           </div>
@@ -156,8 +189,9 @@ const Overview = () => {
             {" "}
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
-                <h5>INR {total}</h5>
-                <p>Payment Pending</p>
+              <p className="text-center">Payment Pending</p>
+                <h5  className="text-center">INR {total}</h5>
+                
               </div>
             </div>
           </div>
@@ -165,20 +199,24 @@ const Overview = () => {
           <div className="row mt-5">
             <div className="col-lg-8" id="tableresponsive">
               <div className="table-responsive">
-                <h5>Appointment</h5>
+                <h5>Appointments</h5>
                 <table className="table table-bordered table-striped">
                   <thead>
                     <tr>
-                      <th>Date</th>
+                      <th>Date & Time</th>
                       <th>Doctor Name</th>
+                      <th>Treatment</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {patAppointDetails?.slice(-3).map((item) => (
+                    {sortedAppointments?.slice(-3).map((item) => (
                       <>
                         <tr>
-                          <td>{item.appointment_dateTime?.split("T")[0]}</td>
-                          <td>{item.assigned_doctor}</td>
+                          <td>{moment(item?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A')}</td>
+                          <td>{item.assigned_doctor_name}</td>
+                          <td>{item.treatment_provided}</td>
+                          <td>{item.appointment_status}</td>
                         </tr>
                       </>
                     ))}
@@ -190,17 +228,19 @@ const Overview = () => {
                 <table className="table table-bordered table-striped">
                   <thead>
                     <tr>
-                      <th>Date</th>
+                      <th>Date & Time</th>
                       <th>Treatment</th>
                       <th>Doctor Name</th>
+                      <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {patAppointDetails?.slice(-3).map((item) => (
+                    {sortedAppointments?.slice(-3).map((item) => (
                       <tr>
-                        <td>{item.appointment_dateTime?.split("T")[0]}</td>
+                        <td>{moment(item?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A')}</td>
                         <td>{item.treatment_provided}</td>
-                        <td>{item.assigned_doctor}</td>
+                        <td>{item.assigned_doctor_name}</td>
+                        <td>{item.appointment_status}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -309,11 +349,12 @@ const Overview = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {patAppointDetails?.map((item) => (
+                  {sortedAppointments?.slice(-3)?.map((item) => (
                     <>
+                     {item.notes && 
                       <tr>
-                        <td>{item.treatment_provided}</td>
-                      </tr>
+                        <td>{item.notes}</td>
+                      </tr>}
                     </>
                   ))}
                 </tbody>

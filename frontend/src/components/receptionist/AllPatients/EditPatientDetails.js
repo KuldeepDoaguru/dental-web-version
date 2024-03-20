@@ -13,11 +13,29 @@ import CreatableSelect from 'react-select/creatable';
 function EditPatientDetails({ onClose, patientInfo, allPatientData }) {
   const dispatch = useDispatch();
   const {currentUser,refreshTable} = useSelector((state) => state.user);
-
+  const branch = currentUser.branch_name
   const [show, setShow] = useState(false);
   const [selectedDisease, setSelectedDisease] = useState([]);
   const [inputDisease, setInputDisease] = useState('');
   const [disease, setDisease] = useState([]);
+
+  const timelineData = async (id) => {
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/receptionist/insertTimelineEvent",
+        {
+          type: "Patient Profile",
+          description: "Patient Profile Updated",
+          branch: branch,
+          patientId: id,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
     
      
    // Remove current patient data from allAppointmentData
@@ -140,6 +158,7 @@ useEffect(()=>{
     if(response.data.success){
       alert(response?.data?.message);
       dispatch(toggleTableRefresh());
+      timelineData(patientInfo.uhid);
       onClose();
      }
      else{

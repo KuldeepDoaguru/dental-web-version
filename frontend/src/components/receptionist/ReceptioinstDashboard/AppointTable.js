@@ -10,6 +10,8 @@ import EditAppointment from './EditAppointment';
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
 import moment from 'moment';
+import cogoToast from 'cogo-toast';
+import { Link } from 'react-router-dom';
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -29,6 +31,43 @@ const AppointTable = () => {
   const [appointmentsData,setAppointmentData] = useState([]);
 
   const [selectedDateAppData,setSelectedDateAppData] = useState([]);
+
+  const timelineData = async (id) => {
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/receptionist/insertTimelineEvent",
+        {
+          type: "Appointment",
+          description: "Appointment Cancel",
+          branch: branch,
+          patientId: id,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const timelineDataForCheckIn = async (id) => {
+  
+    try {
+      const response = await axios.post(
+        "http://localhost:4000/api/v1/receptionist/insertTimelineEvent",
+        {
+          type: "Appointment",
+          description: "Patient Check-In",
+          branch: branch,
+          patientId: id,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
 
   useEffect(() => {
@@ -85,18 +124,21 @@ const AppointTable = () => {
     };
   };
   // Add an async function to handle status change
-const handleStatusChange = async (appointmentId, newStatus) => {
+const handleStatusChange = async (appointmentId,patient_uhid, newStatus) => {
   try {
     // Send a PUT request to your backend endpoint to update the status
     await axios.put(`http://localhost:4000/api/v1/receptionist/update-appointment-status`, { status: newStatus, appointmentId:appointmentId,appointment_updated_by:currentUser.employee_name,appointment_updated_by_emp_id: currentUser.employee_ID });
     // Optionally, you can re-fetch appointments after successful update
     getAppointments();
     dispatch(toggleTableRefresh());
+    timelineDataForCheckIn(patient_uhid);
+    cogoToast.success("Patient Successfully Check-In")
   } catch (error) {
     console.error('Error updating status:', error);
+    cogoToast.error("Error updating status")
   }
 };
-const handleStatusCancel = async (appointmentId, newStatus) => {
+const handleStatusCancel = async (appointmentId,patient_uhid, newStatus) => {
 
     //  // If the action is 'cancel_treatment', add the reason to the request body
        let reason ;
@@ -104,7 +146,7 @@ const handleStatusCancel = async (appointmentId, newStatus) => {
       if (cancelReason !== null) { // User provided a reason
         reason = cancelReason;
         if(!reason){
-          alert("Please provide a reason for cancellation")
+          cogoToast.error("Please provide a reason for cancellation")
           return;
         }
       } 
@@ -121,6 +163,8 @@ const handleStatusCancel = async (appointmentId, newStatus) => {
     // Optionally, you can re-fetch appointments after successful update
     getAppointments();
     dispatch(toggleTableRefresh());
+    timelineData(patient_uhid);
+    cogoToast.success("Appointment successfully canceled")
   } catch (error) {
     console.error('Error updating status:', error);
   }
@@ -321,7 +365,7 @@ const handleStatusCancel = async (appointmentId, newStatus) => {
           {currentRows.map((patient, index) => (
             <tr key={index}>
               <td>{patient.appoint_id}</td>
-              <td>{patient.uhid}</td>
+              <td><Link to={`/patient_profile/${patient.uhid}`}>{patient.uhid}</Link></td>
               <td>{patient.patient_name}</td>
               <td>{patient.mobileno}</td>
               <td>{patient?.appointment_dateTime ? moment(patient?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('hh:mm A') : ""}</td>
@@ -344,12 +388,12 @@ patient_type
     Action
   </button>
   <ul className="dropdown-menu">
-    {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel"  &&   <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li>}
+    {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel"  &&   <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id,patient.uhid, 'Check-In')}>Check-In</a></li>}
   {/* <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li> */}
   {/* <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Check-Out')}>Check-Out</a></li>
   <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Complete')}>Complete</a></li> */}
    {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" &&   <li><a className="dropdown-item mx-0" onClick={() => handleEditAppointment(patient)}>Edit Appointment</a></li>}
-   {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" &&    <li><a className="dropdown-item mx-0" onClick={() => handleStatusCancel(patient.appoint_id, 'Cancel')}>Cancel Appointment</a></li>}
+   {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" &&    <li><a className="dropdown-item mx-0" onClick={() => handleStatusCancel(patient.appoint_id,patient.uhid ,'Cancel')}>Cancel Appointment</a></li>}
    
    
   

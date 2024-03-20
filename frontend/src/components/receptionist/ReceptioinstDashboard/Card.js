@@ -1,8 +1,83 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useDispatch, useSelector } from 'react-redux';
+import axios from "axios";
+import moment from "moment";
+
 
 function Card() {
+
+  const [patients, setPatients] = useState([]);
+  const [newpatients, setNewPatients] = useState([]);
+  const {refreshTable,currentUser} = useSelector((state) => state.user);
+  const  branch = currentUser.branch_name;
+  const [opdData, setOpdData] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Initialize with today's date
+  const [opdAmount,setOpdAmount] = useState(0);
+ 
+  const getAppointments = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`
+      );
+      
+      const filteredPatients = response?.data?.data.filter(patient => patient.treatment_provided === "OPD" && patient.created_at.includes(selectedDate));
+      setOpdData(filteredPatients);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getNewPatient = async () =>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`);
+      console.log(response);
+      const todayDate = moment().format('YYYY-MM-DD'); // Get today's date
+      const filteredPatients = response?.data?.data.filter(patient => moment(patient.created_at).format('YYYY-MM-DD') === todayDate);
+      setNewPatients(filteredPatients);
+     }
+     catch(error){
+        console.log(error)
+     }
+    
+  }
+  
+  const getPatient = async () =>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`);
+      console.log(response);
+      setPatients(response?.data?.data)
+     }
+     catch(error){
+        console.log(error)
+     }
+    
+  }
+
+  useEffect(()=>{
+    getNewPatient();
+    getPatient();
+    getAppointments();
+    calculateOpdAmount();
+    
+ },[refreshTable]);
+  useEffect(()=>{
+    
+    calculateOpdAmount();
+    
+ },[opdData]);
+
+ const calculateOpdAmount = () =>{
+      let totalAmount = 0;
+       opdData.forEach((data) => (
+        
+        totalAmount += Number(data?.opd_amount)
+       ))
+       setOpdAmount(totalAmount)
+ }
+
+
   return (
     <Wrapper>
       <div className="row">
@@ -55,9 +130,9 @@ function Card() {
                   New Patient
                 </h6>
 
-                <p className=" h6 text-center text-dark">19</p>
+                <p className=" h6 text-center text-dark">{newpatients?.length}</p>
 
-                <p className="view"><Link to="/new_patient" className=" text-decoration-none" style={{color:"red"}}>View Detail</Link></p>
+                <p className="view"><Link to="/new_patient" className=" text-decoration-none" style={{color:"black"}}>View Detail</Link></p>
               </div>
             </div>
           </div>
@@ -72,9 +147,9 @@ function Card() {
                OPD Collection
                 </h6>
 
-                <p className=" h6 text-center text-dark">  <i className="bi bi-currency-rupee"></i>5200</p>
+                <p className=" h6 text-center text-dark">  <i className="bi bi-currency-rupee"></i>{opdAmount}</p>
 
-                <p className="view">View Detail</p>
+                <p className="view"><Link to="/opd_collection" className=" text-decoration-none" style={{color:"black"}} >View Detail</Link></p>
               </div>
             </div>
           </div>
@@ -86,9 +161,9 @@ function Card() {
               <div className="">
                 <h6 className="card-title">All Patient</h6>
 
-                <p className=" h6 text-center text-dark">256</p>
+                <p className=" h6 text-center text-dark">{patients?.length}</p>
 
-                <p className="view"><Link to="/all_patient" className=" text-decoration-none" style={{color:"red"}}>View Detail</Link></p>
+                <p className="view"><Link to="/all_patient" className=" text-decoration-none" style={{color:"black"}}>View Detail</Link></p>
               </div>
             </div>
           </div>
@@ -186,7 +261,9 @@ const Wrapper = styled.div`
   }
 
   .view {
-    color: red;
+   
+    text-align: end;
+    
     
     
   }

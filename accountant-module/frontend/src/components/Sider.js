@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { FaHandHoldingDollar } from "react-icons/fa6";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
@@ -10,15 +10,22 @@ import { BsFileEarmarkPerson } from "react-icons/bs";
 import { TbReport } from "react-icons/tb";
 
 const Sider = () => {
+  const location = useLocation();
+
+  const getSidebarClass = (path) => {
+    return location.pathname === path ? "active-nav" : "";
+  };
   return (
     <Wrapper>
-      <div className="px-0" id="sidebar">
+      <div className="" id="sidebar">
         <div className="d-flex flex-column align-items-center pt-2">
           <ul className="nav nav-pills nav-dash" id="menu">
             <li class="nav-item link-div">
               <Link
                 to="/accountant-dashboard"
-                class="nav-link px-0 align-middle"
+                class={`nav-link  align-middle ${getSidebarClass(
+                  "/accountant-dashboard"
+                )}`}
               >
                 <div className="link-div">
                   <i className="fs-3 bi bi-house-door-fill"></i>
@@ -30,7 +37,12 @@ const Sider = () => {
             </li>
             <hr />
             <li className="">
-              <Link to="/security-amount" class="nav-link px-0 align-middle ">
+              <Link
+                to="/security-amount"
+                class={`nav-link  align-middle ${getSidebarClass(
+                  "/security-amount"
+                )}`}
+              >
                 <div className="link-div">
                   <MdOutlineSecurity className="fs-3 text-white" />
                 </div>
@@ -41,7 +53,12 @@ const Sider = () => {
             </li>
             <hr />
             <li className="">
-              <Link to="/bill_section" class="nav-link px-0 align-middle ">
+              <Link
+                to="/bill_section"
+                class={`nav-link  align-middle ${getSidebarClass(
+                  "/bill_section"
+                )}`}
+              >
                 <div className="link-div">
                   <i className="fs-2 bi bi-receipt-cutoff ms-3"></i>
                 </div>
@@ -56,7 +73,7 @@ const Sider = () => {
               <a
                 href="#submenu2"
                 data-bs-toggle="collapse"
-                className="nav-link px-0 align-middle"
+                className="nav-link  align-middle"
                 role="button"
                 aria-expanded="false"
                 aria-controls="submenu2"
@@ -74,7 +91,10 @@ const Sider = () => {
                 aria-labelledby="submenu2"
               >
                 <li className="w-100">
-                  <Link to="/OpdMainIncome" className="nav-link px-0">
+                  <Link
+                    to="/OpdMainIncome"
+                    className={`nav-link  ${getSidebarClass("/OpdMainIncome")}`}
+                  >
                     <span className="text-center text-light fs-6">
                       OPD Income
                     </span>
@@ -83,7 +103,12 @@ const Sider = () => {
                 </li>
 
                 <li>
-                  <Link to="/TreatmentMainInCome" className="nav-link px-0">
+                  <Link
+                    to="/TreatmentMainInCome"
+                    className={`nav-link  ${getSidebarClass(
+                      "/TreatmentMainInCome"
+                    )}`}
+                  >
                     <span className="text-center text-light fs-6">
                       Treatment Income
                     </span>
@@ -92,7 +117,7 @@ const Sider = () => {
                 </li>
 
                 {/* <li>
-                  <Link to="/LabMainIncome" className="nav-link px-0">
+                  <Link to="/LabMainIncome" className="nav-link ">
                     <span className="text-center text-light fs-6">
                       Lab Income
                     </span>
@@ -101,7 +126,7 @@ const Sider = () => {
                 </li> */}
 
                 {/* <li>
-                  <Link to="/PharmacyMainIncome" className="nav-link px-0">
+                  <Link to="/PharmacyMainIncome" className="nav-link ">
                     <span className="d-none d-sm-inline text-light fs-6">
                       Pharmacy Income
                     </span>
@@ -110,7 +135,10 @@ const Sider = () => {
                 </li> */}
 
                 <li>
-                  <Link to="/PatientsDue" className="nav-link px-0">
+                  <Link
+                    to="/PatientsDue"
+                    className={`nav-link  ${getSidebarClass("/PatientsDue")}`}
+                  >
                     <span className="d-none d-sm-inline text-light fs-6">
                       Due Payment
                     </span>
@@ -119,7 +147,10 @@ const Sider = () => {
                 </li>
 
                 <li>
-                  <Link to="/PatientsPaid" className="nav-link px-0">
+                  <Link
+                    to="/PatientsPaid"
+                    className={`nav-link  ${getSidebarClass("/PatientsPaid")}`}
+                  >
                     <span className="d-none d-sm-inline text-light fs-6">
                       Paid Payment
                     </span>
@@ -135,7 +166,7 @@ const Sider = () => {
               <Link
                 to="#submenu3"
                 data-bs-toggle="collapse"
-                class="nav-link px-0 align-middle "
+                class="nav-link  align-middle "
               >
                 <div className="link-div">
                   <LiaFileInvoiceDollarSolid className="fs-1 bi bi-house-door-fill" />
@@ -150,7 +181,10 @@ const Sider = () => {
                 data-bs-parent="#submenu3"
               >
                 <li class="w-100">
-                  <Link to="/StaffSalary" class="nav-link px-0">
+                  <Link
+                    to="/StaffSalary"
+                    class={`nav-link  ${getSidebarClass("/StaffSalary")}`}
+                  >
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
@@ -162,7 +196,10 @@ const Sider = () => {
                 </li>
 
                 <li>
-                  <Link to="/VoucherCreater" class="nav-link px-0">
+                  <Link
+                    to="/VoucherCreater"
+                    class={`nav-link  ${getSidebarClass("/VoucherCreater")}`}
+                  >
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
@@ -174,7 +211,10 @@ const Sider = () => {
                 </li>
 
                 <li>
-                  <Link to="/VoucherList" class="nav-link px-0">
+                  <Link
+                    to="/VoucherList"
+                    class={`nav-link  ${getSidebarClass("/VoucherList")}`}
+                  >
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
@@ -186,7 +226,10 @@ const Sider = () => {
                 </li>
 
                 <li>
-                  <Link to="/NewPurchase" class="nav-link px-0">
+                  <Link
+                    to="/NewPurchase"
+                    class={`nav-link  ${getSidebarClass("/NewPurchase")}`}
+                  >
                     <span
                       class="d-none d-sm-inline text-light fs-6"
                       target="_blank"
@@ -201,7 +244,12 @@ const Sider = () => {
             <hr />
 
             <li class="nav-item link-div">
-              <Link to="/total-income" class="nav-link px-0 align-middle">
+              <Link
+                to="/total-income"
+                class={`nav-link  align-middle ${getSidebarClass(
+                  "/total-income"
+                )}`}
+              >
                 <div className="link-div">
                   <FaCommentsDollar className="fs-1 bi bi-house-door-fill" />
                 </div>
@@ -214,7 +262,9 @@ const Sider = () => {
               <div className={`link-div ${"/settings"}`}>
                 <Link
                   to="/attendance-leave"
-                  class="nav-link px-0 align-middle "
+                  class={`nav-link  align-middle ${getSidebarClass(
+                    "/attendance-leave"
+                  )}`}
                 >
                   <div className="link-div">
                     <div className="">
@@ -234,7 +284,9 @@ const Sider = () => {
               <div className={`link-div ${"/settings"}`}>
                 <Link
                   to="/account-report-dashboard"
-                  class="nav-link px-0 align-middle "
+                  class={`nav-link  align-middle ${getSidebarClass(
+                    "/account-report-dashboard"
+                  )}`}
                 >
                   <div className="link-div">
                     <div className="">
@@ -305,5 +357,11 @@ const Wrapper = styled.div`
 
   hr {
     color: white;
+  }
+
+  .active-nav {
+    background-color: #201658;
+    padding: 1rem;
+    box-shadow: 0px 0px 16px #7865e0;
   }
 `;

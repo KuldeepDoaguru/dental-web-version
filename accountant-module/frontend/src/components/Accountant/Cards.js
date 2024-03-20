@@ -1,13 +1,113 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { PiStethoscopeBold } from "react-icons/pi";
 import { MdOutlineLocalPharmacy } from "react-icons/md";
 import { LiaMicroscopeSolid } from "react-icons/lia";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { TbReportSearch } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const Cards = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [opdData, setOpdData] = useState([]);
+  const [treatData, setTreatData] = useState([]);
+
+  const getOpdData = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getOPDDetailsByBranch/${branch.name}`
+      );
+      setOpdData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(opdData);
+  //filter for patient treated today card
+  const getDate = new Date();
+  const year = getDate.getFullYear();
+  const month = String(getDate.getMonth() + 1).padStart(2, "0");
+  const day = String(getDate.getDate()).padStart(2, "0");
+
+  const formattedDate = `${year}-${month}-${day}`;
+  console.log(formattedDate);
+
+  //filterForPatAppointToday
+  const filterForOpdAppointToday = opdData?.filter(
+    (item) =>
+      item.appointment_dateTime.split("T")[0] === formattedDate &&
+      item.treatment_provided === "OPD"
+  );
+
+  console.log(filterForOpdAppointToday);
+
+  const totalOpdPrice = () => {
+    try {
+      let total = 0;
+      filterForOpdAppointToday.forEach((item) => {
+        total = total + parseFloat(item.opd_amount);
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+  const totalOpdValue = totalOpdPrice();
+  console.log(totalOpdValue);
+
+  const getTreatmentData = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getTreatmentDetailsByBranch/${branch.name}`
+      );
+      setTreatData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(treatData);
+  //filterForPatAppointToday
+  const filterForTreatAppointToday = treatData?.filter(
+    (item) => item.bill_date.split("T")[0] === formattedDate
+  );
+
+  console.log(filterForTreatAppointToday);
+
+  const totalTreatPrice = () => {
+    try {
+      let total = 0;
+      filterForTreatAppointToday.forEach((item) => {
+        total = total + item.net_amount;
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+  const totalTreatValue = totalTreatPrice();
+  console.log(totalTreatValue);
+
+  useEffect(() => {
+    getOpdData();
+    getTreatmentData();
+  }, []);
+
   return (
     <>
       <Container>
@@ -20,7 +120,9 @@ const Cards = () => {
                 </div>
                 <div className="cardtext">
                   <h5 className="card-title text-light">OPD Income</h5>
-                  <p className="card-text text-light fw-semibold">5000</p>
+                  <p className="card-text text-light fw-semibold">
+                    {totalOpdValue}
+                  </p>
                 </div>
               </div>
             </div>
@@ -48,7 +150,9 @@ const Cards = () => {
                 </div>
                 <div className="cardtext">
                   <h5 className="card-title text-light">Treatment Income</h5>
-                  <p className="card-text text-light fw-semibold">2500</p>
+                  <p className="card-text text-light fw-semibold">
+                    {totalTreatValue}
+                  </p>
                 </div>
               </div>
             </div>

@@ -1,33 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-// import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-// import { setBranch } from "../redux/slices/BranchSlicer";
-// import { setUser } from "../redux/slices/UserSlicer";
 import cogoToast from "cogo-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { setBranch } from "../redux/slices/BranchSlicer";
+import { setUser } from "../redux/slices/UserSlicer";
 
 const UniversalLogin = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const user = useSelector((state) => state.user);
-  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  // console.log("User State:", user);
-  // const branch = useSelector((state) => state.branch);
-  // console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
   const [branchList, setBranchList] = useState(null);
   const [selectedBranch, setSelectedBranch] = useState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const HandleChange = (event) => {
-  //   setBranchList(event.target.value);
-  // };
+  console.log(selectedBranch);
 
   const getBranchList = async () => {
     try {
       const response = await axios.get(
-        "https://dentalguruadmin.doaguru.com//api/v1/admin/getBranch"
+        "https://dentalguruadmin.doaguru.com/api/v1/admin/getBranch"
       );
       console.log(response.data);
       setBranchList(response.data);
@@ -42,13 +40,13 @@ const UniversalLogin = () => {
       (branchList?.length > 0 ? branchList[0].branch_name : ""),
   };
   localStorage.setItem("branchName", JSON.stringify(branchData));
-  // dispatch(setBranch(branchData));
+  dispatch(setBranch(branchData));
 
-  const adminLogin = async (e) => {
+  const accountantLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://dentalguruadmin.doaguru.com//api/v1/admin/adminLoginUser",
+        "http://localhost:8888/api/v1/accountant/accountantLoginUser",
         {
           email,
           password,
@@ -61,9 +59,9 @@ const UniversalLogin = () => {
         id: response.data.user.employee_ID,
       };
       localStorage.setItem("userData", JSON.stringify(userData));
-      // dispatch(setUser(userData));
+      dispatch(setUser(userData));
       cogoToast.success("Login Successful");
-      navigate("/admin-dashboard");
+      navigate("/accountant-dashboard");
     } catch (error) {
       console.log("Axios error:", error);
       cogoToast.error(error.response.data.message);
@@ -78,14 +76,23 @@ const UniversalLogin = () => {
   return (
     <>
       <Container>
-        <section className="vh-100">
-          <div className="container h-100 ">
+        <section className="">
+          <div className="container box-cont">
             <div className="row d-flex justify-content-center align-items-center h-100">
-              <div className="col-lg-12 col-xl-11">
+              <div className="">
                 <div className="text-black cardstyle shadow">
                   <div className="card-body p-md-5">
                     <div className="row justify-content-center">
-                      <div className="col-md-10 col-lg-6 col-xl-5 order-2">
+                      <div className="col-md-6 col-lg-6 col-xl-6">
+                        <div className="d-flex justify-content-center align-items-center">
+                          <img
+                            src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1708075638/dental%20guru/Login-page_1_cwadmt.png"
+                            className="img-fluid"
+                            alt="Sample"
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6 col-lg-6 col-xl-6">
                         <div className="d-flex justify-content-end">
                           <select
                             name="branch"
@@ -111,7 +118,10 @@ const UniversalLogin = () => {
                           Accountant Login
                         </p>
 
-                        <form className="mx-1 mx-md-4" onSubmit={adminLogin}>
+                        <form
+                          className="mx-1 mx-md-4"
+                          onSubmit={accountantLogin}
+                        >
                           <div className="d-flex flex-row align-items-center mb-4">
                             <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
                             <div className="form-outline flex-fill mb-0">
@@ -187,13 +197,6 @@ const UniversalLogin = () => {
                           </div>
                         </form>
                       </div>
-                      <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1">
-                        <img
-                          src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1708075638/dental%20guru/Login-page_1_cwadmt.png"
-                          className="img-fluid"
-                          alt="Sample"
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -222,5 +225,9 @@ const Container = styled.div`
     background-color: #22a6b3;
     font-weight: bold;
     color: white;
+  }
+
+  .box-cont {
+    margin-top: 2rem;
   }
 `;

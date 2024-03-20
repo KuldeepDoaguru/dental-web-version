@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./components/receptionist/Login";
 import Dashboard from "./pages/accountant/Dashboard";
 import UniversalLogin from "./pages/UniversalLogin";
@@ -73,93 +73,106 @@ import StaffSalaryReport from "./pages/AllReport/StaffSalaryReport";
 import VoucherReport from "./pages/AllReport/VoucherReport";
 import PurchaseReport from "./pages/AllReport/PurchaseReport";
 import AttendanceLeave from "./pages/AttendanceLeave";
+import PasswordReset from "./pages/PasswordReset";
 
 function App() {
   return (
-    <Routes>
-      {/* Accountant routes start  */}
+    <BrowserRouter>
+      <Routes>
+        {/* Accountant routes start  */}
 
-      <Route path="/receptionist_login" element={<Login />} />
-      <Route path="/receptionist_registration" element={<Registration />} />
-      <Route path="/accountant-dashboard" element={<Dashboard />} />
-      <Route path="/" element={<UniversalLogin />} />
-      <Route path="/Accountant" element={<Accountant />} />
-      <Route path="/super-admin-appointment" element={<Apointment />} />
-      <Route path="/bill_section" element={<AllBills />} />
-      <Route path="/clinic-setting" element={<ClinicSetting />} />
-      <Route path="/Card" element={<Cards />} />
-      <Route path="/TreatmentMainInCome" element={<TreatmentMainInCome />} />
-      <Route path="/NewPurchase" element={<NewPurchase />} />
-      <Route path="/StaffSalary" element={<StaffSalary />} />
-      <Route path="/VoucherCreater" element={<VoucherCreater />} />
-      <Route path="/VoucherList" element={<VoucherList />} />
-      {/* <Route path="/Monthly" element={<Monthly />} /> */}
-      <Route path="/TodayIncome" element={<TodayIncome />} />
-      {/* <Route path="/WeeklyIncome" element={<WeeklyIncome />} />
+        <Route path="/receptionist_login" element={<Login />} />
+        <Route path="/receptionist_registration" element={<Registration />} />
+        <Route path="/accountant-dashboard" element={<Dashboard />} />
+        <Route path="/" element={<UniversalLogin />} />
+        <Route path="/Accountant" element={<Accountant />} />
+        <Route path="/super-admin-appointment" element={<Apointment />} />
+        <Route path="/bill_section" element={<AllBills />} />
+        <Route path="/clinic-setting" element={<ClinicSetting />} />
+        <Route path="/Card" element={<Cards />} />
+        <Route path="/TreatmentMainInCome" element={<TreatmentMainInCome />} />
+        <Route path="/NewPurchase" element={<NewPurchase />} />
+        <Route path="/StaffSalary" element={<StaffSalary />} />
+        <Route path="/VoucherCreater" element={<VoucherCreater />} />
+        <Route path="/VoucherList" element={<VoucherList />} />
+        {/* <Route path="/Monthly" element={<Monthly />} /> */}
+        <Route path="/TodayIncome" element={<TodayIncome />} />
+        {/* <Route path="/WeeklyIncome" element={<WeeklyIncome />} />
       <Route path="/Yearly" element={<Yearly />} /> */}
-      <Route path="/RightSider" element={<RightSider />} />
-      <Route path="/DoctorSalary" element={<DoctorSalary />} />
-      <Route path="/DoctorMainSalary" element={<DoctorMainSalary />} />
-      <Route path="/AccountantsSalary" element={<AccountantsSalary />} />
-      <Route path="/AccountantSalaryMain" element={<AccountantSalaryMain />} />
-      <Route path="/ReceptionistSalary " element={<ReceptionistSalary />} />
-      <Route path="/NurseMainSalary" element={<NurseMainSalary />} />
-      <Route path="/NurseSalary" element={<NurseSalary />} />
-      <Route path="/OtherMainSalary" element={<OtherMainSalary />} />
-      <Route path="/OtherSalary" element={<OtherSalary />} />
-      <Route path="/OpdMainIncome" element={<OpdMainIncome />} />
-      <Route path="/OpdINcome" element={<OpdINcome />} />
-      <Route path="/AllStaffSalar" element={<AllStaffSalar />} />
-      <Route path="/DueByUs" element={<DueByUs />} />
-      <Route path="/PaidByUs" element={<PaidByUs />} />
-      <Route path="/PatientsDue" element={<PatientsDue />} />
-      <Route path="/PatientsPaid" element={<PatientsPaid />} />
-      <Route path="/TreatmentIncome" element={<TreatmentIncome />} />
-      <Route path="/LabMainIncome" element={<LabMainIncome />} />
-      <Route path="/PharmacyMainIncome" element={<PharmacyMainIncome />} />
-      <Route path="/LabIncome" element={<LabIncome />} />
-      <Route
-        path="/ReceptionistSalaryMain"
-        element={<ReceptionistSalaryMain />}
-      />
-      <Route path="/MedicalInvoice" element={<MedicalInvoice />} />
-      <Route path="/PharmacyBills" element={<PharmacyBills />} />
-      <Route path="/OpdBills" element={<OpdBills />} />
-      <Route path="/PatientsLabBills" element={<PatientsLabBills />} />
-      <Route path="/TreatmentBills" element={<TreatmentBills />} />
-      <Route path="/PaySlip" element={<PaySlip />} />
-      <Route path="/AllDuaAmount" element={<AllDuaAmount />} />
-      <Route path="/VoucherPaid" element={<VoucherPaid />} />
-      <Route path="/VoucherPaidListPrint" element={<VoucherPaidListPrint />} />
-      <Route path="/AddPatientBill" element={<AddPatientBill />} />
-      <Route path="/PatientHomeProfile" element={<PatientHomeProfile />} />
-      <Route path="/Navbar" element={<Navbar />} />
-      <Route
-        path="/PatintDuePaymentPrint"
-        element={<PatintDuePaymentPrint />}
-      />
-      <Route
-        path="/PatintPaidPaymentPrint"
-        element={<PatintPaidPaymentPrint />}
-      />
-      <Route path="/Payment" element={<Payment />} />
-      <Route path="/total-income" element={<TotalIncome />} />
-      <Route path="/accountant-profile" element={<AccountantProfile />} />
-      <Route path="/security-amount" element={<SecurityAmount />} />
-      <Route path="/account-report-dashboard" element={<AccountReportDash />} />
-      <Route path="/security-amount-report" element={<SecAmountReport />} />
-      <Route path="/invoice-report" element={<InvoiceReport />} />
-      <Route path="/opd-income-report" element={<OpdReportDownload />} />
-      <Route path="/treat-income-report" element={<TreatIncomeDownload />} />
-      <Route path="/due-payment-report" element={<DuePaymentReport />} />
-      <Route path="/paid-payment-report" element={<PaidPaymentReport />} />
-      <Route path="/staff-salary-report" element={<StaffSalaryReport />} />
-      <Route path="/voucher-report" element={<VoucherReport />} />
-      <Route path="/purchase-report" element={<PurchaseReport />} />
-      <Route path="/attendance-leave" element={<AttendanceLeave />} />
-      <Route path="*" element={<ErrorPage />} />
-      {/*Acountend  routes end  */}
-    </Routes>
+        <Route path="/RightSider" element={<RightSider />} />
+        <Route path="/DoctorSalary" element={<DoctorSalary />} />
+        <Route path="/DoctorMainSalary" element={<DoctorMainSalary />} />
+        <Route path="/AccountantsSalary" element={<AccountantsSalary />} />
+        <Route
+          path="/AccountantSalaryMain"
+          element={<AccountantSalaryMain />}
+        />
+        <Route path="/ReceptionistSalary " element={<ReceptionistSalary />} />
+        <Route path="/NurseMainSalary" element={<NurseMainSalary />} />
+        <Route path="/NurseSalary" element={<NurseSalary />} />
+        <Route path="/OtherMainSalary" element={<OtherMainSalary />} />
+        <Route path="/OtherSalary" element={<OtherSalary />} />
+        <Route path="/OpdMainIncome" element={<OpdMainIncome />} />
+        <Route path="/OpdINcome" element={<OpdINcome />} />
+        <Route path="/AllStaffSalar" element={<AllStaffSalar />} />
+        <Route path="/DueByUs" element={<DueByUs />} />
+        <Route path="/PaidByUs" element={<PaidByUs />} />
+        <Route path="/PatientsDue" element={<PatientsDue />} />
+        <Route path="/PatientsPaid" element={<PatientsPaid />} />
+        <Route path="/TreatmentIncome" element={<TreatmentIncome />} />
+        <Route path="/LabMainIncome" element={<LabMainIncome />} />
+        <Route path="/PharmacyMainIncome" element={<PharmacyMainIncome />} />
+        <Route path="/LabIncome" element={<LabIncome />} />
+        <Route
+          path="/ReceptionistSalaryMain"
+          element={<ReceptionistSalaryMain />}
+        />
+        <Route path="/MedicalInvoice" element={<MedicalInvoice />} />
+        <Route path="/PharmacyBills" element={<PharmacyBills />} />
+        <Route path="/OpdBills" element={<OpdBills />} />
+        <Route path="/PatientsLabBills" element={<PatientsLabBills />} />
+        <Route path="/TreatmentBills" element={<TreatmentBills />} />
+        <Route path="/PaySlip" element={<PaySlip />} />
+        <Route path="/AllDuaAmount" element={<AllDuaAmount />} />
+        <Route path="/VoucherPaid" element={<VoucherPaid />} />
+        <Route
+          path="/VoucherPaidListPrint"
+          element={<VoucherPaidListPrint />}
+        />
+        <Route path="/AddPatientBill" element={<AddPatientBill />} />
+        <Route path="/PatientHomeProfile" element={<PatientHomeProfile />} />
+        <Route path="/Navbar" element={<Navbar />} />
+        <Route
+          path="/PatintDuePaymentPrint"
+          element={<PatintDuePaymentPrint />}
+        />
+        <Route
+          path="/PatintPaidPaymentPrint"
+          element={<PatintPaidPaymentPrint />}
+        />
+        <Route path="/Payment" element={<Payment />} />
+        <Route path="/total-income" element={<TotalIncome />} />
+        <Route path="/accountant-profile" element={<AccountantProfile />} />
+        <Route path="/security-amount" element={<SecurityAmount />} />
+        <Route
+          path="/account-report-dashboard"
+          element={<AccountReportDash />}
+        />
+        <Route path="/security-amount-report" element={<SecAmountReport />} />
+        <Route path="/invoice-report" element={<InvoiceReport />} />
+        <Route path="/opd-income-report" element={<OpdReportDownload />} />
+        <Route path="/treat-income-report" element={<TreatIncomeDownload />} />
+        <Route path="/due-payment-report" element={<DuePaymentReport />} />
+        <Route path="/paid-payment-report" element={<PaidPaymentReport />} />
+        <Route path="/staff-salary-report" element={<StaffSalaryReport />} />
+        <Route path="/voucher-report" element={<VoucherReport />} />
+        <Route path="/purchase-report" element={<PurchaseReport />} />
+        <Route path="/attendance-leave" element={<AttendanceLeave />} />
+        <Route path="/password-reset" element={<PasswordReset />} />
+        <Route path="*" element={<ErrorPage />} />
+        {/*Acountend  routes end  */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 

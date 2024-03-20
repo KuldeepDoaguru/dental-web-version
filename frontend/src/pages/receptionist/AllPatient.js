@@ -7,12 +7,13 @@ import { Table, Input, Button, Form } from "react-bootstrap";
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import EditPatientDetails from '../../components/receptionist/AllPatients/EditPatientDetails'
+import moment from 'moment'
 function AllPatient() {
   
   const {refreshTable,currentUser} = useSelector((state) => state.user);
   const  branch = currentUser.branch_name
   const [patients, setPatients] = useState([]);
-  const [appointmentsData,setAppointmentsData] = useState([]);
+  
   const [showEditPatientPopup, setShowEditPatientPopup] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,19 +34,11 @@ function AllPatient() {
     
   }
 
-  const getAppointments = async ()=>{
-    try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
-      setAppointmentsData(response?.data?.data)
-    }
-    catch(error){
-      console.log(error)
-    }
-  }
+  
 
   useEffect(()=>{
     getPatient();
-    getAppointments();
+    
     
  },[refreshTable]);
 
@@ -233,7 +226,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                             <th>Age</th>
                             <th>Patient Type</th>
                             <th>Address</th>
-                            <th>Appointment</th>
+                            <th>Created At</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -251,7 +244,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                              <td>
                              {data.address}
                              </td>
-                             <td><div>Last Appointment- {data.last_appointments}</div><div>Upcoming Appointment- {data.last_appointments}</div></td>
+                             <td>{moment(data?.created_at).format('DD/MM/YYYY') }</td>
                              <td ><div className='dropdown'>
                              <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action

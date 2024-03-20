@@ -8,6 +8,7 @@ import { useDispatch ,useSelector} from 'react-redux';
 import axios from 'axios'
 import EditInquiry from '../../components/receptionist/ReceptioinstDashboard/EditInquiry';
 import { toggleTableRefresh } from '../../redux/user/userSlice';
+import moment from 'moment'
 function Inquiry() {
 
   const user = useSelector((state) => state.user);
@@ -436,6 +437,7 @@ catch(error){
                             <th>Address</th>
                             <th>Inquiry for Doctor</th>
                             <th>Notes</th>
+                            <th>Created At</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -453,6 +455,7 @@ catch(error){
                              </td>
                              <td>{data.doctorName}</td>
                              <td>{data.notes}</td>
+                             <td>{moment(data?.created_at).format('DD/MM/YYYY') }</td>
                              <td><div className="dropdown">
   <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
     Action

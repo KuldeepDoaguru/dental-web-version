@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTableRefresh } from '../../../redux/user/userSlice';
 import axios from "axios";
+import moment from "moment";
 
 function Doctor() {
   
@@ -294,7 +295,7 @@ useEffect(() => {
   return (
     <Wrapper>
       <div className="widget-area-2 proclinic-box-shadow rounded bg-white px-1 me-2">
-        <h3 className="widget-title text-center">Doctor Available for {selectedDate}</h3>
+        <h3 className="widget-title text-center">Doctor Available for { moment(selectedDate).format('DD/MM/YYYY')}</h3>
         <div className="d-flex px-2 gap-1">
         <input type="date" 
          class="form-control mr-sm-2 mt-3 mb-2 w-75 m-auto"

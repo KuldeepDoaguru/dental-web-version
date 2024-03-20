@@ -1,5 +1,5 @@
-const {db} = require('../db');
-const dotenv = require('dotenv');
+const { db } = require("../db");
+const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
 dotenv.config();
@@ -18,7 +18,7 @@ dotenv.config();
 //       };
 
 //           console.log(patient_Name);
-          
+
 //            const checkPatientQuery = "SELECT * FROM patient_details WHERE mobileno = ? AND patient_name = ?";
 
 //            db.query(checkPatientQuery, [mobile,patient_Name], (err, result) => {
@@ -33,14 +33,13 @@ dotenv.config();
 //                 });
 //               } else {
 
-                
 //                 // patient not found, proceed with add patient
 //                 const insertPatientQuery = `
 //     INSERT INTO patient_details (
 //         branch_name, patient_name, dob, age, weight, gender, bloodgroup, mobileno, emailid, contact_person, contact_person_name, allergy, disease, address, patient_type, aadhaar_no, patient_added_by, patient_added_by_emp_id, created_at
 //     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 // `;
-      
+
 //                 const insertPatientParams = [
 
 //                   branch_name,
@@ -63,7 +62,7 @@ dotenv.config();
 //                   patient_added_by_emp_id,
 //                   created_at,
 //                 ];
-      
+
 //                 db.query(
 //                   insertPatientQuery,
 //                   insertPatientParams,
@@ -73,7 +72,7 @@ dotenv.config();
 //                       res.status(500).json({ error: "Internal server error" });
 //                     } else {
 //                       const insertData = { id : insertResult.insertId}
-                      
+
 //                         const  bookAppointmentQuery = `INSERT INTO apointments (
 //                             patient_uhid, branch_name,patient_name,patient_contact,assigned_doctor_name , assigned_doctor_id ,appointment_dateTime, treatment_provided, appointment_status, notes, appointment_created_by, appointment_created_by_emp_id,created_at
 //                        ) VALUES ( ?, ?,?,?,?,?,?, ?,?,?,?,?,?)
@@ -102,10 +101,9 @@ dotenv.config();
 //                           console.log("Apointment book successfully");
 //                         }
 //                       })
-                      
-                      
+
 //                       console.log("Patient Added successfully");
-                    
+
 //                       return res.status(200).json({
 //                         success: true,
 //                         message: "Patient Added successfully",
@@ -131,162 +129,240 @@ dotenv.config();
 
 const addPatient = (req, res) => {
   try {
-      const { branch_name, patient_Name, mobile, email, gender, aadhaar_no, contact_Person, contact_Person_Name, blood_Group, dob, age, weight, allergy, disease, patientType, status, doctorId, doctor_name, appDateTime, treatment,
-        opd_amount , payment_Mode, transaction_Id, payment_Status, notes, address, patient_added_by, patient_added_by_emp_id } = req.body;
+    const {
+      branch_name,
+      patient_Name,
+      mobile,
+      email,
+      gender,
+      aadhaar_no,
+      contact_Person,
+      contact_Person_Name,
+      blood_Group,
+      dob,
+      age,
+      weight,
+      allergy,
+      disease,
+      patientType,
+      status,
+      doctorId,
+      doctor_name,
+      appDateTime,
+      treatment,
+      opd_amount,
+      payment_Mode,
+      transaction_Id,
+      payment_Status,
+      notes,
+      address,
+      patient_added_by,
+      patient_added_by_emp_id,
+    } = req.body;
 
-      const created_at = new Date();
+    const created_at = new Date();
 
-      // Generate Patient ID
-      const generatePatientId = (count) => {
-          const prefix = 'DH';
-          // const paddedCount = count.toString().padStart(6, '0');
-          const paddedCount = count.toString();
-          return `${prefix}${paddedCount}`;
-      };
+    // Generate Patient ID
+    const generatePatientId = (count) => {
+      const prefix = "DH";
+      // const paddedCount = count.toString().padStart(6, '0');
+      const paddedCount = count.toString();
+      return `${prefix}${paddedCount}`;
+    };
 
-      const checkPatientQuery = "SELECT * FROM patient_details WHERE mobileno = ? AND patient_name = ?";
+    const checkPatientQuery =
+      "SELECT * FROM patient_details WHERE mobileno = ? AND patient_name = ?";
 
-      db.query(checkPatientQuery, [mobile, patient_Name], (err, result) => {
-          if (err) {
-              console.error("Error checking if user exists in MySQL:", err);
-              return res.status(500).json({ error: "Internal server error" ,message :  "Internal server error"});
-          }
-
-          // Check if patient already exists
-          if (result.length > 0) {
-              return res.status(400).json({success:false, message: "Patient already exists." });
-          } else {
-
-
-           // Find the highest empID in the database for the given pattern
-    const highestPatientIDQuery =
-    "SELECT MAX(CAST(SUBSTRING_INDEX(uhid,'_', -1) AS UNSIGNED)) AS maxID FROM patient_details WHERE uhid LIKE ?";
-  const pattern = "DH_%";
-  
-  
-
-  db.query(highestPatientIDQuery, [pattern], (err, result) => {
-    if (err) {
-      console.error("Error getting highest empID:", err);
-      res.status(500).json({ error: "Internal server error" , message :  "Internal server error"});
-    } else {
-      let nextID = 1;
-      if (result[0].maxID !== null) {
-        nextID = parseInt(result[0].maxID) + 1;
+    db.query(checkPatientQuery, [mobile, patient_Name], (err, result) => {
+      if (err) {
+        console.error("Error checking if user exists in MySQL:", err);
+        return res
+          .status(500)
+          .json({
+            error: "Internal server error",
+            message: "Internal server error",
+          });
       }
-     const  newPatientID = `DH_${nextID}`;
 
+      // Check if patient already exists
+      if (result.length > 0) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Patient already exists." });
+      } else {
+        // Find the highest empID in the database for the given pattern
+        const highestPatientIDQuery =
+          "SELECT MAX(CAST(SUBSTRING_INDEX(uhid,'_', -1) AS UNSIGNED)) AS maxID FROM patient_details WHERE uhid LIKE ?";
+        const pattern = "DH_%";
 
+        db.query(highestPatientIDQuery, [pattern], (err, result) => {
+          if (err) {
+            console.error("Error getting highest empID:", err);
+            res
+              .status(500)
+              .json({
+                error: "Internal server error",
+                message: "Internal server error",
+              });
+          } else {
+            let nextID = 1;
+            if (result[0].maxID !== null) {
+              nextID = parseInt(result[0].maxID) + 1;
+            }
+            const newPatientID = `DH_${nextID}`;
 
+            // Get count of existing patients to generate new ID
+            // const countPatientsQuery = "SELECT COUNT(*) as count FROM patient_details";
+            // db.query(countPatientsQuery, (countErr, countResult) => {
+            //     if (countErr) {
+            //         console.error("Error counting patients:", countErr);
+            //         return res.status(500).json({ error: "Internal server error" });
+            //     }
 
-              // Get count of existing patients to generate new ID
-              // const countPatientsQuery = "SELECT COUNT(*) as count FROM patient_details";
-              // db.query(countPatientsQuery, (countErr, countResult) => {
-              //     if (countErr) {
-              //         console.error("Error counting patients:", countErr);
-              //         return res.status(500).json({ error: "Internal server error" });
-              //     }
+            //     const patientId = generatePatientId(countResult[0].count + 1);
+            // Increment count and generate ID
 
-              //     const patientId = generatePatientId(countResult[0].count + 1); 
-                  // Increment count and generate ID
-
-                  // Proceed with adding the patient
-                  const insertPatientQuery = `
+            // Proceed with adding the patient
+            const insertPatientQuery = `
                       INSERT INTO patient_details (
                           uhid, branch_name, patient_name, dob, age, weight, gender, bloodgroup, mobileno, emailid, contact_person, contact_person_name, allergy, disease, address, patient_type, aadhaar_no, patient_added_by, patient_added_by_emp_id, created_at
                       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                   `;
 
-                  const insertPatientParams = [
-                    newPatientID, // Add patient ID
-                      branch_name,
-                      patient_Name,
-                      dob,
-                      age,
-                      weight,
-                      gender,
-                      blood_Group,
-                      mobile,
-                      email,
-                      contact_Person,
-                      contact_Person_Name,
-                      allergy,
-                      disease,
-                      address,
-                      patientType,
-                      aadhaar_no,
-                      patient_added_by,
-                      patient_added_by_emp_id,
-                      created_at,
-                  ];
+            const insertPatientParams = [
+              newPatientID, // Add patient ID
+              branch_name,
+              patient_Name,
+              dob,
+              age,
+              weight,
+              gender,
+              blood_Group,
+              mobile,
+              email,
+              contact_Person,
+              contact_Person_Name,
+              allergy,
+              disease,
+              address,
+              patientType,
+              aadhaar_no,
+              patient_added_by,
+              patient_added_by_emp_id,
+              created_at,
+            ];
 
-                  db.query(insertPatientQuery, insertPatientParams, (insertErr, insertResult) => {
-                      if (insertErr) {
-                          console.error("Error inserting patient:", insertErr);
-                          return res.status(500).json({ error: "Internal server error" , message :  "Internal server error"});
-                      } else {
-                          // Proceed with booking appointment
-                          const bookAppointmentQuery = `
+            db.query(
+              insertPatientQuery,
+              insertPatientParams,
+              (insertErr, insertResult) => {
+                if (insertErr) {
+                  console.error("Error inserting patient:", insertErr);
+                  return res
+                    .status(500)
+                    .json({
+                      error: "Internal server error",
+                      message: "Internal server error",
+                    });
+                } else {
+                  // Proceed with booking appointment
+                  const bookAppointmentQuery = `
                               INSERT INTO appointments (
                                   patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status,opd_amount, payment_Mode, transaction_Id, payment_Status, notes, appointment_created_by, appointment_created_by_emp_id, created_at
                               ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)
                           `;
-                         
-                          const bookAppointmentParams = [
-                            newPatientID,
-                            branch_name,
-                            doctor_name,
-                            doctorId,
-                            appDateTime,
-                            treatment,
-                            status,
-                            opd_amount,
-                            payment_Mode,
-                            transaction_Id,
-                            payment_Status,
-                            notes,
-                            patient_added_by,
-                            patient_added_by_emp_id,
-                            created_at,
-                          ];
 
-                          db.query(bookAppointmentQuery, bookAppointmentParams, (appointmentErr, appointmentResult) => {
-                              if (appointmentErr) {
-                                  console.error("Error booking appointment:", appointmentErr);
-                                  return res.status(500).json({ error: "Internal server error" ,message :  "Internal server error"});
-                              } else {
-                                  console.log("Appointment booked successfully");
-                                  return res.status(200).json({
-                                      success: true,
-                                      message: "Patient and appointment added successfully",
-                                      data : appointmentResult ,
-                                      treatment : treatment,
-                                      user: { id: insertResult.insertId, patientId: newPatientID}
-                                  });
-                              }
+                  const bookAppointmentParams = [
+                    newPatientID,
+                    branch_name,
+                    doctor_name,
+                    doctorId,
+                    appDateTime,
+                    treatment,
+                    status,
+                    opd_amount,
+                    payment_Mode,
+                    transaction_Id,
+                    payment_Status,
+                    notes,
+                    patient_added_by,
+                    patient_added_by_emp_id,
+                    created_at,
+                  ];
+
+                  db.query(
+                    bookAppointmentQuery,
+                    bookAppointmentParams,
+                    (appointmentErr, appointmentResult) => {
+                      if (appointmentErr) {
+                        console.error(
+                          "Error booking appointment:",
+                          appointmentErr
+                        );
+                        return res
+                          .status(500)
+                          .json({
+                            error: "Internal server error",
+                            message: "Internal server error",
                           });
+                      } else {
+                        console.log("Appointment booked successfully");
+                        return res.status(200).json({
+                          success: true,
+                          message: "Patient and appointment added successfully",
+                          data: appointmentResult,
+                          treatment: treatment,
+                          user: {
+                            id: insertResult.insertId,
+                            patientId: newPatientID,
+                          },
+                        });
                       }
-                  });
-              }});
+                    }
+                  );
+                }
+              }
+            );
           }
-      });
+        });
+      }
+    });
   } catch (error) {
-      console.error("Error in registration:", error);
-      return res.status(500).json({
-          success: false,
-          message: "Error in registration",
-          error: error.message,
-      });
+    console.error("Error in registration:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in registration",
+      error: error.message,
+    });
   }
 };
 
 const updatePatientDetails = (req, res) => {
   try {
-    const {  patientId,patient_Name, mobile, email, gender, aadhaar_no, contact_Person, contact_Person_Name, blood_Group, dob, age, weight, allergy, disease, patientType, address,  patient_updated_by, patient_updated_by_emp_id } = req.body;
+    const {
+      patientId,
+      patient_Name,
+      mobile,
+      email,
+      gender,
+      aadhaar_no,
+      contact_Person,
+      contact_Person_Name,
+      blood_Group,
+      dob,
+      age,
+      weight,
+      allergy,
+      disease,
+      patientType,
+      address,
+      patient_updated_by,
+      patient_updated_by_emp_id,
+    } = req.body;
 
-      const updated_at = new Date();
+    const updated_at = new Date();
 
-      const updatePatientQuery = `
+    const updatePatientQuery = `
           UPDATE patient_details
           SET 
              
@@ -297,101 +373,108 @@ const updatePatientDetails = (req, res) => {
               uhid = ?
       `;
 
-      const updatePatientParams = [
-        patient_Name,
-                      dob,
-                      age,
-                      weight,
-                      gender,
-                      blood_Group,
-                      mobile,
-                      email,
-                      contact_Person,
-                      contact_Person_Name,
-                      allergy,
-                      disease,
-                      address,
-                      patientType,
-                      aadhaar_no,
-                      patient_updated_by,
-                      patient_updated_by_emp_id,
-                      updated_at,
-                      patientId
-          
-         
-      ];
+    const updatePatientParams = [
+      patient_Name,
+      dob,
+      age,
+      weight,
+      gender,
+      blood_Group,
+      mobile,
+      email,
+      contact_Person,
+      contact_Person_Name,
+      allergy,
+      disease,
+      address,
+      patientType,
+      aadhaar_no,
+      patient_updated_by,
+      patient_updated_by_emp_id,
+      updated_at,
+      patientId,
+    ];
 
-      db.query(updatePatientQuery, updatePatientParams, (Err, appointmentResult) => {
-          if (Err) {
-              console.error("Error updating Patient:", Err);
-              return res.status(500).json({ success: false, message: "Internal server error" });
-          } else {
-              console.log("Patient updated successfully");
-              return res.status(200).json({
-                  success: true,
-                  message: "Patient updated successfully",
-              });
-          }
-      });
+    db.query(
+      updatePatientQuery,
+      updatePatientParams,
+      (Err, appointmentResult) => {
+        if (Err) {
+          console.error("Error updating Patient:", Err);
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        } else {
+          console.log("Patient updated successfully");
+          return res.status(200).json({
+            success: true,
+            message: "Patient updated successfully",
+          });
+        }
+      }
+    );
   } catch (error) {
-      console.error("Error in updating Patient:", error);
-      return res.status(500).json({
-          success: false,
-          message: "Error in updating Patient",
-          error: error.message,
-      });
+    console.error("Error in updating Patient:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in updating Patient",
+      error: error.message,
+    });
   }
 };
 
-
-
-const getPatients = (req,res) =>{
+const getPatients = (req, res) => {
   const branch = req.params.branch;
-  try{
-       const sql = 'SELECT * FROM patient_details WHERE branch_name = ?';
+  try {
+    const sql = "SELECT * FROM patient_details WHERE branch_name = ?";
 
-       db.query(sql,[branch],(err,results) =>{
-         if(err){
-           console.error('Error fetching Patients from MySql:' , err);
-           res.status(500).json({error : "Error fetching Patients"});
-         }
-         else {
-           res.status(200).json({data: results,message : "Patients fetched successfully"})
-         }
-
-       })
+    db.query(sql, [branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching Patients from MySql:", err);
+        res.status(500).json({ error: "Error fetching Patients" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Patients fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Patients from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Patients",
+      error: error.message,
+    });
   }
-  catch(error){
-     console.error('Error fetching Patients from MySql:' , error);
-     res.status(500).json({
-       success: false,
-       message: "Error in fetched Patients",
-       error: error.message,
-     })
-   
-  }
-}
+};
 
 const getPatientById = (req, res) => {
   const patientId = req.params.patientId;
   const branch = req.params.branch;
   try {
-    const sql = 'SELECT * FROM patient_details WHERE uhid = ? AND branch_name = ?';
+    const sql =
+      "SELECT * FROM patient_details WHERE uhid = ? AND branch_name = ?";
 
-    db.query(sql, [patientId,branch], (err, results) => {
+    db.query(sql, [patientId, branch], (err, results) => {
       if (err) {
-        console.error('Error fetching patient from MySql:', err);
+        console.error("Error fetching patient from MySql:", err);
         res.status(500).json({ error: "Error fetching patient" });
       } else {
         if (results.length === 0) {
           res.status(404).json({ message: "Patient not found" });
         } else {
-          res.status(200).json({success: true, data: results[0], message: "Patient fetched successfully" });
+          res
+            .status(200)
+            .json({
+              success: true,
+              data: results[0],
+              message: "Patient fetched successfully",
+            });
         }
       }
     });
   } catch (error) {
-    console.error('Error fetching patient from MySql:', error);
+    console.error("Error fetching patient from MySql:", error);
     res.status(500).json({
       success: false,
       message: "Error in fetching patient",
@@ -400,127 +483,144 @@ const getPatientById = (req, res) => {
   }
 };
 
+const getDisease = (req, res) => {
+  try {
+    const sql = "SELECT * FROM patient_disease";
 
-const getDisease = (req,res) =>{
-   
-   try{
-        const sql = 'SELECT * FROM patient_disease';
+    db.query(sql, (err, results) => {
+      if (err) {
+        console.error("Error fetching disease from MySql:", err);
+        res.status(500).json({ error: "Error fetching disease" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Disease fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching disease from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched disease",
+      error: error.message,
+    });
+  }
+};
+const getTreatment = (req, res) => {
+  try {
+    const sql = "SELECT * FROM treatment_list";
 
-        db.query(sql,(err,results) =>{
-          if(err){
-            console.error('Error fetching disease from MySql:' , err);
-            res.status(500).json({error : "Error fetching disease"});
-          }
-          else {
-            res.status(200).json({data: results,message : "Disease fetched successfully"})
-          }
+    db.query(sql, (err, results) => {
+      if (err) {
+        console.error("Error fetching treatments from MySql:", err);
+        res.status(500).json({ error: "Error fetching treatments" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "treatments fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching treatments from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched treatments",
+      error: error.message,
+    });
+  }
+};
 
-        })
-   }
-   catch(error){
-      console.error('Error fetching disease from MySql:' , error);
-      res.status(500).json({
-        success: false,
-        message: "Error in fetched disease",
-        error: error.message,
-      })
-    
-   }
-}
-const getTreatment = (req,res) =>{
-   
-   try{
-        const sql = 'SELECT * FROM treatment_list';
+const bookAppointment = (req, res) => {
+  try {
+    const {
+      branch_name,
+      patient_uhid,
+      status,
+      doctorId,
+      doctor_name,
+      appDateTime,
+      treatment,
+      opd_amount,
+      payment_Mode,
+      transaction_Id,
+      payment_Status,
+      notes,
+      appointment_created_by,
+      appointment_created_by_emp_id,
+    } = req.body;
 
-        db.query(sql,(err,results) =>{
-          if(err){
-            console.error('Error fetching treatments from MySql:' , err);
-            res.status(500).json({error : "Error fetching treatments"});
-          }
-          else {
-            res.status(200).json({data: results,message : "treatments fetched successfully"})
-          }
+    const created_at = new Date();
 
-        })
-   }
-   catch(error){
-      console.error('Error fetching treatments from MySql:' , error);
-      res.status(500).json({
-        success: false,
-        message: "Error in fetched treatments",
-        error: error.message,
-      })
-    
-   }
-}
-
-const bookAppointment = (req,res)=>{
-    try{
-      const { branch_name,patient_uhid, status, doctorId, doctor_name, appDateTime, treatment, opd_amount , payment_Mode, transaction_Id, payment_Status, notes,appointment_created_by, appointment_created_by_emp_id} = req.body;
-
-      const created_at = new Date();
-
-      const bookAppointmentQuery = `
+    const bookAppointmentQuery = `
       INSERT INTO appointments (
           patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status,opd_amount, payment_Mode, transaction_Id, payment_Status,  notes, appointment_created_by, appointment_created_by_emp_id, created_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)
   `;
 
-  const bookAppointmentParams = [
-    patient_uhid,
-    branch_name,
-    doctor_name,
-    doctorId,
-    appDateTime,
-    treatment,
-    status,
-    opd_amount ,
-    payment_Mode,
-    transaction_Id,
-    payment_Status,
-    notes,
-    appointment_created_by,
-    appointment_created_by_emp_id,
-    created_at
-];
+    const bookAppointmentParams = [
+      patient_uhid,
+      branch_name,
+      doctor_name,
+      doctorId,
+      appDateTime,
+      treatment,
+      status,
+      opd_amount,
+      payment_Mode,
+      transaction_Id,
+      payment_Status,
+      notes,
+      appointment_created_by,
+      appointment_created_by_emp_id,
+      created_at,
+    ];
 
-db.query(bookAppointmentQuery, bookAppointmentParams, (appointmentErr, appointmentResult) => {
-  if (appointmentErr) {
-      console.error("Error booking appointment:", appointmentErr);
-      return res.status(500).json({ success: false , message: "Internal server error" });
-  } else {
-      console.log("Appointment booked successfully");
-      return res.status(200).json({
-          data: appointmentResult,
-          treatment : treatment,
-          success: true,
-          message: "Appointment Booked successfully",
-          
-      });
+    db.query(
+      bookAppointmentQuery,
+      bookAppointmentParams,
+      (appointmentErr, appointmentResult) => {
+        if (appointmentErr) {
+          console.error("Error booking appointment:", appointmentErr);
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        } else {
+          console.log("Appointment booked successfully");
+          return res.status(200).json({
+            data: appointmentResult,
+            treatment: treatment,
+            success: true,
+            message: "Appointment Booked successfully",
+          });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Error in book appointment:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in book appointment",
+      error: error.message,
+    });
   }
-});
-
-
-    }
-    catch(error){
-      console.error("Error in book appointment:", error);
-      return res.status(500).json({
-          success: false,
-          message: "Error in book appointment",
-          error: error.message,
-      });
-    }
-}
-
-
+};
 
 const updateAppointment = (req, res) => {
   try {
-      const { appoint_id, doctorId, doctor_name, appDateTime, treatment, notes, appointment_updated_by, appointment_updated_by_emp_id } = req.body;
+    const {
+      appoint_id,
+      doctorId,
+      doctor_name,
+      appDateTime,
+      treatment,
+      notes,
+      appointment_updated_by,
+      appointment_updated_by_emp_id,
+    } = req.body;
 
-      const updated_at = new Date();
+    const updated_at = new Date();
 
-      const updateAppointmentQuery = `
+    const updateAppointmentQuery = `
           UPDATE appointments
           SET 
              
@@ -538,138 +638,156 @@ const updateAppointment = (req, res) => {
               appoint_id = ?
       `;
 
-      const updateAppointmentParams = [
-        
-          
-          doctor_name,
-          doctorId,
-          appDateTime,
-          treatment,
-          notes,
-          appointment_updated_by,
-          appointment_updated_by_emp_id,
-          updated_at,
-          appoint_id
-      ];
+    const updateAppointmentParams = [
+      doctor_name,
+      doctorId,
+      appDateTime,
+      treatment,
+      notes,
+      appointment_updated_by,
+      appointment_updated_by_emp_id,
+      updated_at,
+      appoint_id,
+    ];
 
-      db.query(updateAppointmentQuery, updateAppointmentParams, (appointmentErr, appointmentResult) => {
-          if (appointmentErr) {
-              console.error("Error updating appointment:", appointmentErr);
-              return res.status(500).json({ success: false, message: "Internal server error" });
-          } else {
-              console.log("Appointment updated successfully");
-              return res.status(200).json({
-                  success: true,
-                  message: "Appointment updated successfully",
-              });
-          }
-      });
+    db.query(
+      updateAppointmentQuery,
+      updateAppointmentParams,
+      (appointmentErr, appointmentResult) => {
+        if (appointmentErr) {
+          console.error("Error updating appointment:", appointmentErr);
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        } else {
+          console.log("Appointment updated successfully");
+          return res.status(200).json({
+            success: true,
+            message: "Appointment updated successfully",
+          });
+        }
+      }
+    );
   } catch (error) {
-      console.error("Error in updating appointment:", error);
-      return res.status(500).json({
-          success: false,
-          message: "Error in updating appointment",
-          error: error.message,
-      });
+    console.error("Error in updating appointment:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in updating appointment",
+      error: error.message,
+    });
   }
 };
 
-
-
-
-
-
-
-
-
 const updateAppointmentStatus = (req, res) => {
   try {
-      const { appointmentId, status ,appointment_updated_by,appointment_updated_by_emp_id} = req.body;
+    const {
+      appointmentId,
+      status,
+      appointment_updated_by,
+      appointment_updated_by_emp_id,
+    } = req.body;
 
-      const updated_at = new Date();
+    const updated_at = new Date();
 
-      const updateAppointmentQuery = `
+    const updateAppointmentQuery = `
           UPDATE appointments
           SET appointment_status = ?, updated_at = ?,appointment_updated_by = ?,appointment_updated_by_emp_id = ?
           WHERE appoint_id = ?
       `;
 
-      const updateAppointmentParams = [
-          status,
-          updated_at,
-          appointment_updated_by,
-          appointment_updated_by_emp_id,
-          appointmentId
-      ];
+    const updateAppointmentParams = [
+      status,
+      updated_at,
+      appointment_updated_by,
+      appointment_updated_by_emp_id,
+      appointmentId,
+    ];
 
-      db.query(updateAppointmentQuery, updateAppointmentParams, (appointmentErr, appointmentResult) => {
-          if (appointmentErr) {
-              console.error("Error updating appointment:", appointmentErr);
-              return res.status(500).json({ success: false, message: "Internal server error" });
-          } else {
-              console.log("Appointment updated successfully");
-              return res.status(200).json({
-                  success: true,
-                  message: "Appointment updated successfully",
-              });
-          }
-      });
+    db.query(
+      updateAppointmentQuery,
+      updateAppointmentParams,
+      (appointmentErr, appointmentResult) => {
+        if (appointmentErr) {
+          console.error("Error updating appointment:", appointmentErr);
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        } else {
+          console.log("Appointment updated successfully");
+          return res.status(200).json({
+            success: true,
+            message: "Appointment updated successfully",
+          });
+        }
+      }
+    );
   } catch (error) {
-      console.error("Error updating appointment:", error);
-      return res.status(500).json({
-          success: false,
-          message: "Error updating appointment",
-          error: error.message,
-      });
+    console.error("Error updating appointment:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating appointment",
+      error: error.message,
+    });
   }
-}
+};
 
 const updateAppointmentStatusCancel = (req, res) => {
   try {
-      const { appointmentId, status ,cancelReason, appointment_updated_by,appointment_updated_by_emp_id} = req.body;
+    const {
+      appointmentId,
+      status,
+      cancelReason,
+      appointment_updated_by,
+      appointment_updated_by_emp_id,
+    } = req.body;
 
-      const updated_at = new Date();
+    const updated_at = new Date();
 
-      const updateAppointmentQuery = `
+    const updateAppointmentQuery = `
           UPDATE appointments
           SET appointment_status = ?, updated_at = ?,appointment_updated_by = ?,cancel_reason = ?, appointment_updated_by_emp_id = ?
           WHERE appoint_id = ?
       `;
 
-      const updateAppointmentParams = [
-          status,
-          updated_at,
-          appointment_updated_by,
-          cancelReason,
-          appointment_updated_by_emp_id,
-          appointmentId
-      ];
+    const updateAppointmentParams = [
+      status,
+      updated_at,
+      appointment_updated_by,
+      cancelReason,
+      appointment_updated_by_emp_id,
+      appointmentId,
+    ];
 
-      db.query(updateAppointmentQuery, updateAppointmentParams, (appointmentErr, appointmentResult) => {
-          if (appointmentErr) {
-              console.error("Error updating appointment:", appointmentErr);
-              return res.status(500).json({ success: false, message: "Internal server error" });
-          } else {
-              console.log("Appointment updated successfully");
-              return res.status(200).json({
-                  success: true,
-                  message: "Appointment updated successfully",
-              });
-          }
-      });
+    db.query(
+      updateAppointmentQuery,
+      updateAppointmentParams,
+      (appointmentErr, appointmentResult) => {
+        if (appointmentErr) {
+          console.error("Error updating appointment:", appointmentErr);
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        } else {
+          console.log("Appointment updated successfully");
+          return res.status(200).json({
+            success: true,
+            message: "Appointment updated successfully",
+          });
+        }
+      }
+    );
   } catch (error) {
-      console.error("Error updating appointment:", error);
-      return res.status(500).json({
-          success: false,
-          message: "Error updating appointment",
-          error: error.message,
-      });
+    console.error("Error updating appointment:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating appointment",
+      error: error.message,
+    });
   }
-}
+};
 
-const getAppointments = (req,res) =>{
-
-  try{
+const getAppointments = (req, res) => {
+  try {
     const branch = req.params.branch;
     // const sql = 'SELECT * FROM apointments WHERE branch_name = ?';
     const sql = `
@@ -686,6 +804,7 @@ const getAppointments = (req,res) =>{
             a.payment_Status,
             a.appointment_created_by,
             a.appointment_created_by_emp_id,
+            a.created_at,
             a.notes,
             p.uhid,
             p.patient_name,
@@ -704,27 +823,28 @@ const getAppointments = (req,res) =>{
             a.branch_name = ?
     `;
 
-    db.query(sql,[branch],(err,results) =>{
-      if(err){
-        console.error('Error fetching Patients from MySql:' , err);
-        res.status(500).json({error : "Error fetching appointments"});
+    db.query(sql, [branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching Patients from MySql:", err);
+        res.status(500).json({ error: "Error fetching appointments" });
+      } else {
+        res
+          .status(200)
+          .json({
+            data: results,
+            message: "Appoinmtments fetched successfully",
+          });
       }
-      else {
-        res.status(200).json({data: results,message : "Appoinmtments fetched successfully"})
-      }
-
-    })
-}
-catch(error){
-  console.error('Error fetching appointments from MySql:' , error);
-  res.status(500).json({
-    success: false,
-    message: "Error in fetched appointments",
-    error: error.message,
-  })
-
-}
-}
+    });
+  } catch (error) {
+    console.error("Error fetching appointments from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched appointments",
+      error: error.message,
+    });
+  }
+};
 
 const getAppointmentById = (req, res) => {
   try {
@@ -770,18 +890,92 @@ const getAppointmentById = (req, res) => {
 
     db.query(sql, [appointmentId, branch], (err, results) => {
       if (err) {
-        console.error('Error fetching appointment from MySql:', err);
+        console.error("Error fetching appointment from MySql:", err);
         res.status(500).json({ error: "Error fetching appointment" });
       } else {
         if (results.length === 0) {
           res.status(404).json({ message: "Appointment not found" });
         } else {
-          res.status(200).json({ data: results[0], message: "Appointment fetched successfully" });
+          res
+            .status(200)
+            .json({
+              data: results[0],
+              message: "Appointment fetched successfully",
+            });
         }
       }
     });
   } catch (error) {
-    console.error('Error fetching appointment from MySql:', error);
+    console.error("Error fetching appointment from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetching appointment",
+      error: error.message,
+    });
+  }
+};
+
+const getAllAppointmentByPatientId = (req, res) => {
+  try {
+    const patientId = req.params.patientId;
+    const branch = req.params.branch;
+    const sql = `
+      SELECT 
+        a.branch_name,
+        a.appoint_id,
+        a.assigned_doctor_name,
+        a.assigned_doctor_id,
+        a.appointment_status,
+        a.appointment_dateTime,
+        a.treatment_provided,
+        a.opd_amount,
+        a.payment_Mode,
+        a.transaction_Id,
+        a.payment_Status,
+        a.appointment_created_by,
+        a.appointment_created_by_emp_id,
+        a.notes,
+        a.created_at,
+        p.uhid,
+        p.patient_name,
+        p.mobileno,
+        p.dob,
+        p.age,
+        p.weight,
+        p.bloodgroup,
+        p.disease,
+        p.allergy,
+        p.patient_type,
+        p.address,
+        p.gender
+      FROM 
+        appointments AS a
+      JOIN 
+        patient_details AS p ON a.patient_uhid = p.uhid 
+      WHERE
+      a.patient_uhid = ? AND
+      a.branch_name = ?
+    `;
+
+    db.query(sql, [patientId, branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching appointment from MySql:", err);
+        res.status(500).json({ error: "Error fetching appointment" });
+      } else {
+        if (results.length === 0) {
+          res.status(404).json({ message: "Appointment not found" });
+        } else {
+          res
+            .status(200)
+            .json({
+              data: results,
+              message: "Appointment fetched successfully",
+            });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching appointment from MySql:", error);
     res.status(500).json({
       success: false,
       message: "Error in fetching appointment",
@@ -793,19 +987,24 @@ const getAppointmentById = (req, res) => {
 const getDoctorDataByBranch = (req, res) => {
   try {
     const branch = req.params.branch;
-    const getQuery = 'SELECT * FROM employee_register WHERE branch_name = ? AND employee_role LIKE "%doctor%" AND employee_status = "Approved"';
+    const getQuery =
+      'SELECT * FROM employee_register WHERE branch_name = ? AND employee_role LIKE "%doctor%" AND employee_status = "Approved"';
     db.query(getQuery, [branch], (err, result) => {
       if (err) {
-        res.status(400).send({status : false, message: "error in fetching doctor" });
-      }
-      else{
+        res
+          .status(400)
+          .send({ status: false, message: "error in fetching doctor" });
+      } else {
         // Iterate over the result array and delete the password property from each object
-        result.forEach(employee => {
+        result.forEach((employee) => {
           delete employee.employee_password;
         });
-        res.json({ data: result, status: true, message: "successful fetching doctor" });
+        res.json({
+          data: result,
+          status: true,
+          message: "successful fetching doctor",
+        });
       }
-      
     });
   } catch (error) {
     console.log(error);
@@ -816,88 +1015,85 @@ const getDoctorDataByBranch = (req, res) => {
   }
 };
 
-const getBranch = (req,res) =>{
-  try{
-    const sql = 'SELECT * FROM branches';
+const getBranch = (req, res) => {
+  try {
+    const sql = "SELECT * FROM branches";
 
-    db.query(sql,(err,results) =>{
-      if(err){
-        console.error('Error fetching Branches from MySql:' , err);
-        res.status(500).json({error : "Error fetching Branches"});
+    db.query(sql, (err, results) => {
+      if (err) {
+        console.error("Error fetching Branches from MySql:", err);
+        res.status(500).json({ error: "Error fetching Branches" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Branches fetched successfully" });
       }
-      else {
-        res.status(200).json({data: results,message : "Branches fetched successfully"})
-      }
+    });
+  } catch (error) {
+    console.error("Error fetching Branches from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Branches",
+      error: error.message,
+    });
+  }
+};
 
-    })
-}
-catch(error){
-  console.error('Error fetching Branches from MySql:' , error);
-  res.status(500).json({
-    success: false,
-    message: "Error in fetched Branches",
-    error: error.message,
-  })
-
-}
-}
-
-const getBranchDetail = (req,res) =>{
-  try{
+const getBranchDetail = (req, res) => {
+  try {
     const branch = req.params.branch;
-    const sql = 'SELECT * FROM branches WHERE branch_name = ?';
+    const sql = "SELECT * FROM branches WHERE branch_name = ?";
 
-    db.query(sql,[branch],(err,results) =>{
-      if(err){
-        console.error('Error fetching Branches from MySql:' , err);
-        res.status(500).json({error : "Error fetching Branches"});
+    db.query(sql, [branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching Branches from MySql:", err);
+        res.status(500).json({ error: "Error fetching Branches" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Branches fetched successfully" });
       }
-      else {
-        res.status(200).json({data: results,message : "Branches fetched successfully"})
-      }
+    });
+  } catch (error) {
+    console.error("Error fetching Branches from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Branches",
+      error: error.message,
+    });
+  }
+};
 
-    })
-}
-catch(error){
-  console.error('Error fetching Branches from MySql:' , error);
-  res.status(500).json({
-    success: false,
-    message: "Error in fetched Branches",
-    error: error.message,
-  })
-
-}
-}
-
-const getBranchHoliday = (req,res) =>{
-  try{
+const getBranchHoliday = (req, res) => {
+  try {
     const branch = req.params.branch;
-    const sql = 'SELECT * FROM holidays WHERE branch_name = ?';
+    const sql = "SELECT * FROM holidays WHERE branch_name = ?";
 
-    db.query(sql,[branch],(err,results) =>{
-      if(err){
-        console.error('Error fetching Branch Holidays from MySql:' , err);
-        res.status(500).json({error : "Error fetching Branch Holidays"});
+    db.query(sql, [branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching Branch Holidays from MySql:", err);
+        res.status(500).json({ error: "Error fetching Branch Holidays" });
+      } else {
+        res
+          .status(200)
+          .json({
+            data: results,
+            message: "Branch Holidays fetched successfully",
+          });
       }
-      else {
-        res.status(200).json({data: results,message : "Branch Holidays fetched successfully"})
-      }
+    });
+  } catch (error) {
+    console.error("Error fetching Branch Holidays from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Branch Holidays",
+      error: error.message,
+    });
+  }
+};
 
-    })
-}
-catch(error){
-  console.error('Error fetching Branch Holidays from MySql:' , error);
-  res.status(500).json({
-    success: false,
-    message: "Error in fetched Branch Holidays",
-    error: error.message,
-  })
-
-}
-}
-
-const addInquiry = (req,res)=>{
-  try{
+const addInquiry = (req, res) => {
+  try {
     const {
       branch,
       patientName,
@@ -929,7 +1125,7 @@ const addInquiry = (req,res)=>{
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 `;
 
-const addInquiryParams = [
+    const addInquiryParams = [
       branch,
       patientName,
       mobile,
@@ -940,34 +1136,32 @@ const addInquiryParams = [
       notes,
       doctorId,
       doctorName,
-      created_at
-];
+      created_at,
+    ];
 
-db.query(addInquiryQuery, addInquiryParams, (err, Result) => {
-if (err) {
-    console.error("Error booking Inquiry add:", err);
-    return res.status(500).json({ success: false , message: "Internal server error" });
-} else {
-    console.log("Inquiry add successfully");
-    return res.status(200).json({
-        success: true,
-        message: "Inquiry add successfully",
-        
+    db.query(addInquiryQuery, addInquiryParams, (err, Result) => {
+      if (err) {
+        console.error("Error booking Inquiry add:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      } else {
+        console.log("Inquiry add successfully");
+        return res.status(200).json({
+          success: true,
+          message: "Inquiry add successfully",
+        });
+      }
     });
-}
-});
-
-
-  }
-  catch(error){
+  } catch (error) {
     console.error("Error in Inquiry add:", error);
     return res.status(500).json({
-        success: false,
-        message: "Error in Inquiry add",
-        error: error.message,
+      success: false,
+      message: "Error in Inquiry add",
+      error: error.message,
     });
   }
-}
+};
 
 const updateInquiry = (req, res) => {
   try {
@@ -1005,7 +1199,6 @@ const updateInquiry = (req, res) => {
     `;
 
     const updateInquiryParams = [
-     
       patientName,
       mobile,
       email,
@@ -1022,7 +1215,9 @@ const updateInquiry = (req, res) => {
     db.query(updateInquiryQuery, updateInquiryParams, (err, result) => {
       if (err) {
         console.error("Error updating inquiry:", err);
-        return res.status(500).json({ success: false, message: "Internal server error" });
+        return res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
       } else {
         console.log("Inquiry updated successfully");
         return res.status(200).json({
@@ -1044,7 +1239,7 @@ const updateInquiry = (req, res) => {
 const deleteInquiry = (req, res) => {
   try {
     const id = req.params.id;
-   console.log(id)
+    console.log(id);
     const deleteInquiryQuery = `
       DELETE FROM inquiries 
       WHERE id = ?
@@ -1053,7 +1248,9 @@ const deleteInquiry = (req, res) => {
     db.query(deleteInquiryQuery, [id], (err, result) => {
       if (err) {
         console.error("Error deleting inquiry:", err);
-        return res.status(500).json({ success: false, message: "Internal server error" });
+        return res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
       } else {
         console.log("Inquiry deleted successfully");
         return res.status(200).json({
@@ -1072,37 +1269,36 @@ const deleteInquiry = (req, res) => {
   }
 };
 
-const getInquiries = (req,res) =>{
+const getInquiries = (req, res) => {
   const branch = req.params.branch;
-  try{
-       const sql = 'SELECT * FROM inquiries WHERE branch = ?';
+  try {
+    const sql = "SELECT * FROM inquiries WHERE branch = ?";
 
-       db.query(sql,[branch],(err,results) =>{
-         if(err){
-           console.error('Error fetching inquiries from MySql:' , err);
-           res.status(500).json({error : "Error fetching inquiries"});
-         }
-         else {
-           res.status(200).json({data: results,message : "inquiries fetched successfully"})
-         }
-
-       })
+    db.query(sql, [branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching inquiries from MySql:", err);
+        res.status(500).json({ error: "Error fetching inquiries" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "inquiries fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching inquiries from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched inquiries",
+      error: error.message,
+    });
   }
-  catch(error){
-     console.error('Error fetching inquiries from MySql:' , error);
-     res.status(500).json({
-       success: false,
-       message: "Error in fetched inquiries",
-       error: error.message,
-     })
-   
-  }
-}
+};
 
 const getDoctorDataByBranchWithLeave = (req, res) => {
   try {
     const branch = req.params.branch;
-    const getQuery = 'SELECT * FROM employee_register WHERE branch_name = ? AND employee_role LIKE "%doctor%"';
+    const getQuery =
+      'SELECT * FROM employee_register WHERE branch_name = ? AND employee_role LIKE "%doctor%"';
     const sql = `
         SELECT 
          l.*,
@@ -1115,16 +1311,20 @@ const getDoctorDataByBranchWithLeave = (req, res) => {
     `;
     db.query(sql, [branch], (err, result) => {
       if (err) {
-        res.status(400).send({status : false, message: "error in fetching doctor" });
-      }
-      else{
+        res
+          .status(400)
+          .send({ status: false, message: "error in fetching doctor" });
+      } else {
         // Iterate over the result array and delete the password property from each object
-        result.forEach(employee => {
+        result.forEach((employee) => {
           delete employee.employee_password;
         });
-        res.json({ data: result, status: true, message: "successful fetching doctor" });
+        res.json({
+          data: result,
+          status: true,
+          message: "successful fetching doctor",
+        });
       }
-      
     });
   } catch (error) {
     console.log(error);
@@ -1156,14 +1356,44 @@ const insertTimelineEvent = (req, res) => {
   }
 };
 
-const LoginReceptionist =  (req, res) => {
+const getPatientTimeline = (req, res) => {
+  const patientId = req.params.patientId;
+  const branch = req.params.branch;
   try {
-    const { email, password,	branch_name } = req.body;
-    if(!branch_name){
+    const sql =
+      "SELECT * FROM patient_timeline WHERE uhid = ? AND branch_name = ?";
+
+    db.query(sql, [patientId, branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching patient_timeline from MySql:", err);
+        res.status(500).json({ error: "Error fetching patient_timeline" });
+      } else {
+        res
+          .status(200)
+          .json({
+            data: results,
+            message: "patient_timeline fetched successfully",
+          });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching patient_timeline from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched patient_timeline",
+      error: error.message,
+    });
+  }
+};
+
+const LoginReceptionist = (req, res) => {
+  try {
+    const { email, password, branch_name } = req.body;
+    if (!branch_name) {
       return res.status(404).json({
-        success : false,
-        message:"Please select branch"
-      })
+        success: false,
+        message: "Please select branch",
+      });
     }
     if (!email || !password) {
       return res.status(404).json({
@@ -1175,7 +1405,7 @@ const LoginReceptionist =  (req, res) => {
     db.query(
       `SELECT * FROM employee_register WHERE employee_email = ?`,
       [email],
-       (err, result) => {
+      (err, result) => {
         if (err) {
           console.log(err);
           return res.status(500).json({
@@ -1201,48 +1431,45 @@ const LoginReceptionist =  (req, res) => {
           });
         }
 
-        if(!user.employee_role.includes("receptionist")){
+        if (!user.employee_role.includes("receptionist")) {
           return res.status(401).json({
             success: "false",
             message: "Please login with receptionist email",
           });
         }
-        if(user.branch_name !== branch_name){
+        if (user.branch_name !== branch_name) {
           return res.status(401).json({
             success: "false",
             message: "Please login with your branch",
           });
         }
 
-        if(user.employee_status !== "Approved"){
+        if (user.employee_status !== "Approved") {
           return res.status(401).json({
             success: "false",
-            message: "Your Email is not approved, Please contact team for furthur assistance",
+            message:
+              "Your Email is not approved, Please contact team for furthur assistance",
           });
         }
 
-      
-
-        const token =  JWT.sign({ id: user.id }, process.env.JWT_SECRET, {
+        const token = JWT.sign({ id: user.id }, process.env.JWT_SECRET, {
           expiresIn: "7d",
         });
 
         res.status(200).json({
           success: "true",
           message: "Login successful",
-          
+
           user: {
             employee_ID: user.employee_ID,
             email: user.email,
             branch_name: user.branch_name,
-            employee_name : user.employee_name,
-            employee_mobile : user.employee_mobile,
-            employee_designation : user.employee_designation,
-            employee_picture : user.employee_picture,
-            token: token
-
+            employee_name: user.employee_name,
+            employee_mobile: user.employee_mobile,
+            employee_designation: user.employee_designation,
+            employee_picture: user.employee_picture,
+            token: token,
           },
-          
         });
       }
     );
@@ -1253,7 +1480,6 @@ const LoginReceptionist =  (req, res) => {
       .json({ success: "false", message: "Login failed", error: error });
   }
 };
-
 
 const sendOtp = (req, res) => {
   const { email } = req.body;
@@ -1369,5 +1595,30 @@ const verifyOtp = (req, res) => {
   }
 };
 
-
-module.exports = {addPatient,getDisease,getTreatment,getPatients,bookAppointment,getDoctorDataByBranch,getAppointments,updateAppointmentStatus,updateAppointmentStatusCancel,updateAppointment,LoginReceptionist,getBranch,getDoctorDataByBranchWithLeave,getBranchDetail , updatePatientDetails ,getBranchHoliday , getPatientById,addInquiry,getInquiries,updateInquiry,deleteInquiry,getAppointmentById,insertTimelineEvent};
+module.exports = {
+  addPatient,
+  getDisease,
+  getTreatment,
+  getPatients,
+  bookAppointment,
+  getDoctorDataByBranch,
+  getAppointments,
+  updateAppointmentStatus,
+  updateAppointmentStatusCancel,
+  updateAppointment,
+  LoginReceptionist,
+  getBranch,
+  getDoctorDataByBranchWithLeave,
+  getBranchDetail,
+  updatePatientDetails,
+  getBranchHoliday,
+  getPatientById,
+  addInquiry,
+  getInquiries,
+  updateInquiry,
+  deleteInquiry,
+  getAppointmentById,
+  insertTimelineEvent,
+  getPatientTimeline,
+  getAllAppointmentByPatientId,
+};

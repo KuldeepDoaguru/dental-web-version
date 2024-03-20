@@ -1,6 +1,6 @@
 
 const express = require("express");
-const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent } = require("../controller/receptionist_Controller");
+const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent, getPatientTimeline, getAllAppointmentByPatientId } = require("../controller/receptionist_Controller");
 const router = express.Router();
 
 router.post('/add-patient',addPatient);
@@ -26,6 +26,8 @@ router.post('/insertTimelineEvent',insertTimelineEvent);
 router.get('/get-inquiries/:branch',getInquiries);
 router.put('/update-inquiry',updateInquiry);
 router.delete('/delete-inquiry/:id',deleteInquiry);
+router.get('/getPatientTimeline/:branch/:patientId',getPatientTimeline)
+router.get('/getAllAppointmentByPatientId/:branch/:patientId',getAllAppointmentByPatientId)
 
 
 module.exports = router;

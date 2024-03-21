@@ -13,7 +13,8 @@ const TreatSuggest = () => {
     const [formData, setFormData] = useState({
         appoint_id: id,
         p_uhid: "",
-        treatment_name: "",
+        treatment_name: [],
+        totalCost: "",
         treatment_sitting: "",
         consider_sitting: "",
         sitting_result: ""
@@ -28,6 +29,7 @@ const TreatSuggest = () => {
             );
             console.log(res.data.data);
             setTreatments(res.data.data);
+
         } catch (error) {
             console.log("Error fetching treatments:", error);
         }
@@ -63,26 +65,64 @@ const TreatSuggest = () => {
 
     // Get Patient Details END
 
+    // const calculateTotalCost = () => {
+    //     let totalCostArray = [];
+    //     let totalCostValue = 0;
+
+    //     formData.treatment_name.forEach(selectedTreatment => {
+    //         const treatment = treatments.find(treatment => treatment.treatment_name === selectedTreatment);
+    //         if (treatment) {
+    //             totalCostArray.push(treatment.treatment_cost); // Push treatment cost into the array
+    //             totalCostValue += Number(treatment.treatment_cost);
+    //         }
+    //     });
+
+    //     return { totalCostArray, totalCostValue };
+    // };
+
+    const calculateTotalCost = () => {
+        let totalCostArray = [];
+        let totalCostValue = 0;
+
+        formData.treatment_name.forEach(selectedTreatment => {
+            const treatment = treatments.find(treatment => treatment.treatment_name === selectedTreatment);
+            if (treatment) {
+                totalCostArray.push(treatment.treatment_cost); // Push treatment cost into the array
+                totalCostValue += Number(treatment.treatment_cost);
+            }
+        });
+
+        return { totalCostArray, totalCostValue }; // Return an object with both values
+    };
+
+
+    useEffect(() => {
+        const { totalCostArray, totalCostValue } = calculateTotalCost();
+        setFormData({ ...formData, totalCost: totalCostArray, totalCostValue });
+    }, [formData.treatment_name, treatments]);
+
+
     const handleSubmitForm = async (e) => {
         e.preventDefault();
-    
+
         let sitting_result = 0;
-    
+
         if (formData.consider_sitting === "YES") {
             sitting_result = formData.treatment_sitting - 1;
         } else {
             sitting_result = formData.treatment_sitting;
         }
-    
+
         const forms = {
             appoint_id: id,
             p_uhid: formData.p_uhid,
             treatment_name: formData.treatment_name,
+            totalCost: formData.totalCostValue, 
             treatment_sitting: formData.treatment_sitting,
             consider_sitting: formData.consider_sitting,
             sitting_result: sitting_result,
         };
-    
+
         if (currentForm < 3) {
             setCurrentForm(currentForm + 1); // Move to the next form
         } else {
@@ -93,12 +133,13 @@ const TreatSuggest = () => {
                 );
                 alert("Successfully added!");
                 console.log(res.data);
+                window.location.reload();
             } catch (error) {
                 console.log(error);
             }
         }
     };
-    
+
 
     return (
         <>
@@ -166,39 +207,49 @@ const TreatSuggest = () => {
                         ))}
                     </div>
                 </div>
-
                 <div className="container mainbody">
-                    <div className="row shadow-sm p-3 mb-5 bg-body rounded">
+                    <div className="row shadow-sm p-3 mb-2 bg-body rounded">
                         <form onSubmit={handleSubmitForm}>
                             {currentForm === 1 && (
                                 <div className="">
                                     <div className="text-center">
-                                        <label className="label">Select Treatment ?</label>
+                                        <label className="label">Select Treatment(s)</label>
                                     </div>
                                     <div className="d-flex justify-content-center align-item-center text-center">
                                         <select
-                                            className="form-select text-center w-25"
+                                            className="form-select text-center w-50"
                                             name="treatment_name"
                                             aria-label="Default select example"
                                             onChange={(e) =>
                                                 setFormData({
                                                     ...formData,
-                                                    treatment_name: e.target.value,
+                                                    treatment_name: Array.from(e.target.selectedOptions, option => option.value),
                                                 })
                                             }
                                             value={formData.treatment_name}
+                                            multiple  // Add this attribute to enable multi-select
                                         >
-                                            <option selected>Choose Treatment</option>
                                             {treatments.map((item, index) => (
                                                 <option key={index}>{item.treatment_name}</option>
                                             ))}
                                         </select>
                                         <div className="m-2">
                                             <button type="submit" className="btn btn-primary">
-                                                Save
+                                                Next
                                             </button>
                                         </div>
                                     </div>
+                                    <div className="text-center">
+                                        <label className="label">Total Cost</label>
+                                        <input
+                                            type="text" // Change the input type to text for now
+                                            className="form-control w-25"
+                                            value={formData.totalCostValue}
+                                            onChange={(e) => setFormData({ ...formData, totalCostValue: e.target.value })}
+                                        />
+
+                                    </div>
+
                                 </div>
                             )}
                             {currentForm === 2 && (
@@ -217,7 +268,7 @@ const TreatSuggest = () => {
                                         />
                                         <div className="m-2">
                                             <button type="submit" className="btn btn-primary">
-                                                Save
+                                                Next
                                             </button>
                                         </div>
                                     </div>
@@ -246,6 +297,35 @@ const TreatSuggest = () => {
                                 </div>
                             )}
                         </form>
+                    </div>
+                </div>
+
+
+                <div className="container">
+                    <div className="row shadow-sm p-3 mb-5 bg-body rounded">
+                        <div className="d-flex justify-content-center align-items-center">
+                            <button className="btn btn-info text-light mx-2">Skip</button>
+                            <button type="button" className="btn btn-info text-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Book Appointment
+                            </button>
+                            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div className="modal-dialog modal-dialog-centered">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h1 className="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div className="modal-body">
+                                            ...
+                                        </div>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" className="btn btn-primary">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </Wrapper>

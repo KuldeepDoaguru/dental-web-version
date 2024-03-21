@@ -119,6 +119,29 @@ const bookAppointment = (req, res) => {
     }
 }
 
+const getTreatSuggest = (req, res) => {
+    try {
+        const appoint_id = req.params.appoint_id;
+
+        const sql = `SELECT * FROM treat_suggest WHERE appoint_id = ?`;
+
+        db.query(sql, appoint_id, (err, result) => {
+            if (err) {
+                return res.status(400).json({ success: false, message: 'Failed to query database', error: err });
+            } else {
+                if (result.length === 0) {
+                    return res.status(404).json({ success: false, message: 'No data found' });
+                }
+                return res.status(200).json({ success: true, message: 'Data retrieved successfully', data: result });
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+};
 
 
-module.exports = { bookAppointment }; 
+
+
+module.exports = { bookAppointment, getTreatSuggest }; 

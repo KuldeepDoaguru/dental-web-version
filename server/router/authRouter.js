@@ -7,7 +7,7 @@ const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById
 const { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId } = require("../controller/authBranch.js");
 const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM } = require("../controller/authTreatment.js");
 const { uploadImage, getUploadedImages } = require("../controller/authContrimg.js");
-const { bookAppointment } = require("../controller/authBook.js");
+const { bookAppointment, getTreatSuggest } = require("../controller/authBook.js");
 
 const router = express.Router();
 
@@ -75,7 +75,8 @@ router.get('/bill-patient-data/:appoint_id', billPatientDataByAppId);
 // Bill Routes END here......
 
 //  Booking Appointment START here......
-router.post('/bookAppointment', bookAppointment)
+router.post('/bookAppointment', bookAppointment);
+router.get('/getTreatSuggest/:appoint_id', getTreatSuggest);
 //  Booking Appointment END here......
 
 

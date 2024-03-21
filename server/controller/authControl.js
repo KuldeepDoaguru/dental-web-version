@@ -72,19 +72,37 @@ const deleteDentalPediatric = (req, res) =>{
     })
 }
 
-const insertTreatSuggest = (req, res) =>{
-    const {appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result} = req.body;
+// const insertTreatSuggest = (req, res) =>{
+//     const {appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result} = req.body;
 
-    const sql =  `INSERT INTO treat_suggest (appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result) VALUES(?,?,?,?,?,?)`;
+//     const sql =  `INSERT INTO treat_suggest (appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result) VALUES(?,?,?,?,?,?)`;
 
-    db.query(sql, [ appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result], (err, result)=>{
-        if(err){
-            return res.status(400).json({success: false, message: err})
-        }else{
-            return res.status(201).json({success: true, message:"Insertion Successful!", result});
+//     db.query(sql, [ appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result], (err, result)=>{
+//         if(err){
+//             return res.status(400).json({success: false, message: err})
+//         }else{
+//             return res.status(201).json({success: true, message:"Insertion Successful!", result});
+//         }
+//     })
+// }
+
+const insertTreatSuggest = (req, res) => {
+    const { appoint_id, p_uhid, treatment_name, totalCost, treatment_sitting, consider_sitting, sitting_result } = req.body;
+
+    // Convert treatment_name array to a comma-separated string
+    const treatmentNamesString = Array.isArray(treatment_name) ? treatment_name.join(', ') : treatment_name;
+
+    const sql = `INSERT INTO treat_suggest (appoint_id, p_uhid, treatment_name, totalCost, treatment_sitting, consider_sitting, sitting_result) VALUES(?,?,?,?,?,?,?)`;
+
+    db.query(sql, [appoint_id, p_uhid, treatmentNamesString, totalCost, treatment_sitting, consider_sitting, sitting_result], (err, result) => {
+        if (err) {
+            return res.status(400).json({ success: false, message: err });
+        } else {
+            return res.status(201).json({ success: true, message: "Insertion Successful!", result });
         }
-    })
-}
+    });
+};
+
 
 
 module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest}; 

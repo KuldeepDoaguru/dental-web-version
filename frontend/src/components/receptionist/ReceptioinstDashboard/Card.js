@@ -15,14 +15,35 @@ function Card() {
   const [opdData, setOpdData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Initialize with today's date
   const [opdAmount,setOpdAmount] = useState(0);
+  const [appointmentData,setAppointmentsData] = useState([]);
+
+  const [missedAppointments,setMissedAppointments] = useState(0);
+  const [checkInAppointments,setCheckInAppointments] = useState(0);
+  const [upcomingAppointments,setUpcomingAppointments] = useState(0);
+  const [completeAppointments,setCompleteAppointments] = useState(0);
+  const [cancelAppointments,setCancelAppointments] = useState(0);
+
+
+  const getAppointments = async ()=>{
+    try{
+      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
+
+      
+      const filteredPatients = response?.data?.data.filter(patient => patient.appointment_dateTime.includes(selectedDate));
+      setAppointmentsData(filteredPatients)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
  
-  const getAppointments = async () => {
+  const getAppointmentsForOpd = async () => {
     try {
       const response = await axios.get(
         `http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`
       );
       
-      const filteredPatients = response?.data?.data.filter(patient => patient.treatment_provided === "OPD" && patient.created_at.includes(selectedDate));
+      const filteredPatients = response?.data?.data.filter(patient => patient.payment_Status === "paid" && patient.created_at.includes(selectedDate));
       setOpdData(filteredPatients);
     } catch (error) {
       console.log(error);
@@ -58,23 +79,78 @@ function Card() {
   useEffect(()=>{
     getNewPatient();
     getPatient();
-    getAppointments();
+    getAppointmentsForOpd();
     calculateOpdAmount();
+    getAppointments();
     
  },[refreshTable]);
+
+
   useEffect(()=>{
     
     calculateOpdAmount();
     
  },[opdData]);
 
+
+  useEffect(()=>{
+    
+    calculateAppointmentData();
+    
+ },[appointmentData]);
+
  const calculateOpdAmount = () =>{
       let totalAmount = 0;
-       opdData.forEach((data) => (
-        
-        totalAmount += Number(data?.opd_amount)
-       ))
-       setOpdAmount(totalAmount)
+         
+         opdData.forEach((data) => {
+          // Check if the OPD amount is a valid number
+          const opdAmount = parseInt(data?.opd_amount);
+          if (!isNaN(opdAmount)) {
+            totalAmount += opdAmount;
+          }
+        });
+        setOpdAmount(totalAmount);
+ }
+
+ const calculateAppointmentData = () =>{
+  const currentDateAndTime = new Date();
+  
+  // Adjusting the time zone offset for Indian Standard Time (IST)
+  const ISTOffset = 330; // Offset in minutes (5 hours 30 minutes)
+  const indianTime = new Date(currentDateAndTime.getTime() + (ISTOffset * 60000)).toISOString();
+  let missedApp = 0;
+  let cancelApp = 0;
+  let upcomingApp = 0;
+  let completeApp = 0;
+  let checkInApp = 0;
+  console.log(indianTime)
+  appointmentData.forEach((data) => {
+    // Check if the OPD amount is a valid number
+    let appStatus = data?.appointment_status;
+    let appDateAndTime = data?.appointment_dateTime;
+    
+    if (appDateAndTime < indianTime && appStatus === "Appoint") {
+        missedApp +=1;
+    }
+    else if ( appStatus === "Cancel") {
+      cancelApp +=1;
+    }
+    else if ( appDateAndTime > indianTime && appStatus === "Appoint") {
+      upcomingApp +=1;
+    }
+    else if (  appStatus === "Complete") {
+      completeApp +=1;
+    }
+    else if (  appStatus === "Check-In") {
+      checkInApp +=1;
+    }
+  });
+  setMissedAppointments(missedApp);
+  setCancelAppointments(cancelApp);
+  setCheckInAppointments(checkInApp);
+  setCompleteAppointments(completeApp);
+  setUpcomingAppointments(upcomingApp);
+
  }
 
 
@@ -92,29 +168,29 @@ function Card() {
                   <div className="data">
                     <li className="dotrem h6 ">Missed</li>
 
-                    <li className="dotrem1  text-bg-danger rounded-5">54</li>
+                    <li className="dotrem1  text-bg-danger rounded-5">{missedAppointments}</li>
                   </div>
                   <div className="data">
                     <li className="dotrem h6">Checked in</li>
                     <li className="dotrem1    text-bg-success rounded-5 ">
-                      54
+                      {checkInAppointments}
                     </li>
                   </div>
                   <div className="data">
                     <li className="dotrem h6  ">Upcoming</li>
                     <li className="dotrem1   text-bg-warning rounded-5  text-white">
-                      54
+                      {upcomingAppointments}
                     </li>
                   </div>
                   <div className="data">
                     <li className="dotrem h6 ">Complete</li>
                     <li className="dotrem1  text-bg-primary rounded-5 ">
-                      54
+                      {completeAppointments}
                     </li>
                   </div>
                   <div className="data">
                     <li className="dotrem h6 ">Cancel</li>
-                    <li className="dotrem1 text-bg-secondary rounded-5 ">54</li>
+                    <li className="dotrem1 text-bg-secondary rounded-5 ">{cancelAppointments}</li>
                   </div>
                 </ul>
               </p>

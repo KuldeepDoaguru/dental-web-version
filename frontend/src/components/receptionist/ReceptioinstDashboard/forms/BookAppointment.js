@@ -996,7 +996,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                     OPD Amount
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     id="form6Example1"
                     className="form-control"
                     onChange={handleOpdAmountChange}

@@ -31,9 +31,9 @@ function Header() {
                     <FaUserAlt />
                   </a>
                   <ul className="dropdown-menu" style={{ marginLeft: "-2rem" }}>
-                    <li><a className="dropdown-item" href="#">View Profile</a></li>
-                    <li><hr className="dropdown-divider" /></li>
-                    <li><a className="dropdown-item" href="#">Logout</a></li>
+                    <li><Link to='/receptionist_profile' className="dropdown-item">View Profile</Link></li>
+                    {/* <li><hr className="dropdown-divider" /></li> */}
+                   
 
                   </ul>
                 </li>

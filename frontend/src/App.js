@@ -26,6 +26,7 @@ import Inquiry from "./pages/receptionist/Inquiry";
 import { useSelector } from "react-redux";
 import PrintOpdBill from "./components/receptionist/ReceptioinstDashboard/PrintOpdBill";
 import OpdCollection from "./pages/receptionist/OpdColletion";
+import Profile from "./pages/receptionist/Profile";
 
 function App() {
 
@@ -56,6 +57,7 @@ function App() {
     <Route path='/report' Component={ReportSection}/>
     <Route path='/new_patient' Component={NewPatient}/>
     <Route path='/opd_collection' element={<OpdCollection/>}/>
+    <Route path='/receptionist_profile' element={<Profile/>}/>
 
     {/* receptionist routes end */}
     </Routes>

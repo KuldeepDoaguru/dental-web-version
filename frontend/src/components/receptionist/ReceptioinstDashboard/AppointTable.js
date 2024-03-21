@@ -12,6 +12,7 @@ import { FaArrowCircleRight } from "react-icons/fa";
 import moment from 'moment';
 import cogoToast from 'cogo-toast';
 import { Link } from 'react-router-dom';
+import CancleAppointment from './CancelAppointment';
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -20,11 +21,12 @@ const AppointTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const {refreshTable,currentUser} = useSelector((state) => state.user);
   const [showEditPopup, setShowEditPopup] = useState(false);
+  const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Initialize with today's date
 
 
-
+ 
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const  branch = currentUser.branch_name;
@@ -113,6 +115,10 @@ const AppointTable = () => {
    const handleEditAppointment = (appointment)=>{
           setSelectedAppointment(appointment)
           setShowEditPopup(true);
+   }
+   const handleCancelAppointment = (appointment)=>{
+          setSelectedAppointment(appointment)
+          setShowCancelPopup(true);
    }
 
 
@@ -393,7 +399,7 @@ patient_type
   {/* <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Check-Out')}>Check-Out</a></li>
   <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Complete')}>Complete</a></li> */}
    {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" &&   <li><a className="dropdown-item mx-0" onClick={() => handleEditAppointment(patient)}>Edit Appointment</a></li>}
-   {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" &&    <li><a className="dropdown-item mx-0" onClick={() => handleStatusCancel(patient.appoint_id,patient.uhid ,'Cancel')}>Cancel Appointment</a></li>}
+   {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" &&    <li><a className="dropdown-item mx-0" onClick={() => handleCancelAppointment(patient)}>Cancel Appointment</a></li>}
    
    
   
@@ -447,6 +453,9 @@ patient_type
     </div>
     {showEditPopup && (
         <EditAppointment onClose={() => setShowEditPopup(false)} appointmentInfo={selectedAppointment} allAppointmentData={appointmentsData}/>
+      )}
+    {showCancelPopup && (
+        <CancleAppointment onClose={() => setShowCancelPopup(false)} appointmentInfo={selectedAppointment} allAppointmentData={appointmentsData}/>
       )}
    
     </Wrapper>

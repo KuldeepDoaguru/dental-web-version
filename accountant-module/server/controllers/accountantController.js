@@ -286,6 +286,123 @@ const getTreatmentDetailsByBranch = (req, res) => {
   }
 };
 
+const voucherCreate = (req, res) => {
+  try {
+    const {
+      branch_name,
+      for_name,
+      for_use,
+      voucher_amount,
+      voucher_date,
+      created_by,
+    } = req.body;
+    if (
+      (!branch_name,
+      !for_name,
+      !for_use,
+      !voucher_amount,
+      !voucher_date,
+      !created_by)
+    ) {
+      return res.status(404).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+    const insertQuery =
+      "INSERT INTO expense_voucher (branch_name, for_name, for_use, voucher_amount, voucher_date, created_by) VALUES (?,?,?,?,?,?)";
+    db.query(
+      insertQuery,
+      [
+        branch_name,
+        for_name,
+        for_use,
+        voucher_amount,
+        voucher_date,
+        created_by,
+      ],
+      (err, result) => {
+        if (err) {
+          res.status(400).json({ success: false, message: err.message });
+        } else {
+          console.log("Voucher Created successfully");
+          return res.status(200).json({
+            success: true,
+            message: "Voucher Created successfully",
+          });
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getVoucherListByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM expense_voucher WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getPatientBillsByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getBillsByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).send({ success: false, error: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+const getPurInventoryByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery = "SELECT * FROM purchase_inventory WHERE branch_name = ?";
+    db.query(getQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).send({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   accountantLoginUser,
   sendOtp,
@@ -293,4 +410,9 @@ module.exports = {
   resetPassword,
   getOPDDetailsByBranch,
   getTreatmentDetailsByBranch,
+  voucherCreate,
+  getVoucherListByBranch,
+  getPatientBillsByBranch,
+  getBillsByBranch,
+  getPurInventoryByBranch,
 };

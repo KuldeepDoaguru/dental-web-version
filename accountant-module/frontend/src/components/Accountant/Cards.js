@@ -19,6 +19,8 @@ const Cards = () => {
   console.log(`User Name: ${branch.name}`);
   const [opdData, setOpdData] = useState([]);
   const [treatData, setTreatData] = useState([]);
+  const [voucherAmt, setVoucherAmt] = useState([]);
+  const [patientBill, setPatientBill] = useState([]);
 
   const getOpdData = async () => {
     try {
@@ -49,6 +51,12 @@ const Cards = () => {
   );
 
   console.log(filterForOpdAppointToday);
+
+  const filterForAppointToday = opdData?.filter(
+    (item) => item.appointment_dateTime.split("T")[0] === formattedDate
+  );
+
+  console.log(filterForAppointToday.length);
 
   const totalOpdPrice = () => {
     try {
@@ -103,9 +111,64 @@ const Cards = () => {
   const totalTreatValue = totalTreatPrice();
   console.log(totalTreatValue);
 
+  const getVoucherAmount = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getVoucherListByBranch/${branch.name}`
+      );
+      console.log(data);
+      setVoucherAmt(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(voucherAmt[0]?.voucher_date);
+  console.log(formattedDate);
+  const filterForVoucherAmountToday = voucherAmt?.filter(
+    (item) => item.voucher_date.split("T")[0] === formattedDate
+  );
+
+  console.log(filterForVoucherAmountToday);
+  const totalVoucherPrice = () => {
+    try {
+      let total = 0;
+      filterForVoucherAmountToday.forEach((item) => {
+        total = total + item.voucher_amount;
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+  const totalVoucherValue = totalVoucherPrice();
+  console.log(totalVoucherValue);
+
+  const getPatientBill = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getPatientBillsByBranch/${branch.name}`
+      );
+      setPatientBill(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filterForPatientBillToday = patientBill?.filter(
+    (item) => item.bill_date?.split("T")[0] === formattedDate
+  );
+
+  console.log(filterForPatientBillToday);
+
   useEffect(() => {
     getOpdData();
     getTreatmentData();
+    getVoucherAmount();
+    getPatientBill();
   }, []);
 
   return (
@@ -135,8 +198,10 @@ const Cards = () => {
                   <MdOutlineLocalPharmacy />
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title text-light">Pharmacy Income</h5>
-                  <p className="card-text text-light fw-semibold">250000</p>
+                  <h5 className="card-title text-light">Total Appointments</h5>
+                  <p className="card-text text-light fw-semibold">
+                    {filterForAppointToday.length}
+                  </p>
                 </div>
               </div>
             </div>
@@ -165,8 +230,10 @@ const Cards = () => {
                   <LiaFileInvoiceDollarSolid />
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title text-light">Expenses</h5>
-                  <p className="card-text text-light fw-semibold">15</p>
+                  <h5 className="card-title text-light">Expense Amount</h5>
+                  <p className="card-text text-light fw-semibold">
+                    {totalVoucherValue}
+                  </p>
                 </div>
               </div>
             </div>
@@ -181,8 +248,10 @@ const Cards = () => {
                   </div>
 
                   <div className="cardtext">
-                    <h5 className="card-title text-light">Add Bills</h5>
-                    <p className="card-text text-light fw-semibold">09</p>
+                    <h5 className="card-title text-light">Total Bills</h5>
+                    <p className="card-text text-light fw-semibold">
+                      {filterForPatientBillToday.length}
+                    </p>
                   </div>
                 </div>
               </div>

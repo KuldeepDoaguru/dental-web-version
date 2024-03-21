@@ -94,7 +94,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   return null;
 };
 
-const ExpenseChart = () => {
+const PurchaseChart = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
@@ -202,10 +202,10 @@ const ExpenseChart = () => {
   );
 };
 
-export default ExpenseChart;
+export default PurchaseChart;
 const Container = styled.div`
   #main {
-    background-color: #ff7675;
+    background-color: #ffeaa7;
     width: 100%;
     border-radius: 5px;
     padding: 2rem;

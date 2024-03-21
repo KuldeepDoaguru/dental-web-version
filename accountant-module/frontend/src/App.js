@@ -74,6 +74,7 @@ import VoucherReport from "./pages/AllReport/VoucherReport";
 import PurchaseReport from "./pages/AllReport/PurchaseReport";
 import AttendanceLeave from "./pages/AttendanceLeave";
 import PasswordReset from "./pages/PasswordReset";
+import SecurityAmtPrint from "./pages/SecurityAmtPrint";
 
 function App() {
   return (
@@ -169,6 +170,7 @@ function App() {
         <Route path="/purchase-report" element={<PurchaseReport />} />
         <Route path="/attendance-leave" element={<AttendanceLeave />} />
         <Route path="/password-reset" element={<PasswordReset />} />
+        <Route path="/security-amount-reciept" element={<SecurityAmtPrint />} />
         <Route path="*" element={<ErrorPage />} />
         {/*Acountend  routes end  */}
       </Routes>

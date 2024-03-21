@@ -171,20 +171,20 @@ const UniversalLogin = () => {
                           </div>
 
                           <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                            {/* <button
+                            <button
                               type="submit"
                               className="btn btn-primary btn-lg"
                             >
                               Login
-                            </button> */}
-                            <Link to="/accountant-dashboard">
+                            </button>
+                            {/* <Link to="/accountant-dashboard">
                               <button
                                 type="button"
                                 className="btn btn-primary btn-lg"
                               >
                                 Login
                               </button>
-                            </Link>
+                            </Link> */}
                           </div>
                           <div className="col-sm-12 col-md-10 text-center ms-4">
                             <p>

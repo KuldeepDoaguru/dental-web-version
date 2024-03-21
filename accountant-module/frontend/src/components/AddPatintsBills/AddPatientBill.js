@@ -11,10 +11,10 @@ const AddPatientBill = () => {
         <div className="main">
           <div className="container-fluid">
             <div className="row d-flex justify-content-between">
-              <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-2 p-0">
+              <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 p-0">
                 <Sider />
               </div>
-              <div className="secand-main col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-10">
+              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10">
                 <div className=" d-flex justify-content-between">
                   <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
                     <div className="mt-5">

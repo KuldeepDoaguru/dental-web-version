@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Sider from "../components/Sider";
 import BranchDetails from "../components/BranchDetails";
 import MakeRefund from "../components/btModal/MakeRefund";
+import { Link } from "react-router-dom";
 
 const SecurityAmount = () => {
   return (
@@ -183,6 +184,7 @@ const SecurityAmount = () => {
                             <th>Security Amount</th>
                             <th>Payment Status</th>
                             <th>Refund</th>
+                            <th>Print</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -198,18 +200,12 @@ const SecurityAmount = () => {
                             <td>
                               <MakeRefund />
                             </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td>07/04/2024</td>
-                            <td>1</td>
-                            <td>DHID007</td>
-                            <td>Shubham Singh</td>
-                            <td>8602161019</td>
-                            <td>Mohit sahu</td>
-                            <td>8000</td>
-                            <td>Success</td>
                             <td>
-                              <MakeRefund />
+                              <Link to="/security-amount-reciept">
+                                <button className="btn btn-success">
+                                  Print
+                                </button>
+                              </Link>
                             </td>
                           </tr>
                           <tr className="table-row">
@@ -223,6 +219,33 @@ const SecurityAmount = () => {
                             <td>Success</td>
                             <td>
                               <MakeRefund />
+                            </td>
+                            <td>
+                              <Link to="/security-amount-reciept">
+                                <button className="btn btn-success">
+                                  Print
+                                </button>
+                              </Link>
+                            </td>
+                          </tr>
+                          <tr className="table-row">
+                            <td>07/04/2024</td>
+                            <td>1</td>
+                            <td>DHID007</td>
+                            <td>Shubham Singh</td>
+                            <td>8602161019</td>
+                            <td>Mohit sahu</td>
+                            <td>8000</td>
+                            <td>Success</td>
+                            <td>
+                              <MakeRefund />
+                            </td>
+                            <td>
+                              <Link to="/security-amount-reciept">
+                                <button className="btn btn-success">
+                                  Print
+                                </button>
+                              </Link>
                             </td>
                           </tr>
                         </tbody>

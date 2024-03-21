@@ -8,6 +8,7 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { MdOutlineSecurity } from "react-icons/md";
 import { BsFileEarmarkPerson } from "react-icons/bs";
 import { TbReport } from "react-icons/tb";
+import { FaMoneyBills } from "react-icons/fa6";
 
 const Sider = () => {
   const location = useLocation();
@@ -36,6 +37,24 @@ const Sider = () => {
               </Link>
             </li>
             <hr />
+            {/* <li class="nav-item link-div">
+              <Link
+                to="/AddPatientBill"
+                class={`nav-link  align-middle ${getSidebarClass(
+                  "/AddPatientBill"
+                )}`}
+              >
+                <div className="link-div">
+                  <FaMoneyBills className="bi bi-people-fill icon fs-3 bi bi-house-door-fill" />
+                </div>
+                <div d-flex justify-content-center>
+                  <h3 class=" d-none d-sm-inline fs-6 text-light">
+                    Generate Bill
+                  </h3>
+                </div>
+              </Link>
+            </li>
+            <hr /> */}
             <li className="">
               <Link
                 to="/security-amount"
@@ -52,7 +71,7 @@ const Sider = () => {
               </Link>
             </li>
             <hr />
-            <li className="">
+            {/* <li className="">
               <Link
                 to="/bill_section"
                 class={`nav-link  align-middle ${getSidebarClass(
@@ -67,7 +86,7 @@ const Sider = () => {
                 </h3>
               </Link>
             </li>
-            <hr />
+            <hr /> */}
 
             <li className="">
               <a

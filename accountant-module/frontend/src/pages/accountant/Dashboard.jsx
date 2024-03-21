@@ -8,6 +8,8 @@ import Detail from "../../components/Bill/Details";
 import Editbill from "../../components/Bill/Editbill";
 import Makepayment from "../../components/Bill/Makepayment";
 import BranchDetails from "../../components/BranchDetails";
+import MonthIncome from "../../components/Accountant/charts/MonthIncome";
+import PurchaseChart from "../../components/Accountant/charts/PurchaseChart";
 
 const Accountant_Dashboard = () => {
   return (
@@ -21,29 +23,24 @@ const Accountant_Dashboard = () => {
             </div>
             <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11">
               <BranchDetails />
-
-              <div className="d-flex justify-content-center mt-4">
-                <h2> TODAY`S OVERVIEW</h2>
-              </div>
-
               <div className="mt-4">
                 <Cards />
               </div>
 
-              <div className="container-fuild px-4 me-5">
+              <div className="container-fuild px-2">
                 <div className="row g-4 mt-3 ">
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">Monthly Earning</h3>
-                    <ExpenseChart />
+                    <MonthIncome />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                    <h3 className="text-center">Monthly Expence</h3>
+                    <h3 className="text-center">Monthly Expenses</h3>
                     <ExpenseChart />
                   </div>
 
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">Monthly Purchase</h3>
-                    <ExpenseChart />
+                    <PurchaseChart />
                   </div>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 
 const express = require("express");
-const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent, getPatientTimeline, getAllAppointmentByPatientId } = require("../controller/receptionist_Controller");
+const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent, getPatientTimeline, getAllAppointmentByPatientId, updateAppointmentStatusCancelOpd } = require("../controller/receptionist_Controller");
 const router = express.Router();
 
 router.post('/add-patient',addPatient);
@@ -18,6 +18,7 @@ router.post('/receptionist-login',LoginReceptionist);
 router.get('/get-doctors/:branch',getDoctorDataByBranch);
 router.get('/get-doctors-with-leave/:branch',getDoctorDataByBranchWithLeave);
 router.put('/update-appointment-status',updateAppointmentStatus);
+router.put('/cancel-appointment-status-opd',updateAppointmentStatusCancelOpd);
 router.put('/update-appointment-status-cancel',updateAppointmentStatusCancel);
 router.put('/update-appointment',updateAppointment);
 router.put('/update-patient-details',updatePatientDetails);

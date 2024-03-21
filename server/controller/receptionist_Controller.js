@@ -785,6 +785,65 @@ const updateAppointmentStatusCancel = (req, res) => {
     });
   }
 };
+const updateAppointmentStatusCancelOpd = (req, res) => {
+  try {
+    const {
+      appoint_id,
+      status,
+      payment_Status,
+
+      cancelReason,
+      notes,
+      appointment_updated_by,
+      appointment_updated_by_emp_id,
+    } = req.body;
+
+    const updated_at = new Date();
+   
+    const updateAppointmentQuery = `
+          UPDATE appointments
+          SET payment_Status = ?, notes = ?, appointment_status = ?, updated_at = ?,appointment_updated_by = ?,cancel_reason = ?, appointment_updated_by_emp_id = ?
+          WHERE appoint_id = ?
+      `;
+
+    const updateAppointmentParams = [
+      payment_Status,
+      notes,
+      status,
+      updated_at,
+      appointment_updated_by,
+      cancelReason,
+      appointment_updated_by_emp_id,
+      appoint_id,
+    ];
+
+    db.query(
+      updateAppointmentQuery,
+      updateAppointmentParams,
+      (appointmentErr, appointmentResult) => {
+        if (appointmentErr) {
+          console.error("Error cancel appointment:", appointmentErr);
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        } else {
+          console.log("Appointment cancel successfully");
+          return res.status(200).json({
+            success: true,
+            message: "Appointment cancel successfully",
+          });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Error updating appointment:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error updating appointment",
+      error: error.message,
+    });
+  }
+};
 
 const getAppointments = (req, res) => {
   try {
@@ -1621,4 +1680,5 @@ module.exports = {
   insertTimelineEvent,
   getPatientTimeline,
   getAllAppointmentByPatientId,
+  updateAppointmentStatusCancelOpd
 };

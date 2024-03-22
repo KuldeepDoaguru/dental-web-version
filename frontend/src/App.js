@@ -38,26 +38,26 @@ function App() {
       <Route path="/" element={<UniversalLogin />} />
 
       {/* receptionist routes start */}
-      <Route path="/receptionist_login" element={<Login />} />
+      <Route path="/receptionist_login" element={<UniversalLogin/>} />
       <Route path="/receptionist_registration" element={<Registration />} />
       <Route path='/receptionist-dashboard' element={ user.currentUser=== null ? <UniversalLogin/>  : <Receptionistdash/>}/>
-    <Route path='/all_patient' Component={AllPatient}/>
-    <Route path='/inquiry' element={<Inquiry/>}/>
-    <Route path='/patient_profile/:pid' Component={PatientProfile}/>
-    <Route path='/print_Opd_Reciept/:appointmentId' Component={PrintOpdBill}/>
-    <Route path='/appointment' Component={AppointmentSection}/>
-    <Route path='/edit_appointment' Component={EditPopup}/>
-    <Route path='/modify_appointment' Component={ModifyPopup}/>
-    <Route path='/delete_appointment' Component={DeletePopup}/>
-    <Route path='/bill_section' Component={BillSection}/>
-    <Route path='/doctor_section' Component={DoctorSection}/>
-    <Route path='/doctor_profile' Component={Doctorprofile}/>
-    <Route path='/video' Component={VideoSection}/>
-    <Route path='/lab' Component={LabSection}/>
-    <Route path='/report' Component={ReportSection}/>
-    <Route path='/new_patient' Component={NewPatient}/>
-    <Route path='/opd_collection' element={<OpdCollection/>}/>
-    <Route path='/receptionist_profile' element={<Profile/>}/>
+    <Route path='/all_patient' element={user.currentUser=== null ? <UniversalLogin/>  :<AllPatient/>}/>
+    <Route path='/inquiry' element={user.currentUser=== null ? <UniversalLogin/>  :<Inquiry/>}/>
+    <Route path='/patient_profile/:pid' element={user.currentUser=== null ? <UniversalLogin/>  : <PatientProfile/>}/>
+    <Route path='/print_Opd_Reciept/:appointmentId' element={user.currentUser=== null ? <UniversalLogin/>  : <PrintOpdBill/>}/>
+    <Route path='/appointment' element={user.currentUser=== null ? <UniversalLogin/>  : <AppointmentSection/>}/>
+    <Route path='/edit_appointment' element={user.currentUser=== null ? <UniversalLogin/>  : <EditPopup/>}/>
+    <Route path='/modify_appointment' element={user.currentUser=== null ? <UniversalLogin/>  : <ModifyPopup/>}/>
+    <Route path='/delete_appointment' element={user.currentUser=== null ? <UniversalLogin/>  : <DeletePopup/>}/>
+    <Route path='/bill_section' element={user.currentUser=== null ? <UniversalLogin/>  : <BillSection/>}/>
+    <Route path='/doctor_section' element={user.currentUser=== null ? <UniversalLogin/>  : <DoctorSection/>}/>
+    <Route path='/doctor_profile' element={user.currentUser=== null ? <UniversalLogin/>  : <Doctorprofile/>}/>
+    <Route path='/video' element={user.currentUser=== null ? <UniversalLogin/>  : <VideoSection/>}/>
+    <Route path='/lab' element={user.currentUser=== null ? <UniversalLogin/>  : <LabSection/>}/>
+    <Route path='/report' element={user.currentUser=== null ? <UniversalLogin/>  : <ReportSection/>}/>
+    <Route path='/new_patient' element={user.currentUser=== null ? <UniversalLogin/>  : <NewPatient/>}/>
+    <Route path='/opd_collection' element={user.currentUser=== null ? <UniversalLogin/>  :<OpdCollection/>}/>
+    <Route path='/receptionist_profile' element={ user.currentUser=== null ? <UniversalLogin/>  :<Profile/>}/>
 
     {/* receptionist routes end */}
     </Routes>

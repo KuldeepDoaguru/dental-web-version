@@ -8,6 +8,7 @@ import axios from 'axios';
 import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTableRefresh } from '../../../redux/user/userSlice';
+import cogoToast from 'cogo-toast';
 
 function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   const dispatch = useDispatch();
@@ -401,19 +402,19 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
         const response = await axios.put('http://localhost:4000/api/v1/receptionist/update-appointment',newAppointment);
         console.log(response);
         if(response.data.success){
-          alert(response?.data?.message);
+          cogoToast.success(response?.data?.message);
           dispatch(toggleTableRefresh());
-          timelineData(appointmentInfo.uhid)
-          
+          timelineData(appointmentInfo.uhid);
+          onClose();
          }
          else{
-          alert(response?.data?.message);
+          cogoToast.error(response?.data?.message);
          }
   
      }
      catch(error){
        console.log(error)
-          alert(error?.response?.data?.message);
+          cogoToast.error(error?.response?.data?.message);
   
      }
       // setAppointmentData([...appointment_data,newAppointment]);

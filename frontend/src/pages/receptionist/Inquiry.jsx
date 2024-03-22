@@ -9,6 +9,7 @@ import axios from 'axios'
 import EditInquiry from '../../components/receptionist/ReceptioinstDashboard/EditInquiry';
 import { toggleTableRefresh } from '../../redux/user/userSlice';
 import moment from 'moment'
+import cogoToast from 'cogo-toast'
 function Inquiry() {
 
   const user = useSelector((state) => state.user);
@@ -207,7 +208,7 @@ const handleSubmit =async (e)=>{
       const response = await axios.post('http://localhost:4000/api/v1/receptionist/add-inquiry', newData);
       console.log(response);
       if (response.data.success) {
-        alert(response?.data?.message);
+       cogoToast.success(response?.data?.message);
         // dispatch(toggleTableRefresh());
         setFormData({
           branch:branch,
@@ -224,13 +225,13 @@ const handleSubmit =async (e)=>{
       }
       
      else {
-    alert(response?.data?.message);
+    cogoToast.error(response?.data?.message);
   }
 
 }
  catch(error){
    console.log(error)
-      alert(error?.response?.data?.message);
+      cogoToast.error(error?.response?.data?.message);
 
  }
   
@@ -248,7 +249,7 @@ const handleDelete = async (id)=>{
     console.log(response);
     if (response.data.success) {
         dispatch(toggleTableRefresh());
-      alert(response?.data?.message);
+      cogoToast.success(response?.data?.message);
       
       
      
@@ -257,13 +258,13 @@ const handleDelete = async (id)=>{
     }
     
    else {
-  alert(response?.data?.message);
+ cogoToast.error(response?.data?.message);
 }
 
 }
 catch(error){
  console.log(error)
-    alert(error?.response?.data?.message);
+    cogoToast.error(error?.response?.data?.message);
 
 }
 }

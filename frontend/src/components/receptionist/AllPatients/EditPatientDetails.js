@@ -9,6 +9,7 @@ import Select from 'react-select';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTableRefresh } from '../../../redux/user/userSlice';
 import CreatableSelect from 'react-select/creatable';
+import cogoToast from 'cogo-toast';
 
 function EditPatientDetails({ onClose, patientInfo, allPatientData }) {
   const dispatch = useDispatch();
@@ -156,19 +157,19 @@ useEffect(()=>{
     const response = await axios.put('http://localhost:4000/api/v1/receptionist/update-patient-details', updatedData);
     console.log(response);
     if(response.data.success){
-      alert(response?.data?.message);
+      cogoToast.success(response?.data?.message);
       dispatch(toggleTableRefresh());
       timelineData(patientInfo.uhid);
       onClose();
      }
      else{
-      alert(response?.data?.message);
+      cogoToast.error(response?.data?.message);
      }
 
  }
  catch(error){
    console.log(error)
-      alert(error?.response?.data?.message);
+      cogoToast.error(error?.response?.data?.message);
 
  }
  }

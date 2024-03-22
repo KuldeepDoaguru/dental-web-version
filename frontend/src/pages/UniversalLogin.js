@@ -115,6 +115,7 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { setUser } from '../redux/user/userSlice';
+import cogoToast from "cogo-toast";
 
 
 const UniversalLogin = () => {
@@ -181,12 +182,12 @@ console.log(selectedBranch)
       setLocalhost(response.data);
       if (response.data.success === "true") {
         // sendOtp();
-        alert("login successful");
+        cogoToast.success("login successful");
         dispatch(setUser(response.data.user));
         navigate("/receptionist-dashboard");
         // setPopupVisible(true);
       } else {
-        alert.error(response.data.message);
+        cogoToast.error(response.data.message);
       }
     } catch (error) {
       console.log("Axios error:", error);
@@ -197,10 +198,10 @@ console.log(selectedBranch)
         error.response.data.message
       ) {
         // If there is a response object and it contains a message property
-         alert(error.response.data.message);
+         cogoToast.error(error.response.data.message);
       } else {
         // If there is no response object or no message property
-         alert("An error occurred while processing your request.");
+         cogoToast.error("An error occurred while processing your request.");
       }
     }
   };

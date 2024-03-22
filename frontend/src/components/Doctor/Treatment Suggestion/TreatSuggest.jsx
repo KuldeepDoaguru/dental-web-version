@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { GiFastBackwardButton } from "react-icons/gi";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 
 const TreatSuggest = () => {
     const { id } = useParams();
@@ -17,8 +17,12 @@ const TreatSuggest = () => {
         totalCost: "",
         treatment_sitting: "",
         consider_sitting: "",
-        sitting_result: ""
+        sitting_result: "",
+        appoint_date: "",
+        note: ""
     });
+
+    const navigate = useNavigate();
 
     console.log(formData);
 
@@ -77,29 +81,37 @@ const TreatSuggest = () => {
     //         }
     //     });
 
-    //     return { totalCostArray, totalCostValue };
+    //     return { totalCostArray, totalCostValue }; // Return an object with both values
     // };
 
     const calculateTotalCost = () => {
         let totalCostArray = [];
         let totalCostValue = 0;
-
-        formData.treatment_name.forEach(selectedTreatment => {
+        let uniqueTreatments = new Set(formData.treatment_name); // Use a Set to store unique treatments
+    
+        uniqueTreatments.forEach(selectedTreatment => {
             const treatment = treatments.find(treatment => treatment.treatment_name === selectedTreatment);
             if (treatment) {
                 totalCostArray.push(treatment.treatment_cost); // Push treatment cost into the array
                 totalCostValue += Number(treatment.treatment_cost);
             }
         });
-
+    
         return { totalCostArray, totalCostValue }; // Return an object with both values
     };
+    
 
+
+    // useEffect(() => {
+    //     const { totalCostArray, totalCostValue } = calculateTotalCost();
+    //     setFormData({ ...formData, totalCost: totalCostArray, totalCostValue });
+    // }, [formData.treatment_name, treatments]);
 
     useEffect(() => {
         const { totalCostArray, totalCostValue } = calculateTotalCost();
-        setFormData({ ...formData, totalCost: totalCostArray, totalCostValue });
+        setFormData({ ...formData, totalCost: totalCostArray, totalCostValue: totalCostValue });
     }, [formData.treatment_name, treatments]);
+    
 
 
     const handleSubmitForm = async (e) => {
@@ -121,13 +133,15 @@ const TreatSuggest = () => {
             treatment_sitting: formData.treatment_sitting,
             consider_sitting: formData.consider_sitting,
             sitting_result: sitting_result,
+            appoint_date: formData.appoint_date,
+            note: formData.note
         };
 
-        if (currentForm < 3) {
+        if (currentForm < 5) {
             setCurrentForm(currentForm + 1); // Move to the next form
         } else {
             try {
-                const res = await axios.post(
+                const res = await axios.post( 
                     `http://localhost:8888/api/doctor/insertTreatSuggest`,
                     forms
                 );
@@ -139,6 +153,14 @@ const TreatSuggest = () => {
             }
         }
     };
+
+    const handleNavigate = () =>{
+        navigate(`/TreatmentDashBoard/${id}`); 
+      }
+
+      const handleCollect = () =>{
+        navigate(`/SecurityAmount/${id}`); 
+      }
 
 
     return (
@@ -239,7 +261,7 @@ const TreatSuggest = () => {
                                             </button>
                                         </div>
                                     </div>
-                                    <div className="text-center">
+                                    <div className="text-start">
                                         <label className="label">Total Cost</label>
                                         <input
                                             type="text" // Change the input type to text for now
@@ -247,9 +269,7 @@ const TreatSuggest = () => {
                                             value={formData.totalCostValue}
                                             onChange={(e) => setFormData({ ...formData, totalCostValue: e.target.value })}
                                         />
-
                                     </div>
-
                                 </div>
                             )}
                             {currentForm === 2 && (
@@ -284,10 +304,50 @@ const TreatSuggest = () => {
                                             onChange={(e) => setFormData({ ...formData, consider_sitting: e.target.value })}
                                             checked={formData.consider_sitting === "YES"} />
                                         <label htmlFor="yes">YES</label>
-                                        &nbsp;
+                                        &nbsp; &nbsp; &nbsp;
                                         <input type="radio" name="first_sitting" value="NO" onChange={(e) => setFormData({ ...formData, consider_sitting: e.target.value })}
                                             checked={formData.consider_sitting === "NO"} />
                                         <label htmlFor="no">NO</label>
+                                    </div>
+                                    <div className="m-2">
+                                        <button type="submit" className="btn btn-primary">
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                             {currentForm === 4 && (
+                                <div className="d-flex flex-column align-items-center mt-3 mb-3">
+                                    <label className="label">
+                                        Next Appointmnent Date
+                                    </label>
+                                    <div className="d-flex justify-content-evenly">
+                                        <input type="date"
+                                            className="form-control"
+                                            name="appoint_date"
+                                            placeholder="Appointment"
+                                            onChange={(e) => setFormData({ ...formData, appoint_date: e.target.value })}
+                                            value={formData.appoint_date} />
+                                    </div>
+                                    <div className="m-2">
+                                        <button type="submit" className="btn btn-primary">
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                             {currentForm === 5 && (
+                                <div className="d-flex flex-column align-items-center mt-3 mb-3">
+                                    <label className="label">
+                                        Add Note
+                                    </label>
+                                    <div className="d-flex justify-content-evenly">
+                                        <input type="text"
+                                            className="form-control"
+                                            name="note"
+                                            placeholder="Note for Patient"
+                                            onChange={(e) => setFormData({ ...formData, note: e.target.value })}
+                                            value={formData.note} />
                                     </div>
                                     <div className="m-2">
                                         <button type="submit" className="btn btn-primary">
@@ -304,27 +364,10 @@ const TreatSuggest = () => {
                 <div className="container">
                     <div className="row shadow-sm p-3 mb-5 bg-body rounded">
                         <div className="d-flex justify-content-center align-items-center">
-                            <button className="btn btn-info text-light mx-2">Skip</button>
-                            <button type="button" className="btn btn-info text-light" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                Book Appointment
+                            <button className="btn btn-info text-light mx-2" onClick={handleNavigate}>Skip</button>
+                            <button type="button" className="btn btn-info text-light" onClick={handleCollect}>
+                                Collect Security Money
                             </button>
-                            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div className="modal-dialog modal-dialog-centered">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h1 className="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div className="modal-body">
-                                            ...
-                                        </div>
-                                        <div className="modal-footer">
-                                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" className="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -99,6 +99,73 @@ const upDateAppointmentStatus = (req, res) => {
     })
 }
 
+const addSecurityAmount = (req, res) => {
+    try {
+        const {
+            branch_name,
+            date,
+            appointment_id,
+            uhid,
+            patient_name,
+            patient_number,
+            assigned_doctor,
+            amount,
+            payment_status,
+            refund_amount,
+            refund_date,
+            received_by,
+            refund_by,
+        } = req.body;
+        const insertParams = [
+            branch_name,
+            date,
+            appointment_id,
+            uhid,
+            patient_name,
+            patient_number,
+            assigned_doctor,
+            amount,
+            payment_status,
+            refund_amount,
+            refund_date,
+            received_by,
+            refund_by,
+        ];
 
-module.exports = { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus };
+        const selectQuery =
+            "INSERT INTO security_amount (branch_name, date, appointment_id, uhid, patient_name, patient_number, assigned_doctor, amount, payment_status, refund_amount, refund_date, received_by, refund_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        db.query(selectQuery, insertParams, (err, result) => {
+            if (err) {
+                res.status(400).json({ success: false, message: err.message });
+            }
+            res.status(200).json({
+                success: true,
+                message: "Security Amount Submitted Successfully",
+            });
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+const getSecurityAmountByAppointmentId = (req, res) => {
+    const appointment_id = req.params.appointment_id;
+
+    const selectQuery = "SELECT * FROM security_amount WHERE appointment_id = ?";
+
+    db.query(selectQuery, [appointment_id], (err, result) => {
+        if (err) {
+            return res.status(400).json({ success: false, message: err.message });
+        }
+        if (result.length === 0) {
+            return res.status(404).json({ success: false, message: "No data found with the provided appointment_id" });
+        }
+        return res.status(200).json({ success: true, data: result });
+    });
+};
+
+
+module.exports = { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId };
 

@@ -32,7 +32,7 @@ import TreatmentDashTwo from "./components/Doctor/Treatment/TreatmentDashTwo";
 import NewTreatPrescription from "./components/Doctor/Prescription/TreatmentPrescription/NewTreatPrescription";
 import ViewTreatPrescription from "./components/Doctor/Prescription/TreatmentPrescription/ViewTreatPrescription";
 import TreatSuggestDashs from "./components/Doctor/Treatment Suggestion/TreatSuggestDashs";
-import BookAppoint from "./components/Doctor/Treatment Suggestion/BookAppoint";
+import SecurityAmount from "./components/Doctor/Treatment Suggestion/SecurityAmount";
 
 function App() {
   return (
@@ -71,7 +71,7 @@ function App() {
       <Route path="/HistoryDashBoard" element={<HistoryDashBoard />} />
       <Route path="/ViewTreatPrescription/:id" element={<ViewTreatPrescription />} />
       <Route path="/treatmentSuggestion/:id" element={<TreatSuggestDashs />} />
-      <Route path="/book-appointment" element={<BookAppoint />} />
+      <Route path="/SecurityAmount/:id" element={<SecurityAmount />} />
       {/* test */}
       <Route path="/HeadBar" element={<HeadBar />} />
 

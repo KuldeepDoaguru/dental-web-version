@@ -87,14 +87,14 @@ const deleteDentalPediatric = (req, res) =>{
 // }
 
 const insertTreatSuggest = (req, res) => {
-    const { appoint_id, p_uhid, treatment_name, totalCost, treatment_sitting, consider_sitting, sitting_result } = req.body;
+    const { appoint_id, p_uhid, treatment_name, totalCost, treatment_sitting, consider_sitting, sitting_result, appoint_date, note } = req.body;
 
     // Convert treatment_name array to a comma-separated string
     const treatmentNamesString = Array.isArray(treatment_name) ? treatment_name.join(', ') : treatment_name;
 
-    const sql = `INSERT INTO treat_suggest (appoint_id, p_uhid, treatment_name, totalCost, treatment_sitting, consider_sitting, sitting_result) VALUES(?,?,?,?,?,?,?)`;
+    const sql = `INSERT INTO treat_suggest (appoint_id, p_uhid, treatment_name, totalCost, treatment_sitting, consider_sitting, sitting_result, appoint_date, note) VALUES(?,?,?,?,?,?,?,?,?)`;
 
-    db.query(sql, [appoint_id, p_uhid, treatmentNamesString, totalCost, treatment_sitting, consider_sitting, sitting_result], (err, result) => {
+    db.query(sql, [appoint_id, p_uhid, treatmentNamesString, totalCost, treatment_sitting, consider_sitting, sitting_result, appoint_date, note], (err, result) => {
         if (err) {
             return res.status(400).json({ success: false, message: err });
         } else {
@@ -103,6 +103,22 @@ const insertTreatSuggest = (req, res) => {
     });
 };
 
+const getTreatSuggestById = (req, res) => {
+    const appoint_id = req.params.appoint_id;
+    const sql = `SELECT * FROM treat_suggest WHERE appoint_id = ?`;
+
+    db.query(sql, [appoint_id], (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(400).json({ success: false, message: err.message });
+        } else {
+            if (result.length === 0) {
+                return res.status(404).json({ success: false, message: "No data found with the provided ID" });
+            }
+            return res.status(200).json({ success: true, data: result[0] });
+        }
+    });
+};
 
 
-module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest}; 
+module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById}; 

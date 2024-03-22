@@ -13,10 +13,10 @@ const Cards = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  // console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  // console.log(`User Name: ${branch.name}`);
   const [opdData, setOpdData] = useState([]);
   const [treatData, setTreatData] = useState([]);
   const [voucherAmt, setVoucherAmt] = useState([]);
@@ -41,7 +41,7 @@ const Cards = () => {
   const day = String(getDate.getDate()).padStart(2, "0");
 
   const formattedDate = `${year}-${month}-${day}`;
-  console.log(formattedDate);
+  // console.log(formattedDate);
 
   //filterForPatAppointToday
   const filterForOpdAppointToday = opdData?.filter(
@@ -50,13 +50,13 @@ const Cards = () => {
       item.treatment_provided === "OPD"
   );
 
-  console.log(filterForOpdAppointToday);
+  // console.log(filterForOpdAppointToday);
 
   const filterForAppointToday = opdData?.filter(
     (item) => item.appointment_dateTime.split("T")[0] === formattedDate
   );
 
-  console.log(filterForAppointToday.length);
+  // console.log(filterForAppointToday.length);
 
   const totalOpdPrice = () => {
     try {
@@ -73,7 +73,7 @@ const Cards = () => {
   };
 
   const totalOpdValue = totalOpdPrice();
-  console.log(totalOpdValue);
+  // console.log(totalOpdValue);
 
   const getTreatmentData = async () => {
     try {
@@ -86,13 +86,13 @@ const Cards = () => {
     }
   };
 
-  console.log(treatData);
+  // console.log(treatData);
   //filterForPatAppointToday
   const filterForTreatAppointToday = treatData?.filter(
     (item) => item.bill_date.split("T")[0] === formattedDate
   );
 
-  console.log(filterForTreatAppointToday);
+  // console.log(filterForTreatAppointToday);
 
   const totalTreatPrice = () => {
     try {
@@ -100,7 +100,7 @@ const Cards = () => {
       filterForTreatAppointToday.forEach((item) => {
         total = total + item.net_amount;
       });
-      console.log(total);
+      // console.log(total);
       return total;
     } catch (error) {
       console.log(error);
@@ -109,34 +109,34 @@ const Cards = () => {
   };
 
   const totalTreatValue = totalTreatPrice();
-  console.log(totalTreatValue);
+  // console.log(totalTreatValue);
 
   const getVoucherAmount = async () => {
     try {
       const { data } = await axios.get(
         `http://localhost:8888/api/v1/accountant/getVoucherListByBranch/${branch.name}`
       );
-      console.log(data);
+      // console.log(data);
       setVoucherAmt(data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(voucherAmt[0]?.voucher_date);
-  console.log(formattedDate);
+  // console.log(voucherAmt[0]?.voucher_date);
+  // console.log(formattedDate);
   const filterForVoucherAmountToday = voucherAmt?.filter(
     (item) => item.voucher_date.split("T")[0] === formattedDate
   );
 
-  console.log(filterForVoucherAmountToday);
+  // console.log(filterForVoucherAmountToday);
   const totalVoucherPrice = () => {
     try {
       let total = 0;
       filterForVoucherAmountToday.forEach((item) => {
         total = total + item.voucher_amount;
       });
-      console.log(total);
+      // console.log(total);
       return total;
     } catch (error) {
       console.log(error);
@@ -145,7 +145,7 @@ const Cards = () => {
   };
 
   const totalVoucherValue = totalVoucherPrice();
-  console.log(totalVoucherValue);
+  // console.log(totalVoucherValue);
 
   const getPatientBill = async () => {
     try {
@@ -162,7 +162,7 @@ const Cards = () => {
     (item) => item.bill_date?.split("T")[0] === formattedDate
   );
 
-  console.log(filterForPatientBillToday);
+  // console.log(filterForPatientBillToday);
 
   useEffect(() => {
     getOpdData();

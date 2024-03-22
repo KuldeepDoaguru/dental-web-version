@@ -97,10 +97,10 @@ const CustomTooltip = ({ active, payload, label }) => {
 const PurchaseChart = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  // console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  // console.log(`User Name: ${branch.name}`);
   const [appointmentList, setAppointmentList] = useState([]);
 
   useEffect(() => {
@@ -148,7 +148,7 @@ const PurchaseChart = () => {
       parseFloat(item.item_mrp) * item.pur_quantity;
   });
 
-  console.log(totalAmountPerDay);
+  // console.log(totalAmountPerDay);
 
   // Create an array containing data for all days of the month
   const data = Array.from({ length: lastDay }, (_, index) => {
@@ -160,7 +160,7 @@ const PurchaseChart = () => {
     };
   });
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <>

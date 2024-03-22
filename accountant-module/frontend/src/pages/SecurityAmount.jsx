@@ -1,12 +1,99 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import Sider from "../components/Sider";
 import BranchDetails from "../components/BranchDetails";
 import MakeRefund from "../components/btModal/MakeRefund";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import cogoToast from "cogo-toast";
 
 const SecurityAmount = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [patData, setPatData] = useState([]);
+  const [securityList, setSecurityList] = useState([]);
+  const [addSecurityAmount, setAddSecurityAmount] = useState({
+    branch_name: branch.name,
+    date: "",
+    appointment_id: "",
+    uhid: "",
+    patient_name: "",
+    patient_number: "",
+    assigned_doctor: "",
+    amount: "",
+    payment_status: "",
+    received_by: user.name,
+  });
+
+  const handleInput = async (event) => {
+    const { name, value } = event.target;
+    if (name === "appointment_id") {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:8888/api/v1/accountant/getAppointmentDetailsViaID/${value}`
+        );
+        console.log(data);
+        if (data) {
+          setAddSecurityAmount((prevData) => ({
+            ...prevData,
+            uhid: data[0]?.patient_uhid,
+            patient_name: data[0]?.patient_name,
+            patient_number: data[0]?.mobileno,
+            assigned_doctor: data[0]?.assigned_doctor_name,
+            appointment_id: value,
+          }));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // For other input fields, update the state as before
+      setAddSecurityAmount((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  console.log(addSecurityAmount);
+
+  const insertSecurityAmount = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/v1/accountant/addSecurityAmount",
+        addSecurityAmount
+      );
+      console.log(response);
+      cogoToast.success("Security Amount Submitted Successfully");
+    } catch (error) {
+      console.log(error);
+      cogoToast.success("failed to submit security amount");
+    }
+  };
+
+  const getSecurityAmountList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getSecurityAmountDataByBranch/${branch.name}`
+      );
+      setSecurityList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSecurityAmountList();
+  }, []);
+
   return (
     <>
       <Container>
@@ -23,12 +110,7 @@ const SecurityAmount = () => {
                 <div className="container">
                   <h2 className="text-center mt-5">Submit Security Amount</h2>
                   <hr />
-                  <form
-                    action=""
-                    className=""
-                    enctype="multipart/form-data"
-                    // onSubmit={addPurchaseDetails}
-                  >
+                  <form action="" className="" onSubmit={insertSecurityAmount}>
                     <div className="container-fluid">
                       <div className="row">
                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
@@ -42,10 +124,11 @@ const SecurityAmount = () => {
                             <input
                               type="date"
                               class="p-1 w-100 rounded"
-                              name="item_code"
                               placeholder="appointment ID"
-                              // value={recData.item_code}
-                              // onChange={handleInputChange}
+                              name="date"
+                              required
+                              value={addSecurityAmount.date}
+                              onChange={handleInput}
                             />
                           </div>
                         </div>
@@ -60,10 +143,10 @@ const SecurityAmount = () => {
                             <input
                               type="text"
                               class="p-1 w-100 rounded"
-                              name="item_code"
                               placeholder="appointment ID"
-                              // value={recData.item_code}
-                              // onChange={handleInputChange}
+                              name="appointment_id"
+                              value={addSecurityAmount.appointment_id}
+                              onChange={handleInput}
                             />
                           </div>
                         </div>
@@ -79,9 +162,9 @@ const SecurityAmount = () => {
                               type="text"
                               class="p-1 w-100 rounded"
                               placeholder="UHID"
-                              name="item_name"
-                              // value={recData.item_name}
-                              // onChange={handleInputChange}
+                              name="uhid"
+                              value={addSecurityAmount.uhid}
+                              onChange={handleInput}
                             />
                           </div>
                         </div>
@@ -97,9 +180,9 @@ const SecurityAmount = () => {
                               type="text"
                               class="p-1 w-100 rounded"
                               placeholder="Patient Name"
-                              name="HSN_code"
-                              // value={recData.HSN_code}
-                              // onChange={handleInputChange}
+                              name="patient_name"
+                              value={addSecurityAmount.patient_name}
+                              onChange={handleInput}
                             />
                           </div>
                         </div>
@@ -114,10 +197,10 @@ const SecurityAmount = () => {
                             <input
                               type="text"
                               class="p-1 w-100 rounded"
-                              placeholder="Patient Name"
-                              name="HSN_code"
-                              // value={recData.HSN_code}
-                              // onChange={handleInputChange}
+                              placeholder="Patient Number"
+                              name="patient_number"
+                              value={addSecurityAmount.patient_number}
+                              onChange={handleInput}
                             />
                           </div>
                         </div>
@@ -133,9 +216,9 @@ const SecurityAmount = () => {
                               type="text"
                               class="p-1 w-100 rounded"
                               placeholder="Patient Name"
-                              name="HSN_code"
-                              // value={recData.HSN_code}
-                              // onChange={handleInputChange}
+                              name="assigned_doctor"
+                              value={addSecurityAmount.assigned_doctor}
+                              onChange={handleInput}
                             />
                           </div>
                         </div>
@@ -152,10 +235,39 @@ const SecurityAmount = () => {
                               type="number"
                               class="p-1 w-100 rounded"
                               placeholder="Security Amount"
-                              name="HSN_code"
-                              // value={recData.HSN_code}
-                              // onChange={handleInputChange}
+                              name="amount"
+                              value={addSecurityAmount.amount}
+                              onChange={handleInput}
                             />
+                          </div>
+                        </div>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                          <div class="input-group mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Payment Status
+                            </label>
+                            {/* <input
+                              type="number"
+                              class="p-1 w-100 rounded"
+                              placeholder="Payment Status"
+                              name="payment_status"
+                              value={addSecurityAmount.payment_status}
+                              onChange={handleInput}
+                            /> */}
+
+                            <select
+                              name="payment_status"
+                              onChange={handleInput}
+                              id=""
+                              class="p-1 w-100 rounded"
+                            >
+                              <option value="">select-status</option>
+                              <option value="pending">Pending</option>
+                              <option value="success">Success</option>
+                            </select>
                           </div>
                         </div>
                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">

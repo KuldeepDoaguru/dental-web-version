@@ -12,6 +12,10 @@ const {
   getPatientBillsByBranch,
   getBillsByBranch,
   getPurInventoryByBranch,
+  appointmentData,
+  addSecurityAmount,
+  getAppointmentDetailsViaID,
+  getSecurityAmountDataByBranch,
 } = require("../controllers/accountantController");
 
 const router = express.Router();
@@ -27,5 +31,12 @@ router.get("/getVoucherListByBranch/:branch", getVoucherListByBranch);
 router.get("/getPatientBillsByBranch/:branch", getPatientBillsByBranch);
 router.get("/getBillsByBranch/:branch", getBillsByBranch);
 router.get("/getPurInventoryByBranch/:branch", getPurInventoryByBranch);
+router.get("/getAppointmentData/:branch", appointmentData);
+router.post("/addSecurityAmount", addSecurityAmount);
+router.get("/getAppointmentDetailsViaID/:id", getAppointmentDetailsViaID);
+router.get(
+  "/getSecurityAmountDataByBranch/:branch",
+  getSecurityAmountDataByBranch
+);
 
 module.exports = router;

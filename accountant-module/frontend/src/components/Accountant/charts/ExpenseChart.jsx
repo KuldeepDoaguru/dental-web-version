@@ -97,17 +97,17 @@ const CustomTooltip = ({ active, payload, label }) => {
 const ExpenseChart = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  // console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  // console.log(`User Name: ${branch.name}`);
   const [appointmentList, setAppointmentList] = useState([]);
 
   useEffect(() => {
-    const getAppointList = async () => {
+    const getVoucherList = async () => {
       try {
         const response = await axios.get(
-          `https://dentalguruadmin.doaguru.com//api/v1/admin/getPurInventoryByBranch/${branch.name}`
+          `http://localhost:8888/api/v1/accountant/getVoucherListByBranch/${branch.name}`
         );
         setAppointmentList(response.data);
       } catch (error) {
@@ -115,7 +115,7 @@ const ExpenseChart = () => {
       }
     };
 
-    getAppointList();
+    getVoucherList();
   }, [branch.name]);
 
   const getDate = new Date();
@@ -142,13 +142,12 @@ const ExpenseChart = () => {
   let totalAmountPerDay = {}; // Object to store total amount for each day
 
   appointmentList.forEach((item) => {
-    const date = item.purchase_date?.split("T")[0];
+    const date = item.voucher_date?.split("T")[0];
     totalAmountPerDay[date] =
-      (totalAmountPerDay[date] || 0) +
-      parseFloat(item.item_mrp) * item.pur_quantity;
+      (totalAmountPerDay[date] || 0) + parseFloat(item.voucher_amount);
   });
 
-  console.log(totalAmountPerDay);
+  // console.log(totalAmountPerDay);
 
   // Create an array containing data for all days of the month
   const data = Array.from({ length: lastDay }, (_, index) => {
@@ -160,7 +159,7 @@ const ExpenseChart = () => {
     };
   });
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ExpenseChart from "../../components/Accountant/charts/ExpenseChart";
 import Header from "../../components/Header";
@@ -10,8 +10,71 @@ import Makepayment from "../../components/Bill/Makepayment";
 import BranchDetails from "../../components/BranchDetails";
 import MonthIncome from "../../components/Accountant/charts/MonthIncome";
 import PurchaseChart from "../../components/Accountant/charts/PurchaseChart";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Accountant_Dashboard = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
+  const [billList, setBillList] = useState([]);
+  const [appointmentList, setAppointmentList] = useState([]);
+
+  const getTodaysBill = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getBillsByBranch/${branch.name}`
+      );
+      setBillList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //filter for patient treated today card
+  const getDate = new Date();
+  const year = getDate.getFullYear();
+  const month = String(getDate.getMonth() + 1).padStart(2, "0");
+  const day = String(getDate.getDate()).padStart(2, "0");
+
+  const formattedDate = `${year}-${month}-${day}`;
+  console.log(formattedDate);
+
+  console.log(billList[0]?.bill_date);
+  const filterForBillToday = billList?.filter(
+    (item) => item.bill_date.split("T")[0] === formattedDate
+  );
+
+  console.log(filterForBillToday);
+
+  const getAppointList = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getAppointmentData/${branch.name}`
+      );
+      console.log(response);
+      setAppointmentList(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filterForAppointmentToday = appointmentList?.filter(
+    (item) => item.appointment_dateTime.split("T")[0] === formattedDate
+  );
+
+  console.log(filterForAppointmentToday);
+
+  useEffect(() => {
+    getTodaysBill();
+    getAppointList();
+  }, []);
+
   return (
     <Wrapper>
       <Header />
@@ -50,125 +113,43 @@ const Accountant_Dashboard = () => {
                   id="tableres"
                 >
                   <div className="table-responsive" id="table">
-                    <h5>Today Bill </h5>
+                    <h5>Todays Bill </h5>
                     <table className="table table-bordered table-striped">
                       <thead>
                         <tr>
-                          <th>UHID</th>
-                          <th>RGID</th>
+                          <th>Bill Id</th>
+                          <th>Bill Date</th>
+                          <th>Patient UHID</th>
                           <th>Patient Name</th>
-                          <th>Moblie No.</th>
-                          <th>Date</th>
-                          <th>Treatment Amount</th>
+                          <th>Patient Mobile</th>
+                          <th>Patient Email</th>
+                          <th>Assigned Doctor</th>
+                          <th>Treatment</th>
+                          <th>Treatment Status</th>
+                          <th>Total Paid</th>
+                          <th>Paid Amount</th>
                           <th>Payment Status</th>
-
-                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>DH19</td>
-                          <td>RG5</td>
-                          <td>Mohit Sahu</td>
-                          <td>698525455</td>
-                          <td>22-1-24</td>
-                          <td>1944</td>
-                          <td>Pending</td>
-
-                          <td>
-                            <div class="dropdown">
-                              <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                Action
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <Detail />
-                                </li>
-                                <li>
-                                  <Editbill />
-                                </li>
-
-                                <li>
-                                  <Makepayment />
-                                </li>
-                              </ul>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>DH19</td>
-                          <td>RG5</td>
-                          <td>Mohit Sahu</td>
-                          <td>698525455</td>
-                          <td>22-1-24</td>
-                          <td>1944</td>
-                          <td>Pending</td>
-
-                          <td>
-                            <div class="dropdown">
-                              <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                Action
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <Detail />
-                                </li>
-                                <li>
-                                  <Editbill />
-                                </li>
-
-                                <li>
-                                  <Makepayment />
-                                </li>
-                              </ul>
-                            </div>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>DH19</td>
-                          <td>RG5</td>
-                          <td>Mohit Sahu</td>
-                          <td>698525455</td>
-                          <td>22-1-24</td>
-                          <td>1944</td>
-                          <td>Pending</td>
-
-                          <td>
-                            <div class="dropdown">
-                              <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                Action
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <Detail />
-                                </li>
-                                <li>
-                                  <Editbill />
-                                </li>
-
-                                <li>
-                                  <Makepayment />
-                                </li>
-                              </ul>
-                            </div>
-                          </td>
-                        </tr>
+                        {filterForBillToday?.map((item) => (
+                          <>
+                            <tr>
+                              <td>{item.bill_id}</td>
+                              <td>{item.bill_date?.split("T")[0]}</td>
+                              <td>{item.uhid}</td>
+                              <td>{item.patient_name}</td>
+                              <td>{item.patient_mobile}</td>
+                              <td>{item.patient_email}</td>
+                              <td>{item.assigned_doctor}</td>
+                              <td>{item.treatment}</td>
+                              <td>{item.treatment_status}</td>
+                              <td>{item.net_amount}</td>
+                              <td>{item.paid_amount}</td>
+                              <td>{item.payment_status}</td>
+                            </tr>
+                          </>
+                        ))}
                       </tbody>
                     </table>
                   </div>
@@ -180,126 +161,75 @@ const Accountant_Dashboard = () => {
                   id="tableres"
                 >
                   <div className="table-responsive" id="table">
-                    <h5>Today Appointment</h5>
+                    <h5>Todays Appointment</h5>
                     <table className="table table-bordered table-striped">
                       <thead>
                         <tr>
-                          <th>UHID</th>
-                          <th>RGID</th>
-                          <th>Patient Name</th>
-                          <th>Moblie No.</th>
-                          <th>Date</th>
-                          <th>Treatment Amount</th>
-                          <th>Payment Status</th>
+                          <th className="table-sno">Appointment ID</th>
+                          <th>Patient UHID</th>
 
-                          <th>Action</th>
+                          <th className="table-small">Patient Name</th>
+                          <th className="table-small">Contact Number</th>
+                          <th className="table-small">Assigned Doctor</th>
+
+                          <th className="table-small">Appointed by</th>
+                          <th className="table-small">Updated by</th>
+                          <th className="table-small">
+                            Appointment Date & Time
+                          </th>
+                          <th className="table-small">Appointment Status</th>
+                          <th>Cancel Reason</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>DH19</td>
-                          <td>RG5</td>
-                          <td>Mohit Sahu</td>
-                          <td>698525455</td>
-                          <td>22-1-24</td>
-                          <td>1944</td>
-                          <td>Pending</td>
+                        {filterForAppointmentToday?.map((item) => (
+                          <>
+                            <tr className="table-row">
+                              <td className="table-sno">{item.appoint_id}</td>
+                              <td className="table-small">
+                                {item.patient_uhid}
+                              </td>
+                              <td>{item.patient_name}</td>
+                              <td className="table-small">{item.mobileno}</td>
+                              <td className="table-small">
+                                {item.assigned_doctor_name}
+                              </td>
 
-                          <td>
-                            <div class="dropdown">
-                              <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                Action
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <Detail />
-                                </li>
-                                <li>
-                                  <Editbill />
-                                </li>
-
-                                <li>
-                                  <Makepayment />
-                                </li>
-                              </ul>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>DH19</td>
-                          <td>RG5</td>
-                          <td>Mohit Sahu</td>
-                          <td>698525455</td>
-                          <td>22-1-24</td>
-                          <td>1944</td>
-                          <td>Pending</td>
-
-                          <td>
-                            {" "}
-                            <div class="dropdown">
-                              <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                Action
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <Detail />
-                                </li>
-                                <li>
-                                  <Editbill />
-                                </li>
-
-                                <li>
-                                  <Makepayment />
-                                </li>
-                              </ul>
-                            </div>
-                          </td>
-                        </tr>
-
-                        <tr>
-                          <td>DH19</td>
-                          <td>RG5</td>
-                          <td>Mohit Sahu</td>
-                          <td>698525455</td>
-                          <td>22-1-24</td>
-                          <td>1944</td>
-                          <td>Pending</td>
-
-                          <td>
-                            <div class="dropdown">
-                              <button
-                                class="btn btn-secondary dropdown-toggle"
-                                type="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                Action
-                              </button>
-                              <ul class="dropdown-menu">
-                                <li>
-                                  <Detail />
-                                </li>
-                                <li>
-                                  <Editbill />
-                                </li>
-
-                                <li>
-                                  <Makepayment />
-                                </li>
-                              </ul>
-                            </div>
-                          </td>
-                        </tr>
+                              <td className="table-small">
+                                {item.appointment_created_by}
+                              </td>
+                              <td className="table-small">
+                                {item.updated_by ? item.updated_by : "-"}
+                              </td>
+                              <td className="table-small">
+                                {item.appointment_dateTime?.split("T")[0]}{" "}
+                                {item.appointment_dateTime?.split("T")[1]}
+                              </td>
+                              <td>{item.appointment_status}</td>
+                              <td>{item.cancel_reason}</td>
+                              {/* <td className="table-small">
+                                    <button
+                                      className="btn btn-warning"
+                                      onClick={() =>
+                                        openUpdatePopup(item.appoint_id)
+                                      }
+                                    >
+                                      Edit
+                                    </button>
+                                  </td>
+                                  <td className="table-small">
+                                    <button
+                                      className="btn btn-danger"
+                                      onClick={() =>
+                                        deleteAppointment(item.appoint_id)
+                                      }
+                                    >
+                                      Delete
+                                    </button>
+                                  </td> */}
+                            </tr>
+                          </>
+                        ))}
                       </tbody>
                     </table>
                   </div>

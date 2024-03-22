@@ -403,6 +403,110 @@ const getPurInventoryByBranch = (req, res) => {
   }
 };
 
+const appointmentData = (req, res) => {
+  const branchName = req.params.branch;
+  try {
+    const getQuery =
+      "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid WHERE appointments.branch_name = ?";
+    db.query(getQuery, branchName, (err, result) => {
+      if (err) {
+        console.error("Error retrieving appointment:", err); // Log the error for debugging
+        return res
+          .status(500)
+          .json({ success: false, message: "Error getting appointment" });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.error("Error in try-catch block:", error); // Log any synchronous errors
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const addSecurityAmount = (req, res) => {
+  try {
+    const {
+      branch_name,
+      date,
+      appointment_id,
+      uhid,
+      patient_name,
+      patient_number,
+      assigned_doctor,
+      amount,
+      payment_status,
+      refund_amount,
+      refund_date,
+      received_by,
+      refund_by,
+    } = req.body;
+    const insertParams = [
+      branch_name,
+      date,
+      appointment_id,
+      uhid,
+      patient_name,
+      patient_number,
+      assigned_doctor,
+      amount,
+      payment_status,
+      refund_amount,
+      refund_date,
+      received_by,
+      refund_by,
+    ];
+
+    const selectQuery =
+      "INSERT INTO security_amount (branch_name, date, appointment_id, uhid, patient_name, patient_number, assigned_doctor, amount, payment_status, refund_amount, refund_date, received_by, refund_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+    db.query(selectQuery, insertParams, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).json({
+        success: true,
+        message: "Security Amount Submitted Successfully",
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getAppointmentDetailsViaID = (req, res) => {
+  try {
+    const id = req.params.id;
+    const selectQuery =
+      "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid WHERE appointments.appoint_id = ?";
+    db.query(selectQuery, id, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getSecurityAmountDataByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM security_amount WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   accountantLoginUser,
   sendOtp,
@@ -415,4 +519,8 @@ module.exports = {
   getPatientBillsByBranch,
   getBillsByBranch,
   getPurInventoryByBranch,
+  appointmentData,
+  addSecurityAmount,
+  getAppointmentDetailsViaID,
+  getSecurityAmountDataByBranch,
 };

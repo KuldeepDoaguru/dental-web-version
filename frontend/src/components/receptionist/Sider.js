@@ -227,9 +227,9 @@ const Sider = () => {
           // If the user cancels the deletion, do nothing
           return;
         }
-     
+        navigate("/")
          dispatch(clearUser())
-         navigate("/")
+         
        }
 
   const getSidebarClass = (path) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 import styled from "styled-components";
 import Select from 'react-select';
 import axios from "axios";
@@ -11,6 +11,7 @@ import cogoToast from "cogo-toast";
 
 
 function BookAppointment() {
+  const formRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {refreshTable,currentUser} = useSelector((state) => state.user);
@@ -534,24 +535,24 @@ const timelineData = async (id) => {
 
    // Check if the selected doctor is null
    if (!selectedDoctor) {
-    alert("Please select doctor from the list")
+    cogoToast.error("Please select doctor from the list")
     console.log("Please select a doctor");
     return;
   }
   if(selectedTreatment?.length == 0){
-    alert("Please select treatment")
+    cogoToast.error("Please select treatment")
     console.log("Please select treatment");
     return;
   }
 
   const selectedDay = new Date(selectedDate).getDay();
   if(selectedDay === weekOffDay){
-     alert("Selected date is a week off day. Please choose another date.");
+     cogoToast.info("Selected date is a week off day. Please choose another date.");
      return ;
   }
 
   if(bookData.payment_Status === "unpaid"){
-    alert("Please paid the OPD amount to book appointment");
+    cogoToast.info("Please paid the OPD amount to book appointment");
     return
   }
 
@@ -597,7 +598,7 @@ const isBranchHoliday = branchHolidays.some(holiday => {
 })
 
  if(isBranchHoliday){
-   alert(`Selected date is branch holiday please selected other date`)
+   cogoToast.info(`Selected date is branch holiday please selected other date`)
    return
  }
 
@@ -701,15 +702,20 @@ const isDoctorAvailable = (selectedDateTime) => {
       const response = await axios.post('http://localhost:4000/api/v1/receptionist/book-appointment',newAppointment);
       console.log(response);
       if(response.data.success){
-        alert(response?.data?.message);
+        cogoToast.success(response?.data?.message);
         dispatch(toggleTableRefresh());
         timelineData(selectedPatient.uhid);
-        console.log(response?.data?.data)
+        console.log(response?.data?.data);
+        formRef.current.reset();
+        setSelectedPatient(null);
+        setSearchDoctor("");
+        setSelectedTreatment([]);
+
         if(response?.data?.treatment === "OPD"){
         navigate(`/print_Opd_Reciept/${response?.data?.data?.insertId}`)}
        }
        else{
-        alert(response?.data?.message);
+        cogoToast.error(response?.data?.message);
         
         console.log(response.data);
        }
@@ -717,7 +723,7 @@ const isDoctorAvailable = (selectedDateTime) => {
    }
    catch(error){
      console.log(error)
-        alert(error?.response?.data?.message);
+        cogoToast.error(error?.response?.data?.message);
 
    }
     // setAppointmentData([...appointment_data,newAppointment]);
@@ -731,7 +737,7 @@ const isDoctorAvailable = (selectedDateTime) => {
     // alert("Appointment booked successfully!");
   } else {
     // Slot is not available
-    alert("The selected doctor's slot is already booked at the specified time");
+    cogoToast.error("The selected doctor's slot is already booked at the specified time");
     console.log("The selected doctor's slot is already booked at the specified time");
   }
  }
@@ -832,7 +838,7 @@ const isDoctorAvailable = (selectedDateTime) => {
  
   return (
     <Wrapper>
-      <form onSubmit={handleBookAppointment}>
+      <form ref={formRef} onSubmit={handleBookAppointment}>
         <ul className="list-group">
           <li className="list-group-item">
             <input

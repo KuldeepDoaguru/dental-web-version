@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState , useRef } from "react";
 import styled from "styled-components";
 import Select from 'react-select';
 import CreatableSelect from 'react-select/creatable';
@@ -7,11 +7,12 @@ import axios from "axios";
 import { useDispatch ,useSelector} from 'react-redux';
 import { toggleTableRefresh } from '../../../../redux/user/userSlice';
 import { useNavigate } from "react-router-dom";
+import cogoToast from "cogo-toast";
 
 
 
 function AddPatient() {
-
+  const formRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
@@ -454,30 +455,30 @@ const handleChangeDisease = (newValue, actionMeta) => {
   
     // Check if the selected doctor is null
     if (!selectedDoctor) {
-      alert("Please select doctor from the list")
+      cogoToast.error("Please select doctor from the list")
       console.log("Please select a doctor");
       return;
     }
 
     if(selectedTreatment?.length == 0){
-      alert("Please select treatment")
+      cogoToast.error("Please select treatment")
       console.log("Please select treatment");
       return;
     }
 
     const selectedDay = new Date(selectedDate).getDay();
   if(selectedDay === weekOffDay){
-     alert("Selected date is a week off day. Please choose another date.");
+     cogoToast.info("Selected date is a week off day. Please choose another date.");
      return ;
   }
 
     if (patients.some(patient => patient.patient_name === data.patient_Name && patient.mobileno === data.mobile)) {
-      alert("Patient already exists");
+      cogoToast.info("Patient already exists");
       return;
   }
 
   if(data.payment_Status === "unpaid"){
-    alert("Please paid the OPD amount to book appointment");
+    cogoToast.info("Please paid the OPD amount to book appointment");
     return
   }
 
@@ -510,7 +511,7 @@ const handleChangeDisease = (newValue, actionMeta) => {
   })
   
    if(isBranchHoliday){
-     alert(`Selected date is branch holiday please selected other date`)
+     cogoToast.info(`Selected date is branch holiday please selected other date`)
      return
    }
 
@@ -606,20 +607,34 @@ const handleChangeDisease = (newValue, actionMeta) => {
           const response = await axios.post('http://localhost:4000/api/v1/receptionist/add-patient',newPatient);
           console.log(response);
           if(response?.data?.success){
-           alert(response?.data?.message);
+           cogoToast.success(response?.data?.message);
            dispatch(toggleTableRefresh());
            timelineData(response?.data?.user?.patientId)
+           formRef.current.reset();
+           setSelectedDoctor(null);
+           setSelectedDisease([]);
+           setSelectedTreatment([]);
+           setSearchDoctor("");
+           setData({ branch_name:"", patient_Name:"",mobile: "",email: "",gender: "", aadhaar_no:"", contact_Person : "" , contact_Person_Name: "", blood_Group : "" , dob : "", age : "",weight:"",allergy:"",disease:"", patientType:"", status:"",doctorId:"",doctor_name:"",appDateTime:"",treatment:"",opd_amount : "", payment_Mode:"", transaction_Id:"", payment_Status:"",notes:"",  address: "", patient_added_by:"",patient_updated_by:"",patient_added_by_emp_id:"", patient_updated_by_emp_id:""})
+           
+
+
+
+
            if(response?.data?.treatment === "OPD"){
+           
             navigate(`/print_Opd_Reciept/${response?.data?.data?.insertId}`)}
           }
           else{
-           alert(response?.data?.message);
+           
+           cogoToast.error(response?.data?.message);
+           
           }
  
        }
        catch(error){
          console.log(error)
-         alert(error.response.data.message);
+         cogoToast.error(error.response.data.message);
  
        }
 
@@ -660,7 +675,7 @@ const handleChangeDisease = (newValue, actionMeta) => {
       // alert("Appointment booked successfully!");
     } else {
       // Slot is not available
-      alert("The selected doctor's slot is already booked at the specified time");
+      cogoToast.error("The selected doctor's slot is already booked at the specified time");
       console.log("The selected doctor's slot is already booked at the specified time");
     }
   };
@@ -684,7 +699,7 @@ const handleDoctorSelect = (doctor) => {
   return (
     <Wrapper>
       
-                <form onSubmit={handleSubmit}>
+                <form ref={formRef} onSubmit={handleSubmit}>
                 <ul className="list-group">
                   <li className="list-group-item">
                     <div className="row">

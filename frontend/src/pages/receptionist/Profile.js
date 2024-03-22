@@ -3,8 +3,12 @@ import styled from "styled-components";
 
 import Sider from "../../components/receptionist/Sider";
 import Header from "../../components/receptionist/Header";
+import { useDispatch, useSelector } from 'react-redux';
 
 const Profile = () => {
+
+    const {refreshTable,currentUser} = useSelector((state) => state.user);
+  const  branch = currentUser?.branch_name;
   return (
     <>
       <Wrapper>
@@ -33,19 +37,19 @@ const Profile = () => {
                         <div className="col-lg-4">
                             <label className="text-info">UserID</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">ID</p>
+                                <p className="m-0">{currentUser?.employee_ID}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
                         <label className="text-info">User Name</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Dr. Name</p>
+                                <p className="m-0">{currentUser?.employee_name}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
                         <label className="text-info">Email</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">doctor@doaguru.com</p>
+                                <p className="m-0">{currentUser?.employee_email}</p>
                             </div>
                         </div>
                     </div>
@@ -53,93 +57,37 @@ const Profile = () => {
                         <div className="col-lg-4">
                             <label className="text-info">Sex</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Male</p>
+                                <p className="m-0">{currentUser?.gender}</p>
                             </div>
                         </div>
+                       
                         <div className="col-lg-4">
-                        <label className="text-info">Reg.No</label>
+                        <label className="text-info">Address</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">123</p>
+                                <p className="m-0">{currentUser?.address}</p>
                             </div>
                         </div>
-                        <div className="col-lg-4">
-                        <label className="text-info">City</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Jabalpur</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row mb-3">
                         <div className="col-lg-4">
                             <label className="text-info">Designation</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Doctor Designation</p>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                        <label className="text-info">Specialization</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Doctor Specialization</p>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                        <label className="text-info">Pin</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">482002</p>
+                                <p className="m-0">{currentUser?.employee_designation}</p>
                             </div>
                         </div>
                     </div>
+                  
                     <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label className="text-info">Country</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">India</p>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                        <label className="text-info">State</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Madhya Pradesh</p>
-                            </div>
-                        </div>
+                        
+                       
                         <div className="col-lg-4">
                         <label className="text-info">Mobile No.</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">7000070070</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label className="text-info">Experience</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">2 Years</p>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                        <label className="text-info">Last Degree</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">B.com</p>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                        <label className="text-info">College Name</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Mahakousal</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-lg-4">
-                            <label className="text-info">Previous Work Experience</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">AIIMS</p>
+                                <p className="m-0">{currentUser?.employee_mobile}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
                         <label className="text-info">Working Days</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Mon-Wed</p>
+                                <p className="m-0">{currentUser?.working_days}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
@@ -149,6 +97,8 @@ const Profile = () => {
                             </div>
                         </div>
                     </div>
+                   
+                   
                 </div>
             </div>
         </div>

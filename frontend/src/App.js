@@ -33,6 +33,7 @@ import NewTreatPrescription from "./components/Doctor/Prescription/TreatmentPres
 import ViewTreatPrescription from "./components/Doctor/Prescription/TreatmentPrescription/ViewTreatPrescription";
 import TreatSuggestDashs from "./components/Doctor/Treatment Suggestion/TreatSuggestDashs";
 import SecurityAmount from "./components/Doctor/Treatment Suggestion/SecurityAmount";
+import PrintSecurityAmt from "./components/Doctor/Treatment Suggestion/PrintSecurityAmt";
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
       <Route path="/ViewTreatPrescription/:id" element={<ViewTreatPrescription />} />
       <Route path="/treatmentSuggestion/:id" element={<TreatSuggestDashs />} />
       <Route path="/SecurityAmount/:id" element={<SecurityAmount />} />
+      <Route path="/print-security-bill/:sa_id" element={<PrintSecurityAmt />} />
       {/* test */}
       <Route path="/HeadBar" element={<HeadBar />} />
 

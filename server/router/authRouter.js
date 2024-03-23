@@ -3,7 +3,7 @@ const db = require("../connect.js");
 const multer = require('multer');
 const path = require('path');
 const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById } = require("../controller/authControl.js");
-const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId } = require("../controller/authAppointTable.js");
+const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts } = require("../controller/authAppointTable.js");
 const { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId } = require("../controller/authBranch.js");
 const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM } = require("../controller/authTreatment.js");
 const { uploadImage, getUploadedImages } = require("../controller/authContrimg.js");
@@ -23,6 +23,9 @@ router.post("/insertTreatSuggest", insertTreatSuggest);
 router.post("/addSecurityAmount", addSecurityAmount);
 router.get("/getTreatSuggestById/:appoint_id", getTreatSuggestById);
 router.get("/getSecurityAmountByAppointmentId/:appointment_id", getSecurityAmountByAppointmentId);
+router.get('/patient-security/:appoint_id', getPatientSecurityAmt);
+router.put('/update-security-amount/:sa_id', updatePatientSecurityAmt);
+router.get('/getAllSecurityAmounts/:sa_id', getAllSecurityAmounts)
 // Treatment Suggestion Routes END here........
 
 // Appointment  Routes START here......

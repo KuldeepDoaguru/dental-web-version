@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../../../redux/user/userSlice';
 
 const Profile = () => {
+    const currentUser = useSelector(selectCurrentUser);
   return (
     <>
       <Wrapper>
@@ -9,61 +12,74 @@ const Profile = () => {
             <div className="row">
                 <div className="col-lg-12 col-12">
                     <div className="text-start p-2">
-                        <h3>Doctor Profile</h3>
+                        <h3>Doctor Profile</h3> 
                         <hr />
                     </div>
                 </div>
             </div>
+            {currentUser && (
             <div className="row">
                 <div className="col-lg-4">
-                    <img src="https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg" alt="doctor-profile" className="img-fluid rounded"/>
+                    <img src={currentUser.employee_picture} alt="doctor-profile" className="img-fluid rounded"/>
                 </div>
                 <div className="col-lg-8">
                     <div className="row mb-3">
                         <div className="col-lg-4">
                             <label className="text-info">UserID</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Doctor ID</p>
+                                <p className="m-0">{currentUser.employee_ID}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
                         <label className="text-info">User Name</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Dr. Name</p>
+                                <p className="m-0">Dr. {currentUser.employee_name}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
                         <label className="text-info">Email</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">doctor@doaguru.com</p>
+                                <p className="m-0">{currentUser.email}</p>
                             </div>
                         </div>
                     </div>
                     <div className="row mb-3">
-                        <div className="col-lg-4">
-                            <label className="text-info">Sex</label>
+                    <div className="col-lg-4">
+                        <label className="text-info">Mobile No.</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Male</p>
+                                <p className="m-0">{currentUser.employee_mobile}</p>
                             </div>
                         </div>
-                        <div className="col-lg-4">
+                        {/* <div className="col-lg-4">
+                            <label className="text-info">Sex</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{currentUser.gender}</p>
+                            </div>
+                        </div> */}
+                        {/* <div className="col-lg-4">
                         <label className="text-info">Reg.No</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">123</p>
                             </div>
-                        </div>
-                        <div className="col-lg-4">
-                        <label className="text-info">City</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Jabalpur</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row mb-3">
+                        </div> */}
                         <div className="col-lg-4">
                             <label className="text-info">Designation</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Doctor Designation</p>
+                                <p className="m-0">{currentUser.employee_designation}</p>
+                            </div>
+                        </div>
+                        <div className="col-lg-4">
+                        <label className="text-info">Address</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{currentUser.address}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <div className="row mb-3">
+                        <div className="col-lg-4">
+                            <label className="text-info">Designation</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{currentUser.employee_designation}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
@@ -78,12 +94,18 @@ const Profile = () => {
                                 <p className="m-0">482002</p>
                             </div>
                         </div>
-                    </div>
-                    <div className="row mb-3">
+                    </div> */}
+                    {/* <div className="row mb-3">
+                        <div className="col-lg-4">
+                        <label className="text-info">Mobile No.</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{currentUser.employee_mobile}</p>
+                            </div>
+                        </div>
                         <div className="col-lg-4">
                             <label className="text-info">Country</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">India</p>
+                                <p className="m-0"></p>
                             </div>
                         </div>
                         <div className="col-lg-4">
@@ -92,14 +114,8 @@ const Profile = () => {
                                 <p className="m-0">Madhya Pradesh</p>
                             </div>
                         </div>
-                        <div className="col-lg-4">
-                        <label className="text-info">Mobile No.</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">7000070070</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row mb-3">
+                    </div> */}
+                    {/* <div className="row mb-3">
                         <div className="col-lg-4">
                             <label className="text-info">Experience</label>
                             <div className="shadow-none p-1 bg-light rounded">
@@ -118,29 +134,31 @@ const Profile = () => {
                                 <p className="m-0">Mahakousal</p>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="row">
-                        <div className="col-lg-4">
-                            <label className="text-info">Previous Work Experience</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">AIIMS</p>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
+                    <div className="col-lg-4">
                         <label className="text-info">Working Days</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">Mon-Wed</p>
+                                <p className="m-0">{currentUser.working_days}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
-                        <label className="text-info">Working Shift</label>
+                            <label className="text-info">Morning Working Shift</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">12PM - 2PM</p>
+                                <p className="m-0">{currentUser.morning_shift_start_time} - {currentUser.morning_shift_end_time}</p>
+                            </div>
+                        </div>
+                        
+                        <div className="col-lg-4">
+                        <label className="text-info">Evening Working Shift</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{currentUser.evening_shift_start_time} - {currentUser.evening_shift_end_time}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            )}
         </div>
       </Wrapper>
     </>

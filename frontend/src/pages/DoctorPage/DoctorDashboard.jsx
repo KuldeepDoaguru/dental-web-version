@@ -1,11 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-// import Card from "../../components/superAdmin/dashboard/Card";
 import HeadBar from "../../components/Doctor/HeadBar";
 import SideBar from "../../components/Doctor/SideBar";
-import Card from "../../components/Doctor/Card/Card";
 import AppointTable from "../../components/Doctor/Tables/AppointTable";
-import AveragePatientChart from "../../components/Doctor/Charts/AveragePatientChart";
 
 const DoctorDashboard = () => {
   return (
@@ -25,19 +22,6 @@ const DoctorDashboard = () => {
                   <h3> Welcome To Dental Guru</h3>
                   <p> Doctor Dashboard</p>
                 </div>
-                {/* <div className="col-12 col-md-4 my-3">
-                  <form className="d-flex ms-auto my-sm" role="search">
-                    <input
-                      className="form-control me-2"
-                      type="search"
-                      placeholder="Search"
-                      aria-label="Search"
-                    />
-                    <button className="btn btn-outline-primary" type="submit">
-                      Search
-                    </button>
-                  </form>
-                </div> */}
               </div>
               <div className="row d-flex justify-content-around ms-4">
                 {/* <Card /> */}

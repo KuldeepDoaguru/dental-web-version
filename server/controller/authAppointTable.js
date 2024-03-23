@@ -166,6 +166,77 @@ const getSecurityAmountByAppointmentId = (req, res) => {
     });
 };
 
+const getPatientSecurityAmt = (req, res) => {
+    const appoint_id = req.params.appoint_id;
 
-module.exports = { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId };
+    const sql = `
+        SELECT 
+            a.appoint_id,
+            p.uhid, 
+            p.patient_name,
+            p.mobileno,
+            ts.totalCost
+        FROM 
+            appointments AS a
+        JOIN 
+            patient_details AS p ON a.patient_uhid = p.uhid
+        LEFT JOIN 
+        treat_suggest AS ts ON p.uhid = ts.p_uhid
+        WHERE
+            a.appoint_id = ?
+    `;
+
+    db.query(sql, [appoint_id], (err, result) => {
+        if (err) {
+            console.error('Error executing query:', err.stack);
+            return res.status(500).json({ error: 'Internal server error' });
+        } else if (result.length === 0) {
+            return res.status(404).json({ error: "Not Found Data" });
+        } else {
+            return res.status(200).json({ message: 'Access data Successfully', result });
+        }
+    });
+};
+
+const updatePatientSecurityAmt = (req, res) =>{
+    const sa_id = req.params.sa_id;
+    const { refund_amount, refund_date, refund_by } = req.body;
+
+    // Prepare the SQL query
+    const sql = `
+        UPDATE security_amount
+        SET payment_status = 'refund', refund_amount = ?, refund_date = ?, refund_by = ?
+        WHERE sa_id = ?
+    `;
+
+    // Execute the update query
+    db.query(sql, [refund_amount, refund_date, refund_by, sa_id], (err, result) => {
+        if (err) {
+            console.error('Error executing query:', err.stack);
+            return res.status(500).json({ error: 'Internal server error' });
+        } else {
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ error: 'No records updated' });
+            } else {
+                return res.status(200).json({ message: 'Security amount updated successfully' });
+            }
+        }
+    });
+};
+
+const  getAllSecurityAmounts = (req,res)=>{
+    const sa_id  = req.params.sa_id;
+
+    const sql = `SELECT * FROM security_amount WHERE sa_id = ?`;
+
+    db.query(sql, [sa_id] ,(err, result) => {
+        if(err){
+            return res.status(400).json({success: false, message:"Bad request", errors: err});
+        }else{
+            return res.status(200).json({ success: true, message: "Successfully Get Data", result})
+        }
+    });
+};
+
+module.exports = { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts };
 

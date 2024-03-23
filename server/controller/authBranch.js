@@ -110,6 +110,13 @@ const LoginDoctor = (req, res) => {
                         branch_name: user.branch_name,
                         employee_name: user.employee_name,
                         employee_mobile: user.employee_mobile,
+                        gender: user.gender,
+                        address: user.address,
+                        working_days: user.working_days,
+                        morning_shift_start_time: user.morning_shift_start_time,
+                        morning_shift_end_time: user.morning_shift_end_time,
+                        evening_shift_start_time: user.evening_shift_start_time,
+                        evening_shift_end_time: user.evening_shift_end_time,
                         employee_designation: user.employee_designation,
                         employee_picture: user.employee_picture,
                         token: token

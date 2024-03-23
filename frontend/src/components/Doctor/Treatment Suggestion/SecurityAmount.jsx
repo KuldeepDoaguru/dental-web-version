@@ -12,12 +12,10 @@ const SecurityAmount = () => {
   const { id } = useParams();
   console.log(id);
   const navigate = useNavigate();
-  const [getPatientData, setGetPatientData] = useState();
-  const [getTSData, setGetTStData] = useState();
   const [securityAmt, setSecurityAmt] = useState([]);
   const currentUser = useSelector(selectCurrentUser);
   const [formData, setFormData] = useState({
-    branch_name: "",
+    branch_name: currentUser ? currentUser.branch_name : "",
     date: "",
     appointment_id: id,
     uhid: "",
@@ -29,64 +27,38 @@ const SecurityAmount = () => {
     received_by: currentUser ? currentUser.employee_name : "",
   });
 
+  const [updateRefund, setUpdateRefund] = useState({
+    refundBy: currentUser ? currentUser.employee_name : "",
+    refundDate: "",
+    refundAmount: ""
+  });
+
+  console.log(updateRefund);
+
   console.log(formData);
 
-  const fetchData = async () => {
+  const newGetFetchData = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
-      );
-      //   const { mobileno, uhid, patient_name } = res.data.result;
-      //   setFormData({
-      //     ...formData,
-      //     uhid,
-      //     patient_name,
-      //     patient_number: mobileno, // Assuming mobileno is equivalent to patient_number
-      //   });
-      if (Array.isArray(res.data.result) && res.data.result.length > 0) {
-        const { patient_name, uhid, mobileno } = res.data.result[0]; // Extract values from the first element of the array
-        setFormData({
-          ...formData,
-          uhid,
-          patient_name,
-          patient_number: mobileno,
-        });
-        console.log(res.data.result[0]);
-        setGetPatientData(res.data.result[0]);
-      } else {
-        console.log("No data received from the API");
-      }
-      console.log(res.data.result);
-      setGetPatientData(res.data.result);
+      const resps = await axios.get(`http://localhost:8888/api/doctor/patient-security/${id}`);
+      const { patient_name, uhid, mobileno, totalCost } = resps.data.result[0];
+      console.log(resps.data.result);
+      setFormData({
+        ...formData,
+        uhid,
+        patient_name,
+        patient_number: mobileno,
+        amount: totalCost,
+      });
     } catch (error) {
       console.log(error);
     }
-  };
+  }
 
   useEffect(() => {
-    fetchData();
+    newGetFetchData();
   }, []);
 
-  const fetchTreatSuggest = async () => {
-    try {
-      const resps = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatSuggestById/${id}`
-      );
-    //   const { totalCost } = resps.data.data;
-    //   setFormData({
-    //     ...formData,
-    //     amount: totalCost,
-    //   });
-    //   console.log(resps.data.data);
-    //   setGetTStData(resps.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
-  useEffect(() => {
-    fetchTreatSuggest();
-  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -98,7 +70,7 @@ const SecurityAmount = () => {
       await insertCorrectData();
       alert("Security Amount Submitted Successfully");
       setFormData({
-        branch_name: "",
+        // branch_name: "",
         date: "",
         appointment_id: id,
         // uhid: '',
@@ -118,7 +90,7 @@ const SecurityAmount = () => {
   const insertCorrectData = async () => {
     try {
       const formsCorrect = {
-        branch_name: "",
+        branch_name: formData.branch_name,
         date: formData.date,
         appointment_id: id,
         uhid: formData.uhid,
@@ -141,19 +113,50 @@ const SecurityAmount = () => {
     }
   };
 
-  const getSecurityAmt = async () =>{
+  const getSecurityAmt = async () => {
     try {
-        const resdata = await axios.get(`http://localhost:8888/api/doctor/getSecurityAmountByAppointmentId/${id}`);
-        setSecurityAmt(resdata.data.data);
-        console.log(resdata.data.data);
-     } catch (error) {
-        console.log(error);
+      const resdata = await axios.get(`http://localhost:8888/api/doctor/getSecurityAmountByAppointmentId/${id}`);
+      setSecurityAmt(resdata.data.data);
+      console.log(resdata.data.data);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getSecurityAmt();
   }, []);
+
+  const handleUpdate = async (e, sa_id) => {
+    e.preventDefault();
+
+    const { refundDate, refundAmount } = updateRefund;
+
+    const updatedata = {
+      refund_by: currentUser ? currentUser.employee_name : "",
+      refund_date: refundDate,
+      refund_amount: refundAmount
+    };
+
+    try {
+      const response = await axios.put(`http://localhost:8888/api/doctor/update-security-amount/${sa_id}`, updatedata);
+
+      console.log(response.data);
+      
+      setUpdateRefund({
+        refundDate: "",
+        refundAmount: ""
+      });
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handlePrint = (sa_id) =>{
+    navigate(`/print-security-bill/${sa_id}`)
+  }
+
 
   return (
     <>
@@ -355,35 +358,91 @@ const SecurityAmount = () => {
                             <th>Assigned Doctor</th>
                             <th>Security Amount</th>
                             <th>Payment Status</th>
-                            <th>Refund</th>
+                            <th>Action</th>
                             <th>Print</th>
                           </tr>
                         </thead>
                         <tbody>
-                            {securityAmt.map((item, index)=>(
-                          <tr className="table-row" key={index}>
-                            <td>{item.date}</td>
-                            <td>{item.appointment_id}</td>
-                            <td>{item.uhid}</td>
-                            <td>{item.patient_name}</td>
-                            <td>{item.patient_number}</td>
-                            <td>{item.assigned_doctor}</td>
-                            <td>{item.amount}</td>
-                            <td>{item.payment_status}</td>
-                            <td>{/* <MakeRefund /> */}</td>
-                            <td>
-                              <Link to="/security-amount-reciept">
-                                <button className="btn btn-success">
-                                  Print
+                          {securityAmt.map((item, index) => (
+                            <tr className="table-row" key={index}>
+                              <td>{item.date}</td>
+                              <td>{item.appointment_id}</td>
+                              <td>{item.uhid}</td>
+                              <td>{item.patient_name}</td>
+                              <td>{item.patient_number}</td>
+                              <td>{item.assigned_doctor}</td>
+                              <td>{item.amount}</td>
+                              <td>{item.payment_status}</td>
+                              <td><div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Action
                                 </button>
-                              </Link>
-                            </td>
-                          </tr>
+                                <ul class="dropdown-menu">
+                                  {/* <li><a class="dropdown-item" href="#">Update Status</a></li> */}
+                                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Refund</a></li>
+                                </ul>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Refund  Security Amount</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <form onSubmit={(e) => handleUpdate(e, item.sa_id)}>
+
+                                          <div data-mdb-input-init class="form-outline mb-4">
+                                            <label class="form-label" for="form1Example1">Refund By</label>
+                                            <input type="text" id="form1Example1" class="form-control" value={updateRefund.refundBy}
+                                              onChange={(e) => setUpdateRefund({ ...updateRefund, refundBy: e.target.value })}
+                                              name="refundBy" />
+
+                                          </div>
+
+                                          <div data-mdb-input-init class="form-outline mb-4">
+                                            <label class="form-label" for="form1Example2">Refund Date</label>
+                                            <input type="datetime-local" id="form1Example2" class="form-control" value={updateRefund.refundDate}
+                                              onChange={(e) => setUpdateRefund({ ...updateRefund, refundDate: e.target.value })}
+                                              name="refundDate" />
+                                          </div>
+
+                                          <div data-mdb-input-init class="form-outline mb-4">
+                                            <label class="form-label" for="form1Example2">Refund Amount</label>
+                                            <input type="text" id="form1Example2" className="form-control"
+                                              value={updateRefund.refundAmount}
+                                              onChange={(e) => setUpdateRefund({ ...updateRefund, refundAmount: e.target.value })}
+                                              name="refundAmount" />
+                                          </div>
+
+                                          <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block">Update</button>
+
+                                        </form>
+                                      </div>
+                                      {/* <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary">Save changes</button>
+                                      </div> */}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              </td>
+                              <td>
+                                {/* <Link to="/print-security-bill"> */}
+                                  <button className="btn btn-success" onClick={()=>handlePrint(item.sa_id)}>
+                                    Print
+                                  </button>
+                                {/* </Link> */}
+                              </td>
+                            </tr>
                           ))}
                         </tbody>
                       </table>
                     </div>
                   </div>
+                </div>
+                <div className="text-center">
+                  <button className="btn btn-info text-light">Save & Continue</button>
                 </div>
               </div>
             </div>

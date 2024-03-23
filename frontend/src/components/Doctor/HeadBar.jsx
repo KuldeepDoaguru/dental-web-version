@@ -71,9 +71,9 @@ const HeadBar = () => {
                   </ul>
                 </li>
 
-                <li className="nav-item" id="bell">
+                {/* <li className="nav-item" id="bell">
                   <AiFillBell className="icon" />
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>

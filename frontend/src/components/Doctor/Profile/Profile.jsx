@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../../redux/user/userSlice';
 
 const Profile = () => {
-    const currentUser = useSelector(selectCurrentUser);
+    const currentUser = useSelector(state => state.user.currentUser);
   return (
     <>
       <Wrapper>

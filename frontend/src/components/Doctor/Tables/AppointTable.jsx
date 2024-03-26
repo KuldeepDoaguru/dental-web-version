@@ -4,6 +4,9 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleTableRefresh } from '../../../redux/user/userSlice';
+import cogoToast from "cogo-toast";
 
 const AppointTable = () => {
     const [searchInput, setSearchInput] = useState("");
@@ -11,6 +14,8 @@ const AppointTable = () => {
     const [filterTableData, setFilterTableData] = useState([]);
     const navigate = useNavigate();
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+    const dispatch = useDispatch();
+    const { refreshTable } = useSelector((state) => state.user);
 
     const handleDateChange = (increment) => {
         const currentDate = new Date(selectedDate);
@@ -19,6 +24,7 @@ const AppointTable = () => {
     };
 
     useEffect(() => {
+        console.log("AppointTable is refreshing...");
         const fetchAppointments = async () => {
             try {
                 const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetails?date=${selectedDate}`);
@@ -35,7 +41,17 @@ const AppointTable = () => {
         };
 
         fetchAppointments();
-    }, [selectedDate, searchInput]);
+
+               // Refresh every 5 seconds
+    const interval = setInterval(() => {
+        dispatch(toggleTableRefresh());
+    }, 5000);
+
+    return () => {
+        clearInterval(interval);
+        console.log("Interval cleared.");
+    };
+    }, [selectedDate, searchInput, dispatch]);
 
 
 
@@ -67,6 +83,7 @@ const AppointTable = () => {
                 const cancelReason = prompt("Please provide a reason for cancellation:");
                 if (cancelReason !== null) {
                     requestBody.reason = cancelReason;
+                    cogoToast.success("Patient Appointment Cancel Successfully")
                 } else {
                     return;
                 }

@@ -1,47 +1,29 @@
+
 import { createSlice } from "@reduxjs/toolkit";
-import { createSelector } from '@reduxjs/toolkit';
 
 const initialState = {
     currentUser: null,
-    loading: false,
-    error: false,
-    refreshData: false
-};
+    refreshTable: false, // Add a new state for managing table refresh
+
+}
 
 const userSlice = createSlice({
-    name: 'user',
+    name: "user",
     initialState,
     reducers: {
-        signInStart: (state) => {
-            state.loading = true;
-        },
-        signInSuccess: (state, action) => {
+        setUser: (state, action) => {
             state.currentUser = action.payload;
-            state.loading = false;
-            state.error = false;
         },
-        signInFailure: (state, action) => {
-            state.loading = false;
-            state.error = action.payload;
-        },
-        logout: (state) => {
+        clearUser: (state) => {
             state.currentUser = null;
-            state.loading = false;
-            state.error = false;
         },
-        toggleDataRefresh: (state) => {
-            state.refreshData = !state.refreshData;
+        toggleTableRefresh: (state) => {
+            state.refreshTable = !state.refreshTable;
         }
+
     }
-});
 
-const selectUser = (state) => state.user;
+})
 
-export const selectCurrentUser = createSelector(
-    [selectUser],
-    (user) => user.currentUser
-);
-
-export const { signInStart, signInSuccess, signInFailure, logout, toggleDataRefresh } = userSlice.actions;
-
+export const { setUser, clearUser, toggleTableRefresh } = userSlice.actions; 
 export default userSlice.reducer;

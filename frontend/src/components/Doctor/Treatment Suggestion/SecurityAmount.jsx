@@ -6,14 +6,13 @@ import cogoToast from "cogo-toast";
 import Sider from "../SideBar";
 import HeadBar from "../HeadBar";
 import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../../redux/user/userSlice";
 
 const SecurityAmount = () => {
   const { id } = useParams();
   console.log(id);
   const navigate = useNavigate();
   const [securityAmt, setSecurityAmt] = useState([]);
-  const currentUser = useSelector(selectCurrentUser);
+  const currentUser = useSelector(state => state.user.currentUser);
   const [formData, setFormData] = useState({
     branch_name: currentUser ? currentUser.branch_name : "",
     date: "",
@@ -155,6 +154,10 @@ const SecurityAmount = () => {
 
   const handlePrint = (sa_id) =>{
     navigate(`/print-security-bill/${sa_id}`)
+  };
+
+  const handleChangePage = () =>{
+    navigate(`/TreatmentDashBoard/${id}`)
   }
 
 
@@ -442,7 +445,7 @@ const SecurityAmount = () => {
                   </div>
                 </div>
                 <div className="text-center">
-                  <button className="btn btn-info text-light">Save & Continue</button>
+                  <button className="btn btn-info text-light" onClick={handleChangePage}>Start Treatment</button>
                 </div>
               </div>
             </div>

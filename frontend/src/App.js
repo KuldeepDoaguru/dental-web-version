@@ -5,26 +5,16 @@ import { Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/superAdmin/Dashboard";
 import UniversalLogin from "./pages/UniversalLogin";
 import DoctorDashboard from "./pages/DoctorPage/DoctorDashboard";
-import Card from "./components/Doctor/Card/Card";
-import Profile from "./components/Doctor/Profile/Profile";
 import ProfileDashboard from "./components/Doctor/Profile/ProfileDashboard";
-import AppointTable from "./components/Doctor/Tables/AppointTable";
-import AllAppoint from "./components/Doctor/Appointment/AllAppoint";
 import PatientProfile from "./pages/DoctorPage/PatientProfile";
 import AllPatient from "./pages/DoctorPage/AllPatient";
 import ExaminationDashBoard from "./components/Doctor/Examination/ExaminationDashBoard";
-import PediatricDental from "./components/Doctor/Examination/PediatricDental";
-import ExaminationDashTwo from "./components/Doctor/Examination/ExaminationDashTwo";
-import ExaminationPatient from "./components/Doctor/Examination/ExaminationPatient";
 import ExaminationDashBoardPatient from "./components/Doctor/Examination/ExaminationDashBoardPatient";
 import ExaminationDashBoardPediatric from "./components/Doctor/Examination/ExaminationDashBoardPediatric";
 import TreatmentDashBoard from "./components/Doctor/Treatment/TreatmentDashBoard";
 import PrescriptionDashBoard from "./components/Doctor/Prescription/PrescriptionDashBoard";
-import CreatePrescrip from "./components/Doctor/Prescription/CreatePrescrip";
 import TPrescription from "./components/Doctor/Prescription/TreatmentPrescription/TPrescription";
 import TPrescriptionDash from "./components/Doctor/Prescription/TreatmentPrescription/TPrescriptionDash";
-import HistoryDashBoard from "./components/Doctor/HistoryFolder/HistoryDashBoard";
-import HeadBar from "./components/Doctor/HeadBar";
 import DoctorLogin from "./components/Doctor/Login/DoctorLogin";
 import NewTreatment from "./components/Doctor/Treatment/NewTreatment";
 import TreatmentForm from "./components/Doctor/Treatment/TreatmentForm";
@@ -44,38 +34,27 @@ function App() {
       <Route path="/UniversalLogin" element={<UniversalLogin />} />
 
       {/* ************** Doctor Routes Start Here ******************* */}
+
       <Route path="/" element={<DoctorLogin />} />
       <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
-      
-      <Route path="/card" element={<Card />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/profileDashboard" element={<ProfileDashboard />} /> 
-      <Route path="/appointTable" element={<AppointTable />} />
-      <Route path="/all-appoint" element={<AllAppoint />} />
-      <Route path="/Patient-profile" element={<PatientProfile />} />
-      <Route path="/all-patient" element={<AllPatient />} />
       <Route path="/examination-Dashboard/:id" element={<ExaminationDashBoard />} />
-      <Route path="/PediatricDental" element={<PediatricDental />} />
-      <Route path="/ExaminationDashTwo" element={<ExaminationDashTwo />} />
-      <Route path="/ExaminationPatient" element={<ExaminationPatient />} />
       <Route path="/ExaminationDashBoardPatient/:id" element={<ExaminationDashBoardPatient />} />
       <Route path="/ExaminationDashBoardPediatric/:id" element={<ExaminationDashBoardPediatric />} />
+      <Route path="/treatmentSuggestion/:id" element={<TreatSuggestDashs />} />
+      <Route path="/SecurityAmount/:id" element={<SecurityAmount />} />
+      <Route path="/print-security-bill/:sa_id" element={<PrintSecurityAmt />} />
       <Route path="/TreatmentDashBoard/:id" element={<TreatmentDashBoard />} />
       <Route path="/NewTreatment/:id" element={<NewTreatment />} />
       <Route path="/treatProducer/:id/:appointment_id" element={<TreatmentForm />} />
       <Route path="/treatmentDashTwo/:id/:appointment_id" element={<TreatmentDashTwo />} />
       <Route path="/NewTreatPrescription/:id" element={<NewTreatPrescription />} />
       <Route path="/PrescriptionDashBoard" element={<PrescriptionDashBoard />} />
-      <Route path="/CreatePrescrip" element={<CreatePrescrip />} />
       <Route path="/TPrescription" element={<TPrescription />} />
       <Route path="/TPrescriptionDash/:id" element={<TPrescriptionDash />} />
-      <Route path="/HistoryDashBoard" element={<HistoryDashBoard />} />
       <Route path="/ViewTreatPrescription/:id" element={<ViewTreatPrescription />} />
-      <Route path="/treatmentSuggestion/:id" element={<TreatSuggestDashs />} />
-      <Route path="/SecurityAmount/:id" element={<SecurityAmount />} />
-      <Route path="/print-security-bill/:sa_id" element={<PrintSecurityAmt />} />
-      {/* test */}
-      <Route path="/HeadBar" element={<HeadBar />} />
+      <Route path="/profileDashboard" element={<ProfileDashboard />} /> 
+      <Route path="/Patient-profile" element={<PatientProfile />} />
+      <Route path="/all-patient" element={<AllPatient />} />
 
       {/* ****************** Doctor Routes End Here ******************* */}
     </Routes>

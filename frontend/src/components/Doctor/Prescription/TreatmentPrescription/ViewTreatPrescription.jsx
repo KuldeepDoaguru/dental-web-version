@@ -3,14 +3,14 @@ import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '../../../../redux/user/userSlice';
+import { setUser } from '../../../../redux/user/userSlice';
 
 const ViewTreatPrescription = () => {
     const { id } = useParams();
     console.log(id);
     const navigate = useNavigate();
     const [getPatientData, setGetPatientData] = useState([]);
-    const currentUser = useSelector(selectCurrentUser);
+    const currentUser = useSelector(state => state.user.currentUser); 
     const [getExaminData, setGetExaminData] = useState([]);
     const [getTreatData, setGetTreatData] = useState([]);
     const [getTreatMedicine, setGetTreatMedicine] = useState([]);

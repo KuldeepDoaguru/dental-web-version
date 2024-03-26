@@ -6,8 +6,9 @@ import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { RiLoader2Fill } from "react-icons/ri";
 import { useDispatch } from 'react-redux';
-import { toggleDataRefresh } from '../../../redux/user/userSlice'; 
+import { toggleTableRefresh } from '../../../redux/user/userSlice'; 
 import { GiFastBackwardButton } from "react-icons/gi";
+import cogoToast from "cogo-toast";
 import teeth18 from "../Assest/teeth1.png";
 import teeth16 from "../Assest/teeth3.png";
 import teeth13 from "../Assest/teeth6.png";
@@ -722,8 +723,8 @@ const PediatricDentalTest = () => {
     try {
       const response = await axios.post('http://localhost:8888/api/doctor/dentalPediatric', formData);
       console.log(response.data);
-      // dispatch(toggleDataRefresh());
-      window.location.reload();
+      dispatch(toggleTableRefresh());
+      // window.location.reload();
     } catch (error) {
       console.error('Error:', error);
     }
@@ -766,7 +767,7 @@ const PediatricDentalTest = () => {
   const handleRedirect = (e) => {
     if (isFormFilled) {
       e.preventDefault(); // Prevent the default redirection behavior
-      alert("You cannot navigate away while the form is filled.");
+      cogoToast.info("You cannot navigate away while the form is filled.");
     } else {
       navigate(`/ExaminationDashBoardPatient/${id}`);
     }

@@ -3,7 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import { signInStart, signInSuccess, signInFailure } from '../../../redux/user/userSlice';
+import { setUser } from "../../../redux/user/userSlice";
+import cogoToast from "cogo-toast";
 
 const DoctorLogin = () => {
   const dispatch = useDispatch();
@@ -16,20 +17,6 @@ const DoctorLogin = () => {
   const [localhost, setLocalhost] = useState([]);
   const [braches,setBranches] = useState([]);
   const [selectedBranch,setSelectedBranch] = useState("");
-
-  // const sendOtp = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       "http://localhost:7777/api/v1/super-admin/sendOtp",
-  //       {
-  //         email,
-  //       }
-  //     );
-  //     console.log(response); 
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
 const getBranches = async ()=>{
   try{
@@ -69,15 +56,16 @@ console.log(selectedBranch)
       setLocalhost(response.data);
       if (response.data.success === "true") {
         // sendOtp();
-        // alert("login successful")
-        dispatch(signInSuccess(response.data.user))
+        cogoToast.success(response.data.message);
+        dispatch(setUser(response.data.user))
         navigate("/doctor-dashboard");
         // setPopupVisible(true);
       } else {
-        alert.error(response.data.message);
+        cogoToast.error(response.data.message);
       }
     } catch (error) {
       console.log("Axios error:", error);
+      // cogoToast.error("Axios error:", error)
 
       if (
         error.response &&
@@ -85,10 +73,10 @@ console.log(selectedBranch)
         error.response.data.message
       ) {
         // If there is a response object and it contains a message property
-         alert(error.response.data.message);
+        cogoToast.info(error.response.data.message);
       } else {
         // If there is no response object or no message property
-         alert("An error occurred while processing your request.");
+        cogoToast.error("An error occurred while processing your request.");
       }
     }
   };
@@ -96,78 +84,6 @@ console.log(selectedBranch)
   const closeUpdatePopup = () => {
     setPopupVisible(false);
   };
-
-  // const Popup = ({ email, onClose }) => {
-  //   const [otp, setOtp] = useState("");
-  //   console.log(email);
-
-  //   const verifyOtpAdmin = async (e) => {
-  //     e.preventDefault();
-  //     try {
-  //       const response = await axios.post(
-  //         "http://localhost:7777/api/v1/super-admin/verifyOtp",
-  //         {
-  //           email,
-  //           otp,
-  //         }
-  //       );
-  //       console.log(response);
-  //       console.log(localhost);
-  //       const userData = {
-  //         name: localhost.user.email,
-  //         id: localhost.user.id,
-  //       };
-  //       // localStorage.setItem("userData", JSON.stringify(userData));
-  //       dispatch(setUser(userData));
-  //       navigate("/superadmin-dashboard");
-  //       setVerification(true);
-  //     } catch (error) {
-  //       console.log(error);
-  //       // cogoToast.error("Wrong OTP!");
-  //     }
-  //   };
-
-  //   useEffect(() => {
-  //     console.log("Popup visible state updated:", popupVisible);
-  //   }, [popupVisible]);
-
-  //   return (
-  //     <>
-  //       <div>
-  //         <div className={popup-container${popupVisible ? " active" : ""}}>
-  //           <div className="popup">
-  //             <form onSubmit={verifyOtpAdmin} className="d-flex flex-column">
-  //               <div className="d-flex justify-content-evenly flex-column">
-  //                 <label htmlFor="otp" className="fw-bold">
-  //                   Enter OTP
-  //                 </label>
-  //                 <input
-  //                   type="text"
-  //                   placeholder="Enter OTP"
-  //                   className="mb-3 rounded p-1"
-  //                   name="otp"
-  //                   value={otp}
-  //                   onChange={(e) => setOtp(e.target.value)}
-  //                 />
-
-  //                 <button type="submit" className="btn btn-success mt-2 mb-2">
-  //                   Login
-  //                 </button>
-  //                 <button
-  //                   type="button"
-  //                   className="btn btn-danger mt-2"
-  //                   onClick={onClose}
-  //                 >
-  //                   Cancel
-  //                 </button>
-  //               </div>
-  //             </form>
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </>
-  //   );
-  // };
   return (
     <>
       <Container>

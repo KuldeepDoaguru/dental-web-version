@@ -3,21 +3,30 @@ import { styled } from "styled-components";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import cogoToast from "cogo-toast";
-import { useSelector } from "react-redux";
-// import moment from "moment";
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../../../redux/user/userSlice';
 
 const PrintSecurityAmt = () => {
     const { sa_id } = useParams();
     console.log(sa_id);
     const pdfRef = useRef();
-    // const { appointmentId } = useParams();
     const user = useSelector((state) => state.user);
-    const { refreshTable, currentUser } = useSelector((state) => state.user);
-    const branch = currentUser.branch_name;
+    const dispatch = useDispatch();
     const [data, setData] = useState("");
     const [hospitalDoc, setHospitalDoc] = useState([]);
     const [showData, setShowData] = useState([]);
     const navigate = useNavigate();
+
+    const [appointId, setAppointId] = useState("");
+    const [patientId, setPatientId] = useState("");
+    const [securityAmtId, setSecurityAmtId] = useState("");
+    const [patientName, setPatientName] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [branchName, setBranchName] = useState("");
+    const [doctorName, setDoctorName] = useState("");
+    const [date, setDate] = useState("");
+    const [paymentStatus, setPaymentStatus] = useState("");
+
 
     const displayDocHospital = async () => {
         console.log(user.id);
@@ -33,19 +42,37 @@ const PrintSecurityAmt = () => {
         }
     };
 
-    const getSecurityAmtID = async () => {
-        try {
-            const resps = await axios.get(`http://localhost:8888/api/doctor/getAllSecurityAmounts/${sa_id}`)
-            console.log(resps.data.result);
-            setShowData(resps.data.result);
-        } catch (error) {
-            console.log(error);
+    useEffect(() => {
+        const getSecurityAmtID = async () => {
+            try {
+                const resps = await axios.get(`http://localhost:8888/api/doctor/getAllSecurityAmounts/${sa_id}`)
+                console.log(resps.data.result);
+                setShowData(resps.data.result);
+                if (resps.status === 200) {
+                    const { data } = resps;
+                    console.log(data.result);
+                    setAppointId(data.result[0].appointment_id);
+                    setPatientId(data.result[0].uhid);
+                    setSecurityAmtId(data.result[0].sa_id);
+                    setPatientName(data.result[0].patient_name);
+                    setMobile(data.result[0].patient_number);
+                    setBranchName(data.result[0].branch_name);
+                    setDoctorName(data.result[0].assigned_doctor);
+                    setDate(data.result[0].date);
+                    setPaymentStatus(data.result[0].payment_status);
+                }
+            } catch (error) {
+                console.log(error);
+            }
         }
-    }
+
+        getSecurityAmtID();
+
+    }, [sa_id]);
+
 
     useEffect(() => {
         displayDocHospital();
-        getSecurityAmtID();
     }, []);
 
     const handlePrint = () => {
@@ -68,34 +95,30 @@ const PrintSecurityAmt = () => {
                         <div className="col-12">
                             <table className="table table-borderless">
                                 <tbody>
-                                    {showData.map((data, index) => (
-                                        <tbody key={index}>
-                                            <tr className=''>
-                                                <th className='text-start'>Appointment ID</th>
-                                                <td className='text-capitalize'>{": "}{data.appointment_id}</td>
-                                                <th scope="col" className='text-start'>Patient ID</th>
-                                                <td className='text-capitalize'>{": "}{data.uhid}</td>
-                                                <th scope="col" className='text-start'>Security Amt ID</th>
-                                                <td className='text-capitalize'>{": "}{data.sa_id}</td>
-                                            </tr>
-                                            <tr className='mx-5'>
-                                                <th scope="col" className='text-start'>Name</th>
-                                                <td className='text-capitalize'>{": "}{data.patient_name}</td>
-                                                <th scope="col" className='text-start pe-5'>Mobile No</th>
-                                                <td className='text-capitalize'>{": "}{data.patient_number}</td>
-                                                <th scope="col" className='text-start'>Branch Name</th>
-                                                <td className='text-capitalize'>{": "}{data.branch_name}</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="col" className='text-start'>Doctor Name</th>
-                                                <td className='text-capitalize'>{": "}{data.assigned_doctor}</td>
-                                                <th scope="col" className='text-start'> Date</th>
-                                                <td className='text-capitalize'>{": "}{data.date}</td>
-                                                <th scope="col" className='text-start'>Payment Status</th>
-                                                <td className='text-capitalize'>{": "}{data.payment_status}</td>
-                                            </tr>
-                                        </tbody>
-                                    ))}
+                                    <tr className=''>
+                                        <th className='text-start'>Appointment ID</th>
+                                        <td className='text-capitalize'>{": "}{appointId}</td>
+                                        <th scope="col" className='text-start'>Patient ID</th>
+                                        <td className='text-capitalize'>{": "}{patientId}</td>
+                                        <th scope="col" className='text-start'>Security Amt ID</th>
+                                        <td className='text-capitalize'>{": "}{securityAmtId}</td>
+                                    </tr>
+                                    <tr className='mx-5'>
+                                        <th scope="col" className='text-start'>Name</th>
+                                        <td className='text-capitalize'>{": "}{patientName}</td>
+                                        <th scope="col" className='text-start pe-5'>Mobile No</th>
+                                        <td className='text-capitalize'>{": "}{mobile}</td>
+                                        <th scope="col" className='text-start'>Branch Name</th>
+                                        <td className='text-capitalize'>{": "}{branchName}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" className='text-start'>Doctor Name</th>
+                                        <td className='text-capitalize'>{": "}{doctorName}</td>
+                                        <th scope="col" className='text-start'> Date</th>
+                                        <td className='text-capitalize'>{": "}{date}</td>
+                                        <th scope="col" className='text-start'>Payment Status</th>
+                                        <td className='text-capitalize'>{": "}{paymentStatus}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -105,23 +128,23 @@ const PrintSecurityAmt = () => {
                         <div className="col-12">
                             <table className="table table-borderless">
                                 <tbody>
-                                {showData.map((data, index) => (
+                                    {showData.map((data, index) => (
                                         <tbody key={index}>
-                                    <tr >
-                                        <th scope="col" className='' style={{ width: '30% !important' }}>
-                                        </th>
-                                        <th scope="col" className='text-start px-5 pt-4 second-th' >
-                                            Receive Person {" "}
-                                        </th>
-                                        <th scope="col" className='text-end px-5 pt-4'>{data.received_by}</th>
-                                    </tr>
-                                    <tr>
-                                        <th scope="col" className='' style={{ width: '30%' }}></th>
-                                        <th scope="col" className='text-start second-th px-5'> Amount Paid {" "} INR</th>
-                                        <th scope="col" className='px-5'>{data.amount}{".00"}</th>
-                                    </tr>
-                                    </tbody>
-                                ))}
+                                            <tr >
+                                                <th scope="col" className='' style={{ width: '30% !important' }}>
+                                                </th>
+                                                <th scope="col" className='text-start px-5 pt-4 second-th' >
+                                                    Receive Person {" "}
+                                                </th>
+                                                <th scope="col" className='text-end px-5 pt-4'>{data.received_by}</th>
+                                            </tr>
+                                            <tr>
+                                                <th scope="col" className='' style={{ width: '30%' }}></th>
+                                                <th scope="col" className='text-start second-th px-5'> Amount Paid {" "} INR</th>
+                                                <th scope="col" className='px-5'>{data.amount}{".00"}</th>
+                                            </tr>
+                                        </tbody>
+                                    ))}
                                 </tbody>
                             </table>
 
@@ -154,7 +177,7 @@ const PrintSecurityAmt = () => {
             </div>
             <div className='d-flex justify-content-center my-3 gap-2'>
                 <button type="button" className="btn btn-primary btn-lg" onClick={handlePrint}>Print</button>
-                <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/receptionist-dashboard')}>Go to Dashboard</button>
+                <button type="button" className="btn btn-primary btn-lg" onClick={() => navigate('/doctor-dashboard')}>Go to Dashboard</button>
                 {/* <button
     type='button'
     className='btn btn-secondary btn-lg ms-3'

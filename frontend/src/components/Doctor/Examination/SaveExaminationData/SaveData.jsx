@@ -4,8 +4,8 @@ import axios from 'axios';
 // import { useParams } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
-import { useDispatch } from 'react-redux';
-import { toggleDataRefresh } from '../../../../redux/user/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleTableRefresh } from '../../../../redux/user/userSlice';
 
 const SaveData = ({ id }) => {
     console.log(id);
@@ -20,6 +20,7 @@ const SaveData = ({ id }) => {
     });
     const [modalIndex, setModalIndex] = useState(null); // State to manage which modal is open
     const dispatch = useDispatch();
+    const {refreshTable,currentUser} = useSelector((state) => state.user);
 
     useEffect(() => {
         const getData = async () => {
@@ -28,13 +29,13 @@ const SaveData = ({ id }) => {
                 setData(res.data);
 
                 // Dispatch the action to toggle data refresh
-                dispatch(toggleDataRefresh());
+                // dispatch(toggleDataRefresh());
             } catch (error) {
                 console.log(error);
             }
         };
         getData();
-    }, [id, dispatch]);
+    }, [id, refreshTable]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -48,9 +49,9 @@ const SaveData = ({ id }) => {
         try {
             const response = await axios.put(`http://localhost:8888/api/doctor/updatedentalPediatric/${id}`, formData);
             console.log(response.data);
-            window.location.reload();
+            // window.location.reload();
 
-            // dispatch(toggleDataRefresh());
+            dispatch(toggleTableRefresh());
 
         } catch (error) {
             console.error('Error:', error);

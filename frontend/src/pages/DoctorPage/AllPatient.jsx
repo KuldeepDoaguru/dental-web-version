@@ -110,7 +110,7 @@ function AllPatient() {
 
                         <td>Male</td>
                         <td>Raintal Gate no.4 Jabalpur</td>
-                        <td>Last Appointment-15 feb 2023</td>
+                        <td>Last Appointment-15 feb 2023</td>   
                         <td>View Bills </td>
                       </tr>
                       <tr>

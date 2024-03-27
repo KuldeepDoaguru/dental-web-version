@@ -24,6 +24,7 @@ import ViewTreatPrescription from "./components/Doctor/Prescription/TreatmentPre
 import TreatSuggestDashs from "./components/Doctor/Treatment Suggestion/TreatSuggestDashs";
 import SecurityAmount from "./components/Doctor/Treatment Suggestion/SecurityAmount";
 import PrintSecurityAmt from "./components/Doctor/Treatment Suggestion/PrintSecurityAmt";
+import CreatePrescrip from "./components/Doctor/Prescription/CreatePrescrip";
 
 function App() {
   return (
@@ -52,8 +53,9 @@ function App() {
       <Route path="/TPrescription" element={<TPrescription />} />
       <Route path="/TPrescriptionDash/:id" element={<TPrescriptionDash />} />
       <Route path="/ViewTreatPrescription/:id" element={<ViewTreatPrescription />} />
+      <Route path="/CreatePrescrip" element={<CreatePrescrip />} />
       <Route path="/profileDashboard" element={<ProfileDashboard />} /> 
-      <Route path="/Patient-profile" element={<PatientProfile />} />
+      <Route path="/Patient-profile/:uhid" element={<PatientProfile />} />
       <Route path="/all-patient" element={<AllPatient />} />
 
       {/* ****************** Doctor Routes End Here ******************* */}

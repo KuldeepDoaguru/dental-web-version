@@ -2,8 +2,8 @@ const express = require("express");
 const db = require("../connect.js");
 const multer = require('multer');
 const path = require('path');
-const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById } = require("../controller/authControl.js");
-const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts } = require("../controller/authAppointTable.js");
+const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails } = require("../controller/authControl.js");
+const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg } = require("../controller/authAppointTable.js");
 const { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId } = require("../controller/authBranch.js");
 const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM } = require("../controller/authTreatment.js");
 const { uploadImage, getUploadedImages } = require("../controller/authContrimg.js");
@@ -32,6 +32,9 @@ router.get('/getAllSecurityAmounts/:sa_id', getAllSecurityAmounts)
 router.get('/getAppointmentsWithPatientDetails', getAppointmentsWithPatientDetails);
 router.get('/getAppointmentsWithPatientDetailsById/:id', getAppointmentsWithPatientDetailsById);
 router.put('/upDateAppointmentStatus', upDateAppointmentStatus);
+
+// just for testing treatment suggest sitting logic
+router.get('/appointtreatSitting', getAppointmentsWithPatientDetailsTreatSugg);
 // Appointment Routes END here......
 
 // Branch Routes START here......
@@ -77,13 +80,18 @@ router.get('/getUploadedImages', getUploadedImages);
 
 // Bill Routes START here......
 router.get('/bill-patient-data', billPatientData);
-router.get('/bill-patient-data/:appoint_id', billPatientDataByAppId);
+router.get('/bill-patient-data/:appoint_id', billPatientDataByAppId); 
 // Bill Routes END here......
 
 //  Booking Appointment START here......
 router.post('/bookAppointment', bookAppointment);
 router.get('/getTreatSuggest/:appoint_id', getTreatSuggest);
 //  Booking Appointment END here......
+
+//  Patient Profile START here......
+// testing 
+router.get('/get-Patient-by-id/:branch/:patientId',getPatientDetails);
+//  Patient Profile END here......
 
 
 module.exports = { authRoutes: router };

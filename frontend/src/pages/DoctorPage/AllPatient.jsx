@@ -5,10 +5,10 @@ import HeadBar from "../../components/Doctor/HeadBar";
 import Sider from "../../components/Doctor/SideBar";
 
 function AllPatient() {
+  
   return (
     <Wrapper>
      <HeadBar />
-
       <div className="row flex-nowrap ">
         <div className="col-lg-1 col-1" id="hd">
           <Sider />

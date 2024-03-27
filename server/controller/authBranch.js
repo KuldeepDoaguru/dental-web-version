@@ -223,14 +223,14 @@ const billPatientDataByAppId = (req, res) => {
 
         // Insert fetched data into new_table
         results.forEach(result => {
-            db.query('INSERT INTO new_table (uhid, branch_name, patient_name, mobileno, emailid, appoint_id, assigned_doctor_name, dental_treatment, cost_amt, medicine_name, dosage, total_amt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+            db.query('INSERT INTO patient_bills (uhid, branch_name, patient_name, patient_mobile, patient_email, appoint_id, assigned_doctor_name, dental_treatment, cost_amt, medicine_name, dosage, total_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
                 [result.uhid, result.branch_name, result.patient_name, result.mobileno, result.emailid, result.appoint_id, result.assigned_doctor_name, result.dental_treatments, result.cost_amt, result.medicine_names, result.dosages, result.total_amt], 
                 (err, insertResult) => {
                     if (err) {
                         console.error('Error inserting data into new_table:', err);
                         return res.status(500).json({ error: 'An error occurred while inserting data into new_table' });
                     }
-                    console.log('Data inserted into new_table:', insertResult);
+                    // console.log('Data inserted into new_table:', insertResult);
                 });
         });
 

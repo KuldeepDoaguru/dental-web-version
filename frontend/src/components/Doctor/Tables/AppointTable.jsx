@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from "styled-components";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
 import { useDispatch, useSelector } from 'react-redux';
@@ -169,7 +169,7 @@ const AppointTable = () => {
                                     {filterTableData.map((item, index) => (
                                         <tr key={index}>
                                             <td>{item.appoint_id}</td>
-                                            <td>{item.uhid}</td>
+                                            <td><Link to={`/Patient-profile/${item.uhid}`}>{item.uhid}</Link></td>
                                             <td>{item.patient_name}</td>
                                             <td>{item.mobileno}</td>
                                             <td>{item.appointment_dateTime}</td>

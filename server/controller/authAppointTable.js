@@ -238,5 +238,44 @@ const  getAllSecurityAmounts = (req,res)=>{
     });
 };
 
-module.exports = { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts };
+const getAppointmentsWithPatientDetailsTreatSugg = (req, res) => {
+    const sql = `
+        SELECT 
+            a.appoint_id,
+            a.appointment_dateTime,
+            a.treatment_provided,
+            a.notes,
+            a.appointment_status,
+            p.uhid, 
+            p.patient_name,
+            p.mobileno,
+            p.dob,
+            p.age,
+            p.weight,
+            p.bloodgroup,
+            p.disease,
+            p.allergy,
+            p.patient_type,
+            IF(a.treatment_provided = n.treatment_name, n.sitting_result, NULL) AS sitting_result
+        FROM 
+            appointments AS a
+        JOIN 
+            patient_details AS p ON a.patient_uhid = p.uhid
+        LEFT JOIN 
+        treat_suggest AS n ON a.patient_uhid = n.p_uhid AND a.treatment_provided = n.treatment_name
+    `;
+
+    db.query(sql, (err, result) => {
+        if (err) {
+            console.error('Error executing query:', err.stack);
+            return res.status(500).json({ error: 'Internal server error' });
+        } else {
+            // console.log('Query executed successfully');
+            return res.status(200).json({ message: 'Get data from appointments and patient_details', result });
+        }
+    });
+};
+
+
+module.exports = { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg };
 

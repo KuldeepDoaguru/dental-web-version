@@ -72,20 +72,6 @@ const deleteDentalPediatric = (req, res) =>{
     })
 }
 
-// const insertTreatSuggest = (req, res) =>{
-//     const {appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result} = req.body;
-
-//     const sql =  `INSERT INTO treat_suggest (appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result) VALUES(?,?,?,?,?,?)`;
-
-//     db.query(sql, [ appoint_id, p_uhid, treatment_name, treatment_sitting, consider_sitting, sitting_result], (err, result)=>{
-//         if(err){
-//             return res.status(400).json({success: false, message: err})
-//         }else{
-//             return res.status(201).json({success: true, message:"Insertion Successful!", result});
-//         }
-//     })
-// }
-
 const insertTreatSuggest = (req, res) => {
     const { appoint_id, p_uhid, treatment_name, totalCost, treatment_sitting, consider_sitting, sitting_result, appoint_date, note } = req.body;
 
@@ -120,5 +106,40 @@ const getTreatSuggestById = (req, res) => {
     });
 };
 
+const getPatientDetails = (req, res) =>{
+    const patientId = req.params.patientId;
+    const branch = req.params.branch;
+    try {
+      const sql =
+        "SELECT * FROM patient_details WHERE uhid = ? AND branch_name = ?";
+  
+      db.query(sql, [patientId, branch], (err, results) => {
+        if (err) {
+          console.error("Error fetching patient from MySql:", err);
+          res.status(500).json({ error: "Error fetching patient" });
+        } else {
+          if (results.length === 0) {
+            res.status(404).json({ message: "Patient not found" });
+          } else {
+            res
+              .status(200)
+              .json({
+                success: true,
+                data: results[0],
+                message: "Patient fetched successfully",
+              });
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching patient from MySql:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error in fetching patient",
+        error: error.message,
+      });
+    }
+}
 
-module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById}; 
+
+module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails}; 

@@ -4,8 +4,8 @@ const db = require("../connect.js");
 const dentalPediatric = (req, res) => {
     const data = req.body;
 
-    const sql = 'INSERT INTO dental_examination (appointment_id, selected_teeth, disease, chief_complain, advice, on_examination) VALUES (?, ?, ?, ?, ?, ?)';
-    const values = [data.appointment_id, data.selectedTeeth, data.disease, data.chiefComplain, data.advice, data.onExamination];
+    const sql = 'INSERT INTO dental_examination (appointment_id, patient_uhid, selected_teeth, disease, chief_complain, advice, on_examination) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const values = [data.appointment_id, data.patient_uhid, data.selectedTeeth, data.disease, data.chiefComplain, data.advice, data.onExamination];
 
     db.query(sql, values, (err, result) => {
         if (err) {
@@ -36,6 +36,7 @@ const updateDentalPediatric = (req, res) => {
     });
 };
 
+// Examination Module
 const getDentalDataByID = (req, res) => {
     const appointmentId = req.params.appointmentId;
 
@@ -55,6 +56,48 @@ const getDentalDataByID = (req, res) => {
         res.status(200).json(result);
     });
 };
+
+// Examination Module for Patient Profile
+const getDentalPatientDataByID = (req, res) => {
+    const patientUHID = req.params.patientUHID;
+
+    const sql = 'SELECT * FROM dental_examination WHERE patient_uhid = ?';
+    db.query(sql, [patientUHID], (err, result) => {
+        if (err) {
+            console.error('Error retrieving data: ', err);
+            res.status(500).send('Error retrieving data: ' + err.message);
+            return;
+        }
+
+        if (result.length === 0) {
+            res.status(404).send('No data found for Patient UHID: ' + patientUHID);
+            return;
+        }
+
+        res.status(200).json(result);
+    });
+};
+
+const getDentalPatientByID = (req, res) => {
+    const patientUHID = req.params.patientUHID;
+
+    const sql = 'SELECT * FROM dental_examination WHERE patient_uhid = ? ORDER BY date DESC LIMIT 1';
+    db.query(sql, [patientUHID], (err, result) => {
+        if (err) {
+            console.error('Error retrieving data: ', err);
+            res.status(500).send('Error retrieving data: ' + err.message);
+            return;
+        }
+
+        if (result.length === 0) {
+            res.status(404).send('No data found for Patient UHID: ' + patientUHID);
+            return;
+        }
+
+        res.status(200).json(result);
+    });
+};
+
 
 const deleteDentalPediatric = (req, res) =>{
     const id = req.params.id;
@@ -111,7 +154,8 @@ const getPatientDetails = (req, res) =>{
     const branch = req.params.branch;
     try {
       const sql =
-        "SELECT * FROM patient_details WHERE uhid = ? AND branch_name = ?";
+        // "SELECT * FROM patient_details WHERE uhid = ? AND branch_name = ?";
+        "SELECT * FROM patient_details WHERE uhid = ?";
   
       db.query(sql, [patientId, branch], (err, results) => {
         if (err) {
@@ -142,4 +186,4 @@ const getPatientDetails = (req, res) =>{
 }
 
 
-module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails}; 
+module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID}; 

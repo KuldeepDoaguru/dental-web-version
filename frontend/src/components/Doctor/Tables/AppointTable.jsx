@@ -16,6 +16,8 @@ const AppointTable = () => {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
     const dispatch = useDispatch();
     const { refreshTable } = useSelector((state) => state.user);
+    const user = useSelector((state) => state.user);
+    const doctor = user.currentUser.employee_name;
 
     const handleDateChange = (increment) => {
         const currentDate = new Date(selectedDate);
@@ -32,7 +34,9 @@ const AppointTable = () => {
                 const filteredData = res.data.result.filter(item =>
                     item.appointment_dateTime.includes(selectedDate)
                     && item.patient_name.toLowerCase().includes(searchInput.toLowerCase())
+                    && item.assigned_doctor_name.toLowerCase() === doctor.toLowerCase()
                 );
+                // setAppointments(appointments);
                 setFilterTableData(filteredData);
                 console.log(res.data.result);
             } catch (error) {
@@ -42,16 +46,16 @@ const AppointTable = () => {
 
         fetchAppointments();
 
-               // Refresh every 5 seconds
-    const interval = setInterval(() => {
-        dispatch(toggleTableRefresh());
-    }, 5000);
+        // Refresh every 5 seconds
+        const interval = setInterval(() => {
+            dispatch(toggleTableRefresh());
+        }, 5000);
 
-    return () => {
-        clearInterval(interval);
-        console.log("Interval cleared.");
-    };
-    }, [selectedDate, searchInput, dispatch]);
+        return () => {
+            clearInterval(interval);
+            console.log("Interval cleared.");
+        };
+    }, [selectedDate, searchInput, dispatch, doctor]);
 
 
 
@@ -143,90 +147,90 @@ const AppointTable = () => {
                             id="form12"
                         />
                     </div>
-                        <div className="table-responsive ">
-                            <table className="table table-bordered table-striped border" style={{ overflowX: 'scroll' }}>
-                                <thead>
-                                    <tr>
-                                        <th>A.Id</th>
-                                        <th>P.Id</th>
-                                        <th>Patient Name</th>
-                                        <th>Mobile</th>
-                                        <th>Timing</th>
-                                        <th>Treatment</th>
-                                        <th>Blood Group</th>
-                                        <th>DOB</th>
-                                        <th>Age</th>
-                                        <th>Weight</th>
-                                        <th>Allergy</th>
-                                        <th>Disease</th>
-                                        <th>Patient Type</th>
-                                        <th>Note</th>
-                                        <th>Status</th>
-                                        <th>Type of Action</th>
+                    <div className="table-responsive ">
+                        <table className="table table-bordered table-striped border" style={{ overflowX: 'scroll' }}>
+                            <thead>
+                                <tr>
+                                    <th>A.Id</th>
+                                    <th>P.Id</th>
+                                    <th>Patient Name</th>
+                                    <th>Mobile</th>
+                                    <th>Timing</th>
+                                    <th>Treatment</th>
+                                    <th>Blood Group</th>
+                                    <th>DOB</th>
+                                    <th>Age</th>
+                                    <th>Weight</th>
+                                    <th>Allergy</th>
+                                    <th>Disease</th>
+                                    <th>Patient Type</th>
+                                    <th>Note</th>
+                                    <th>Status</th>
+                                    <th>Type of Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filterTableData.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{item.appoint_id}</td>
+                                        <td><Link to={`/Patient-profile/${item.uhid}`}>{item.uhid}</Link></td>
+                                        <td>{item.patient_name}</td>
+                                        <td>{item.mobileno}</td>
+                                        <td>{item.appointment_dateTime}</td>
+                                        <td>{item.treatment_provided}</td>
+                                        <td>{item.bloodgroup}</td>
+                                        <td>{item.dob}</td>
+                                        <td>{item.age}</td>
+                                        <td>{item.weight}</td>
+                                        <td>{item.allergy}</td>
+                                        <td>{item.disease}</td>
+                                        <td>{item.patient_type}</td>
+                                        <td>{item.notes}</td>
+                                        <td>{item.appointment_status}</td>
+                                        <td>
+                                            <div className="dropdown">
+                                                <button
+                                                    className="btn btn-secondary dropdown-toggle"
+                                                    type="button"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false"
+                                                >
+                                                    Action
+                                                </button>
+                                                <ul className="dropdown-menu">
+                                                    <li>
+                                                        <button
+                                                            className="dropdown-item mx-0"
+                                                            onClick={() => handleAction('In Treatment', item.appoint_id)}
+                                                        >
+                                                            Start Treatment
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="dropdown-item mx-0"
+                                                            onClick={() => handleAction('Cancel', item.appoint_id)}
+                                                        >
+                                                            Cancel Treatment
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            className="dropdown-item mx-0"
+                                                            onClick={() => handleAction('On Hold', item.appoint_id)}
+                                                        >
+                                                            Hold
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {filterTableData.map((item, index) => (
-                                        <tr key={index}>
-                                            <td>{item.appoint_id}</td>
-                                            <td><Link to={`/Patient-profile/${item.uhid}`}>{item.uhid}</Link></td>
-                                            <td>{item.patient_name}</td>
-                                            <td>{item.mobileno}</td>
-                                            <td>{item.appointment_dateTime}</td>
-                                            <td>{item.treatment_provided}</td>
-                                            <td>{item.bloodgroup}</td>
-                                            <td>{item.dob}</td>
-                                            <td>{item.age}</td>
-                                            <td>{item.weight}</td>
-                                            <td>{item.allergy}</td>
-                                            <td>{item.disease}</td>
-                                            <td>{item.patient_type}</td>
-                                            <td>{item.notes}</td>
-                                            <td>{item.appointment_status}</td>
-                                            <td>
-                                                <div className="dropdown">
-                                                    <button
-                                                        className="btn btn-secondary dropdown-toggle"
-                                                        type="button"
-                                                        data-bs-toggle="dropdown"
-                                                        aria-expanded="false"
-                                                    >
-                                                        Action
-                                                    </button>
-                                                    <ul className="dropdown-menu">
-                                                        <li>
-                                                            <button
-                                                                className="dropdown-item mx-0"
-                                                                onClick={() => handleAction('In Treatment', item.appoint_id)}
-                                                            >
-                                                                Start Treatment
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button
-                                                                className="dropdown-item mx-0"
-                                                                onClick={() => handleAction('Cancel', item.appoint_id)}
-                                                            >
-                                                                Cancel Treatment
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button
-                                                                className="dropdown-item mx-0"
-                                                                onClick={() => handleAction('On Hold', item.appoint_id)}
-                                                            >
-                                                                Hold
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-                    
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
             </div>
         </Wrapper>

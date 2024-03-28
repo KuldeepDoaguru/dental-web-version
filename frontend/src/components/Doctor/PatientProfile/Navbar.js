@@ -15,8 +15,11 @@ import Timeline from "./Timeline";
 import Lab from "./Lab";
 import Files from "./Files";
 import Overview from "./Overview";
+import { useParams } from "react-router-dom";
 
 const Navbar = () => {
+  const {uhid} = useParams();
+  console.log(uhid);
   return (
     <Wrapper>
       <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -200,7 +203,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Overview />
+                <Overview uhid={uhid}/>
               </li>
             </ul>
           </div>
@@ -213,7 +216,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item" id="app">
-                <Appointment />
+                <Appointment uhid={uhid}/>
               </li>
             </ul>
           </div>

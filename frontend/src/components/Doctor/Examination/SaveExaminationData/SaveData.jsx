@@ -20,7 +20,7 @@ const SaveData = ({ id }) => {
     });
     const [modalIndex, setModalIndex] = useState(null); // State to manage which modal is open
     const dispatch = useDispatch();
-    const {refreshTable,currentUser} = useSelector((state) => state.user);
+    const {refreshTable,currentUser} = useSelector((state) => state.user); 
 
     useEffect(() => {
         const getData = async () => {

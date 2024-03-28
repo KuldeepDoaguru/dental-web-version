@@ -206,6 +206,7 @@ const PediatricDentalTest = () => {
   // const [inputItemList, setInputItemList] = useState([]);
   const [inputItem, setInputItem] = useState({
     appointment_id: id,
+    patient_uhid: null,
     selectTeeth: [],
     desease: "",
     chiefComplain: "",
@@ -713,6 +714,7 @@ const PediatricDentalTest = () => {
     // Prepare data to send to the backend
     const formData = {
       appointment_id: id,
+      patient_uhid: inputItem.patient_uhid,
       selectedTeeth: inputItem.selectTeeth.join(", "),
       disease: inputItem.desease,
       chiefComplain: inputItem.chiefComplain,
@@ -794,6 +796,13 @@ const PediatricDentalTest = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+
+      const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
+      setInputItem(prevInputItem => ({
+          ...prevInputItem,
+          patient_uhid: uhid
+      }));
+
       setGetPatientData(res.data.result);
     } catch (error) {
       console.log(error);
@@ -1333,7 +1342,7 @@ const PediatricDentalTest = () => {
                 </form>
               </div>
               <div>
-                <SaveData id={id}/>
+                <SaveData id={id}/> 
                 {/* <h2>Saved Data</h2>
                 <div>
                   {inputItemList.length ? (

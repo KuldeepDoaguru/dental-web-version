@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("../connect.js");
 const multer = require('multer');
 const path = require('path');
-const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails } = require("../controller/authControl.js");
+const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID } = require("../controller/authControl.js");
 const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg } = require("../controller/authAppointTable.js");
 const { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId } = require("../controller/authBranch.js");
 const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM } = require("../controller/authTreatment.js");
@@ -12,9 +12,11 @@ const { bookAppointment, getTreatSuggest } = require("../controller/authBook.js"
 const router = express.Router();
 
 // Examination  Routes START here......
-router.post("/dentalPediatric", dentalPediatric);
+router.post("/dentalPediatric", dentalPediatric); 
 router.put("/updatedentalPediatric/:id", updateDentalPediatric);
 router.get("/getDentalDataByID/:appointmentId", getDentalDataByID);
+router.get("/getDentalPatientDataByID/:patientUHID", getDentalPatientDataByID);
+router.get("/getDentalPatientByID/:patientUHID", getDentalPatientByID);
 router.delete("/deleteDentalPediatric/:id", deleteDentalPediatric);
 // Examination  Routes END here......
 
@@ -90,7 +92,8 @@ router.get('/getTreatSuggest/:appoint_id', getTreatSuggest);
 
 //  Patient Profile START here......
 // testing 
-router.get('/get-Patient-by-id/:branch/:patientId',getPatientDetails);
+// router.get('/get-Patient-by-id/:branch/:patientId',getPatientDetails);
+router.get('/get-Patient-by-id/:patientId',getPatientDetails);
 //  Patient Profile END here......
 
 

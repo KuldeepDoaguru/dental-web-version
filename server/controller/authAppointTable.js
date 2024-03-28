@@ -9,6 +9,7 @@ const getAppointmentsWithPatientDetails = (req, res) => {
             a.treatment_provided,
             a.notes,
             a.appointment_status,
+            a.assigned_doctor_name,
             p.uhid, 
             p.patient_name,
             p.mobileno,

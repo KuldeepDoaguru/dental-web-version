@@ -8,19 +8,22 @@ import styled from "styled-components";
 const Overview = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
+  const { uhid } = useParams();
+  console.log(uhid);
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
-  const  branch = user.currentUser.branch_name;
-  
+  const branch = user.currentUser.branch_name;
+
   const [patPendingBill, setPatPendingBill] = useState([]);
   const [patAppointDetails, setPatAppointDetails] = useState([]);
-  const [exmData, setExmData] = useState([]);
 
   const [presData, setPresData] = useState([]);
   const [nextAppoint, setNextAppoint] = useState(null);
-const [prevAppoint, setPrevAppoint] = useState(null);
-const [sortedAppointments,setSortedAppointments] = useState([]);
+  const [prevAppoint, setPrevAppoint] = useState(null);
+  const [sortedAppointments, setSortedAppointments] = useState([]);
+
+  const [clinicExam, setClinicExam] = useState([]);
 
   const getPresDetails = async () => {
     try {
@@ -29,7 +32,7 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
       );
       setPresData(data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -38,10 +41,10 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
       const { data } = await axios.get(
         `http://localhost:7777/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
       );
-      console.log(data);
+      // console.log(data);
       setPatPendingBill(data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -50,7 +53,7 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
       const { data } = await axios.get(
         `http://localhost:4000/api/v1/receptionist/getAllAppointmentByPatientId/${branch}/${pid}`
       );
-      console.log(data);
+      // console.log(data);
       setPatAppointDetails(data?.data);
     } catch (error) {
       console.log(error);
@@ -62,9 +65,9 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
       const { data } = await axios.get(
         `http://localhost:7777/api/v1/super-admin/examinDetailsByPatId/${pid}`
       );
-      setExmData(data);
+      // setExmData(data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -79,7 +82,7 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
     getExamineDetails();
   }, []);
 
-  
+
   const filterForPendingAmount = patPendingBill?.filter((item) => {
     return item.payment_status === "Pending";
   });
@@ -87,7 +90,7 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
     return accumulator + item.total_amount;
   }, 0);
 
- 
+
 
   const todayDate = new Date();
 
@@ -109,17 +112,32 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
         break;
       }
     }
-  
-    console.log("Previous Appointment:", prevAppointment);
-    console.log("Next Appointment:", nextAppointment);
-  
-    const nextAppointDate = nextAppointment ?  moment(nextAppointment?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A')  : null;
+
+    // console.log("Previous Appointment:", prevAppointment);
+    // console.log("Next Appointment:", nextAppointment);
+
+    const nextAppointDate = nextAppointment ? moment(nextAppointment?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A') : null;
     const prevAppointDate = prevAppointment ? moment(prevAppointment?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A') : null;
-  
+
     // Set state variables for next and previous appointments
     setNextAppoint(nextAppointDate);
     setPrevAppoint(prevAppointDate);
   }, [patAppointDetails]);
+
+  const fetchLatestDentalPatientData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8888/api/doctor/getDentalPatientByID/${uhid}`);
+      console.log(response.data); // Assuming your API returns the data directly
+      setClinicExam(response.data)
+    } catch (error) {
+      console.error('Error fetching dental patient data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLatestDentalPatientData();
+  }, []);
+
 
   return (
     <>
@@ -128,9 +146,9 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
           <div className="col-lg-4" id="tableresponsive1">
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
-              <p className="text-center">Last Appointment</p>
+                <p className="text-center">Last Appointment</p>
                 <h5>{prevAppoint}</h5>
-                
+
               </div>
             </div>
           </div>
@@ -138,9 +156,9 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
             {" "}
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
-              <p className="text-center">Next Appointment</p>
+                <p className="text-center">Next Appointment</p>
                 <h5>{nextAppoint}</h5>
-               
+
               </div>
             </div>
           </div>
@@ -148,9 +166,9 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
             {" "}
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
-              <p className="text-center">Payment Pending</p>
-                <h5  className="text-center">INR {total}</h5>
-                
+                <p className="text-center">Payment Pending</p>
+                <h5 className="text-center">INR {total}</h5>
+
               </div>
             </div>
           </div>
@@ -244,19 +262,20 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
                     </tr>
                   </thead>
                   <tbody>
-                    {exmData?.slice(-3).map((item) => (
-                      <>
-                        <tr>
-                          <td>{item.examin_date?.split("T")[0]}</td>
-                          <td>{item.examin_issue}</td>
-                          <td>{item.examin_investigation}</td>
-
-                          <td>{item.tooth}</td>
-                          <td>{item.diagnosis}</td>
-                          <td>{item.doctor_name}</td>
-                        </tr>
-                      </>
-                    ))}
+                    {clinicExam.length > 0 ? (
+                      <tr>
+                        <td>{clinicExam[0].date}</td>
+                        <td>{clinicExam[0].disease}</td>
+                        <td>{clinicExam[0].chief_complain}</td>
+                        <td>{clinicExam[0].selected_teeth}</td>
+                        <td>{clinicExam[0].on_examination}</td>
+                        <td>Doctor Name</td> {/* Replace "Doctor Name" with the actual doctor's name */}
+                      </tr>
+                    ) : (
+                      <tr>
+                        <td colSpan="6">No examination data available</td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -297,10 +316,10 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
                 <tbody>
                   {sortedAppointments?.slice(-3)?.map((item) => (
                     <>
-                     {item.notes && 
-                      <tr>
-                        <td>{item.notes}</td>
-                      </tr>}
+                      {item.notes &&
+                        <tr>
+                          <td>{item.notes}</td>
+                        </tr>}
                     </>
                   ))}
                 </tbody>

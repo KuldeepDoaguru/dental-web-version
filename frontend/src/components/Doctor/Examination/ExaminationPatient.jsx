@@ -314,7 +314,8 @@ const ExaminationPatientTest = () => {
   // const [inputItemList, setInputItemList] = useState([]);
   const [inputItem, setInputItem] = useState({
     appointment_id: id,
-    selectTeeth: [],
+    patient_uhid: null,
+    selectTeeth: [], 
     desease: "",
     chiefComplain: "",
     advice: "",
@@ -325,6 +326,8 @@ const ExaminationPatientTest = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [getPatientData, setGetPatientData] = useState([]);
   const dispatch = useDispatch();
+
+  // console.log(getPatientData[0].uhid);
 
   useEffect(() => {
 
@@ -889,6 +892,7 @@ const ExaminationPatientTest = () => {
     // Prepare data to send to the backend
     const formData = {
       appointment_id: id, 
+      patient_uhid: inputItem.patient_uhid,
       selectedTeeth: inputItem.selectTeeth.join(", "),
       disease: inputItem.desease,
       chiefComplain: inputItem.chiefComplain,
@@ -996,7 +1000,15 @@ const ExaminationPatientTest = () => {
   const getPatientDetail = async () =>{
     try {
       const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+
+      const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
+      setInputItem(prevInputItem => ({
+          ...prevInputItem,
+          patient_uhid: uhid
+      }));
+
       setGetPatientData(res.data.result);
+      console.log(res.data.result[0].uhid);
     } catch (error) {
       console.log(error);
     }

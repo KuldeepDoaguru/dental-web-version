@@ -19,7 +19,8 @@ function PatientProfile() {
 
   const  getPatientDetails = async () => {
     try {
-      const res = await axios.get(`http://localhost:8888/api/doctor/get-Patient-by-id/${branch}/${uhid}`)
+      // const res = await axios.get(`http://localhost:8888/api/doctor/get-Patient-by-id/${branch}/${uhid}`)
+      const res = await axios.get(`http://localhost:8888/api/doctor/get-Patient-by-id/${uhid}`)
       console.log(res.data.data);
       setPatientData(res?.data?.data)
     } catch (error) {
@@ -305,7 +306,7 @@ function PatientProfile() {
             </div>
             <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 col-sm-12">
               <div className="mrgtop">
-                <Navbar />
+                <Navbar uhid={uhid}/>
               </div>
             </div>
           </div>

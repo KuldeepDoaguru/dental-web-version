@@ -3,12 +3,17 @@ import styled from "styled-components";
 import HeadBar from "../../components/Doctor/HeadBar";
 import SideBar from "../../components/Doctor/SideBar";
 import AppointTable from "../../components/Doctor/Tables/AppointTable";
+import { useDispatch, useSelector } from "react-redux";
 
 const DoctorDashboard = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  // console.log(user);
+  const  branch = user.currentUser.branch_name;
+  // console.log(`User Branch: ${branch}`);
   return (
     <Wrapper>
       <HeadBar/>
-
       <div className="main">
         <div className="container-fluid">
           <div className="row flex-nowrap">
@@ -21,6 +26,7 @@ const DoctorDashboard = () => {
                 <div className="col-12 col-lg-12 text-center mt-3">
                   <h3> Welcome To Dental Guru</h3>
                   <p> Doctor Dashboard</p>
+                  <p>Branch : {branch}</p>
                 </div>
               </div>
               <div className="row d-flex justify-content-around ms-4">
@@ -66,6 +72,7 @@ overflow-x: hidden;
  p{
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-size: 1.5rem;
+  margin: 0 0 8px;
  }
 `;
 

@@ -5,11 +5,12 @@ import axios from "axios";
 import { FaTooth } from "react-icons/fa";
 
 
-const TreatmentForm = () => {
-    const { id, appointment_id } = useParams();
+const TreatmentForm = () => { 
+    const { id, appointment_id } = useParams(); 
     console.log(id);
     console.log(appointment_id);
     const navigate = useNavigate();
+    const [getPatientData, setGetPatientData] = useState([]);
 
     // Access teeth number from location state --START--
     const locationState = useLocation().state;
@@ -28,6 +29,7 @@ const TreatmentForm = () => {
 
     const [treatments, setTreatments] = useState([]);
     const [formData, setFormData] = useState({
+        patient_uhid: null,
         dental_treatment: '',
         no_teeth: teethNumber || '',
         qty: teethNumberLength.toString() || '',
@@ -36,6 +38,8 @@ const TreatmentForm = () => {
         total_amt: '',
         note: ''
     });
+
+    console.log(formData);
 
     // Send Treatment Data to the Server....
 
@@ -130,6 +134,27 @@ const TreatmentForm = () => {
         }
     }
 
+     // Get Patient Details START
+     const getPatientDetail = async () => {
+        try {
+            const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${appointment_id}`);
+            
+            const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
+            setFormData(prevInputItem => ({
+                ...prevInputItem,
+                patient_uhid: uhid
+            }));
+            setGetPatientData(res.data.result);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getPatientDetail();
+    }, []);
+    // Get Patient Details END
+
     return (
         <>
             <Wrapper>
@@ -139,6 +164,38 @@ const TreatmentForm = () => {
                             <p className="fs-1 shadow-none p-2 mb-4 bg-light rounded">Treatment Procedure</p>
                         </div>
                     </div>
+
+                    <div className="container patient">
+                    <div className="row shadow-sm p-3 mb-3 bg-body rounded">
+                        {getPatientData.map((item, index) => (
+                            <>
+                                <div key={index} className="col-lg-12 d-flex justify-content-between align-items-center">
+                                    <div className="col-lg-4">
+                                        <p><strong>Appoint ID</strong> : {item.appoint_id}</p>
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <p><strong>Patient Name</strong> : {item.patient_name}</p>
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <p><strong>Patient Mobile No.</strong> : {item.mobileno}</p>
+                                    </div>
+                                </div>
+                                <div key={index + 'secondRow'} className="col-lg-12 d-flex justify-content-between align-items-center">
+                                    <div className="col-lg-4">
+                                        <p className="mb-0"><strong>Blood Group</strong> : {item.bloodgroup}</p>
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <p className="mb-0"><strong>Disease</strong> : {item.disease}</p>
+                                    </div>
+                                    <div className="col-lg-4">
+                                        <p className="mb-0"><strong>Allergy</strong> : {item.allergy}</p>
+                                    </div>
+                                </div>
+                            </>
+                        ))}
+                    </div>
+                </div>
+
                     <div className="row shadow-sm p-4 mb-3 bg-white rounded" >
                         <form onSubmit={handleSubmit}>
                             <div className="d-flex justify-content-between align-items-center p-2">

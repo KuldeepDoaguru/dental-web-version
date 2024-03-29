@@ -213,7 +213,7 @@ const PediatricDentalTest = () => {
     advice: "",
     onExamination: "",
   });
-  const [selectAllTeeth, setSelectAllTeeth] = useState(false);
+  const [selectAllTeeth, setSelectAllTeeth] = useState(false); 
   const [isFormFilled, setIsFormFilled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [getPatientData, setGetPatientData] = useState([]);

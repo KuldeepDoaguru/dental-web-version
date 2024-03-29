@@ -58,10 +58,32 @@ const getDentalDataByID = (req, res) => {
 };
 
 // Examination Module for Patient Profile
+// const getDentalPatientDataByID = (req, res) => {
+//     const patientUHID = req.params.patientUHID;
+
+//     const sql = 'SELECT * FROM dental_examination WHERE patient_uhid = ?';
+//     db.query(sql, [patientUHID], (err, result) => {
+//         if (err) {
+//             console.error('Error retrieving data: ', err);
+//             res.status(500).send('Error retrieving data: ' + err.message);
+//             return;
+//         }
+
+//         if (result.length === 0) {
+//             res.status(404).send('No data found for Patient UHID: ' + patientUHID);
+//             return;
+//         }
+
+//         res.status(200).json(result);
+//     });
+// };
+
 const getDentalPatientDataByID = (req, res) => {
     const patientUHID = req.params.patientUHID;
 
-    const sql = 'SELECT * FROM dental_examination WHERE patient_uhid = ?';
+    const sql = `
+    SELECT dental_examination.*, appointments.assigned_doctor_name, appointments.branch_name FROM dental_examination LEFT JOIN appointments ON dental_examination.appointment_id = appointments.appoint_id WHERE dental_examination.patient_uhid = ?`;
+        
     db.query(sql, [patientUHID], (err, result) => {
         if (err) {
             console.error('Error retrieving data: ', err);
@@ -77,6 +99,7 @@ const getDentalPatientDataByID = (req, res) => {
         res.status(200).json(result);
     });
 };
+
 
 const getDentalPatientByID = (req, res) => {
     const patientUHID = req.params.patientUHID;

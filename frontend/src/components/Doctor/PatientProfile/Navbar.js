@@ -94,7 +94,7 @@ const Navbar = () => {
             Payment
           </button>
         </li>
-        <li className="nav-item" role="presentation">
+        <li className="nav-item" role="presentation"> 
           <button
             className="nav-link"
             id="profile-tab4"
@@ -229,7 +229,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Treatment />
+                <Treatment uhid={uhid}/>
               </li>
             </ul>
           </div>
@@ -268,7 +268,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Clinic_Examin />
+                <Clinic_Examin uhid={uhid}/>
               </li>
             </ul>
           </div>
@@ -281,7 +281,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Prescription />
+                <Prescription uhid={uhid}/>
               </li>
             </ul>
           </div>

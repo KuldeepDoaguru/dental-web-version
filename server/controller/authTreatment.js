@@ -22,13 +22,13 @@ const getTreatmentList = (req, res) => {
 const insertTreatmentData = (req, res) => {
     const examId = req.params.exam_id;
     const appointmentId = req.params.appointment_id;
-    const { dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, note, original_cost_amt } = req.body;
+    const { dental_treatment, patient_uhid, no_teeth, qty, cost_amt, disc_amt, total_amt, note, original_cost_amt } = req.body;
 
     try {
         // Insert treatment details into the database
         db.query(
-            'INSERT INTO dental_treatment (exam_id, appointment_id, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, note, original_cost_amt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [examId, appointmentId, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, note, original_cost_amt],
+            'INSERT INTO dental_treatment (exam_id, appointment_id, patient_uhid, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, note, original_cost_amt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [examId, appointmentId, patient_uhid, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, note, original_cost_amt],
             (error, result) => {
                 if (error) {
                     console.error('Error inserting treatment details:', error);
@@ -82,6 +82,68 @@ const getTreatmentData = (req, res) => {
     })
 };
 
+// const treatPatientUHID = (req, res) => {
+//     const patientUHID = req.params.patientUHID;
+
+//     const sql = 'SELECT * FROM dental_treatment WHERE patient_uhid = ? ORDER BY date DESC LIMIT 1';
+//     db.query(sql, [patientUHID], (err, result) => {
+//         if (err) {
+//             console.error('Error retrieving data: ', err);
+//             res.status(500).send('Error retrieving data: ' + err.message);
+//             return;
+//         }
+
+//         if (result.length === 0) {
+//             res.status(404).send('No data found for Patient UHID: ' + patientUHID);
+//             return;
+//         }
+
+//         res.status(200).json(result);
+//     });
+// };
+
+
+const treatPatientUHID = (req, res) => {
+    const patientUHID = req.params.patientUHID;
+
+    const sql = 'SELECT * FROM dental_treatment WHERE patient_uhid = ? ORDER BY date DESC LIMIT 1';
+    db.query(sql, [patientUHID], (err, result) => {
+        if (err) {
+            console.error('Error retrieving data: ', err);
+            res.status(500).send('Error retrieving data: ' + err.message);
+            return;
+        }
+
+        if (result.length === 0) {
+            res.status(404).send('No data found for Patient UHID: ' + patientUHID);
+            return;
+        }
+
+        res.status(200).json(result); // Return the first (and only) element
+    });
+};
+
+const getTreatPatientProfile = (req, res) =>{
+    const patientUHID = req.params.patientUHID;
+
+    const sql = `SELECT dental_treatment.*, appointments.assigned_doctor_name FROM dental_treatment LEFT JOIN appointments ON dental_treatment.appointment_id = appointments.appoint_id WHERE dental_treatment.patient_uhid = ?`;
+
+    db.query(sql, [patientUHID], (err, result) => {
+        if (err) {
+            console.error('Error retrieving data: ', err);
+            res.status(500).send('Error retrieving data: ' + err.message);
+            return;
+        }
+
+        if (result.length === 0) {
+            res.status(404).send('No data found for Appointment ID: ' + patientUHID);
+            return;
+        }
+
+        res.status(200).json(result);
+    });
+}
+
 const updateTreatmentData = (req, res) => {
     const treatmentId = req.params.id; // Assuming you're passing the treatment ID in the route
 
@@ -124,12 +186,12 @@ const deleteTreatmentData = (req, res) => {
 };
 
 const insertTreatPrescription = (req, res) => {
-    const { medicine_name, dosage, frequency, duration, note } = req.body;
+    const {patient_uhid, medicine_name, dosage, frequency, duration, note } = req.body;
     const { appoint_id } = req.params;
 
-    const sql = 'INSERT INTO dental_prescription (appoint_id, medicine_name, dosage, frequency, duration, note) VALUES (?, ?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO dental_prescription (appoint_id, patient_uhid, medicine_name, dosage, frequency, duration, note) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
-    db.query(sql, [appoint_id, medicine_name, dosage, frequency, duration, note], (err, result) => {
+    db.query(sql, [appoint_id, patient_uhid, medicine_name, dosage, frequency, duration, note], (err, result) => {
         if (err) {
             res.status(500).json({ error: err.message });
         } else {
@@ -137,6 +199,47 @@ const insertTreatPrescription = (req, res) => {
         }
     });
 };
+
+const prescripPatientUHID = (req, res) => {
+    const patientUHID = req.params.patientUHID;
+
+    const sql = `SELECT dp.*, a.assigned_doctor_name FROM dental_prescription dp JOIN appointments a ON dp.appoint_id = a.appoint_id WHERE dp.patient_uhid = ? ORDER BY dp.date DESC LIMIT 1;`;
+    db.query(sql, [patientUHID], (err, result) => {
+        if (err) {
+            console.error('Error retrieving data: ', err);
+            res.status(500).send('Error retrieving data: ' + err.message);
+            return;
+        }
+
+        if (result.length === 0) {
+            res.status(404).send('No data found for Patient UHID: ' + patientUHID);
+            return;
+        }
+
+        res.status(200).json(result); // Return the first (and only) element
+    });
+};
+
+const getPrescriptionPatientProfile = (req, res) =>{
+    const patientUHID = req.params.patientUHID;
+
+    const sql = `SELECT dental_prescription.*, appointments.assigned_doctor_name FROM dental_prescription LEFT JOIN appointments ON dental_prescription.appoint_id = appointments.appoint_id WHERE dental_prescription.patient_uhid = ?`;
+
+    db.query(sql, [patientUHID], (err, result) => {
+        if (err) {
+            console.error('Error retrieving data: ', err);
+            res.status(500).send('Error retrieving data: ' + err.message);
+            return;
+        }
+
+        if (result.length === 0) {
+            res.status(404).send('No data found for Appointment ID: ' + patientUHID);
+            return;
+        }
+
+        res.status(200).json(result);
+    });
+}
 
 const getMedicineData = (req, res) => {
     const sql = 'SELECT item_name FROM purchase_inventory';
@@ -205,4 +308,4 @@ const getTreatmentDataSUM = (req, res) => {
 
 
 
-module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM }; 
+module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM, getTreatPatientProfile, treatPatientUHID, getPrescriptionPatientProfile, prescripPatientUHID }; 

@@ -24,6 +24,10 @@ const Overview = () => {
   const [sortedAppointments, setSortedAppointments] = useState([]);
 
   const [clinicExam, setClinicExam] = useState([]);
+  const [treatData, setTreatData] = useState([]);
+  const [prescpData, setPrescpData] = useState([]);
+  console.log(treatData);
+  console.log(prescpData);
 
   const getPresDetails = async () => {
     try {
@@ -133,11 +137,37 @@ const Overview = () => {
       console.error('Error fetching dental patient data:', error);
     }
   };
-
   useEffect(() => {
     fetchLatestDentalPatientData();
   }, []);
 
+  const fetchLatestTreatPatientData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8888/api/doctor/treatPatientUHID/${uhid}`);
+      console.log(response.data); // Assuming your API returns the data directly
+      setTreatData(response.data);
+    } catch (error) {
+      console.error('Error fetching dental patient data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLatestTreatPatientData();
+  }, []);
+
+  const fetchLatestPrescriptionPatientData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8888/api/doctor/prescripPatientUHID/${uhid}`);
+      console.log(response.data); // Assuming your API returns the data directly
+      setPrescpData(response.data);
+    } catch (error) {
+      console.error('Error fetching dental patient data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLatestPrescriptionPatientData();
+  }, []);
 
   return (
     <>
@@ -207,19 +237,25 @@ const Overview = () => {
                     <tr>
                       <th>Date & Time</th>
                       <th>Treatment</th>
-                      <th>Doctor Name</th>
-                      <th>Status</th>
+                      <th>Cost</th>
+                      <th>Note</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {sortedAppointments?.slice(-3).map((item) => (
-                      <tr>
-                        <td>{moment(item?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A')}</td>
-                        <td>{item.treatment_provided}</td>
-                        <td>{item.assigned_doctor_name}</td>
-                        <td>{item.appointment_status}</td>
-                      </tr>
-                    ))}
+                  {treatData.length > 0 ? (
+                  <>
+                  <tr>
+                    <td>{treatData[0].date?.split("T")[0]}</td>
+                    <td>{treatData[0].dental_treatment}</td>
+                    <td>{treatData[0].total_amt}</td>
+                    <td>{treatData[0].note}</td>
+                  </tr>
+                  </>
+                ) : (
+                  <tr>
+                    <td colSpan="4">No Treatment data available</td>
+                  </tr>
+                )}
                   </tbody>
                 </table>
               </div>
@@ -291,16 +327,20 @@ const Overview = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {presData?.slice(-3).map((item) => (
-                      <>
-                        <tr>
-                          <td>{item.prescription_date?.split("T")[0]}</td>
-                          <td>{item.doctor_name}</td>
-                          <td>{item.medicine_name}</td>
-                          <td>{item.note}</td>
-                        </tr>
-                      </>
-                    ))}
+                  {prescpData.length > 0 ? (
+                  <>
+                  <tr>
+                    <td>{prescpData[0].date?.split("T")[0]}</td>
+                    <td>{prescpData[0].assigned_doctor_name}</td>
+                    <td>{prescpData[0].medicine_name}</td>
+                    <td>{prescpData[0].note}</td>
+                  </tr>
+                  </>
+                ) : (
+                  <tr>
+                    <td colSpan="4">No Treatment data available</td>
+                  </tr>
+                )}
                   </tbody>
                 </table>
               </div>

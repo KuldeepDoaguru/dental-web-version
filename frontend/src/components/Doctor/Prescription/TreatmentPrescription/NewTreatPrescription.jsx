@@ -15,6 +15,7 @@ const NewTreatPrescription = () => {
     const [getExaminData, setGetExaminData] = useState([]);
     const [getTreatData, setGetTreatData] = useState([]);
     const [prescriptionData, setPrescriptionData] = useState({
+        patient_uhid: null,
         medicine_name: [],
         dosage: '',
         frequency: '',
@@ -30,6 +31,13 @@ const NewTreatPrescription = () => {
     const getPatientDetail = async () => {
         try {
             const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+
+            const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
+            setPrescriptionData(prevInputItem => ({
+                ...prevInputItem,
+                patient_uhid: uhid
+            }));
+
             setGetPatientData(res.data.result);
         } catch (error) {
             console.log(error);

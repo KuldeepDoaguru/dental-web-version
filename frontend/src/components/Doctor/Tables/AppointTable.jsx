@@ -18,6 +18,7 @@ const AppointTable = () => {
     const { refreshTable } = useSelector((state) => state.user);
     const user = useSelector((state) => state.user);
     const doctor = user.currentUser.employee_name;
+    // const [selectedActions, setSelectedActions] = useState({});
 
     const handleDateChange = (increment) => {
         const currentDate = new Date(selectedDate);
@@ -29,7 +30,7 @@ const AppointTable = () => {
         console.log("AppointTable is refreshing...");
         const fetchAppointments = async () => {
             try {
-                const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetails?date=${selectedDate}`);
+                const res = await axios.get(`http://localhost:8888/api/doctor/appointtreatSitting?date=${selectedDate}`);
                 setAppointments(res.data.result);
                 const filteredData = res.data.result.filter(item =>
                     item.appointment_dateTime.includes(selectedDate)
@@ -99,9 +100,10 @@ const AppointTable = () => {
                 navigate(`/examination-Dashboard/${appointId}`);
             }
 
-            const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetails?date=${selectedDate}`);
+            const res = await axios.get(`http://localhost:8888/api/doctor/appointtreatSitting?date=${selectedDate}`);
             setAppointments(res.data.result);
             setFilterTableData(res.data.result);
+            // setSelectedActions({ ...selectedActions, [appointId]: action });
         } catch (error) {
             console.error('Error updating appointment status:', error.message);
         }
@@ -165,6 +167,7 @@ const AppointTable = () => {
                                     <th>Disease</th>
                                     <th>Patient Type</th>
                                     <th>Note</th>
+                                    <th>Sitting</th>
                                     <th>Status</th>
                                     <th>Type of Action</th>
                                 </tr>
@@ -186,6 +189,7 @@ const AppointTable = () => {
                                         <td>{item.disease}</td>
                                         <td>{item.patient_type}</td>
                                         <td>{item.notes}</td>
+                                        <td>{item.sitting_result}</td>
                                         <td>{item.appointment_status}</td>
                                         <td>
                                             <div className="dropdown">
@@ -197,11 +201,13 @@ const AppointTable = () => {
                                                 >
                                                     Action
                                                 </button>
-                                                <ul className="dropdown-menu">
+                                                {/* Option 1 */}
+                                                 <ul className="dropdown-menu">
                                                     <li>
                                                         <button
                                                             className="dropdown-item mx-0"
                                                             onClick={() => handleAction('In Treatment', item.appoint_id)}
+                                                            // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'In Treatment'}
                                                         >
                                                             Start Treatment
                                                         </button>
@@ -210,6 +216,7 @@ const AppointTable = () => {
                                                         <button
                                                             className="dropdown-item mx-0"
                                                             onClick={() => handleAction('Cancel', item.appoint_id)}
+                                                            // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'Cancel'}
                                                         >
                                                             Cancel Treatment
                                                         </button>
@@ -218,11 +225,48 @@ const AppointTable = () => {
                                                         <button
                                                             className="dropdown-item mx-0"
                                                             onClick={() => handleAction('On Hold', item.appoint_id)}
+                                                            // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'On Hold'}
                                                         >
                                                             Hold
                                                         </button>
                                                     </li>
                                                 </ul>
+                                                {/* Option 2
+                                                 <ul className="dropdown-menu">
+                                                    {item.appointment_status !== 'Cancelled' && (
+                                                        <li>
+                                                            <button
+                                                                className="dropdown-item mx-0"
+                                                                onClick={() => handleAction('In Treatment', item.appoint_id)}
+                                                                disabled={item.appointment_status !== 'Pending'} // Disable if not in 'Pending' status
+                                                            >
+                                                                Start Treatment
+                                                            </button>
+                                                        </li>
+                                                    )}
+                                                    {item.appointment_status !== 'Cancelled' && (
+                                                        <li>
+                                                            <button
+                                                                className="dropdown-item mx-0"
+                                                                onClick={() => handleAction('Cancel', item.appoint_id)}
+                                                                disabled={item.appointment_status !== 'Pending'} // Disable if not in 'Pending' status
+                                                            >
+                                                                Cancel Treatment
+                                                            </button>
+                                                        </li>
+                                                    )}
+                                                    {item.appointment_status !== 'Cancelled' && (
+                                                        <li>
+                                                            <button
+                                                                className="dropdown-item mx-0"
+                                                                onClick={() => handleAction('On Hold', item.appoint_id)}
+                                                                disabled={item.appointment_status !== 'In Treatment'} // Disable if not in 'In Treatment' status
+                                                            >
+                                                                Hold
+                                                            </button>
+                                                        </li>
+                                                    )}
+                                                </ul> */}
                                             </div>
                                         </td>
                                     </tr>

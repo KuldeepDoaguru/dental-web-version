@@ -20,7 +20,7 @@ const TreatmentDashTwo = () => {
                                 <SideBar />
                             </div>
                             <div className="col-lg-11 col-11 ps-0 m-0">
-                                <TreatmentForm />
+                                <TreatmentForm /> 
                             </div>
                         </div>
                     </div>

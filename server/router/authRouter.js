@@ -5,7 +5,7 @@ const path = require('path');
 const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID } = require("../controller/authControl.js");
 const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg } = require("../controller/authAppointTable.js");
 const { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId } = require("../controller/authBranch.js");
-const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM } = require("../controller/authTreatment.js");
+const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM, getTreatPatientProfile, treatPatientUHID, getPrescriptionPatientProfile, prescripPatientUHID } = require("../controller/authTreatment.js");
 const { uploadImage, getUploadedImages } = require("../controller/authContrimg.js");
 const { bookAppointment, getTreatSuggest } = require("../controller/authBook.js");
 
@@ -27,7 +27,8 @@ router.get("/getTreatSuggestById/:appoint_id", getTreatSuggestById);
 router.get("/getSecurityAmountByAppointmentId/:appointment_id", getSecurityAmountByAppointmentId);
 router.get('/patient-security/:appoint_id', getPatientSecurityAmt);
 router.put('/update-security-amount/:sa_id', updatePatientSecurityAmt);
-router.get('/getAllSecurityAmounts/:sa_id', getAllSecurityAmounts)
+router.get('/getAllSecurityAmounts/:sa_id', getAllSecurityAmounts);
+router.get("/treatPatientUHID/:patientUHID", treatPatientUHID);
 // Treatment Suggestion Routes END here........
 
 // Appointment  Routes START here......
@@ -49,6 +50,7 @@ router.get("/treatmentLists", getTreatmentList);
 router.post("/insertTreatmentData/:exam_id/:appointment_id", insertTreatmentData);
 router.get("/getExamDataIdbyAppointId/:id/:appointment_id", getExamDataIdbyAppointId);
 router.get("/getTreatmentData/:appointment_id", getTreatmentData);
+router.get("/treatPatientProfile/:patientUHID", getTreatPatientProfile);
 router.put('/updateTreatmentData/:id', updateTreatmentData);
 router.delete('/deleteTreatmentData/:id', deleteTreatmentData);
 
@@ -59,6 +61,8 @@ router.get("/getTreatmentDatasum/:appointment_id", getTreatmentDataSUM);
 // Medical Prescription Routes START here......
 router.post('/insertTreatPrescription/:appoint_id', insertTreatPrescription);
 router.get('/getMedicineData', getMedicineData);
+router.get('/getPrescriptionPatientProfile/:patientUHID', getPrescriptionPatientProfile);
+router.get('/prescripPatientUHID/:patientUHID', prescripPatientUHID);
 router.get('/getTreatPrescriptionByAppointId/:appoint_id', getTreatPrescriptionByAppointId);
 router.delete('/deleteTreatPrescriptionById/:id', deleteTreatPrescriptionById);
 // Medical Prescription Routes END here......

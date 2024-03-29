@@ -157,13 +157,13 @@ console.log(selectedBranch)
                             </div>
                           </div>
 
-                          <div className="col-5 ms-3">
+                          {/* <div className="col-5 ms-3">
                             <p>
                               <Link to="/receptionist_registration">
                                 Forgot Password?
                               </Link>
                             </p>
-                          </div>
+                          </div> */}
 
                           <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                             {/* <Link to="/superadmin-dashboard"></Link> */}

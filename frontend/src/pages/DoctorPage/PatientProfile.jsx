@@ -306,7 +306,7 @@ function PatientProfile() {
             </div>
             <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 col-sm-12">
               <div className="mrgtop">
-                <Navbar uhid={uhid}/>
+                <Navbar uhid={uhid}/> 
               </div>
             </div>
           </div>

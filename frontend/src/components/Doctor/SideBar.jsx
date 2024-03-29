@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 // import { MdOutlineInventory } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
@@ -11,13 +11,26 @@ import { IoHome } from "react-icons/io5";
 import { ImSwitch } from "react-icons/im";
 import { IoPeople } from "react-icons/io5";
 import { CiMedicalClipboard } from "react-icons/ci";
+import { clearUser } from "../../redux/user/userSlice";
+import { useDispatch } from "react-redux";
 
 const Sider = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const getSidebarClass = (path) => {
     return location.pathname === path ? "active-nav" : "";
   };
+
+  const handleLogout = () =>{
+    const isConfirmed = window.confirm('Are you sure you want to Logout?');
+    if (!isConfirmed) {
+      return;
+    }
+    navigate("/")
+    dispatch(clearUser())
+  }
 
   return (
     <Wrapper>
@@ -146,7 +159,7 @@ const Sider = () => {
                 </div>
               </Link>
             </li> */}
-             <hr/>
+             {/* <hr/>
             <li>
               <Link
                 to="/all-patient"
@@ -161,7 +174,7 @@ const Sider = () => {
                   </h3>
                 </div>
               </Link>
-            </li>
+            </li> */}
              <hr />
             {/*<li>
               <Link
@@ -224,7 +237,7 @@ const Sider = () => {
             </li> */}
             {/* <hr /> */}
             <li>
-              <div className="link-div">
+              <div className="link-div" onClick={handleLogout}>
                 <div>
                   {/* <i className="fs-4 bi bi-power"></i> */}
                   <ImSwitch className="icon"/>

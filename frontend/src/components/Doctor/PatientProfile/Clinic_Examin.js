@@ -71,20 +71,26 @@ import styled from "styled-components";
 
 const ClinicExamin = () => {
   const dispatch = useDispatch();
-  const { pid } = useParams();
+  // const { pid } = useParams();
+  const { uhid } = useParams();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`); 
   console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
+  const branch = user.currentUser.branch_name;
+  console.log(branch);
   
   const [exmData, setExmData] = useState([]);
 
   const getExamineDetails = async () => {
     try {
-      const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/examinDetailsByPatId/${pid}`
+      // const { data } = await axios.get(
+      //   `http://localhost:7777/api/v1/super-admin/examinDetailsByPatId/${pid}`
+      // );
+      const respsData = await axios.get(
+        `http://localhost:8888/api/doctor/getDentalPatientDataByID/${uhid}`
       );
-      setExmData(data);
+      setExmData(respsData.data);
+      console.log(respsData.data);
     } catch (error) {
       console.log(error);
     }
@@ -117,13 +123,14 @@ const ClinicExamin = () => {
                 {exmData?.map((item) => (
                   <>
                     <tr>
-                      <td>{item.examin_date?.split("T")[0]}</td>
+                      {/* <td>{item.examin_date?.split("T")[0]}</td> */}
+                      <td>{item.date}</td>
                       <td>{item.branch_name}</td>
-                      <td>{item.examin_issue}</td>
-                      <td>{item.diagnosis}</td>
-                      <td>{item.examin_investigation}</td>
-                      <td>{item.tooth}</td>
-                      <td>{item.doctor_name}</td>
+                      <td>{item.disease}</td>
+                      <td>{item.on_examination}</td>
+                      <td>{item.chief_complain}</td>
+                      <td>{item.selected_teeth}</td>
+                      <td>{item.assigned_doctor_name}</td>
                     </tr>
                   </>
                 ))}

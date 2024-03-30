@@ -141,7 +141,44 @@ const getTreatSuggest = (req, res) => {
     }
 };
 
+const insertLabData = (req, res) =>{
+    const {appoint_id, patient_uhid, test_name} = req.body;
+
+    db.query('INSERT INTO dental_lab (appoint_id, patient_uhid, test_name) VALUES (?, ?, ?)', [appoint_id, patient_uhid, test_name], (err, result) =>{
+        if (err) {
+            console.error('Error inserting data:', err);
+            res.status(500).json({ success: false, message: 'Error inserting data' });
+            return;
+        }
+        
+        console.log('Data inserted successfully');
+        res.status(200).json({ success: true, message: 'Data inserted successfully' });
+    })
+}
+
+const getLabDataByAppointId = (req, res) => {
+    const appointId = req.params.appoint_id;
+
+    const sql = 'SELECT * FROM dental_lab WHERE appoint_id = ?';
+
+    db.query(sql, [appointId], (err, result) => {
+        if (err) {
+            console.error('Error retrieving lab data:', err);
+            res.status(500).json({ success: false, message: 'Error retrieving lab data' });
+            return;
+        }
+
+        if (result.length === 0) {
+            res.status(404).json({ success: false, message: 'No lab data found for appointment ID: ' + appointId });
+            return;
+        }
+
+        res.status(200).json({ success: true, data: result });
+    });
+};
 
 
 
-module.exports = { bookAppointment, getTreatSuggest }; 
+
+
+module.exports = { bookAppointment, getTreatSuggest, insertLabData, getLabDataByAppointId }; 

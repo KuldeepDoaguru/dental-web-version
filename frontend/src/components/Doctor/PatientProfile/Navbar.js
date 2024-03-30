@@ -216,7 +216,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item" id="app">
-                <Appointment uhid={uhid}/>
+                <Appointment uhid={uhid}/> 
               </li>
             </ul>
           </div>
@@ -242,7 +242,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Bill />
+                <Bill uhid={uhid}/>
               </li>
             </ul>
           </div>

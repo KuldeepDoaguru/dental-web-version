@@ -21,7 +21,7 @@ const TPrescriptionDash = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <NewTreatPrescription />
+                <NewTreatPrescription /> 
               </div>
             </div>
           </div>

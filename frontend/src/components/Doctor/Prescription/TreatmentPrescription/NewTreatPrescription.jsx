@@ -25,6 +25,9 @@ const NewTreatPrescription = () => {
     const [medicineOptions, setMedicineOptions] = useState([]);
     const [getTreatMedicine, setGetTreatMedicine] = useState([]);
     const [getSum, setGetSum] = useState(0);
+
+    const [getlab, setGetlab] = useState([]);
+    console.log(getlab);
     // console.log(prescriptionData)
 
     // Get Patient Details START
@@ -152,6 +155,22 @@ const NewTreatPrescription = () => {
     }, [])
     // Get Treatment Medical Prescription Data END
 
+    // Get lab test Data START
+    const getlabByAppointId = async () => {
+        try {
+            const res = await axios.get(`http://localhost:8888/api/doctor/lab-data/${id}`);
+            setGetlab(res.data.data);
+            console.log(res.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getlabByAppointId()
+    }, [])
+    // Get lab test Data END
+
     const handledelete = async (id) => {
         console.log(id);
         try {
@@ -170,9 +189,23 @@ const NewTreatPrescription = () => {
         }
     }
 
-    const handleNavigate = () => {
-        navigate(`/ViewTreatPrescription/${id}`)
-    }
+    const handleNavigate = async () => {
+        try {
+            // Make the API call to fetch bill data
+            const billResponse = await axios.get(`http://localhost:8888/api/doctor/bill-patient-data/${id}`);
+            console.log('Bill data fetched successfully');
+    
+            // Check if bill data was fetched successfully
+            if (billResponse.data.success) {
+                navigate(`/ViewTreatPrescription/${id}`);
+            } else {
+                console.error('Error fetching bill data:', billResponse.data.message);
+            }
+        } catch (error) {
+            console.error('fetching bill data:', error);
+        }
+    };
+    
 
     const grandTotal = async (id) => {
         try {
@@ -275,6 +308,37 @@ const NewTreatPrescription = () => {
                                         <div className="col-lg-3 d-flex flex-column text-center">
 
                                             <p>{item.advice}</p>
+                                        </div>
+                                    </div>
+                                </>
+                            ))}
+                        </fieldset>
+                    </div>
+                </div>
+                <div className="container">
+                    <div className="row shadow-sm p-3 mb-3 bg-body rounded">
+                        <fieldset>
+                            <legend className="">Patient Laboratory Test</legend>
+                            <div className="d-flex justify-content-evenly align-items-center col-lg-12 " style={{ background: "#0dcaf0", borderRadius: "5px" }}>
+                                <div className="col-lg-2 d-flex flex-column text-center">
+                                    <label>Lab Test</label>
+
+                                </div>
+                                <div className="col-lg-2 d-flex flex-column text-center">
+                                    <label>Date</label>
+
+                                </div>
+                            </div>
+                            {getlab.map((item, index) => (
+                                <>
+                                    <div key={index} className="d-flex justify-content-evenly align-items-center col-lg-12">
+                                        <div className="col-lg-2 d-flex flex-column text-center">
+
+                                            <p>{item.test_name}</p>
+                                        </div>
+                                        <div className="col-lg-2 d-flex flex-column text-center">
+
+                                            <p>{item.date}</p>
                                         </div>
                                     </div>
                                 </>

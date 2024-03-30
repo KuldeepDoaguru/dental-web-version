@@ -26,8 +26,10 @@ const Overview = () => {
   const [clinicExam, setClinicExam] = useState([]);
   const [treatData, setTreatData] = useState([]);
   const [prescpData, setPrescpData] = useState([]);
+  const [billData, setBillData] = useState([]);
   console.log(treatData);
   console.log(prescpData);
+  console.log(billData);
 
   const getPresDetails = async () => {
     try {
@@ -169,6 +171,20 @@ const Overview = () => {
     fetchLatestPrescriptionPatientData();
   }, []);
 
+  const fetchLatestBillPatientData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8888/api/doctor/get-patientBill-data/${uhid}`);
+      console.log(response.data); // Assuming your API returns the data directly
+      setBillData(response.data);
+    } catch (error) {
+      console.error('Error fetching dental patient Bill data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLatestBillPatientData();
+  }, []);
+
   return (
     <>
       <Container>
@@ -271,13 +287,13 @@ const Overview = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {patPendingBill?.slice(-3).map((item) => (
+                    {billData?.slice(-3).map((item) => (
                       <>
                         <tr>
                           <td>{item.bill_date.split("T")[0]}</td>
                           <td>{item.total_amount}</td>
-                          <td>{item.treatment}</td>
-                          <td>{item.assigned_doctor}</td>
+                          <td>{item.dental_treatment}</td>
+                          <td>{item.assigned_doctor_name}</td>
                         </tr>
                       </>
                     ))}
@@ -305,7 +321,7 @@ const Overview = () => {
                         <td>{clinicExam[0].chief_complain}</td>
                         <td>{clinicExam[0].selected_teeth}</td>
                         <td>{clinicExam[0].on_examination}</td>
-                        <td>Doctor Name</td> {/* Replace "Doctor Name" with the actual doctor's name */}
+                        <td>{clinicExam[0].assigned_doctor_name}</td> {/* Replace "Doctor Name" with the actual doctor's name */}
                       </tr>
                     ) : (
                       <tr>

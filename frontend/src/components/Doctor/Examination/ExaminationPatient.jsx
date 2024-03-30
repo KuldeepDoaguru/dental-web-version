@@ -311,7 +311,7 @@ const ExaminationPatientTest = () => {
   const { id } = useParams();
   console.log(id);
   const [selectedTeeth, setSelectedTeeth] = useState([]);
-  // const [inputItemList, setInputItemList] = useState([]);
+  // const [inputItemList, setInputItemList] = useState([]); 
   const [inputItem, setInputItem] = useState({
     appointment_id: id,
     patient_uhid: null,
@@ -1036,7 +1036,7 @@ const ExaminationPatientTest = () => {
               </button>
             </div>
           </div>
-          <div className="row shadow-sm p-3 mb-3 bg-body rounded">
+          <div className="row shadow-sm p-3 mb-3 bg-body rounded patient">
             {getPatientData.map((item, index)=>(
               <>
             <div key={index} className="col-lg-12 d-flex justify-content-between align-items-center">
@@ -1653,6 +1653,7 @@ const ExaminationPatientTest = () => {
                   <div class="row mt-5">
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
+                        <label className="lable">Select Teeth</label>
                         <input
                           type="text"
                           id="form8Example1"
@@ -1667,6 +1668,7 @@ const ExaminationPatientTest = () => {
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
+                      <label className="lable">Dental Condition</label>
                         <input
                           type="text"
                           value={inputItem.desease}
@@ -1689,6 +1691,7 @@ const ExaminationPatientTest = () => {
                   <div class="row">
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
+                      <label className="lable">Cheif Complaint</label>
                         <input
                           type="text"
                           name="chiefComplain"
@@ -1702,6 +1705,7 @@ const ExaminationPatientTest = () => {
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
+                      <label className="lable">Any Advice</label>
                         <input
                           type="text"
                           id="form8Example4"
@@ -1715,6 +1719,7 @@ const ExaminationPatientTest = () => {
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
+                      <label className="lable">ON Examination</label>
                         <input
                           type="text"
                           id="form8Example5"
@@ -1887,4 +1892,11 @@ const Wrapper = styled.div`
 .spin {
   animation: spin 1s linear infinite;
 }
+.lable{
+  font-size: 1.3rem;
+  font-weight: 500;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  padding-left: 0.9rem;
+}
+
 `;

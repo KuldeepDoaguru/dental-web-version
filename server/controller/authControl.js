@@ -104,7 +104,13 @@ const getDentalPatientDataByID = (req, res) => {
 const getDentalPatientByID = (req, res) => {
     const patientUHID = req.params.patientUHID;
 
-    const sql = 'SELECT * FROM dental_examination WHERE patient_uhid = ? ORDER BY date DESC LIMIT 1';
+    // const sql = 'SELECT * FROM dental_examination WHERE patient_uhid = ? ORDER BY date DESC LIMIT 1';
+    const sql = `SELECT dental.*, appointments.assigned_doctor_name 
+    FROM dental_examination dental
+    INNER JOIN appointments ON dental.patient_uhid = appointments.patient_uhid
+    WHERE dental.patient_uhid = ? 
+    ORDER BY dental.date DESC 
+    LIMIT 1;`;
     db.query(sql, [patientUHID], (err, result) => {
         if (err) {
             console.error('Error retrieving data: ', err);
@@ -206,7 +212,44 @@ const getPatientDetails = (req, res) =>{
         error: error.message,
       });
     }
-}
+};
+
+const updateSittingCount = (req, res) => {
+    const appointId = req.params.appoint_id; // Get the appointment ID from request parameters
+
+    // Retrieve current sitting count for the given appointment ID
+    db.query('SELECT sitting_result FROM treat_suggest WHERE appoint_id = ?', [appointId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ success: false, message: 'Error fetching sitting count' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ success: false, message: 'Appointment ID not found' });
+        }
+
+        const currentSitting = results[0].sitting_result; // Corrected: retrieve sitting_result
+
+        // Check if sitting count is greater than 0
+        if (currentSitting > 0) {
+            // Calculate new sitting count after deduction
+            const newSitting = currentSitting - 1;
+
+            // Update sitting count in the database
+            db.query('UPDATE treat_suggest SET sitting_result = ? WHERE appoint_id = ?', [newSitting, appointId], (err, result) => {
+                if (err) {
+                    return res.status(500).json({ success: false, message: 'Error updating sitting count' });
+                }
+
+                return res.status(200).json({ success: true, message: 'Sitting count updated successfully', newSitting });
+            });
+        } else {
+            // Sitting count is already 0, no need to update
+            return res.status(200).json({ success: true, message: 'Sitting count is already 0, no deduction needed' });
+        }
+    });
+};
 
 
-module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID}; 
+
+
+module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID, updateSittingCount}; 

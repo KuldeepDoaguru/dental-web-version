@@ -203,7 +203,7 @@ const PediatricDentalTest = () => {
   const { id } = useParams();
   console.log(id);
   const [selectedTeeth, setSelectedTeeth] = useState([]);
-  // const [inputItemList, setInputItemList] = useState([]);
+  // const [inputItemList, setInputItemList] = useState([]); 
   const [inputItem, setInputItem] = useState({
     appointment_id: id,
     patient_uhid: null,
@@ -824,7 +824,7 @@ const PediatricDentalTest = () => {
     <>
       <Wrapper>
         <div className="container">
-          <div className="row">
+          <div className="row headButton">
             <div className="col-md-12 text-start p-3">
             <button className="btn btn-secondary mx-3" onClick={()=>window.history.back()}><GiFastBackwardButton size={21}/></button>
               <button
@@ -836,7 +836,8 @@ const PediatricDentalTest = () => {
             </div>
           </div>
 
-          <div className="row shadow-sm p-3 mb-3 bg-body rounded">
+          <div className="row shadow-sm p-3 mb-3 bg-body rounded patient">
+            <div className="">
             {getPatientData.map((item, index) => (
               <>
                 <div key={index} className="col-lg-12 d-flex justify-content-between align-items-center">
@@ -863,6 +864,7 @@ const PediatricDentalTest = () => {
                 </div>
               </>
             ))}
+            </div>
           </div>
 
           {/* dental chart 20 teeth start */}
@@ -872,7 +874,7 @@ const PediatricDentalTest = () => {
             </div>
           ) : (
             <>
-              <div className="row">
+              <div className="row setTeeth1">
                 <div className="col-lg-12 col-12">
                   <div className="d-flex justify-content-center">
                     <div>
@@ -1048,7 +1050,7 @@ const PediatricDentalTest = () => {
                   </div>
                 </div>
               </div>
-              <div className="row">
+              <div className="row setTeeth1">
                 <div className="col-lg-12 col-12">
                   <div className="d-flex justify-content-center">
                     <div>
@@ -1227,8 +1229,8 @@ const PediatricDentalTest = () => {
             </>)}
           {/* dental chart 20 teeth end */}
 
-          <div className="row mt-2">
-            <div className="col-lg-10 col-10">
+          <div className="row mt-2 ">
+            <div className="col-lg-10 col-10 bodyteeth">
               <div className="text-center">
                 <button
                   onClick={handleClick}
@@ -1249,6 +1251,7 @@ const PediatricDentalTest = () => {
                   <div class="row mt-3">
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
+                      <label className="lable">Select Teeth</label>
                         <input
                           type="text"
                           id="form8Example1"
@@ -1263,6 +1266,7 @@ const PediatricDentalTest = () => {
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
+                      <label className="lable">Dental Condition</label>
                         <input
                           type="text"
                           value={inputItem.desease}
@@ -1285,6 +1289,7 @@ const PediatricDentalTest = () => {
                   <div class="row">
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
+                      <label className="lable">Cheif Complaint</label>
                         <input
                           type="text"
                           name="chiefComplain"
@@ -1298,6 +1303,7 @@ const PediatricDentalTest = () => {
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
+                      <label className="lable">Any Advice</label>
                         <input
                           type="text"
                           id="form8Example4"
@@ -1311,6 +1317,7 @@ const PediatricDentalTest = () => {
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
+                      <label className="lable">ON Examination</label>
                         <input
                           type="text"
                           id="form8Example5"
@@ -1380,7 +1387,7 @@ const PediatricDentalTest = () => {
               </div>
             </div>
 
-            <div className="col-lg-2 col-2">
+            <div className="col-lg-2 col-2 bodybutton">
               <div className="d-flex flex-column text-center">
                 <div onClick={caries} className="p-2">
                   <img
@@ -1485,5 +1492,46 @@ const Wrapper = styled.div`
 
 .spin {
   animation: spin 1s linear infinite;
+}
+
+.patient{
+    @media screen and (min-width: 768px) and (max-width: 1023px) {
+      width: 53rem;
+      margin-left: 2rem;
+    }
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 37rem;
+      margin-left: 3.2rem;
+    }
+  }
+  .setTeeth1{
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 37rem;
+      margin-left: 3.2rem;
+    }
+  }
+  .headButton{
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 37rem;
+      margin-left: 3.2rem;
+    }
+  }
+  .bodyteeth{
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 37rem;
+      margin-left: 3.2rem;
+    }
+  }
+  .bodybutton{
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 37rem;
+      margin-left: 3.2rem;
+    }
+  }
+  .lable{
+  font-size: 1.3rem;
+  font-weight: 500;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  padding-left: 0.9rem;
 }
 `;

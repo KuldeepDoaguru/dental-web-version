@@ -238,5 +238,27 @@ const billPatientDataByAppId = (req, res) => {
     });
 }; 
 
+const getPatientBillUHID = (req, res) => {
+    const patientUHID = req.params.patientUHID;
 
-module.exports = { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId }; 
+    const sql = `SELECT * FROM patient_bills WHERE uhid = ?`;
+
+    db.query(sql, [patientUHID], (err, result) => {
+        if (err) {
+            console.error('Error retrieving data: ', err);
+            res.status(500).send('Error retrieving data: ' + err.message);
+            return;
+        }
+
+        if (result.length === 0) {
+            res.status(404).send('No data found for Patient UHID: ' + patientUHID);
+            return;
+        }
+
+        res.status(200).json(result); // Return the result
+    });
+};
+
+
+
+module.exports = { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId, getPatientBillUHID }; 

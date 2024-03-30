@@ -89,8 +89,20 @@ const NewTreatmentTable = () => {
         }
     }
 
-    const handleNavigate = () =>{
+    const handleNavigate = async () =>{
         navigate(`/TPrescriptionDash/${id}`)
+        // try {
+
+        //     // Make the API call to update sitting count
+        // //    const updateSitting = await axios.get(`http://localhost:8888/api/doctor/updateSittingCount/${id}`);
+        // //     console.log('Sitting count updated successfully');
+
+            
+            
+        // } catch (error) {
+        //     console.log('Error updating sitting count', error);
+        // }
+       
     }
 
 

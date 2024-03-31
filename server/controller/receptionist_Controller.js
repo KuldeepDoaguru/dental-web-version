@@ -1366,7 +1366,7 @@ const getDoctorDataByBranchWithLeave = (req, res) => {
         employee_leave  AS l
         LEFT JOIN 
         employee_register  AS d ON d.employee_ID = l.employee_ID WHERE
-            d.branch_name = ? AND d.employee_designation = "doctor" AND l.leave_status = "Approved"
+            d.branch_name = ? AND d.employee_role LIKE "%doctor%" AND l.leave_status = "Approved"
     `;
     db.query(sql, [branch], (err, result) => {
       if (err) {

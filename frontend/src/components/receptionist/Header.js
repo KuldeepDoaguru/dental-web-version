@@ -64,7 +64,7 @@ box-shadow: 1px 1px 6px black;
     }
 }
 #bell{
-    margin-left: 5rem;
+    margin-left: 1rem;
     list-style-type: none;
     @media screen and  (max-width: 768px) {
         margin-left: 0rem;

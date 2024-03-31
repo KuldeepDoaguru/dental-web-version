@@ -255,7 +255,7 @@ const Sider = () => {
                   <i className="fs-4 bi bi-house-door-fill"></i>
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
+                  <h3 className=" d-none d-sm-inline" id="navleft1">
                     Dashboard
                   </h3>
                 </div>
@@ -374,7 +374,7 @@ const Sider = () => {
 export default Sider;
 const Wrapper = styled.div`
   #navleft1 {
-    font-size: 12px;
+    font-size: 13px;
     margin-left: 0rem;
     color: white;
   }
@@ -390,7 +390,10 @@ const Wrapper = styled.div`
   }
   #sidebar {
     width: 80%;
-    height: 75rem;
+    min-height: 100vh;
+
+    
+    
     background-color: teal;
     @media screen and (max-width: 768px) {
       width: 3rem;
@@ -399,6 +402,10 @@ const Wrapper = styled.div`
     @media screen and (min-width: 768px) and (max-width: 1020px) {
       width: 5rem;
       height: 151rem;
+    }
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+      width: 95%;
+      
     }
   }
   .bi {

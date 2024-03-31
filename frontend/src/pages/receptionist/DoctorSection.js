@@ -374,9 +374,14 @@ const Wrapper = styled.div`
     height: 46rem;
   }
 }
-td{
-  padding: 1rem;
-}
+th{
+    background-color: teal;
+    color: white;
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
+  }
 
 
 `

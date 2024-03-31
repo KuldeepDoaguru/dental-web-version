@@ -365,5 +365,13 @@ const Wrapper = styled.div`
    width: 42rem;
   }
 }
+th{
+    background-color: teal;
+    color: white;
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
+  }
 
 `

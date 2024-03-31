@@ -242,7 +242,12 @@ const handleEdit = (inquiry)=>{
   setShowEditPopup(true);
 }
 const handleDelete = async (id)=>{
-  
+  const isConfirmed = window.confirm('Are you sure you want to Delete?');
+     
+  if (!isConfirmed) {
+    // If the user cancels the deletion, do nothing
+    return;
+  }
  
   try {
     const response = await axios.delete(`http://localhost:4000/api/v1/receptionist/delete-inquiry/${id}`);
@@ -592,6 +597,11 @@ overflow: hidden;
 }
 th{
     background-color: teal;
+    color: white;
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
   }
 
 `

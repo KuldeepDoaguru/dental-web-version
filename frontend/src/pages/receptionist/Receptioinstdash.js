@@ -54,6 +54,7 @@ export default Receptioinstdash
 const Wrapper=styled.div`
 .cards{
   width: 15%;
+
   @media screen and (max-width: 768px) {
  width: 95%;
 }
@@ -69,14 +70,18 @@ const Wrapper=styled.div`
 @media screen and (max-width: 768px) {
   margin-left: 1.5rem;
 }
-  @media screen and (min-width: 1020px) and (max-width: 1700px) {
+  @media screen and (min-width: 1020px) and (max-width: 1500px) {
+    margin-left: -1rem;
+    
+  }
+  @media screen and (min-width: 1500px) and (max-width: 1700px) {
     margin-left: -1.9rem;
     
   }
 }
 
 #sider{
-  height: 62rem;
+  min-height: 100vh;
   
  
 

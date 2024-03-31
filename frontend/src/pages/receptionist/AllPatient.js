@@ -347,13 +347,14 @@ const Wrapper = styled.div`
   }
 }
 #hd{
-  height:44rem;
+  
   @media screen and (max-width: 768px) {
    height: 68rem;
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {
    height: 58rem;
   }
+ 
 }
 #tableres{
   @media screen and (max-width: 768px) {
@@ -363,6 +364,15 @@ const Wrapper = styled.div`
   @media screen and (min-width: 768px) and (max-width: 1020px) {
    width: 42rem;
   }
+}
+th{
+  background-color: teal;
+  color: white;
+  white-space: nowrap;
+  
+}
+td{
+  white-space: nowrap;
 }
 
 `

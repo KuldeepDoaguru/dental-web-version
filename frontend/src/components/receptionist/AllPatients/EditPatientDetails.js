@@ -272,6 +272,8 @@ useEffect(()=>{
                             name="aadhaar_no"
                             onChange={handleChange}
                             value={data.aadhaar_no}
+                            maxLength={12}
+                            minLength={12}
                           
                           />
           </div>
@@ -405,7 +407,7 @@ useEffect(()=>{
 
                           <select className="form-select" id="patientType" name="patientType" value={data.patientType} required onChange={handleChange}>
       <option value="">Select Patient Type</option>
-      <option value="Genral">General</option>
+      <option value="General">General</option>
       <option value="CGHS(Serving)">CGHS(Serving)</option>
       <option value="CGHS(Pensioner)">CGHS(Pensioner)</option>
       <option value="CSMA">CSMA</option>

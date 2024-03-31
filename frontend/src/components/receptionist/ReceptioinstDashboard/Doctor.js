@@ -182,10 +182,12 @@ useEffect(() => {
     if (doctorLeaveEntries.length > 0) {
       return !doctorLeaveEntries.some(entry => {
         const leaveDates = entry.leave_dates.split(',');
-        return leaveDates.includes(selectedDateTime);
+        console.log(leaveDates);
+        console.log(moment(selectedDateTime).format('YYYY-MM-DD'))
+        return leaveDates.includes(moment(selectedDateTime).format('YYYY-MM-DD') );
       });
     }
-
+ 
     // If the doctor has no leave entries, include them in the filtered array
     return true;
   });
@@ -271,7 +273,6 @@ useEffect(() => {
     
   };
 
- 
     const handleSearchChange = (e) => {
       setSearchDoctor(e.target.value);
     };
@@ -294,7 +295,7 @@ useEffect(() => {
     
   return (
     <Wrapper>
-      <div className="widget-area-2 proclinic-box-shadow rounded bg-white px-1 me-2">
+      <div className="widget-area-2 proclinic-box-shadow rounded bg-white px-1 me-2 ">
         <h3 className="widget-title text-center">Doctor Available for { moment(selectedDate).format('DD/MM/YYYY')}</h3>
         <div className="d-flex px-2 gap-1">
         <input type="date" 
@@ -418,12 +419,19 @@ width: 110%;
   @media screen and (min-width: 768px) and (max-width: 1020px)  {
       width: 41rem;
     }
-  @media screen and (min-width: 1020px) and (max-width: 1700px) {
-   height: 26rem;
+    @media screen and (min-width: 1020px) and (max-width: 1300px) {
+   height: 25.5rem;
+  }
+  @media screen and (min-width: 1300px) and (max-width: 1700px) {
+   height: 25.2rem;
   }
 }
 .widget-title{
   font-size: 20px;
+  padding-top: 10px;
+  @media screen and (min-width: 1020px) and (max-width: 1300px) {
+    font-size: 15px;
+  }
   
   @media screen and (max-width: 768px)  {
    margin-top: 15px;

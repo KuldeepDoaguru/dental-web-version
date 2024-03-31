@@ -24,7 +24,8 @@ const AppointTable = () => {
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Initialize with today's date
-
+  const todayDate = new Date().toISOString().split('T')[0];
+  
 
  
   const [filteredData, setFilteredData] = useState([]);
@@ -394,7 +395,8 @@ patient_type
     Action
   </button>
   <ul className="dropdown-menu">
-    {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel"  &&   <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id,patient.uhid, 'Check-In')}>Check-In</a></li>}
+    {( patient.appointment_status !== "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime.split("T")[0] == todayDate)  &&   <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id,patient.uhid, 'Check-In')}>Check-In</a></li>}
+    {( patient.appointment_status == "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime.split("T")[0] == todayDate)  &&   <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id,patient.uhid, 'Appoint')}>Change Status to "Appoint"</a></li>}
   {/* <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li> */}
   {/* <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Check-Out')}>Check-Out</a></li>
   <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Complete')}>Complete</a></li> */}
@@ -492,6 +494,11 @@ const Wrapper = styled.div`
   }
   th{
     background-color: teal;
+    color: white;
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
   }
   .table-responsive{
     

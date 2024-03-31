@@ -252,13 +252,29 @@ function Card() {
 export default Card;
 
 const Wrapper = styled.div`
+
+  .sec{
+    padding: 0;
+  }
   .dotrem {
     list-style-type: none;
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+       font-size: small;
+       white-space: nowrap;
+   
+  }
   }
   .dotrem1 {
     list-style-type: none;
     width: 25px;
     padding-left:4px;
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+       
+       
+   
+  }
+   
+  
   }
 
 .data{
@@ -267,30 +283,59 @@ const Wrapper = styled.div`
   margin-top: 2px;
   color: black;
     font-size: larger;
+    
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+       font-size: small;
+      
+       
+   
+  }
 
  
 }
 
   #card1 {
     background-image: linear-gradient(#9dc5f8, #cbfdd9);
-    width: 18rem;
+    width : 110%;
     height: 13rem;
-    @media screen and (max-width: 768px) {
+    /* @media screen and (max-width: 768px) {
       width: 83%;
     }
     @media screen and (min-width: 768px) and (max-width: 1020px) {
       width: 41rem;
-    }
-    @media screen and (min-width: 1020px) and (max-width: 1700px) {
-    width: 13rem;
+    } */
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+       font-size: small;
+   
   }
+
+  
+    /* @media screen and (min-width: 1020px) and (max-width: 1500px) {
+    width: 10rem;
+  }
+    @media screen and (min-width: 1500px) and (max-width: 1700px) {
+    width: 13rem;
+  } */
   }
   #card2 {
-    width: 18rem;
+    width: 110%;
     height: 6rem;
     margin-top: 5px;
 
     background-image: linear-gradient(#fff0b4, #ffb4ee);
+
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+       font-size: small;
+   
+  }
+  .card-title{
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+       font-size: small;
+       white-space: nowrap;
+   
+  }
+  }
+/*     
     @media screen and (max-width: 768px) {
       margin-top: 1rem;
       width: 83%;
@@ -300,15 +345,26 @@ const Wrapper = styled.div`
     }
     @media screen and (min-width: 1020px) and (max-width: 1700px) {
     width: 13rem;
-  }
+  } */
   }
   #card3 {
-    width: 18rem;
+    width: 110%;
     height: 6rem;
 
     background-image: linear-gradient(#9dc5f8, #cbfdd9);
     margin-top: 5px;
-    @media screen and (max-width: 768px) {
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+       font-size: small;
+   
+  }
+  .card-title{
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+       font-size: small;
+       white-space: nowrap;
+   
+  }
+  }
+    /* @media screen and (max-width: 768px) {
       width: 83%;
     }
     @media screen and (min-width: 768px) and (max-width: 1020px) {
@@ -316,16 +372,27 @@ const Wrapper = styled.div`
     }
     @media screen and (min-width: 1020px) and (max-width: 1700px) {
     width: 13rem;
-  }
+  } */
   }
   #card4 {
-    width: 18rem;
+    width: 110%;
     height: 6rem;
 
     background-image: linear-gradient(#fff0b4, #ffb4ee);
 
     margin-top: 5px;
-    @media screen and (max-width: 768px) {
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+       font-size: small;
+   
+  }
+  .card-title{
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+       font-size: small;
+       white-space: nowrap;
+   
+  }
+  }
+    /* @media screen and (max-width: 768px) {
       width: 83%;
     }
     @media screen and (min-width: 768px) and (max-width: 1020px) {
@@ -333,7 +400,7 @@ const Wrapper = styled.div`
     }
     @media screen and (min-width: 1020px) and (max-width: 1700px) {
     width: 13rem;
-  }
+  } */
   }
 
   .view {

@@ -1394,6 +1394,82 @@ const getDoctorDataByBranchWithLeave = (req, res) => {
   }
 };
 
+const getPatientSecurityAmt = (req, res) => {
+  
+  const branch = req.params.branch;
+  const sql = `SELECT * from security_amount WHERE branch_name = ? `;
+
+  db.query(sql,[branch], (err, result) => {
+      if (err) {
+          console.error('Error executing query:', err.stack);
+          return res.status(500).json({success:false, error: 'Internal server error' });
+      } else if (result.length === 0) {
+          return res.status(404).json({success:false, error: "Not Found Data" });
+      } else {
+          return res.status(200).json({success: true, message: 'Access data Successfully',data : result });
+      }
+  });
+};
+
+const updatePatientSecurityAmt = (req, res) => {
+  try {
+    const {
+      sa_id  ,
+      amount ,
+      payment_status ,
+      payment_Mode,
+      transaction_Id	,
+      notes ,
+  
+      received_by,
+    } = req.body;
+
+    const payment_date = new Date();
+
+    const updatePatientQuery = `
+          UPDATE security_amount
+          SET payment_status = ? , payment_Mode = ? , transaction_Id = ?, received_by = ? , payment_date = ?, notes = ?
+          WHERE sa_id = ?
+      `;
+
+    const updatePatientParams = [
+      payment_status,
+      payment_Mode,
+      transaction_Id,
+      received_by,
+      payment_date,
+      notes,
+      sa_id,
+    ];
+
+    db.query(
+      updatePatientQuery,
+      updatePatientParams,
+      (Err, appointmentResult) => {
+        if (Err) {
+          console.error("Error updating Patient:", Err);
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        } else {
+          console.log("Payment added successfully");
+          return res.status(200).json({
+            success: true,
+            message: "Payment added successfully",
+          });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Error in adding Payment", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in adding Payment",
+      error: error.message,
+    });
+  }
+};
+
 const insertTimelineEvent = (req, res) => {
   try {
     const { type, description, branch, patientId } = req.body;
@@ -1692,5 +1768,7 @@ module.exports = {
   insertTimelineEvent,
   getPatientTimeline,
   getAllAppointmentByPatientId,
-  updateAppointmentStatusCancelOpd
+  updateAppointmentStatusCancelOpd,
+  getPatientSecurityAmt,
+  updatePatientSecurityAmt
 };

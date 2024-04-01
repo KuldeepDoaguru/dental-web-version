@@ -272,7 +272,7 @@ const Sider = () => {
                 <i className="bi bi-people-fill h1"></i>
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
+                  <h3 className=" d-none d-sm-inline " id="navleft1">
                   Patients
                   </h3>
                 </div>
@@ -288,7 +288,7 @@ const Sider = () => {
                 <i className="fs-4 bi bi-table"></i>
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
+                  <h3 className=" d-none d-sm-inline " id="navleft1">
                   Inquiry
                   </h3>
                 </div>
@@ -304,8 +304,26 @@ const Sider = () => {
                 <i className="fs-4 bi bi-person-fill"></i>
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
+                  <h3 className=" d-none d-sm-inline" id="navleft1">
                   Doctor
+                  </h3>
+                </div>
+              </Link>
+            </li>
+          
+            <hr />
+
+            <li>
+              <Link
+                to="/security_amount"
+                className={`link-div ${getSidebarClass("/security_amount")}`}
+              >
+                <div>
+                <i class="fs-4 bi bi-currency-rupee"></i>
+                </div>
+                <div>
+                  <h3 className="text-center " id="navleft1">
+                  Security Amount
                   </h3>
                 </div>
               </Link>
@@ -354,7 +372,7 @@ const Sider = () => {
                 <div>
                   <i className="fs-4 bi bi-power" onClick={logout}></i>
                 </div>
-                <div className="text-light" onClick={logout}>
+                <div className="text-light" onClick={logout} id="navleft1">
                   Logout
                   {/* <button className="btn btn-danger d-none d-sm-inline">
                     Logout
@@ -377,6 +395,10 @@ const Wrapper = styled.div`
     font-size: 13px;
     margin-left: 0rem;
     color: white;
+    @media screen and (max-width : 1200px) {
+      font-size: 10px;
+    }
+
   }
   #navleft2 {
     font-size: 12px;
@@ -404,12 +426,13 @@ const Wrapper = styled.div`
       height: 151rem;
     }
     @media screen and (min-width: 1020px) and (max-width: 1500px) {
-      width: 95%;
+      width: 96%;
       
     }
   }
   .bi {
     color: white;
+   
   }
 
   li:hover {

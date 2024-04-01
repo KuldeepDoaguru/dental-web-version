@@ -19,6 +19,13 @@ const SecurityAmount = () => {
   console.log(`User Name: ${branch.name}`);
   const [patData, setPatData] = useState([]);
   const [securityList, setSecurityList] = useState([]);
+  const [refAmount, setRefAmount] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [showEditSecAmount, setShowEditSecAmount] = useState(false);
+  const [showPaySecAmount, setShowPaySecAmount] = useState(false);
+  const [outStanding, setOutStanding] = useState([]);
+  const [selected, setSelected] = useState();
+  // const [refAmount, setRefAmount] = useState();
   const [addSecurityAmount, setAddSecurityAmount] = useState({
     branch_name: branch.name,
     date: "",
@@ -31,6 +38,34 @@ const SecurityAmount = () => {
     payment_status: "",
     received_by: user.name,
   });
+
+  const date = new Date();
+  console.log(date);
+
+  const [refund, setRefund] = useState({
+    refund_date: date,
+    refund_by: user.name,
+    payment_status: "Refunded",
+  });
+
+  const [data, setData] = useState({
+    payment_status: "Success",
+    payment_Mode: "",
+    transaction_Id: "",
+    notes: "",
+    received_by: user.name,
+  });
+  console.log(data);
+
+  const handlePaySecChange = (e) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value,
+    });
+  };
+
+  console.log(data);
 
   const handleInput = async (event) => {
     const { name, value } = event.target;
@@ -62,7 +97,12 @@ const SecurityAmount = () => {
     }
   };
 
-  console.log(addSecurityAmount);
+  console.log(refund);
+
+  // const handleInputChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setRefund({ ...refund, [name]: value !== "" ? parseFloat(value) : "" });
+  // };
 
   const insertSecurityAmount = async (e) => {
     e.preventDefault();
@@ -90,9 +130,134 @@ const SecurityAmount = () => {
     }
   };
 
+  const makePaymentNow = async (id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8888/api/v1/accountant/updateSecurityAmount/${id}`
+      );
+      getSecurityAmountList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const openSecAmountSubPopup = (id) => {
+    setShowEditSecAmount(true);
+    getTotaloutstanding(id);
+    setSelected(id);
+  };
+
+  const closeUpdatePopup = () => {
+    setShowEditSecAmount(false);
+    setShowPaySecAmount(false);
+  };
+
+  const openSecurityAmtPay = (id) => {
+    setShowPaySecAmount(true);
+    setSelected(id);
+  };
+
   useEffect(() => {
     getSecurityAmountList();
   }, []);
+
+  console.log(securityList);
+  console.log(selected);
+  // alert(selected);
+
+  const filterForSecAmountDef = securityList.filter((item) => {
+    return item.sa_id === selected;
+  });
+
+  console.log(filterForSecAmountDef);
+
+  const getTotaloutstanding = async (id) => {
+    console.log(id);
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getSecurityAmountDataBySID/${id}`
+      );
+      console.log(data);
+      setOutStanding(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(outStanding);
+  const filterForOut = outStanding?.filter((item) => {
+    return item.payment_status !== "success";
+  });
+
+  console.log(filterForOut);
+
+  const totalPrice = () => {
+    try {
+      let total = 0;
+      filterForOut.forEach((item) => {
+        total = total + parseFloat(item.total_amount);
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+  const totalValue = totalPrice();
+  console.log(totalValue);
+
+  const MakeRefund = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:8888/api/v1/accountant/updateRefundAmount/${selected}`,
+        {
+          refund_date: date,
+          refund_by: user.name,
+          payment_status: "Refunded",
+          refund_amount: refAmount,
+        }
+      );
+      cogoToast.success("Amount Refunded Successfully");
+      getSecurityAmountList();
+      closeUpdatePopup();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(refAmount);
+
+  const makeRefData = () => {
+    if (outStanding.length === 0) {
+      return filterForSecAmountDef[0]?.amount;
+    } else {
+      return outStanding[0]?.amount - totalValue;
+    }
+  };
+
+  const amtRefund = makeRefData();
+  console.log(amtRefund);
+  useEffect(() => {
+    setRefAmount(amtRefund);
+  }, [amtRefund]);
+
+  const paySecurityCash = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:8888/api/v1/accountant/updatePatientSecurityAmt/${selected}`,
+        data
+      );
+      cogoToast.success("Amount Paid Successfully");
+      getSecurityAmountList();
+      closeUpdatePopup();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -108,9 +273,9 @@ const SecurityAmount = () => {
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10">
                 <BranchDetails />
                 <div className="container">
-                  <h2 className="text-center mt-5">Submit Security Amount</h2>
+                  <h2 className="text-center mt-5">Security Amount Details</h2>
                   <hr />
-                  <form action="" className="" onSubmit={insertSecurityAmount}>
+                  {/* <form action="" className="" onSubmit={insertSecurityAmount}>
                     <div className="container-fluid">
                       <div className="row">
                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
@@ -249,14 +414,6 @@ const SecurityAmount = () => {
                             >
                               Payment Status
                             </label>
-                            {/* <input
-                              type="number"
-                              class="p-1 w-100 rounded"
-                              placeholder="Payment Status"
-                              name="payment_status"
-                              value={addSecurityAmount.payment_status}
-                              onChange={handleInput}
-                            /> */}
 
                             <select
                               name="payment_status"
@@ -281,8 +438,20 @@ const SecurityAmount = () => {
                       </div>
                     </div>
                   </form>
-                  <hr />
+                  <hr /> */}
                   <div className="container-fluid">
+                    <div>
+                      <label>search by patient name :</label>
+                      <input
+                        type="text"
+                        placeholder="search by patient name"
+                        className="mx-3 p-1 rounded"
+                        value={keyword}
+                        onChange={(e) =>
+                          setKeyword(e.target.value.toLowerCase())
+                        }
+                      />
+                    </div>
                     <div class="table-responsive mt-4">
                       <table class="table table-bordered">
                         <thead className="table-head">
@@ -295,71 +464,76 @@ const SecurityAmount = () => {
                             <th>Assigned Doctor</th>
                             <th>Security Amount</th>
                             <th>Payment Status</th>
-                            <th>Refund</th>
+                            <th>Action</th>
                             <th>Print</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="table-row">
-                            <td>07/04/2024</td>
-                            <td>1</td>
-                            <td>DHID007</td>
-                            <td>Shubham Singh</td>
-                            <td>8602161019</td>
-                            <td>Mohit sahu</td>
-                            <td>8000</td>
-                            <td>Success</td>
-                            <td>
-                              <MakeRefund />
-                            </td>
-                            <td>
-                              <Link to="/security-amount-reciept">
-                                <button className="btn btn-success">
-                                  Print
-                                </button>
-                              </Link>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td>07/04/2024</td>
-                            <td>1</td>
-                            <td>DHID007</td>
-                            <td>Shubham Singh</td>
-                            <td>8602161019</td>
-                            <td>Mohit sahu</td>
-                            <td>8000</td>
-                            <td>Success</td>
-                            <td>
-                              <MakeRefund />
-                            </td>
-                            <td>
-                              <Link to="/security-amount-reciept">
-                                <button className="btn btn-success">
-                                  Print
-                                </button>
-                              </Link>
-                            </td>
-                          </tr>
-                          <tr className="table-row">
-                            <td>07/04/2024</td>
-                            <td>1</td>
-                            <td>DHID007</td>
-                            <td>Shubham Singh</td>
-                            <td>8602161019</td>
-                            <td>Mohit sahu</td>
-                            <td>8000</td>
-                            <td>Success</td>
-                            <td>
-                              <MakeRefund />
-                            </td>
-                            <td>
-                              <Link to="/security-amount-reciept">
-                                <button className="btn btn-success">
-                                  Print
-                                </button>
-                              </Link>
-                            </td>
-                          </tr>
+                          {securityList
+                            ?.filter((val) => {
+                              if (keyword === "") {
+                                return true;
+                              } else if (
+                                val.patient_name
+                                  .toLowerCase()
+                                  .includes(keyword.toLowerCase())
+                              ) {
+                                return val;
+                              }
+                            })
+                            .map((item) => (
+                              <>
+                                <tr className="table-row">
+                                  <td>{item.date.split("T")[0]}</td>
+                                  <td>{item.appointment_id}</td>
+                                  <td>{item.uhid}</td>
+                                  <td>{item.patient_name}</td>
+                                  <td>{item.patient_number}</td>
+                                  <td>{item.assigned_doctor}</td>
+                                  <td>{item.amount}</td>
+                                  <td>
+                                    <div className="d-flex">
+                                      <h6>{item.payment_status}</h6>
+                                      {item.payment_status === "Pending" ? (
+                                        <>
+                                          <button
+                                            className="mx-2 btn btn-info"
+                                            onClick={() =>
+                                              openSecurityAmtPay(item.sa_id)
+                                            }
+                                          >
+                                            Pay now
+                                          </button>
+                                        </>
+                                      ) : (
+                                        <></>
+                                      )}
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <button
+                                      className={`mx-2 btn btn-warning ${
+                                        item.payment_status === "Pending"
+                                          ? "disabled"
+                                          : ""
+                                      } `}
+                                      onClick={() =>
+                                        openSecAmountSubPopup(item.sa_id)
+                                      }
+                                    >
+                                      Make Refund
+                                    </button>
+                                  </td>
+                                  <td>
+                                    <Link to="/security-amount-reciept">
+                                      <button className="btn btn-success">
+                                        Print
+                                      </button>
+                                    </Link>
+                                  </td>
+                                </tr>
+                              </>
+                            ))}
                         </tbody>
                       </table>
                     </div>
@@ -368,6 +542,155 @@ const SecurityAmount = () => {
               </div>
             </div>
           </div>
+          {/* ***************************************************************************************************** */}
+
+          {/* pop-up for refund amount */}
+          <div
+            className={`popup-container${showEditSecAmount ? " active" : ""}`}
+          >
+            <div className="popup">
+              <h4 className="text-center">Refund Amount</h4>
+              <hr />
+              <form className="d-flex flex-column" onSubmit={MakeRefund}>
+                <div className="container">
+                  <div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">
+                        Security Amount Submitted -{" "}
+                        {outStanding.length === 0
+                          ? filterForSecAmountDef[0]?.amount
+                          : outStanding[0]?.amount}
+                      </label>
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">
+                        Total Outstanding - {totalValue}
+                      </label>
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">
+                        Refund Amount :
+                        {outStanding.length === 0
+                          ? filterForSecAmountDef[0]?.amount
+                          : outStanding[0]?.amount - totalValue}
+                      </label>
+                      {/* <input
+                        type="text"
+                        class="form-control"
+                        id="exampleFormControlInput1"
+                        placeholder="Enter Amount"
+                        name="refund_amount"
+                        value={
+                          outStanding.length === 0
+                            ? filterForSecAmountDef[0]?.amount
+                            : outStanding[0]?.amount - totalValue
+                        }
+                        onChange={handleInputChange}
+                      /> */}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="d-flex justify-content-center">
+                  <button type="submit" className="btn btn-success mt-2">
+                    Refund
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger mt-2 mx-2"
+                    onClick={closeUpdatePopup}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          {/* pop-up for refund amount */}
+          {/* ************************************************************************************* */}
+
+          {/* ***************************************************************************************************** */}
+
+          {/* pop-up for Pay security amount */}
+          <div
+            className={`popup-container${showPaySecAmount ? " active" : ""}`}
+          >
+            <div className="popup">
+              <h4 className="text-center">Pay Security Amount</h4>
+              <hr />
+              <form className="d-flex flex-column" onSubmit={paySecurityCash}>
+                <div className="container">
+                  <div>
+                    <div class="mb-3">
+                      <label className="form-label" htmlFor="">
+                        Payment Mode
+                      </label>
+                      <select
+                        className="form-select"
+                        id="payment_Mode"
+                        name="payment_Mode"
+                        value={data.payment_Mode}
+                        required
+                        onChange={handlePaySecChange}
+                      >
+                        <option value="">Select</option>
+                        <option value="cash">Cash</option>
+                        <option value="online">Online</option>
+                      </select>
+                    </div>
+
+                    {data.payment_Mode === "online" && (
+                      <div class="mb-3">
+                        <label className="form-label" for="form6Example1">
+                          Transaction Id
+                        </label>
+                        <input
+                          type="text"
+                          id="form6Example1"
+                          className="form-control"
+                          name="transaction_Id"
+                          onChange={handlePaySecChange}
+                          value={data.transaction_Id}
+                          required
+                        />
+                      </div>
+                    )}
+
+                    <div class="mb-3">
+                      <label className="form-label" for="form6Example1">
+                        Notes
+                      </label>
+                      <input
+                        type="text"
+                        id="form6Example1"
+                        className="form-control"
+                        name="notes"
+                        onChange={handlePaySecChange}
+                        value={data.notes}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="d-flex justify-content-center">
+                  <button type="submit" className="btn btn-success mt-2">
+                    Pay
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger mt-2 mx-2"
+                    onClick={closeUpdatePopup}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          {/* pop-up for Pay security amount */}
+          {/* ************************************************************************************* */}
         </div>
       </Container>
     </>
@@ -385,5 +708,32 @@ const Container = styled.div`
 
   .btnbox {
     margin-top: 2rem;
+  }
+
+  .popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: scroll;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-container.active {
+    display: flex;
+    background-color: #00000075;
+  }
+
+  .popup {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    height: auto;
+    width: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 `;

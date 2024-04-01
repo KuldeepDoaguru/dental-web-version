@@ -8,6 +8,9 @@ import { GiMoneyStack } from "react-icons/gi";
 import { GiTakeMyMoney } from "react-icons/gi";
 import BranchDetails from "./BranchDetails";
 const OpdIncome = () => {
+
+
+  
   return (
     <Container>
       <BranchDetails />
@@ -93,9 +96,7 @@ const OpdIncome = () => {
         <div className="row flex-nowrap">
           <div className="col-xxl-12 col-xl-12 col-lg-12 col-12 ps-0">
             <div className="container mt-4">
-              <h2 className="text-center">
-                All Received Action For OPD Payment
-              </h2>
+              <h2 className="text-center">All Received OPD Payment</h2>
               <div className="container mt-5">
                 <div class="table-responsive rounded">
                   <table class="table table-bordered rounded shadow">

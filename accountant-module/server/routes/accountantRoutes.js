@@ -16,6 +16,10 @@ const {
   addSecurityAmount,
   getAppointmentDetailsViaID,
   getSecurityAmountDataByBranch,
+  updateSecurityAmount,
+  getSecurityAmountDataBySID,
+  updateRefundAmount,
+  updatePatientSecurityAmt,
 } = require("../controllers/accountantController");
 
 const router = express.Router();
@@ -38,5 +42,10 @@ router.get(
   "/getSecurityAmountDataByBranch/:branch",
   getSecurityAmountDataByBranch
 );
+
+router.put("/updateSecurityAmount/:sid", updateSecurityAmount);
+router.get("/getSecurityAmountDataBySID/:sid", getSecurityAmountDataBySID);
+router.put("/updateRefundAmount/:sid", updateRefundAmount);
+router.put("/updatePatientSecurityAmt/:sid", updatePatientSecurityAmt);
 
 module.exports = router;

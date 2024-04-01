@@ -1,13 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-function MakeRefund() {
+function MakeRefund(props) {
   const [show, setShow] = useState(false);
-
+  // const sid = useParams();
+  console.log(props.id);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 

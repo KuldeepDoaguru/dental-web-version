@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const branchSlice = createSlice({
   name: "branch",
-  initialState: { branch: null },
+  initialState: { name: null },
   reducers: {
     setBranch: (state, action) => {
       state.name = action.payload.name;

@@ -43,6 +43,24 @@ const SaveData = ({ id }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const timelineForDelete = async () => {
+
+    try {
+        const response = await axios.post(
+            "http://localhost:8888/api/doctor/insertTimelineEvent",
+            {
+                type: "Examiantion",
+                description: "Add Teeth Pediatric DentalX",
+                // branch: branch,
+                // patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+            }
+        );
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
   // Handle Update Data
 
   const handleSubmit = async (id, e) => {

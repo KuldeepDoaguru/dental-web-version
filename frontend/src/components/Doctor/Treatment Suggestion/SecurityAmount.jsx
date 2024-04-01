@@ -12,6 +12,7 @@ const SecurityAmount = () => {
   console.log(id);
   const navigate = useNavigate();
   const [securityAmt, setSecurityAmt] = useState([]);
+  const [getPatientData, setGetPatientData] = useState([]);
   const currentUser = useSelector(state => state.user.currentUser);
   const [formData, setFormData] = useState({
     branch_name: currentUser ? currentUser.branch_name : "",
@@ -57,6 +58,21 @@ const SecurityAmount = () => {
     newGetFetchData();
   }, []);
 
+  // option for patient data
+
+  const getPatientDetail = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+
+      // const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
+
+      setGetPatientData(res.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
 
 
   const handleChange = (e) => {
@@ -86,6 +102,25 @@ const SecurityAmount = () => {
     }
   };
 
+  
+  const timelineForSecuirty = async () => {
+
+    try {
+        const response = await axios.post(
+            "http://localhost:8888/api/doctor/insertTimelineEvent",
+            {
+                type: "Secuirty Amount",
+                description: "Secuirty Amount Added",
+                branch: currentUser ? currentUser.branch_name : "",
+                patientId: formData.uhid,
+            }
+        );
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
   const insertCorrectData = async () => {
     try {
       const formsCorrect = {
@@ -107,6 +142,7 @@ const SecurityAmount = () => {
       );
 
       console.log(resp.data);
+      timelineForSecuirty();
     } catch (error) {
       console.log(error);
     }

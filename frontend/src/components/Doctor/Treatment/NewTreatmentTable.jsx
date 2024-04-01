@@ -100,7 +100,7 @@ const NewTreatmentTable = () => {
             
             
         // } catch (error) {
-        //     console.log('Error updating sitting count', error);
+        //     console.log('Error updating sitting count', error); 
         // }
        
     }

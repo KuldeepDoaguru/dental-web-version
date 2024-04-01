@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { GiFastBackwardButton } from "react-icons/gi";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 
 const TreatSuggest = () => {
     const { id } = useParams();
@@ -27,7 +28,12 @@ const TreatSuggest = () => {
         patient_uhid: "",
         test_name: "",
     });
-    const [patientUHID, setPatientUHID] = useState('');
+    // const [patientUHID, setPatientUHID] = useState('');
+
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+    const branch = user.currentUser.branch_name;
+      console.log(branch);
 
     const navigate = useNavigate();
     // console.log(getPatientData[0].uhid);
@@ -62,7 +68,7 @@ const TreatSuggest = () => {
             console.log(res.data.result);
 
             const uhid = res.data.result[0]?.uhid; // Assuming you get only one patient data
-            setPatientUHID(uhid);
+            // setPatientUHID(uhid);
             setFormData((prevState) => ({
                 ...prevState,
                 p_uhid: uhid || "", // Set uhid in the form state as p_uhid
@@ -80,21 +86,7 @@ const TreatSuggest = () => {
 
     // Get Patient Details END
 
-    // const calculateTotalCost = () => {
-    //     let totalCostArray = [];
-    //     let totalCostValue = 0;
-
-    //     formData.treatment_name.forEach(selectedTreatment => {
-    //         const treatment = treatments.find(treatment => treatment.treatment_name === selectedTreatment);
-    //         if (treatment) {
-    //             totalCostArray.push(treatment.treatment_cost); // Push treatment cost into the array
-    //             totalCostValue += Number(treatment.treatment_cost);
-    //         }
-    //     });
-
-    //     return { totalCostArray, totalCostValue }; // Return an object with both values
-    // };
-
+   
     const calculateTotalCost = () => {
         let totalCostArray = [];
         let totalCostValue = 0;
@@ -126,6 +118,25 @@ const TreatSuggest = () => {
             totalCostValue: totalCostValue,
         });
     }, [formData.treatment_name, treatments]);
+
+
+    const timelineForTreatSuggest = async () => {
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8888/api/doctor/insertTimelineEvent",
+                {
+                    type: "Treatment Suggest",
+                    description: "Select Treatment Plan",
+                    branch: branch,
+                    patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+                }
+            );
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleSubmitForm = async (e) => {
         e.preventDefault();
@@ -160,10 +171,29 @@ const TreatSuggest = () => {
                 );
                 alert("Successfully added!");
                 console.log(res.data);
+                timelineForTreatSuggest();
                 window.location.reload();
             } catch (error) {
                 console.log(error);
             }
+        }
+    };
+
+    const timelineForlab = async () => {
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8888/api/doctor/insertTimelineEvent",
+                {
+                    type: " Dental Laboratory Test",
+                    description: "Add Laboratory Test",
+                    branch: branch,
+                    patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+                }
+            );
+            console.log(response);
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -186,6 +216,7 @@ const TreatSuggest = () => {
                 );
                 alert("Successfully added!");
                 console.log(response.data);
+                timelineForlab()
 
                 // Reset the labData state after successful submission
             setLabData({

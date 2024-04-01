@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { FaTooth } from "react-icons/fa";
-
+import { useDispatch, useSelector } from 'react-redux';
 
 const TreatmentForm = () => { 
     const { id, appointment_id } = useParams(); 
@@ -11,6 +11,10 @@ const TreatmentForm = () => {
     console.log(appointment_id);
     const navigate = useNavigate();
     const [getPatientData, setGetPatientData] = useState([]);
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+    const branch = user.currentUser.branch_name;
+      console.log(branch);
 
     // Access teeth number from location state --START--
     const locationState = useLocation().state;
@@ -48,11 +52,30 @@ const TreatmentForm = () => {
     };
     console.log(formData);
 
+    const timelineForTreatForm = async () => {
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8888/api/doctor/insertTimelineEvent",
+                {
+                    type: "Treatment Producer",
+                    description: "Treatment Start",
+                    branch: branch,
+                    patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+                }
+            );
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const res = await axios.post(`http://localhost:8888/api/doctor/insertTreatmentData/${id}/${appointment_id}`, formData);
             if (res.status >= 200 && res.status < 300) {
+                timelineForTreatForm();
                 console.log('Treatment details inserted successfully');
                 // Optionally, you can reset the form fields after successful submission
                 setFormData({

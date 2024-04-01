@@ -4,7 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID, updateSittingCount } = require("../controller/authControl.js");
 const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg } = require("../controller/authAppointTable.js");
-const { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId, getPatientBillUHID } = require("../controller/authBranch.js");
+const { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId, getPatientBillUHID, insertTimelineEvent, getPatientTimeline } = require("../controller/authBranch.js");
 const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM, getTreatPatientProfile, treatPatientUHID, getPrescriptionPatientProfile, prescripPatientUHID } = require("../controller/authTreatment.js");
 const { uploadImage, getUploadedImages } = require("../controller/authContrimg.js");
 const { bookAppointment, getTreatSuggest, insertLabData, getLabDataByAppointId } = require("../controller/authBook.js");
@@ -44,6 +44,8 @@ router.get('/appointtreatSitting', getAppointmentsWithPatientDetailsTreatSugg);
 // Branch Routes START here......
 router.get("/get-branches", getBranch);
 router.post("/doctor-login", LoginDoctor);
+router.post('/insertTimelineEvent',insertTimelineEvent);
+router.get('/getPatientTimeline/:branch/:patientId',getPatientTimeline)
 // Branch Routes END here......
 
 // Treatment List Routes START here......

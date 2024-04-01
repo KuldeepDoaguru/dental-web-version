@@ -223,8 +223,8 @@ const billPatientDataByAppId = (req, res) => {
 
         // Insert fetched data into new_table
         results.forEach(result => {
-            db.query('INSERT INTO patient_bills (uhid, branch_name, patient_name, patient_mobile, patient_email, appoint_id, assigned_doctor_name, dental_treatment, cost_amt, medicine_name, dosage, total_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', 
-                [result.uhid, result.branch_name, result.patient_name, result.mobileno, result.emailid, result.appoint_id, result.assigned_doctor_name, result.dental_treatments, result.cost_amt, result.medicine_names, result.dosages, result.total_amt], 
+            db.query('INSERT INTO patient_bills (uhid, branch_name, patient_name, patient_mobile, patient_email, appoint_id, assigned_doctor_name, dental_treatment, cost_amt, medicine_name, dosage, total_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                [result.uhid, result.branch_name, result.patient_name, result.mobileno, result.emailid, result.appoint_id, result.assigned_doctor_name, result.dental_treatments, result.cost_amt, result.medicine_names, result.dosages, result.total_amt],
                 (err, insertResult) => {
                     if (err) {
                         console.error('Error inserting data into new_table:', err);
@@ -236,7 +236,7 @@ const billPatientDataByAppId = (req, res) => {
 
         res.status(200).json({ success: true, data: results });
     });
-}; 
+};
 
 const getPatientBillUHID = (req, res) => {
     const patientUHID = req.params.patientUHID;
@@ -259,6 +259,57 @@ const getPatientBillUHID = (req, res) => {
     });
 };
 
+const insertTimelineEvent = (req, res) => {
+    try {
+        const { type, description, branch, patientId } = req.body;
+        const insertQuery =
+            "INSERT INTO patient_timeline (event_type, event_description, branch_name, uhid	) VALUES (?,?,?,?)";
+        db.query(
+            insertQuery,
+            [type, description, branch, patientId],
+            (err, result) => {
+                if (err) {
+                    res.status(400).json({ success: false, message: err.message });
+                }
+                res.status(200).json({ success: true, result: result });
+            }
+        );
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: err.message });
+    }
+};
+
+const getPatientTimeline = (req, res) => {
+    const patientId = req.params.patientId;
+    const branch = req.params.branch;
+    try {
+        const sql =
+            "SELECT * FROM patient_timeline WHERE uhid = ? AND branch_name = ?";
+
+        db.query(sql, [patientId, branch], (err, results) => {
+            if (err) {
+                console.error("Error fetching patient_timeline from MySql:", err);
+                res.status(500).json({ error: "Error fetching patient_timeline" });
+            } else {
+                res
+                    .status(200)
+                    .json({
+                        data: results,
+                        message: "patient_timeline fetched successfully",
+                    });
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching patient_timeline from MySql:", error);
+        res.status(500).json({
+            success: false,
+            message: "Error in fetched patient_timeline",
+            error: error.message,
+        });
+    }
+};
 
 
-module.exports = { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId, getPatientBillUHID }; 
+
+module.exports = { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId, getPatientBillUHID, insertTimelineEvent, getPatientTimeline }; 

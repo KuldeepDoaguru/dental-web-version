@@ -78,6 +78,20 @@ const ViewTreatPrescription = () => {
     }, [])
     // Get Treatment Medical Prescription Data END
 
+    const handleButton = async() =>{
+        console.log(id);
+        try {
+            // Make the API call to update sitting count
+            console.log(id);
+            await axios.get(`http://localhost:8888/api/doctor/updateSittingCount/${id}`);
+            console.log(id);
+            console.log('Sitting count updated successfully');
+            window.print();
+        } catch (error) {
+            console.log('Error updating sitting count', error); 
+        }
+    }
+
     return (
         <>
             <Wrapper>
@@ -213,7 +227,7 @@ const ViewTreatPrescription = () => {
                                 </table>
                             </div>
                             <div className="text-center">
-                                <button className="btn btn-primary no-print mx-3 no-print" onClick={() => window.print()}>Print</button>
+                                <button className="btn btn-success no-print mx-3 no-print" onClick={handleButton}>Complete & Print</button>
                             </div>
                         </div>
                     </div>

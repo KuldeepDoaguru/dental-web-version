@@ -18,6 +18,8 @@ const AppointTable = () => {
     const { refreshTable } = useSelector((state) => state.user);
     const user = useSelector((state) => state.user);
     const doctor = user.currentUser.employee_name;
+    const branch = user.currentUser.branch_name;
+    console.log(branch);
     // const [selectedActions, setSelectedActions] = useState({});
 
     const handleDateChange = (increment) => {
@@ -75,9 +77,44 @@ const AppointTable = () => {
         console.log(filteredResults);
     };
 
+    const timelineForStartTreat = async (uhid) => {
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8888/api/doctor/insertTimelineEvent",
+                {
+                    type: "Examiantion",
+                    description: "Start Examintion",
+                    branch: branch,
+                    patientId: uhid,
+                }
+            );
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const timelineForCancelTreat = async (uhid) => {
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8888/api/doctor/insertTimelineEvent",
+                {
+                    type: "Examiantion",
+                    description: "Cancel Treatment",
+                    branch: branch,
+                    patientId: uhid,
+                }
+            );
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
 
-    const handleAction = async (action, appointId) => {
+    const handleAction = async (action, appointId, uhid) => {
         try {
             let requestBody = {
                 action,
@@ -85,18 +122,24 @@ const AppointTable = () => {
             };
 
             if (action === 'Cancel') {
+                console.log(uhid);
                 const cancelReason = prompt("Please provide a reason for cancellation:");
                 if (cancelReason !== null) {
                     requestBody.reason = cancelReason;
+                    timelineForCancelTreat(uhid);
+                    console.log(uhid);
                     cogoToast.success("Patient Appointment Cancel Successfully")
                 } else {
+                    console.log(uhid);
                     return;
                 }
+                
             }
 
             await axios.put(`http://localhost:8888/api/doctor/upDateAppointmentStatus`, requestBody);
 
             if (action === 'In Treatment') {
+                timelineForStartTreat(uhid)
                 navigate(`/examination-Dashboard/${appointId}`);
             }
 
@@ -202,12 +245,12 @@ const AppointTable = () => {
                                                     Action
                                                 </button>
                                                 {/* Option 1 */}
-                                                 <ul className="dropdown-menu">
+                                                <ul className="dropdown-menu">
                                                     <li>
                                                         <button
                                                             className="dropdown-item mx-0"
-                                                            onClick={() => handleAction('In Treatment', item.appoint_id)}
-                                                            // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'In Treatment'}
+                                                            onClick={() => handleAction('In Treatment', item.appoint_id, item.uhid)}
+                                                        // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'In Treatment'}
                                                         >
                                                             Start Treatment
                                                         </button>
@@ -215,8 +258,8 @@ const AppointTable = () => {
                                                     <li>
                                                         <button
                                                             className="dropdown-item mx-0"
-                                                            onClick={() => handleAction('Cancel', item.appoint_id)}
-                                                            // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'Cancel'}
+                                                            onClick={() => handleAction('Cancel', item.appoint_id, item.uhid)}
+                                                        // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'Cancel'}
                                                         >
                                                             Cancel Treatment
                                                         </button>
@@ -224,8 +267,8 @@ const AppointTable = () => {
                                                     <li>
                                                         <button
                                                             className="dropdown-item mx-0"
-                                                            onClick={() => handleAction('On Hold', item.appoint_id)}
-                                                            // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'On Hold'}
+                                                            onClick={() => handleAction('On Hold', item.appoint_id, item.uhid)}
+                                                        // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'On Hold'}
                                                         >
                                                             Hold
                                                         </button>

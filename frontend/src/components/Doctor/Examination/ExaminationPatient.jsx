@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { RiLoader2Fill } from "react-icons/ri";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleTableRefresh } from '../../../redux/user/userSlice'; 
 import { GiFastBackwardButton } from "react-icons/gi";
 import cogoToast from "cogo-toast";
@@ -321,11 +321,14 @@ const ExaminationPatientTest = () => {
     advice: "",
     onExamination: "",
   });
-  const [selectAllTeeth, setSelectAllTeeth] = useState(false);
+  const [selectAllTeeth, setSelectAllTeeth] = useState(false); 
   const [isFormFilled, setIsFormFilled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [getPatientData, setGetPatientData] = useState([]);
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const branch = user.currentUser.branch_name;
+    console.log(branch);
 
   // console.log(getPatientData[0].uhid);
 
@@ -886,6 +889,24 @@ const ExaminationPatientTest = () => {
     );
   };
 
+  const timelineForExamination = async () => {
+
+    try {
+        const response = await axios.post(
+            "http://localhost:8888/api/doctor/insertTimelineEvent",
+            {
+                type: "Examiantion",
+                description: "Add Teeth DentalX",
+                branch: branch,
+                patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+            }
+        );
+        console.log(response);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
   const handleSave = async (e) => {
     e.preventDefault();
 
@@ -904,6 +925,7 @@ const ExaminationPatientTest = () => {
       const response = await axios.post('http://localhost:8888/api/doctor/dentalPediatric', formData);
       console.log(response.data);
       dispatch(toggleTableRefresh());
+      timelineForExamination();
       // window.location.reload();
     } catch (error) {
       console.error('Error:', error);
@@ -1751,7 +1773,7 @@ const ExaminationPatientTest = () => {
                 </form> 
               </div>
               <div>
-               <SaveData id={id}/>
+             <SaveData id={id} />
                 {/* <h2>Saved Data</h2>
                 <div>
                   {inputItemList.length ? (

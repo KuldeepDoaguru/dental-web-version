@@ -871,7 +871,7 @@ const isDoctorAvailable = (selectedDateTime) => {
             </PatientList>
 
             <div className="row mt-5">
-              <div className="col-sm-6">
+              <div className="col-sm-6 col-md-12">
                 <div className="form-outline" id="form1">
                   <label className="form-label" for="form6Example1">
                     Patient name

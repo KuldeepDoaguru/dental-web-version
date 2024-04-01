@@ -70,6 +70,9 @@ const Wrapper=styled.div`
 @media screen and (max-width: 768px) {
   margin-left: 1.5rem;
 }
+@media screen and (min-width: 768px) and (max-width : 1020px) {
+  margin-left: -1rem;
+}
   @media screen and (min-width: 1020px) and (max-width: 1500px) {
     margin-left: -1rem;
     

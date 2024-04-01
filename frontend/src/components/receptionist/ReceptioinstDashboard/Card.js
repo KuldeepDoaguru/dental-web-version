@@ -217,7 +217,8 @@ function Card() {
           
           <div className="card" id="card3">
             <div className="card-body d-flex justify-content-between">
-            <i className="bi bi-currency-exchange  h1 float-end"></i>
+            <i className="bi bi-currency-rupee h1 float-end"></i>
+            
               <div className="">
                 <h6 className="card-title" style={{ color: "black " }}>
                OPD Collection
@@ -277,6 +278,15 @@ const Wrapper = styled.div`
   
   }
 
+  .bi{
+    @media screen and (min-width: 768px) and (max-width: 1250px) {
+       font-size: x-large;
+      
+       
+   
+  }
+  }
+
 .data{
   display: flex;
   justify-content: space-between;
@@ -308,6 +318,16 @@ const Wrapper = styled.div`
        font-size: small;
    
   }
+
+  .card-title{
+    @media screen and (min-width: 1020px) and (max-width: 1200px) {
+       font-size: small;
+      
+   
+  }
+}
+
+  
 
   
     /* @media screen and (min-width: 1020px) and (max-width: 1500px) {
@@ -358,7 +378,12 @@ const Wrapper = styled.div`
    
   }
   .card-title{
-    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+    @media screen and (min-width: 1020px) and (max-width: 1200px) {
+       font-size: 11px;
+       white-space: nowrap;
+   
+  }
+    @media screen and (min-width: 1200px) and (max-width: 1500px) {
        font-size: small;
        white-space: nowrap;
    
@@ -405,7 +430,16 @@ const Wrapper = styled.div`
 
   .view {
    
-    text-align: end;
+    @media screen and (min-width: 1200px) and (max-width: 2000px) {
+      text-align: end;
+     
+   
+  }
+    @media screen and (min-width: 1020px) and (max-width: 1200px) {
+      white-space: nowrap;
+     
+   
+  }
     
     
     

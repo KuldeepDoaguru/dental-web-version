@@ -130,6 +130,14 @@ const Wrapper = styled.div`
       overflow-y: auto;
       
     }
+    .nav-link{
+      @media screen and (min-width: 1020px) and (max-width: 1200px) {
+        
+       
+        font-size: small;
+        
+      }
+    }
   
 `;
 

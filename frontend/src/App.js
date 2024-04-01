@@ -27,6 +27,7 @@ import { useSelector } from "react-redux";
 import PrintOpdBill from "./components/receptionist/ReceptioinstDashboard/PrintOpdBill";
 import OpdCollection from "./pages/receptionist/OpdColletion";
 import Profile from "./pages/receptionist/Profile";
+import SecurityAmount from "./pages/receptionist/SecurityAmount ";
 
 function App() {
 
@@ -58,6 +59,7 @@ function App() {
     <Route path='/new_patient' element={user.currentUser=== null ? <UniversalLogin/>  : <NewPatient/>}/>
     <Route path='/opd_collection' element={user.currentUser=== null ? <UniversalLogin/>  :<OpdCollection/>}/>
     <Route path='/receptionist_profile' element={ user.currentUser=== null ? <UniversalLogin/>  :<Profile/>}/>
+    <Route path='/security_amount' element={ user.currentUser=== null ? <UniversalLogin/>  :<SecurityAmount/>}/>
 
     {/* receptionist routes end */}
     </Routes>

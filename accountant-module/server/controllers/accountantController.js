@@ -88,6 +88,7 @@ const accountantLoginUser = async (req, res) => {
           user: {
             employee_ID: user.employee_ID,
             email: user.employee_email,
+            branch: user.branch_name,
             token: token,
           },
         });

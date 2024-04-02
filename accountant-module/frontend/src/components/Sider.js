@@ -123,9 +123,9 @@ const Sider = () => {
 
                 <li>
                   <Link
-                    to="/TreatmentMainInCome"
+                    to="/treatment-income"
                     className={`nav-link  ${getSidebarClass(
-                      "/TreatmentMainInCome"
+                      "/treatment-income"
                     )}`}
                   >
                     <span className="text-center text-light fs-6">

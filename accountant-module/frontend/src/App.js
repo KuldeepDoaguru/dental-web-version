@@ -91,7 +91,7 @@ function App() {
         <Route path="/bill_section" element={<AllBills />} />
         <Route path="/clinic-setting" element={<ClinicSetting />} />
         <Route path="/Card" element={<Cards />} />
-        <Route path="/TreatmentMainInCome" element={<TreatmentMainInCome />} />
+        <Route path="/treatment-income" element={<TreatmentMainInCome />} />
         <Route path="/NewPurchase" element={<NewPurchase />} />
         <Route path="/StaffSalary" element={<StaffSalary />} />
         <Route path="/VoucherCreater" element={<VoucherCreater />} />
@@ -130,7 +130,7 @@ function App() {
         />
         <Route path="/MedicalInvoice" element={<MedicalInvoice />} />
         <Route path="/PharmacyBills" element={<PharmacyBills />} />
-        <Route path="/OpdBills" element={<OpdBills />} />
+        <Route path="/OpdBills/:bid" element={<OpdBills />} />
         <Route path="/PatientsLabBills" element={<PatientsLabBills />} />
         <Route path="/TreatmentBills" element={<TreatmentBills />} />
         <Route path="/PaySlip" element={<PaySlip />} />
@@ -170,7 +170,10 @@ function App() {
         <Route path="/purchase-report" element={<PurchaseReport />} />
         <Route path="/attendance-leave" element={<AttendanceLeave />} />
         <Route path="/password-reset" element={<PasswordReset />} />
-        <Route path="/security-amount-reciept" element={<SecurityAmtPrint />} />
+        <Route
+          path="/security-amount-reciept/:sid"
+          element={<SecurityAmtPrint />}
+        />
         <Route path="*" element={<ErrorPage />} />
         {/*Acountend  routes end  */}
       </Routes>

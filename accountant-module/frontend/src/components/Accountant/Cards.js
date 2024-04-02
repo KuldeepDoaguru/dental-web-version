@@ -13,10 +13,10 @@ const Cards = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  // console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  // console.log(`User Name: ${branch.name}`);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
   const [opdData, setOpdData] = useState([]);
   const [treatData, setTreatData] = useState([]);
   const [voucherAmt, setVoucherAmt] = useState([]);
@@ -25,7 +25,7 @@ const Cards = () => {
   const getOpdData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getOPDDetailsByBranch/${branch.name}`
+        `http://localhost:8888/api/v1/accountant/getOPDDetailsByBranch/${user.branch}`
       );
       setOpdData(data);
     } catch (error) {
@@ -78,7 +78,7 @@ const Cards = () => {
   const getTreatmentData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getTreatmentDetailsByBranch/${branch.name}`
+        `http://localhost:8888/api/v1/accountant/getTreatmentDetailsByBranch/${user.branch}`
       );
       setTreatData(data);
     } catch (error) {
@@ -114,7 +114,7 @@ const Cards = () => {
   const getVoucherAmount = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getVoucherListByBranch/${branch.name}`
+        `http://localhost:8888/api/v1/accountant/getVoucherListByBranch/${user.branch}`
       );
       // console.log(data);
       setVoucherAmt(data);
@@ -150,7 +150,7 @@ const Cards = () => {
   const getPatientBill = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getPatientBillsByBranch/${branch.name}`
+        `http://localhost:8888/api/v1/accountant/getPatientBillsByBranch/${user.branch}`
       );
       setPatientBill(data);
     } catch (error) {

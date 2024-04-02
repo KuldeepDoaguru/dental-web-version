@@ -8,8 +8,8 @@ import moment from "moment";
 
 const SecurityAmtPrint = () => {
   const pdfRef = useRef();
-  const { appointmentId } = useParams();
-  const [data, setData] = useState("");
+  const { sid } = useParams();
+  const [recData, setRecData] = useState([]);
   const [hospitalDoc, setHospitalDoc] = useState([]);
   const navigate = useNavigate();
 
@@ -40,15 +40,27 @@ const SecurityAmtPrint = () => {
   //     }
   //   };
 
-  useEffect(() => {
-    // displayDocHospital();
-    // getBill();
-  }, []);
-
   const handlePrint = () => {
     window.print();
   };
 
+  console.log(sid);
+  const getSecurityRec = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getSecurityAmountDataBySID/${sid}`
+      );
+      setRecData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSecurityRec();
+  }, []);
+
+  console.log(recData);
   return (
     <Container>
       <div ref={pdfRef}>
@@ -70,7 +82,7 @@ const SecurityAmtPrint = () => {
                     <th className="text-start">Appointment Id</th>
                     <td className="text-capitalize">
                       {": "}
-                      {data?.appoint_id}
+                      {recData[0]?.appoint_id}
                     </td>
 
                     <th scope="col" className="text-start">
@@ -78,7 +90,7 @@ const SecurityAmtPrint = () => {
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {data?.uhid}
+                      {recData[0]?.uhid}
                     </td>
 
                     <th scope="col" className="text-start">
@@ -86,7 +98,7 @@ const SecurityAmtPrint = () => {
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {data?.branch_name}
+                      {recData[0]?.branch_name}
                     </td>
                   </tr>
                   <tr>
@@ -95,89 +107,57 @@ const SecurityAmtPrint = () => {
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {data?.patient_name}
+                      {recData[0]?.patient_name}
                     </td>
                     <th scope="col" className="text-start pe-5">
                       Mobile No
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {data?.mobileno}
+                      {recData[0]?.patient_mobile}
                     </td>
                     <th scope="col" className="text-start">
-                      Gender
+                      Appointment Date
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {data?.gender}
+                      {recData[0]?.date.split("T")[0]}
                     </td>
                   </tr>
-                  <tr>
-                    <th scope="col" className="text-start">
-                      Patient Type
-                    </th>
-                    <td className="text-capitalize">
-                      {": "}
-                      {data?.patient_type}
-                    </td>
-
-                    <th scope="col" className="text-start">
-                      Appointment
-                    </th>
-                    <td className="text-capitalize">
-                      {": "}
-                      {data?.appointment_dateTime
-                        ? moment(
-                            data?.appointment_dateTime,
-                            "YYYY-MM-DDTHH:mm"
-                          ).format("DD/MM/YYYY hh:mm A")
-                        : ""}
-                    </td>
-                    {/* <th scope="col" className='text-start'>Blood Group</th>
-                  <td  className='text-capitalize'>{": "}{data?.bloodgroup}</td> */}
-                    <th scope="col" className="text-start">
-                      Age
-                    </th>
-                    <td className="text-capitalize">
-                      {": "}
-                      {data?.age}
-                    </td>
-                  </tr>
+                  <tr></tr>
                   <tr>
                     <th scope="col" className="text-start">
                       Doctor Name
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {data?.assigned_doctor_name}
+                      {recData[0]?.assigned_doctor_name}
                     </td>
                     <th scope="col" className="text-start">
                       {" "}
-                      Date
+                      Payment Date
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {data?.created_at
-                        ? moment(data?.created_at).format("DD/MM/YYYY")
-                        : ""}
+                      {recData[0]?.payment_date.split(" ")[0]}
                     </td>
                     <th scope="col" className="text-start">
                       Payment Mode
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {data.payment_Mode}
+                      {recData[0]?.payment_Mode}
                     </td>
                   </tr>
                   <tr>
-                    {data.payment_Mode == "online" && (
+                    {recData[0]?.payment_Mode === "online" && (
                       <>
                         <th scope="col" className="text-start">
                           Transaction Id
                         </th>
                         <td className="text-capitalize">
                           {": "}
-                          {data?.transaction_Id}
+                          {recData[0]?.transaction_Id}
                         </td>{" "}
                       </>
                     )}
@@ -186,21 +166,10 @@ const SecurityAmtPrint = () => {
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {data.payment_Status}
+                      {recData[0]?.payment_Status}
                     </td>
                   </tr>
-                  <tr>
-                    <th scope="col" className="text-start">
-                      Address
-                    </th>
-                    <td
-                      className="text-capitalize"
-                      style={{ whiteSpace: "normal" }}
-                    >
-                      {": "}
-                      {data?.address}
-                    </td>
-                  </tr>
+                  <tr></tr>
                 </tbody>
               </table>
             </div>
@@ -232,83 +201,24 @@ const SecurityAmtPrint = () => {
                       style={{ wordWrap: "break-word", whiteSpace: "normal" }}
                       className="text-start code-column"
                     >
-                      OPD
+                      {recData[0]?.dental_treatment}
                     </td>
-                    <td className="text-end pe-4">{data.opd_amount}</td>
+                    <td className="text-end pe-4">{recData[0]?.amount}</td>
                   </tr>
-
-                  <tr>
-                    <th
-                      scope="col"
-                      className=""
-                      style={{ width: "30% !important" }}
-                    ></th>
-
-                    <th scope="col" className="text-start pt-4 second-th">
-                      Payable Amount INR
-                    </th>
-
-                    <th scope="col" className="text-end pe-4 pt-4">
-                      {" "}
-                      {data.opd_amount}
-                      {".00"}
-                    </th>
-                  </tr>
-                  <tr>
-                    <th scope="col" className="" style={{ width: "30%" }}></th>
-                    <th scope="col" className="text-start second-th">
-                      {" "}
-                      Amount Paid INR
-                    </th>
-
-                    <th scope="col" className="text-end pe-4">
-                      {data.opd_amount}
-                      {".00"}
-                    </th>
-                  </tr>
-
-                  {/* <tr>
-                  <th scope="col" className='' style={{ width: '30%' }}></th>
-                  <th scope="col" className='text-start second-th'>Net Payable {" "}INR</th>
-                  
-                  <th scope="col" className='text-end pe-4'>{totalAmount}{".00"}</th>
-                   </tr> */}
                 </tbody>
               </table>
             </div>
           </div>
         </div>
-        <div className="row">
+        <div className="row proc-detail">
           <div className="col-6 d-flex align-items-end ">
             <div>
               <h6 className="ms-5 preparedBy">
-                Prepared by{" "}
+                Recieved by{": "}
                 <span className="text-uppercase">
-                  {data?.appointment_created_by}
+                  {recData[0]?.received_by}
                 </span>
               </h6>
-            </div>
-          </div>
-
-          <div className="col-6 d-flex align-items-end gap-4">
-            <div className="sealimg">
-              <img
-                src={hospitalDoc?.sealimg}
-                alt="header"
-                srcset=""
-                width="200px"
-                height="150px"
-              />
-            </div>
-
-            <div className="signimg">
-              <img
-                src={hospitalDoc?.signimg}
-                alt="header"
-                srcset=""
-                width="100px"
-                height="100px"
-              />
             </div>
           </div>
         </div>

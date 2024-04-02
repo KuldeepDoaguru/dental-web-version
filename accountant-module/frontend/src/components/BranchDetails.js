@@ -1,14 +1,21 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const BranchDetails = () => {
+  const user = useSelector((state) => state.user);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
+
   return (
     <>
       <Container>
         <div className="row d-flex justify-content-between">
           <div className="col-12 col-md-4 mt-4">
             <div>
-              <h5>Branch : Madan Mahal</h5>
+              <h5>Branch : {user.branch}</h5>
             </div>
             <div className="mt-2">
               <h3> Welcome to Dental Guru! </h3>

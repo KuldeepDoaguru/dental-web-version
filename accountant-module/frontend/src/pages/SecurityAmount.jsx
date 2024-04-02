@@ -13,10 +13,10 @@ const SecurityAmount = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
   console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
   const [patData, setPatData] = useState([]);
   const [securityList, setSecurityList] = useState([]);
   const [refAmount, setRefAmount] = useState("");
@@ -27,7 +27,7 @@ const SecurityAmount = () => {
   const [selected, setSelected] = useState();
   // const [refAmount, setRefAmount] = useState();
   const [addSecurityAmount, setAddSecurityAmount] = useState({
-    branch_name: branch.name,
+    branch_name: user.branch,
     date: "",
     appointment_id: "",
     uhid: "",
@@ -122,7 +122,7 @@ const SecurityAmount = () => {
   const getSecurityAmountList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getSecurityAmountDataByBranch/${branch.name}`
+        `http://localhost:8888/api/v1/accountant/getSecurityAmountDataByBranch/${user.branch}`
       );
       setSecurityList(data);
     } catch (error) {
@@ -525,7 +525,9 @@ const SecurityAmount = () => {
                                     </button>
                                   </td>
                                   <td>
-                                    <Link to="/security-amount-reciept">
+                                    <Link
+                                      to={`/security-amount-reciept/${item.sa_id}`}
+                                    >
                                       <button className="btn btn-success">
                                         Print
                                       </button>

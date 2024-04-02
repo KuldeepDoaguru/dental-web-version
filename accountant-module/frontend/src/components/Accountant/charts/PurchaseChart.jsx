@@ -97,17 +97,17 @@ const CustomTooltip = ({ active, payload, label }) => {
 const PurchaseChart = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  // console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  // console.log(`User Name: ${branch.name}`);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
   const [appointmentList, setAppointmentList] = useState([]);
 
   useEffect(() => {
     const getAppointList = async () => {
       try {
         const response = await axios.get(
-          `https://dentalguruadmin.doaguru.com//api/v1/admin/getPurInventoryByBranch/${branch.name}`
+          `https://dentalguruadmin.doaguru.com//api/v1/admin/getPurInventoryByBranch/${user.branch}`
         );
         setAppointmentList(response.data);
       } catch (error) {
@@ -116,7 +116,7 @@ const PurchaseChart = () => {
     };
 
     getAppointList();
-  }, [branch.name]);
+  }, [user.branch]);
 
   const getDate = new Date();
   const year = getDate.getFullYear();

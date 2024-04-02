@@ -30,17 +30,17 @@ const CustomTooltip = ({ active, payload, label }) => {
 const MonthIncome = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  // console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  // console.log(`User Name: ${branch.name}`);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
   const [appointmentList, setAppointmentList] = useState([]);
 
   useEffect(() => {
     const getAppointList = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8888/api/v1/accountant/getBillsByBranch/${branch.name}`
+          `http://localhost:8888/api/v1/accountant/getBillsByBranch/${user.branch}`
         );
         setAppointmentList(response.data);
       } catch (error) {
@@ -49,7 +49,7 @@ const MonthIncome = () => {
     };
 
     getAppointList();
-  }, [branch.name]);
+  }, [user.branch]);
 
   const getDate = new Date();
   const year = getDate.getFullYear();

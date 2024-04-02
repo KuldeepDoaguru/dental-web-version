@@ -14,7 +14,7 @@ const UniversalLogin = () => {
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  console.log(`branch Name: ${branch?.name}`);
   const [branchList, setBranchList] = useState(null);
   const [selectedBranch, setSelectedBranch] = useState();
   const [email, setEmail] = useState("");
@@ -35,12 +35,12 @@ const UniversalLogin = () => {
   };
 
   const branchData = {
-    name:
+    branch:
       selectedBranch ||
       (branchList?.length > 0 ? branchList[0].branch_name : ""),
   };
   localStorage.setItem("branchName", JSON.stringify(branchData));
-  dispatch(setBranch(branchData));
+  dispatch(setBranch({ branch: selectedBranch }));
 
   const accountantLogin = async (e) => {
     e.preventDefault();
@@ -53,10 +53,11 @@ const UniversalLogin = () => {
           branch_name: selectedBranch,
         }
       );
-      console.log(response.data.user.employee_ID);
+      console.log(response.data.user);
       const userData = {
         name: response.data.user.email,
         id: response.data.user.employee_ID,
+        branch: response.data.user.branch,
       };
       localStorage.setItem("userData", JSON.stringify(userData));
       dispatch(setUser(userData));

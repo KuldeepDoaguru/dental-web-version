@@ -97,17 +97,17 @@ const CustomTooltip = ({ active, payload, label }) => {
 const ExpenseChart = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  // console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  // console.log(`User Name: ${branch.name}`);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
   const [appointmentList, setAppointmentList] = useState([]);
 
   useEffect(() => {
     const getVoucherList = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8888/api/v1/accountant/getVoucherListByBranch/${branch.name}`
+          `http://localhost:8888/api/v1/accountant/getVoucherListByBranch/${user.branch}`
         );
         setAppointmentList(response.data);
       } catch (error) {
@@ -116,7 +116,7 @@ const ExpenseChart = () => {
     };
 
     getVoucherList();
-  }, [branch.name]);
+  }, [user.branch]);
 
   const getDate = new Date();
   const year = getDate.getFullYear();

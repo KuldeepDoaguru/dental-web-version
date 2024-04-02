@@ -8,6 +8,6 @@ const initialState = { branch: null };
 export const branchReducer = createReducer(initialState, (builder) => {
   console.log("Initial branch State:", initialState);
   builder.addCase(setBranch, (state, action) => {
-    state.name = action.payload.name;
+    state.branch = action.payload.branch;
   });
 });

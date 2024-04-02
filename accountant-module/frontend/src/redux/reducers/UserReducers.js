@@ -3,7 +3,7 @@ import { createReducer } from "@reduxjs/toolkit";
 import { setUser, clearUser } from "../slices/UserSlicer";
 
 // Initial state for the user
-const initialState = { name: "", id: null };
+const initialState = { name: "", id: null, branch: null };
 
 // Create a reducer using createReducer from Redux Toolkit
 export const userReducer = createReducer(initialState, (builder) => {
@@ -12,10 +12,12 @@ export const userReducer = createReducer(initialState, (builder) => {
     .addCase(setUser, (state, action) => {
       state.name = action.payload.name;
       state.id = action.payload.id;
+      state.branch = action.payload.branch;
       console.log("User State after setUser:", state);
     })
     .addCase(clearUser, (state) => {
       state.name = "";
       state.id = null;
+      state.branch = null;
     });
 });

@@ -18,17 +18,17 @@ const Accountant_Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
   console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
   const [billList, setBillList] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
 
   const getTodaysBill = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getBillsByBranch/${branch.name}`
+        `http://localhost:8888/api/v1/accountant/getBillsByBranch/${user.branch}`
       );
       setBillList(data);
     } catch (error) {
@@ -55,7 +55,7 @@ const Accountant_Dashboard = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getAppointmentData/${branch.name}`
+        `http://localhost:8888/api/v1/accountant/getAppointmentData/${user.branch}`
       );
       console.log(response);
       setAppointmentList(response.data);

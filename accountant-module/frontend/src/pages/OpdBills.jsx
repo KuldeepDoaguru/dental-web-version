@@ -1,13 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { IoArrowBackSharp } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const OpdBills = () => {
+  const { bid } = useParams();
+  const [opdAmount, setOpdAmount] = useState([]);
+  const user = useSelector((state) => state.user);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
+
   const goBack = () => {
     window.history.go(-1);
   };
+
+  console.log(bid);
+  const getOpdAmt = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getAppointmentDetailsViaID/${bid}`
+      );
+      setOpdAmount(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getOpdAmt();
+  }, []);
+
+  console.log(opdAmount);
   return (
     <>
       <Container>

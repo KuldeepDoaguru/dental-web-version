@@ -28,6 +28,7 @@ import PrintOpdBill from "./components/receptionist/ReceptioinstDashboard/PrintO
 import OpdCollection from "./pages/receptionist/OpdColletion";
 import Profile from "./pages/receptionist/Profile";
 import SecurityAmount from "./pages/receptionist/SecurityAmount ";
+import PrintSecurityAmt from "./components/receptionist/SecurityAmount/PrintSecurityAmt";
 
 function App() {
 
@@ -46,6 +47,7 @@ function App() {
     <Route path='/inquiry' element={user.currentUser=== null ? <UniversalLogin/>  :<Inquiry/>}/>
     <Route path='/patient_profile/:pid' element={user.currentUser=== null ? <UniversalLogin/>  : <PatientProfile/>}/>
     <Route path='/print_Opd_Reciept/:appointmentId' element={user.currentUser=== null ? <UniversalLogin/>  : <PrintOpdBill/>}/>
+    <Route path='/print_security_amount/:SId' element={user.currentUser=== null ? <UniversalLogin/>  : <PrintSecurityAmt/>}/>
     <Route path='/appointment' element={user.currentUser=== null ? <UniversalLogin/>  : <AppointmentSection/>}/>
     <Route path='/edit_appointment' element={user.currentUser=== null ? <UniversalLogin/>  : <EditPopup/>}/>
     <Route path='/modify_appointment' element={user.currentUser=== null ? <UniversalLogin/>  : <ModifyPopup/>}/>

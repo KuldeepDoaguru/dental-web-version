@@ -8,7 +8,9 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import EditPatientDetails from '../../components/receptionist/AllPatients/EditPatientDetails'
 import moment from 'moment'
-import MakePayment from '../../components/receptionist/SecurityAmount/MakePayment'
+import MakePayment from '../../components/receptionist/SecurityAmount/MakePayment';
+import cogoToast from 'cogo-toast';
+
 function SecurityAmount() {
   
   const {refreshTable,currentUser} = useSelector((state) => state.user);
@@ -22,6 +24,103 @@ function SecurityAmount() {
 
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+
+  const [showEditSecAmount, setShowEditSecAmount] = useState(false);
+  const [outStanding, setOutStanding] = useState([]);
+  const [selected, setSelected] = useState();
+  const date = new Date();
+  const [refAmount, setRefAmount] = useState("");
+
+  const filterForSecAmountDef = patients.filter((item) => {
+    return item.sa_id === selected;
+  });
+
+  
+
+  
+
+  const MakeRefund = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `http://localhost:4000/api/v1/receptionist/updateRefundAmount/${selected}`,
+        {
+          refund_date: date,
+          refund_by: currentUser.employee_name,
+          payment_status: "Refunded",
+          refund_amount: refAmount,
+        }
+      );
+      cogoToast.success("Amount Refunded Successfully");
+      getPatient();
+      closeUpdatePopup();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const openSecAmountSubPopup = (id) => {
+    setShowEditSecAmount(true);
+    getTotaloutstanding(id);
+    setSelected(id);
+  };
+
+  const closeUpdatePopup = () => {
+    setShowEditSecAmount(false);
+    
+  };
+
+
+
+  const getTotaloutstanding = async (id) => {
+    console.log(id);
+    try {
+      const { data } = await axios.get(
+        `http://localhost:4000/api/v1/receptionist/getSecurityAmountDataBySID/${id}`
+      );
+      console.log(data);
+      setOutStanding(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const filterForOut = outStanding?.filter((item) => {
+    return item.payment_status !== "success";
+  });
+
+  const totalPrice = () => {
+    try {
+      let total = 0;
+      filterForOut.forEach((item) => {
+        total = total + parseFloat(item.total_amount);
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+ 
+  const totalValue = totalPrice();
+
+
+
+  const makeRefData = () => {
+    if (outStanding.length === 0) {
+      return filterForSecAmountDef[0]?.amount;
+    } else {
+      return outStanding[0]?.amount - totalValue;
+    }
+  };
+  console.log(totalValue)
+  const amtRefund = makeRefData();
+  console.log(amtRefund);
+  useEffect(() => {
+    setRefAmount(amtRefund);
+  }, [amtRefund]);
 
   const getPatient = async () =>{
     try{
@@ -59,7 +158,7 @@ function SecurityAmount() {
     setCurrentPage(1); // Reset to the first page when searching
 
     const filteredResults = patients.filter((row) =>
-      row.patient_name.toLowerCase().includes(searchTerm) || row.mobileno.includes(searchTerm) || row.uhid.toLowerCase().includes(searchTerm)
+      row?.patient_name.toLowerCase().includes(searchTerm) || row?.patient_number.includes(searchTerm) || row?.uhid.toLowerCase().includes(searchTerm)
     );
 
     setFilteredData(filteredResults);
@@ -220,16 +319,19 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                         <thead>
                           <tr>
                           <th>Date</th>
-                            <th>Appointment ID</th>
+                            <th>App. ID</th>
                             <th>UHID</th>
                             <th>Patient Name</th>
-                            <th>Patient Number</th>
-                            <th>Assigned Doctor</th>
+                            <th>Mobile</th>
+                            <th>Doctor</th>
                             <th>Security Amount</th>
                             <th>Payment Status</th>
                             <th>Payment Mode</th>
                             <th>Transaction Id</th>
                             <th>Payment Date</th>
+                            <th>Refund Date</th>
+                            <th>Refund Amount</th>
+
                             <th>Notes</th>
                             <th>Action</th>
                             <th>Print</th>
@@ -238,7 +340,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                         <tbody>
                           {currentRows.map((data,index)=>(
                              <tr key={index}>
-                             <td>{data.date}</td>
+                             <td>{data?.date ? moment(data?.date, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY') : ""}</td>
                              <td>{data.appointment_id}</td>
                              <td><Link to={`/patient_profile/${data.uhid}`}>{data.uhid}</Link></td>
                              <td>{data.patient_name}</td>
@@ -249,7 +351,9 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                              <td>{data.payment_status}</td>
                              <td>{data.payment_Mode}</td>
                              <td>{data.transaction_Id}</td>
-                             <td>{data.payment_date}</td>
+                             <td>{data.payment_date ? moment(data?.payment_date).format('DD/MM/YYYY') : ""}</td>
+                             <td>{data?.refund_date ? moment(data?.refund_date, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY') : ""}</td>
+                             <td>{data?.refund_amount}</td>
                              <td>{data.notes}</td>
                              
                            
@@ -260,7 +364,9 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
   </button>
   <ul className="dropdown-menu">
    
- {data.payment_status === "success" &&  <li><a className="dropdown-item mx-0" onClick={()=>handleEditPatient(data)}>Rufund</a></li> } 
+ {data.payment_status === "success" &&  <li><a className="dropdown-item mx-0"  onClick={() =>
+                                        openSecAmountSubPopup(data.sa_id)
+                                      }>Rufund</a></li> } 
  {data.payment_status === "pending" &&  <li><a className="dropdown-item mx-0" onClick={()=>handleEditPatient(data)}>Make Payment</a></li> } 
  
  
@@ -268,6 +374,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
  
   </ul>
   </div></td>
+  <td> {data.payment_status === "success" ? (<Link to={`/print_security_amount/${data.sa_id}`}>  <button type="button" className="btn btn-primary">Print</button> </Link>) : (  <button type="button" className="btn btn-primary" disabled>Print</button>)} </td>
                            </tr>
                           ))}
                           
@@ -322,6 +429,73 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
   </div>
    </div>
    </div>
+
+
+   {/* pop-up for refund amount */}
+   <div
+            className={`popup-container${showEditSecAmount ? " active" : ""}`}
+          >
+            <div className="popup">
+              <h4 className="text-center">Refund Amount</h4>
+              <hr />
+              <form className="d-flex flex-column" onSubmit={MakeRefund}>
+                <div className="container">
+                  <div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">
+                        Security Amount Submitted -{" "}
+                        {outStanding.length === 0
+                          ? filterForSecAmountDef[0]?.amount
+                          : outStanding[0]?.amount}
+                      </label>
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">
+                        Total Outstanding - {totalValue}
+                      </label>
+                    </div>
+                    <div class="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">
+                        Refund Amount :
+                        {outStanding.length === 0
+                          ? filterForSecAmountDef[0]?.amount
+                          : outStanding[0]?.amount - totalValue}
+                      </label>
+                      {/* <input
+                        type="text"
+                        class="form-control"
+                        id="exampleFormControlInput1"
+                        placeholder="Enter Amount"
+                        name="refund_amount"
+                        value={
+                          outStanding.length === 0
+                            ? filterForSecAmountDef[0]?.amount
+                            : outStanding[0]?.amount - totalValue
+                        }
+                        onChange={handleInputChange}
+                      /> */}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="d-flex justify-content-center">
+                  <button type="submit" className="btn btn-success mt-2">
+                    Refund
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger mt-2 mx-2"
+                    onClick={closeUpdatePopup}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+
+
    {showEditPatientPopup && (
         <MakePayment onClose={() => setShowEditPatientPopup(false)} patientInfo={selectedPatient} />
       )} 
@@ -386,5 +560,32 @@ th{
 td{
   white-space: nowrap;
 }
+
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: scroll;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .popup-container.active {
+    display: flex;
+    background-color: #00000075;
+  }
+
+  .popup {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    height: auto;
+    width: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
 
 `

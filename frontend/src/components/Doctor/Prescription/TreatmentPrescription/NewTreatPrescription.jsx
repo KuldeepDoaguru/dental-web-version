@@ -6,11 +6,16 @@ import { IoMdAdd } from "react-icons/io";
 import CreatableSelect from 'react-select/creatable';
 import { FaPrescriptionBottleMedical } from "react-icons/fa6";
 import { FaLocationArrow } from "react-icons/fa6";
+import { useDispatch, useSelector } from 'react-redux';
 
 const NewTreatPrescription = () => {
     const { id } = useParams();
     console.log(id);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+    const branch = user.currentUser.branch_name;
+      console.log(branch);
     const [getPatientData, setGetPatientData] = useState([]);
     const [getExaminData, setGetExaminData] = useState([]);
     const [getTreatData, setGetTreatData] = useState([]);
@@ -27,6 +32,7 @@ const NewTreatPrescription = () => {
     const [getSum, setGetSum] = useState(0);
 
     const [getlab, setGetlab] = useState([]);
+    const [getTreatSug, setGetTreatSug] = useState([]);
     console.log(getlab);
     // console.log(prescriptionData)
 
@@ -90,11 +96,30 @@ const NewTreatPrescription = () => {
         setPrescriptionData({ ...prescriptionData, [name]: value });
     };
 
+    const timelineForMedical = async () => {
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8888/api/doctor/insertTimelineEvent",
+                {
+                    type: "Medical Prescription",
+                    description: "Add Medicine",
+                    branch: branch,
+                    patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+                }
+            );
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post(`http://localhost:8888/api/doctor/insertTreatPrescription/${id}`, prescriptionData);
             console.log(response.data);
+            timelineForMedical();
             window.location.reload();
             // setGetTreatMedicine([...getTreatMedicine, response.data]);
             // Handle success, maybe show a success message
@@ -171,6 +196,22 @@ const NewTreatPrescription = () => {
     }, [])
     // Get lab test Data END
 
+     // Get Treatment Suggest START
+     const getTreatmentSuggestAppointId = async () => {
+        try {
+            const res = await axios.get(`http://localhost:8888/api/doctor/getTreatSuggest/${id}`);
+            setGetTreatSug(res.data.data);
+            console.log(res.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getTreatmentSuggestAppointId()
+    }, [])
+     // Get Treatment Suggest END
+
     const handledelete = async (id) => {
         console.log(id);
         try {
@@ -189,11 +230,30 @@ const NewTreatPrescription = () => {
         }
     }
 
+    const timelineForBill = async () => {
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8888/api/doctor/insertTimelineEvent",
+                {
+                    type: "Bill Data",
+                    description: "Add Bill Data Patient Table",
+                    branch: branch,
+                    patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+                }
+            );
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleNavigate = async () => {
         try {
             // Make the API call to fetch bill data
             const billResponse = await axios.get(`http://localhost:8888/api/doctor/bill-patient-data/${id}`);
             console.log('Bill data fetched successfully');
+            timelineForBill();
     
             // Check if bill data was fetched successfully
             if (billResponse.data.success) {
@@ -308,6 +368,37 @@ const NewTreatPrescription = () => {
                                         <div className="col-lg-3 d-flex flex-column text-center">
 
                                             <p>{item.advice}</p>
+                                        </div>
+                                    </div>
+                                </>
+                            ))}
+                        </fieldset>
+                    </div>
+                </div>
+                <div className="container">
+                    <div className="row shadow-sm p-3 mb-3 bg-body rounded">
+                        <fieldset>
+                            <legend className="">Treatment Suggest</legend>
+                            <div className="d-flex justify-content-evenly align-items-center col-lg-12 " style={{ background: "#0dcaf0", borderRadius: "5px" }}>
+                                <div className="col-lg-2 d-flex flex-column text-center">
+                                    <label>Treatment Name</label>
+
+                                </div>
+                                <div className="col-lg-2 d-flex flex-column text-center">
+                                    <label>Note</label>
+
+                                </div>
+                            </div>
+                            {getTreatSug?.map((item, index) => (
+                                <>
+                                    <div key={index} className="d-flex justify-content-evenly align-items-center col-lg-12">
+                                        <div className="col-lg-2 d-flex flex-column text-center">
+
+                                            <p>{item.treatment_name}</p>
+                                        </div>
+                                        <div className="col-lg-2 d-flex flex-column text-center">
+
+                                            <p>{item.note}</p>
                                         </div>
                                     </div>
                                 </>

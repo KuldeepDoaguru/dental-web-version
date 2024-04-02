@@ -27,6 +27,7 @@ const Overview = () => {
   const [treatData, setTreatData] = useState([]);
   const [prescpData, setPrescpData] = useState([]);
   const [billData, setBillData] = useState([]);
+  const [ongoing, setOngoing] = useState([]);
   console.log(treatData);
   console.log(prescpData);
   console.log(billData);
@@ -183,6 +184,20 @@ const Overview = () => {
 
   useEffect(() => {
     fetchLatestBillPatientData();
+  }, []);
+
+  const onGoingTreat = async () =>{
+    try {
+      const response = await axios.get(`http://localhost:8888/api/doctor/onGoingTreat/${uhid}`)
+      console.log(response.data);
+      setOngoing(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    onGoingTreat();
   }, []);
 
   return (

@@ -2,23 +2,26 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from 'react-redux';
-import { setUser } from '../../../../redux/user/userSlice';
+import { useSelector } from "react-redux";
+import { setUser } from "../../../../redux/user/userSlice";
 
 const ViewTreatPrescription = () => {
     const { id } = useParams();
     console.log(id);
     const navigate = useNavigate();
     const [getPatientData, setGetPatientData] = useState([]);
-    const currentUser = useSelector(state => state.user.currentUser); 
+    const currentUser = useSelector((state) => state.user.currentUser);
     const [getExaminData, setGetExaminData] = useState([]);
     const [getTreatData, setGetTreatData] = useState([]);
     const [getTreatMedicine, setGetTreatMedicine] = useState([]);
+    const [getTreatSug, setGetTreatSug] = useState([]);
 
     // Get Patient Details START
     const getPatientDetail = async () => {
         try {
-            const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+            const res = await axios.get(
+                `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+            );
             setGetPatientData(res.data.result);
         } catch (error) {
             console.log(error);
@@ -33,7 +36,9 @@ const ViewTreatPrescription = () => {
     // Get Patient Examintion Details START
     const getExaminDetail = async () => {
         try {
-            const res = await axios.get(`http://localhost:8888/api/doctor/getDentalDataByID/${id}`);
+            const res = await axios.get(
+                `http://localhost:8888/api/doctor/getDentalDataByID/${id}`
+            );
             setGetExaminData(res.data);
             console.log(res.data);
         } catch (error) {
@@ -49,7 +54,9 @@ const ViewTreatPrescription = () => {
     // Get Patient Treatment Details START
     const getTreatDetail = async () => {
         try {
-            const res = await axios.get(`http://localhost:8888/api/doctor/getTreatmentData/${id}`);
+            const res = await axios.get(
+                `http://localhost:8888/api/doctor/getTreatmentData/${id}`
+            );
             setGetTreatData(res.data.data);
             console.log(res.data.data);
         } catch (error) {
@@ -65,7 +72,9 @@ const ViewTreatPrescription = () => {
     // Get Treatment Medical Prescription Data START
     const getTreatPrescriptionByAppointId = async () => {
         try {
-            const res = await axios.get(`http://localhost:8888/api/doctor/getTreatPrescriptionByAppointId/${id}`);
+            const res = await axios.get(
+                `http://localhost:8888/api/doctor/getTreatPrescriptionByAppointId/${id}`
+            );
             setGetTreatMedicine(res.data);
             console.log(res.data);
         } catch (error) {
@@ -74,23 +83,48 @@ const ViewTreatPrescription = () => {
     };
 
     useEffect(() => {
-        getTreatPrescriptionByAppointId()
-    }, [])
+        getTreatPrescriptionByAppointId();
+    }, []);
     // Get Treatment Medical Prescription Data END
 
-    const handleButton = async() =>{
-        console.log(id);
+    // Get Treatment Suggest START
+    const getTreatmentSuggestAppointId = async () => {
+        try {
+            const res = await axios.get(
+                `http://localhost:8888/api/doctor/getTreatSuggest/${id}`
+            );
+            setGetTreatSug(res.data.data);
+            console.log(res.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getTreatmentSuggestAppointId();
+    }, []);
+    // Get Treatment Suggest END
+
+    const handleButton = async () => {
         try {
             // Make the API call to update sitting count
-            console.log(id);
-            await axios.get(`http://localhost:8888/api/doctor/updateSittingCount/${id}`);
-            console.log(id);
-            console.log('Sitting count updated successfully');
+            await axios.get(
+                `http://localhost:8888/api/doctor/updateSittingCount/${id}`
+            );
+            console.log("Sitting count updated successfully");
+
+            // Make the API call to update appointment status
+            await axios.put(
+                `http://localhost:8888/api/doctor/updateAppointStatus/${id}`,
+                { status: "Complete" }
+            );
+            console.log("Appointment status updated successfully");
+
             window.print();
         } catch (error) {
-            console.log('Error updating sitting count', error); 
+            console.log("Error updating sitting count", error);
         }
-    }
+    };
 
     return (
         <>
@@ -103,18 +137,20 @@ const ViewTreatPrescription = () => {
                                     <div className="d-flex justify-content-between align-items-center">
                                         <div className="text-start">
                                             <h2>Dr. {currentUser.employee_name}</h2>
-                                            <p className="fs-5">({currentUser.employee_designation})</p>
+                                            <p className="fs-5">
+                                                ({currentUser.employee_designation})
+                                            </p>
                                         </div>
                                         <div className="text-start">
                                             <h5>Mobile Number</h5>
-                                            <p className='m-0 fs-5'>{currentUser.employee_mobile}</p>
-                                            <p className='m-0 fs-5'>{currentUser.email}</p>
+                                            <p className="m-0 fs-5">{currentUser.employee_mobile}</p>
+                                            <p className="m-0 fs-5">{currentUser.email}</p>
                                         </div>
                                     </div>
                                 )}
                             </div>
                             <table className="table table-bordered border">
-                                <tbody >
+                                <tbody>
                                     {getPatientData.map((item, index) => (
                                         <React.Fragment key={index}>
                                             <tr>
@@ -139,8 +175,16 @@ const ViewTreatPrescription = () => {
                                     ))}
                                 </tbody>
                             </table>
+                            <div className="treatment">
+                                <p className="fs-4 fw-bold">Treatment</p>
+                                {getTreatSug?.map((item, index) => (
+                                    <div key={index}>
+                                        <p className="fs-6 px-3">{item.treatment_name}</p>
+                                    </div>
+                                ))}
+                            </div>
                             <div className="diagnosis">
-                                <p className="text-start fs-3 fw-normal">Diagnosis</p>
+                                <p className="text-start fs-4 fw-bold">Diagnosis</p>
                                 <table className="table table-bordered border">
                                     <thead>
                                         <tr>
@@ -167,7 +211,7 @@ const ViewTreatPrescription = () => {
                                 </table>
                             </div>
                             <div className="Treatment">
-                                <p className="text-start fs-3 fw-normal">Treatment Advice</p>
+                                <p className="text-start fs-4 fw-bold">Treatment Producer</p>
                                 <table className="table table-bordered border">
                                     <thead>
                                         <tr>
@@ -200,7 +244,7 @@ const ViewTreatPrescription = () => {
                                 </table>
                             </div>
                             <div className="Medicine">
-                                <p className="text-start fs-3 fw-normal">Drug Category</p>
+                                <p className="text-start fs-4 fw-bold">Drug Category</p>
                                 <table className="table table-bordered border">
                                     <thead>
                                         <tr>
@@ -227,43 +271,48 @@ const ViewTreatPrescription = () => {
                                 </table>
                             </div>
                             <div className="text-center">
-                                <button className="btn btn-success no-print mx-3 no-print" onClick={handleButton}>Complete & Print</button>
+                                <button
+                                    className="btn btn-success no-print mx-3 no-print"
+                                    onClick={handleButton}
+                                >
+                                    Complete & Print
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </Wrapper>
         </>
-    )
-}
+    );
+};
 
 export default ViewTreatPrescription;
 const Wrapper = styled.div`
-overflow: hidden;
-background-color: white;
-height: 100%;
-.doctor-detail{
+  overflow: hidden;
+  background-color: white;
+  height: 100%;
+  .doctor-detail {
     margin-bottom: 0.5rem;
-}
-@media print {
-  @page {
-    margin: 0; /* Remove default page margins */
   }
+  @media print {
+    @page {
+      margin: 0; /* Remove default page margins */
+    }
 
-  body {
-    margin: 0; /* Ensure no margin on the body */
-  }
+    body {
+      margin: 0; /* Ensure no margin on the body */
+    }
 
-  .container-fluid {
-    width: 100%; /* Optionally set the width */
-    margin: 0; /* Remove margin */
-    padding: 0; /* Remove padding */
-    page-break-before: auto;
+    .container-fluid {
+      width: 100%; /* Optionally set the width */
+      margin: 0; /* Remove margin */
+      padding: 0; /* Remove padding */
+      page-break-before: auto;
+    }
   }
-}
-@media print {
-  .no-print {
-    display: none !important;
+  @media print {
+    .no-print {
+      display: none !important;
+    }
   }
-}
 `;

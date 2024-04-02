@@ -304,8 +304,44 @@ const getTreatmentDataSUM = (req, res) => {
     })
 };
 
+const onGoingTreat = (req, res) =>{
+    const patientUHID = req.params.patientUHID;
+
+    // SQL query to fetch treatment data for the given appointment ID
+    const sql = `SELECT treatment_name, sitting_result FROM treat_suggest WHERE p_uhid = ?`;
+
+    db.query(sql, [patientUHID], (error, results) => {
+        if (error) {
+            console.error('Error fetching treatment data:', error.message);
+            return res.status(500).json({ error: 'Server error' });
+        }
+
+        let ongoingTreatment = '';
+        if (results.length > 0) {
+            // Calculate total sitting result
+            let totalSittingResult = 0;
+            results.forEach(row => {
+                totalSittingResult += row.sitting_result;
+            });
+
+            // Determine ongoing treatment
+            if (totalSittingResult > 0) {
+                // If there are ongoing treatments, find the treatment name
+                ongoingTreatment = results.find(row => row.sitting_result > 0).treatment_name;
+            } else {
+                ongoingTreatment = `No Ongoing Treatment`;
+            }
+        } else {
+            ongoingTreatment = 'No treatments found';
+        }
+
+        // Return the result
+        res.json({ ongoingTreatment });
+    });
+}
 
 
 
 
-module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM, getTreatPatientProfile, treatPatientUHID, getPrescriptionPatientProfile, prescripPatientUHID }; 
+
+module.exports = { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM, getTreatPatientProfile, treatPatientUHID, getPrescriptionPatientProfile, prescripPatientUHID, onGoingTreat }; 

@@ -3,9 +3,9 @@ const db = require("../connect.js");
 const multer = require('multer');
 const path = require('path');
 const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID, updateSittingCount } = require("../controller/authControl.js");
-const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg } = require("../controller/authAppointTable.js");
+const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg, updateAppointStatus } = require("../controller/authAppointTable.js");
 const { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId, getPatientBillUHID, insertTimelineEvent, getPatientTimeline } = require("../controller/authBranch.js");
-const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM, getTreatPatientProfile, treatPatientUHID, getPrescriptionPatientProfile, prescripPatientUHID } = require("../controller/authTreatment.js");
+const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM, getTreatPatientProfile, treatPatientUHID, getPrescriptionPatientProfile, prescripPatientUHID, onGoingTreat } = require("../controller/authTreatment.js");
 const { uploadImage, getUploadedImages } = require("../controller/authContrimg.js");
 const { bookAppointment, getTreatSuggest, insertLabData, getLabDataByAppointId } = require("../controller/authBook.js");
 
@@ -68,6 +68,8 @@ router.get('/getPrescriptionPatientProfile/:patientUHID', getPrescriptionPatient
 router.get('/prescripPatientUHID/:patientUHID', prescripPatientUHID);
 router.get('/getTreatPrescriptionByAppointId/:appoint_id', getTreatPrescriptionByAppointId);
 router.delete('/deleteTreatPrescriptionById/:id', deleteTreatPrescriptionById);
+router.put('/updateAppointStatus/:appointId', updateAppointStatus);
+router.get('/onGoingTreat/:patientUHID', onGoingTreat);
 // Medical Prescription Routes END here......
 
 // Prescription Image Routes START here......

@@ -35,7 +35,7 @@ function App() {
       <Route path="/examination-Dashboard/:id" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoard />} />
       <Route path="/ExaminationDashBoardPatient/:id" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoardPatient />} />
       <Route path="/ExaminationDashBoardPediatric/:id" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoardPediatric />} />
-      <Route path="/treatmentSuggestion/:id" element={user.currentUser=== null ? <DoctorLogin /> : <TreatSuggestDashs />} />
+      <Route path="/treatmentSuggestion/:id" element={user.currentUser=== null ? <DoctorLogin /> : <TreatSuggestDashs />} /> 
       <Route path="/SecurityAmount/:id" element={user.currentUser=== null ? <DoctorLogin /> : <SecurityAmount />} />
       <Route path="/print-security-bill/:sa_id" element={user.currentUser=== null ? <DoctorLogin /> : <PrintSecurityAmt />} />
       <Route path="/TreatmentDashBoard/:id" element={user.currentUser=== null ? <DoctorLogin /> : <TreatmentDashBoard />} />

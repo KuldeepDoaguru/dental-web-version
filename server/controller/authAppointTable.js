@@ -278,6 +278,26 @@ const getAppointmentsWithPatientDetailsTreatSugg = (req, res) => {
     });
 };
 
+const updateAppointStatus = (req, res) =>{
+    const appointId = req.params.appointId;
 
-module.exports = { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg };
+    // SQL query to update appointment status
+    const sql = `UPDATE appointments SET appointment_status = 'Complete' WHERE appoint_id = ?`;
+
+    db.query(sql, [appointId], (error, results) => {
+        if (error) {
+            console.error('Error updating appointment status:', error.message);
+            return res.status(500).json({ error: 'Server error' });
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ error: 'Appointment not found' });
+        }
+
+        return res.json({ message: 'Appointment status updated to Complete' });
+    });
+}
+
+
+module.exports = { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg, updateAppointStatus };
 

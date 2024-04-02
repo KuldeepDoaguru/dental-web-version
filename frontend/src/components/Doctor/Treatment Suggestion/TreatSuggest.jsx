@@ -377,6 +377,8 @@ const TreatSuggest = () => {
                                                 })
                                             }
                                             value={formData.treatment_sitting}
+                                            min="1"
+                                            required
                                         />
                                         <div className="m-2">
                                             <button type="submit" className="btn btn-primary">

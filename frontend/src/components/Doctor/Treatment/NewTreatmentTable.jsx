@@ -5,6 +5,7 @@ import axios from "axios";
 import { FaPrescriptionBottleMedical } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
 import { FaLocationArrow } from "react-icons/fa6";
+import { useDispatch, useSelector } from 'react-redux';
 
 const NewTreatmentTable = () => {
     const { id } = useParams();
@@ -23,6 +24,34 @@ const NewTreatmentTable = () => {
         note: ""
     });
 
+    const [getPatientData, setGetPatientData] = useState([]);
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
+    const branch = user.currentUser.branch_name;
+      console.log(branch);
+
+    
+     // Get Patient Details START
+     const getPatientDetail = async () => {
+        try {
+            const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+            
+            // const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
+            // setFormData(prevInputItem => ({
+            //     ...prevInputItem,
+            //     patient_uhid: uhid
+            // }));
+            setGetPatientData(res.data.result);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getPatientDetail();
+    }, []);
+    // Get Patient Details END
+
     const fetchTreatmentData = async () => {
         try {
             const res = await axios.get(`http://localhost:8888/api/doctor/getTreatmentData/${id}`);
@@ -37,12 +66,32 @@ const NewTreatmentTable = () => {
         fetchTreatmentData();
     }, []);
 
+    const timelineForTreatupdate = async () => {
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8888/api/doctor/insertTimelineEvent",
+                {
+                    type: "Treatment Producer",
+                    description: "Treatment Data Update",
+                    branch: branch,
+                    patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+                }
+            );
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
     const handleSubmit = async (e, id) => {
         e.preventDefault();
         try {
             const res = await axios.put(`http://localhost:8888/api/doctor/updateTreatmentData/${id}`, formData);
-            window.location.reload();
             console.log(res.data);
+            timelineForTreatupdate();
+            window.location.reload();
         } catch (error) {
             console.log(error);
         }
@@ -72,14 +121,32 @@ const NewTreatmentTable = () => {
         setModalIndex(index);
     };
 
-    const handleDelete = async (id) => {
+    const timelineForTreatdelete = async () => {
+
+        try {
+            const response = await axios.post(
+                "http://localhost:8888/api/doctor/insertTimelineEvent",
+                {
+                    type: "Treatment Producer",
+                    description: "Treatment Data Delete ",
+                    branch: branch,
+                    patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+                }
+            );
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleDelete = async (id) => { 
         try {
             const confirmed = window.confirm("Are you sure you want to delete?"); // Show confirmation dialog
 
             if (confirmed) {
                 const res = await axios.delete(`http://localhost:8888/api/doctor/deleteTreatmentData/${id}`);
                 console.log(res.data); // Log response data
-
+                timelineForTreatdelete();
                 setTreatmentData(treatmentData.filter(item => item.id !== id)); // Remove deleted item from data
             }
         } catch (error) {

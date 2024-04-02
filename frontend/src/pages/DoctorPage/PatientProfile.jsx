@@ -16,6 +16,7 @@ function PatientProfile() {
   console.log(`User Branch: ${branch}`);
 
   const [patientData, setPatientData] = useState([]);
+  const [ongoing, setOngoing] = useState([]);
 
   const  getPatientDetails = async () => {
     try {
@@ -31,6 +32,20 @@ function PatientProfile() {
   useEffect(()=>{
     getPatientDetails();
   }, [])
+
+  const onGoingTreat = async () =>{
+    try {
+      const response = await axios.get(`http://localhost:8888/api/doctor/onGoingTreat/${uhid}`)
+      console.log(response.data);
+      setOngoing(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    onGoingTreat();
+  }, []);
 
   return (
     <Wrapper>
@@ -289,7 +304,8 @@ function PatientProfile() {
               </div>
               <div>
                 <div className="p-2 bg-light rounded">
-                  <h6 className="fw-bold mt-2">Ongoing Treatment</h6>
+                  <h6 className="fw-bold fs-5 mt-2">Ongoing Treatment</h6>
+                  <p className="">{ongoing.ongoingTreatment}</p>
                 </div>
                 <div className="container">
                   <ul className=" list-unstyled">

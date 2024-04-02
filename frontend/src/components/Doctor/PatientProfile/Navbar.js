@@ -1,6 +1,3 @@
-
-
-
 import React from "react";
 import styled from "styled-components";
 import Appointment from "./Appointment";
@@ -346,7 +343,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Timeline />
+                <Timeline uhid={uhid}/>
               </li>
             </ul>
           </div>

@@ -1654,7 +1654,7 @@ const ExaminationPatientTest = () => {
           {/* dental chart 32 teeth end */}
 
           <div className="row mt-5">
-            <div className="col-lg-10 col-10">
+            <div className="col-lg-10 col-10 dentalForm">
               <div className="text-center">
                 <button
                   onClick={handleClick}
@@ -1679,7 +1679,7 @@ const ExaminationPatientTest = () => {
                         <input
                           type="text"
                           id="form8Example1"
-                          className="form-control"
+                          className="form-control input1"
                           placeholder="Selected Teeth Number"
                           readOnly
                           //   value={selectedTeeth.join(", ")}
@@ -1702,7 +1702,7 @@ const ExaminationPatientTest = () => {
                           }
                           id="form8Example2"
                           placeholder="Dental Condition"
-                          className="form-control"
+                          className="form-control input1"
                         />
                       </div>
                     </div>
@@ -1774,44 +1774,10 @@ const ExaminationPatientTest = () => {
               </div>
               <div>
              <SaveData id={id} />
-                {/* <h2>Saved Data</h2>
-                <div>
-                  {inputItemList.length ? (
-                    <ul className="list">
-                      {inputItemList.map((item, index) => (
-                        <li key={index} className="list-item">
-                          {/* Render each item's properties */}
-                          {/* Select Teeth: {item.selectTeeth.join(", ")}, Disease:{" "}
-                          {item.desease}, Chief Complaint: {item.chiefComplain},
-                          Advice: {item.advice}, On Examination:{" "}
-                          {item.onExamination} */}
-                          {/* <div className="buttons">
-                            <button
-                              className="btn btn-primary mx-1"
-                              onClick={() => editItem(index)}
-                            >
-                              <MdEdit size={20} />
-                            </button>
-                            <button
-                              className="btn btn-danger mx-1"
-                              onClick={() => deleteItem(index)}
-                            >
-                              <MdDelete size={20} />
-                            </button>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p class="placeholder-glow">
-                      Currently, there is no available data.
-                    </p>
-                  )}
-                </div> */}
               </div>
             </div>
 
-            <div className="col-lg-2 col-2">
+            <div className="col-lg-2 col-2 dentalButton">
               <div className="d-flex flex-column text-center">
                 <div onClick={() => caries("Caries")} className="p-2">
                   <img
@@ -1920,5 +1886,26 @@ const Wrapper = styled.div`
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   padding-left: 0.9rem;
 }
+.patient{
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+      width: 53rem;
+      margin-left: 2rem;
+    }
+}
 
+.dentalForm{
+  /* @media screen and (min-width: 768px) and (max-width: 1024px) {
+      width: 50rem;
+      margin-left: 1.rem;
+    } */
+}
+.dentalButton{
+  
+}
+.input1{
+  @media screen and (min-width: 868px) and (max-width: 1024px){
+    width: 19rem;
+    margin-left: 0.9rem;
+  }
+}
 `;

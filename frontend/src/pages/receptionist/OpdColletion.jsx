@@ -241,6 +241,7 @@ console.log(appointmentsData)
                         <th>Phone Number</th>
                         <th>App. Timing</th>
                         <th>Doctor Name</th>
+                        <th>Treatment</th>
                         <th>App. Status</th>
                         <th>OPD Amount</th>
                         <th>Payment Mode</th>
@@ -268,6 +269,7 @@ console.log(appointmentsData)
                           </td>
 
                           <td>{data.assigned_doctor_name}</td>
+                          <td>{data.treatment_provided}</td>
                           <td>{data.appointment_status}</td>
                           <td>{data.opd_amount}</td>
                           <td>{data.payment_Mode}</td>

@@ -13,7 +13,7 @@ function Form() {
   return (
     <Wrapper>
       <div className="">
-        <div className="row  mx-1 p-1 border rounded bg-white" id="section3">
+        <div className="row  p-1 border rounded bg-white" id="section3">
           <ul className="nav nav-tabs" id="myTab" role="tablist">
             <li className="nav-item" role="presentation">
               <button
@@ -81,11 +81,16 @@ const Wrapper = styled.div`
   #section3 {
     @media screen and (max-width: 768px) {
       margin-top: 1rem;
-      width: 20rem;
+      width: 75%;
+      
+      margin: 1rem auto;
+      
     
     }
-    @media screen and (min-width: 768px) and (max-width: 1020px)  {
-      width: 41rem;
+    @media screen and (min-width: 770px) and (max-width: 1020px)  {
+      width: 75%;
+      
+      margin: 1rem auto;
     }
   }
     .formbtn {

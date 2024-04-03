@@ -1166,7 +1166,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                      </div>
                      </div> */}
 
-              <div className="formbtn d-flex justify-content-center">
+              <div className="formbtn d-flex justify-content-lg-center">
                 <button className="btn btn-success " type="submit" id="btn2">
                   {" "}
                   Book Appointment
@@ -1218,7 +1218,7 @@ const Wrapper = styled.div`
       }
       @media screen and (min-width: 768px) and (max-width: 1020px) {
         font-size: small;
-        margin-left: 1rem;
+        margin:1rem auto;
       }
       @media screen and (min-width: 1020px) and (max-width: 1600px) {
         

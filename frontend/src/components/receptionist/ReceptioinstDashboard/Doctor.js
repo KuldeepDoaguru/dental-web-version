@@ -295,7 +295,7 @@ useEffect(() => {
     
   return (
     <Wrapper>
-      <div className="widget-area-2 proclinic-box-shadow rounded bg-white px-1 me-2 ">
+      <div className="widget-area-2 proclinic-box-shadow rounded bg-white px-1 main">
         <h3 className="widget-title text-center">Doctor Available for { moment(selectedDate).format('DD/MM/YYYY')}</h3>
         <div className="d-flex px-2 gap-1">
         <input type="date" 
@@ -412,12 +412,35 @@ export default Doctor;
 const Wrapper = styled.div`
 width: 110%;
 
-#tab{
-  @media screen and (max-width: 768px)  {
-   width: 20rem;
+@media screen and (max-width: 768px) {
+   width: auto;
+   margin-bottom: 20px;
+   
   }
   @media screen and (min-width: 768px) and (max-width: 1020px)  {
-      width: 41rem;
+    width: auto;
+    margin-bottom: 20px;
+    }
+
+.main{
+  @media screen and (max-width: 768px)  {
+   width: 75%;
+   margin: auto;
+  }
+  @media screen and (min-width: 768px) and (max-width: 1020px)  {
+    width: 75%;
+    margin: auto;
+    min-height: 400px;
+    }
+}
+
+#tab{
+  @media screen and (max-width: 768px)  {
+   width: 90%;
+  }
+  @media screen and (min-width: 768px) and (max-width: 1020px)  {
+      width: 90%;
+      margin: auto;
     }
     @media screen and (min-width: 1020px) and (max-width: 1300px) {
    height: 25.5rem;

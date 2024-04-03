@@ -139,7 +139,7 @@ const handleStatusChange = async (appointmentId,patient_uhid, newStatus) => {
     getAppointments();
     dispatch(toggleTableRefresh());
     timelineDataForCheckIn(patient_uhid);
-    cogoToast.success("Patient Successfully Check-In")
+    cogoToast.success(`Patient Successfully ${newStatus}`)
   } catch (error) {
     console.error('Error updating status:', error);
     cogoToast.error("Error updating status")
@@ -296,7 +296,7 @@ const handleStatusCancel = async (appointmentId,patient_uhid, newStatus) => {
 
   
       <div className="widget-area-2 proclinic-box-shadow" id="tableres">
-       <div className="d-flex justify-content-between align-items-center">
+       <div className="d-lg-flex justify-content-between align-items-center">
          <div className="d-flex justify-content-center align-items-center">
          <h5  className=" me-4  widget-title" id="title">
        Appointment for 
@@ -312,9 +312,9 @@ const handleStatusCancel = async (appointmentId,patient_uhid, newStatus) => {
         </div>
         <Form.Group
                       controlId="rowsPerPageSelect"
-                      style={{ display: "flex" }}
+                      style={{ display: "flex",justifyContent:"center" }}
                     >
-                      <Form.Label className="d-flex align-items-center">
+                      <Form.Label className="d-flex  align-items-center row-per-page ">
                         Rows Per Page :{" "}
                       </Form.Label>
                       <Form.Control
@@ -400,7 +400,7 @@ patient_type
   {/* <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li> */}
   {/* <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Check-Out')}>Check-Out</a></li>
   <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Complete')}>Complete</a></li> */}
-   {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" &&   <li><a className="dropdown-item mx-0" onClick={() => handleEditAppointment(patient)}>Edit Appointment</a></li>}
+   {(patient.appointment_status == "Appoint" && patient.appointment_status !== "Cancel") &&   <li><a className="dropdown-item mx-0" onClick={() => handleEditAppointment(patient)}>Edit Appointment</a></li>}
    {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" &&    <li><a className="dropdown-item mx-0" onClick={() => handleCancelAppointment(patient)}>Cancel Appointment</a></li>}
    
    
@@ -492,6 +492,7 @@ const Wrapper = styled.div`
       width: 75%;
     }
   }
+
   th{
     background-color: teal;
     color: white;

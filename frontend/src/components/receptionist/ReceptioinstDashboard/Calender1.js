@@ -32,6 +32,14 @@ function Calender1() {
   // const [date,setDate] = useState("");
   // Add timeSlots state
 
+
+   // CSS override to change the color of weekend dates
+   const StyledCalendar = styled(Calendar)`
+   .react-calendar__month-view__days__day--weekend {
+     color: black; // Change this to your desired color: ;
+   }
+ `;
+
   const filteredAppointmentData = appointmentsData.filter(appointment => 
     appointment.appointment_status !== "Cancel"
 )
@@ -250,8 +258,17 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
       
       </h6></div>
     <div className={isDisplay?"d-none" : "d-block"}>
-    <div className="cal "> <Calendar onChange={onChange}
-    onClickDay={handleDayClick} value={value} /></div>
+    {/* <div className="cal "> <Calendar onChange={onChange}
+    onClickDay={handleDayClick} value={value} /></div> */}
+    
+     {/* use this for change the weekend colour in calender  */}
+    <div>
+    <StyledCalendar
+            onChange={onChange}
+            onClickDay={handleDayClick}
+            value={value}
+          />
+    </div>
     </div>
   
   
@@ -389,13 +406,19 @@ padding:10px;
 width: 100%;
 margin-left: 10px;
 border-radius: 5px;
+@media screen and (max-width: 768px) {
+  margin: auto;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1020px)  {
+      margin: auto;
+    }
 
 .cal{
   @media screen and (max-width: 768px) {
-      width: 20rem
+      width: 80%;
     }
     @media screen and (min-width: 768px) and (max-width: 1020px)  {
-      width: 22rem;
+      width: 80%;
     }
 }
 .react-calendar{
@@ -407,9 +430,14 @@ border-radius: 5px;
     font-family: Arial, Helvetica, sans-serif;
     line-height: 2.6rem;
     @media screen and (max-width: 768px) {
-      height: 20rem;
-      line-height: 1rem;
+      width: 90%;
+      margin: auto;
     }
+    @media screen and (min-width: 768px) and (max-width: 1020px)  {
+      width: 90%;
+      margin: auto;
+    }
+   
 }
 .time-slots{
   height: 28.8rem;

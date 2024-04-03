@@ -408,7 +408,7 @@ useEffect(()=>{
       
           </div>
           <div class="mb-3">
-            <label for="message-text" class="col-form-label">Paid Amount:</label>
+            <label for="message-text" class="col-form-label">Paid Amount for Appointment:</label>
             <input type="text" value={data.opd_amount} readOnly class="form-control" name='opd_amount' onChange={handleChange}  id="recipient-name"/>
           </div>
           <div class="mb-3">

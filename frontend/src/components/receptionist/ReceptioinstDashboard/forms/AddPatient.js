@@ -1259,7 +1259,7 @@ const handleDoctorSelect = (doctor) => {
                    
                  </li>
                </ul>
-                      <div className="formbtn d-flex justify-content-center">
+                      <div className="formbtn d-flex justify-content-lg-center">
                         <button className="btn btn-success " type="submit" id="btn2">
                           {" "}
                           Add Patient & Book Appointment
@@ -1292,6 +1292,9 @@ const Wrapper = styled.div`
   }
     .formbtn {
       margin-top: 1rem;
+      @media screen and (max-width: 768px) {
+       
+      }
       
     }
 
@@ -1312,7 +1315,7 @@ const Wrapper = styled.div`
       }
       @media screen and (min-width: 768px) and (max-width: 1020px) {
         font-size: small;
-        margin-left: 1rem;
+        margin:1rem auto;
       }
       @media screen and (min-width: 1020px) and (max-width: 1600px) {
         

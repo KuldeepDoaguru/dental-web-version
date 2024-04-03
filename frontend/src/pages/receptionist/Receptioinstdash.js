@@ -22,7 +22,7 @@ function Receptioinstdash() {
    <div className="col-lg-2 cards" >
     <Card/>
    </div>
-   <div className="col-lg-4">
+   <div className="col-lg-4 form">
     <Form/>
    </div>
    
@@ -35,7 +35,7 @@ function Receptioinstdash() {
 
     <Calender1/>
 </div>
-  <div className="col-lg-12 mt-4">
+  <div className="col-lg-12 mt-4 appointment">
     <AppointTable/>
   </div>
 
@@ -52,18 +52,48 @@ function Receptioinstdash() {
 
 export default Receptioinstdash
 const Wrapper=styled.div`
+overflow: hidden;
 .cards{
   width: 15%;
 
   @media screen and (max-width: 768px) {
- width: 95%;
+ width: 50%;
+ text-align: center;
+ margin: auto;
+ 
 }
+@media screen and (min-width: 768px) and (max-width : 1020px) {
+  width: 50%;
+ text-align: center;
+ margin: auto;
+}
+
+
 
 
 }
 .calender{
- 
+  @media screen and (max-width: 768px) {
+    width: 75%;
+   margin: auto;
 }
+@media screen and (min-width: 768px) and (max-width : 1020px) {
+   width: 75%;
+   margin: auto;
+}
+}
+
+.appointment{
+  @media screen and (max-width: 768px) {
+    width: 75%;
+   margin: auto;
+}
+@media screen and (min-width: 768px) and (max-width : 1020px) {
+   width: 75%;
+   margin: auto;
+}
+}
+
 #set{
 
   margin-left: -4.5rem;

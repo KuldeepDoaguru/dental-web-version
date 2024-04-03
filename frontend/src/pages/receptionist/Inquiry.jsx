@@ -377,7 +377,7 @@ catch(error){
             </div>
         </div>
       <div className="row" >
-   <div className="col-lg-12" id='head'>
+   <div className="col-lg-12 col-sm-10" id='head'>
    <nav class="navbar navbar-light bg-light">
             <h6 className='mx-3 my-0'>Search By Patient</h6>
   <div class="container-fluid" id='cont'>
@@ -568,6 +568,10 @@ overflow: hidden;
   width: 85%;
   margin-left: 1.2rem;
   }
+  @media screen and (min-width: 768px) and (max-width: 1020px) {
+   margin-left: 1rem;
+   width: 85%;
+  }
 }
 #hd{
   height:44rem;
@@ -586,14 +590,16 @@ overflow: hidden;
    
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {
-   
+   width: 85%;
   }
 }
 .inquiry-form{
    padding: 20px;
    background-color: #f2f2f2;
    margin: auto;
-   
+   @media screen and (min-width: 768px) and (max-width: 1020px) {
+   margin-left: 1rem;
+  }
 }
 th{
     background-color: teal;

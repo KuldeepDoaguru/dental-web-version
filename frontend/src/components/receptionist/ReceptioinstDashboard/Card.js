@@ -200,7 +200,7 @@ function Card() {
         <div className="col-lg-11 col-md-11">
           <div className="card" id="card2">
             <div className="card-body d-flex justify-content-between">
-              <i className="bi bi-person h1"></i>
+              <i className="bi bi-person h1 icon"></i>
               <div className="">
                 <h6 className="card-title" style={{ color: "black " }}>
                   New Patient
@@ -217,7 +217,7 @@ function Card() {
           
           <div className="card" id="card3">
             <div className="card-body d-flex justify-content-between">
-            <i className="bi bi-currency-rupee h1 float-end"></i>
+            <i className="bi bi-currency-rupee h1 float-end icon"></i>
             
               <div className="">
                 <h6 className="card-title" style={{ color: "black " }}>
@@ -234,7 +234,7 @@ function Card() {
         <div className="col-lg-11 col-md-11">
           <div className="card" id="card4">
             <div className="card-body d-flex justify-content-between">
-              <i className="bi bi-people-fill h1"></i>
+              <i className="bi bi-people-fill h1 icon"></i>
               <div className="">
                 <h6 className="card-title">All Patient</h6>
 
@@ -278,8 +278,8 @@ const Wrapper = styled.div`
   
   }
 
-  .bi{
-    @media screen and (min-width: 768px) and (max-width: 1250px) {
+  .icon{
+    @media screen and (min-width: 1020px) and (max-width: 1250px) {
        font-size: x-large;
       
        

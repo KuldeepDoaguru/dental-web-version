@@ -160,7 +160,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
     </div>
     <div className="col-lg-11 mt-2" id='set'>
       <div className="row" >
-   <div className="col-lg-12" id='head'>
+   <div className="col-lg-12 col-sm-10 " id='head'>
    <nav class="navbar navbar-light bg-light">
             <h6 className='mx-3 my-0'>Search By Patient</h6>
   <div class="container-fluid" id='cont'>
@@ -210,7 +210,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
 </nav>  
    </div>
 
-   <div className="col-lg-12">
+   <div className="col-lg-12 table">
    <div className="widget-area-2 proclinic-box-shadow mx-3 mt-5" id='tableres'>
                     
                     
@@ -265,7 +265,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                       </table>
                     </div>
                     <div className="container mt-3 mb-3">
-                  <div className="row">
+                  <div className="row pagination">
                     <div className="col-lg-8 col-md-8 col-sm-12 col-12">  <h4
                           style={{
                             color: "black",
@@ -320,6 +320,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
 
 export default AllPatient
 const Wrapper = styled.div`
+overflow: hidden;
 .navbar1{
   display: flex;
   width: 25%;
@@ -345,6 +346,9 @@ const Wrapper = styled.div`
   width: 85%;
   margin-left: 1.2rem;
   }
+  @media screen and (min-width: 768px) and (max-width: 1020px) {
+   margin: auto;
+  }
 }
 #hd{
   
@@ -362,7 +366,8 @@ const Wrapper = styled.div`
    
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {
-   width: 42rem;
+   width: auto;
+   
   }
 }
 th{
@@ -373,6 +378,15 @@ th{
 }
 td{
   white-space: nowrap;
+}
+.table{
+  @media screen and (min-width: 768px) and (max-width: 1020px) {
+   margin-left: 1rem;
+  }
+}
+
+.pagination{
+  background-color: transparent;
 }
 
 `

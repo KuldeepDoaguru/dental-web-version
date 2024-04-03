@@ -3,7 +3,7 @@ const db = require("../connect.js");
 const multer = require('multer');
 const path = require('path');
 const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID, updateSittingCount } = require("../controller/authControl.js");
-const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg, updateAppointStatus } = require("../controller/authAppointTable.js");
+const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg, updateAppointStatus, getAllAppointmentByPatientId } = require("../controller/authAppointTable.js");
 const { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId, getPatientBillUHID, insertTimelineEvent, getPatientTimeline } = require("../controller/authBranch.js");
 const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM, getTreatPatientProfile, treatPatientUHID, getPrescriptionPatientProfile, prescripPatientUHID, onGoingTreat } = require("../controller/authTreatment.js");
 const { uploadImage, getUploadedImages } = require("../controller/authContrimg.js");
@@ -26,9 +26,10 @@ router.get("/updateSittingCount/:appoint_id", updateSittingCount);
 router.post("/addSecurityAmount", addSecurityAmount);
 router.get("/getTreatSuggestById/:appoint_id", getTreatSuggestById);
 router.get("/getSecurityAmountByAppointmentId/:appointment_id", getSecurityAmountByAppointmentId);
-router.get('/patient-security/:appoint_id', getPatientSecurityAmt);
+// router.get('/patient-security/:appoint_id', getPatientSecurityAmt);
+router.get('/patient-security/:appoint_id/:branch_name', getPatientSecurityAmt);
 router.put('/update-security-amount/:sa_id', updatePatientSecurityAmt);
-router.get('/getAllSecurityAmounts/:sa_id', getAllSecurityAmounts);
+router.get('/getAllSecurityAmounts/:sa_id/:branch_name', getAllSecurityAmounts);
 router.get("/treatPatientUHID/:patientUHID", treatPatientUHID);
 // Treatment Suggestion Routes END here........
 
@@ -36,6 +37,7 @@ router.get("/treatPatientUHID/:patientUHID", treatPatientUHID);
 router.get('/getAppointmentsWithPatientDetails', getAppointmentsWithPatientDetails);
 router.get('/getAppointmentsWithPatientDetailsById/:id', getAppointmentsWithPatientDetailsById);
 router.put('/upDateAppointmentStatus', upDateAppointmentStatus);
+router.get('/getAllAppointmentByPatientId/:patientId/:branch', getAllAppointmentByPatientId);
 
 // just for testing treatment suggest sitting logic
 router.get('/appointtreatSitting', getAppointmentsWithPatientDetailsTreatSugg);

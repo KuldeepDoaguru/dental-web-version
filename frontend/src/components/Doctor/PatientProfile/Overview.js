@@ -58,7 +58,7 @@ const Overview = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/getAllAppointmentByPatientId/${branch}/${pid}`
+        `http://localhost:8888/api/doctor/getAllAppointmentByPatientId/${uhid}/${branch}`
       );
       // console.log(data);
       setPatAppointDetails(data?.data);
@@ -276,7 +276,7 @@ const Overview = () => {
                   {treatData.length > 0 ? (
                   <>
                   <tr>
-                    <td>{treatData[0].date?.split("T")[0]}</td>
+                    <td>{treatData[0].date?.split("T")[0]}</td> 
                     <td>{treatData[0].dental_treatment}</td>
                     <td>{treatData[0].total_amt}</td>
                     <td>{treatData[0].note}</td>

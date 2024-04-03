@@ -164,29 +164,31 @@ const AppointTable = () => {
     <Wrapper>
       <div className="container-fluid pt-4">
         <div className="widget-area-2 proclinic-box-shadow" id="tableres">
-          <div className="d-flex justify-content-between mb-3 widget-header">
+          <div className="d-flex justify-content-between mb-3 widget-header appointMain">
             <h5 className="widget-title m-0 pt-2" id="title">
               Current Appointment
-              <h5 className="d-inline ms-4">
+              <h5 className="d-inline">
                 Total - {filterTableData.length}
               </h5>
             </h5>
 
             <div className="pt-1">
               <FaArrowCircleLeft
-                style={{ fontSize: "35px", cursor: "pointer" }}
+                // style={{ fontSize: "35px", cursor: "pointer" }}
+                className="arrow"
                 onClick={() => handleDateChange(-1)}
               />
             </div>
             <input
               type="date"
-              className="form-control w-25"
+              className="form-control w-25 inputDate"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
             />
             <div className="pt-1 mx-2">
               <FaArrowCircleRight
-                style={{ fontSize: "35px", cursor: "pointer" }}
+                // style={{ fontSize: "35px", cursor: "pointer" }}
+                className="arrow"
                 onClick={() => handleDateChange(1)}
               />
             </div>
@@ -196,7 +198,7 @@ const AppointTable = () => {
               placeholder="Search here"
               onChange={handleChange}
               value={searchInput}
-              className="mb-2 rounded-5 form-control w-25"
+              className="rounded-5 form-control w-25 inputSearch"
               id="form12"
             />
           </div>
@@ -402,6 +404,42 @@ const Wrapper = styled.div`
       width: 5rem;
     }
   }
+  .appointMain{
+    h5{
+        font-size: 24px;
+        margin: 0 0 0 20px;
+      }
+    .arrow{
+        font-size: 35px;
+      }
+    @media screen and (min-width: 750px) and (max-width: 850px) {
+      h5{
+        font-size: 15px;
+        margin: 0 0 0 10px;
+      }
+      .arrow{
+        font-size: 25px;
+      }
+      .inputSearch{
+        padding: 0;
+        margin: 0;
+      }
+    }
+    @media screen and (min-width: 851px) and (max-width: 1024px) {
+      h5{
+        font-size: 15px;
+        margin: 0 0 0 10px;
+      }
+      .arrow{
+        font-size: 25px;
+      }
+      .inputSearch{
+        padding: 0;
+        margin: 0;
+      }
+    }
+  }
+
   .table {
     box-shadow: 1px -1px 11px 2px rgba(128, 128, 128, 0.78);
     -webkit-box-shadow: 1px -1px 11px 2px rgba(128, 128, 128, 0.78);

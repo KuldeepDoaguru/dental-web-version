@@ -109,9 +109,13 @@ const addSecurityAmount = (req, res) => {
             uhid,
             patient_name,
             patient_number,
+            treatment,
             assigned_doctor,
             amount,
             payment_status,
+            payment_Mode,
+            transaction_Id,
+            payment_date,
             refund_amount,
             refund_date,
             received_by,
@@ -124,9 +128,13 @@ const addSecurityAmount = (req, res) => {
             uhid,
             patient_name,
             patient_number,
+            treatment,
             assigned_doctor,
             amount,
             payment_status,
+            payment_Mode,
+            transaction_Id,
+            payment_date,
             refund_amount,
             refund_date,
             received_by,
@@ -134,7 +142,7 @@ const addSecurityAmount = (req, res) => {
         ];
 
         const selectQuery =
-            "INSERT INTO security_amount (branch_name, date, appointment_id, uhid, patient_name, patient_number, assigned_doctor, amount, payment_status, refund_amount, refund_date, received_by, refund_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            "INSERT INTO security_amount (branch_name, date, appointment_id, uhid, patient_name, patient_number, treatment, assigned_doctor, amount, payment_status, payment_Mode, transaction_Id, payment_date, refund_amount, refund_date, received_by, refund_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         db.query(selectQuery, insertParams, (err, result) => {
             if (err) {
@@ -169,25 +177,49 @@ const getSecurityAmountByAppointmentId = (req, res) => {
 
 const getPatientSecurityAmt = (req, res) => {
     const appoint_id = req.params.appoint_id;
+    const branch_name = req.params.branch_name;
+
+    // const sql = `
+    //     SELECT 
+    //         a.appoint_id,
+    //         a.branch_name
+    //         p.uhid, 
+    //         p.patient_name,
+    //         p.mobileno,
+    //         ts.totalCost
+    //         ts.treatment_name
+    //     FROM 
+    //         appointments AS a
+    //     JOIN 
+    //         patient_details AS p ON a.patient_uhid = p.uhid
+    //     LEFT JOIN 
+    //     treat_suggest AS ts ON p.uhid = ts.p_uhid
+    //     WHERE
+    //         a.appoint_id = ? AND
+    //         a.branch_name = ?;
+    // `;
 
     const sql = `
-        SELECT 
-            a.appoint_id,
-            p.uhid, 
-            p.patient_name,
-            p.mobileno,
-            ts.totalCost
-        FROM 
-            appointments AS a
-        JOIN 
-            patient_details AS p ON a.patient_uhid = p.uhid
-        LEFT JOIN 
+    SELECT 
+        a.appoint_id,
+        a.branch_name,
+        p.uhid, 
+        p.patient_name,
+        p.mobileno,
+        ts.totalCost,
+        ts.treatment_name
+    FROM 
+        appointments AS a
+    JOIN 
+        patient_details AS p ON a.patient_uhid = p.uhid
+    LEFT JOIN 
         treat_suggest AS ts ON p.uhid = ts.p_uhid
-        WHERE
-            a.appoint_id = ?
-    `;
+    WHERE
+        a.appoint_id = ? AND
+        a.branch_name = ?;
+`;
 
-    db.query(sql, [appoint_id], (err, result) => {
+    db.query(sql, [appoint_id, branch_name], (err, result) => {
         if (err) {
             console.error('Error executing query:', err.stack);
             return res.status(500).json({ error: 'Internal server error' });
@@ -199,7 +231,7 @@ const getPatientSecurityAmt = (req, res) => {
     });
 };
 
-const updatePatientSecurityAmt = (req, res) =>{
+const updatePatientSecurityAmt = (req, res) => {
     const sa_id = req.params.sa_id;
     const { refund_amount, refund_date, refund_by } = req.body;
 
@@ -225,19 +257,21 @@ const updatePatientSecurityAmt = (req, res) =>{
     });
 };
 
-const  getAllSecurityAmounts = (req,res)=>{
-    const sa_id  = req.params.sa_id;
+const getAllSecurityAmounts = (req, res) => {
+    const sa_id = req.params.sa_id;
+    const branch_name = req.params.branch_name;
 
-    const sql = `SELECT * FROM security_amount WHERE sa_id = ?`;
+    const sql = `SELECT * FROM security_amount WHERE sa_id = ? AND branch_name = ?`;
 
-    db.query(sql, [sa_id] ,(err, result) => {
-        if(err){
-            return res.status(400).json({success: false, message:"Bad request", errors: err});
-        }else{
-            return res.status(200).json({ success: true, message: "Successfully Get Data", result})
+    db.query(sql, [sa_id, branch_name], (err, result) => {
+        if (err) {
+            return res.status(400).json({ success: false, message: "Bad request", errors: err });
+        } else {
+            return res.status(200).json({ success: true, message: "Successfully Get Data", result });
         }
     });
 };
+
 
 const getAppointmentsWithPatientDetailsTreatSugg = (req, res) => {
     const sql = `
@@ -278,7 +312,7 @@ const getAppointmentsWithPatientDetailsTreatSugg = (req, res) => {
     });
 };
 
-const updateAppointStatus = (req, res) =>{
+const updateAppointStatus = (req, res) => {
     const appointId = req.params.appointId;
 
     // SQL query to update appointment status
@@ -296,8 +330,77 @@ const updateAppointStatus = (req, res) =>{
 
         return res.json({ message: 'Appointment status updated to Complete' });
     });
-}
+};
+
+const getAllAppointmentByPatientId = (req, res) => {
+    try {
+        const patientId = req.params.patientId;
+        const branch = req.params.branch;
+        const sql = `
+        SELECT 
+          a.branch_name,
+          a.appoint_id,
+          a.assigned_doctor_name,
+          a.assigned_doctor_id,
+          a.appointment_status,
+          a.appointment_dateTime,
+          a.treatment_provided,
+          a.opd_amount,
+          a.payment_Mode,
+          a.transaction_Id,
+          a.payment_Status,
+          a.appointment_created_by,
+          a.appointment_created_by_emp_id,
+          a.notes,
+          a.created_at,
+          p.uhid,
+          p.patient_name,
+          p.mobileno,
+          p.dob,
+          p.age,
+          p.weight,
+          p.bloodgroup,
+          p.disease,
+          p.allergy,
+          p.patient_type,
+          p.address,
+          p.gender
+        FROM 
+          appointments AS a
+        JOIN 
+          patient_details AS p ON a.patient_uhid = p.uhid 
+        WHERE
+        a.patient_uhid = ? AND
+        a.branch_name = ?
+      `;
+
+        db.query(sql, [patientId, branch], (err, results) => {
+            if (err) {
+                console.error("Error fetching appointment from MySql:", err);
+                res.status(500).json({ error: "Error fetching appointment" });
+            } else {
+                if (results.length === 0) {
+                    res.status(404).json({ message: "Appointment not found" });
+                } else {
+                    res
+                        .status(200)
+                        .json({
+                            data: results,
+                            message: "Appointment fetched successfully",
+                        });
+                }
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching appointment from MySql:", error);
+        res.status(500).json({
+            success: false,
+            message: "Error in fetching appointment",
+            error: error.message,
+        });
+    }
+};
 
 
-module.exports = { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg, updateAppointStatus };
+module.exports = { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg, updateAppointStatus, getAllAppointmentByPatientId };
 

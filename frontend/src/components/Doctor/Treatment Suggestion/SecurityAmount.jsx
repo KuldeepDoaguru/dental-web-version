@@ -12,41 +12,47 @@ const SecurityAmount = () => {
   console.log(id);
   const navigate = useNavigate();
   const [securityAmt, setSecurityAmt] = useState([]);
-  const [getPatientData, setGetPatientData] = useState([]);
+  // const [getPatientData, setGetPatientData] = useState([]);
   const currentUser = useSelector(state => state.user.currentUser);
+  const branch = currentUser.branch_name;
+  console.log(branch);
   const [formData, setFormData] = useState({
     branch_name: currentUser ? currentUser.branch_name : "",
-    date: "",
     appointment_id: id,
     uhid: "",
     patient_name: "",
     patient_number: "",
+    treatment: "",
     assigned_doctor: currentUser ? currentUser.employee_name : "",
     amount: "",
     payment_status: "",
+    payment_Mode: "",
+    transaction_Id: "",
+    payment_date: "",
     received_by: currentUser ? currentUser.employee_name : "",
   });
 
-  const [updateRefund, setUpdateRefund] = useState({
-    refundBy: currentUser ? currentUser.employee_name : "",
-    refundDate: "",
-    refundAmount: ""
-  });
+  // const [updateRefund, setUpdateRefund] = useState({
+  //   refundBy: currentUser ? currentUser.employee_name : "",
+  //   refundDate: "",
+  //   refundAmount: ""
+  // });
 
-  console.log(updateRefund);
+  // console.log(updateRefund);
 
   console.log(formData);
 
   const newGetFetchData = async () => {
     try {
-      const resps = await axios.get(`http://localhost:8888/api/doctor/patient-security/${id}`);
-      const { patient_name, uhid, mobileno, totalCost } = resps.data.result[0];
+      const resps = await axios.get(`http://localhost:8888/api/doctor/patient-security/${id}/${branch}`);
+      const { patient_name, uhid, treatment_name, mobileno, totalCost } = resps.data.result[0];
       console.log(resps.data.result);
       setFormData({
         ...formData,
         uhid,
         patient_name,
         patient_number: mobileno,
+        treatment: treatment_name,
         amount: totalCost,
       });
     } catch (error) {
@@ -60,23 +66,34 @@ const SecurityAmount = () => {
 
   // option for patient data
 
-  const getPatientDetail = async () => {
-    try {
-      const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+  // const getPatientDetail = async () => {
+  //   try {
+  //     const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
 
-      // const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
+  //     // const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
 
-      setGetPatientData(res.data.result);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //     setGetPatientData(res.data.result);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
 
 
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    let updatedFormData = { ...formData, [name]: value };
+
+    // If payment status changes to "success", set the current date
+    if (name === 'payment_status' && value === 'success') {
+      updatedFormData = {
+        ...updatedFormData,
+        payment_date: new Date().toISOString().slice(0, 10) // Set the current date in YYYY-MM-DD format
+      };
+    }
+
+    setFormData(updatedFormData);
   };
 
   const handleSubmit = async (e) => {
@@ -94,6 +111,8 @@ const SecurityAmount = () => {
         assigned_doctor: currentUser ? currentUser.employee_name : "",
         // amount: "",
         payment_status: "",
+        payment_Mode: "",
+        transaction_Id: "",
         received_by: currentUser ? currentUser.employee_name : "",
       });
     } catch (error) {
@@ -102,37 +121,40 @@ const SecurityAmount = () => {
     }
   };
 
-  
+
   const timelineForSecuirty = async () => {
 
     try {
-        const response = await axios.post(
-            "http://localhost:8888/api/doctor/insertTimelineEvent",
-            {
-                type: "Secuirty Amount",
-                description: "Secuirty Amount Added",
-                branch: currentUser ? currentUser.branch_name : "",
-                patientId: formData.uhid,
-            }
-        );
-        console.log(response);
+      const response = await axios.post(
+        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        {
+          type: "Secuirty Amount",
+          description: "Secuirty Amount Added",
+          branch: currentUser ? currentUser.branch_name : "",
+          patientId: formData.uhid,
+        }
+      );
+      console.log(response);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-};
+  };
 
   const insertCorrectData = async () => {
     try {
       const formsCorrect = {
         branch_name: formData.branch_name,
-        date: formData.date,
         appointment_id: id,
         uhid: formData.uhid,
         patient_name: formData.patient_name,
         patient_number: formData.patient_number,
+        treatment: formData.treatment,
         assigned_doctor: formData.assigned_doctor,
         amount: formData.amount,
         payment_status: formData.payment_status,
+        payment_Mode: formData.payment_Mode,
+        transaction_Id: formData.transaction_Id,
+        payment_date: formData.payment_date,
         received_by: formData.received_by,
       };
 
@@ -162,37 +184,37 @@ const SecurityAmount = () => {
     getSecurityAmt();
   }, []);
 
-  const handleUpdate = async (e, sa_id) => {
-    e.preventDefault();
+  // const handleUpdate = async (e, sa_id) => {
+  //   e.preventDefault();
 
-    const { refundDate, refundAmount } = updateRefund;
+  //   const { refundDate, refundAmount } = updateRefund;
 
-    const updatedata = {
-      refund_by: currentUser ? currentUser.employee_name : "",
-      refund_date: refundDate,
-      refund_amount: refundAmount
-    };
+  //   const updatedata = {
+  //     refund_by: currentUser ? currentUser.employee_name : "",
+  //     refund_date: refundDate,
+  //     refund_amount: refundAmount
+  //   };
 
-    try {
-      const response = await axios.put(`http://localhost:8888/api/doctor/update-security-amount/${sa_id}`, updatedata);
+  //   try {
+  //     const response = await axios.put(`http://localhost:8888/api/doctor/update-security-amount/${sa_id}`, updatedata);
 
-      console.log(response.data);
-      
-      setUpdateRefund({
-        refundDate: "",
-        refundAmount: ""
-      });
+  //     console.log(response.data);
 
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     setUpdateRefund({
+  //       refundDate: "",
+  //       refundAmount: ""
+  //     });
 
-  const handlePrint = (sa_id) =>{
-    navigate(`/print-security-bill/${sa_id}`)
-  };
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  const handleChangePage = () =>{
+  // const handlePrint = (sa_id) => {
+  //   navigate(`/print-security-bill/${sa_id}`)
+  // };
+
+  const handleChangePage = () => {
     navigate(`/TreatmentDashBoard/${id}`)
   }
 
@@ -220,16 +242,17 @@ const SecurityAmount = () => {
                               for="exampleFormControlInput1"
                               class="form-label"
                             >
-                              Date
+                              Treatment Provide
                             </label>
                             <input
-                              type="datetime-local"
+                              type="text"
                               class="p-1 w-100 rounded"
-                              placeholder="appointment ID"
+                              placeholder="Treatment"
                               name="date"
                               required
-                              value={formData.date}
+                              value={formData.treatment}
                               onChange={handleChange}
+                              readOnly
                             />
                           </div>
                         </div>
@@ -372,6 +395,40 @@ const SecurityAmount = () => {
                             </select>
                           </div>
                         </div>
+                        {formData.payment_status === 'success' && (
+                          <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                            <div className="input-group mb-3">
+                              <label htmlFor="exampleFormControlInput2" className="form-label">Payment Method</label>
+                              <select
+                                name="payment_Mode"
+                                value={formData.payment_Mode}
+                                onChange={handleChange}
+                                className="p-1 w-100 rounded"
+                                required
+                              >
+                                <option value="">Select Payment Method</option>
+                                <option value="cash">Cash</option>
+                                <option value="online">Online</option>
+                              </select>
+                            </div>
+                          </div>
+                        )}
+                        {formData.payment_Mode === 'online' && (
+                          <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                            <div className="input-group mb-3">
+                              <label htmlFor="exampleFormControlInput1" className="form-label mx-2">Transaction ID</label><br />
+                              <input
+                                type="text"
+                                name="transaction_Id"
+                                value={formData.transaction_Id}
+                                onChange={handleChange}
+                                className="p-1 w-100 rounded"
+                                placeholder="Enter Transaction ID"
+                                required
+                              />
+                            </div>
+                          </div>
+                        )}
                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
                           <button
                             className="btn btn-primary text-light btnbox fw-bold shadow p-1 w-100 rounded"
@@ -412,12 +469,12 @@ const SecurityAmount = () => {
                               <td>{item.assigned_doctor}</td>
                               <td>{item.amount}</td>
                               <td>{item.payment_status}</td>
-                              <td><div class="dropdown">
+                              {/* <td><div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                   Action
                                 </button>
                                 <ul class="dropdown-menu">
-                                  {/* <li><a class="dropdown-item" href="#">Update Status</a></li> */}
+                                  
                                   <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Refund</a></li>
                                 </ul>
                                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -457,21 +514,19 @@ const SecurityAmount = () => {
 
                                         </form>
                                       </div>
-                                      {/* <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Save changes</button>
-                                      </div> */}
+                                    
                                     </div>
                                   </div>
                                 </div>
                               </div>
-                              </td>
+                              </td> */}
                               <td>
-                                {/* <Link to="/print-security-bill"> */}
-                                  <button className="btn btn-success" onClick={()=>handlePrint(item.sa_id)}>
+                                {/* {item.payment_status === 'success' && (
+                                  <button className="btn btn-success" onClick={() => handlePrint(item.sa_id)}>
                                     Print
                                   </button>
-                                {/* </Link> */}
+                                )} */}
+                                  <td> {item.payment_status === "success" ? (<Link to={`/print-security-bill/${item.sa_id}`}>  <button type="button" className="btn btn-primary">Print</button> </Link>) : (  <button type="button" className="btn btn-primary" disabled>Print</button>)} </td>
                               </td>
                             </tr>
                           ))}

@@ -1411,60 +1411,60 @@ const PediatricDentalTest = () => {
 
             <div className="col-lg-2 col-2 bodybutton">
               <div className="d-flex flex-column text-center">
-                <div onClick={caries} className="p-2">
+                <div onClick={caries} className="p-2 diseaseMain">
                   <img
                     src={cariesbtn}
                     alt="caries"
-                    className="buttons shadow-sm bg-body rounded"
+                    className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={fracture} className="p-2">
+                <div onClick={fracture} className="p-2 diseaseMain ">
                   <img
                     src={fracturebtn}
                     alt="fracture"
-                    className="buttons shadow-sm bg-body rounded"
+                    className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={impacted} className="p-2">
+                <div onClick={impacted} className="p-2 diseaseMain">
                   <img
                     src={impactedbtn}
                     alt="impacted"
-                    className="buttons shadow-sm bg-body rounded"
+                    className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={missing} className="p-2">
+                <div onClick={missing} className="p-2 diseaseMain">
                   <img
                     src={missingbtn}
                     alt="missing"
-                    className="buttons shadow-sm bg-body rounded"
+                    className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={mobility} className="p-2">
+                <div onClick={mobility} className="p-2 diseaseMain">
                   <img
                     src={mobilitybtn}
                     alt="mobility"
-                    className="buttons shadow-sm bg-body rounded"
+                    className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={periapical} className="p-2">
+                <div onClick={periapical} className="p-2 diseaseMain">
                   <img
                     src={periapicalbtn}
                     alt="periapical"
-                    className="buttons shadow-sm bg-body rounded"
+                    className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={root} className="p-2">
+                <div onClick={root} className="p-2 diseaseMain">
                   <img
                     src={rootbtn}
                     alt="root"
-                    className="buttons shadow-sm bg-body rounded"
+                    className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={supara} className="p-2">
+                <div onClick={supara} className="p-2 diseaseMain">
                   <img
                     src={suparabtn}
                     alt="supara"
-                    className="buttons shadow-sm bg-body rounded"
+                    className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
               </div>
@@ -1555,5 +1555,13 @@ const Wrapper = styled.div`
   font-weight: 500;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   padding-left: 0.9rem;
+}
+.diseaseMain .teethDisease{
+  @media screen and (min-width: 992px) and (max-width: 1080px){
+    width: 125px;
+  }
+  @media screen and (min-width: 769px) and (max-width: 914px){
+    width: 105px;
+  }
 }
 `;

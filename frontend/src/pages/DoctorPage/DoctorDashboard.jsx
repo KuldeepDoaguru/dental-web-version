@@ -32,7 +32,7 @@ const DoctorDashboard = () => {
               <div className="row d-flex justify-content-around ms-4">
                 {/* <Card /> */}
               </div>
-              <div className="row ms-3 w-100">
+              <div className="row appointTable">
                 <AppointTable />
               </div>
             </div>
@@ -73,6 +73,16 @@ overflow-x: hidden;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-size: 1.5rem;
   margin: 0 0 8px;
+ }
+ .appointTable{
+  @media screen and (min-width: 768px) and (max-width: 850px) {
+      width: 44rem;
+      margin-left: 1.5rem;
+    }
+    @media screen and (min-width: 851px) and (max-width: 1024px) {
+      width: 58rem;
+      margin-left: 1.1rem;
+    }
  }
 `;
 

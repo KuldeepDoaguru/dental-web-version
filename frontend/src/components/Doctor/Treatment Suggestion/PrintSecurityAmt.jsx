@@ -12,11 +12,14 @@ const PrintSecurityAmt = () => {
     const pdfRef = useRef();
     const user = useSelector((state) => state.user);
     const dispatch = useDispatch();
+    const {currentUser} = useSelector((state) => state.user);
+
+    const  branch = currentUser.branch_name;
     const [data, setData] = useState("");
     const [hospitalDoc, setHospitalDoc] = useState([]);
     const [showData, setShowData] = useState([]);
     const navigate = useNavigate();
-
+console.log(branch);
     const [appointId, setAppointId] = useState("");
     const [patientId, setPatientId] = useState("");
     const [securityAmtId, setSecurityAmtId] = useState("");
@@ -45,7 +48,7 @@ const PrintSecurityAmt = () => {
     useEffect(() => {
         const getSecurityAmtID = async () => {
             try {
-                const resps = await axios.get(`http://localhost:8888/api/doctor/getAllSecurityAmounts/${sa_id}`)
+                const resps = await axios.get(`http://localhost:8888/api/doctor/getAllSecurityAmounts/${sa_id}/${branch}`)
                 console.log(resps.data.result);
                 setShowData(resps.data.result);
                 if (resps.status === 200) {
@@ -97,34 +100,34 @@ const PrintSecurityAmt = () => {
                                 <tbody>
                                     <tr className=''>
                                         <th className='text-start'>Appointment ID</th>
-                                        <td className='text-capitalize'>{": "}{appointId}</td>
+                                        <td className='text-capitalize'>{": "}{showData[0]?.appointment_id}</td>
                                         <th scope="col" className='text-start'>Patient ID</th>
-                                        <td className='text-capitalize'>{": "}{patientId}</td>
-                                        <th scope="col" className='text-start'>Security Amt ID</th>
-                                        <td className='text-capitalize'>{": "}{securityAmtId}</td>
+                                        <td className='text-capitalize'>{": "}{showData[0]?.uhid}</td>
+                                        <th scope="col" className='text-start'>Branch Name</th>
+                                        <td className='text-capitalize'>{": "}{showData[0]?.branch_name}</td>
                                     </tr>
                                     <tr className='mx-5'>
                                         <th scope="col" className='text-start'>Name</th>
-                                        <td className='text-capitalize'>{": "}{patientName}</td>
+                                        <td className='text-capitalize'>{": "}{showData[0]?.patient_number}</td>
                                         <th scope="col" className='text-start pe-5'>Mobile No</th>
-                                        <td className='text-capitalize'>{": "}{mobile}</td>
-                                        <th scope="col" className='text-start'>Branch Name</th>
-                                        <td className='text-capitalize'>{": "}{branchName}</td>
+                                        <td className='text-capitalize'>{": "}{showData[0]?.patient_number}</td>
+                                        {/* <th scope="col" className='text-start'>Branch Name</th>
+                                        <td className='text-capitalize'>{": "}{showData[0]?.appointment_id}</td> */}
                                     </tr>
                                     <tr>
                                         <th scope="col" className='text-start'>Doctor Name</th>
-                                        <td className='text-capitalize'>{": "}{doctorName}</td>
+                                        <td className='text-capitalize'>{": "}{showData[0]?.assigned_doctor}</td>
                                         <th scope="col" className='text-start'> Date</th>
-                                        <td className='text-capitalize'>{": "}{date}</td>
+                                        <td className='text-capitalize'>{": "}{showData[0]?.payment_date}</td>
                                         <th scope="col" className='text-start'>Payment Status</th>
-                                        <td className='text-capitalize'>{": "}{paymentStatus}</td>
+                                        <td className='text-capitalize'>{": "}{showData[0]?.payment_Mode}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <div className="row proc-detail" >
+                    {/* <div className="row proc-detail" >
                         <div className="col-12">
                             <table className="table table-borderless">
                                 <tbody>
@@ -143,8 +146,59 @@ const PrintSecurityAmt = () => {
                                                 <th scope="col" className='text-start second-th px-5'> Amount Paid {" "} INR</th>
                                                 <th scope="col" className='px-5'>{data.amount}{".00"}</th>
                                             </tr>
-                                        </tbody>
+                                        </tbody> 
                                     ))}
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div> */}
+                    <div className="row proc-detail" >
+                        <div className="col-12">
+                            <table className="table table-borderless">
+
+                                <tbody>
+
+
+
+
+
+                                    <tr >
+                                        <th scope="col" className='' style={{ width: '30% !important' }}>
+
+                                        </th>
+
+                                        <th scope="col" className='text-start pt-4 second-th' >
+
+                                            Payable Amount {" "} INR
+
+
+                                        </th>
+
+                                        <th scope="col" className='text-end pe-4 pt-4'> {showData[0]?.amount}{".00"}</th>
+
+
+
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" className='' style={{ width: '30%' }}></th>
+                                        <th scope="col" className='text-start second-th'> Amount Paid {" "} INR</th>
+
+                                        <th scope="col" className='text-end pe-4'>{showData[0]?.amount}{".00"}</th>
+
+
+
+                                    </tr>
+
+
+                                    {/* <tr>
+                  <th scope="col" className='' style={{ width: '30%' }}></th>
+                  <th scope="col" className='text-start second-th'>Net Payable {" "}INR</th>
+                  
+                  <th scope="col" className='text-end pe-4'>{totalAmount}{".00"}</th>
+                   </tr> */}
+
+
                                 </tbody>
                             </table>
 

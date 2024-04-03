@@ -1,11 +1,37 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Header from "../Header";
 import Sider from "../Sider";
 import BranchDetails from "../BranchDetails";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const PatientsDue = () => {
+  const user = useSelector((state) => state.user);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
+  const [patBill, setPatBill] = useState([]);
+
+  const getPatBills = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getPatientBillsByBranch/${user.branch}`
+      );
+      setPatBill(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPatBills();
+  }, []);
+
+  console.log(patBill);
+
   return (
     <>
       <Container>
@@ -28,263 +54,69 @@ const PatientsDue = () => {
                             <table class="table table-bordered rounded shadow">
                               <thead className="table-head">
                                 <tr>
-                                  <th
-                                    className="table-sno"
-                                    style={{ width: "3%" }}
-                                  >
-                                    SN
+                                  <th className="table-sno sticky">
+                                    Appointment ID
                                   </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Patients Name
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Doctor Name
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Treatment's
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Total Amount
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Paid Amount
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Due Amount
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Date
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Action
-                                  </th>
+                                  <th className="sticky">Patient UHID</th>
+                                  <th className=" sticky">Patients Name</th>
+                                  <th className=" sticky">Doctor Name</th>
+                                  <th className=" sticky">Treatment's</th>
+                                  <th className=" sticky">Total Amount</th>
+                                  <th className=" sticky">Paid Amount</th>
+                                  <th className=" sticky">Due Amount</th>
+                                  <th className=" sticky">Bill Date</th>
+                                  <th className=" sticky">Action</th>
                                 </tr>
                               </thead>
 
                               <tbody>
-                                <tr className="table-row">
-                                  <td
-                                    className="table-sno"
-                                    style={{ width: "10%" }}
-                                  >
-                                    1
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Ram Ji
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Dr.Shubham patel
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Root Canal
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    5000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    3000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    2000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/04/2024
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    <Link to="/PatintDuePaymentPrint">
-                                      <button
-                                        className="btn"
-                                        style={{
-                                          backgroundColor: "#FFA600",
-                                        }}
-                                      >
-                                        Action
-                                      </button>
-                                    </Link>
-                                  </td>
-                                </tr>
-                              </tbody>
-                              <tbody>
-                                <tr className="table-row">
-                                  <td
-                                    className="table-sno"
-                                    style={{ width: "10%" }}
-                                  >
-                                    2
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Devi Prashad
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Dr.Shrikant Dubey
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Braces
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    25000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    12000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    13000
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/02/2024
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    <Link to="/PatintDuePaymentPrint">
-                                      <button
-                                        className="btn"
-                                        style={{
-                                          backgroundColor: "#FFA600",
-                                        }}
-                                      >
-                                        Action
-                                      </button>
-                                    </Link>
-                                  </td>
-                                </tr>
-                              </tbody>
-                              <tbody>
-                                <tr className="table-row">
-                                  <td
-                                    className="table-sno"
-                                    style={{ width: "10%" }}
-                                  >
-                                    3
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Raju Yadav
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Dr.Ghunghuniya
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Teeth Cleaning
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    500
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    300
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    200
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/04/2024
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    <Link to="/PatintDuePaymentPrint">
-                                      <button
-                                        className="btn"
-                                        style={{
-                                          backgroundColor: "#FFA600",
-                                        }}
-                                      >
-                                        Action
-                                      </button>
-                                    </Link>
-                                  </td>
-                                </tr>
+                                {patBill?.map((item) => (
+                                  <>
+                                    <tr className="table-row">
+                                      <td className="table-sno">
+                                        {item.appoint_id}
+                                      </td>
+                                      <td>{item.uhid}</td>
+                                      <td>{item.patient_name}</td>
+                                      <td>{item.assigned_doctor_name}</td>
+                                      <td>{item.dental_treatment}</td>
+                                      <td>{item.total_amount}</td>
+                                      <td>{item.paid_amount}</td>
+                                      <td>
+                                        {item.paid_amount
+                                          ? 0
+                                          : item.total_amount}
+                                      </td>
+                                      <td>{item.bill_date.split("T")[0]}</td>
+                                      <td>
+                                        {item.total_amount >
+                                        item.paid_amount ? (
+                                          <Link
+                                            to={`/PatintDuePaymentPrint/${item.bill_id}`}
+                                          >
+                                            <button
+                                              className="btn"
+                                              style={{
+                                                backgroundColor: "#FFA600",
+                                              }}
+                                            >
+                                              Pay Now
+                                            </button>
+                                          </Link>
+                                        ) : (
+                                          <span>
+                                            <button
+                                              className="btn btn-secondary disabled"
+                                              disabled
+                                            >
+                                              Pay Now
+                                            </button>
+                                          </span>
+                                        )}
+                                      </td>
+                                    </tr>
+                                  </>
+                                ))}
                               </tbody>
                             </table>
                           </div>
@@ -303,4 +135,23 @@ const PatientsDue = () => {
 };
 
 export default PatientsDue;
-const Container = styled.div``;
+const Container = styled.div`
+  .table-responsive {
+    height: 30rem;
+    overflow: auto;
+  }
+
+  th {
+    background-color: #201658;
+    color: #fff;
+    font-weight: bold;
+    position: sticky;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    color: white;
+    z-index: 1;
+  }
+`;

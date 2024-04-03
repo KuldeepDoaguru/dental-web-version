@@ -22,7 +22,7 @@ const TreatmentIncome = () => {
   const getTreatmentAmt = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getAppointmentData/${user.branch}`
+        `http://localhost:8888/api/v1/accountant/getTreatmentAmountByBranch/${user.branch}`
       );
       setTreatAmount(data);
     } catch (error) {
@@ -33,6 +33,8 @@ const TreatmentIncome = () => {
   useEffect(() => {
     getTreatmentAmt();
   }, []);
+
+  console.log(treatAmount);
 
   const filterForOpdList = treatAmount.filter((item) => {
     return item.treatment_provided !== "OPD";
@@ -161,7 +163,7 @@ const TreatmentIncome = () => {
     try {
       let total = 0;
       filterForOpdYearly.forEach((item) => {
-        total = total + parseFloat(item.opd_amount);
+        total = total + parseFloat(item.paid_amount);
       });
       console.log(total);
       return total;
@@ -269,9 +271,7 @@ const TreatmentIncome = () => {
           <div className="row flex-nowrap ">
             <div className="col-xxl-12 col-xl-12 col-lg-12 col-12 ps-0">
               <div className="container mt-5">
-                <h2 className="text-center">
-                  All Received Action For Treatment Payment
-                </h2>
+                {/* <h2 className="text-center">Treatment Payment</h2> */}
                 <div className="container mt-5">
                   <div className="mb-2">
                     <label>search by patient name :</label>
@@ -330,20 +330,32 @@ const TreatmentIncome = () => {
                                 <td>{item.assigned_doctor_name}</td>
                                 <td>{item.assigned_doctor_id}</td>
                                 <td>{item.treatment_provided}</td>
-                                <td>{item.opd_amount}</td>
+                                <td>{item.paid_amount}</td>
                                 <td>{item.payment_Mode}</td>
                                 <td>{item.payment_Status}</td>
                                 <td>
-                                  <Link to="/OpdBills">
-                                    <button
-                                      className="btn"
-                                      style={{
-                                        backgroundColor: "#FFA600",
-                                      }}
+                                  {item.payment_Status !== "Pending" &&
+                                  item.payment_Status !== "" ? (
+                                    <Link
+                                      to={`/TreatmentBills/${item.appoint_id}`}
                                     >
-                                      View Receipt
-                                    </button>
-                                  </Link>
+                                      <button
+                                        className="btn"
+                                        style={{ backgroundColor: "#FFA600" }}
+                                      >
+                                        View Receipt
+                                      </button>
+                                    </Link>
+                                  ) : (
+                                    <span>
+                                      <button
+                                        className="btn btn-secondary disabled"
+                                        disabled
+                                      >
+                                        View Receipt
+                                      </button>
+                                    </span>
+                                  )}
                                 </td>
                               </tr>
                             </>

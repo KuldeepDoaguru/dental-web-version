@@ -479,6 +479,23 @@ const getAppointmentDetailsViaID = (req, res) => {
   try {
     const id = req.params.id;
     const selectQuery =
+      "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid JOIN patient_bills ON appointments.appoint_id = patient_bills.appoint_id WHERE appointments.appoint_id = ?";
+    db.query(selectQuery, id, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getAppointmentDetailsViaIDForOPD = (req, res) => {
+  try {
+    const id = req.params.id;
+    const selectQuery =
       "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid WHERE appointments.appoint_id = ?";
     db.query(selectQuery, id, (err, result) => {
       if (err) {
@@ -665,6 +682,152 @@ const updatePatientSecurityAmt = (req, res) => {
   }
 };
 
+const getBranchDetailsByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery = "SELECT * FROM branches WHERE branch_name = ?";
+    db.query(getQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).json(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getTreatmentAmountByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery =
+      "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid JOIN patient_bills ON appointments.appoint_id = patient_bills.appoint_id WHERE appointments.branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getPatientBillsAndSecurityAmountByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const bid = req.params.bid;
+    const selectQuery =
+      "SELECT * FROM patient_bills WHERE branch_name = ? AND bill_id = ?";
+    db.query(selectQuery, [branch, bid], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const makeBillPayment = (req, res) => {
+  try {
+    const bid = req.params.bid;
+    const branch = req.params.branch;
+    const { paid_amount, payment_status, payment_date_time } = req.body;
+    const selectQuery =
+      "SELECT * FROM patient_bills WHERE branch_name = ? AND bill_id = ?";
+
+    db.query(selectQuery, [branch, bid], (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateFields = [];
+        const updateValues = [];
+
+        if (paid_amount) {
+          updateFields.push("paid_amount = ?");
+          updateValues.push(paid_amount);
+        }
+
+        if (payment_status) {
+          updateFields.push("payment_status = ?");
+          updateValues.push(payment_status);
+        }
+
+        if (payment_date_time) {
+          updateFields.push("payment_date_time = ?");
+          updateValues.push(payment_date_time);
+        }
+
+        const updateQuery = `UPDATE patient_bills SET ${updateFields.join(
+          ", "
+        )} WHERE branch_name = ? AND bill_id = ?`;
+
+        db.query(updateQuery, [...updateValues, branch, bid], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Failed to update details",
+            });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "Payment updated successfully",
+            });
+          }
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Branch/bill not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const paidBillLIst = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const paidBillDetails = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const bid = req.params.bid;
+    const selectQuery =
+      "SELECT * FROM patient_bills WHERE branch_name = ? AND bill_id = ?";
+    db.query(selectQuery, [branch, bid], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   accountantLoginUser,
   sendOtp,
@@ -685,4 +848,11 @@ module.exports = {
   getSecurityAmountDataBySID,
   updateRefundAmount,
   updatePatientSecurityAmt,
+  getBranchDetailsByBranch,
+  getAppointmentDetailsViaIDForOPD,
+  getTreatmentAmountByBranch,
+  getPatientBillsAndSecurityAmountByBranch,
+  makeBillPayment,
+  paidBillLIst,
+  paidBillDetails,
 };

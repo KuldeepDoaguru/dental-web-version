@@ -1,11 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Header from "../Header";
 import Sider from "../Sider";
 import BranchDetails from "../BranchDetails";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const PatientsPaid = () => {
+  const user = useSelector((state) => state.user);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
+  const [paidList, setPaidList] = useState([]);
+
+  const getBillPaidList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/paidBillLIst/${user.branch}`
+      );
+      setPaidList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getBillPaidList();
+  }, []);
+
   return (
     <>
       <Container>
@@ -28,197 +52,52 @@ const PatientsPaid = () => {
                             <table class="table table-bordered rounded shadow">
                               <thead className="table-head">
                                 <tr>
-                                  <th
-                                    className="table-sno"
-                                    style={{ width: "5%" }}
-                                  >
-                                    SN
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Name
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Treatment's
-                                  </th>
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    Received Amount
-                                  </th>
-
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Date
-                                  </th>
-
-                                  <th
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    Action
-                                  </th>
+                                  <th className="sticky">Bill ID</th>
+                                  <th className="sticky">Bill Date</th>
+                                  <th className="sticky">Appointment ID</th>
+                                  <th className="sticky">Patient UHID</th>
+                                  <th className="sticky">Patient Name</th>
+                                  <th className="sticky">Doctor Name</th>
+                                  <th className="sticky">Treatment</th>
+                                  <th className="sticky">Total Amount</th>
+                                  <th className="sticky">Paid Amount</th>
+                                  <th className="sticky">Payment Date</th>
+                                  <th className="sticky">Action</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr className="table-row">
-                                  <td
-                                    className="table-sno"
-                                    style={{ width: "5%" }}
-                                  >
-                                    1
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Rohit patel
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Teeth Cleaning
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    500
-                                  </td>
-
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/04/2024
-                                  </td>
-
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    <Link to="/PatintPaidPaymentPrint">
-                                      <button
-                                        className="btn"
-                                        style={{
-                                          backgroundColor: "#FFA600",
-                                        }}
-                                      >
-                                        Get Action
-                                      </button>
-                                    </Link>
-                                  </td>
-                                </tr>
-                              </tbody>
-                              <tbody>
-                                <tr className="table-row">
-                                  <td
-                                    className="table-sno"
-                                    style={{ width: "5%" }}
-                                  >
-                                    2
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Devi Prashad
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Braces Treetment
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    25000
-                                  </td>
-
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/02/2024
-                                  </td>
-
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    <Link to="/PatintPaidPaymentPrint">
-                                      <button
-                                        className="btn"
-                                        style={{
-                                          backgroundColor: "#FFA600",
-                                        }}
-                                      >
-                                        Get Action
-                                      </button>
-                                    </Link>
-                                  </td>
-                                </tr>
-                              </tbody>
-                              <tbody>
-                                <tr className="table-row">
-                                  <td
-                                    className="table-sno"
-                                    style={{ width: "5%" }}
-                                  >
-                                    3
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Raju
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "20%" }}
-                                  >
-                                    Root Canal
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "15%" }}
-                                  >
-                                    5500
-                                  </td>
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    01/04/2024
-                                  </td>
-
-                                  <td
-                                    className="table-small"
-                                    style={{ width: "10%" }}
-                                  >
-                                    <Link to="/PatintPaidPaymentPrint">
-                                      <button
-                                        className="btn"
-                                        style={{
-                                          backgroundColor: "#FFA600",
-                                        }}
-                                      >
-                                        Get Action
-                                      </button>
-                                    </Link>
-                                  </td>
-                                </tr>
+                                {paidList?.map((item) => (
+                                  <>
+                                    <tr className="table-row">
+                                      <td>{item.bill_id}</td>
+                                      <td>{item.bill_date.split("T")[0]}</td>
+                                      <td>{item.appoint_id}</td>
+                                      <td>{item.uhid}</td>
+                                      <td>{item.patient_name}</td>
+                                      <td>{item.assigned_doctor_name}</td>
+                                      <td>{item.dental_treatment}</td>
+                                      <td>{item.total_amount}</td>
+                                      <td>{item.paid_amount}</td>
+                                      <td>
+                                        {item.payment_date_time?.split("T")[0]}
+                                      </td>
+                                      <td>
+                                        <Link
+                                          to={`/PatintPaidPaymentPrint/${item.bill_id}`}
+                                        >
+                                          <button
+                                            className="btn"
+                                            style={{
+                                              backgroundColor: "#FFA600",
+                                            }}
+                                          >
+                                            Print
+                                          </button>
+                                        </Link>
+                                      </td>
+                                    </tr>
+                                  </>
+                                ))}
                               </tbody>
                             </table>
                           </div>
@@ -238,4 +117,23 @@ const PatientsPaid = () => {
 
 export default PatientsPaid;
 
-const Container = styled.div``;
+const Container = styled.div`
+  .table-responsive {
+    height: 30rem;
+    overflow: auto;
+  }
+
+  th {
+    background-color: #201658;
+    color: #fff;
+    font-weight: bold;
+    position: sticky;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    color: white;
+    z-index: 1;
+  }
+`;

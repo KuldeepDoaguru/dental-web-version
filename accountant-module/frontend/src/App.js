@@ -132,7 +132,7 @@ function App() {
         <Route path="/PharmacyBills" element={<PharmacyBills />} />
         <Route path="/OpdBills/:bid" element={<OpdBills />} />
         <Route path="/PatientsLabBills" element={<PatientsLabBills />} />
-        <Route path="/TreatmentBills" element={<TreatmentBills />} />
+        <Route path="/TreatmentBills/:bid" element={<TreatmentBills />} />
         <Route path="/PaySlip" element={<PaySlip />} />
         <Route path="/AllDuaAmount" element={<AllDuaAmount />} />
         <Route path="/VoucherPaid" element={<VoucherPaid />} />
@@ -144,11 +144,11 @@ function App() {
         <Route path="/PatientHomeProfile" element={<PatientHomeProfile />} />
         <Route path="/Navbar" element={<Navbar />} />
         <Route
-          path="/PatintDuePaymentPrint"
+          path="/PatintDuePaymentPrint/:bid"
           element={<PatintDuePaymentPrint />}
         />
         <Route
-          path="/PatintPaidPaymentPrint"
+          path="/PatintPaidPaymentPrint/:bid"
           element={<PatintPaidPaymentPrint />}
         />
         <Route path="/Payment" element={<Payment />} />

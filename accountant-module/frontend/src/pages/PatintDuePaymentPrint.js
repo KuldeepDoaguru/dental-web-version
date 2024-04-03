@@ -1,14 +1,96 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Sider from "../components/Sider";
 import { IoArrowBackSharp } from "react-icons/io5";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import cogoToast from "cogo-toast";
 
 const PatintDuePaymentPrint = () => {
+  const { bid } = useParams();
+  const user = useSelector((state) => state.user);
+  const [branchData, setBranchData] = useState([]);
+  const [billAmount, setBillAmount] = useState([]);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
+
   const goBack = () => {
     window.history.go(-1);
   };
+
+  const branchDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getBranchDetailsByBranch/${user.branch}`
+      );
+      setBranchData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getBillDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getPatientBillsAndSecurityAmountByBranch/${user.branch}/${bid}`
+      );
+      setBillAmount(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    branchDetails();
+    getBillDetails();
+  }, []);
+
+  console.log(branchData);
+  console.log(billAmount);
+
+  const todayDate = new Date();
+  const year = todayDate.getFullYear();
+  const month = String(todayDate.getMonth() + 1).padStart(2, "0");
+  const date = String(todayDate.getDate()).padStart(2, "0");
+  const formattedDate = `${year}-${month}-${date}`;
+
+  console.log(formattedDate);
+
+  const makePayment = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8888/api/v1/accountant/makeBillPayment/${user.branch}/${bid}`,
+        {
+          paid_amount:
+            Number(billAmount[0]?.total_amount) +
+            Number(billAmount[0]?.total_amount) * 0.18,
+          payment_status: "paid",
+          payment_date_time: formattedDate,
+        }
+      );
+      cogoToast.success("payment successful");
+      getBillDetails();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handlePrint = () => {
+    const contentToPrint =
+      document.getElementById("printableContent").innerHTML;
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = contentToPrint;
+
+    window.print();
+    window.location.reload();
+    document.body.innerHTML = originalContent;
+  };
+
   return (
     <>
       <Container>
@@ -20,38 +102,41 @@ const PatintDuePaymentPrint = () => {
                 className="fs-1 mt-2 text-black"
                 onClick={goBack}
               />
-              <div className="row mt-5">
+              <div className="row mt-5" id="printableContent">
                 <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                   <div className="d-flex justify-content-center">
                     <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                      <div className="d-flex justify-content-center">
+                      <div className="">
                         <div>
-                          <h5>Branch : Madan Mahal</h5>
+                          <h4>Branch : {branchData[0]?.branch_name}</h4>
 
                           <form className="d-flex ">
                             <h6>Addresh </h6>
-                            <h6>: 128,Near Gwarighat Jabalpur M.p (482001)</h6>
+                            <h6>: {branchData[0]?.branch_address}</h6>
                           </form>
                         </div>
                       </div>
                     </div>
 
                     <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                      <div className="d-flex justify-content-center">
+                      <div className="d-flex justify-content-end">
                         <div>
                           <form className="d-flex">
-                            <h5>Email id : </h5>
-                            <h5 className="ms-2">DentalGuru@Gmail.com</h5>
+                            {/* <h5>Email id : </h5> */}
+                            <h3 className="">
+                              {branchData[0]?.hospital_name.toUpperCase()}
+                            </h3>
                           </form>
 
                           <form className="d-flex ">
                             <h4>Contact Number : </h4>
-                            <h4>+91-7000000058 </h4>
+                            <h4> {branchData[0]?.branch_contact}</h4>
                           </form>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <hr />
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
                     <div className="d-flex justify-content-center">
                       <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-11 col-sm-11">
@@ -61,19 +146,33 @@ const PatintDuePaymentPrint = () => {
                               <h4>PATIENT SUMMARY </h4>
                               <div className="d-flex ">
                                 <h6>Patient Name </h6>
-                                <h6 className="ms-1"> : Vinay Dhariya </h6>
+                                <h6 className="ms-1">
+                                  {" "}
+                                  : {billAmount[0]?.patient_name}{" "}
+                                </h6>
                               </div>
                               <div className="d-flex">
                                 <h6>Patient id </h6>
-                                <h6 className="ms-1"> : 123 </h6>
+                                <h6 className="ms-1">
+                                  {" "}
+                                  : {billAmount[0]?.uhid}{" "}
+                                </h6>
                               </div>
                               <div className="d-flex ">
                                 <h6> Invoice Number </h6>
-                                <h6 className="ms-1"> : 206Mar23 </h6>
+                                <h6 className="ms-1">
+                                  {" "}
+                                  : {billAmount[0]?.bill_id}{" "}
+                                </h6>
                               </div>
                               <div className="d-flex">
                                 <h6> Invoice Date </h6>
-                                <h6 className="ms-1"> :31/12/2023 </h6>
+                                <h6 className="ms-1">
+                                  {" "}
+                                  : {
+                                    billAmount[0]?.bill_date.split("T")[0]
+                                  }{" "}
+                                </h6>
                               </div>
                             </div>
                           </div>
@@ -82,7 +181,7 @@ const PatintDuePaymentPrint = () => {
                             <div class=" rounded d-flex justify-content-end mt-5 me-5">
                               <div class="card" style={{ width: "18rem" }}>
                                 <div className="ms-4 mt-2">
-                                  <h1> ₹2,425.00</h1>
+                                  <h1> ₹{billAmount[0]?.total_amount}</h1>
                                   <h5 className="text-danger ms-4">
                                     Patient Net Due
                                   </h5>
@@ -101,140 +200,25 @@ const PatintDuePaymentPrint = () => {
                     <hr className="mt-5" />
                   </div>
                 </div>
-
-                {/* <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-  <div className="d-flex justify-content-center">
-    <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-10">
-      <div class="table-responsive rounded">
-        <table class="table table-bordered rounded shadow">
-          <thead className="table-head">
-            <tr>
-              <th className="table-sno" style={{ width: "20%" }}>
-                Earnings
-              </th>
-              <th className="table-small" style={{ width: "20%" }}>
-                {" "}
-                Amounts
-              </th>
-
-              <th className="table-small" style={{ width: "20%" }}>
-                Deduction
-              </th>
-              <th className="table-small" style={{ width: "20%" }}>
-                Amounts
-              </th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr className="table-row">
-              <td className="table-sno" style={{ width: "20%" }}>
-                Basic
-              </td>
-              <td className="table-small" style={{ width: "20%" }}>
-                ₹ 33,333.00
-              </td>
-              <td className="table-small" style={{ width: "20%" }}>
-                Income Tex
-              </td>
-              <td className="table-small" style={{ width: "20%" }}>
-                0
-              </td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr className="table-row">
-              <td className="table-sno" style={{ width: "20%" }}>
-                House Rent Allowance
-              </td>
-              <td className="table-small" style={{ width: "20%" }}>
-                ₹ 16,667.00
-              </td>
-              <td className="table-small" style={{ width: "20%" }}>
-                Provident Fund
-              </td>
-              <td className="table-small" style={{ width: "20%" }}>
-                ₹ 4,000.00
-              </td>
-            </tr>
-          </tbody>
-
-          <tbody>
-            <tr className="table-row">
-              <td
-                className="table-sno"
-                style={{ width: "10%" }}
-              ></td>
-              <td
-                className="table-small"
-                style={{ width: "20%" }}
-              ></td>
-              <td className="table-small" style={{ width: "20%" }}>
-                Professional Tax
-              </td>
-              <td className="table-small" style={{ width: "20%" }}>
-                ₹ 2,00.00
-              </td>
-            </tr>
-          </tbody>
-          <tbody>
-            <tr className="table-row">
-              <td className="table-sno" style={{ width: "10%" }}>
-                Gross Earnings
-              </td>
-              <td className="table-small" style={{ width: "20%" }}>
-                ₹ 50,000.00
-              </td>
-              <td className="table-small" style={{ width: "20%" }}>
-                Total Deductions
-              </td>
-              <td className="table-small" style={{ width: "20%" }}>
-                ₹ 4,200.00
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div> */}
-
                 <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
                   <div className="d-flex justify-content-center mt-4">
                     <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-11 col-sm-11">
                       <table class="table table-bordered shadow">
                         <thead class="table-primary  rounded">
                           <tr>
-                            <th scope="col" style={{ width: "10%" }}>
-                              Date
-                            </th>
-                            <th scope="col" style={{ width: "20%" }}>
-                              Description
-                            </th>
-                            <th scope="col" style={{ width: "20%" }}>
-                              Amount
-                            </th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Amount</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <th scope="row">01/04/2023</th>
-                            <td>Cleaning Teeth</td>
-                            <td>500</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">02/04/2023</th>
-                            <td>Braces Treatment</td>
-                            <td>25000</td>
-                          </tr>
-                          {/* <tr>
-                            <th scope="row" colspan="2">
-                              04/04/2023
+                            <th scope="row">
+                              {billAmount[0]?.bill_date.split("T")[0]}
                             </th>
-
-                            <td>750</td>
-                          </tr> */}
-
+                            <td>{billAmount[0]?.dental_treatment}</td>
+                            <td>{billAmount[0]?.total_amount}</td>
+                          </tr>
                           <tr>
                             <td colspan="2">
                               <h6>
@@ -244,7 +228,7 @@ const PatintDuePaymentPrint = () => {
                               </h6>
                             </td>
 
-                            <td className="fw-bolder">₹25500</td>
+                            <td className="fw-bolder">₹1000</td>
                           </tr>
                           <tr>
                             <td colspan="2">
@@ -252,7 +236,9 @@ const PatintDuePaymentPrint = () => {
                                 <span class="spaces"></span>Gst(18%)
                               </h6>
                             </td>
-                            <td className="fw-bolder">₹ 4590</td>
+                            <td className="fw-bolder">
+                              ₹ {Number(billAmount[0]?.total_amount) * 0.18}
+                            </td>
                           </tr>
                           <tr>
                             <td colspan="2">
@@ -260,7 +246,11 @@ const PatintDuePaymentPrint = () => {
                                 <span class="spaces"></span>Net Amount
                               </h6>
                             </td>
-                            <td className="fw-bolder">₹ 30090</td>
+                            <td className="fw-bolder">
+                              ₹{" "}
+                              {Number(billAmount[0]?.total_amount) +
+                                Number(billAmount[0]?.total_amount) * 0.18}
+                            </td>
                           </tr>
                           <tr>
                             <td colspan="2">
@@ -268,61 +258,79 @@ const PatintDuePaymentPrint = () => {
                                 <span class="spaces"></span>Paid Amount
                               </h6>
                             </td>
-                            <td className="fw-bolder">₹ 30090</td>
+                            <td className="fw-bolder">
+                              {billAmount[0]?.paid_amount !== null
+                                ? billAmount[0]?.paid_amount
+                                : "-"}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
 
-                      <div class="row mt-5 d-flex">
-                        <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-7 col-sm-7">
-                          <h4 className="d-flex">Thank you </h4>
-                        </div>
-                        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                          <div>
-                            <div className="d-flex justify-content-end">
-                              <Link to="/Payment">
-                                <button class="btn btn-primary dum text-capitalize b-none">
-                                  Pay Now
-                                </button>
-                              </Link>
-                              <button
-                                class="btn btn btn-success dum text-capitalize mx-2"
-                                onClick={() => window.print()}
-                              >
-                                Print
-                              </button>
-                            </div>
-                          </div>
-                          {/* <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-3 ms-5"></div> */}
-                        </div>
+                      <div className="d-flex justify-content-between">
+                        <h4 className="">Thank you </h4>
+                        <h4 className="">Auth. signature</h4>
                       </div>
                     </div>
                     <div className="d-xxl-none d-xl-none d-lg-none col-md-1 col-sm-1"></div>
                   </div>
                 </div>
+              </div>
+              <div>
+                <div className="container d-flex justify-content-end mb-3">
+                  <button
+                    type="button"
+                    class="btn btn-primary hide-during-print"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                  >
+                    Pay Now
+                  </button>
 
-                <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-                  <div className="d-flex justify-content-center mt-4">
-                    <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-9">
-                      <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-10 mt-4 ms-5">
-                        <div class="row">
-                          <div class="col-xl-8"></div>
-                          <div class="col-xl-3">
-                            <ul class="list-unstyled">
-                              <li class="text-muted ms-3"></li>
-                              <li class="text-muted ms-3 mt-2">
-                                <span class="text-black me-4"></span>
-                              </li>
-                            </ul>
-                            <p class="text-black float-start">
-                              <span class="text-black me-3"> </span>
-                              <span className="fs-5"> </span>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <button
+                    class="btn btn btn-success dum text-capitalize mx-2 hide-during-print"
+                    onClick={handlePrint}
+                  >
+                    Print
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1
+                    class="modal-title fs-5 text-center"
+                    id="exampleModalLabel"
+                  >
+                    Do you want to make payment
+                  </h1>
+                </div>
+
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    data-bs-dismiss="modal"
+                    onClick={makePayment}
+                  >
+                    Pay Now
+                  </button>
                 </div>
               </div>
             </div>
@@ -342,8 +350,8 @@ const Container = styled.div`
     margin-right: 45rem;
   }
   @media print {
-    .dum {
-      display: none;
+    .hide-during-print {
+      display: none !important;
     }
   }
 `;

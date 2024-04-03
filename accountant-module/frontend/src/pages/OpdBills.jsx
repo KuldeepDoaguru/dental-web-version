@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
 import { Link, useParams } from "react-router-dom";
@@ -10,6 +10,8 @@ const OpdBills = () => {
   const { bid } = useParams();
   const [opdAmount, setOpdAmount] = useState([]);
   const user = useSelector((state) => state.user);
+  const [branchData, setBranchData] = useState([]);
+  const containerRef = useRef(null);
   console.log(
     `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
   );
@@ -23,7 +25,7 @@ const OpdBills = () => {
   const getOpdAmt = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getAppointmentDetailsViaID/${bid}`
+        `http://localhost:8888/api/v1/accountant/getAppointmentDetailsViaIDOPD/${bid}`
       );
       setOpdAmount(data);
     } catch (error) {
@@ -31,11 +33,36 @@ const OpdBills = () => {
     }
   };
 
+  const branchDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getBranchDetailsByBranch/${user.branch}`
+      );
+      setBranchData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getOpdAmt();
+    branchDetails();
   }, []);
 
   console.log(opdAmount);
+  console.log(branchData);
+
+  const handlePrint = () => {
+    const contentToPrint =
+      document.getElementById("printableContent").innerHTML;
+    const originalContent = document.body.innerHTML;
+
+    document.body.innerHTML = contentToPrint;
+
+    window.print();
+
+    document.body.innerHTML = originalContent;
+  };
   return (
     <>
       <Container>
@@ -49,29 +76,22 @@ const OpdBills = () => {
           </div>
         </div>
 
-        <div className="container">
+        <div className="container print-box" id="printableContent">
           <div className="row">
             <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
               <div className="row d-flex justify-content-between mt-3">
-                <div className="ms-4">
+                <div className="">
                   <div className="mt-3">
-                    <h5>Branch : Madan Mahal</h5>
+                    <h3>{branchData[0]?.hospital_name.toUpperCase()}</h3>
+                    <h5>Branch : {user.branch}</h5>
                   </div>
                   <form className="d-flex ms-auto my-sm">
                     <h6>Addresh : </h6>
-                    <h6 className="ms-2">
-                      128,Near Gwarighat Jabalpur M.p (482001)
-                    </h6>
+                    <h6 className="ms-2">{branchData[0]?.branch_address}</h6>
                   </form>
-
-                  <form className="d-flex ms-auto my-sm mt-1">
-                    <h5>Email id : </h5>
-                    <h5 className="ms-2">DentalGuru@Gmail.com</h5>
-                  </form>
-
                   <form className="d-flex ms-auto my-sm mt-1">
                     <h4>Contact Number : </h4>
-                    <h4 className="ms-2">+91-7000000058 </h4>
+                    <h4 className="ms-2">{branchData[0]?.branch_contact}</h4>
                   </form>
                 </div>
               </div>
@@ -84,46 +104,65 @@ const OpdBills = () => {
             }}
           />
 
-          <div className="container mt-4">
+          <div className="mt-4">
             <div class="table-responsive rounded">
               <table class="table table-bordered rounded shadow">
                 <tbody>
                   <tr className="table-row">
-                    <td className="table-small" style={{ width: "20%" }}>
-                      Patient Name :
+                    <td>
+                      Patient Name :{" "}
+                      <strong>
+                        {opdAmount[0]?.patient_name.toUpperCase()}
+                      </strong>
                     </td>
-                    <td className="table-small" style={{ width: "20%" }}>
-                      Date :
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody>
-                  <tr className="table-row">
-                    <td className="table-small" style={{ width: "20%" }}>
-                      Patient Address:
-                    </td>
-                    <td className="table-small" style={{ width: "10%" }}>
-                      Age/Sex :
+                    <td>
+                      Date :{" "}
+                      <strong>
+                        {opdAmount[0]?.appointment_dateTime
+                          .split("T")[0]
+                          .toUpperCase()}
+                      </strong>
                     </td>
                   </tr>
                 </tbody>
                 <tbody>
                   <tr className="table-row">
-                    <td className="table-small" style={{ width: "20%" }}>
-                      Phone Number:
+                    <td>
+                      Patient Address :{" "}
+                      <strong>{opdAmount[0]?.address.toUpperCase()}</strong>
                     </td>
-                    <td className="table-small" style={{ width: "10%" }}>
-                      Consaltant :
+                    <td>
+                      Age/Sex :{" "}
+                      <strong>
+                        {opdAmount[0]?.age.toUpperCase()} /{" "}
+                        {opdAmount[0]?.gender.toUpperCase()}
+                      </strong>
                     </td>
                   </tr>
                 </tbody>
                 <tbody>
                   <tr className="table-row">
-                    <td className="table-small" style={{ width: "20%" }}>
-                      Email id:
+                    <td>
+                      Phone Number :{" "}
+                      <strong>{opdAmount[0]?.mobileno.toUpperCase()}</strong>
                     </td>
-                    <td className="table-small" style={{ width: "10%" }}>
-                      OPD Fee : 200
+                    <td>
+                      Consaltant :{" "}
+                      <strong>
+                        {opdAmount[0]?.assigned_doctor_name.toUpperCase()}
+                      </strong>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr className="table-row">
+                    <td>
+                      Email id :{" "}
+                      <strong>{opdAmount[0]?.emailid.toUpperCase()}</strong>
+                    </td>
+                    <td>
+                      OPD Fee :{" "}
+                      <strong>{opdAmount[0]?.opd_amount.toUpperCase()}</strong>
                     </td>
                   </tr>
                 </tbody>
@@ -133,7 +172,7 @@ const OpdBills = () => {
         </div>
         <div className="d-flex justify-content-center mb-5 mt-3">
           <div className="table-small">
-            <button className="btn px-5 py-3" onClick={() => window.print()}>
+            <button className="btn px-5 py-3" onClick={handlePrint}>
               Print
             </button>
           </div>
@@ -148,6 +187,9 @@ const Container = styled.div`
   @media print {
     .Button {
       display: none; /* Hide the button when printing */
+    }
+    .print-box {
+      width: 100%;
     }
   }
   .table-small {

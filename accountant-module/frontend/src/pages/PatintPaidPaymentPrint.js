@@ -1,13 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { IoArrowBackSharp } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const PatintPaidPaymentPrint = () => {
+  const { bid } = useParams();
+  const [branchData, setBranchData] = useState([]);
+  const user = useSelector((state) => state.user);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
+  const [paidBill, setPaidBill] = useState([]);
+
   const goBack = () => {
     window.history.go(-1);
   };
+
+  const getPaidBillData = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/paidBillDetails/${user.branch}/${bid}`
+      );
+      setPaidBill(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const branchDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getBranchDetailsByBranch/${user.branch}`
+      );
+      setBranchData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPaidBillData();
+    branchDetails();
+  }, []);
+
   return (
     <>
       <Container>
@@ -19,58 +58,66 @@ const PatintPaidPaymentPrint = () => {
                 className="fs-1 mt-2 text-black"
                 onClick={goBack}
               />
-              <div className="d-flex justify-content-center">
+              <div className="container d-flex justify-content-between">
                 <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                  <div className="d-flex justify-content-center">
+                  <div className="d-flex justify-content-start">
                     <div>
-                      <h5>Branch : Madan Mahal</h5>
+                      <h5>Branch : {branchData[0]?.branch_name}</h5>
 
-                      <form className="d-flex ">
-                        <h6>Addresh </h6>
-                        <h6>: 128,Near Gwarighat Jabalpur M.p (482001)</h6>
+                      <form className="d-flex">
+                        <h6>Address </h6>
+                        <h6>: {branchData[0]?.branch_address}</h6>
                       </form>
                     </div>
                   </div>
                 </div>
 
                 <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                  <div className="d-flex justify-content-center">
+                  <div className="d-flex justify-content-end">
                     <div>
                       <form className="d-flex">
-                        <h5>Email id : </h5>
-                        <h5 className="ms-2">DentalGuru@Gmail.com</h5>
+                        <h4 className="">
+                          {branchData[0]?.hospital_name.toUpperCase()}
+                        </h4>
                       </form>
 
                       <form className="d-flex ">
                         <h4>Contact Number : </h4>
-                        <h4>+91-7000000058 </h4>
+                        <h4>{branchData[0]?.branch_contact}</h4>
                       </form>
                     </div>
                   </div>
                 </div>
               </div>
+              <hr />
               <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
                 <div className="d-flex justify-content-center">
                   <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-11 col-sm-11">
-                    <div className="row  mt-2 d-flex justify-content-between">
+                    <div className="row mt-2 d-flex justify-content-between">
                       <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-5 col-sm-5">
                         <div class=" rounded mt-4">
                           <h4>PATIENT SUMMARY </h4>
                           <div className="d-flex ">
                             <h6>Patient Name </h6>
-                            <h6 className="ms-1"> : Vinay Dhariya </h6>
+                            <h6 className="ms-1">
+                              {" "}
+                              : {paidBill[0]?.patient_name}{" "}
+                            </h6>
                           </div>
                           <div className="d-flex">
-                            <h6>Patient id </h6>
-                            <h6 className="ms-1"> : 123 </h6>
+                            <h6>Patient UHID </h6>
+                            <h6 className="ms-1">: {paidBill[0]?.uhid}</h6>
                           </div>
                           <div className="d-flex ">
                             <h6> Invoice Number </h6>
-                            <h6 className="ms-1"> : 206Mar23 </h6>
+                            <h6 className="ms-1"> : {paidBill[0]?.bill_id} </h6>
                           </div>
                           <div className="d-flex">
                             <h6> Invoice Date </h6>
-                            <h6 className="ms-1"> :31/12/2023 </h6>
+                            <h6 className="ms-1">
+                              {" "}
+                              : {paidBill[0]?.bill_date.split("T")[0]}
+                            </h6>
                           </div>
                         </div>
                       </div>
@@ -79,7 +126,7 @@ const PatintPaidPaymentPrint = () => {
                         <div class=" rounded d-flex justify-content-end mt-5 me-5">
                           <div class="card" style={{ width: "18rem" }}>
                             <div className="ms-4 mt-2">
-                              <h1> ₹2,425.00</h1>
+                              <h1> ₹{paidBill[0]?.total_amount}</h1>
                               <h5 className="text-success ms-4">
                                 Patient Net Paid
                               </h5>

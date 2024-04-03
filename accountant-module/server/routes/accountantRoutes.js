@@ -20,6 +20,13 @@ const {
   getSecurityAmountDataBySID,
   updateRefundAmount,
   updatePatientSecurityAmt,
+  getBranchDetailsByBranch,
+  getAppointmentDetailsViaIDForOPD,
+  getTreatmentAmountByBranch,
+  getPatientBillsAndSecurityAmountByBranch,
+  makeBillPayment,
+  paidBillLIst,
+  paidBillDetails,
 } = require("../controllers/accountantController");
 
 const router = express.Router();
@@ -39,6 +46,10 @@ router.get("/getAppointmentData/:branch", appointmentData);
 router.post("/addSecurityAmount", addSecurityAmount);
 router.get("/getAppointmentDetailsViaID/:id", getAppointmentDetailsViaID);
 router.get(
+  "/getAppointmentDetailsViaIDOPD/:id",
+  getAppointmentDetailsViaIDForOPD
+);
+router.get(
   "/getSecurityAmountDataByBranch/:branch",
   getSecurityAmountDataByBranch
 );
@@ -47,5 +58,15 @@ router.put("/updateSecurityAmount/:sid", updateSecurityAmount);
 router.get("/getSecurityAmountDataBySID/:sid", getSecurityAmountDataBySID);
 router.put("/updateRefundAmount/:sid", updateRefundAmount);
 router.put("/updatePatientSecurityAmt/:sid", updatePatientSecurityAmt);
+router.get("/getBranchDetailsByBranch/:branch", getBranchDetailsByBranch);
+router.get("/getTreatmentAmountByBranch/:branch", getTreatmentAmountByBranch);
+router.get(
+  "/getPatientBillsAndSecurityAmountByBranch/:branch/:bid",
+  getPatientBillsAndSecurityAmountByBranch
+);
+
+router.put("/makeBillPayment/:branch/:bid", makeBillPayment);
+router.get("/paidBillLIst/:branch", paidBillLIst);
+router.get("/paidBillDetails/:branch/:bid", paidBillDetails);
 
 module.exports = router;

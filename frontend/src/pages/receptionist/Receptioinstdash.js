@@ -11,7 +11,10 @@ import styled from 'styled-components'
 function Receptioinstdash() {
   return (
     <Wrapper>
-   <Header/>
+      <div className='header'>
+      <Header/>
+      </div>
+   
    
    <div className="row flex-nowrap">
     <div className="col-lg-1 col-1" id='sider'>
@@ -53,6 +56,7 @@ function Receptioinstdash() {
 export default Receptioinstdash
 const Wrapper=styled.div`
 overflow: hidden;
+
 .cards{
   width: 15%;
 
@@ -97,24 +101,41 @@ overflow: hidden;
 #set{
 
   margin-left: -4.5rem;
+  padding-left: 150px; /* Width of sidebar */
+  padding-top: 90px; /* Height of header */
+  flex-grow: 1;
+  overflow-y: auto;
+ 
 @media screen and (max-width: 768px) {
   margin-left: 1.5rem;
 }
 @media screen and (min-width: 768px) and (max-width : 1020px) {
-  margin-left: -1rem;
+  margin: 2rem;
+  padding-left: 0px; /* Width of sidebar */
 }
   @media screen and (min-width: 1020px) and (max-width: 1500px) {
-    margin-left: -1rem;
+    margin-left: -2rem;
     
   }
-  @media screen and (min-width: 1500px) and (max-width: 1700px) {
+  @media screen and (min-width: 1500px) and (max-width: 1800px) {
     margin-left: -1.9rem;
     
   }
+  @media screen and (min-width: 1800px) and (max-width: 2500px) {
+   margin-left: 0.5rem;
+    
+  }
 }
-
+.header{
+  position: fixed;
+  min-width: 100%;
+  z-index: 100;
+}
 #sider{
+  padding-top: 60px; /* Height of header */
   min-height: 100vh;
+  position: fixed;
+  
   
  
 

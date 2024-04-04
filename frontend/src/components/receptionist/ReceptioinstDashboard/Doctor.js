@@ -445,7 +445,7 @@ width: 110%;
     @media screen and (min-width: 1020px) and (max-width: 1300px) {
    height: 25.5rem;
   }
-  @media screen and (min-width: 1300px) and (max-width: 1700px) {
+  @media screen and (min-width: 1300px) and (max-width: 2000px) {
    height: 25.2rem;
   }
 }

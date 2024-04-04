@@ -277,7 +277,9 @@ catch(error){
 
   return (
     <Wrapper>
-        <Header/>
+       <div className='header'>
+      <Header/>
+      </div>
       
         <div className="row flex-nowrap ">
     <div className="col-lg-1 col-1" id='hd'>
@@ -377,7 +379,7 @@ catch(error){
             </div>
         </div>
       <div className="row" >
-   <div className="col-lg-12 col-sm-10" id='head'>
+   <div className="col-lg-12" id='head'>
    <nav class="navbar navbar-light bg-light">
             <h6 className='mx-3 my-0'>Search By Patient</h6>
   <div class="container-fluid" id='cont'>
@@ -428,7 +430,7 @@ catch(error){
    </div>
 
    <div className="col-lg-12">
-   <div className="widget-area-2 proclinic-box-shadow mx-3 mt-5" id='tableres'>
+   <div className="widget-area-2 proclinic-box-shadow  mt-5" id='tableres'>
                     
                     
                     <div className="table-responsive" style={{ overflowX: "auto" }}>
@@ -485,7 +487,7 @@ catch(error){
                     </div>
                     <div className="container mt-3 mb-3">
                   <div className="row">
-                    <div className="col-lg-8 col-md-8 col-sm-12 col-12">  <h4
+                    <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">  <h4
                           style={{
                             color: "black",
                             marginLeft: "5px",
@@ -498,7 +500,7 @@ catch(error){
                        {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {inquiries?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {inquiries?.length} entries</> }  
 
                         </h4></div>
-                    <div className="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="col-lg-3 col-md-3 col-sm-3 col-12">
                       <div className="d-flex justify-content-evenly">
                         <Button
                           onClick={() => paginate(currentPage - 1)}
@@ -562,6 +564,30 @@ overflow: hidden;
    width: 100%;
   }
 }
+
+#set{
+
+margin-left: -4.5rem;
+padding-left: 150px; /* Width of sidebar */
+padding-top: 90px; /* Height of header */
+flex-grow: 1;
+overflow-y: auto;
+
+@media screen and (max-width: 768px) {
+  margin-left: -2rem;
+}
+@media screen and (min-width: 768px) and (max-width : 1020px) {
+  margin-left: -2rem;
+}
+@media screen and (min-width: 1020px) and (max-width: 1500px) {
+  margin-left: -2rem;
+  
+}
+@media screen and (min-width: 1500px) and (max-width: 2000px) {
+  margin-left: -1.9rem;
+  
+}
+}
 #head{
   
   @media screen and (max-width: 768px) {
@@ -570,11 +596,14 @@ overflow: hidden;
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {
    margin-left: 1rem;
-   width: 85%;
+   
+   margin: auto;
   }
 }
 #hd{
-  height:44rem;
+  padding-top: 60px; /* Height of header */
+  min-height: 100vh;
+  position: fixed;
   @media screen and (max-width: 768px) {
    height: 68rem;
   }
@@ -590,7 +619,9 @@ overflow: hidden;
    
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {
-   width: 85%;
+   width: auto;
+   margin: auto;
+   
   }
 }
 .inquiry-form{
@@ -599,6 +630,7 @@ overflow: hidden;
    margin: auto;
    @media screen and (min-width: 768px) and (max-width: 1020px) {
    margin-left: 1rem;
+   margin: auto;
   }
 }
 th{
@@ -609,5 +641,9 @@ th{
   td{
     white-space: nowrap;
   }
-
+  .header{
+  position: fixed;
+  min-width: 100%;
+  z-index: 100;
+}
 `

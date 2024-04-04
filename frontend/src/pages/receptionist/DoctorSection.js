@@ -194,47 +194,67 @@ const formatDate = (dateString) => {
   
   return (
     <Wrapper>
-      <Header />
+      <div className='header'>
+      <Header/>
+      </div>
       <div className="row flex-nowrap">
         <div className="col-lg-1 col-1 " id="sider">
           <Sider />
         </div>
-        <div className="col-lg-11">
+        <div className="col-lg-11 mt-2" id='set'>
           <div className="row" id="row1">
-            <div className="col-lg-11">
-              <div className="input-group mt-4 ">
-                <Form.Group
-                  controlId="rowsPerPageSelect"
-                  style={{ display: "flex" }}
-                >
-                  <Form.Label className="d-flex align-items-center">
-                    Rows Per Page :{" "}
-                  </Form.Label>
-                  <Form.Control
-                    as="select"
-                    value={rowsPerPage}
-                    className="m-2"
-                    style={{ width: "auto" }}
-                    onChange={handleRowsPerPageChange}
-                  >
-                    <option value={10}>10</option>
-                    <option value={25}>25</option>
-                    <option value={50}>50</option>
-                    {/* Add more options as needed */}
-                  </Form.Control>
-                </Form.Group>
-                <div className="form-outline  d-flex align-items-center">
-                  <input
-                    type="search"
-                    id="form1"
-                    className="form-control"
-                    placeholder="Search here"
-                    onChange={handleSearch}
-                    value={searchTerm}
-                  />
-                </div>
-              </div>
-              <div className="widget-area-2 proclinic-box-shadow" id="tableres">
+            <div className="col-lg-12">
+            <div className="col-lg-12" id='head'>
+   <nav class="navbar navbar-light bg-light">
+            <h6 className='mx-3 my-0'>Search By Doctor</h6>
+  <div class="container-fluid" id='cont'>
+    <form class="navbar1 " >
+      <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Doctor Name Or Moblie" aria-label="Search" onChange={handleSearch}
+        value={searchTerm}/>
+      {/* <button class="btn btn-outline-success" type="submit">Search</button> */}
+    </form>
+    <div>
+    <Form.Group
+                      controlId="rowsPerPageSelect"
+                      style={{ display: "flex" }}
+                    >
+                      <Form.Label className="d-flex align-items-center">
+                        Rows Per Page :{" "}
+                      </Form.Label>
+                      <Form.Control
+                        as="select"
+                        value={rowsPerPage}
+                        className="m-2"
+                        style={{ width: "auto" }}
+                        onChange={handleRowsPerPageChange}
+                      >
+                        
+                        <option value={10}>10</option>
+                        <option value={25}>25</option>
+                        <option value={50}>50</option>
+                        {/* Add more options as needed */}
+                      </Form.Control>
+                    </Form.Group>
+    </div>
+    <div><h5>Total Doctors - {doctors.length}</h5></div>
+    
+{/* <div class="dropdown" id='drop'>
+  
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+  Filter Patient by Bill Status
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="#">Unpaid</a></li>
+    <li><a class="dropdown-item" href="#">Partially Paid</a></li>
+    <li><a class="dropdown-item" href="#">Paid</a></li>
+    <li><a class="dropdown-item" href="#">All</a></li>
+  </ul>
+</div> */}
+  </div>
+</nav>  
+   </div>
+             
+              <div className="widget-area-2 proclinic-box-shadow  mt-5" id="tableres">
                 <div className="table-responsive">
                   <table className="table table-bordered table-striped">
                     <thead>
@@ -304,7 +324,7 @@ const formatDate = (dateString) => {
                 </div>
                 <div className="container mt-3 mb-3">
                   <div className="row">
-                    <div className="col-lg-8 col-md-8 col-sm-12 col-12">
+                    <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">
                       {" "}
                       <h4
                         style={{
@@ -330,7 +350,7 @@ const formatDate = (dateString) => {
                         )}
                       </h4>
                     </div>
-                    <div className="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="col-lg-3 col-md-3 col-sm-3 col-12">
                       <div className="d-flex justify-content-evenly">
                         <Button
                           onClick={() => paginate(currentPage - 1)}
@@ -363,6 +383,7 @@ const formatDate = (dateString) => {
 
 export default DoctorSection
 const Wrapper = styled.div`
+overflow: hidden;
 #row1{
   @media screen and (max-width: 768px) {
     width: 22rem;
@@ -370,9 +391,50 @@ const Wrapper = styled.div`
   }
 }
 #sider{
+  padding-top: 60px; /* Height of header */
+  min-height: 100vh;
+  position: fixed;
+  
+  
+ 
+
+}
+#head{
+  
   @media screen and (max-width: 768px) {
-    height: 46rem;
+  width: 85%;
+  margin-left: 1.2rem;
   }
+  @media screen and (min-width: 768px) and (max-width: 1020px) {
+   margin-left: 1rem;
+   
+   margin: auto;
+  }
+}
+
+#set{
+
+margin-left: -4.5rem;
+padding-left: 150px; /* Width of sidebar */
+padding-top: 90px; /* Height of header */
+flex-grow: 1;
+overflow-y: auto;
+
+@media screen and (max-width: 768px) {
+margin-left: 1.5rem;
+}
+@media screen and (min-width: 768px) and (max-width : 1020px) {
+  margin-left: -2rem;
+  
+}
+@media screen and (min-width: 1020px) and (max-width: 1500px) {
+  margin-left: -2rem;
+  
+}
+@media screen and (min-width: 1500px) and (max-width: 2000px) {
+  margin-left: -1.9rem;
+  
+}
 }
 th{
     background-color: teal;
@@ -383,5 +445,17 @@ th{
     white-space: nowrap;
   }
 
+  .header{
+  position: fixed;
+  min-width: 100%;
+  z-index: 100;
+}
+.navbar1{
+  display: flex;
+  width: 25%;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+}
 
 `

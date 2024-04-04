@@ -12,13 +12,15 @@ const Profile = () => {
   return (
     <>
       <Wrapper>
-      <Header />
+      <div className='header'>
+      <Header/>
+      </div>
 
 <div className="row mrgnzero">
   <div className="col-lg-1 col-md-1 col-1" id="sider">
     <Sider />
   </div>
-  <div className="col-lg-11 col-md-11 col-11">
+  <div className="col-lg-11 col-md-11 col-11" id="set">
         <div className="container-fluid  shadow p-3 mt-5 bg-body rounded">
             <div className="row">
                 <div className="col-lg-12 col-12">
@@ -120,8 +122,42 @@ img{
     margin-right: 0rem;
   }
   #sider {
-    @media screen and (max-width: 768px) {
-      height: 118rem;
-    }
+    padding-top: 60px; /* Height of header */
+  min-height: 100vh;
+  position: fixed;
+  @media screen and (max-width: 768px) {
+   height: 68rem;
   }
+  @media screen and (min-width: 768px) and (max-width: 1020px) {
+   height: 58rem;
+  }
+  }
+  .header{
+  position: fixed;
+  min-width: 100%;
+  z-index: 100;
+}
+#set{
+
+margin-left: -4.5rem;
+padding-left: 150px; /* Width of sidebar */
+padding-top: 90px; /* Height of header */
+flex-grow: 1;
+overflow-y: auto;
+
+@media screen and (max-width: 768px) {
+  margin-left: -2rem;
+}
+@media screen and (min-width: 768px) and (max-width : 1020px) {
+  margin-left: -2rem;
+}
+@media screen and (min-width: 1020px) and (max-width: 1500px) {
+  margin-left: -2rem;
+  
+}
+@media screen and (min-width: 1500px) and (max-width: 2000px) {
+  margin-left: -1.9rem;
+  
+}
+}
 `;

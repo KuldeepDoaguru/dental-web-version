@@ -155,7 +155,9 @@ function OpdCollection() {
 console.log(appointmentsData)
   return (
     <Wrapper>
-      <Header />
+      <div className='header'>
+      <Header/>
+      </div>
 
       <div className="row flex-nowrap ">
         <div className="col-lg-1 col-1" id="hd">
@@ -228,7 +230,7 @@ console.log(appointmentsData)
 
             <div className="col-lg-12">
               <div
-                className="widget-area-2 proclinic-box-shadow mx-3 mt-5"
+                className="widget-area-2 proclinic-box-shadow mt-5"
                 id="tableres"
               >
                 <div className="table-responsive">
@@ -285,7 +287,7 @@ console.log(appointmentsData)
                 </div>
                 <div className="container mt-3 mb-3">
                   <div className="row">
-                    <div className="col-lg-8 col-md-8 col-sm-12 col-12">
+                    <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">
                       {" "}
                       <h4
                         style={{
@@ -311,7 +313,7 @@ console.log(appointmentsData)
                         )}
                       </h4>
                     </div>
-                    <div className="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="col-lg-3 col-md-3 col-sm-3 col-12">
                       <div className="d-flex justify-content-evenly">
                         <Button
                           onClick={() => paginate(currentPage - 1)}
@@ -344,6 +346,7 @@ console.log(appointmentsData)
 
 export default OpdCollection;
 const Wrapper = styled.div`
+overflow: hidden;
   .navbar1 {
     display: flex;
     width: 25%;
@@ -363,29 +366,64 @@ const Wrapper = styled.div`
       width: 100%;
     }
   }
-  #head {
-    @media screen and (max-width: 768px) {
-      width: 85%;
-      margin-left: 1.2rem;
-    }
+  #head{
+  
+  @media screen and (max-width: 768px) {
+  width: 85%;
+  margin-left: 1.2rem;
   }
-  #hd {
-    height: 44rem;
-    @media screen and (max-width: 768px) {
-      height: 68rem;
-    }
-    @media screen and (min-width: 768px) and (max-width: 1020px) {
-      height: 58rem;
-    }
+  @media screen and (min-width: 768px) and (max-width: 1020px) {
+   margin-left: 1rem;
+   
+   margin: auto;
   }
-  #tableres {
-    @media screen and (max-width: 768px) {
-      width: 21rem;
-    }
-    @media screen and (min-width: 768px) and (max-width: 1020px) {
-      width: 42rem;
-    }
+}
+  #set{
+
+margin-left: -4.5rem;
+padding-left: 150px; /* Width of sidebar */
+padding-top: 90px; /* Height of header */
+flex-grow: 1;
+overflow-y: auto;
+
+@media screen and (max-width: 768px) {
+  margin-left: -2rem;
+}
+@media screen and (min-width: 768px) and (max-width : 1020px) {
+  margin-left: -2rem;
+}
+@media screen and (min-width: 1020px) and (max-width: 1500px) {
+  margin-left: -2rem;
+  
+}
+@media screen and (min-width: 1500px) and (max-width: 2000px) {
+  margin-left: -1.9rem;
+  
+}
+}
+#hd{
+  padding-top: 60px; /* Height of header */
+  min-height: 100vh;
+  position: fixed;
+  @media screen and (max-width: 768px) {
+   height: 68rem;
   }
+  @media screen and (min-width: 768px) and (max-width: 1020px) {
+   height: 58rem;
+  }
+}
+#tableres{
+  
+  @media screen and (max-width: 768px) {
+    width: 21rem;
+   
+  }
+  @media screen and (min-width: 768px) and (max-width: 1020px) {
+   width: auto;
+   margin: auto;
+   
+  }
+}
   th{
     background-color: teal;
     color: white;
@@ -394,4 +432,9 @@ const Wrapper = styled.div`
   td{
     white-space: nowrap;
   }
+  .header{
+  position: fixed;
+  min-width: 100%;
+  z-index: 100;
+}
 `;

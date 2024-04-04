@@ -416,7 +416,7 @@ patient_type
         </div>
         <div className="container mt-3 mb-3">
                   <div className="row">
-                    <div className="col-lg-8 col-md-8 col-sm-12 col-12">  <h4
+                    <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">  <h4
                           style={{
                             color: "black",
                             marginLeft: "5px",
@@ -429,7 +429,7 @@ patient_type
                        {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {selectedDateAppData?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {selectedDateAppData?.length} entries</> }  
 
                         </h4></div>
-                    <div className="col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="col-lg-3 col-md-3 col-sm-3 col-12">
                       <div className="d-flex justify-content-evenly">
                         <Button
                           onClick={() => paginate(currentPage - 1)}
@@ -470,10 +470,10 @@ const Wrapper = styled.div`
   #tableres {
     margin-top: 0rem;
     @media screen and (max-width: 768px) {
-      width: 20rem;
+      width: 98%
     }
     @media screen and (min-width: 768px) and (max-width: 1020px) {
-      width: 41rem;
+      width: 98%
     }
   }
   #title {

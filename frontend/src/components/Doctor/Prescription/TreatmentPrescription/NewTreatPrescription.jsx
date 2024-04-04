@@ -191,6 +191,7 @@ const NewTreatPrescription = () => {
         }
     };
 
+    
     useEffect(() => {
         getlabByAppointId()
     }, [])
@@ -293,7 +294,7 @@ const NewTreatPrescription = () => {
                 <div className="container">
                     <div className="row shadow-sm p-3 mb-3 bg-body rounded">
                         <legend className="">Patient Details</legend>
-                        {getPatientData.map((item, index) => (
+                        {getPatientData?.map((item, index) => (
                             <>
                                 <div key={index} className="col-lg-12 d-flex justify-content-between align-items-center">
                                     <div className="col-lg-4">
@@ -420,7 +421,7 @@ const NewTreatPrescription = () => {
 
                                 </div>
                             </div>
-                            {getlab.map((item, index) => (
+                            {getlab?.map((item, index) => (
                                 <>
                                     <div key={index} className="d-flex justify-content-evenly align-items-center col-lg-12">
                                         <div className="col-lg-2 d-flex flex-column text-center">
@@ -527,7 +528,7 @@ const NewTreatPrescription = () => {
                                             isMulti
                                             onChange={handleMedicineChange}
                                             onCreateOption={handleCreateMedicine}
-                                            value={prescriptionData.medicine_name.map(medicine => ({ value: medicine, label: medicine }))}
+                                            value={prescriptionData?.medicine_name?.map(medicine => ({ value: medicine, label: medicine }))}
                                             placeholder="Select medicine..."
                                         />
                                     </div>
@@ -535,13 +536,13 @@ const NewTreatPrescription = () => {
                                 <div className="col">
                                     <div data-mdb-input-init className="form-outline">
                                         <label>Dosage</label>
-                                        <input type="text" id="dosage" className="form-control" name="dosage" value={prescriptionData.dosage} onChange={handleChange} />
+                                        <input type="text" id="dosage" className="form-control" name="dosage" value={prescriptionData?.dosage} onChange={handleChange} />
                                     </div>
                                 </div>
                                 <div className="col">
                                     <div data-mdb-input-init className="form-outline">
                                         <label>Frequency</label>
-                                        <select id="frequency" className="form-control" name="frequency" value={prescriptionData.frequency} onChange={handleChange}>
+                                        <select id="frequency" className="form-control" name="frequency" value={prescriptionData?.frequency} onChange={handleChange}>
                                             <option value="">Choose frequency</option>
                                             <option value="1-1-1(TDS)">1-1-1(TDS)</option>
                                             <option value="1-1-0(BD)">1-1-0(BD)</option>
@@ -603,7 +604,7 @@ const NewTreatPrescription = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {getTreatMedicine.map((item, index) => (
+                                {getTreatMedicine?.map((item, index) => (
                                     <tr key={index}>
                                         <td>{item.medicine_name}</td>
                                         <td>{item.dosage}</td>

@@ -32,9 +32,9 @@ function App() {
 
       <Route path="/" element={<DoctorLogin />} />
       <Route path="/doctor-dashboard" element={user.currentUser=== null ? <DoctorLogin /> : <DoctorDashboard />} />
-      <Route path="/examination-Dashboard/:id" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoard />} />
-      <Route path="/ExaminationDashBoardPatient/:id" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoardPatient />} />
-      <Route path="/ExaminationDashBoardPediatric/:id" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoardPediatric />} />
+      <Route path="/examination-Dashboard/:id/:uhid" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoard />} />
+      <Route path="/ExaminationDashBoardPatient/:id/:dcat" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoardPatient />} />
+      <Route path="/ExaminationDashBoardPediatric/:id/:dcat" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoardPediatric />} />
       <Route path="/treatmentSuggestion/:id" element={user.currentUser=== null ? <DoctorLogin /> : <TreatSuggestDashs />} /> 
       <Route path="/SecurityAmount/:id" element={user.currentUser=== null ? <DoctorLogin /> : <SecurityAmount />} />
       <Route path="/print-security-bill/:sa_id" element={user.currentUser=== null ? <DoctorLogin /> : <PrintSecurityAmt />} />

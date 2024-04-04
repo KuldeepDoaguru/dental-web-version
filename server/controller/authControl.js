@@ -4,8 +4,8 @@ const db = require("../connect.js");
 const dentalPediatric = (req, res) => {
     const data = req.body;
 
-    const sql = 'INSERT INTO dental_examination (appointment_id, patient_uhid, selected_teeth, disease, chief_complain, advice, on_examination) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    const values = [data.appointment_id, data.patient_uhid, data.selectedTeeth, data.disease, data.chiefComplain, data.advice, data.onExamination];
+    const sql = 'INSERT INTO dental_examination (appointment_id, patient_uhid, selected_teeth, disease, chief_complain, advice, on_examination, diagnosis_category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const values = [data.appointment_id, data.patient_uhid, data.selectedTeeth, data.disease, data.chiefComplain, data.advice, data.onExamination, data.diagnosis_category];
 
     db.query(sql, values, (err, result) => {
         if (err) {
@@ -14,7 +14,7 @@ const dentalPediatric = (req, res) => {
             return;
         }
         console.log('Inserted data with ID ' + result.insertId);
-        res.status(200).send('Data inserted successfully');
+        res.status(200).json({success:true, examination_ID:result.insertId.toString()});
     });
 };
 
@@ -22,7 +22,7 @@ const updateDentalPediatric = (req, res) => {
     const id = req.params.id; // Get the ID from the URL
     const data = req.body;
 
-    const sql = 'UPDATE dental_examination SET selected_teeth = ?, disease = ?, chief_complain = ?, advice = ?, on_examination = ? WHERE id = ?';
+    const sql = 'UPDATE dental_examination SET selected_teeth = ?, disease = ?, chief_complain = ?, advice = ?, on_examination = ? WHERE exm_id = ?';
     const values = [data.selectedTeeth, data.disease, data.chiefComplain, data.advice, data.onExamination, id];
 
     db.query(sql, values, (err, result) => {
@@ -131,7 +131,7 @@ const getDentalPatientByID = (req, res) => {
 const deleteDentalPediatric = (req, res) =>{
     const id = req.params.id;
     
-    const sql = `DELETE FROM dental_examination WHERE id=?`;
+    const sql = `DELETE FROM dental_examination WHERE exm_id=?`;
     const values = [id];
 
     db.query(sql, values, (err, result)=>{
@@ -249,7 +249,37 @@ const updateSittingCount = (req, res) => {
     });
 };
 
+const addTreatPackageDetails = (req, res)=>{
+    try {
+        const {uhid, branch_name, appointment_id, examination_id, doctor_id, doctor_name, diagnosis_category} = req.body;
+        const insertQuery = "INSERT INTO treatment_package (uhid, branch_name, appointment_id, examination_id, doctor_id, doctor_name, diagnosis_category) VALUES (?,?,?,?,?,?,?)";
+        const insertParams = [
+            uhid, branch_name, appointment_id, examination_id, doctor_id, doctor_name, diagnosis_category
+        ]
+        db.query(insertQuery, insertParams, (err, result)=>{
+            if(err){
+                res.status(400).json({success:false, message:err.message});
+            }else {
+                const insertedData = {
+                    uhid,
+                    branch_name,
+                    appointment_id,
+                    examination_id,
+                    doctor_id,
+                    doctor_name,
+                    diagnosis_category,
+                    insertId: result.insertId 
+                };
+                res.status(200).json({ success: true, result: insertedData });
+            }
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({success:false, message:"Internal Server Error"});
+    }
+}
 
 
 
-module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID, updateSittingCount}; 
+
+module.exports = { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID, updateSittingCount, addTreatPackageDetails}; 

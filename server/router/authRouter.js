@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("../connect.js");
 const multer = require('multer');
 const path = require('path');
-const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID, updateSittingCount } = require("../controller/authControl.js");
+const { dentalPediatric, updateDentalPediatric, getDentalDataByID, deleteDentalPediatric, insertTreatSuggest, getTreatSuggestById, getPatientDetails, getDentalPatientDataByID, getDentalPatientByID, updateSittingCount, addTreatPackageDetails } = require("../controller/authControl.js");
 const { getAppointmentsWithPatientDetails, getAppointmentsWithPatientDetailsById, upDateAppointmentStatus, addSecurityAmount, getSecurityAmountByAppointmentId, getPatientSecurityAmt, updatePatientSecurityAmt, getAllSecurityAmounts, getAppointmentsWithPatientDetailsTreatSugg, updateAppointStatus, getAllAppointmentByPatientId } = require("../controller/authAppointTable.js");
 const { getBranch, LoginDoctor, billPatientData, billPatientDataByAppId, getPatientBillUHID, insertTimelineEvent, getPatientTimeline } = require("../controller/authBranch.js");
 const { getTreatmentList, insertTreatmentData, getExamDataIdbyAppointId, getTreatmentData, updateTreatmentData, deleteTreatmentData, insertTreatPrescription, getMedicineData, getTreatPrescriptionByAppointId, deleteTreatPrescriptionById, getTreatmentDataSUM, getTreatPatientProfile, treatPatientUHID, getPrescriptionPatientProfile, prescripPatientUHID, onGoingTreat } = require("../controller/authTreatment.js");
@@ -111,7 +111,9 @@ router.get('/get-Patient-by-id/:patientId',getPatientDetails);
 //  lab section START here......
 router.post('/insertLabData', insertLabData);
 router.get('/lab-data/:appoint_id', getLabDataByAppointId);
-//  lab section END here......
 
+//  lab section END here......
+// treatpackage routes
+router.post("/addTreatPackageDetails", addTreatPackageDetails)
 
 module.exports = { authRoutes: router };

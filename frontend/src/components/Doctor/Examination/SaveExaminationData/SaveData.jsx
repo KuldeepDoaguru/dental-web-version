@@ -22,20 +22,19 @@ const SaveData = ({ id }) => {
   const dispatch = useDispatch();
   const { refreshTable, currentUser } = useSelector((state) => state.user);
 
+  
+  const getData = async () => {
+    try {
+      const {data} = await axios.get(
+        `http://localhost:8888/api/doctor/getDentalDataByID/${id}`
+      );
+      setData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:8888/api/doctor/getDentalDataByID/${id}`
-        );
-        setData(res.data);
-
-        // Dispatch the action to toggle data refresh
-        // dispatch(toggleDataRefresh());
-      } catch (error) {
-        console.log(error);
-      }
-    };
+    
     getData();
   }, [id, refreshTable]);
 
@@ -84,7 +83,7 @@ const SaveData = ({ id }) => {
     // Set formData with values of the item being edited
     const item = data[index];
     setFormData({
-      id: item.id,
+      id: item.exm_id,
       selectedTeeth: item.selected_teeth,
       disease: item.disease,
       chiefComplain: item.chief_complain,
@@ -99,15 +98,14 @@ const SaveData = ({ id }) => {
 
   const handleDelete = async (id) => {
     try {
-      const confirmed = window.confirm("Are you sure you want to delete?"); // Show confirmation dialog
+      const confirmed = window.confirm("Are you sure you want to delete?"); 
 
       if (confirmed) {
         const res = await axios.delete(
           `http://localhost:8888/api/doctor/deleteDentalPediatric/${id}`
         );
         console.log(res.data); // Log response data
-
-        setData(data.filter((item) => item.id !== id)); // Remove deleted item from data
+        getData();
       }
     } catch (error) {
       console.log(error);
@@ -131,6 +129,7 @@ const SaveData = ({ id }) => {
                     <th>CHIEF COMPLAIN</th>
                     <th>ADVICE</th>
                     <th>ON EXAMINATION</th>
+                    <th>Diagnose Category</th>
                     <th>EDIT ACTION</th>
                     <th>DELETE ACTION</th>
                   </tr>
@@ -143,6 +142,7 @@ const SaveData = ({ id }) => {
                       <td>{item.chief_complain}</td>
                       <td>{item.advice}</td>
                       <td>{item.on_examination}</td>
+                      <td>{item.diagnosis_category}</td>
                       <td>
                         {" "}
                         <button
@@ -158,7 +158,7 @@ const SaveData = ({ id }) => {
                       <td>
                         <button
                           className="btn btn-danger mx-1 justify-content-end"
-                          onClick={() => handleDelete(item.id)}
+                          onClick={() => handleDelete(item.exm_id)}
                         >
                           <MdDelete size={20} />
                         </button>
@@ -187,7 +187,7 @@ const SaveData = ({ id }) => {
                               ></button>
                             </div>
                             <div className="modal-body">
-                              <form onSubmit={(e) => handleSubmit(item.id, e)}>
+                              <form onSubmit={(e) => handleSubmit(item.exm_id, e)}>
                                 <div
                                   data-mdb-input-init
                                   class="form-outline mb-4"

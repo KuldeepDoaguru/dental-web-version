@@ -146,7 +146,7 @@ const AppointTable = () => {
 
       if (action === "In Treatment") {
         timelineForStartTreat(uhid);
-        navigate(`/examination-Dashboard/${appointId}`);
+        navigate(`/examination-Dashboard/${appointId}/${uhid}`);
       }
 
       const res = await axios.get(
@@ -264,7 +264,7 @@ const AppointTable = () => {
                         {/* Option 1 */}
                         <ul className="dropdown-menu">
                           {item.appointment_status !== "Complete" &&
-                            item.appointment_status !== "Check Out" && (
+                            item.appointment_status !== "Check Out" && item.appointment_status !== "Appoint" &&(
                               <>
                                 <li>
                                   <button

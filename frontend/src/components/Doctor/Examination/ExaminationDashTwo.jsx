@@ -23,50 +23,51 @@ const ExaminationDashTwo = () => {
     examination_id: "",
     doctor_id: user.currentUser.employee_ID,
     doctor_name: user.currentUser.employee_name,
-    diagnosis_category:dcat
+    diagnosis_category: dcat,
   });
-
-  
 
   console.log(treatData);
 
   const addPackageTreat = async (updatedTreatData) => {
     try {
-      const {data} = await axios.post(
-        "http://localhost:8888/api/doctor/addTreatPackageDetails",updatedTreatData
+      const { data } = await axios.post(
+        "http://localhost:8888/api/doctor/addTreatPackageDetails",
+        updatedTreatData
       );
-      console.log(data.result.diagnosis_category);
+      console.log(data.result);
       cogoToast.success("treatment started added");
-        if(data.result.diagnosis_category === "Dental-X"){
-          navigate(`/ExaminationDashBoardPatient/${id}/${data.result.diagnosis_category}`);
-        }
-        if(data.result.diagnosis_category === "Pediatric"){
-          navigate(`/ExaminationDashBoardPediatric/${id}/${data.result.diagnosis_category}`);
-        }
+      if (data.result.diagnosis_category === "Dental-X") {
+        navigate(
+          `/ExaminationDashBoardPatient/${id}/${data.result.diagnosis_category}/${data.result.insertId}`
+        );
+      }
+      if (data.result.diagnosis_category === "Pediatric") {
+        navigate(
+          `/ExaminationDashBoardPediatric/${id}/${data.result.diagnosis_category}/${data.result.insertId}`
+        );
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-
- 
   const uniFunc = async (id) => {
     try {
-        setDcat(id);
+      setDcat(id);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-}
+  };
 
-useEffect(() => {
-  if (dcat) {
+  useEffect(() => {
+    if (dcat) {
       const updatedTreatData = {
-          ...treatData,
-          diagnosis_category: dcat
+        ...treatData,
+        diagnosis_category: dcat,
       };
       addPackageTreat(updatedTreatData);
-  }
-}, [dcat]);
+    }
+  }, [dcat]);
   return (
     <>
       <Wrapper>
@@ -92,22 +93,18 @@ useEffect(() => {
                 className="d-flex flex-column justify-content-end align-items-end"
                 style={{ marginTop: "5rem" }}
               >
-                <div className="dental shadow p-5 m-3 bg-body rounded mx-3" onClick={()=>uniFunc("Dental-X")}>
-                    Dental-X Chart
-                  </div>
-                  <div className="dental shadow p-5 mt-5 bg-body rounded mx-3" onClick={()=>uniFunc("Pediatric")}>
-                    Pediatric Chart
-                  </div>
-                {/* <Link to={`/ExaminationDashBoardPatient/${id}`}>
-                  <div className="dental shadow p-5 m-3 bg-body rounded mx-3">
-                    Dental-X Chart
-                  </div>
-                </Link>
-                <Link to={`/ExaminationDashBoardPediatric/${id}`}>
-                  <div className="dental shadow p-5 mt-5 bg-body rounded mx-3">
-                    Pediatric Chart
-                  </div>
-                </Link> */}
+                <div
+                  className="dental shadow p-5 m-3 bg-body rounded mx-3"
+                  onClick={() => uniFunc("Dental-X")}
+                >
+                  Dental-X Chart
+                </div>
+                <div
+                  className="dental shadow p-5 mt-5 bg-body rounded mx-3"
+                  onClick={() => uniFunc("Pediatric")}
+                >
+                  Pediatric Chart
+                </div>
               </div>
             </div>
             <div className="co-lg-6 col-6">

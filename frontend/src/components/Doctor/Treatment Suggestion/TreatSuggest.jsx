@@ -5,60 +5,68 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import EditAppointment from "./EditAppointment";
+import { toggleTableRefresh } from "../../../redux/user/userSlice";
+import SuggestedtreatmentList from "../Examination/SaveExaminationData/SuggestedtreatmentList";
 
 const TreatSuggest = () => {
-  const { id } = useParams();
-  console.log(id);
-  const [treatments, setTreatments] = useState([]);
-  const [getPatientData, setGetPatientData] = useState([]);
-  const [currentForm, setCurrentForm] = useState(1);
-  const [showEditPopup, setShowEditPopup] = useState(false); // State to track current form
-  const [formData, setFormData] = useState({
-    appoint_id: id,
-    p_uhid: "",
-    treatment_name: [],
-    totalCost: "",
-    treatment_sitting: "",
-    consider_sitting: "",
-    sitting_result: "",
-    appoint_date: "",
-    note: "",
-  });
-
-  console.log(formData);
-  const [labData, setLabData] = useState({
-    appoint_id: id,
-    patient_uhid: "",
-    test_name: "",
-  });
-  // const [patientUHID, setPatientUHID] = useState('');
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
   console.log(branch);
+  const { id, tpid } = useParams();
+  console.log(id, tpid);
+  const [treatments, setTreatments] = useState([]);
+  const [getPatientData, setGetPatientData] = useState([]);
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [value, setValue] = useState(0); // State to track current form
+  const [formData, setFormData] = useState({
+    appoint_id: id,
+    branch: branch,
+    p_uhid: "",
+    tp_id: tpid,
+    treatment_name: "",
+    total_sitting: "",
+    total_cost: "",
+  });
 
-  const navigate = useNavigate();
-  // console.log(getPatientData[0].uhid);
+  console.log(getPatientData);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevInputItem) => ({
+      ...prevInputItem,
+      [name]: value,
+    }));
+
+    let uniqueTreatments = formData.treatment_name;
+    const treatment = treatments.find(
+      (treatment) => treatment.treatment_name === uniqueTreatments
+    );
+    setFormData((prevInputItem) => ({
+      ...prevInputItem,
+      total_cost: treatment?.treatment_cost,
+    }));
+  };
 
   console.log(formData);
-  console.log(labData);
 
   const getTreatmentList = async () => {
     try {
-      const res = await axios.get(
+      const { data } = await axios.get(
         `http://localhost:8888/api/doctor/treatmentLists`
       );
-      console.log(res.data.data);
-      setTreatments(res.data.data);
+      console.log(data);
+      setTreatments(data.data);
     } catch (error) {
       console.log("Error fetching treatments:", error);
     }
   };
 
-  const handleEditAppointment = ()=>{
+  console.log(treatments);
+  const handleEditAppointment = () => {
     setShowEditPopup(true);
-}
+  };
 
   useEffect(() => {
     getTreatmentList();
@@ -74,11 +82,10 @@ const TreatSuggest = () => {
       setGetPatientData(res.data.result);
       console.log(res.data.result);
 
-      const uhid = res.data.result[0]?.uhid; // Assuming you get only one patient data
-      // setPatientUHID(uhid);
+      const uhid = res.data.result[0]?.uhid;
       setFormData((prevState) => ({
         ...prevState,
-        p_uhid: uhid || "", // Set uhid in the form state as p_uhid
+        p_uhid: uhid || "",
       }));
     } catch (error) {
       console.log(error);
@@ -88,40 +95,6 @@ const TreatSuggest = () => {
   useEffect(() => {
     getPatientDetail();
   }, []);
-
-  // Get Patient Details END
-
-  const calculateTotalCost = () => {
-    let totalCostArray = [];
-    let totalCostValue = 0;
-    let uniqueTreatments = new Set(formData.treatment_name); // Use a Set to store unique treatments
-
-    uniqueTreatments.forEach((selectedTreatment) => {
-      const treatment = treatments.find(
-        (treatment) => treatment.treatment_name === selectedTreatment
-      );
-      if (treatment) {
-        totalCostArray.push(treatment.treatment_cost); // Push treatment cost into the array
-        totalCostValue += Number(treatment.treatment_cost);
-      }
-    });
-
-    return { totalCostArray, totalCostValue }; // Return an object with both values
-  };
-
-  // useEffect(() => {
-  //     const { totalCostArray, totalCostValue } = calculateTotalCost();
-  //     setFormData({ ...formData, totalCost: totalCostArray, totalCostValue });
-  // }, [formData.treatment_name, treatments]);
-
-  useEffect(() => {
-    const { totalCostArray, totalCostValue } = calculateTotalCost();
-    setFormData({
-      ...formData,
-      totalCost: totalCostArray,
-      totalCostValue: totalCostValue,
-    });
-  }, [formData.treatment_name, treatments]);
 
   const timelineForTreatSuggest = async () => {
     try {
@@ -140,29 +113,39 @@ const TreatSuggest = () => {
     }
   };
 
+  const calculateTotalCost = () => {
+    let uniqueTreatments = formData.treatment_name;
+
+    const treatment = treatments.find(
+      (treatment) => treatment.treatment_name === uniqueTreatments
+    );
+
+    return treatment?.treatment_cost;
+  };
+
+  // let totalValue = calculateTotalCost
+  // const valueTot = setValue(totalValue);
+
+  useEffect(() => {
+    const calculatedValue = calculateTotalCost();
+    setValue(calculatedValue);
+  }, []);
+
+  const forms = {
+    appoint_id: id,
+    branch: branch,
+    p_uhid: formData.p_uhid,
+    tp_id: tpid,
+    treatment_name: formData.treatment_name,
+    totalCost: value,
+    total_sitting: formData.total_sitting,
+  };
+
+  console.log(forms);
+
   //form number one
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-
-    let sitting_result = 0;
-
-    if (formData.consider_sitting === "YES") {
-      sitting_result = formData.treatment_sitting;
-    } else {
-      sitting_result = formData.treatment_sitting;
-    }
-
-    const forms = {
-      appoint_id: id,
-      p_uhid: formData.p_uhid,
-      treatment_name: formData.treatment_name,
-      totalCost: formData.totalCostValue,
-      treatment_sitting: formData.treatment_sitting,
-      consider_sitting: formData.consider_sitting,
-      sitting_result: sitting_result,
-      appoint_date: formData.appoint_date,
-      note: formData.note,
-    };
 
     try {
       const res = await axios.post(
@@ -172,62 +155,15 @@ const TreatSuggest = () => {
       alert("Successfully added!");
       console.log(res.data);
       timelineForTreatSuggest();
-      window.location.reload();
+      setFormData({
+        ...formData,
+        treatment_name: "",
+        total_sitting: "",
+        total_cost: "",
+      });
+      dispatch(toggleTableRefresh());
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const timelineForlab = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
-        {
-          type: " Dental Laboratory Test",
-          description: "Add Laboratory Test",
-          branch: branch,
-          patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
-        }
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleInsertData = async (e) => {
-    e.preventDefault();
-
-    console.log(getPatientData[0].uhid);
-
-    if (getPatientData.length > 0 && getPatientData[0].uhid) {
-      const labform = {
-        appoint_id: id,
-        patient_uhid: getPatientData[0].uhid,
-        test_name: labData.test_name,
-      };
-
-      try {
-        const response = await axios.post(
-          `http://localhost:8888/api/doctor/insertLabData`,
-          labform
-        );
-        alert("Successfully added!");
-        console.log(response.data);
-        timelineForlab();
-
-        // Reset the labData state after successful submission
-        setLabData({
-          appoint_id: id,
-          patient_uhid: "",
-          test_name: "",
-        });
-      } catch (error) {
-        console.error("Error inserting lab data:", error);
-        alert("Error inserting lab data");
-      }
-    } else {
-      alert("Error: Patient data not available");
     }
   };
 
@@ -321,45 +257,29 @@ const TreatSuggest = () => {
                             className="form-select text-center w-100"
                             name="treatment_name"
                             aria-label="Default select example"
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                treatment_name: Array.from(
-                                  e.target.selectedOptions,
-                                  (option) => option.value
-                                ),
-                              })
-                            }
+                            onChange={handleChange}
                             value={formData.treatment_name}
-                            multiple // Add this attribute to enable multi-select
                           >
+                            <option value="">-select treatment-</option>
                             {treatments.map((item, index) => (
                               <option key={index}>{item.treatment_name}</option>
                             ))}
                           </select>
-                          <small>
-                            *Please select multiple treatments with ctrl +
-                            click*
-                          </small>
                         </div>
                         <div className="text-start">
                           <label className="label">Total Cost</label>
                           <input
                             type="text" // Change the input type to text for now
                             className="form-control w-100"
-                            value={formData.totalCostValue}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                totalCostValue: e.target.value,
-                              })
-                            }
+                            name="total_cost"
+                            value={formData.total_cost}
+                            // onChange={handleChange}
                           />
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <div className="text-center">
                       <label className="label">
                         How Many Sitting Are Required ?
@@ -368,22 +288,27 @@ const TreatSuggest = () => {
                         <input
                           type="number"
                           className="form-control w-100"
-                          name="sittings_required"
+                          name="total_sitting"
                           placeholder="Answer...."
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              treatment_sitting: e.target.value,
-                            })
-                          }
-                          value={formData.treatment_sitting}
+                          onChange={handleChange}
+                          value={formData.total_sitting}
                           min="1"
                           required
                         />
                       </div>
                     </div>
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+                    <div className="h-100 d-flex justify-content-center align-items-center">
+                      <button
+                        type="submit"
+                        className="btn btn-info text-light mt-5"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </div>
+                  {/* <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
                     <div className="d-flex flex-column align-items-center mt-3 mb-3">
                       <label className="label">
                         Consider this is first Sitting ?
@@ -453,17 +378,16 @@ const TreatSuggest = () => {
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="m-2 d-flex justify-content-center">
-                    <button type="submit" className="btn btn-info shadow">
-                      Save
-                    </button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </form>
           </div>
         </div>
+        <div className="container p-0">
+          <SuggestedtreatmentList tpid={tpid} getPatientData={getPatientData} />
+        </div>
+
         <div className="container">
           <div className="row shadow-sm p-3 mb-5 bg-body rounded">
             <div className="d-flex justify-content-center align-items-center">
@@ -480,90 +404,6 @@ const TreatSuggest = () => {
               >
                 Collect Security Money
               </button>
-            </div>
-          </div>
-        </div>
-
-        {/* ------- Laboratory Section ----------- */}
-
-        <div className="container main">
-          <div className="row justify-content-center ">
-            <p className="fs-1 shadow-none p-2 bg-light rounded text-center">
-              Dental Laboratory Test
-            </p>
-          </div>
-        </div>
-        <div className="container">
-          <div className="row shadow-sm p-3 mb-5 bg-body rounded">
-            <div className="d-flex justify-content-center align-items-center">
-              <button
-                type="button"
-                class="btn btn-info text-light mx-2"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModal"
-              >
-                Add Lab Test
-              </button>
-
-              <div
-                class="modal fade"
-                id="exampleModal"
-                tabindex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">
-                        Laboratory Test
-                      </h1>
-                      <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div class="modal-body">
-                      <form onSubmit={handleInsertData}>
-                        <div data-mdb-input-init class="form-outline mb-4">
-                          <input
-                            type="hidden"
-                            name="appointment_id"
-                            value={
-                              getPatientData.length > 0
-                                ? getPatientData[0].uhid
-                                : ""
-                            }
-                          />
-                          <label class="form-label" for="form4Example1">
-                            Write Test
-                          </label>
-                          <input
-                            type="text"
-                            id="form4Example1"
-                            class="form-control"
-                            name="test_name"
-                            value={labData.test_name}
-                            onChange={(e) =>
-                              setLabData({
-                                ...labData,
-                                test_name: e.target.value,
-                              })
-                            }
-                          />
-                          <div className="text-center m-3">
-                            <button className="btn btn-primary">
-                              Add Test
-                            </button>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

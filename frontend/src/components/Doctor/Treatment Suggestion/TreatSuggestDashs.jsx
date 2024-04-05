@@ -5,8 +5,8 @@ import SideBar from "../SideBar";
 import TreatSuggest from "./TreatSuggest";
 
 const TreatSuggestDashs = () => {
-//   const { id } = useParams();
-//   console.log(id);
+  // const { id, tpid } = useParams();
+  //   console.log(id);
   return (
     <>
       <Wrapper>
@@ -31,5 +31,5 @@ const TreatSuggestDashs = () => {
 
 export default TreatSuggestDashs;
 const Wrapper = styled.div`
-overflow-x: hidden;
+  overflow-x: hidden;
 `;

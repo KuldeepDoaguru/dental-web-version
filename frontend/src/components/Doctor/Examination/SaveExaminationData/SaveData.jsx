@@ -6,8 +6,10 @@ import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTableRefresh } from "../../../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
-const SaveData = ({ id }) => {
+const SaveData = ({ id, tpid }) => {
+  const navigate = useNavigate();
   console.log(id);
   const [data, setData] = useState([]);
   const [formData, setFormData] = useState({
@@ -22,10 +24,9 @@ const SaveData = ({ id }) => {
   const dispatch = useDispatch();
   const { refreshTable, currentUser } = useSelector((state) => state.user);
 
-  
   const getData = async () => {
     try {
-      const {data} = await axios.get(
+      const { data } = await axios.get(
         `http://localhost:8888/api/doctor/getDentalDataByID/${id}`
       );
       setData(data);
@@ -34,7 +35,6 @@ const SaveData = ({ id }) => {
     }
   };
   useEffect(() => {
-    
     getData();
   }, [id, refreshTable]);
 
@@ -43,22 +43,21 @@ const SaveData = ({ id }) => {
   };
 
   const timelineForDelete = async () => {
-
     try {
-        const response = await axios.post(
-            "http://localhost:8888/api/doctor/insertTimelineEvent",
-            {
-                type: "Examiantion",
-                description: "Add Teeth Pediatric DentalX",
-                // branch: branch,
-                // patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
-            }
-        );
-        console.log(response);
+      const response = await axios.post(
+        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        {
+          type: "Examiantion",
+          description: "Add Teeth Pediatric DentalX",
+          // branch: branch,
+          // patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        }
+      );
+      console.log(response);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-};
+  };
 
   // Handle Update Data
 
@@ -98,14 +97,14 @@ const SaveData = ({ id }) => {
 
   const handleDelete = async (id) => {
     try {
-      const confirmed = window.confirm("Are you sure you want to delete?"); 
+      const confirmed = window.confirm("Are you sure you want to delete?");
 
       if (confirmed) {
         const res = await axios.delete(
           `http://localhost:8888/api/doctor/deleteDentalPediatric/${id}`
         );
-        console.log(res.data); // Log response data
-        getData();
+        console.log(res.data);
+        setData(data.filter((item) => item.exm_id !== id));
       }
     } catch (error) {
       console.log(error);
@@ -114,12 +113,17 @@ const SaveData = ({ id }) => {
     }
   };
 
+  const handleSaveContinue = () => {
+    // navigate(`/TreatmentDashBoard/${id}`);
+    navigate(`/treatmentSuggestion/${id}/${tpid}`);
+  };
+
   return (
     <Wrapper>
       <div className="container">
         <div className="row">
           <h2>Saved Data</h2>
-          {data.length > 0 ? (
+          {data && data?.length > 0 ? (
             <div className="table-responsive ">
               <table className="table table-bordered table-striped table-secondary border border-secondary">
                 <thead>
@@ -187,7 +191,9 @@ const SaveData = ({ id }) => {
                               ></button>
                             </div>
                             <div className="modal-body">
-                              <form onSubmit={(e) => handleSubmit(item.exm_id, e)}>
+                              <form
+                                onSubmit={(e) => handleSubmit(item.exm_id, e)}
+                              >
                                 <div
                                   data-mdb-input-init
                                   class="form-outline mb-4"
@@ -311,6 +317,15 @@ const SaveData = ({ id }) => {
                   ))}
                 </tbody>
               </table>
+              <div className="d-flex justify-content-end">
+                <button
+                  type="button"
+                  className="btn btn-info text-light mx-3"
+                  onClick={handleSaveContinue}
+                >
+                  Next
+                </button>
+              </div>
             </div>
           ) : (
             <p>There is no saved data.</p>
@@ -326,7 +341,7 @@ const Wrapper = styled.div`
   .updatelable {
     font-size: 1rem;
     font-weight: 600;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Roboto", sans-serif;
     padding-left: 0.9rem;
   }
 `;

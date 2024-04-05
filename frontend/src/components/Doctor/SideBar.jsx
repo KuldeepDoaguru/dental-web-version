@@ -126,14 +126,13 @@ const Sider = () => {
                 </div>
               </Link>
             </li> */}
-            <hr />
-            <li>
+            {/* <hr /> */}
+            {/* <li>
               <Link
                 to="/CreatePrescrip"
                 className={`link-div ${getSidebarClass("/CreatePrescrip")}`}
               >
                 <div>
-                  {/* <AiOutlineAccountBook className="icon"/> */}
                   <CiMedicalClipboard className="icon"/>
                 </div>
                 <div>
@@ -142,7 +141,7 @@ const Sider = () => {
                   </h3>
                 </div>
               </Link>
-            </li>
+            </li> */}
             {/* <hr/>
             <li>
               <Link

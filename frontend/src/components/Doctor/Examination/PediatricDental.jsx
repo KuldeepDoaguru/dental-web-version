@@ -199,11 +199,12 @@ import rootbtn from "../Assest/Examination Buttons/rootstump1.png";
 import suparabtn from "../Assest/Examination Buttons/Supra erupted1.png";
 import SaveData from "./SaveExaminationData/SaveData";
 
-const PediatricDentalTest = () => {
+const PediatricDentalTest = ({ tpid }) => {
+  console.log(tpid);
   const { id, dcat } = useParams();
   console.log(id);
   const [selectedTeeth, setSelectedTeeth] = useState([]);
-  const [teethShow, setTeethShow] = useState()
+  const [teethShow, setTeethShow] = useState();
   // const [inputItemList, setInputItemList] = useState([]);
   const [inputItem, setInputItem] = useState({
     appointment_id: id,
@@ -213,7 +214,7 @@ const PediatricDentalTest = () => {
     chiefComplain: "",
     advice: "",
     onExamination: "",
-    diagnosis_category:dcat
+    diagnosis_category: dcat,
   });
   const [selectAllTeeth, setSelectAllTeeth] = useState(false);
   const [isFormFilled, setIsFormFilled] = useState(false);
@@ -320,43 +321,42 @@ const PediatricDentalTest = () => {
     75: cariesT20,
   };
 
-  const crNull = ()=>{
-    cogoToast.error("Please Select Teeth")
-  }
+  const crNull = () => {
+    cogoToast.error("Please Select Teeth");
+  };
 
   const caries = () => {
     let updatedDisease;
     if (inputItem.desease && inputItem.desease.includes("Caries")) {
-        // Remove "Caries" from the array
-        updatedDisease = inputItem.desease.filter(disease => disease !== "Caries");
+      // Remove "Caries" from the array
+      updatedDisease = inputItem.desease.filter(
+        (disease) => disease !== "Caries"
+      );
     } else {
-        // Add "Caries" to the array
-        updatedDisease = [...inputItem.desease, "Caries"];
+      // Add "Caries" to the array
+      updatedDisease = [...inputItem.desease, "Caries"];
     }
 
     console.log(updatedDisease); // Check the updated disease array
 
     const newInputItem = {
-        ...inputItem,
-        desease: updatedDisease,
+      ...inputItem,
+      desease: updatedDisease,
     };
     setInputItem(newInputItem);
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
         if (inputItem.desease && inputItem.desease.includes("Caries")) {
-          
-          toothElement.src = toothDefaultMapping[toothId]; 
+          toothElement.src = toothDefaultMapping[toothId];
         } else {
           toothElement.src = toothImageMapping[toothId];
         }
       }
     });
-  
-};
+  };
 
-// console.log(teeth);
-
+  // console.log(teeth);
 
   // caries end here
 
@@ -388,30 +388,31 @@ const PediatricDentalTest = () => {
   const fracture = () => {
     let updatedDisease;
     if (inputItem.desease && inputItem.desease.includes("Fracture")) {
-        // Remove "Fracture" from the array
-        updatedDisease = inputItem.desease.filter(disease => disease !== "Fracture");
+      // Remove "Fracture" from the array
+      updatedDisease = inputItem.desease.filter(
+        (disease) => disease !== "Fracture"
+      );
     } else {
-        // Add "Fracture" to the array
-        updatedDisease = [...inputItem.desease, "Fracture"];
+      // Add "Fracture" to the array
+      updatedDisease = [...inputItem.desease, "Fracture"];
     }
 
     console.log(updatedDisease); // Check the updated disease array
 
     const newInputItem = {
-        ...inputItem,
-        desease: updatedDisease,
+      ...inputItem,
+      desease: updatedDisease,
     };
     setInputItem(newInputItem);
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
-        const toothElement = document.getElementById(`tooth_${toothId}`);
-        if (toothElement) {
+      const toothElement = document.getElementById(`tooth_${toothId}`);
+      if (toothElement) {
         if (inputItem.desease && inputItem.desease.includes("Fracture")) {
-          
-          toothElement.src = toothDefaultMapping[toothId]; 
+          toothElement.src = toothDefaultMapping[toothId];
         } else {
-          toothElement.src = toothfractureImageMapping[toothId]; 
+          toothElement.src = toothfractureImageMapping[toothId];
         }
       }
     });
@@ -446,18 +447,20 @@ const PediatricDentalTest = () => {
   const impacted = () => {
     let updatedDisease;
     if (inputItem.desease && inputItem.desease.includes("Impacted")) {
-        // Remove "Impacted" from the array
-        updatedDisease = inputItem.desease.filter(disease => disease !== "Impacted");
+      // Remove "Impacted" from the array
+      updatedDisease = inputItem.desease.filter(
+        (disease) => disease !== "Impacted"
+      );
     } else {
-        // Add "Impacted" to the array
-        updatedDisease = [...inputItem.desease, "Impacted"];
+      // Add "Impacted" to the array
+      updatedDisease = [...inputItem.desease, "Impacted"];
     }
 
     console.log(updatedDisease); // Check the updated disease array
 
     const newInputItem = {
-        ...inputItem,
-        desease: updatedDisease,
+      ...inputItem,
+      desease: updatedDisease,
     };
     setInputItem(newInputItem);
 
@@ -465,13 +468,12 @@ const PediatricDentalTest = () => {
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-      if (inputItem.desease && inputItem.desease.includes("Impacted")) {
-        
-        toothElement.src = toothDefaultMapping[toothId]; 
-      } else {
-        toothElement.src = toothimpactedImageMapping[toothId]; 
+        if (inputItem.desease && inputItem.desease.includes("Impacted")) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothimpactedImageMapping[toothId];
+        }
       }
-    }
     });
   };
 
@@ -505,18 +507,20 @@ const PediatricDentalTest = () => {
   const missing = () => {
     let updatedDisease;
     if (inputItem.desease && inputItem.desease.includes("Missing Tooth")) {
-        // Remove "Missing Tooth" from the array
-        updatedDisease = inputItem.desease.filter(disease => disease !== "Missing Tooth");
+      // Remove "Missing Tooth" from the array
+      updatedDisease = inputItem.desease.filter(
+        (disease) => disease !== "Missing Tooth"
+      );
     } else {
-        // Add "Missing Tooth" to the array
-        updatedDisease = [...inputItem.desease, "Missing Tooth"];
+      // Add "Missing Tooth" to the array
+      updatedDisease = [...inputItem.desease, "Missing Tooth"];
     }
 
     console.log(updatedDisease); // Check the updated disease array
 
     const newInputItem = {
-        ...inputItem,
-        desease: updatedDisease,
+      ...inputItem,
+      desease: updatedDisease,
     };
     setInputItem(newInputItem);
 
@@ -524,13 +528,12 @@ const PediatricDentalTest = () => {
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-      if (inputItem.desease && inputItem.desease.includes("Missing Tooth")) {
-        
-        toothElement.src = toothDefaultMapping[toothId]; 
-      } else {
-        toothElement.src = toothmissingImageMapping[toothId]; 
+        if (inputItem.desease && inputItem.desease.includes("Missing Tooth")) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothmissingImageMapping[toothId];
+        }
       }
-    }
     });
   };
 
@@ -564,31 +567,32 @@ const PediatricDentalTest = () => {
   const mobility = () => {
     let updatedDisease;
     if (inputItem.desease && inputItem.desease.includes("Mobility")) {
-        // Remove "Mobility" from the array
-        updatedDisease = inputItem.desease.filter(disease => disease !== "Mobility");
+      // Remove "Mobility" from the array
+      updatedDisease = inputItem.desease.filter(
+        (disease) => disease !== "Mobility"
+      );
     } else {
-        // Add "Mobility" to the array
-        updatedDisease = [...inputItem.desease, "Mobility"];
+      // Add "Mobility" to the array
+      updatedDisease = [...inputItem.desease, "Mobility"];
     }
 
     console.log(updatedDisease); // Check the updated disease array
 
     const newInputItem = {
-        ...inputItem,
-        desease: updatedDisease,
+      ...inputItem,
+      desease: updatedDisease,
     };
     setInputItem(newInputItem);
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-      if (inputItem.desease && inputItem.desease.includes("Mobility")) {
-        
-        toothElement.src = toothDefaultMapping[toothId]; 
-      } else {
-        toothElement.src = toothmobilityImageMapping[toothId]; 
+        if (inputItem.desease && inputItem.desease.includes("Mobility")) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothmobilityImageMapping[toothId];
+        }
       }
-    }
     });
   };
 
@@ -622,31 +626,35 @@ const PediatricDentalTest = () => {
   const periapical = () => {
     let updatedDisease;
     if (inputItem.desease && inputItem.desease.includes("Periapical Abscess")) {
-        // Remove "Periapical Abscess" from the array
-        updatedDisease = inputItem.desease.filter(disease => disease !== "Periapical Abscess");
+      // Remove "Periapical Abscess" from the array
+      updatedDisease = inputItem.desease.filter(
+        (disease) => disease !== "Periapical Abscess"
+      );
     } else {
-        // Add "Periapical Abscess" to the array
-        updatedDisease = [...inputItem.desease, "Periapical Abscess"];
+      // Add "Periapical Abscess" to the array
+      updatedDisease = [...inputItem.desease, "Periapical Abscess"];
     }
 
     console.log(updatedDisease); // Check the updated disease array
 
     const newInputItem = {
-        ...inputItem,
-        desease: updatedDisease,
+      ...inputItem,
+      desease: updatedDisease,
     };
     setInputItem(newInputItem);
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-      if (inputItem.desease && inputItem.desease.includes("Periapical Abscess")) {
-        
-        toothElement.src = toothDefaultMapping[toothId]; 
-      } else {
-        toothElement.src = toothperiapicalImageMapping[toothId]; 
+        if (
+          inputItem.desease &&
+          inputItem.desease.includes("Periapical Abscess")
+        ) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothperiapicalImageMapping[toothId];
+        }
       }
-    }
     });
   };
 
@@ -681,18 +689,20 @@ const PediatricDentalTest = () => {
   const root = () => {
     let updatedDisease;
     if (inputItem.desease && inputItem.desease.includes("Root Stump")) {
-        // Remove "Root Stump" from the array
-        updatedDisease = inputItem.desease.filter(disease => disease !== "Root Stump");
+      // Remove "Root Stump" from the array
+      updatedDisease = inputItem.desease.filter(
+        (disease) => disease !== "Root Stump"
+      );
     } else {
-        // Add "Root Stump" to the array
-        updatedDisease = [...inputItem.desease, "Root Stump"];
+      // Add "Root Stump" to the array
+      updatedDisease = [...inputItem.desease, "Root Stump"];
     }
 
     console.log(updatedDisease); // Check the updated disease array
 
     const newInputItem = {
-        ...inputItem,
-        desease: updatedDisease,
+      ...inputItem,
+      desease: updatedDisease,
     };
     setInputItem(newInputItem);
 
@@ -700,13 +710,12 @@ const PediatricDentalTest = () => {
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-      if (inputItem.desease && inputItem.desease.includes("Root Stump")) {
-        
-        toothElement.src = toothDefaultMapping[toothId]; 
-      } else {
-        toothElement.src = toothrootImageMapping[toothId]; 
+        if (inputItem.desease && inputItem.desease.includes("Root Stump")) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothrootImageMapping[toothId];
+        }
       }
-    }
     });
   };
 
@@ -740,31 +749,32 @@ const PediatricDentalTest = () => {
   const supara = () => {
     let updatedDisease;
     if (inputItem.desease && inputItem.desease.includes("Supra Erupted")) {
-        // Remove "Supra Erupted" from the array
-        updatedDisease = inputItem.desease.filter(disease => disease !== "Supra Erupted");
+      // Remove "Supra Erupted" from the array
+      updatedDisease = inputItem.desease.filter(
+        (disease) => disease !== "Supra Erupted"
+      );
     } else {
-        // Add "Supra Erupted" to the array
-        updatedDisease = [...inputItem.desease, "Supra Erupted"];
+      // Add "Supra Erupted" to the array
+      updatedDisease = [...inputItem.desease, "Supra Erupted"];
     }
 
     console.log(updatedDisease); // Check the updated disease array
 
     const newInputItem = {
-        ...inputItem,
-        desease: updatedDisease,
+      ...inputItem,
+      desease: updatedDisease,
     };
     setInputItem(newInputItem);
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-      if (inputItem.desease && inputItem.desease.includes("Supra Erupted")) {
-        
-        toothElement.src = toothDefaultMapping[toothId]; 
-      } else {
-        toothElement.src = toothsuparaImageMapping[toothId]; 
+        if (inputItem.desease && inputItem.desease.includes("Supra Erupted")) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothsuparaImageMapping[toothId];
+        }
       }
-    }
     });
   };
 
@@ -814,7 +824,7 @@ const PediatricDentalTest = () => {
       chiefComplain: inputItem.chiefComplain,
       advice: inputItem.advice,
       onExamination: inputItem.onExamination,
-      diagnosis_category: inputItem.diagnosis_category
+      diagnosis_category: inputItem.diagnosis_category,
     };
 
     try {
@@ -823,7 +833,7 @@ const PediatricDentalTest = () => {
         formData
       );
       console.log(response.data);
-      alert(response.data)
+      alert(response.data);
       dispatch(toggleTableRefresh());
       timelineForExamination();
       // window.location.reload();
@@ -875,7 +885,6 @@ const PediatricDentalTest = () => {
     }
   };
 
-
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
@@ -915,12 +924,12 @@ const PediatricDentalTest = () => {
               >
                 <GiFastBackwardButton size={21} />
               </button>
-              <button
+              {/* <button
                 className="btn btn-info text-light"
                 onClick={handleRedirect}
               >
                 Dental-X Chart
-              </button>
+              </button> */}
             </div>
           </div>
 
@@ -1373,6 +1382,7 @@ const PediatricDentalTest = () => {
                           className="form-control"
                           placeholder="Selected Teeth Number"
                           readOnly
+                          required
                           //   value={selectedTeeth.join(", ")}
                           value={inputItem.selectTeeth.join(", ")}
                           // onChange={handleSelecteditem}
@@ -1385,6 +1395,7 @@ const PediatricDentalTest = () => {
                         <input
                           type="text"
                           value={inputItem.desease.join(", ")}
+                          required
                           onChange={(e) =>
                             setInputItem({
                               ...inputItem,
@@ -1412,6 +1423,7 @@ const PediatricDentalTest = () => {
                           name="chiefComplain"
                           onChange={handleSelecteditem}
                           value={inputItem.chiefComplain}
+                          required
                           id="form8Example3"
                           class="form-control"
                           placeholder="Cheif Complaints"
@@ -1453,76 +1465,94 @@ const PediatricDentalTest = () => {
                       className="btn btn-info text-light mx-3"
                       // onClick={handleAddNew}
                     >
-                      Add New
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-info text-light mx-3"
-                      onClick={handleSaveContinue}
-                    >
-                      Save & Continue
+                      Save
                     </button>
                   </div>
                 </form>
               </div>
               <div>
-                <SaveData id={id} />
-               
+                <SaveData id={id} tpid={tpid} />
               </div>
             </div>
 
             <div className="col-lg-2 col-2 bodybutton">
               <div className="d-flex flex-column text-center">
-                <div onClick={inputItem.selectTeeth.length > 0 ? caries:crNull} className="p-2 diseaseMain">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? caries : crNull}
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={cariesbtn}
                     alt="caries"
                     className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={inputItem.selectTeeth.length > 0 ? fracture:crNull} className="p-2 diseaseMain ">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? fracture : crNull}
+                  className="p-2 diseaseMain "
+                >
                   <img
                     src={fracturebtn}
                     alt="fracture"
                     className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={inputItem.selectTeeth.length > 0 ? impacted:crNull} className="p-2 diseaseMain">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? impacted : crNull}
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={impactedbtn}
                     alt="impacted"
                     className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={inputItem.selectTeeth.length > 0 ? missing:crNull} className="p-2 diseaseMain">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? missing : crNull}
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={missingbtn}
                     alt="missing"
                     className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={inputItem.selectTeeth.length > 0 ? mobility:crNull} className="p-2 diseaseMain">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? mobility : crNull}
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={mobilitybtn}
                     alt="mobility"
                     className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={inputItem.selectTeeth.length > 0 ? periapical:crNull} className="p-2 diseaseMain">
+                <div
+                  onClick={
+                    inputItem.selectTeeth.length > 0 ? periapical : crNull
+                  }
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={periapicalbtn}
                     alt="periapical"
                     className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={inputItem.selectTeeth.length > 0 ? root:crNull} className="p-2 diseaseMain">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? root : crNull}
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={rootbtn}
                     alt="root"
                     className="buttons shadow-sm bg-body rounded teethDisease"
                   />
                 </div>
-                <div onClick={inputItem.selectTeeth.length > 0 ? supara:crNull} className="p-2 diseaseMain">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? supara : crNull}
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={suparabtn}
                     alt="supara"

@@ -24,33 +24,145 @@ import CreatePrescrip from "./components/Doctor/Prescription/CreatePrescrip";
 import { useSelector } from "react-redux";
 
 function App() {
-  const user = useSelector((state)=> state.user);
+  const user = useSelector((state) => state.user);
   console.log(user);
   return (
     <Routes>
       {/* ************** Doctor Routes Start Here ******************* */}
 
       <Route path="/" element={<DoctorLogin />} />
-      <Route path="/doctor-dashboard" element={user.currentUser=== null ? <DoctorLogin /> : <DoctorDashboard />} />
-      <Route path="/examination-Dashboard/:id/:uhid" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoard />} />
-      <Route path="/ExaminationDashBoardPatient/:id/:dcat" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoardPatient />} />
-      <Route path="/ExaminationDashBoardPediatric/:id/:dcat" element={user.currentUser=== null ? <DoctorLogin /> : <ExaminationDashBoardPediatric />} />
-      <Route path="/treatmentSuggestion/:id" element={user.currentUser=== null ? <DoctorLogin /> : <TreatSuggestDashs />} /> 
-      <Route path="/SecurityAmount/:id" element={user.currentUser=== null ? <DoctorLogin /> : <SecurityAmount />} />
-      <Route path="/print-security-bill/:sa_id" element={user.currentUser=== null ? <DoctorLogin /> : <PrintSecurityAmt />} />
-      <Route path="/TreatmentDashBoard/:id" element={user.currentUser=== null ? <DoctorLogin /> : <TreatmentDashBoard />} />
-      <Route path="/NewTreatment/:id" element={user.currentUser=== null ? <DoctorLogin /> : <NewTreatment />} />
-      <Route path="/treatProducer/:id/:appointment_id" element={user.currentUser=== null ? <DoctorLogin /> : <TreatmentForm />} />
-      <Route path="/treatmentDashTwo/:id/:appointment_id" element={user.currentUser=== null ? <DoctorLogin /> : <TreatmentDashTwo />} />
-      <Route path="/NewTreatPrescription/:id" element={user.currentUser=== null ? <DoctorLogin /> : <NewTreatPrescription />} />
-      <Route path="/PrescriptionDashBoard" element={user.currentUser=== null ? <DoctorLogin /> : <PrescriptionDashBoard />} />
-      <Route path="/TPrescription" element={user.currentUser=== null ? <DoctorLogin /> : <TPrescription />} />
-      <Route path="/TPrescriptionDash/:id" element={user.currentUser=== null ? <DoctorLogin /> : <TPrescriptionDash />} />
-      <Route path="/ViewTreatPrescription/:id" element={user.currentUser=== null ? <DoctorLogin /> : <ViewTreatPrescription />} />
-      <Route path="/CreatePrescrip" element={user.currentUser=== null ? <DoctorLogin /> : <CreatePrescrip />} />
-      <Route path="/profileDashboard" element={user.currentUser=== null ? <DoctorLogin /> : <ProfileDashboard />} /> 
-      <Route path="/Patient-profile/:uhid" element={user.currentUser=== null ? <DoctorLogin /> : <PatientProfile />} />
-      <Route path="/all-patient" element={user.currentUser=== null ? <DoctorLogin /> : <AllPatient />} />
+      <Route
+        path="/doctor-dashboard"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <DoctorDashboard />
+        }
+      />
+      <Route
+        path="/examination-Dashboard/:id/:uhid"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <ExaminationDashBoard />
+        }
+      />
+      <Route
+        path="/ExaminationDashBoardPatient/:id/:dcat/:tpid"
+        element={
+          user.currentUser === null ? (
+            <DoctorLogin />
+          ) : (
+            <ExaminationDashBoardPatient />
+          )
+        }
+      />
+      <Route
+        path="/ExaminationDashBoardPediatric/:id/:dcat/:tpid"
+        element={
+          user.currentUser === null ? (
+            <DoctorLogin />
+          ) : (
+            <ExaminationDashBoardPediatric />
+          )
+        }
+      />
+      <Route
+        path="/treatmentSuggestion/:id/:tpid"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <TreatSuggestDashs />
+        }
+      />
+      <Route
+        path="/SecurityAmount/:id"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <SecurityAmount />
+        }
+      />
+      <Route
+        path="/print-security-bill/:sa_id"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <PrintSecurityAmt />
+        }
+      />
+      <Route
+        path="/TreatmentDashBoard/:id"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <TreatmentDashBoard />
+        }
+      />
+      <Route
+        path="/NewTreatment/:id"
+        element={user.currentUser === null ? <DoctorLogin /> : <NewTreatment />}
+      />
+      <Route
+        path="/treatProducer/:id/:appointment_id"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <TreatmentForm />
+        }
+      />
+      <Route
+        path="/treatmentDashTwo/:id/:appointment_id"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <TreatmentDashTwo />
+        }
+      />
+      <Route
+        path="/NewTreatPrescription/:id"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <NewTreatPrescription />
+        }
+      />
+      <Route
+        path="/PrescriptionDashBoard"
+        element={
+          user.currentUser === null ? (
+            <DoctorLogin />
+          ) : (
+            <PrescriptionDashBoard />
+          )
+        }
+      />
+      <Route
+        path="/TPrescription"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <TPrescription />
+        }
+      />
+      <Route
+        path="/TPrescriptionDash/:id"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <TPrescriptionDash />
+        }
+      />
+      <Route
+        path="/ViewTreatPrescription/:id"
+        element={
+          user.currentUser === null ? (
+            <DoctorLogin />
+          ) : (
+            <ViewTreatPrescription />
+          )
+        }
+      />
+      <Route
+        path="/CreatePrescrip"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <CreatePrescrip />
+        }
+      />
+      <Route
+        path="/profileDashboard"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <ProfileDashboard />
+        }
+      />
+      <Route
+        path="/Patient-profile/:uhid"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <PatientProfile />
+        }
+      />
+      <Route
+        path="/all-patient"
+        element={user.currentUser === null ? <DoctorLogin /> : <AllPatient />}
+      />
 
       {/* ****************** Doctor Routes End Here ******************* */}
 

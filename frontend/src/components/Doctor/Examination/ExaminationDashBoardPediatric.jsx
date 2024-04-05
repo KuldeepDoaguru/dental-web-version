@@ -3,9 +3,10 @@ import styled from "styled-components";
 import HeadBar from "../HeadBar";
 import SideBar from "../SideBar";
 import PediatricDental from "./PediatricDental";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const ExaminationDashBoardPediatric = () => {
-  
+  const { tpid } = useParams();
   return (
     <>
       <Wrapper>
@@ -18,8 +19,7 @@ const ExaminationDashBoardPediatric = () => {
                 <SideBar />
               </div>
               <div className="col-lg-11 col-11 ps-0 m-2">
-             <PediatricDental /> 
-                
+                <PediatricDental tpid={tpid} />
               </div>
             </div>
           </div>
@@ -31,5 +31,5 @@ const ExaminationDashBoardPediatric = () => {
 
 export default ExaminationDashBoardPediatric;
 const Wrapper = styled.div`
-overflow: hidden;
+  overflow: hidden;
 `;

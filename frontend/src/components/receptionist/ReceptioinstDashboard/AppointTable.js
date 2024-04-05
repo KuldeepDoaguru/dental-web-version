@@ -467,15 +467,7 @@ patient_type
 export default AppointTable;
 const Wrapper = styled.div`
  
-  #tableres {
-    margin-top: 0rem;
-    @media screen and (max-width: 768px) {
-      width: 98%
-    }
-    @media screen and (min-width: 768px) and (max-width: 1020px) {
-      width: 98%
-    }
-  }
+
   #title {
 
     white-space: nowrap; /* Prevent text wrapping */
@@ -502,9 +494,10 @@ const Wrapper = styled.div`
     white-space: nowrap;
   }
   .table-responsive{
-    
+    min-height: 10rem;
   }
   .dropdown-item {
   
   }
+  
 `;

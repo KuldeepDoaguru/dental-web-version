@@ -70,7 +70,7 @@ function App() {
         }
       />
       <Route
-        path="/SecurityAmount/:id"
+        path="/SecurityAmount/:id/:tpid"
         element={
           user.currentUser === null ? <DoctorLogin /> : <SecurityAmount />
         }

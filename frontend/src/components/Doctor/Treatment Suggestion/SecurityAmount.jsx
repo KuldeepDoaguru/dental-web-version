@@ -8,15 +8,17 @@ import HeadBar from "../HeadBar";
 import { useSelector } from "react-redux";
 
 const SecurityAmount = () => {
-  const { id } = useParams();
+  const { id, tpid } = useParams();
   console.log(id);
+  console.log(tpid);
   const navigate = useNavigate();
   const [securityAmt, setSecurityAmt] = useState([]);
   // const [getPatientData, setGetPatientData] = useState([]);
-  const currentUser = useSelector(state => state.user.currentUser);
+  const currentUser = useSelector((state) => state.user.currentUser);
   const branch = currentUser.branch_name;
   console.log(branch);
   const [formData, setFormData] = useState({
+    tp_id: tpid,
     branch_name: currentUser ? currentUser.branch_name : "",
     appointment_id: id,
     uhid: "",
@@ -44,8 +46,11 @@ const SecurityAmount = () => {
 
   const newGetFetchData = async () => {
     try {
-      const resps = await axios.get(`http://localhost:8888/api/doctor/patient-security/${id}/${branch}`);
-      const { patient_name, uhid, treatment_name, mobileno, totalCost } = resps.data.result[0];
+      const resps = await axios.get(
+        `http://localhost:8888/api/doctor/patient-security/${id}/${branch}`
+      );
+      const { patient_name, uhid, treatment_name, mobileno, totalCost } =
+        resps.data.result[0];
       console.log(resps.data.result);
       setFormData({
         ...formData,
@@ -58,7 +63,7 @@ const SecurityAmount = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     newGetFetchData();
@@ -78,18 +83,15 @@ const SecurityAmount = () => {
   //   }
   // }
 
-
-
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFormData = { ...formData, [name]: value };
 
     // If payment status changes to "success", set the current date
-    if (name === 'payment_status' && value === 'success') {
+    if (name === "payment_status" && value === "success") {
       updatedFormData = {
         ...updatedFormData,
-        payment_date: new Date().toISOString().slice(0, 10) // Set the current date in YYYY-MM-DD format
+        payment_date: new Date().toISOString().slice(0, 10), // Set the current date in YYYY-MM-DD format
       };
     }
 
@@ -121,9 +123,7 @@ const SecurityAmount = () => {
     }
   };
 
-
   const timelineForSecuirty = async () => {
-
     try {
       const response = await axios.post(
         "http://localhost:8888/api/doctor/insertTimelineEvent",
@@ -143,6 +143,7 @@ const SecurityAmount = () => {
   const insertCorrectData = async () => {
     try {
       const formsCorrect = {
+        tp_id: tpid,
         branch_name: formData.branch_name,
         appointment_id: id,
         uhid: formData.uhid,
@@ -172,7 +173,9 @@ const SecurityAmount = () => {
 
   const getSecurityAmt = async () => {
     try {
-      const resdata = await axios.get(`http://localhost:8888/api/doctor/getSecurityAmountByAppointmentId/${id}`);
+      const resdata = await axios.get(
+        `http://localhost:8888/api/doctor/getSecurityAmountByAppointmentId/${id}`
+      );
       setSecurityAmt(resdata.data.data);
       console.log(resdata.data.data);
     } catch (error) {
@@ -215,9 +218,8 @@ const SecurityAmount = () => {
   // };
 
   const handleChangePage = () => {
-    navigate(`/TreatmentDashBoard/${id}`)
-  }
-
+    navigate(`/TreatmentDashBoard/${id}`);
+  };
 
   return (
     <>
@@ -242,7 +244,7 @@ const SecurityAmount = () => {
                               for="exampleFormControlInput1"
                               class="form-label"
                             >
-                              Treatment Provide
+                              Treatment Package ID
                             </label>
                             <input
                               type="text"
@@ -250,7 +252,7 @@ const SecurityAmount = () => {
                               placeholder="Treatment"
                               name="date"
                               required
-                              value={formData.treatment}
+                              value={tpid}
                               onChange={handleChange}
                               readOnly
                             />
@@ -395,10 +397,15 @@ const SecurityAmount = () => {
                             </select>
                           </div>
                         </div>
-                        {formData.payment_status === 'success' && (
+                        {formData.payment_status === "success" && (
                           <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
                             <div className="input-group mb-3">
-                              <label htmlFor="exampleFormControlInput2" className="form-label">Payment Method</label>
+                              <label
+                                htmlFor="exampleFormControlInput2"
+                                className="form-label"
+                              >
+                                Payment Method
+                              </label>
                               <select
                                 name="payment_Mode"
                                 value={formData.payment_Mode}
@@ -413,10 +420,16 @@ const SecurityAmount = () => {
                             </div>
                           </div>
                         )}
-                        {formData.payment_Mode === 'online' && (
+                        {formData.payment_Mode === "online" && (
                           <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
                             <div className="input-group mb-3">
-                              <label htmlFor="exampleFormControlInput1" className="form-label mx-2">Transaction ID</label><br />
+                              <label
+                                htmlFor="exampleFormControlInput1"
+                                className="form-label mx-2"
+                              >
+                                Transaction ID
+                              </label>
+                              <br />
                               <input
                                 type="text"
                                 name="transaction_Id"
@@ -454,7 +467,6 @@ const SecurityAmount = () => {
                             <th>Assigned Doctor</th>
                             <th>Security Amount</th>
                             <th>Payment Status</th>
-                            <th>Action</th>
                             <th>Print</th>
                           </tr>
                         </thead>
@@ -526,7 +538,30 @@ const SecurityAmount = () => {
                                     Print
                                   </button>
                                 )} */}
-                                  <td> {item.payment_status === "success" ? (<Link to={`/print-security-bill/${item.sa_id}`}>  <button type="button" className="btn btn-primary">Print</button> </Link>) : (  <button type="button" className="btn btn-primary" disabled>Print</button>)} </td>
+                                <td>
+                                  {" "}
+                                  {item.payment_status === "success" ? (
+                                    <Link
+                                      to={`/print-security-bill/${item.sa_id}`}
+                                    >
+                                      {" "}
+                                      <button
+                                        type="button"
+                                        className="btn btn-primary"
+                                      >
+                                        Print
+                                      </button>{" "}
+                                    </Link>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      className="btn btn-primary"
+                                      disabled
+                                    >
+                                      Print
+                                    </button>
+                                  )}{" "}
+                                </td>
                               </td>
                             </tr>
                           ))}
@@ -536,7 +571,12 @@ const SecurityAmount = () => {
                   </div>
                 </div>
                 <div className="text-center">
-                  <button className="btn btn-info text-light" onClick={handleChangePage}>Start Treatment</button>
+                  <button
+                    className="btn btn-info text-light"
+                    onClick={handleChangePage}
+                  >
+                    Start Treatment
+                  </button>
                 </div>
               </div>
             </div>

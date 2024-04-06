@@ -3,7 +3,9 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import SittingProcessModal from "./SittingProcessModal";
-import EditAppointment from "../../Treatment Suggestion/EditAppointment";
+import BookSittingAppointment from "../../Treatment Suggestion/BookSittingAppointment";
+import EditTreatSuggestModal from "./EditTreatSuggestModal";
+import { toggleTableRefresh } from "../../../../redux/user/userSlice";
 
 const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
   const dispatch = useDispatch();
@@ -15,13 +17,14 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedData, setSelectedData] = useState();
   const [showBookPopup, setShowBookPopup] = useState(false);
-
+  const [showEditTreatSug, setShowEditTreatSug] = useState(false);
 
   const getListTreatment = async () => {
     try {
       const { data } = await axios.get(
         `http://localhost:8888/api/doctor/getTreatList/${branch}/${tpid}`
       );
+      console.log(data);
       setTreatList(data);
     } catch (error) {
       console.log(error);
@@ -39,10 +42,52 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
     setShowEditPopup(true);
   };
 
-  const openBookAppoint = () =>{
+  const openBookAppoint = () => {
     setShowEditPopup(false);
     setShowBookPopup(true);
-  }
+  };
+
+  const openTreatEdit = (item) => {
+    setShowEditTreatSug(true);
+    setSelectedData(item);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const confirmed = window.confirm("Are you sure you want to delete?");
+
+      if (confirmed) {
+        const res = await axios.delete(
+          `http://localhost:8888/api/doctor/deleteTreatSuggestion/${id}/${branch}`
+        );
+        console.log(res.data);
+        dispatch(toggleTableRefresh());
+        setTreatList(treatList.filter((item) => item.ts_id !== id));
+      }
+    } catch (error) {
+      console.log(error);
+      // Optionally, provide feedback to the user
+      window.alert("An error occurred while deleting the item.");
+    }
+  };
+
+  const totalTreatSuggest = () => {
+    try {
+      let total = 0;
+      treatList.forEach((item) => {
+        total = total + parseFloat(item.totalCost);
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+  const grandTotal = totalTreatSuggest();
+
+  console.log(getPatientData);
 
   return (
     <>
@@ -63,7 +108,7 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
                   <th>Total Cost</th>
                   <th>Current Sitting</th>
                   <th>Total Req. Sitting</th>
-                  <th>Action</th>
+                  <th className="text-center">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -76,21 +121,48 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
                       <td>{item.p_uhid}</td>
                       <td>{item.treatment_name}</td>
                       <td>{item.totalCost}</td>
-                      <td>{item.treatment_sitting}</td>
+                      <td>{item.current_sitting}</td>
                       <td>{item.total_sitting}</td>
                       <td>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => handleShowTreatProcess(item)}
-                        >
-                          Start
-                        </button>
+                        <div className="d-flex justify-content-between">
+                          <button
+                            className="btn btn-info"
+                            onClick={() => handleShowTreatProcess(item)}
+                          >
+                            Start
+                          </button>
+                          <button
+                            className="btn btn-warning ms-2"
+                            onClick={() => openTreatEdit(item)}
+                          >
+                            Change Total Sitting
+                          </button>
+                          {item.current_sitting > 0 ? (
+                            <button
+                              className="btn btn-danger"
+                              disabled
+                              onClick={() => handleDelete(item.ts_id)}
+                            >
+                              Delete
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-danger"
+                              onClick={() => handleDelete(item.ts_id)}
+                            >
+                              Delete
+                            </button>
+                          )}
+                        </div>
                       </td>
                     </tr>
                   </>
                 ))}
               </tbody>
             </table>
+            <div>
+              <h5>Grand Total : {grandTotal}</h5>
+            </div>
           </div>
           {showEditPopup && (
             <SittingProcessModal
@@ -99,7 +171,21 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
               openBookAppoint={openBookAppoint}
             />
           )}
-          {showBookPopup && <EditAppointment onClose={() => setShowBookPopup(false)} getPatientData={getPatientData} />}
+          {showBookPopup && (
+            <BookSittingAppointment
+              onClose={() => setShowBookPopup(false)}
+              getPatientData={getPatientData}
+              selectedData={selectedData}
+            />
+          )}
+
+          {showEditTreatSug && (
+            <EditTreatSuggestModal
+              onClose={() => setShowEditTreatSug(false)}
+              selectedData={selectedData}
+              openBookAppoint={openBookAppoint}
+            />
+          )}
         </div>
       </Container>
     </>

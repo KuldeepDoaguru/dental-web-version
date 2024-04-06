@@ -80,27 +80,6 @@ const getDentalDataByID = (req, res) => {
   });
 };
 
-// Examination Module for Patient Profile
-// const getDentalPatientDataByID = (req, res) => {
-//     const patientUHID = req.params.patientUHID;
-
-//     const sql = 'SELECT * FROM dental_examination WHERE patient_uhid = ?';
-//     db.query(sql, [patientUHID], (err, result) => {
-//         if (err) {
-//             console.error('Error retrieving data: ', err);
-//             res.status(500).send('Error retrieving data: ' + err.message);
-//             return;
-//         }
-
-//         if (result.length === 0) {
-//             res.status(404).send('No data found for Patient UHID: ' + patientUHID);
-//             return;
-//         }
-
-//         res.status(200).json(result);
-//     });
-// };
-
 const getDentalPatientDataByID = (req, res) => {
   const patientUHID = req.params.patientUHID;
 
@@ -178,29 +157,45 @@ const insertTreatSuggest = (req, res) => {
     total_sitting,
   } = req.body;
 
-  const sql = `INSERT INTO treat_suggest (appoint_id, branch_name, p_uhid, tp_id, treatment_name, totalCost,total_sitting) VALUES(?,?,?,?,?,?,?)`;
-
-  db.query(
-    sql,
-    [
-      appoint_id,
-      branch,
-      p_uhid,
-      tp_id,
-      treatment_name,
-      totalCost,
-      total_sitting,
-    ],
-    (err, result) => {
-      if (err) {
-        return res.status(400).json({ success: false, message: err });
-      } else {
+  const selectQuery =
+    "SELECT * FROM treat_suggest WHERE tp_id = ? AND treatment_name = ?";
+  db.query(selectQuery, [tp_id, treatment_name], (err, result) => {
+    if (err) {
+      return res.status(400).json({ success: false, message: err.message });
+    } else {
+      if (result && result.length > 0) {
         return res
-          .status(201)
-          .json({ success: true, message: "Insertion Successful!", result });
+          .status(400)
+          .json({ success: false, message: "treatment already listed" });
+      } else {
+        const sql = `INSERT INTO treat_suggest (appoint_id, branch_name, p_uhid, tp_id, treatment_name, totalCost,total_sitting) VALUES(?,?,?,?,?,?,?)`;
+
+        db.query(
+          sql,
+          [
+            appoint_id,
+            branch,
+            p_uhid,
+            tp_id,
+            treatment_name,
+            totalCost,
+            total_sitting,
+          ],
+          (err, result) => {
+            if (err) {
+              return res.status(400).json({ success: false, message: err });
+            } else {
+              return res.status(201).json({
+                success: true,
+                message: "Insertion Successful!",
+                result,
+              });
+            }
+          }
+        );
       }
     }
-  );
+  });
 };
 
 const getTreatSuggestById = (req, res) => {
@@ -381,23 +376,130 @@ const updateTreatSitting = (req, res) => {
   try {
     const tsid = req.params.tsid;
     const branch = req.params.branch;
-    const { consider_sitting } = req.body;
+    const {
+      consider_sitting,
+      current_sitting,
+      upcoming_sitting,
+      current_sitting_status,
+      upcoming_sitting_status,
+    } = req.body;
 
-    const sql = `UPDATE treat_suggest SET consider_sitting = ? WHERE ts_id = ? AND branch_name = ?`;
+    const sql = `UPDATE treat_suggest 
+    SET consider_sitting = ?, 
+        current_sitting = ?, 
+        upcoming_sitting = ?, 
+        current_sitting_status = ?, 
+        upcoming_sitting_status = ? 
+    WHERE ts_id = ? 
+      AND branch_name = ?`;
 
-    db.query(sql, [consider_sitting, tsid, branch], (err, result) => {
+    db.query(
+      sql,
+      [
+        consider_sitting,
+        current_sitting,
+        upcoming_sitting,
+        current_sitting_status,
+        upcoming_sitting_status,
+        tsid,
+        branch,
+      ],
+      (err, result) => {
+        if (err) {
+          res.status(400).json({ success: false, message: err.message });
+        } else {
+          const insertedData = {
+            consider_sitting,
+            current_sitting,
+            upcoming_sitting,
+            current_sitting_status,
+            upcoming_sitting_status,
+            tsid,
+            branch,
+          };
+          res.status(200).json({ success: true, result: insertedData });
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+const updateTreatSuggestion = (req, res) => {
+  const branch = req.params.branch;
+  const tsid = req.params.tsid;
+  try {
+    const { total_sitting } = req.body;
+    const selectQuery =
+      "SELECT * FROM treat_suggest WHERE ts_id = ? AND branch_name = ?";
+    db.query(selectQuery, [tsid, branch], (err, result) => {
       if (err) {
-        res.status(400).json({ success: false, message: err.message });
+        return res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+
+      if (result && result.length > 0) {
+        const updateQuery = `UPDATE treat_suggest SET total_sitting = ? WHERE ts_id = ? AND branch_name = ?`;
+
+        db.query(updateQuery, [total_sitting, tsid, branch], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Failed to update details",
+            });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "Details updated successfully",
+            });
+          }
+        });
       } else {
-        const insertedData = {
-          consider_sitting,
-        };
-        res.status(200).json({ success: true, result: insertedData });
+        return res.status(404).json({
+          success: false,
+          message: "treatment not found",
+        });
       }
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
+  }
+};
+
+const deleteTreatSuggestion = (req, res) => {
+  const branch = req.params.branch;
+  const tsid = req.params.tsid;
+  try {
+    const deleteQuery =
+      "DELETE FROM treat_suggest WHERE ts_id = ? AND branch_name = ?";
+    db.query(deleteQuery, [tsid, branch], (err, result) => {
+      if (err) {
+        return res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+
+      if (result.affectedRows > 0) {
+        return res.status(200).json({
+          success: true,
+          message: "Treatment suggestion deleted successfully",
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Treatment suggestion not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error!" });
   }
 };
 
@@ -415,4 +517,6 @@ module.exports = {
   addTreatPackageDetails,
   getTreatList,
   updateTreatSitting,
+  updateTreatSuggestion,
+  deleteTreatSuggestion,
 };

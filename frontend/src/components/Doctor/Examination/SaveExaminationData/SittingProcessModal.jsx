@@ -19,15 +19,67 @@ const SittingProcessModal = ({ onClose, selectedData, openBookAppoint }) => {
   const [sitConsider, setSitConsider] = useState("");
   const [treat, setTreat] = useState([]);
   const [showBook, setShowBook] = useState(false);
+  const [formData, setFormData] = useState({
+    consider_sitting: "",
+    current_sitting: "",
+    upcoming_sitting: "",
+    current_sitting_status: "",
+    upcoming_sitting_status: "",
+  });
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    // Update formData with the new value
+    setFormData((prevInputItem) => ({
+      ...prevInputItem,
+      [name]: value,
+    }));
+
+    // Access the updated formData in the callback
+
+    setFormData((prevInputItem) => {
+      if (
+        selectedData.total_sitting === "1" &&
+        prevInputItem.consider_sitting === "yes"
+      ) {
+        return {
+          ...prevInputItem,
+          current_sitting: "1",
+          upcoming_sitting: "",
+          current_sitting_status: "ongoing",
+          upcoming_sitting_status: "",
+        };
+      } else if (
+        selectedData.total_sitting > "1" &&
+        prevInputItem.consider_sitting === "yes"
+      ) {
+        return {
+          ...prevInputItem,
+          current_sitting: "1",
+          upcoming_sitting: "2",
+          current_sitting_status: "ongoing",
+          upcoming_sitting_status: "hold",
+        };
+      } else {
+        return {
+          ...prevInputItem,
+          current_sitting: "",
+          upcoming_sitting: "1",
+          current_sitting_status: "",
+          upcoming_sitting_status: "hold",
+        };
+      }
+    });
+  };
+
+  console.log(formData);
   const updateSitting = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
         `http://localhost:8888/api/doctor/updateTreatSitting/${branch}/${selectedData.ts_id}`,
-        {
-          consider_sitting: sitConsider,
-        }
+        formData
       );
       cogoToast.success("sitting considered");
       console.log(data.result.consider_sitting);
@@ -41,6 +93,7 @@ const SittingProcessModal = ({ onClose, selectedData, openBookAppoint }) => {
     if (treat === "yes" && selectedData.total_sitting === "1") {
       setShow(true);
       setShowBook(false);
+      onClose();
     } else if (treat === "no" && selectedData.total_sitting === "1") {
       setShow(false);
       setShowBook(true);
@@ -72,28 +125,72 @@ const SittingProcessModal = ({ onClose, selectedData, openBookAppoint }) => {
                       Consider this First Sitting?
                     </label>
                     <select
-                      name=""
+                      name="consider_sitting"
                       id=""
                       required
                       className="rounded p-1"
-                      onChange={(e) => setSitConsider(e.target.value)}
+                      onChange={handleChange}
+                      value={formData.consider_sitting}
                     >
                       <option value="">-select-</option>
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
                     </select>
                   </div>
-                  {/* <div class="mb-3">
-                  <label for="recipient-id" class="col-form-label">
-                    Note
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="recipient-id"
-                    onChange={(e) => setNote(e.target.value)}
-                  />
-                </div> */}
+                  <div class="mb-3">
+                    <label for="recipient-id" class="col-form-label">
+                      Current Sitting
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="recipient-id"
+                      name="current_sitting"
+                      onChange={handleChange}
+                      value={formData.current_sitting}
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="recipient-id" class="col-form-label">
+                      Upcoming Sitting
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id=""
+                      name="upcoming_sitting"
+                      onChange={handleChange}
+                      value={formData.upcoming_sitting}
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label for="recipient-id" class="col-form-label">
+                      Current Sitting Status
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id=""
+                      name="current_sitting_status"
+                      onChange={handleChange}
+                      value={formData.current_sitting_status}
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="recipient-id" class="col-form-label">
+                      Upcoming Sitting Status
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id=""
+                      name="upcoming_sitting_status"
+                      onChange={handleChange}
+                      value={formData.upcoming_sitting_status}
+                    />
+                  </div>
                   <div class="mb-3 d-flex justify-content-between">
                     {/* {sitConsider === "yes" ? (
                     <button className="btn btn-warning shadow d-none">

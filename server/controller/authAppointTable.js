@@ -108,6 +108,7 @@ const upDateAppointmentStatus = (req, res) => {
 const addSecurityAmount = (req, res) => {
   try {
     const {
+      tp_id,
       branch_name,
       date,
       appointment_id,
@@ -127,6 +128,7 @@ const addSecurityAmount = (req, res) => {
       refund_by,
     } = req.body;
     const insertParams = [
+      tp_id,
       branch_name,
       date,
       appointment_id,
@@ -146,8 +148,10 @@ const addSecurityAmount = (req, res) => {
       refund_by,
     ];
 
+    const  querySecurity = `SELECT * FROM security_amount WHERE sa_id = ? AND branch_name = ?`;
+
     const selectQuery =
-      "INSERT INTO security_amount (branch_name, date, appointment_id, uhid, patient_name, patient_number, treatment, assigned_doctor, amount, payment_status, payment_Mode, transaction_Id, payment_date, refund_amount, refund_date, received_by, refund_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO security_amount (tp_id, branch_name, date, appointment_id, uhid, patient_name, patient_number, treatment, assigned_doctor, amount, payment_status, payment_Mode, transaction_Id, payment_date, refund_amount, refund_date, received_by, refund_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
     db.query(selectQuery, insertParams, (err, result) => {
       if (err) {
@@ -422,6 +426,89 @@ const getAllAppointmentByPatientId = (req, res) => {
   }
 };
 
+const getAppointmentsViaDocId = (req, res) => {
+  const did = req.params.did;
+  const branch = req.params.branch;
+  const selectQuery = `SELECT * FROM appointments WHERE assigned_doctor_id = ? AND branch_name = ?`;
+  db.query(selectQuery, [did, branch], (err, result) => {
+    if (err) {
+      res.status(500).json({ success: false, message: err.message });
+    } else {
+      return res.status(200).json({
+        message: "Get data from appointments and patient_details",
+        result,
+      });
+    }
+  });
+};
+
+const bookSittingAppointment = (req, res) => {
+  try {
+    const {
+      patient_uhid,
+      branch,
+      assigned_doctor_name,
+      assigned_doctor_id,
+      appointment_dateTime,
+      treatment_provided,
+      appointment_created_by,
+      appointment_created_by_ID,
+      notes,
+      appointment_status,
+    } = req.body;
+
+    const created_at = new Date();
+
+    const bookAppointmentQuery = `
+      INSERT INTO appointments (
+          patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided,  appointment_created_by, appointment_created_by_emp_id, notes, appointment_status, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `;
+
+    const bookAppointmentParams = [
+      patient_uhid,
+      branch,
+      assigned_doctor_name,
+      assigned_doctor_id,
+      appointment_dateTime,
+      treatment_provided,
+      appointment_created_by,
+      appointment_created_by_ID,
+      notes,
+      appointment_status,
+      created_at,
+    ];
+
+    db.query(
+      bookAppointmentQuery,
+      bookAppointmentParams,
+      (appointmentErr, appointmentResult) => {
+        if (appointmentErr) {
+          console.error("Error booking appointment:", appointmentErr);
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        } else {
+          console.log("Appointment booked successfully");
+          return res.status(200).json({
+            data: appointmentResult,
+            treatment: treatment_provided,
+            success: true,
+            message: "Appointment Booked successfully",
+          });
+        }
+      }
+    );
+  } catch (error) {
+    console.error("Error in book appointment:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in book appointment",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getAppointmentsWithPatientDetails,
   getAppointmentsWithPatientDetailsById,
@@ -434,4 +521,6 @@ module.exports = {
   getAppointmentsWithPatientDetailsTreatSugg,
   updateAppointStatus,
   getAllAppointmentByPatientId,
+  getAppointmentsViaDocId,
+  bookSittingAppointment,
 };

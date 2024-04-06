@@ -4,7 +4,7 @@ import { GiFastBackwardButton } from "react-icons/gi";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import EditAppointment from "./EditAppointment";
+import EditAppointment from "./BookSittingAppointment";
 import { toggleTableRefresh } from "../../../redux/user/userSlice";
 import SuggestedtreatmentList from "../Examination/SaveExaminationData/SuggestedtreatmentList";
 
@@ -34,19 +34,23 @@ const TreatSuggest = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+
+    // Update formData with the new value
     setFormData((prevInputItem) => ({
       ...prevInputItem,
       [name]: value,
     }));
 
-    let uniqueTreatments = formData.treatment_name;
-    const treatment = treatments.find(
-      (treatment) => treatment.treatment_name === uniqueTreatments
-    );
-    setFormData((prevInputItem) => ({
-      ...prevInputItem,
-      total_cost: treatment?.treatment_cost,
-    }));
+    // Access the updated formData in the callback
+    setFormData((prevInputItem) => {
+      const treatment = treatments.find(
+        (treatment) => treatment.treatment_name === prevInputItem.treatment_name
+      );
+      return {
+        ...prevInputItem,
+        total_cost: treatment?.treatment_cost,
+      };
+    });
   };
 
   console.log(formData);
@@ -123,9 +127,6 @@ const TreatSuggest = () => {
     return treatment?.treatment_cost;
   };
 
-  // let totalValue = calculateTotalCost
-  // const valueTot = setValue(totalValue);
-
   useEffect(() => {
     const calculatedValue = calculateTotalCost();
     setValue(calculatedValue);
@@ -137,7 +138,7 @@ const TreatSuggest = () => {
     p_uhid: formData.p_uhid,
     tp_id: tpid,
     treatment_name: formData.treatment_name,
-    totalCost: value,
+    totalCost: formData.total_cost,
     total_sitting: formData.total_sitting,
   };
 
@@ -146,7 +147,6 @@ const TreatSuggest = () => {
   //form number one
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-
     try {
       const res = await axios.post(
         `http://localhost:8888/api/doctor/insertTreatSuggest`,
@@ -164,6 +164,7 @@ const TreatSuggest = () => {
       dispatch(toggleTableRefresh());
     } catch (error) {
       console.log(error);
+      alert(error.response.data.message);
     }
   };
 
@@ -172,7 +173,7 @@ const TreatSuggest = () => {
   };
 
   const handleCollect = () => {
-    navigate(`/SecurityAmount/${id}`);
+    navigate(`/SecurityAmount/${id}/${tpid}`);
   };
 
   return (
@@ -272,7 +273,9 @@ const TreatSuggest = () => {
                             type="text" // Change the input type to text for now
                             className="form-control w-100"
                             name="total_cost"
-                            value={formData.total_cost}
+                            value={
+                              formData.treatment_name ? formData.total_cost : ""
+                            }
                             // onChange={handleChange}
                           />
                         </div>
@@ -395,7 +398,7 @@ const TreatSuggest = () => {
                 className="btn btn-info text-light mx-2"
                 onClick={handleNavigate}
               >
-                Skip
+                Start Treatment
               </button>
               <button
                 type="button"

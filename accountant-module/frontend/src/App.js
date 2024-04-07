@@ -133,11 +133,11 @@ function App() {
         <Route path="/OpdBills/:bid" element={<OpdBills />} />
         <Route path="/PatientsLabBills" element={<PatientsLabBills />} />
         <Route path="/TreatmentBills/:bid" element={<TreatmentBills />} />
-        <Route path="/PaySlip" element={<PaySlip />} />
+        <Route path="/PaySlip/:slid" element={<PaySlip />} />
         <Route path="/AllDuaAmount" element={<AllDuaAmount />} />
         <Route path="/VoucherPaid" element={<VoucherPaid />} />
         <Route
-          path="/VoucherPaidListPrint"
+          path="/VoucherPaidListPrint/:vid"
           element={<VoucherPaidListPrint />}
         />
         <Route path="/AddPatientBill" element={<AddPatientBill />} />

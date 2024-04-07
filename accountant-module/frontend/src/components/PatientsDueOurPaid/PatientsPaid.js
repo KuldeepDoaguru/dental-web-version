@@ -26,6 +26,13 @@ const PatientsPaid = () => {
     }
   };
 
+  console.log(paidList);
+  const filterForPaidBills = paidList?.filter((item) => {
+    return item.paid_amount !== null;
+  });
+
+  console.log(filterForPaidBills);
+
   useEffect(() => {
     getBillPaidList();
   }, []);
@@ -66,7 +73,7 @@ const PatientsPaid = () => {
                                 </tr>
                               </thead>
                               <tbody>
-                                {paidList?.map((item) => (
+                                {filterForPaidBills?.map((item) => (
                                   <>
                                     <tr className="table-row">
                                       <td>{item.bill_id}</td>

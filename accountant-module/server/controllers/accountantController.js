@@ -828,6 +828,74 @@ const paidBillDetails = (req, res) => {
   }
 };
 
+const addEmployeeSalary = (req, res) => {
+  const branch = req.params.branch;
+  const {
+    employee_ID,
+    branch_name,
+    payable_salary,
+    paid_salary,
+    due_salary,
+    advance_payment,
+    pay_date,
+    pay_status,
+    pay_month,
+  } = req.body;
+
+  const insertQuery =
+    "INSERT INTO staff_salary (employee_ID, branch_name, payable_salary, paid_salary, due_salary, advance_payment, pay_date, pay_status,    pay_month) VALUES (?,?,?,?,?,?,?,?,?)";
+
+  const insertParams = [
+    employee_ID,
+    branch_name,
+    payable_salary,
+    paid_salary,
+    due_salary,
+    advance_payment,
+    pay_date,
+    pay_status,
+    pay_month,
+  ];
+  db.query(insertQuery, insertParams, (err, result) => {
+    if (err) {
+      res.status(400).json({ success: false, message: err.message });
+    }
+    const resultField = {
+      salary_ID: result.insertId,
+      employee_ID: employee_ID,
+      branch_name: branch_name,
+      payable_salary: payable_salary,
+      paid_salary: paid_salary,
+      due_salary: due_salary,
+      advance_payment: advance_payment,
+      pay_date: pay_date,
+      pay_status: pay_status,
+      pay_month: pay_month,
+    };
+    res.status(200).json({
+      success: true,
+      resultField: resultField,
+    });
+  });
+};
+
+const getEmployeeListByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery =
+      "SELECT * FROM staff_salary JOIN employee_register ON staff_salary.employee_ID = employee_register.employee_ID WHERE staff_salary.branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   accountantLoginUser,
   sendOtp,
@@ -855,4 +923,6 @@ module.exports = {
   makeBillPayment,
   paidBillLIst,
   paidBillDetails,
+  getEmployeeListByBranch,
+  addEmployeeSalary,
 };

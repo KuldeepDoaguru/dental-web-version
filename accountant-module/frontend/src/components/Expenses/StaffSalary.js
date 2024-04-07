@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Header from "../Header";
 import Sider from "../Sider";
-import RightSider from "../RightSider";
-
 import AllStaffSalar from "./AllStaffSalar";
 import BranchDetails from "../BranchDetails";
 
@@ -25,10 +23,6 @@ const StaffSalary = () => {
                     <div className="">
                       <AllStaffSalar />
                     </div>
-
-                    {/* <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-8 col-2 p-0">
-                      <RightSider />
-                    </div> */}
                   </div>
                 </div>
               </div>

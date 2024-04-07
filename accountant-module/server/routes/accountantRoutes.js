@@ -27,7 +27,12 @@ const {
   makeBillPayment,
   paidBillLIst,
   paidBillDetails,
+  getEmployeeListByBranch,
+  addEmployeeSalary,
 } = require("../controllers/accountantController");
+const {
+  getEmployeeListByBranchByID,
+} = require("../controllers/employeeController");
 
 const router = express.Router();
 
@@ -68,5 +73,11 @@ router.get(
 router.put("/makeBillPayment/:branch/:bid", makeBillPayment);
 router.get("/paidBillLIst/:branch", paidBillLIst);
 router.get("/paidBillDetails/:branch/:bid", paidBillDetails);
+router.get("/getEmployeeListByBranch/:branch", getEmployeeListByBranch);
+router.post("/addEmployeeSalary/:branch", addEmployeeSalary);
+router.get(
+  "/getEmployeeListByBranchByID/:branch/:slid",
+  getEmployeeListByBranchByID
+);
 
 module.exports = router;

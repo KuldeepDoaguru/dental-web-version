@@ -76,7 +76,7 @@ function App() {
         }
       />
       <Route
-        path="/print-security-bill/:sa_id"
+        path="/print-security-bill/:sa_id/:tpid"
         element={
           user.currentUser === null ? <DoctorLogin /> : <PrintSecurityAmt />
         }

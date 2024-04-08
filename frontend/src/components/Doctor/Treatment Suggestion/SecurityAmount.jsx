@@ -5,16 +5,23 @@ import axios from "axios";
 import cogoToast from "cogo-toast";
 import Sider from "../SideBar";
 import HeadBar from "../HeadBar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTableRefresh } from "../../../redux/user/userSlice";
+import SecurityAmtUpdateModal from "./SecurityAmtUpdateModal";
 
 const SecurityAmount = () => {
   const { id, tpid } = useParams();
   console.log(id);
   console.log(tpid);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [selectedData, setSelectedData] = useState();
+  const [showEditPopup, setShowEditPopup] = useState(false);
   const [securityAmt, setSecurityAmt] = useState([]);
   // const [getPatientData, setGetPatientData] = useState([]);
+  const [treatList, setTreatList] = useState([]);
   const currentUser = useSelector((state) => state.user.currentUser);
+  const { refreshTable } = useSelector((state) => state.user);
   const branch = currentUser.branch_name;
   console.log(branch);
   const [formData, setFormData] = useState({
@@ -34,14 +41,6 @@ const SecurityAmount = () => {
     received_by: currentUser ? currentUser.employee_name : "",
   });
 
-  // const [updateRefund, setUpdateRefund] = useState({
-  //   refundBy: currentUser ? currentUser.employee_name : "",
-  //   refundDate: "",
-  //   refundAmount: ""
-  // });
-
-  // console.log(updateRefund);
-
   console.log(formData);
 
   const newGetFetchData = async () => {
@@ -57,8 +56,8 @@ const SecurityAmount = () => {
         uhid,
         patient_name,
         patient_number: mobileno,
-        treatment: treatment_name,
-        amount: totalCost,
+        // treatment: treatment_name,
+        // amount: totalCost,
       });
     } catch (error) {
       console.log(error);
@@ -69,19 +68,41 @@ const SecurityAmount = () => {
     newGetFetchData();
   }, []);
 
-  // option for patient data
+  const getListTreatment = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/doctor/getTreatList/${branch}/${tpid}`
+      );
+      console.log(data);
+      setTreatList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  // const getPatientDetail = async () => {
-  //   try {
-  //     const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+  useEffect(() => {
+    getListTreatment();
+  }, [refreshTable]);
 
-  //     // const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
+  const totalTreatSuggest = () => {
+    try {
+      let total = 0;
+      treatList.forEach((item) => {
+        total = total + parseFloat(item.totalCost);
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
 
-  //     setGetPatientData(res.data.result);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
+  console.log(treatList);
+
+  const grandTotal = totalTreatSuggest();
+
+  console.log(grandTotal);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -102,7 +123,7 @@ const SecurityAmount = () => {
     e.preventDefault();
     try {
       await insertCorrectData();
-      alert("Security Amount Submitted Successfully");
+      alert("Security Amount Added");
       setFormData({
         // branch_name: "",
         date: "",
@@ -166,6 +187,7 @@ const SecurityAmount = () => {
 
       console.log(resp.data);
       timelineForSecuirty();
+      dispatch(toggleTableRefresh());
     } catch (error) {
       console.log(error);
     }
@@ -185,7 +207,7 @@ const SecurityAmount = () => {
 
   useEffect(() => {
     getSecurityAmt();
-  }, []);
+  }, [refreshTable]);
 
   // const handleUpdate = async (e, sa_id) => {
   //   e.preventDefault();
@@ -221,6 +243,11 @@ const SecurityAmount = () => {
     navigate(`/TreatmentDashBoard/${id}`);
   };
 
+  const openSecurityAmountEdit = (item) => {
+    setShowEditPopup(true);
+    setSelectedData(item);
+  };
+
   return (
     <>
       <Container>
@@ -235,225 +262,239 @@ const SecurityAmount = () => {
                 <div className="container">
                   <h2 className="text-center mt-5">Submit Security Amount</h2>
                   <hr />
-                  <form action="" className="" onSubmit={handleSubmit}>
-                    <div className="container-fluid">
-                      <div className="row">
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Treatment Package ID
-                            </label>
-                            <input
-                              type="text"
-                              class="p-1 w-100 rounded"
-                              placeholder="Treatment"
-                              name="date"
-                              required
-                              value={tpid}
-                              onChange={handleChange}
-                              readOnly
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Appointment ID
-                            </label>
-                            <input
-                              type="text"
-                              class="p-1 w-100 rounded"
-                              placeholder="appointment ID"
-                              id="appointment_id"
-                              name="appointment_id"
-                              value={formData.appointment_id}
-                              readOnly
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label rounded"
-                            >
-                              UHID
-                            </label>
-                            <input
-                              type="text"
-                              class="p-1 w-100 rounded"
-                              placeholder="UHID"
-                              name="uhid"
-                              value={formData.uhid}
-                              onChange={handleChange}
-                              readOnly
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Patient Name
-                            </label>
-                            <input
-                              type="text"
-                              class="p-1 w-100 rounded"
-                              placeholder="Patient Name"
-                              name="patient_name"
-                              value={formData.patient_name}
-                              onChange={handleChange}
-                              readOnly
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Patient Mobile
-                            </label>
-                            <input
-                              type="text"
-                              class="p-1 w-100 rounded"
-                              placeholder="Patient Number"
-                              name="patient_number"
-                              value={formData.patient_number}
-                              onChange={handleChange}
-                              readOnly
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Assigned Doctor
-                            </label>
-                            <input
-                              type="text"
-                              class="p-1 w-100 rounded"
-                              placeholder="Patient Name"
-                              name="assigned_doctor"
-                              value={formData.assigned_doctor}
-                              onChange={handleChange}
-                              readOnly
-                            />
-                          </div>
-                        </div>
+                  {securityAmt.length > 0 ? (
+                    ""
+                  ) : (
+                    <>
+                      <form action="" className="" onSubmit={handleSubmit}>
+                        <div className="container-fluid">
+                          <div className="row">
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Treatment Package ID
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="Treatment"
+                                  name="date"
+                                  required
+                                  value={tpid}
+                                  onChange={handleChange}
+                                  readOnly
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Appointment ID
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="appointment ID"
+                                  id="appointment_id"
+                                  name="appointment_id"
+                                  value={formData.appointment_id}
+                                  readOnly
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label rounded"
+                                >
+                                  UHID
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="UHID"
+                                  name="uhid"
+                                  value={formData.uhid}
+                                  onChange={handleChange}
+                                  readOnly
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Patient Name
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="Patient Name"
+                                  name="patient_name"
+                                  value={formData.patient_name}
+                                  onChange={handleChange}
+                                  readOnly
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Patient Mobile
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="Patient Number"
+                                  name="patient_number"
+                                  value={formData.patient_number}
+                                  onChange={handleChange}
+                                  readOnly
+                                />
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Assigned Doctor
+                                </label>
+                                <input
+                                  type="text"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="Patient Name"
+                                  name="assigned_doctor"
+                                  value={formData.assigned_doctor}
+                                  onChange={handleChange}
+                                  readOnly
+                                />
+                              </div>
+                            </div>
 
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Security Amount
-                            </label>
-                            <input
-                              type="number"
-                              class="p-1 w-100 rounded"
-                              placeholder="Security Amount"
-                              name="amount"
-                              required
-                              value={formData.amount}
-                              onChange={handleChange}
-                              readOnly
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Payment Status
-                            </label>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Security Amount
+                                </label>
+                                <input
+                                  type="number"
+                                  class="p-1 w-100 rounded"
+                                  placeholder="Security Amount"
+                                  name="amount"
+                                  required
+                                  value={formData.amount}
+                                  onChange={handleChange}
+                                />
+                                <small style={{ color: "red" }}>
+                                  *Suggested Security Amount : {grandTotal}
+                                </small>
+                              </div>
+                            </div>
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <div class="input-group mb-3">
+                                <label
+                                  for="exampleFormControlInput1"
+                                  class="form-label"
+                                >
+                                  Payment Status
+                                </label>
 
-                            <select
-                              name="payment_status"
-                              value={formData.payment_status}
-                              onChange={handleChange}
-                              id=""
-                              class="p-1 w-100 rounded"
-                              required
-                            >
-                              <option value="">select-status</option>
-                              <option value="pending">Pending</option>
-                              <option value="success">Success</option>
-                            </select>
-                          </div>
-                        </div>
-                        {formData.payment_status === "success" && (
-                          <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                            <div className="input-group mb-3">
-                              <label
-                                htmlFor="exampleFormControlInput2"
-                                className="form-label"
+                                <select
+                                  name="payment_status"
+                                  value={formData.payment_status}
+                                  onChange={handleChange}
+                                  id=""
+                                  class="p-1 w-100 rounded"
+                                  required
+                                >
+                                  <option value="">select-status</option>
+                                  <option value="pending">Pending</option>
+                                  <option value="success">Success</option>
+                                </select>
+                              </div>
+                            </div>
+                            {formData.payment_status === "success" && (
+                              <>
+                                <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                                  <div className="input-group mb-3">
+                                    <label
+                                      htmlFor="exampleFormControlInput2"
+                                      className="form-label"
+                                    >
+                                      Payment Method
+                                    </label>
+                                    <select
+                                      name="payment_Mode"
+                                      value={formData.payment_Mode}
+                                      onChange={handleChange}
+                                      className="p-1 w-100 rounded"
+                                      required
+                                    >
+                                      <option value="">
+                                        Select Payment Method
+                                      </option>
+                                      <option value="cash">Cash</option>
+                                      <option value="online">Online</option>
+                                    </select>
+                                  </div>
+                                </div>
+                                {formData.payment_Mode === "online" && (
+                                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                                    <div className="input-group mb-3">
+                                      <label
+                                        htmlFor="exampleFormControlInput1"
+                                        className="form-label mx-2"
+                                      >
+                                        Transaction ID
+                                      </label>
+                                      <br />
+                                      <input
+                                        type="text"
+                                        name="transaction_Id"
+                                        value={formData.transaction_Id}
+                                        onChange={handleChange}
+                                        className="p-1 w-100 rounded"
+                                        placeholder="Enter Transaction ID"
+                                        required
+                                      />
+                                    </div>
+                                  </div>
+                                )}
+                              </>
+                            )}
+
+                            <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+                              <button
+                                className="btn btn-primary text-light btnbox fw-bold shadow p-1 w-100 rounded"
+                                type="submit"
                               >
-                                Payment Method
-                              </label>
-                              <select
-                                name="payment_Mode"
-                                value={formData.payment_Mode}
-                                onChange={handleChange}
-                                className="p-1 w-100 rounded"
-                                required
-                              >
-                                <option value="">Select Payment Method</option>
-                                <option value="cash">Cash</option>
-                                <option value="online">Online</option>
-                              </select>
+                                Submit
+                              </button>
                             </div>
                           </div>
-                        )}
-                        {formData.payment_Mode === "online" && (
-                          <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                            <div className="input-group mb-3">
-                              <label
-                                htmlFor="exampleFormControlInput1"
-                                className="form-label mx-2"
-                              >
-                                Transaction ID
-                              </label>
-                              <br />
-                              <input
-                                type="text"
-                                name="transaction_Id"
-                                value={formData.transaction_Id}
-                                onChange={handleChange}
-                                className="p-1 w-100 rounded"
-                                placeholder="Enter Transaction ID"
-                                required
-                              />
-                            </div>
-                          </div>
-                        )}
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <button
-                            className="btn btn-primary text-light btnbox fw-bold shadow p-1 w-100 rounded"
-                            type="submit"
-                          >
-                            Submit
-                          </button>
                         </div>
-                      </div>
-                    </div>
-                  </form>
-                  <hr />
+                      </form>
+                      <hr />
+                    </>
+                  )}
+
                   <div className="container-fluid">
                     <div class="table-responsive mt-4">
                       <table class="table table-bordered">
@@ -466,8 +507,11 @@ const SecurityAmount = () => {
                             <th>Patient Number</th>
                             <th>Assigned Doctor</th>
                             <th>Security Amount</th>
+                            <th>Payment Mode</th>
+                            <th>Transaction Id</th>
                             <th>Payment Status</th>
                             <th>Print</th>
+                            <th>Action</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -480,88 +524,40 @@ const SecurityAmount = () => {
                               <td>{item.patient_number}</td>
                               <td>{item.assigned_doctor}</td>
                               <td>{item.amount}</td>
+                              <td>{item.payment_Mode}</td>
+                              <td>{item.transaction_Id}</td>
                               <td>{item.payment_status}</td>
-                              {/* <td><div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Action
-                                </button>
-                                <ul class="dropdown-menu">
-                                  
-                                  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">Refund</a></li>
-                                </ul>
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                  <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Refund  Security Amount</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                      </div>
-                                      <div class="modal-body">
-                                        <form onSubmit={(e) => handleUpdate(e, item.sa_id)}>
-
-                                          <div data-mdb-input-init class="form-outline mb-4">
-                                            <label class="form-label" for="form1Example1">Refund By</label>
-                                            <input type="text" id="form1Example1" class="form-control" value={updateRefund.refundBy}
-                                              onChange={(e) => setUpdateRefund({ ...updateRefund, refundBy: e.target.value })}
-                                              name="refundBy" />
-
-                                          </div>
-
-                                          <div data-mdb-input-init class="form-outline mb-4">
-                                            <label class="form-label" for="form1Example2">Refund Date</label>
-                                            <input type="datetime-local" id="form1Example2" class="form-control" value={updateRefund.refundDate}
-                                              onChange={(e) => setUpdateRefund({ ...updateRefund, refundDate: e.target.value })}
-                                              name="refundDate" />
-                                          </div>
-
-                                          <div data-mdb-input-init class="form-outline mb-4">
-                                            <label class="form-label" for="form1Example2">Refund Amount</label>
-                                            <input type="text" id="form1Example2" className="form-control"
-                                              value={updateRefund.refundAmount}
-                                              onChange={(e) => setUpdateRefund({ ...updateRefund, refundAmount: e.target.value })}
-                                              name="refundAmount" />
-                                          </div>
-
-                                          <button data-mdb-ripple-init type="submit" class="btn btn-primary btn-block">Update</button>
-
-                                        </form>
-                                      </div>
-                                    
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                              </td> */}
                               <td>
-                                {/* {item.payment_status === 'success' && (
-                                  <button className="btn btn-success" onClick={() => handlePrint(item.sa_id)}>
-                                    Print
-                                  </button>
-                                )} */}
-                                <td>
-                                  {" "}
-                                  {item.payment_status === "success" ? (
-                                    <Link
-                                      to={`/print-security-bill/${item.sa_id}`}
-                                    >
-                                      {" "}
-                                      <button
-                                        type="button"
-                                        className="btn btn-primary"
-                                      >
-                                        Print
-                                      </button>{" "}
-                                    </Link>
-                                  ) : (
+                                {" "}
+                                {item.payment_status === "success" ? (
+                                  <Link
+                                    to={`/print-security-bill/${item.sa_id}/${tpid}`}
+                                  >
+                                    {" "}
                                     <button
                                       type="button"
                                       className="btn btn-primary"
-                                      disabled
                                     >
                                       Print
-                                    </button>
-                                  )}{" "}
-                                </td>
+                                    </button>{" "}
+                                  </Link>
+                                ) : (
+                                  <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    disabled
+                                  >
+                                    Print
+                                  </button>
+                                )}{" "}
+                              </td>
+                              <td>
+                                <button
+                                  className="btn btn-info"
+                                  onClick={() => openSecurityAmountEdit(item)}
+                                >
+                                  Update
+                                </button>
                               </td>
                             </tr>
                           ))}
@@ -578,6 +574,13 @@ const SecurityAmount = () => {
                     Start Treatment
                   </button>
                 </div>
+                {showEditPopup && (
+                  <SecurityAmtUpdateModal
+                    onClose={() => setShowEditPopup(false)}
+                    selectedData={selectedData}
+                    grandTotal={grandTotal}
+                  />
+                )}
               </div>
             </div>
           </div>

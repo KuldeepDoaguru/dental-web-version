@@ -42,6 +42,16 @@ const SaveData = ({ id, tpid }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  console.log(data);
+
+  const diseases = new Set(
+    data.flatMap((entry) =>
+      entry.disease.split(", ").map((disease) => disease.trim())
+    )
+  );
+
+  console.log([...diseases]);
+
   const timelineForDelete = async () => {
     try {
       const response = await axios.post(

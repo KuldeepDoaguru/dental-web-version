@@ -4,11 +4,11 @@ const { getBranch } = require("./authBranch.js");
 
 const dentalPediatric = (req, res) => {
   const data = req.body;
-
   const sql =
-    "INSERT INTO dental_examination (appointment_id, patient_uhid, selected_teeth, disease, chief_complain, advice, on_examination, diagnosis_category) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO dental_examination (appointment_id, tp_id, patient_uhid, selected_teeth, disease, chief_complain, advice, on_examination, diagnosis_category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
   const values = [
     data.appointment_id,
+    data.tpid,
     data.patient_uhid,
     data.selectedTeeth,
     data.disease,
@@ -152,6 +152,7 @@ const insertTreatSuggest = (req, res) => {
     branch,
     p_uhid,
     tp_id,
+    desease,
     treatment_name,
     totalCost,
     total_sitting,
@@ -168,7 +169,7 @@ const insertTreatSuggest = (req, res) => {
           .status(400)
           .json({ success: false, message: "treatment already listed" });
       } else {
-        const sql = `INSERT INTO treat_suggest (appoint_id, branch_name, p_uhid, tp_id, treatment_name, totalCost,total_sitting) VALUES(?,?,?,?,?,?,?)`;
+        const sql = `INSERT INTO treat_suggest (appoint_id, branch_name, p_uhid, tp_id, desease, treatment_name, totalCost,total_sitting) VALUES(?,?,?,?,?,?,?,?)`;
 
         db.query(
           sql,
@@ -177,6 +178,7 @@ const insertTreatSuggest = (req, res) => {
             branch,
             p_uhid,
             tp_id,
+            desease,
             treatment_name,
             totalCost,
             total_sitting,
@@ -503,6 +505,25 @@ const deleteTreatSuggestion = (req, res) => {
   }
 };
 
+const getFilteredTreat = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const branch = req.params.branch;
+    const getQuery =
+      "SELECT * FROM treat_suggest JOIN dental_examination on treat_suggest.tp_id = dental_examination.tp_id WHERE treat_suggest.tp_id = ? AND branch_name = ?";
+
+    db.query(getQuery, [tpid, branch], (err, results) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(results);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 module.exports = {
   dentalPediatric,
   updateDentalPediatric,
@@ -519,4 +540,5 @@ module.exports = {
   updateTreatSitting,
   updateTreatSuggestion,
   deleteTreatSuggestion,
+  getFilteredTreat,
 };

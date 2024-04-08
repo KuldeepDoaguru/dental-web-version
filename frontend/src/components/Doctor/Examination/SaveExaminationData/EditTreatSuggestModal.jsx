@@ -49,7 +49,7 @@ const EditTreatSuggestModal = ({ onClose, selectedData, openBookAppoint }) => {
         <>
           <Modal show={true} onHide={onClose}>
             <Modal.Header closeButton>
-              <Modal.Title>Book Next Sitting</Modal.Title>
+              <Modal.Title>Update Sitting</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <form onSubmit={updateSitting}>
@@ -64,18 +64,6 @@ const EditTreatSuggestModal = ({ onClose, selectedData, openBookAppoint }) => {
                     value={selectedData.treatment_name}
                   />
                 </div>
-                <div class="mb-3">
-                  <label for="recipient-id" class="col-form-label">
-                    Current Sitting
-                  </label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    readOnly
-                    value={selectedData.current_sitting}
-                  />
-                </div>
-
                 <div class="mb-3">
                   <label for="recipient-id" class="col-form-label">
                     Total Sitting

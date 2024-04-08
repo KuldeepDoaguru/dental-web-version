@@ -100,13 +100,9 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
             >
               <thead>
                 <tr>
-                  <th>TS_ID</th>
-                  <th>TP_ID</th>
-                  <th>Appoint ID</th>
-                  <th>UHID</th>
+                  <th>Desease</th>
                   <th>Treatment</th>
-                  <th>Total Cost</th>
-                  <th>Current Sitting</th>
+                  <th>Treatment Cost</th>
                   <th>Total Req. Sitting</th>
                   <th className="text-center">Action</th>
                 </tr>
@@ -115,22 +111,18 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
                 {treatList?.map((item) => (
                   <>
                     <tr>
-                      <td>{item.ts_id}</td>
-                      <td>{item.tp_id}</td>
-                      <td>{item.appoint_id}</td>
-                      <td>{item.p_uhid}</td>
+                      <td>{item.desease}</td>
                       <td>{item.treatment_name}</td>
                       <td>{item.totalCost}</td>
-                      <td>{item.current_sitting}</td>
                       <td>{item.total_sitting}</td>
                       <td>
-                        <div className="d-flex justify-content-between">
-                          <button
+                        <div className="d-flex justify-content-center">
+                          {/* <button
                             className="btn btn-info"
                             onClick={() => handleShowTreatProcess(item)}
                           >
-                            Start
-                          </button>
+                            Set Sitting
+                          </button> */}
                           <button
                             className="btn btn-warning ms-2"
                             onClick={() => openTreatEdit(item)}
@@ -139,7 +131,7 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
                           </button>
                           {item.current_sitting > 0 ? (
                             <button
-                              className="btn btn-danger"
+                              className="btn btn-danger ms-2"
                               disabled
                               onClick={() => handleDelete(item.ts_id)}
                             >
@@ -147,7 +139,7 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
                             </button>
                           ) : (
                             <button
-                              className="btn btn-danger"
+                              className="btn btn-danger ms-2"
                               onClick={() => handleDelete(item.ts_id)}
                             >
                               Delete

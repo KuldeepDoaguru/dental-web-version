@@ -818,6 +818,7 @@ const PediatricDentalTest = ({ tpid }) => {
     // Prepare data to send to the backend
     const formData = {
       appointment_id: id,
+      tpid: tpid,
       patient_uhid: inputItem.patient_uhid,
       selectedTeeth: inputItem.selectTeeth.join(", "),
       disease: inputItem.desease.join(", "),
@@ -833,7 +834,7 @@ const PediatricDentalTest = ({ tpid }) => {
         formData
       );
       console.log(response.data);
-      alert(response.data);
+      cogoToast.success("data saved");
       dispatch(toggleTableRefresh());
       timelineForExamination();
       // window.location.reload();

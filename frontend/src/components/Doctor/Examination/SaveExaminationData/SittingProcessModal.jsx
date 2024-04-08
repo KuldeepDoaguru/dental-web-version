@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
 
 const SittingProcessModal = ({ onClose, selectedData, openBookAppoint }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
@@ -84,6 +85,9 @@ const SittingProcessModal = ({ onClose, selectedData, openBookAppoint }) => {
       cogoToast.success("sitting considered");
       console.log(data.result.consider_sitting);
       setTreat(data.result.consider_sitting);
+      navigate(
+        `/SecurityAmount/${selectedData.appoint_id}/${selectedData.tp_id}`
+      );
     } catch (error) {
       console.log(error);
     }

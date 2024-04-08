@@ -148,7 +148,7 @@ const addSecurityAmount = (req, res) => {
       refund_by,
     ];
 
-    const  querySecurity = `SELECT * FROM security_amount WHERE sa_id = ? AND branch_name = ?`;
+    const querySecurity = `SELECT * FROM security_amount WHERE sa_id = ? AND branch_name = ?`;
 
     const selectQuery =
       "INSERT INTO security_amount (tp_id, branch_name, date, appointment_id, uhid, patient_name, patient_number, treatment, assigned_doctor, amount, payment_status, payment_Mode, transaction_Id, payment_date, refund_amount, refund_date, received_by, refund_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -509,6 +509,126 @@ const bookSittingAppointment = (req, res) => {
   }
 };
 
+// const updateSecurityAmount = (req, res) => {
+//   try {
+//     const said = req.params.said;
+//     const { amount, payment_status, payment_Mode, transaction_Id } = req.body;
+//     const selectQuery = "SELECT * FROM security_amount WHERE sa_id = ?";
+//     db.query(selectQuery, said, (err, result) => {
+//       if (err) {
+//         return res.status(400).json({ success: false, message: err.message });
+//       }
+//       if (result && result.length > 1) {
+//         const updateFields = [];
+//         const updateValues = [];
+
+//         if (amount) {
+//           updateFields.push("amount = ?");
+//           updateValues.push(amount);
+//         }
+
+//         if (payment_status) {
+//           updateFields.push("payment_status = ?");
+//           updateValues.push(payment_status);
+//         }
+
+//         if (payment_Mode) {
+//           updateFields.push("payment_Mode = ?");
+//           updateValues.push(payment_Mode);
+//         }
+
+//         if (transaction_Id) {
+//           updateFields.push("transaction_Id = ?");
+//           updateValues.push(transaction_Id);
+//         }
+
+//         const updateQuery = `UPDATE security_amount SET ${updateFields.join(
+//           ", "
+//         )} WHERE sa_id = ?`;
+
+//         db.query(updateQuery, updateValues, (err, result) => {
+//           if (err) {
+//             return res.status(400).json({ success: false, message: err.message });
+//           }
+
+//           return res.status(200).json({ success: true, message: "Security amount updated successfully", result});
+//         });
+//       } else {
+//         return res.status(404).json({ success: false, message: "Security amount not found" });
+//       }
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ success: false, message: "Server Error" });
+//   }
+// };
+
+const updateSecurityAmount = (req, res) => {
+  try {
+    const said = req.params.said;
+    const { amount, payment_status, payment_Mode, transaction_Id } = req.body;
+    const selectQuery = "SELECT * FROM security_amount WHERE sa_id = ?";
+
+    db.query(selectQuery, said, (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+
+      if (result && result.length === 1) {
+        // Changed condition to check if exactly one row is found
+        const updateFields = [];
+        const updateValues = [];
+
+        if (amount) {
+          updateFields.push("amount = ?");
+          updateValues.push(amount);
+        }
+
+        if (payment_status) {
+          updateFields.push("payment_status = ?");
+          updateValues.push(payment_status);
+        }
+
+        if (payment_Mode) {
+          updateFields.push("payment_Mode = ?");
+          updateValues.push(payment_Mode);
+        }
+
+        if (transaction_Id) {
+          updateFields.push("transaction_Id = ?");
+          updateValues.push(transaction_Id);
+        }
+
+        updateValues.push(said); // Pushing sa_id for the WHERE clause
+
+        const updateQuery = `UPDATE security_amount SET ${updateFields.join(
+          ", "
+        )} WHERE sa_id = ?`;
+
+        db.query(updateQuery, updateValues, (err, result) => {
+          if (err) {
+            return res
+              .status(400)
+              .json({ success: false, message: err.message });
+          }
+
+          return res.status(200).json({
+            success: true,
+            message: "Security amount updated successfully",
+          });
+        });
+      } else {
+        return res
+          .status(404)
+          .json({ success: false, message: "Security amount not found" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+};
+
 module.exports = {
   getAppointmentsWithPatientDetails,
   getAppointmentsWithPatientDetailsById,
@@ -523,4 +643,5 @@ module.exports = {
   getAllAppointmentByPatientId,
   getAppointmentsViaDocId,
   bookSittingAppointment,
+  updateSecurityAmount,
 };

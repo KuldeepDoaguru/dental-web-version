@@ -18,6 +18,7 @@ const {
   updateTreatSitting,
   updateTreatSuggestion,
   deleteTreatSuggestion,
+  getFilteredTreat,
 } = require("../controller/authControl.js");
 const {
   getAppointmentsWithPatientDetails,
@@ -33,6 +34,7 @@ const {
   getAllAppointmentByPatientId,
   getAppointmentsViaDocId,
   bookSittingAppointment,
+  updateSecurityAmount,
 } = require("../controller/authAppointTable.js");
 const {
   getBranch,
@@ -101,6 +103,7 @@ router.get("/patient-security/:appoint_id/:branch_name", getPatientSecurityAmt);
 router.put("/update-security-amount/:sa_id", updatePatientSecurityAmt);
 router.get("/getAllSecurityAmounts/:sa_id/:branch_name", getAllSecurityAmounts);
 router.get("/treatPatientUHID/:patientUHID", treatPatientUHID);
+router.put("/updateSecurityAmount/:said", updateSecurityAmount);
 // Treatment Suggestion Routes END here........
 
 // Appointment  Routes START here......
@@ -224,5 +227,6 @@ router.get("/getAppointmentsViaDocId/:branch/:did", getAppointmentsViaDocId);
 router.post("/bookSittingAppointment", bookSittingAppointment);
 router.put("/updateTreatSuggestion/:tsid/:branch", updateTreatSuggestion);
 router.delete("/deleteTreatSuggestion/:tsid/:branch", deleteTreatSuggestion);
+router.get("/getFilteredTreat/:tpid/:branch", getFilteredTreat);
 
 module.exports = { authRoutes: router };

@@ -29,6 +29,7 @@ import OpdCollection from "./pages/receptionist/OpdColletion";
 import Profile from "./pages/receptionist/Profile";
 import SecurityAmount from "./pages/receptionist/SecurityAmount ";
 import PrintSecurityAmt from "./components/receptionist/SecurityAmount/PrintSecurityAmt";
+import BranchInfo from "./pages/receptionist/BranchInfo";
 
 function App() {
 
@@ -62,6 +63,7 @@ function App() {
     <Route path='/opd_collection' element={user.currentUser=== null ? <UniversalLogin/>  :<OpdCollection/>}/>
     <Route path='/receptionist_profile' element={ user.currentUser=== null ? <UniversalLogin/>  :<Profile/>}/>
     <Route path='/security_amount' element={ user.currentUser=== null ? <UniversalLogin/>  :<SecurityAmount/>}/>
+    <Route path='/branch-details' element={ user.currentUser=== null ? <UniversalLogin/>  :<BranchInfo/>}/>
 
     {/* receptionist routes end */}
     </Routes>

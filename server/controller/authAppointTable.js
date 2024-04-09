@@ -41,7 +41,8 @@ const getAppointmentsWithPatientDetails = (req, res) => {
 };
 
 const getAppointmentsWithPatientDetailsById = (req, res) => {
-  const appointmentId = req.params.id; // Assuming the appointment ID is passed as a parameter in the URL
+  // const appointmentId = req.params.id;
+  const appointmentId = req.params.id;
 
   const sql = `
         SELECT 
@@ -509,60 +510,6 @@ const bookSittingAppointment = (req, res) => {
   }
 };
 
-// const updateSecurityAmount = (req, res) => {
-//   try {
-//     const said = req.params.said;
-//     const { amount, payment_status, payment_Mode, transaction_Id } = req.body;
-//     const selectQuery = "SELECT * FROM security_amount WHERE sa_id = ?";
-//     db.query(selectQuery, said, (err, result) => {
-//       if (err) {
-//         return res.status(400).json({ success: false, message: err.message });
-//       }
-//       if (result && result.length > 1) {
-//         const updateFields = [];
-//         const updateValues = [];
-
-//         if (amount) {
-//           updateFields.push("amount = ?");
-//           updateValues.push(amount);
-//         }
-
-//         if (payment_status) {
-//           updateFields.push("payment_status = ?");
-//           updateValues.push(payment_status);
-//         }
-
-//         if (payment_Mode) {
-//           updateFields.push("payment_Mode = ?");
-//           updateValues.push(payment_Mode);
-//         }
-
-//         if (transaction_Id) {
-//           updateFields.push("transaction_Id = ?");
-//           updateValues.push(transaction_Id);
-//         }
-
-//         const updateQuery = `UPDATE security_amount SET ${updateFields.join(
-//           ", "
-//         )} WHERE sa_id = ?`;
-
-//         db.query(updateQuery, updateValues, (err, result) => {
-//           if (err) {
-//             return res.status(400).json({ success: false, message: err.message });
-//           }
-
-//           return res.status(200).json({ success: true, message: "Security amount updated successfully", result});
-//         });
-//       } else {
-//         return res.status(404).json({ success: false, message: "Security amount not found" });
-//       }
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ success: false, message: "Server Error" });
-//   }
-// };
-
 const updateSecurityAmount = (req, res) => {
   try {
     const said = req.params.said;
@@ -629,6 +576,48 @@ const updateSecurityAmount = (req, res) => {
   }
 };
 
+const getExaminedataById = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    // const exmid = req.params.exmid;
+
+    const selectQuery =
+      "SELECT * FROM dental_examination JOIN treat_suggest ON dental_examination.tp_id = treat_suggest.tp_id && dental_examination.disease = treat_suggest.desease WHERE dental_examination.tp_id = ?";
+    db.query(selectQuery, tpid, (err, result) => {
+      if (err) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Error in retrieving data" }); // Add 'return' to prevent further execution
+      }
+      res.status(200).json(result); // Fix to return result as JSON
+    });
+  } catch (error) {
+    console.error(error); // Change console.log to console.error for better error handling
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getExaminedataByIdandexamine = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const tsid = req.params.tsid;
+
+    const selectQuery =
+      "SELECT * FROM dental_examination JOIN treat_suggest ON dental_examination.tp_id = treat_suggest.tp_id && dental_examination.disease = treat_suggest.desease WHERE treat_suggest.ts_id = ? AND treat_suggest.tp_id = ?";
+    db.query(selectQuery, [tsid, tpid], (err, result) => {
+      if (err) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Error in retrieving data" }); // Add 'return' to prevent further execution
+      }
+      res.status(200).json(result); // Fix to return result as JSON
+    });
+  } catch (error) {
+    console.error(error); // Change console.log to console.error for better error handling
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getAppointmentsWithPatientDetails,
   getAppointmentsWithPatientDetailsById,
@@ -644,4 +633,6 @@ module.exports = {
   getAppointmentsViaDocId,
   bookSittingAppointment,
   updateSecurityAmount,
+  getExaminedataById,
+  getExaminedataByIdandexamine,
 };

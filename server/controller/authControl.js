@@ -4,30 +4,49 @@ const { getBranch } = require("./authBranch.js");
 
 const dentalPediatric = (req, res) => {
   const data = req.body;
-  const sql =
-    "INSERT INTO dental_examination (appointment_id, tp_id, patient_uhid, selected_teeth, disease, chief_complain, advice, on_examination, diagnosis_category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  const values = [
-    data.appointment_id,
-    data.tpid,
-    data.patient_uhid,
-    data.selectedTeeth,
-    data.disease,
-    data.chiefComplain,
-    data.advice,
-    data.onExamination,
-    data.diagnosis_category,
-  ];
 
-  db.query(sql, values, (err, result) => {
+  const selectQuery =
+    "SELECT * FROM dental_examination WHERE appointment_id = ? AND disease = ?";
+
+  // Check if the disease already exists in the database
+  db.query(selectQuery, [data.appointment_id, data.disease], (err, result) => {
     if (err) {
-      console.error("Error inserting data: ", err);
-      res.status(500).send("Error inserting data: " + err.message);
-      return;
+      return res.status(400).json({ success: false, message: err.message });
     }
-    console.log("Inserted data with ID " + result.insertId);
-    res
-      .status(200)
-      .json({ success: true, examination_ID: result.insertId.toString() });
+
+    // If the disease already exists, return an error
+    console.log("result :", result);
+    if (result && result.length > 0) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Record already exists" });
+    }
+
+    // If the disease does not exist, insert a new row
+    const insertQuery =
+      "INSERT INTO dental_examination (appointment_id, tp_id, patient_uhid, selected_teeth, disease, chief_complain, advice, on_examination, diagnosis_category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    const values = [
+      data.appointment_id,
+      data.tpid,
+      data.patient_uhid,
+      data.selectedTeeth,
+      data.disease,
+      data.chiefComplain,
+      data.advice,
+      data.onExamination,
+      data.diagnosis_category,
+    ];
+
+    db.query(insertQuery, values, (err, result) => {
+      if (err) {
+        console.error("Error inserting data: ", err);
+        return res.status(500).send("Error inserting data: " + err.message);
+      }
+      console.log("Inserted data with ID " + result.insertId);
+      res
+        .status(200)
+        .json({ success: true, examination_ID: result.insertId.toString() });
+    });
   });
 };
 

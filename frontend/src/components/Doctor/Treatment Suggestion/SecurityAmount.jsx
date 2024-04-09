@@ -240,7 +240,7 @@ const SecurityAmount = () => {
   // };
 
   const handleChangePage = () => {
-    navigate(`/TreatmentDashBoard/${id}`);
+    navigate(`/TreatmentDashBoard/${id}/${tpid}`);
   };
 
   const openSecurityAmountEdit = (item) => {

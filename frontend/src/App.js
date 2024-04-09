@@ -82,7 +82,7 @@ function App() {
         }
       />
       <Route
-        path="/TreatmentDashBoard/:id"
+        path="/TreatmentDashBoard/:id/:tpid"
         element={
           user.currentUser === null ? <DoctorLogin /> : <TreatmentDashBoard />
         }
@@ -98,7 +98,7 @@ function App() {
         }
       />
       <Route
-        path="/treatmentDashTwo/:id/:appointment_id"
+        path="/treatmentDashTwo/:tsid/:appoint_id/:tp_id/:treatment"
         element={
           user.currentUser === null ? <DoctorLogin /> : <TreatmentDashTwo />
         }

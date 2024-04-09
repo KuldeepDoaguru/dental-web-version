@@ -6,10 +6,14 @@ import axios from "axios";
 import { FaHandHoldingMedical } from "react-icons/fa";
 import NewTreatmentTable from "./NewTreatmentTable";
 import { GiFastBackwardButton } from "react-icons/gi";
+import SittingProcessModal from "../Examination/SaveExaminationData/SittingProcessModal";
 
 const NewTreatment = () => {
   const { id } = useParams();
-  console.log(id);
+  const { tpid } = useParams();
+  const [showEditPopup, setShowEditPopup] = useState(false);
+  const [selectedData, setSelectedData] = useState();
+  console.log(id, tpid);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const { refreshTable, currentUser } = useSelector((state) => state.user);
@@ -35,6 +39,11 @@ const NewTreatment = () => {
   useEffect(() => {
     getPatientDetail();
   }, []);
+  console.log(getPatientData);
+  const handleShowTreatProcess = (item) => {
+    setSelectedData(item);
+    setShowEditPopup(true);
+  };
   // Get Patient Details END
 
   // Get Examintion Teeth Details START
@@ -42,7 +51,7 @@ const NewTreatment = () => {
   const getExamintionTeeth = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalDataByID/${id}`
+        `http://localhost:8888/api/doctor/getExaminedataById/${tpid}`
       );
       setGetExamTeeth(res.data);
       console.log(res.data);
@@ -57,9 +66,9 @@ const NewTreatment = () => {
 
   // Get Examintion Teeth Details END
 
-  const handleNavigate = (id, appointment_id, selected_teeth) => {
-    navigate(`/treatmentDashTwo/${id}/${appointment_id}`, {
-      state: { selected_teeth },
+  const handleNavigate = (exid, appointment_id, desease) => {
+    navigate(`/treatmentDashTwo/${exid}/${appointment_id}/${tpid}`, {
+      state: desease,
     });
   };
 
@@ -93,53 +102,10 @@ const NewTreatment = () => {
     getData();
   }, []);
 
-  const diseases = new Set(
-    vdata.flatMap((entry) =>
-      entry.disease.split(", ").map((disease) => disease.trim())
-    )
-  );
-
-  const uniqueDiseases = [...diseases];
-  console.log(uniqueDiseases);
-
-  const filterUniqueTreatmentsAndDiseases = (data) => {
-    const uniqueTreatments = new Set();
-    const uniqueDiseases = new Set();
-    const uniqueTreatmentsAndDiseases = [];
-
-    data.forEach((item) => {
-      const treatmentKey = item.treatment_name + "_" + item.selected_teeth;
-      const diseaseKey = item.desease + "_" + item.selected_teeth;
-
-      if (!uniqueTreatments.has(treatmentKey)) {
-        uniqueTreatments.add(treatmentKey);
-        uniqueTreatmentsAndDiseases.push({
-          treatment_name: item.treatment_name,
-          selected_teeth: item.selected_teeth,
-        });
-      }
-
-      if (!uniqueDiseases.has(diseaseKey)) {
-        uniqueDiseases.add(diseaseKey);
-        uniqueTreatmentsAndDiseases.push({
-          disease: item.desease,
-          selected_teeth: item.selected_teeth,
-        });
-      }
-    });
-
-    return uniqueTreatmentsAndDiseases;
-  };
-
-  // Filtered unique treatments and diseases with teeth
-  const uniqueTreatmentsAndDiseases =
-    filterUniqueTreatmentsAndDiseases(uniqueValue);
-  console.log(uniqueTreatmentsAndDiseases);
-
   return (
     <>
       <Wrapper>
-        <div className="container main">
+        <div className="container-fluid main">
           <div className="row justify-content-center">
             {" "}
             {/* Center the content horizontally */}
@@ -159,7 +125,7 @@ const NewTreatment = () => {
           </div>
         </div>
 
-        <div className="container patient">
+        <div className="container-fluid patient">
           <div className="row shadow-sm p-3 mb-3 bg-body rounded">
             <div className="col-lg-4">
               <p>
@@ -213,87 +179,74 @@ const NewTreatment = () => {
             ))}
           </div>
         </div>
-        <div className="container-fluid">
-          <div
-            className="row shadow-sm p-3 mt-5 mb-3 rounded"
-            style={{ background: "#0dcaf0" }}
-          >
-            <div className="col-lg-12 d-flex justify-content-between align-items-center">
-              <div className="col-lg-2">
-                <p className="text-light text-center mb-0 fs-4">Teeth</p>
-              </div>
-              <div className="col-lg-2">
-                <p className="text-light text-center mb-0 fs-4">Disease</p>
-              </div>
-              <div className="col-lg-2">
-                <p className="text-light text-center mb-0 fs-4">CC</p>
-              </div>
-              <div className="col-lg-2">
-                <p className="text-light text-center mb-0 fs-4">Adv</p>
-              </div>
-              <div className="col-lg-2">
-                <p className="text-light text-center mb-0 fs-4">OE</p>
-              </div>
-              <div className="col-lg-2">
-                <p className="text-light text-center mb-0 fs-4">Action</p>
-              </div>
-            </div>
-          </div>
-
-          {getExamTeeth.map((item, index) => (
-            <div
-              key={index}
-              className="row shadow-sm p-3 mt-3 mb-3 bg-light rounded"
+        <div className="box">
+          <div className="table-responsive">
+            <table
+              className="table table-bordered table-striped border"
+              style={{ overflowX: "scroll" }}
             >
-              <div className="col-lg-12 d-flex justify-content-between align-items-center">
-                <div className="col-lg-2">
-                  <p className="text-dark text-center mb-0 fs-5">
-                    {item.selected_teeth}
-                  </p>
-                </div>
-                <span>|</span>
-                <div className="col-lg-2">
-                  <p className="text-dark text-center mb-0 fs-5">
-                    {item.disease}
-                  </p>
-                </div>
-                <span>|</span>
-                <div className="col-lg-2">
-                  <p className="text-dark text-center mb-0 fs-5">
-                    {item.chief_complain}
-                  </p>
-                </div>
-                <span>|</span>
-                <div className="col-lg-2">
-                  <p className="text-dark text-center mb-0 fs-5">
-                    {item.advice}
-                  </p>
-                </div>
-                <span>|</span>
-                <div className="col-lg-2">
-                  <p className="text-dark text-center mb-0 fs-5">
-                    {item.on_examination}
-                  </p>
-                </div>
-                <span>|</span>
-                <div className="col-lg-2 text-center">
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() =>
-                      handleNavigate(
-                        item.id,
-                        item.appointment_id,
-                        item.selected_teeth
-                      )
+              <thead>
+                <tr>
+                  <th>Treatment</th>
+                  <th>Desease</th>
+                  <th>Teeth</th>
+                  <th>Chief Complain</th>
+                  <th>Advice</th>
+                  <th>On Examination</th>
+                  <th>Treatment status</th>
+                  <th className="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getExamTeeth
+                  .sort((a, b) => {
+                    // Assuming you want to sort by a property called 'propertyName'
+                    const itemA = a.disease.toLowerCase();
+                    const itemB = b.disease.toLowerCase();
+
+                    if (itemA < itemB) {
+                      return -1;
                     }
-                  >
-                    <FaHandHoldingMedical size={25} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+                    if (itemA > itemB) {
+                      return 1;
+                    }
+                    return 0;
+                  })
+                  .map((item) => (
+                    <>
+                      <tr>
+                        <td>{item.treatment_name}</td>
+                        <td>{item.disease}</td>
+                        <td>{item.selected_teeth}</td>
+                        <td>{item.chief_complain}</td>
+                        <td>{item.advice}</td>
+                        <td>{item.on_examination}</td>
+                        <td>{item.treatment_status}</td>
+                        <td>
+                          <button
+                            className="btn btn-secondary"
+                            onClick={() => handleShowTreatProcess(item)}
+                          >
+                            <FaHandHoldingMedical size={25} />
+                          </button>
+                        </td>
+                      </tr>
+                    </>
+                  ))}
+              </tbody>
+            </table>
+            {/* <div>
+              <h5>Grand Total : {grandTotal}</h5>
+            </div> */}
+          </div>
         </div>
+
+        {showEditPopup && (
+          <SittingProcessModal
+            onClose={() => setShowEditPopup(false)}
+            selectedData={selectedData}
+          />
+        )}
         <div>
           <NewTreatmentTable />
         </div>

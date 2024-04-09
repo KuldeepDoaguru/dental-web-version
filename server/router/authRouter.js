@@ -35,6 +35,8 @@ const {
   getAppointmentsViaDocId,
   bookSittingAppointment,
   updateSecurityAmount,
+  getExaminedataById,
+  getExaminedataByIdandexamine,
 } = require("../controller/authAppointTable.js");
 const {
   getBranch,
@@ -228,5 +230,10 @@ router.post("/bookSittingAppointment", bookSittingAppointment);
 router.put("/updateTreatSuggestion/:tsid/:branch", updateTreatSuggestion);
 router.delete("/deleteTreatSuggestion/:tsid/:branch", deleteTreatSuggestion);
 router.get("/getFilteredTreat/:tpid/:branch", getFilteredTreat);
+router.get("/getExaminedataById/:tpid", getExaminedataById);
+router.get(
+  "/getExaminedataByIdandexamine/:tsid/:tpid",
+  getExaminedataByIdandexamine
+);
 
 module.exports = { authRoutes: router };

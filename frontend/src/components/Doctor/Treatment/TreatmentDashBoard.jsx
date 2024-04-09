@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import HeadBar from "../HeadBar";
 import SideBar from "../SideBar";
-import {useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import NewTreatment from "./NewTreatment";
 
 const TreatmentDashBoard = () => {
   const { id } = useParams();
+  const { tpid } = useParams();
   console.log(id);
   return (
     <>
@@ -19,7 +20,7 @@ const TreatmentDashBoard = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SideBar />
               </div>
-              <div className="col-lg-11 col-11 ps-0 m-2"> 
+              <div className="col-lg-11 col-11 ps-0 m-2">
                 <NewTreatment />
               </div>
             </div>
@@ -32,5 +33,5 @@ const TreatmentDashBoard = () => {
 
 export default TreatmentDashBoard;
 const Wrapper = styled.div`
-overflow-x: hidden;
+  overflow-x: hidden;
 `;

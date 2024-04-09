@@ -210,7 +210,7 @@ const PediatricDentalTest = ({ tpid }) => {
     appointment_id: id,
     patient_uhid: null,
     selectTeeth: [],
-    desease: [],
+    desease: "",
     chiefComplain: "",
     advice: "",
     onExamination: "",
@@ -326,28 +326,17 @@ const PediatricDentalTest = ({ tpid }) => {
   };
 
   const caries = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Caries")) {
-      // Remove "Caries" from the array
-      updatedDisease = inputItem.desease.filter(
-        (disease) => disease !== "Caries"
-      );
-    } else {
-      // Add "Caries" to the array
-      updatedDisease = [...inputItem.desease, "Caries"];
-    }
+    // Check if "Caries" is already present in the disease array
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Caries" ? "" : "Caries",
+    }));
 
-    console.log(updatedDisease); // Check the updated disease array
-
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease,
-    };
-    setInputItem(newInputItem);
+    // Update the tooth images
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-        if (inputItem.desease && inputItem.desease.includes("Caries")) {
+        if (inputItem.desease && inputItem.desease === "Caries") {
           toothElement.src = toothDefaultMapping[toothId];
         } else {
           toothElement.src = toothImageMapping[toothId];
@@ -386,30 +375,16 @@ const PediatricDentalTest = ({ tpid }) => {
   };
 
   const fracture = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Fracture")) {
-      // Remove "Fracture" from the array
-      updatedDisease = inputItem.desease.filter(
-        (disease) => disease !== "Fracture"
-      );
-    } else {
-      // Add "Fracture" to the array
-      updatedDisease = [...inputItem.desease, "Fracture"];
-    }
-
-    console.log(updatedDisease); // Check the updated disease array
-
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease,
-    };
-    setInputItem(newInputItem);
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Fracture" ? "" : "Fracture",
+    }));
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-        if (inputItem.desease && inputItem.desease.includes("Fracture")) {
+        if (inputItem.desease && inputItem.desease === "Fracture") {
           toothElement.src = toothDefaultMapping[toothId];
         } else {
           toothElement.src = toothfractureImageMapping[toothId];
@@ -445,24 +420,10 @@ const PediatricDentalTest = ({ tpid }) => {
   };
 
   const impacted = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Impacted")) {
-      // Remove "Impacted" from the array
-      updatedDisease = inputItem.desease.filter(
-        (disease) => disease !== "Impacted"
-      );
-    } else {
-      // Add "Impacted" to the array
-      updatedDisease = [...inputItem.desease, "Impacted"];
-    }
-
-    console.log(updatedDisease); // Check the updated disease array
-
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease,
-    };
-    setInputItem(newInputItem);
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Impacted" ? "" : "Impacted",
+    }));
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
@@ -505,25 +466,10 @@ const PediatricDentalTest = ({ tpid }) => {
   };
 
   const missing = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Missing Tooth")) {
-      // Remove "Missing Tooth" from the array
-      updatedDisease = inputItem.desease.filter(
-        (disease) => disease !== "Missing Tooth"
-      );
-    } else {
-      // Add "Missing Tooth" to the array
-      updatedDisease = [...inputItem.desease, "Missing Tooth"];
-    }
-
-    console.log(updatedDisease); // Check the updated disease array
-
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease,
-    };
-    setInputItem(newInputItem);
-
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Missing Tooth" ? "" : "Missing Tooth",
+    }));
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
@@ -565,24 +511,10 @@ const PediatricDentalTest = ({ tpid }) => {
   };
 
   const mobility = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Mobility")) {
-      // Remove "Mobility" from the array
-      updatedDisease = inputItem.desease.filter(
-        (disease) => disease !== "Mobility"
-      );
-    } else {
-      // Add "Mobility" to the array
-      updatedDisease = [...inputItem.desease, "Mobility"];
-    }
-
-    console.log(updatedDisease); // Check the updated disease array
-
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease,
-    };
-    setInputItem(newInputItem);
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Mobility" ? "" : "Mobility",
+    }));
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
@@ -624,24 +556,13 @@ const PediatricDentalTest = ({ tpid }) => {
   };
 
   const periapical = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Periapical Abscess")) {
-      // Remove "Periapical Abscess" from the array
-      updatedDisease = inputItem.desease.filter(
-        (disease) => disease !== "Periapical Abscess"
-      );
-    } else {
-      // Add "Periapical Abscess" to the array
-      updatedDisease = [...inputItem.desease, "Periapical Abscess"];
-    }
-
-    console.log(updatedDisease); // Check the updated disease array
-
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease,
-    };
-    setInputItem(newInputItem);
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease:
+        prevInputItem.desease === "Periapical Abscess"
+          ? ""
+          : "Periapical Abscess",
+    }));
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
@@ -687,24 +608,10 @@ const PediatricDentalTest = ({ tpid }) => {
   };
 
   const root = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Root Stump")) {
-      // Remove "Root Stump" from the array
-      updatedDisease = inputItem.desease.filter(
-        (disease) => disease !== "Root Stump"
-      );
-    } else {
-      // Add "Root Stump" to the array
-      updatedDisease = [...inputItem.desease, "Root Stump"];
-    }
-
-    console.log(updatedDisease); // Check the updated disease array
-
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease,
-    };
-    setInputItem(newInputItem);
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Root Stump" ? "" : "Root Stump",
+    }));
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
@@ -748,23 +655,10 @@ const PediatricDentalTest = ({ tpid }) => {
 
   const supara = () => {
     let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Supra Erupted")) {
-      // Remove "Supra Erupted" from the array
-      updatedDisease = inputItem.desease.filter(
-        (disease) => disease !== "Supra Erupted"
-      );
-    } else {
-      // Add "Supra Erupted" to the array
-      updatedDisease = [...inputItem.desease, "Supra Erupted"];
-    }
-
-    console.log(updatedDisease); // Check the updated disease array
-
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease,
-    };
-    setInputItem(newInputItem);
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Supra Erupted" ? "" : "Supra Erupted",
+    }));
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
@@ -821,7 +715,7 @@ const PediatricDentalTest = ({ tpid }) => {
       tpid: tpid,
       patient_uhid: inputItem.patient_uhid,
       selectedTeeth: inputItem.selectTeeth.join(", "),
-      disease: inputItem.desease.join(", "),
+      disease: inputItem.desease,
       chiefComplain: inputItem.chiefComplain,
       advice: inputItem.advice,
       onExamination: inputItem.onExamination,
@@ -837,9 +731,26 @@ const PediatricDentalTest = ({ tpid }) => {
       cogoToast.success("data saved");
       dispatch(toggleTableRefresh());
       timelineForExamination();
+      setInputItem({
+        appointment_id: id,
+        selectTeeth: [],
+        desease: "",
+        chiefComplain: "",
+        advice: "",
+        onExamination: "",
+      });
+      setTimeout(() => {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach((checkbox) => {
+          checkbox.checked = false;
+        });
+      });
+
+      setSelectedTeeth([]);
       // window.location.reload();
     } catch (error) {
       console.error("Error:", error);
+      cogoToast.error(error.response.data.message);
     }
 
     // Push the current inputItem to inputItemList
@@ -847,26 +758,9 @@ const PediatricDentalTest = ({ tpid }) => {
 
     // console.log("Before resetting inputItem:", inputItem);
 
-    setInputItem({
-      appointment_id: id,
-      selectTeeth: [],
-      desease: [],
-      chiefComplain: "",
-      advice: "",
-      onExamination: "",
-    });
-
     // console.log("After resetting inputItem:", inputItem);
 
     // Clear the checked property of all checkboxes
-    setTimeout(() => {
-      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-      checkboxes.forEach((checkbox) => {
-        checkbox.checked = false;
-      });
-    });
-
-    setSelectedTeeth([]);
   };
 
   useEffect(() => {
@@ -1395,16 +1289,9 @@ const PediatricDentalTest = ({ tpid }) => {
                         <label className="lable">Dental Condition</label>
                         <input
                           type="text"
-                          value={inputItem.desease.join(", ")}
+                          value={inputItem.desease}
                           required
-                          onChange={(e) =>
-                            setInputItem({
-                              ...inputItem,
-                              desease: e.target.value
-                                .split(",")
-                                .map((item) => item.trim()),
-                            })
-                          }
+                          name="desease"
                           id="form8Example2"
                           placeholder="Enter diseases"
                           className="form-control"

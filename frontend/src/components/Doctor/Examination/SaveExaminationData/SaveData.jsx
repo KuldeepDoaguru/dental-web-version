@@ -144,7 +144,7 @@ const SaveData = ({ id, tpid }) => {
                     <th>ADVICE</th>
                     <th>ON EXAMINATION</th>
                     <th>Diagnose Category</th>
-                    <th>EDIT ACTION</th>
+
                     <th>DELETE ACTION</th>
                   </tr>
                 </thead>
@@ -157,7 +157,7 @@ const SaveData = ({ id, tpid }) => {
                       <td>{item.advice}</td>
                       <td>{item.on_examination}</td>
                       <td>{item.diagnosis_category}</td>
-                      <td>
+                      {/* <td>
                         {" "}
                         <button
                           type="button"
@@ -168,7 +168,7 @@ const SaveData = ({ id, tpid }) => {
                         >
                           <MdEdit size={20} />
                         </button>
-                      </td>
+                      </td> */}
                       <td>
                         <button
                           className="btn btn-danger mx-1 justify-content-end"

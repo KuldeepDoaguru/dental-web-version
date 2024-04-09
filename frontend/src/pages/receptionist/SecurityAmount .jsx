@@ -261,9 +261,12 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
    <Sider/>
     </div>
     <div className="col-lg-11 mt-2" id='set'>
+    <div className='text-center'>
+      <h3>Security Amount</h3>
+    </div>
       <div className="row" >
    <div className="col-lg-12" id='head'>
-   <nav class="navbar navbar-light bg-light">
+   <nav class="shadow rounded navbar navbar-light bg-light">
             <h6 className='mx-3 my-0'>Search By Patient</h6>
   <div class="container-fluid" id='cont'>
     <form class="navbar1 " >

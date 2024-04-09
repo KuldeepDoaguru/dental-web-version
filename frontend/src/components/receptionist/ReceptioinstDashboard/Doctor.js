@@ -295,7 +295,7 @@ useEffect(() => {
     
   return (
     <Wrapper>
-      <div className="widget-area-2 proclinic-box-shadow rounded bg-white px-1 main">
+      <div className="shadow widget-area-2 proclinic-box-shadow rounded bg-white px-1 main">
         <h3 className="widget-title text-center">Doctor Available for { moment(selectedDate).format('DD/MM/YYYY')}</h3>
         <div className="d-flex px-2 gap-1">
         <input type="date" 

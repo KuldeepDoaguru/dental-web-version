@@ -160,14 +160,19 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
     <div className="col-lg-1 col-1" id='hd'>
    <Sider/>
     </div>
+   
     <div className="col-lg-11 mt-2" id='set'>
+        <div className='text-center'>
+        <h3>All Patients</h3>
+      </div>
       <div className="row" >
    <div className="col-lg-12 col-sm-10 " id='head'>
-   <nav class="navbar navbar-light bg-light">
+   <nav class=" shadow rounded
+    navbar navbar-light bg-light">
             <h6 className='mx-3 my-0'>Search By Patient</h6>
   <div class="container-fluid" id='cont'>
     <form class="navbar1 " >
-      <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name Or Moblie" aria-label="Search" onChange={handleSearch}
+      <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name or Mobile or Id" aria-label="Search" onChange={handleSearch}
         value={searchTerm}/>
       {/* <button class="btn btn-outline-success" type="submit">Search</button> */}
     </form>

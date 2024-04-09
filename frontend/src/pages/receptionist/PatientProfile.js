@@ -206,22 +206,26 @@ console.log(branch)
        <div className='header'>
       <Header/>
       </div>
-
+        
       <div className="row mrgnzero">
         <div className="col-lg-1 col-md-1 col-1" id="sider">
           <Sider />
         </div>
+        
         <div className="col-lg-11 col-md-11 col-11" id='set'>
-          <div className="container-fluid mt-3">
+          <div className="container-fluid">
+          <div className='text-center'>
+      <h3>Patient Profile</h3>
+    </div>
             <div className="d-flex justify-content-between">
               {/* <BranchSelector /> */}
             </div>
           </div>
-          <div className="row g-2">
+          <div className="row">
             <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-              <h1 className="mt-3">{patientData?.patient_name}</h1>
+              <h2 className="mt-3">{patientData?.patient_name}</h2>
 
-              <div className="mt-5">
+              <div className="">
                 <div className="p-2 bg-light w-100 rounded">
                   <h6 className="fw-bold mt-2">Basic Info</h6>
                 </div>

@@ -32,6 +32,7 @@ function Header() {
                   </a>
                   <ul className="dropdown-menu" style={{ marginLeft: "-2rem" }}>
                     <li><Link to='/receptionist_profile' className="dropdown-item">View Profile</Link></li>
+                    <li><Link to='/branch-details' className="dropdown-item">View Clinic Details</Link></li>
                     {/* <li><hr className="dropdown-divider" /></li> */}
                    
 

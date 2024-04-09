@@ -90,7 +90,7 @@ const convertToAMPM = (time) => {
       setCurrentPage(1); // Reset to the first page when searching
   
       const filteredResults = doctors.filter((row) =>
-        row.employee_name.toLowerCase().includes(searchTerm)
+        row.employee_name.toLowerCase().includes(searchTerm) || row.employee_mobile.includes(searchTerm)
       );
   
       setFilteredData(filteredResults);
@@ -202,10 +202,13 @@ const formatDate = (dateString) => {
           <Sider />
         </div>
         <div className="col-lg-11 mt-2" id='set'>
+        <div className='text-center'>
+      <h3>All Doctors</h3>
+    </div>
           <div className="row" id="row1">
             <div className="col-lg-12">
             <div className="col-lg-12" id='head'>
-   <nav class="navbar navbar-light bg-light">
+   <nav class="shadow rounded navbar navbar-light bg-light">
             <h6 className='mx-3 my-0'>Search By Doctor</h6>
   <div class="container-fluid" id='cont'>
     <form class="navbar1 " >

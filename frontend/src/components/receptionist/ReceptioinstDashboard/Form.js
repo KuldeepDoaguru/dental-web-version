@@ -13,7 +13,7 @@ function Form() {
   return (
     <Wrapper>
       <div className="">
-        <div className="row  p-1 border rounded bg-white" id="section3">
+        <div className="row shadow p-1 border rounded bg-white" id="section3">
           <ul className="nav nav-tabs" id="myTab" role="tablist">
             <li className="nav-item" role="presentation">
               <button

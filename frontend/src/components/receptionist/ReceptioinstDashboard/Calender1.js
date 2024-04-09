@@ -254,6 +254,7 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
 
   return (
    <Wrapper>
+    <div >
     <div><h6 className='text-center'>View summary by date
       
       </h6></div>
@@ -395,6 +396,7 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
   {showPopup && (
         <AppDetails onClose={() => setShowPopup(false)} slotInfo={selectedAppointment} />
       )}
+   </div>
    </Wrapper>
   )
 }
@@ -406,6 +408,7 @@ padding:10px;
 width: 100%;
 margin-left: 10px;
 border-radius: 5px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
 @media screen and (max-width: 768px) {
   margin: auto;
     }

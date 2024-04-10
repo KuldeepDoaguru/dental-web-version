@@ -973,6 +973,56 @@ const getAppointmentById = (req, res) => {
     });
   }
 };
+const getPatientDeatilsByUhid = (req, res) => {
+  try {
+    const uhid = req.params.uhid;
+    const branch = req.params.branch;
+    const sql = `
+      SELECT 
+       p.tp_id,
+       p.uhid,
+       p.branch_name,
+       p.doctor_name,
+       p.doctor_id,
+       t.ts_id,
+       t.treatment_name,
+       t.treatment_status,
+       t.ts_id
+      FROM 
+      (SELECT * FROM treatment_package WHERE uhid = ? ORDER BY tp_id DESC LIMIT 1) AS p
+      JOIN 
+      treat_suggest AS t ON p.tp_id = t.tp_id 
+      WHERE
+      p.uhid = ? AND
+      p.branch_name = ?
+    `;
+
+    db.query(sql, [uhid,uhid, branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching appointment from MySql:", err);
+        res.status(500).json({ error: "Error fetching Patient details" });
+      } else {
+        if (results.length === 0) {
+          res.status(404).json({ message: "Patient details not found" });
+        } else {
+          res
+            .status(200)
+            .json({
+              data: results,
+              message: "Patient details fetched successfully",
+            });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Patient details from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetching Patient details",
+      error: error.message,
+    });
+  }
+};
 
 const getAllAppointmentByPatientId = (req, res) => {
   try {
@@ -1861,5 +1911,6 @@ module.exports = {
   updatePatientSecurityAmt,
   getSecurityAmountDataBySID,
   updateRefundAmount,
-  getSinglePatientSecurityAmt
+  getSinglePatientSecurityAmt,
+  getPatientDeatilsByUhid
 };

@@ -1,6 +1,6 @@
 
 const express = require("express");
-const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent, getPatientTimeline, getAllAppointmentByPatientId, updateAppointmentStatusCancelOpd, getPatientSecurityAmt, updatePatientSecurityAmt, getSecurityAmountDataBySID, updateRefundAmount, getSinglePatientSecurityAmt } = require("../controller/receptionist_Controller");
+const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent, getPatientTimeline, getAllAppointmentByPatientId, updateAppointmentStatusCancelOpd, getPatientSecurityAmt, updatePatientSecurityAmt, getSecurityAmountDataBySID, updateRefundAmount, getSinglePatientSecurityAmt, getPatientDeatilsByUhid } = require("../controller/receptionist_Controller");
 const router = express.Router();
 
 router.post('/add-patient',addPatient);
@@ -28,6 +28,7 @@ router.get('/get-inquiries/:branch',getInquiries);
 router.put('/update-inquiry',updateInquiry);
 router.delete('/delete-inquiry/:id',deleteInquiry);
 router.get('/getPatientTimeline/:branch/:patientId',getPatientTimeline)
+router.get('/getPatientDeatilsByUhid/:branch/:uhid',getPatientDeatilsByUhid)
 router.get('/getAllAppointmentByPatientId/:branch/:patientId',getAllAppointmentByPatientId)
 router.get('/patient-securityAmt/:branch', getPatientSecurityAmt);
 router.get('/getSecurityAmountDataBySID/:sid', getSecurityAmountDataBySID);

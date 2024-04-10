@@ -21,8 +21,11 @@ const SittingProcessModal = ({ onClose, selectedData }) => {
   const [treat, setTreat] = useState([]);
   const [showBook, setShowBook] = useState(false);
   const [formData, setFormData] = useState({
-    current_sitting: selectedData.current_sitting + 1,
-    current_sitting_status: "",
+    current_sitting:
+      selectedData.treatment_status === "pending"
+        ? selectedData.current_sitting
+        : selectedData.current_sitting + 1,
+    treatment_status: "",
   });
 
   const handleChange = (event) => {
@@ -97,18 +100,25 @@ const SittingProcessModal = ({ onClose, selectedData }) => {
 
                   <div class="mb-3">
                     <label for="recipient-id" class="col-form-label">
-                      Current Sitting Status
+                      Treatment Status
                     </label>
                     <select
                       class="form-control"
                       id=""
-                      name="current_sitting_status"
+                      name="treatment_status"
                       onChange={handleChange}
-                      value={formData.current_sitting_status}
+                      value={formData.treatment_status}
                     >
-                      <option value="">-select-</option>
-                      <option value="pending">Pending</option>
-                      <option value="ongoing">Ongoing</option>
+                      {selectedData.current_sitting >= 1 &&
+                      selectedData.treatment_status === "ongoing" ? (
+                        <option value="ongoing">Ongoing</option>
+                      ) : (
+                        <>
+                          <option value="">-select-</option>
+                          <option value="pending">Pending</option>
+                          <option value="ongoing">Ongoing</option>
+                        </>
+                      )}
                     </select>
                   </div>
 

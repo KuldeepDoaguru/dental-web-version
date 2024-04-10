@@ -27,7 +27,7 @@ const SaveData = ({ id, tpid }) => {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalDataByID/${id}`
+        `http://localhost:8888/api/doctor/getDentalDataByID/${id}/${tpid}`
       );
       setData(data);
     } catch (error) {

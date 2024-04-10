@@ -17,6 +17,7 @@ const {
   getTreatList,
   updateTreatSitting,
   updateTreatSuggestion,
+  updateTreatSittingStatus,
   deleteTreatSuggestion,
   getFilteredTreat,
 } = require("../controller/authControl.js");
@@ -85,7 +86,7 @@ const router = express.Router();
 // Examination  Routes START here......
 router.post("/dentalPediatric", dentalPediatric);
 router.put("/updatedentalPediatric/:id", updateDentalPediatric);
-router.get("/getDentalDataByID/:appointmentId", getDentalDataByID);
+router.get("/getDentalDataByID/:appointmentId/:tpid", getDentalDataByID);
 router.get("/getDentalPatientDataByID/:patientUHID", getDentalPatientDataByID);
 router.get("/getDentalPatientByID/:patientUHID", getDentalPatientByID);
 router.delete("/deleteDentalPediatric/:id", deleteDentalPediatric);
@@ -137,14 +138,14 @@ router.get("/getPatientTimeline/:branch/:patientId", getPatientTimeline);
 // Treatment List Routes START here......
 router.get("/treatmentLists", getTreatmentList);
 router.post(
-  "/insertTreatmentData/:exam_id/:appointment_id",
+  "/insertTreatmentData/:exam_id/:appointment_id/:tpid",
   insertTreatmentData
 );
 router.get(
   "/getExamDataIdbyAppointId/:id/:appointment_id",
   getExamDataIdbyAppointId
 );
-router.get("/getTreatmentData/:appointment_id", getTreatmentData);
+router.get("/getTreatmentData/:appointment_id/:tpid/:branch", getTreatmentData);
 router.get("/treatPatientProfile/:patientUHID", getTreatPatientProfile);
 router.put("/updateTreatmentData/:id", updateTreatmentData);
 router.delete("/deleteTreatmentData/:id", deleteTreatmentData);
@@ -154,7 +155,10 @@ router.get("/getTreatmentDatasum/:appointment_id", getTreatmentDataSUM);
 // Treatment List Routes END here......
 
 // Medical Prescription Routes START here......
-router.post("/insertTreatPrescription/:appoint_id", insertTreatPrescription);
+router.post(
+  "/insertTreatPrescription/:appoint_id/:tpid",
+  insertTreatPrescription
+);
 router.get("/getMedicineData", getMedicineData);
 router.get(
   "/getPrescriptionPatientProfile/:patientUHID",
@@ -162,7 +166,7 @@ router.get(
 );
 router.get("/prescripPatientUHID/:patientUHID", prescripPatientUHID);
 router.get(
-  "/getTreatPrescriptionByAppointId/:appoint_id",
+  "/getTreatPrescriptionByAppointId/:appoint_id/:tpid",
   getTreatPrescriptionByAppointId
 );
 router.delete("/deleteTreatPrescriptionById/:id", deleteTreatPrescriptionById);
@@ -221,6 +225,7 @@ router.get("/lab-data/:appoint_id", getLabDataByAppointId);
 router.post("/addTreatPackageDetails", addTreatPackageDetails);
 router.get("/getTreatList/:branch/:tpid", getTreatList);
 router.put("/updateTreatSitting/:branch/:tsid", updateTreatSitting);
+router.put("/updateTreatSittingStatus/:branch/:tsid", updateTreatSittingStatus);
 router.get("/get-branch-holidays/:branch", getBranchHoliday);
 router.get("/get-branch-detail/:branch", getBranchDetail);
 router.get("/get-treatments", getTreatment);

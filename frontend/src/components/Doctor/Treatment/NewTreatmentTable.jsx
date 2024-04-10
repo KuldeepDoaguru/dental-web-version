@@ -8,7 +8,7 @@ import { FaLocationArrow } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 
 const NewTreatmentTable = () => {
-  const { id } = useParams();
+  const { id, tpid } = useParams();
   console.log(id);
   const navigate = useNavigate();
   const [treatmentData, setTreatmentData] = useState([]);
@@ -56,7 +56,7 @@ const NewTreatmentTable = () => {
   const fetchTreatmentData = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentData/${id}`
+        `http://localhost:8888/api/doctor/getTreatmentData/${id}/${tpid}/${branch}`
       );
       setTreatmentData(res.data.data);
       console.log(res.data.data);
@@ -162,23 +162,14 @@ const NewTreatmentTable = () => {
   };
 
   const handleNavigate = async () => {
-    navigate(`/TPrescriptionDash/${id}`);
-    // try {
-
-    //     // Make the API call to update sitting count
-    // //    const updateSitting = await axios.get(`http://localhost:8888/api/doctor/updateSittingCount/${id}`);
-    // //     console.log('Sitting count updated successfully');
-
-    // } catch (error) {
-    //     console.log('Error updating sitting count', error);
-    // }
+    navigate(`/TPrescriptionDash/${id}/${tpid}`);
   };
 
   console.log(treatmentData);
   return (
     <>
       <Wrapper>
-        <div className="container">
+        <div className="container-fluid">
           <div className="row">
             <div className="d-flex justify-content-center align-items-center mt-4">
               <p className="fs-1 shadow-none p-2 mb-4 bg-light rounded">
@@ -189,6 +180,7 @@ const NewTreatmentTable = () => {
           <table class="table table-bordered table-striped border">
             <thead>
               <tr>
+                <th>Sitting Number</th>
                 <th>Treatment</th>
                 <th>Teeth No.</th>
                 <th>Qty</th>
@@ -197,22 +189,22 @@ const NewTreatmentTable = () => {
                 <th>Discount %</th>
                 <th>Final Cost</th>
                 <th>Note</th>
-                <th>Edit</th>
                 <th>Delete</th>
               </tr>
             </thead>
             <tbody>
               {treatmentData?.map((item, index) => (
                 <tr key={index}>
+                  <td>{item.sitting_number}</td>
                   <td>{item.dental_treatment}</td>
                   <td>{item.no_teeth}</td>
                   <td>{item.qty}</td>
-                  <td>{item.original_cost_amt}</td>
+                  <td>{item.total_amt}</td>
                   <td>{item.cost_amt}</td>
                   <td>{item.disc_amt}</td>
-                  <td>{item.total_amt}</td>
+                  <td>{item.net_amount}</td>
                   <td>{item.note}</td>
-                  <td>
+                  {/* <td>
                     <button
                       className="btn btn-primary justify-content-end"
                       data-bs-toggle="modal"
@@ -221,7 +213,7 @@ const NewTreatmentTable = () => {
                     >
                       <MdEdit size={25} />
                     </button>
-                  </td>
+                  </td> */}
                   <div
                     className="modal fade"
                     id={`exampleModal-${index}`}

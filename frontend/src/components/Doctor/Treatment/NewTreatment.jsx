@@ -223,12 +223,18 @@ const NewTreatment = () => {
                         <td>{item.on_examination}</td>
                         <td>{item.treatment_status}</td>
                         <td>
-                          <button
-                            className="btn btn-secondary"
-                            onClick={() => handleShowTreatProcess(item)}
-                          >
-                            <FaHandHoldingMedical size={25} />
-                          </button>
+                          {item.treatment_status === "complete" ? (
+                            <button className="btn btn-success" disabled>
+                              <FaHandHoldingMedical size={25} />
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-secondary"
+                              onClick={() => handleShowTreatProcess(item)}
+                            >
+                              <FaHandHoldingMedical size={25} />
+                            </button>
+                          )}
                         </td>
                       </tr>
                     </>

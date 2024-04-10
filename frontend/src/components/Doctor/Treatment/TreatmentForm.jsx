@@ -18,6 +18,7 @@ const TreatmentForm = () => {
   const branch = user.currentUser.branch_name;
   console.log(branch);
   const [treatments, setTreatments] = useState([]);
+  const [treatStats, setTreatStats] = useState();
 
   const [formData, setFormData] = useState({
     patient_uhid: "",
@@ -45,10 +46,6 @@ const TreatmentForm = () => {
       console.log("Error fetching treatments:", error);
     }
   };
-  useEffect(() => {
-    getPatientDetail();
-    getTreatmentList();
-  }, []);
 
   // Send Treatment Data to the Server....
   console.log([treatments[0]?.selected_teeth]);
@@ -106,24 +103,44 @@ const TreatmentForm = () => {
       console.log(error);
     }
   };
+  const netAmount =
+    treatments[0]?.totalCost * dataArray?.length -
+    (treatments[0]?.totalCost * dataArray?.length * formData.disc_amt) / 100;
+
+  console.log(netAmount);
+
+  const formDetails = {
+    branch: branch,
+    sitting_number: treatments[0]?.current_sitting,
+    patient_uhid: formData.patient_uhid,
+    desease: treatments[0]?.desease,
+    dental_treatment: treatment,
+    no_teeth: treatments[0]?.selected_teeth,
+    qty: dataArray?.length,
+    cost_amt: treatments[0]?.totalCost,
+    disc_amt: formData.disc_amt,
+    total_amt: treatments[0]?.totalCost * dataArray?.length,
+    net_amount: netAmount,
+    note: formData.note,
+  };
+  console.log(formDetails);
+
+  const treatmentStatsUpdate = async () => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8888/api/doctor/updateTreatSittingStatus/${branch}/${tsid}`
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDetails = {
-      patient_uhid: formData.patient_uhid,
-      desease: treatments[0]?.desease,
-      dental_treatment: treatment,
-      no_teeth: treatments[0]?.selected_teeth,
-      qty: dataArray?.length,
-      cost_amt: "",
-      disc_amt: "",
-      total_amt: "",
-      net_amt: "",
-      note: "",
-    };
+
     try {
       const res = await axios.post(
-        `http://localhost:8888/api/doctor/insertTreatmentData/${tsid}/${appoint_id}`,
+        `http://localhost:8888/api/doctor/insertTreatmentData/${tsid}/${appoint_id}/${tp_id}`,
         formDetails
       );
       if (res.status >= 200 && res.status < 300) {
@@ -131,16 +148,21 @@ const TreatmentForm = () => {
         console.log("Treatment details inserted successfully");
         // Optionally, you can reset the form fields after successful submission
         setFormData({
-          dental_treatment: "",
           no_teeth: "",
           qty: "",
           cost_amt: "",
           original_cost_amt: "",
           disc_amt: "",
           total_amt: "",
+          net_amt: "",
           note: "",
         });
-        // navigate(`/TreatmentDashBoard/${appoint_id}`);
+        if (treatStats === "yes") {
+          treatmentStatsUpdate();
+        }
+        getPatientDetail();
+        getTreatmentList();
+        navigate(`/TreatmentDashBoard/${appoint_id}/${tp_id}`);
       } else {
         console.error(
           "Failed to insert treatment details. Server returned status:",
@@ -174,6 +196,11 @@ const TreatmentForm = () => {
 
   console.log(formData);
   console.log(treatments);
+
+  useEffect(() => {
+    getPatientDetail();
+    getTreatmentList();
+  }, []);
 
   return (
     <>
@@ -267,7 +294,7 @@ const TreatmentForm = () => {
                   <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
-                        SELECT Treatment
+                        Treatment
                       </label>
                       <input
                         type="text"
@@ -359,7 +386,7 @@ const TreatmentForm = () => {
                       </label>
                       <input
                         type="text"
-                        name="total_amt"
+                        // name="total_amt"
                         className="shadow-none p-1 bg-light rounded border-0 w-75"
                         value={
                           treatments[0]?.totalCost &&
@@ -373,7 +400,7 @@ const TreatmentForm = () => {
                             : ""
                         }
                         placeholder="Total Amount"
-                        onChange={handleChange}
+                        // onChange={handleChange}
                       />
                     </div>
                   </div>
@@ -394,10 +421,26 @@ const TreatmentForm = () => {
                   </div>
                 </div>
               </div>
-              <div className="d-flex justify-content-center align-items-center">
-                <div></div>
-                <button type="submit" className="btn btn-info text-light">
-                  Treatment Done <FaTooth size={22} />
+              <div className="d-flex justify-content-center align-items-center flex-column">
+                <div>
+                  <label htmlFor="" class="form-label fw-bold">
+                    Treatment Completed?
+                  </label>
+                  <select
+                    class="form-control"
+                    id=""
+                    name=""
+                    onChange={(e) => setTreatStats(e.target.value)}
+                    value={treatStats}
+                  >
+                    <option value="">-select-</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+                <button type="submit" className="btn btn-info text-light mt-2">
+                  {treatStats === "yes" ? "Treatment Done" : "Sitting Done"}
+                  <FaTooth size={22} />
                 </button>
               </div>
             </form>

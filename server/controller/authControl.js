@@ -79,9 +79,11 @@ const updateDentalPediatric = (req, res) => {
 // Examination Module
 const getDentalDataByID = (req, res) => {
   const appointmentId = req.params.appointmentId;
+  const tpid = req.params.tpid;
 
-  const sql = "SELECT * FROM dental_examination WHERE appointment_id = ?";
-  db.query(sql, [appointmentId], (err, result) => {
+  const sql =
+    "SELECT * FROM dental_examination WHERE appointment_id = ? AND tp_id = ?";
+  db.query(sql, [appointmentId, tpid], (err, result) => {
     if (err) {
       console.error("Error retrieving data: ", err);
       res.status(500).send("Error retrieving data: " + err.message);
@@ -177,6 +179,8 @@ const insertTreatSuggest = (req, res) => {
     total_sitting,
   } = req.body;
 
+  const treatment_status = "pending";
+
   const selectQuery =
     "SELECT * FROM treat_suggest WHERE tp_id = ? AND treatment_name = ?";
   db.query(selectQuery, [tp_id, treatment_name], (err, result) => {
@@ -188,7 +192,7 @@ const insertTreatSuggest = (req, res) => {
           .status(400)
           .json({ success: false, message: "treatment already listed" });
       } else {
-        const sql = `INSERT INTO treat_suggest (appoint_id, branch_name, p_uhid, tp_id, desease, treatment_name, totalCost,total_sitting) VALUES(?,?,?,?,?,?,?,?)`;
+        const sql = `INSERT INTO treat_suggest (appoint_id, branch_name, p_uhid, tp_id, desease, treatment_name, totalCost,total_sitting, treatment_status) VALUES(?,?,?,?,?,?,?,?,?)`;
 
         db.query(
           sql,
@@ -201,6 +205,7 @@ const insertTreatSuggest = (req, res) => {
             treatment_name,
             totalCost,
             total_sitting,
+            treatment_status,
           ],
           (err, result) => {
             if (err) {
@@ -397,44 +402,21 @@ const updateTreatSitting = (req, res) => {
   try {
     const tsid = req.params.tsid;
     const branch = req.params.branch;
-    const {
-      consider_sitting,
-      current_sitting,
-      upcoming_sitting,
-      current_sitting_status,
-      upcoming_sitting_status,
-    } = req.body;
+    const { current_sitting, treatment_status } = req.body;
 
-    const sql = `UPDATE treat_suggest 
-    SET consider_sitting = ?, 
-        current_sitting = ?, 
-        upcoming_sitting = ?, 
-        current_sitting_status = ?, 
-        upcoming_sitting_status = ? 
-    WHERE ts_id = ? 
-      AND branch_name = ?`;
+    const sql = `UPDATE treat_suggest SET current_sitting = ?, treatment_status = ? WHERE ts_id = ? AND branch_name = ?`;
 
     db.query(
       sql,
-      [
-        consider_sitting,
-        current_sitting,
-        upcoming_sitting,
-        current_sitting_status,
-        upcoming_sitting_status,
-        tsid,
-        branch,
-      ],
+      [current_sitting, treatment_status, tsid, branch],
       (err, result) => {
         if (err) {
           res.status(400).json({ success: false, message: err.message });
         } else {
           const insertedData = {
-            consider_sitting,
             current_sitting,
-            upcoming_sitting,
-            current_sitting_status,
-            upcoming_sitting_status,
+            treatment_status,
+
             tsid,
             branch,
           };
@@ -543,6 +525,32 @@ const getFilteredTreat = (req, res) => {
   }
 };
 
+const updateTreatSittingStatus = (req, res) => {
+  try {
+    const tsid = req.params.tsid;
+    const branch = req.params.branch;
+    const treatment_status = "complete";
+
+    const sql = `UPDATE treat_suggest SET treatment_status = ? WHERE ts_id = ? AND branch_name = ?`;
+
+    db.query(sql, [treatment_status, tsid, branch], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      } else {
+        const insertedData = {
+          treatment_status,
+          tsid,
+          branch,
+        };
+        res.status(200).json({ success: true, result: insertedData });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   dentalPediatric,
   updateDentalPediatric,
@@ -560,4 +568,5 @@ module.exports = {
   updateTreatSuggestion,
   deleteTreatSuggestion,
   getFilteredTreat,
+  updateTreatSittingStatus,
 };

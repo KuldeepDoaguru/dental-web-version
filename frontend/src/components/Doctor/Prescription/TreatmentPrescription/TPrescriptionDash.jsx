@@ -6,9 +6,9 @@ import HeadBar from "../../HeadBar";
 import NewTreatPrescription from "./NewTreatPrescription";
 
 const TPrescriptionDash = () => {
-  const { id } = useParams();
-    console.log(id);
-    const navigate = useNavigate();
+  const { id, tpid } = useParams();
+  console.log(id);
+  const navigate = useNavigate();
   return (
     <>
       <Wrapper>
@@ -21,7 +21,7 @@ const TPrescriptionDash = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <NewTreatPrescription /> 
+                <NewTreatPrescription />
               </div>
             </div>
           </div>

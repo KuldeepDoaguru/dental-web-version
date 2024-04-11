@@ -563,14 +563,15 @@ useEffect(()=>{
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Treatment:</label>
-            <Select
+            {/* <Select
         id="treatment"
         name="treatment"
         options={treatments}
         value={selectedTreatment ? { value: selectedTreatment, label: selectedTreatment } : selectedTreatment}
         onChange={handleChangeTreatment}
         required
-      />
+      /> */}
+       <input type="text" value={selectedTreatment} readOnly class="form-control" id="recipient-name"/>
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Notes:</label>

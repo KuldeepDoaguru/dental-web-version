@@ -2,7 +2,7 @@ const express = require("express");
 const db = require("../connect.js");
 
 const getTreatmentList = (req, res) => {
-  const sql = `SELECT * FROM treatment_list`;
+  const sql = `SELECT * FROM treatment_list_copy`;
   db.query(sql, (err, results) => {
     if (!err) {
       const sanitizedResults = results.filter(
@@ -432,6 +432,21 @@ const onGoingTreat = (req, res) => {
   });
 };
 
+const getProcedureList = (req, res) => {
+  try {
+    const selectQuery = "SELECT * FROM treat_procedure_list";
+    db.query(selectQuery, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
 module.exports = {
   getTreatmentList,
   insertTreatmentData,
@@ -449,4 +464,5 @@ module.exports = {
   getPrescriptionPatientProfile,
   prescripPatientUHID,
   onGoingTreat,
+  getProcedureList,
 };

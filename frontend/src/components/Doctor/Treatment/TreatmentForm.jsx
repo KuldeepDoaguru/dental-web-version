@@ -4,6 +4,8 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { FaTooth } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
+import BookSittingAppointment from "../Treatment Suggestion/BookSittingAppointment";
+// import EditAppointment from "./";
 
 const TreatmentForm = () => {
   const { tsid } = useParams();
@@ -18,7 +20,9 @@ const TreatmentForm = () => {
   const branch = user.currentUser.branch_name;
   console.log(branch);
   const [treatments, setTreatments] = useState([]);
+  const [showBookingPopup, setShowBookingPopup] = useState(false);
   const [treatStats, setTreatStats] = useState();
+  const [bookingStats, setBookingStats] = useState();
 
   const [formData, setFormData] = useState({
     patient_uhid: "",
@@ -135,9 +139,7 @@ const TreatmentForm = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     try {
       const res = await axios.post(
         `http://localhost:8888/api/doctor/insertTreatmentData/${tsid}/${appoint_id}/${tp_id}`,
@@ -196,11 +198,29 @@ const TreatmentForm = () => {
 
   console.log(formData);
   console.log(treatments);
+  console.log(getPatientData);
 
   useEffect(() => {
     getPatientDetail();
     getTreatmentList();
   }, []);
+
+  const handleSubmitCall = () => {
+    handleSubmit();
+  };
+
+  const handleTreatSubmit = (e) => {
+    e.preventDefault();
+    if (bookingStats === "yes") {
+      setShowBookingPopup(true);
+    } else {
+      handleSubmit();
+    }
+  };
+
+  const handleEditAppointment = () => {
+    setShowBookingPopup(true);
+  };
 
   return (
     <>
@@ -275,7 +295,7 @@ const TreatmentForm = () => {
           </div>
 
           <div className="row shadow-sm p-4 mb-3 bg-white rounded">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleTreatSubmit}>
               <div className="container">
                 <div className="row g-2">
                   <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
@@ -372,6 +392,7 @@ const TreatmentForm = () => {
                       <input
                         type="text"
                         name="disc_amt"
+                        required
                         className="shadow-none p-1 bg-light rounded border-0 w-75"
                         value={formData.disc_amt}
                         placeholder="Discount percentages"
@@ -386,6 +407,7 @@ const TreatmentForm = () => {
                       </label>
                       <input
                         type="text"
+                        required
                         // name="total_amt"
                         className="shadow-none p-1 bg-light rounded border-0 w-75"
                         value={
@@ -421,27 +443,104 @@ const TreatmentForm = () => {
                   </div>
                 </div>
               </div>
+              <hr />
               <div className="d-flex justify-content-center align-items-center flex-column">
-                <div>
-                  <label htmlFor="" class="form-label fw-bold">
-                    Treatment Completed?
-                  </label>
-                  <select
-                    class="form-control"
-                    id=""
-                    name=""
-                    onChange={(e) => setTreatStats(e.target.value)}
-                    value={treatStats}
-                  >
-                    <option value="">-select-</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
-                  </select>
+                <div className="d-flex justify-content-center align-items-center">
+                  <div>
+                    <label htmlFor="" class="form-label fw-bold">
+                      Treatment Completed?
+                    </label>
+                    <select
+                      class="form-control"
+                      id=""
+                      name=""
+                      onChange={(e) => setTreatStats(e.target.value)}
+                      value={treatStats}
+                    >
+                      <option value="">-select-</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
+                  <div className="ms-2">
+                    <label htmlFor="" class="form-label fw-bold">
+                      Do you want to book next appointment?
+                    </label>
+                    <select
+                      class="form-control"
+                      id=""
+                      name=""
+                      onChange={(e) => setBookingStats(e.target.value)}
+                      value={bookingStats}
+                    >
+                      <option value="">-select-</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
                 </div>
-                <button type="submit" className="btn btn-info text-light mt-2">
-                  {treatStats === "yes" ? "Treatment Done" : "Sitting Done"}
-                  <FaTooth size={22} />
-                </button>
+
+                <div className="d-flex justify-content-center">
+                  {showBookingPopup && (
+                    <BookSittingAppointment
+                      getPatientData={getPatientData}
+                      treatment={treatment}
+                      tsid={tsid}
+                      appoint_id={appoint_id}
+                      tp_id={tp_id}
+                      onClose={() => setShowBookingPopup(false)}
+                    />
+                  )}
+                  {treatStats === "yes" ? (
+                    <>
+                      <div className="d-flex justify-content-center">
+                        {bookingStats === "yes" ? (
+                          <>
+                            <button
+                              type="submit"
+                              className="btn btn-info btn text-dark mt-2"
+                              // onClick={handleEditAppointment}
+                            >
+                              Book Next Treatment & Submit
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button
+                              type="submit"
+                              className="btn btn-info text-dark mt-2 ms-2"
+                            >
+                              Treatment Done
+                              <FaTooth size={22} />
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="d-flex justify-content-center">
+                        {bookingStats === "yes" ? (
+                          <button
+                            type="submit"
+                            className="btn btn-info btn text-dark mt-2"
+                            // onClick={handleEditAppointment}
+                          >
+                            Book Next Sitting & Submit
+                          </button>
+                        ) : (
+                          <button
+                            type="submit"
+                            className="btn btn-info text-dark mt-2 ms-2"
+                          >
+                            Sitting Done
+                            <FaTooth size={22} />
+                          </button>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
             </form>
           </div>

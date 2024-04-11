@@ -163,13 +163,13 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
               openBookAppoint={openBookAppoint}
             />
           )}
-          {showBookPopup && (
+          {/* {showBookPopup && (
             <BookSittingAppointment
               onClose={() => setShowBookPopup(false)}
               getPatientData={getPatientData}
               selectedData={selectedData}
             />
-          )}
+          )} */}
 
           {showEditTreatSug && (
             <EditTreatSuggestModal

@@ -65,6 +65,7 @@ const {
   getPrescriptionPatientProfile,
   prescripPatientUHID,
   onGoingTreat,
+  getProcedureList,
 } = require("../controller/authTreatment.js");
 const {
   uploadImage,
@@ -240,5 +241,7 @@ router.get(
   "/getExaminedataByIdandexamine/:tsid/:tpid",
   getExaminedataByIdandexamine
 );
+
+router.get("/getProcedureList", getProcedureList);
 
 module.exports = { authRoutes: router };

@@ -19,6 +19,7 @@ const TreatSuggest = () => {
   const [treatments, setTreatments] = useState([]);
   const [getPatientData, setGetPatientData] = useState([]);
   const [showEditPopup, setShowEditPopup] = useState(false);
+  const [procedureTreat, setProcedureTreat] = useState([]);
   const [data, setData] = useState([]);
   const [value, setValue] = useState(0); // State to track current form
   const [formData, setFormData] = useState({
@@ -27,6 +28,7 @@ const TreatSuggest = () => {
     p_uhid: "",
     tp_id: tpid,
     desease: "",
+    treatment_procedure: "",
     treatment_name: "",
     total_sitting: "",
     total_cost: "",
@@ -94,12 +96,27 @@ const TreatSuggest = () => {
   };
 
   console.log(treatments);
+
+  const getProcedureTreat = async () => {
+    try {
+      const { data } = await axios.get(
+        "http://localhost:8888/api/doctor/getProcedureList"
+      );
+      console.log(data);
+      setProcedureTreat(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(procedureTreat);
   const handleEditAppointment = () => {
     setShowEditPopup(true);
   };
 
   useEffect(() => {
     getTreatmentList();
+    getProcedureTreat();
   }, []);
 
   // Get Patient Details START
@@ -164,6 +181,7 @@ const TreatSuggest = () => {
     p_uhid: formData.p_uhid,
     tp_id: tpid,
     desease: formData.desease,
+    treatment_procedure: formData.treatment_procedure,
     treatment_name: formData.treatment_name,
     totalCost: formData.total_cost,
     total_sitting: formData.total_sitting,
@@ -184,6 +202,8 @@ const TreatSuggest = () => {
       timelineForTreatSuggest();
       setFormData({
         ...formData,
+        desease: "",
+        treatment_procedure: "",
         treatment_name: "",
         total_sitting: "",
         total_cost: "",
@@ -274,17 +294,18 @@ const TreatSuggest = () => {
             <form onSubmit={handleSubmitForm}>
               <div className="container">
                 <div className="row">
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
                     <div className="">
-                      <div className="text-center">
+                      <div className="text-start">
                         <label className="label">Select Desease</label>
                       </div>
                       <select
-                        className="form-select text-center w-100"
+                        className="form-select text-start w-100"
                         name="desease"
                         aria-label="Default select example"
                         onChange={handleChange}
                         value={formData.desease}
+                        required
                       >
                         <option value="">-select desease-</option>
                         {uniqueDiseases.map((item, index) => (
@@ -293,33 +314,64 @@ const TreatSuggest = () => {
                       </select>
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
                     <div className="">
-                      <div className="text-center">
-                        <label className="label">Select Treatments</label>
+                      <div className="text-start">
+                        <label className="label">Select Procedure</label>
                       </div>
                       <select
-                        className="form-select text-center w-100"
-                        name="treatment_name"
+                        className="form-select text-start w-100"
+                        name="treatment_procedure"
                         aria-label="Default select example"
                         onChange={handleChange}
-                        value={formData.treatment_name}
+                        required
+                        value={formData.treatment_procedure}
                       >
                         <option value="">-select treatment-</option>
-                        {treatments.map((item, index) => (
-                          <option key={index}>{item.treatment_name}</option>
+                        {procedureTreat.map((item, index) => (
+                          <option key={index}>
+                            {item.treat_procedure_name}
+                          </option>
                         ))}
                       </select>
                     </div>
                   </div>
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                    <div className="">
+                      <div className="text-start">
+                        <label className="label">Select Treatments</label>
+                      </div>
+                      <select
+                        className="form-select text-start w-100"
+                        name="treatment_name"
+                        aria-label="Default select example"
+                        onChange={handleChange}
+                        required
+                        value={formData.treatment_name}
+                      >
+                        <option value="">-select treatment-</option>
 
-                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-6 col-sm-12 col-12">
+                        {treatments
+                          ?.filter(
+                            (item) =>
+                              item.treat_procedure_name ===
+                              formData.treatment_procedure
+                          )
+                          .map((item, index) => (
+                            <option key={index}>{item.treatment_name}</option>
+                          ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
                     <div className="text-start">
                       <label className="label">Total Cost</label>
                       <input
                         type="text" // Change the input type to text for now
                         className="form-control w-100"
                         name="total_cost"
+                        required
                         value={
                           formData.treatment_name ? formData.total_cost : ""
                         }
@@ -327,8 +379,8 @@ const TreatSuggest = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
-                    <div className="text-center">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                    <div className="text-start">
                       <label className="label">Required Sitting</label>
                       <div className="d-flex justify-content-center align-item-center">
                         <input
@@ -484,9 +536,9 @@ const Wrapper = styled.div`
     margin: 20px 0 20px 0;
   }
   .label {
-    margin-inline: 1rem;
+    /* margin-inline: 1rem; */
     font-weight: 500;
     font-size: 1.2rem;
-    padding: 1rem;
+    padding: 0.5rem 0rem;
   }
 `;

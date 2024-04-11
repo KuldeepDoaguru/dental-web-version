@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useState } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
@@ -10,8 +11,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleTableRefresh } from "../../../redux/user/userSlice";
 import cogoToast from "cogo-toast";
 
-const BookSittingAppointment = ({ onClose, getPatientData, selectedData }) => {
+const BookSittingAppointment = ({
+  onClose,
+  getPatientData,
+  treatment,
+  tsid,
+  tp_id,
+  appoint_id,
+}) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const { branch_name, employee_ID, employee_name } = user.currentUser;
   // Function to format date in YYYY-MM-DD format
@@ -41,7 +50,7 @@ const BookSittingAppointment = ({ onClose, getPatientData, selectedData }) => {
     assigned_doctor_name: employee_name,
     assigned_doctor_id: employee_ID,
     appointment_dateTime: "",
-    treatment_provided: selectedData.treatment_name,
+    treatment_provided: treatment,
     appointment_created_by: employee_name,
     appointment_created_by_ID: employee_ID,
     notes: "",
@@ -322,14 +331,11 @@ const BookSittingAppointment = ({ onClose, getPatientData, selectedData }) => {
           data
         );
         console.log(response);
-        if (response.data.success) {
-          cogoToast.success(response?.data?.message);
-          dispatch(toggleTableRefresh());
-          timelineData(getPatientData[0]?.uhid);
-          onClose();
-        } else {
-          cogoToast.error(response?.data?.message);
-        }
+        cogoToast.success(response?.data?.message);
+        dispatch(toggleTableRefresh());
+        timelineData(getPatientData[0]?.uhid);
+        onClose();
+        navigate(`/TreatmentDashBoard/${appoint_id}/${tp_id}`);
       } catch (error) {
         console.log(error);
         cogoToast.error(error?.response?.data?.message);

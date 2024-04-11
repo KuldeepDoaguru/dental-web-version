@@ -88,7 +88,7 @@ function App() {
         }
       />
       <Route
-        path="/NewTreatment/:id"
+        path="/NewTreatment/:id/:tpid"
         element={user.currentUser === null ? <DoctorLogin /> : <NewTreatment />}
       />
       <Route

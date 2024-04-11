@@ -278,7 +278,7 @@ const getBranchDetail = (req, res) => {
 
 const getTreatment = (req, res) => {
   try {
-    const sql = "SELECT * FROM treatment_list";
+    const sql = "SELECT * FROM treatment_list_copy";
 
     db.query(sql, (err, results) => {
       if (err) {

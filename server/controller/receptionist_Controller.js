@@ -1201,6 +1201,63 @@ const getBranchHoliday = (req, res) => {
   }
 };
 
+const applyLeave = (req, res) => {
+  try {
+    const {
+      employee_ID, 
+    employee_name, 
+    branch_name ,
+    leave_dates ,
+    leave_reason ,
+    leave_status 
+      
+    } = req.body;
+
+    
+
+    const addLeaveQuery = `
+    INSERT INTO employee_leave(
+      employee_ID, 
+      employee_name, 
+      branch_name ,
+      leave_dates ,
+      leave_reason ,
+      leave_status 
+    ) VALUES (?, ?, ?, ?, ?, ?)
+`;
+
+    const addLeaveParams = [
+      employee_ID, 
+      employee_name, 
+      branch_name ,
+      leave_dates ,
+      leave_reason ,
+      leave_status 
+    ];
+
+    db.query(addLeaveQuery, addLeaveParams, (err, Result) => {
+      if (err) {
+        console.error("Error in apply leave:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      } else {
+        console.log("Leave apply successfully");
+        return res.status(200).json({
+          success: true,
+          message: "Leave apply successfully",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error in apply leave:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in apply leave:",
+      error: error.message,
+    });
+  }
+};
 const addInquiry = (req, res) => {
   try {
     const {
@@ -1398,6 +1455,31 @@ const getInquiries = (req, res) => {
     res.status(500).json({
       success: false,
       message: "Error in fetched inquiries",
+      error: error.message,
+    });
+  }
+};
+const getLeaves = (req, res) => {
+  const branch = req.params.branch;
+  const employee_Id = req.params.employee_Id;
+  try {
+    const sql = "SELECT * FROM employee_leave WHERE branch_name = ? AND employee_ID = ? ORDER BY id DESC";
+
+    db.query(sql, [branch,employee_Id], (err, results) => {
+      if (err) {
+        console.error("Error fetching leaves from MySql:", err);
+        res.status(500).json({ error: "Error fetching leaves" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "leaves fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching leaves from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched leaves",
       error: error.message,
     });
   }
@@ -1912,5 +1994,7 @@ module.exports = {
   getSecurityAmountDataBySID,
   updateRefundAmount,
   getSinglePatientSecurityAmt,
-  getPatientDeatilsByUhid
+  getPatientDeatilsByUhid,
+  applyLeave,
+  getLeaves
 };

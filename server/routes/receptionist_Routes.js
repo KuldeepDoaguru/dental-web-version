@@ -1,6 +1,6 @@
 
 const express = require("express");
-const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent, getPatientTimeline, getAllAppointmentByPatientId, updateAppointmentStatusCancelOpd, getPatientSecurityAmt, updatePatientSecurityAmt, getSecurityAmountDataBySID, updateRefundAmount, getSinglePatientSecurityAmt, getPatientDeatilsByUhid } = require("../controller/receptionist_Controller");
+const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent, getPatientTimeline, getAllAppointmentByPatientId, updateAppointmentStatusCancelOpd, getPatientSecurityAmt, updatePatientSecurityAmt, getSecurityAmountDataBySID, updateRefundAmount, getSinglePatientSecurityAmt, getPatientDeatilsByUhid, applyLeave, getLeaves } = require("../controller/receptionist_Controller");
 const router = express.Router();
 
 router.post('/add-patient',addPatient);
@@ -23,8 +23,10 @@ router.put('/update-appointment-status-cancel',updateAppointmentStatusCancel);
 router.put('/update-appointment',updateAppointment);
 router.put('/update-patient-details',updatePatientDetails);
 router.post('/add-inquiry',addInquiry);
+router.post('/apply-leave',applyLeave);
 router.post('/insertTimelineEvent',insertTimelineEvent);
 router.get('/get-inquiries/:branch',getInquiries);
+router.get('/get-leaves/:branch/:employee_Id',getLeaves);
 router.put('/update-inquiry',updateInquiry);
 router.delete('/delete-inquiry/:id',deleteInquiry);
 router.get('/getPatientTimeline/:branch/:patientId',getPatientTimeline)

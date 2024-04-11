@@ -30,6 +30,7 @@ import Profile from "./pages/receptionist/Profile";
 import SecurityAmount from "./pages/receptionist/SecurityAmount ";
 import PrintSecurityAmt from "./components/receptionist/SecurityAmount/PrintSecurityAmt";
 import BranchInfo from "./pages/receptionist/BranchInfo";
+import AttendanceLeave from "./pages/receptionist/AttendanceLeave";
 
 function App() {
 
@@ -64,6 +65,7 @@ function App() {
     <Route path='/receptionist_profile' element={ user.currentUser=== null ? <UniversalLogin/>  :<Profile/>}/>
     <Route path='/security_amount' element={ user.currentUser=== null ? <UniversalLogin/>  :<SecurityAmount/>}/>
     <Route path='/branch-details' element={ user.currentUser=== null ? <UniversalLogin/>  :<BranchInfo/>}/>
+    <Route path='/attendanceLeave' element={ user.currentUser=== null ? <UniversalLogin/>  :<AttendanceLeave/>}/>
 
     {/* receptionist routes end */}
     </Routes>

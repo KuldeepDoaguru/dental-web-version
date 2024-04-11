@@ -124,13 +124,13 @@ const BranchInfo = () => {
                             <div className="col-lg-4">
                             <label className="text-info">Open Time</label>
                                 <div className="shadow-none p-1 bg-light rounded">
-                                    <p className="m-0">{branchDetail[0]?.open_time}</p>
+                                    <p className="m-0">{branchDetail[0]?.open_time ? moment(branchDetail[0]?.open_time, 'HH:mm:ss.SSSSSS').format('hh:mm A') : ""} </p>
                                 </div>
                             </div>
                             <div className="col-lg-4">
                             <label className="text-info">Close Time</label>
                                 <div className="shadow-none p-1 bg-light rounded">
-                                    <p className="m-0">{branchDetail[0]?.close_time}</p>
+                                    <p className="m-0">{branchDetail[0]?.close_time ? moment(branchDetail[0]?.close_time, 'HH:mm:ss.SSSSSS').format('hh:mm A') : ""}</p>
                                 </div>
                             </div>
                         </div>
@@ -178,10 +178,10 @@ const BranchInfo = () => {
                              <tr key={index}>
                              <td>{data.holiday_id}</td>
                              <td>{data.holiday_name	}</td>
-                             <td>{moment(data?.holiday_date).format('DD/MM/YYYY') }</td>
-                             <td>{data.holiday_start_time	}</td>
+                             <td>{data?.holiday_date ? moment(data?.holiday_date).format('DD/MM/YYYY') : ""}</td>
+                             <td>{data?.holiday_start_time ? moment(data?.holiday_start_time, 'HH:mm:ss.SSSSSS').format('hh:mm A') : ""}</td>
  
-                             <td>{data.holiday_end_time}</td>
+                             <td>{data?.holiday_end_time ? moment(data?.holiday_end_time, 'HH:mm:ss.SSSSSS').format('hh:mm A') : ""}</td>
                              <td>{data.notes}</td>
                             
                              

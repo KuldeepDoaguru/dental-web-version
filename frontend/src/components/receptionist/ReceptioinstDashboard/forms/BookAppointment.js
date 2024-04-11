@@ -1121,7 +1121,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                      </div>
                      </div> */}
 
-              <div className="formbtn d-flex justify-content-lg-center">
+              <div className="formbtn d-flex justify-content-lg-center justify-content-md-center">
                 <button className="btn btn-success " type="submit" id="btn2">
                   {" "}
                   Book Appointment

@@ -37,7 +37,7 @@ function OpdCollection() {
         `http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`
       );
      
-      const filteredPatients = response?.data?.data.filter(patient =>  patient.created_at.includes(selectedDate));
+      const filteredPatients = response?.data?.data.filter(patient =>  patient.created_at.includes(selectedDate) && patient.treatment_provided === "OPD");
       setAppointmentData(filteredPatients);
     } catch (error) {
       console.log(error);

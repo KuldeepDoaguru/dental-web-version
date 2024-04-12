@@ -16,6 +16,7 @@ import Header from "../../components/receptionist/Header";
 import Sider from "../../components/receptionist/Sider";
 import { useNavigate } from 'react-router-dom';
 import ApplyLeave from "../../components/receptionist/ApplyLeave";
+import MarkAttendance from "../../components/receptionist/MarkAttendance";
 
 const AttendanceLeave = () => {
     const navigate = useNavigate();
@@ -31,6 +32,25 @@ const AttendanceLeave = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [leavesData,setLeaveData] = useState([]);
+
+
+  const [Attendance, setAttendance] = useState([]);
+
+
+  const getAttendance = async () => {
+     
+    try{
+        const response = await axios.get(`http://localhost:4000/api/v1/receptionist/getAttendancebyempId/${branch}/${employeeId}`);
+        setAttendance(response?.data?.data)
+      }
+      catch(error){
+        console.log(error)
+      }
+  }
+  
+ useEffect(() => {
+  getAttendance();
+  },[refreshTable])
 
   const getLeaves = async () => {
      
@@ -143,9 +163,20 @@ const formatDate = (dateString) => {
                 </div>
 
                 <div className="container-fluid mt-3">
+                  <div className="row d-flex justify-content-between">
+                    <div className="col-3">
                   <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
                   </button>
+                  </div>
+                  <div className="col-9">
+                  <MarkAttendance/>
+                  </div>
+                
+                 
+                 
+                  </div>
+                 
                   <div className="container-fluid">
                     <div className="row mt-3">
                       <div className="col-12">
@@ -153,12 +184,15 @@ const formatDate = (dateString) => {
                           <div class="container d-flex justify-content-center">
                             <h2 className="">Attendance and Leave Details</h2>
                           </div>
+                          <div className="">
+                          <ApplyLeave />
+                          </div>
                         </nav>
                       </div>
                       <div className="container-fluid">
                         <div className="container-fluid">
                           <div className="d-flex justify-content-between mb-2 mt-4">
-                            <form>
+                            {/* <form>
                               <div className="d-flex justify-content-between">
                                 <div>
                                   <input
@@ -188,12 +222,11 @@ const formatDate = (dateString) => {
                                   Download Report
                                 </button>
                               </div>
-                            </form>
-                            <div>
-                              <ApplyLeave />
-                            </div>
+                            </form> */}
+                            
+                           
                           </div>
-                          <div class="table-responsive">
+                          {/* <div class="table-responsive">
                             <table class="table table-bordered">
                               <thead className="table-head">
                                 <tr>
@@ -261,14 +294,53 @@ const formatDate = (dateString) => {
                                 ))}
                               </tbody>
                             </table>
+                          </div> */}
+                          
+                           
+                           <div className="mt-5">
+                            <div className="mt-5 text-center">
+                             <h4>Attendance details</h4>
+                            </div>
+                          <div className="table-container">
+                            <table className="table table-bordered">
+                              <thead className="table-head">
+                                <tr>
+                                  <th>Sr. no.</th>
+                                  <th>Date</th>
+                                  <th>Login Time</th>
+                                  <th>Logout Time</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {Attendance?.map((item,index) => {
+
+                        
+                                
+                                    return(
+                                        <tr
+                                        className="table-row"
+                                        key={item?.attendance_id}
+                                      >
+                                        <td>{index+1}</td>
+                                        <td>{item?.date ? moment(item?.date).format('DD/MM/YYYY') : ""} </td>
+                                        <td>{item?.allday_shift_login_time ? moment(item?.allday_shift_login_time, 'HH:mm:ss.SSSSSS').format('hh:mm A') : ""} </td>
+                                        <td> {item?.allday_shift_logout_time ? moment(item?.allday_shift_logout_time, 'HH:mm:ss.SSSSSS').format('hh:mm A') : ""}</td>
+                                       
+                                      </tr>
+                                    )
+                                  
+                        })}
+                              </tbody>
+                            </table>
+                          </div>
                           </div>
                           
                           <div className="mt-5">
                             <div className="mt-5 text-center">
                              <h4>Leave details</h4>
                             </div>
-                          <div class="table-responsive">
-                            <table class="table table-bordered">
+                          <div className="table-container">
+                            <table className="table table-bordered">
                               <thead className="table-head">
                                 <tr>
                                   <th>Sr. no.</th>
@@ -320,12 +392,26 @@ const formatDate = (dateString) => {
 
 export default AttendanceLeave;
 const Container = styled.div`
+  .table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  
+}
+.table-head{
+  position: sticky;
+  top: 0;
+  z-index: 1; /* Ensure the header stays on top of the table body */
+  padding-bottom: 20px;
+
+}
+
   .table {
     overflow-x: auto;
     th {
       background-color: teal;
       color: white;
       min-width: 7rem;
+      
     }
     td {
       font-weight: bold;
@@ -335,7 +421,9 @@ const Container = styled.div`
   .table::-webkit-scrollbar {
     width: 0;
   }
-
+  .table tbody {
+  padding-top: 40px; /* Adjust based on the height of the table header */
+}
   .select-style {
     border: none;
     background-color: #22a6b3;

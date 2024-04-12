@@ -162,7 +162,7 @@ const NewTreatmentTable = () => {
   };
 
   const handleNavigate = async () => {
-    navigate(`/TPrescriptionDash/${id}/${tpid}`);
+    // navigate(`/TPrescriptionDash/${id}/${tpid}`);
   };
 
   console.log(treatmentData);

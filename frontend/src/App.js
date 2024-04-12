@@ -126,7 +126,7 @@ function App() {
         }
       />
       <Route
-        path="/TPrescriptionDash/:id/:tpid"
+        path="/TPrescriptionDash/:id/:tpid/:sitting"
         element={
           user.currentUser === null ? <DoctorLogin /> : <TPrescriptionDash />
         }

@@ -66,6 +66,7 @@ const {
   prescripPatientUHID,
   onGoingTreat,
   getProcedureList,
+  updateSecurityAmountAfterPayment,
 } = require("../controller/authTreatment.js");
 const {
   uploadImage,
@@ -99,7 +100,7 @@ router.get("/updateSittingCount/:appoint_id", updateSittingCount);
 router.post("/addSecurityAmount", addSecurityAmount);
 router.get("/getTreatSuggestById/:appoint_id", getTreatSuggestById);
 router.get(
-  "/getSecurityAmountByAppointmentId/:appointment_id",
+  "/getSecurityAmountByAppointmentId/:tpid",
   getSecurityAmountByAppointmentId
 );
 // router.get('/patient-security/:appoint_id', getPatientSecurityAmt);
@@ -146,7 +147,10 @@ router.get(
   "/getExamDataIdbyAppointId/:id/:appointment_id",
   getExamDataIdbyAppointId
 );
-router.get("/getTreatmentData/:appointment_id/:tpid/:branch", getTreatmentData);
+router.get(
+  "/getTreatmentData/:appointment_id/:tpid/:branch/:sitting",
+  getTreatmentData
+);
 router.get("/treatPatientProfile/:patientUHID", getTreatPatientProfile);
 router.put("/updateTreatmentData/:id", updateTreatmentData);
 router.delete("/deleteTreatmentData/:id", deleteTreatmentData);
@@ -243,5 +247,9 @@ router.get(
 );
 
 router.get("/getProcedureList", getProcedureList);
+router.put(
+  "/updateSecurityAmountAfterPayment/:tp_id",
+  updateSecurityAmountAfterPayment
+);
 
 module.exports = { authRoutes: router };

@@ -9,7 +9,7 @@ import { FaLocationArrow } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 
 const NewTreatPrescription = () => {
-  const { id, tpid } = useParams();
+  const { id, tpid, sitting } = useParams();
   console.log(id);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -135,7 +135,7 @@ const NewTreatPrescription = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:8888/api/doctor/insertTreatPrescription/${id}/${tpid}`,
+        `http://localhost:8888/api/doctor/insertTreatPrescription/${id}/${tpid}/${sitting}`,
         medicineInput
       );
       console.log(response.data);
@@ -228,7 +228,7 @@ const NewTreatPrescription = () => {
   const getTreatmentSuggestAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentData/${id}/${tpid}/${branch}`
+        `http://localhost:8888/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}`
       );
       setGetTreatSug(data.data);
       console.log(data);

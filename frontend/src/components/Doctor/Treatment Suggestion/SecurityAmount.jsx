@@ -173,6 +173,7 @@ const SecurityAmount = () => {
         treatment: formData.treatment,
         assigned_doctor: formData.assigned_doctor,
         amount: formData.amount,
+        remaining_amount: formData.amount,
         payment_status: formData.payment_status,
         payment_Mode: formData.payment_Mode,
         transaction_Id: formData.transaction_Id,
@@ -196,7 +197,7 @@ const SecurityAmount = () => {
   const getSecurityAmt = async () => {
     try {
       const resdata = await axios.get(
-        `http://localhost:8888/api/doctor/getSecurityAmountByAppointmentId/${id}`
+        `http://localhost:8888/api/doctor/getSecurityAmountByAppointmentId/${tpid}`
       );
       setSecurityAmt(resdata.data.data);
       console.log(resdata.data.data);

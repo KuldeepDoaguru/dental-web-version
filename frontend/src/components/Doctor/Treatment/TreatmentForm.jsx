@@ -23,6 +23,8 @@ const TreatmentForm = () => {
   const [showBookingPopup, setShowBookingPopup] = useState(false);
   const [treatStats, setTreatStats] = useState();
   const [bookingStats, setBookingStats] = useState();
+  const [showDirect, setShowDirect] = useState(false);
+  const [securityAmt, setSecurityAmt] = useState([]);
 
   const [formData, setFormData] = useState({
     patient_uhid: "",
@@ -34,6 +36,7 @@ const TreatmentForm = () => {
     disc_amt: "",
     total_amt: "",
     net_amt: "",
+    sitting_payment_status: "",
     note: "",
   });
 
@@ -125,6 +128,7 @@ const TreatmentForm = () => {
     disc_amt: formData.disc_amt,
     total_amt: treatments[0]?.totalCost * dataArray?.length,
     net_amount: netAmount,
+    sitting_payment_status: formData.sitting_payment_status,
     note: formData.note,
   };
   console.log(formDetails);
@@ -157,6 +161,7 @@ const TreatmentForm = () => {
           disc_amt: "",
           total_amt: "",
           net_amt: "",
+          sitting_payment_status: "",
           note: "",
         });
         if (treatStats === "yes") {
@@ -164,7 +169,10 @@ const TreatmentForm = () => {
         }
         getPatientDetail();
         getTreatmentList();
-        navigate(`/TreatmentDashBoard/${appoint_id}/${tp_id}`);
+        navigate(
+          `/TPrescriptionDash/${appoint_id}/${tp_id}/${treatments[0]?.current_sitting}`
+        );
+        // navigate(`/TreatmentDashBoard/${appoint_id}/${tp_id}`);
       } else {
         console.error(
           "Failed to insert treatment details. Server returned status:",
@@ -220,6 +228,38 @@ const TreatmentForm = () => {
 
   const handleEditAppointment = () => {
     setShowBookingPopup(true);
+  };
+
+  const getSecurityAmt = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/doctor/getSecurityAmountByAppointmentId/${tp_id}`
+      );
+      setSecurityAmt(data.data);
+      console.log(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getSecurityAmt();
+  }, []);
+
+  console.log(securityAmt[0]?.remaining_amount);
+  const remaining_amount = securityAmt[0]?.remaining_amount - netAmount;
+  console.log(remaining_amount);
+  const MakePaymentViaSecurityAmount = async () => {
+    try {
+      const res = await axios.put(
+        `http://localhost:8888/api/doctor/updateSecurityAmountAfterPayment/${tp_id}`,
+        { remaining_amount: remaining_amount }
+      );
+      console.log(res);
+      setShowDirect(true);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -439,6 +479,77 @@ const TreatmentForm = () => {
                         placeholder="Add some more details"
                         onChange={handleChange}
                       />
+                    </div>
+                  </div>
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div class="mb-3">
+                      <label htmlFor="" class="form-label fw-bold">
+                        Remaining Security Amount :{" "}
+                        <strong style={{ color: "red" }}>
+                          {!formData.disc_amt
+                            ? securityAmt[0]?.remaining_amount || 0
+                            : remaining_amount}
+                        </strong>
+                      </label>
+                      <div>
+                        {securityAmt[0]?.remaining_amount > 0 &&
+                        formData.disc_amt ? (
+                          !showDirect ? (
+                            <button
+                              type="button"
+                              className="btn btn-info"
+                              onClick={MakePaymentViaSecurityAmount}
+                            >
+                              Make Payment using security amount
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-success"
+                              type="button"
+                              disabled
+                            >
+                              Payment Successful
+                            </button>
+                          )
+                        ) : (
+                          <button
+                            type="button"
+                            className="btn btn-info"
+                            disabled
+                          >
+                            Make Payment using security amount
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    <div class="mb-3">
+                      <label htmlFor="" class="form-label fw-bold">
+                        {!showDirect
+                          ? "Do you want to make payment directly"
+                          : "Payment Status"}
+                      </label>
+                      <select
+                        class="form-control"
+                        id=""
+                        name="sitting_payment_status"
+                        onChange={handleChange}
+                        value={formData.sitting_payment_status}
+                      >
+                        {!showDirect ? (
+                          <>
+                            {" "}
+                            <option value="">-select-</option>
+                            <option value="Recieved">Yes</option>
+                            <option value="Pending">No</option>
+                          </>
+                        ) : (
+                          <>
+                            <option value="Recieved">Recieved</option>
+                          </>
+                        )}
+                      </select>
                     </div>
                   </div>
                 </div>

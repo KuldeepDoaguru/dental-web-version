@@ -35,13 +35,14 @@ const insertTreatmentData = (req, res) => {
     disc_amt,
     total_amt,
     net_amount,
+    sitting_payment_status,
     note,
   } = req.body;
 
   try {
     // Insert treatment details into the database
     db.query(
-      "INSERT INTO dental_treatment (exam_id, tp_id, branch_name, appointment_id, sitting_number, patient_uhid, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, net_amount, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO dental_treatment (exam_id, tp_id, branch_name, appointment_id, sitting_number, patient_uhid, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, net_amount,sitting_payment_status, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
         examId,
         tpid,
@@ -56,6 +57,7 @@ const insertTreatmentData = (req, res) => {
         disc_amt,
         total_amt,
         net_amount,
+        sitting_payment_status,
         note,
       ],
       (error, result) => {
@@ -104,10 +106,11 @@ const getTreatmentData = (req, res) => {
   const appointmentId = req.params.appointment_id;
   const tpid = req.params.tpid;
   const branch = req.params.branch;
+  const sitting = req.params.sitting;
 
-  const sql = `SELECT * FROM dental_treatment WHERE appointment_id = ? AND tp_id = ? AND branch_name = ?`;
+  const sql = `SELECT * FROM dental_treatment WHERE appointment_id = ? AND tp_id = ? AND branch_name = ? AND sitting_number = ?`;
 
-  db.query(sql, [appointmentId, tpid, branch], (err, results) => {
+  db.query(sql, [appointmentId, tpid, branch, sitting], (err, results) => {
     if (err) {
       console.log(err);
       return res
@@ -447,6 +450,29 @@ const getProcedureList = (req, res) => {
   }
 };
 
+const updateSecurityAmountAfterPayment = (req, res) => {
+  const tp_id = req.params.tp_id;
+  const { remaining_amount } = req.body;
+  try {
+    const updateQuery = `UPDATE security_amount SET remaining_amount = ? WHERE tp_id = ?`;
+    db.query(updateQuery, [remaining_amount, tp_id], (err, results) => {
+      if (err) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Invalid tpid" });
+      } else {
+        return res.status(200).json({
+          success: true,
+          message: "Security amount updated successfully",
+          results,
+        });
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
 module.exports = {
   getTreatmentList,
   insertTreatmentData,
@@ -465,4 +491,5 @@ module.exports = {
   prescripPatientUHID,
   onGoingTreat,
   getProcedureList,
+  updateSecurityAmountAfterPayment,
 };

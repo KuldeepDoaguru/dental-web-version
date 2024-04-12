@@ -119,6 +119,7 @@ const addSecurityAmount = (req, res) => {
       treatment,
       assigned_doctor,
       amount,
+      remaining_amount,
       payment_status,
       payment_Mode,
       transaction_Id,
@@ -139,6 +140,7 @@ const addSecurityAmount = (req, res) => {
       treatment,
       assigned_doctor,
       amount,
+      remaining_amount,
       payment_status,
       payment_Mode,
       transaction_Id,
@@ -152,7 +154,7 @@ const addSecurityAmount = (req, res) => {
     const querySecurity = `SELECT * FROM security_amount WHERE sa_id = ? AND branch_name = ?`;
 
     const selectQuery =
-      "INSERT INTO security_amount (tp_id, branch_name, date, appointment_id, uhid, patient_name, patient_number, treatment, assigned_doctor, amount, payment_status, payment_Mode, transaction_Id, payment_date, refund_amount, refund_date, received_by, refund_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+      "INSERT INTO security_amount (tp_id, branch_name, date, appointment_id, uhid, patient_name, patient_number, treatment, assigned_doctor, amount, remaining_amount, payment_status, payment_Mode, transaction_Id, payment_date, refund_amount, refund_date, received_by, refund_by) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, ?)";
 
     db.query(selectQuery, insertParams, (err, result) => {
       if (err) {
@@ -170,11 +172,11 @@ const addSecurityAmount = (req, res) => {
 };
 
 const getSecurityAmountByAppointmentId = (req, res) => {
-  const appointment_id = req.params.appointment_id;
+  const tpid = req.params.tpid;
 
-  const selectQuery = "SELECT * FROM security_amount WHERE appointment_id = ?";
+  const selectQuery = "SELECT * FROM security_amount WHERE tp_id = ?";
 
-  db.query(selectQuery, [appointment_id], (err, result) => {
+  db.query(selectQuery, [tpid], (err, result) => {
     if (err) {
       return res.status(400).json({ success: false, message: err.message });
     }

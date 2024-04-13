@@ -13,36 +13,95 @@ const NewTreatmentTable = () => {
   const navigate = useNavigate();
   const [treatmentData, setTreatmentData] = useState([]);
   const [modalIndex, setModalIndex] = useState(null);
-  const [formData, setFormData] = useState({
-    dental_treatment: "",
-    no_teeth: "",
-    qty: "",
-    cost_amt: "",
-    original_cost_amt: "",
-    disc_amt: "",
-    total_amt: "",
-    note: "",
-  });
-
+  const [getExamTeeth, setGetExamTeeth] = useState([]);
   const [getPatientData, setGetPatientData] = useState([]);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
+  const doctor = user.currentUser.employee_name;
   console.log(branch);
+  console.log(doctor);
 
   // Get Patient Details START
   const getPatientDetail = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+      const { data } = await axios.get(
+        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
+      console.log(data.result[0]?.patient_name);
+      setGetPatientData(data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-      // const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
-      // setFormData(prevInputItem => ({
-      //     ...prevInputItem,
-      //     patient_uhid: uhid
-      // }));
-      setGetPatientData(res.data.result);
+  console.log(getPatientData);
+
+  const fetchTreatmentData = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/doctor/getTreatmentDataViaBranchAndTpid/${tpid}/${branch}`
+      );
+      setTreatmentData(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(treatmentData);
+  const totalFinalBillPrice = () => {
+    try {
+      let total = 0;
+      treatmentData.forEach((item) => {
+        total = total + parseFloat(item.net_amount);
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+  const totalFinalBillValue = totalFinalBillPrice();
+  console.log(totalFinalBillValue);
+
+  const billInputField = {
+    uhid: getPatientData[0]?.uhid,
+    tp_id: tpid,
+    branch_name: getPatientData[0]?.branch_name,
+    patient_name: getPatientData[0]?.patient_name,
+    patient_mobile: getPatientData[0]?.mobileno,
+    patient_email: getPatientData[0]?.emailid,
+    assigned_doctor_name: doctor,
+    total_amount: totalFinalBillValue,
+  };
+
+  const generateFinalBill = async () => {
+    try {
+      const res = await axios.post(
+        "http://localhost:8888/api/doctor/generateFinalBillwithTpid",
+        billInputField
+      );
+      console.log(res);
+      alert("bill generated successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleNavigate = async () => {
+    navigate(`/ViewPatientTotalBill/${tpid}`);
+  };
+
+  const getExamintionTeeth = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8888/api/doctor/getExaminedataById/${tpid}`
+      );
+      setGetExamTeeth(res.data);
+      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -50,122 +109,21 @@ const NewTreatmentTable = () => {
 
   useEffect(() => {
     getPatientDetail();
-  }, []);
-  // Get Patient Details END
-
-  const fetchTreatmentData = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentData/${id}/${tpid}/${branch}`
-      );
-      setTreatmentData(res.data.data);
-      console.log(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
+    getExamintionTeeth();
     fetchTreatmentData();
   }, []);
 
-  const timelineForTreatupdate = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
-        {
-          type: "Treatment Producer",
-          description: "Treatment Data Update",
-          branch: branch,
-          patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
-        }
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleSubmit = async (e, id) => {
-    e.preventDefault();
-    try {
-      const res = await axios.put(
-        `http://localhost:8888/api/doctor/updateTreatmentData/${id}`,
-        formData
-      );
-      console.log(res.data);
-      timelineForTreatupdate();
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleChange = (e) => {
-    setFormData((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleModalOpen = (index) => {
-    // Set formData with values of the item being edited
-    const item = treatmentData[index];
-    setFormData({
-      dental_treatment: item.dental_treatment,
-      no_teeth: item.no_teeth,
-      qty: item.qty,
-      cost_amt: item.cost_amt,
-      original_cost_amt: item.original_cost_amt,
-      disc_amt: item.disc_amt,
-      total_amt: item.total_amt,
-      note: item.note,
-    });
-    // Set the modalIndex to manage which modal is open
-    setModalIndex(index);
-  };
-
-  const timelineForTreatdelete = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
-        {
-          type: "Treatment Producer",
-          description: "Treatment Data Delete ",
-          branch: branch,
-          patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
-        }
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      const confirmed = window.confirm("Are you sure you want to delete?"); // Show confirmation dialog
-
-      if (confirmed) {
-        const res = await axios.delete(
-          `http://localhost:8888/api/doctor/deleteTreatmentData/${id}`
-        );
-        console.log(res.data); // Log response data
-        timelineForTreatdelete();
-        setTreatmentData(treatmentData.filter((item) => item.id !== id)); // Remove deleted item from data
-      }
-    } catch (error) {
-      console.log(error);
-      // Optionally, provide feedback to the user
-      window.alert("An error occurred while deleting the item.");
-    }
-  };
-
-  const handleNavigate = async () => {
-    // navigate(`/TPrescriptionDash/${id}/${tpid}`);
-  };
+  console.log(getExamTeeth);
 
   console.log(treatmentData);
+  const filterTreatmentStats = getExamTeeth?.filter((item) => {
+    if (item.treatment_status === "ongoing") {
+      return true;
+    }
+  });
+
+  console.log(filterTreatmentStats);
+
   return (
     <>
       <Wrapper>
@@ -238,7 +196,7 @@ const NewTreatmentTable = () => {
                           ></button>
                         </div>
                         <div className="modal-body">
-                          <form onSubmit={(e) => handleSubmit(e, item.id)}>
+                          {/* <form>
                             <div data-mdb-input-init class="form-outline mb-4">
                               <input
                                 type="text"
@@ -332,31 +290,37 @@ const NewTreatmentTable = () => {
                                 Update
                               </button>
                             </div>
-                          </form>
+                          </form> */}
                         </div>
                       </div>
                     </div>
                   </div>
 
                   <td>
-                    <button
+                    {/* <button
                       className="btn btn-danger"
                       onClick={() => handleDelete(item.id)}
                     >
                       <FaPrescriptionBottleMedical size={25} />
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
           <div className="text-center">
-            <button
-              className="btn btn-info fs-5 text-light"
-              onClick={handleNavigate}
-            >
-              Save & Continue <FaLocationArrow size={25} />
-            </button>
+            {filterTreatmentStats.length > 0 ? (
+              <button className="btn btn-info fs-5 text-light" disabled>
+                Save & Continue <FaLocationArrow size={25} />
+              </button>
+            ) : (
+              <button
+                className="btn btn-info fs-5 text-light"
+                onClick={generateFinalBill}
+              >
+                Save & Continue <FaLocationArrow size={25} />
+              </button>
+            )}
           </div>
         </div>
       </Wrapper>

@@ -67,6 +67,9 @@ const {
   onGoingTreat,
   getProcedureList,
   updateSecurityAmountAfterPayment,
+  getTreatmentDetailsViaSitting,
+  getTreatmentDataViaBranchAndTpid,
+  generateFinalBillwithTpid,
 } = require("../controller/authTreatment.js");
 const {
   uploadImage,
@@ -117,7 +120,7 @@ router.get(
   getAppointmentsWithPatientDetails
 );
 router.get(
-  "/getAppointmentsWithPatientDetailsById/:id",
+  "/getAppointmentsWithPatientDetailsById/:tpid",
   getAppointmentsWithPatientDetailsById
 );
 router.put("/upDateAppointmentStatus", upDateAppointmentStatus);
@@ -148,7 +151,7 @@ router.get(
   getExamDataIdbyAppointId
 );
 router.get(
-  "/getTreatmentData/:appointment_id/:tpid/:branch/:sitting",
+  "/getTreatmentData/:appointment_id/:tpid/:branch/:sitting/:treatment",
   getTreatmentData
 );
 router.get("/treatPatientProfile/:patientUHID", getTreatPatientProfile);
@@ -161,7 +164,7 @@ router.get("/getTreatmentDatasum/:appointment_id", getTreatmentDataSUM);
 
 // Medical Prescription Routes START here......
 router.post(
-  "/insertTreatPrescription/:appoint_id/:tpid",
+  "/insertTreatPrescription/:appoint_id/:tpid/:sitting",
   insertTreatPrescription
 );
 router.get("/getMedicineData", getMedicineData);
@@ -171,7 +174,7 @@ router.get(
 );
 router.get("/prescripPatientUHID/:patientUHID", prescripPatientUHID);
 router.get(
-  "/getTreatPrescriptionByAppointId/:appoint_id/:tpid",
+  "/getTreatPrescriptionByAppointId/:appoint_id/:tpid/:treatment",
   getTreatPrescriptionByAppointId
 );
 router.delete("/deleteTreatPrescriptionById/:id", deleteTreatPrescriptionById);
@@ -251,5 +254,16 @@ router.put(
   "/updateSecurityAmountAfterPayment/:tp_id",
   updateSecurityAmountAfterPayment
 );
+router.get(
+  "/getTreatmentDetailsViaSitting/:branch/:appoint_id/:tpid/:sitting/:treatment",
+  getTreatmentDetailsViaSitting
+);
+router.get(
+  "/getTreatmentDataViaBranchAndTpid/:tpid/:branch",
+  getTreatmentDataViaBranchAndTpid
+);
+
+//patient bill via tpid
+router.post("/generateFinalBillwithTpid", generateFinalBillwithTpid);
 
 module.exports = { authRoutes: router };

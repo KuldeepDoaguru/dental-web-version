@@ -35,6 +35,8 @@ const insertTreatmentData = (req, res) => {
     disc_amt,
     total_amt,
     net_amount,
+    dir_rec_amt,
+    dir_rec_doctor_id,
     sitting_payment_status,
     note,
   } = req.body;
@@ -42,7 +44,7 @@ const insertTreatmentData = (req, res) => {
   try {
     // Insert treatment details into the database
     db.query(
-      "INSERT INTO dental_treatment (exam_id, tp_id, branch_name, appointment_id, sitting_number, patient_uhid, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, net_amount,sitting_payment_status, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO dental_treatment (exam_id, tp_id, branch_name, appointment_id, sitting_number, patient_uhid, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, net_amount, dir_rec_amt, dir_rec_doctor_id,sitting_payment_status, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)",
       [
         examId,
         tpid,
@@ -57,6 +59,8 @@ const insertTreatmentData = (req, res) => {
         disc_amt,
         total_amt,
         net_amount,
+        dir_rec_amt,
+        dir_rec_doctor_id,
         sitting_payment_status,
         note,
       ],
@@ -107,19 +111,24 @@ const getTreatmentData = (req, res) => {
   const tpid = req.params.tpid;
   const branch = req.params.branch;
   const sitting = req.params.sitting;
+  const treatment = req.params.treatment;
 
-  const sql = `SELECT * FROM dental_treatment WHERE appointment_id = ? AND tp_id = ? AND branch_name = ? AND sitting_number = ?`;
+  const sql = `SELECT * FROM dental_treatment WHERE appointment_id = ? AND tp_id = ? AND branch_name = ? AND sitting_number = ? AND dental_treatment = ?`;
 
-  db.query(sql, [appointmentId, tpid, branch, sitting], (err, results) => {
-    if (err) {
-      console.log(err);
-      return res
-        .status(400)
-        .json({ success: false, message: "Error retrieving treatment data" });
-    } else {
-      return res.status(200).json({ success: true, data: results });
+  db.query(
+    sql,
+    [appointmentId, tpid, branch, sitting, treatment],
+    (err, results) => {
+      if (err) {
+        console.log(err);
+        return res
+          .status(400)
+          .json({ success: false, message: "Error retrieving treatment data" });
+      } else {
+        return res.status(200).json({ success: true, data: results });
+      }
     }
-  });
+  );
 };
 
 const treatPatientUHID = (req, res) => {
@@ -242,6 +251,7 @@ const deleteTreatmentData = (req, res) => {
 
 const insertTreatPrescription = (req, res) => {
   const { appoint_id, tpid } = req.params;
+  const sitting = req.params.sitting;
   const {
     branch_name,
     patient_uhid,
@@ -255,7 +265,7 @@ const insertTreatPrescription = (req, res) => {
   } = req.body;
 
   const sql =
-    "INSERT INTO dental_prescription (appoint_id, tp_id, branch_name, patient_uhid, desease, treatment,medicine_name, dosage, frequency, duration, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
+    "INSERT INTO dental_prescription (appoint_id, tp_id, branch_name, patient_uhid, desease, treatment, sitting_number, medicine_name, dosage, frequency, duration, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
 
   db.query(
     sql,
@@ -266,6 +276,7 @@ const insertTreatPrescription = (req, res) => {
       patient_uhid,
       desease,
       treatment,
+      sitting,
       medicine_name,
       dosage,
       frequency,
@@ -341,12 +352,12 @@ const getMedicineData = (req, res) => {
 };
 
 const getTreatPrescriptionByAppointId = (req, res) => {
-  const { appoint_id, tpid } = req.params;
+  const { appoint_id, tpid, treatment } = req.params;
 
   const sql =
-    "SELECT * FROM dental_prescription WHERE appoint_id = ? AND tp_id = ?";
+    "SELECT * FROM dental_prescription WHERE appoint_id = ? AND tp_id = ? AND treatment = ?";
 
-  db.query(sql, [appoint_id, tpid], (err, results) => {
+  db.query(sql, [appoint_id, tpid, treatment], (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
@@ -473,6 +484,104 @@ const updateSecurityAmountAfterPayment = (req, res) => {
   }
 };
 
+const getTreatmentDetailsViaSitting = (req, res) => {
+  try {
+    const { branch, appoint_id, tpid, sitting, treatment } = req.params;
+    const selectQuery =
+      "SELECT * FROM dental_treatment WHERE branch_name = ? AND appointment_id = ? AND tp_id = ? AND sitting_number = ? AND dental_treatment = ?";
+    db.query(
+      selectQuery,
+      [branch, appoint_id, tpid, sitting, treatment],
+      (err, result) => {
+        if (err) {
+          res.status(400).json({ success: false, message: err.message });
+        }
+        res.status(200).send(result);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
+const getTreatmentDataViaBranchAndTpid = (req, res) => {
+  const tpid = req.params.tpid;
+  const branch = req.params.branch;
+
+  const sql = `SELECT * FROM dental_treatment WHERE tp_id = ? AND branch_name = ?`;
+
+  db.query(sql, [tpid, branch], (err, results) => {
+    if (err) {
+      console.log(err);
+      return res
+        .status(400)
+        .json({ success: false, message: "Error retrieving treatment data" });
+    } else {
+      return res.status(200).send(results);
+    }
+  });
+};
+
+const generateFinalBillwithTpid = (req, res) => {
+  try {
+    const {
+      uhid,
+      tp_id,
+      branch_name,
+      patient_name,
+      patient_mobile,
+      patient_email,
+      assigned_doctor_name,
+      total_amount,
+    } = req.body;
+    const selectQuery = "SELECT * FROM patient_bills WHERE tp_id = ?";
+    db.query(selectQuery, tp_id, (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length === 0) {
+        const insertQuery = `INSERT INTO patient_bills (uhid,	tp_id,	branch_name,	patient_name,	patient_mobile,	patient_email,	assigned_doctor_name,	total_amount) VALUES (?,?,?,?,?,?,?,?)`;
+
+        const insertParams = [
+          uhid,
+          tp_id,
+          branch_name,
+          patient_name,
+          patient_mobile,
+          patient_email,
+          assigned_doctor_name,
+          total_amount,
+        ];
+
+        db.query(insertQuery, insertParams, (err, result) => {
+          if (err) {
+            res.status(400).json({ success: false, message: err.message });
+          }
+          const resultField = {
+            uhid: uhid,
+            tpid: tp_id,
+            branch: branch_name,
+            patient_name: patient_name,
+            patient_mobile: patient_mobile,
+            patient_email: patient_email,
+            doctor_name: assigned_doctor_name,
+            total_amount: total_amount,
+          };
+          res.status(200).json({ success: true, data: resultField });
+        });
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, message: "tpid already exist" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getTreatmentList,
   insertTreatmentData,
@@ -492,4 +601,7 @@ module.exports = {
   onGoingTreat,
   getProcedureList,
   updateSecurityAmountAfterPayment,
+  getTreatmentDetailsViaSitting,
+  getTreatmentDataViaBranchAndTpid,
+  generateFinalBillwithTpid,
 };

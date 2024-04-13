@@ -9,7 +9,7 @@ import { FaLocationArrow } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 
 const NewTreatPrescription = () => {
-  const { id, tpid, sitting } = useParams();
+  const { id, tpid, sitting, treatment } = useParams();
   console.log(id);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -191,7 +191,7 @@ const NewTreatPrescription = () => {
   const getTreatPrescriptionByAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatPrescriptionByAppointId/${id}/${tpid}`
+        `http://localhost:8888/api/doctor/getTreatPrescriptionByAppointId/${id}/${tpid}/${treatment}`
       );
       setGetTreatMedicine(data);
       console.log(data);
@@ -228,7 +228,7 @@ const NewTreatPrescription = () => {
   const getTreatmentSuggestAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}`
+        `http://localhost:8888/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}/${treatment}`
       );
       setGetTreatSug(data.data);
       console.log(data);
@@ -292,7 +292,9 @@ const NewTreatPrescription = () => {
 
       // Check if bill data was fetched successfully
       if (billResponse.data.success) {
-        navigate(`/ViewTreatPrescription/${id}`);
+        navigate(
+          `/ViewTreatPrescription/${id}/${tpid}/${sitting}/${treatment}`
+        );
       } else {
         console.error("Error fetching bill data:", billResponse.data.message);
       }
@@ -416,7 +418,7 @@ const NewTreatPrescription = () => {
           </div>
         </div>
         {/* Treatment Suggest */}
-        <div className="container">
+        {/* <div className="container">
           <legend className="">Treatment Suggest</legend>
           <div className="table-responsive rounded">
             <table
@@ -443,9 +445,9 @@ const NewTreatPrescription = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </div> */}
         {/* lab test */}
-        <div className="container">
+        {/* <div className="container">
           <legend className="">Patient Laboratory Test</legend>
           <div className="table-responsive rounded">
             <table
@@ -477,7 +479,7 @@ const NewTreatPrescription = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </div> */}
 
         {/* Patient Treatment Details */}
         <div className="container">

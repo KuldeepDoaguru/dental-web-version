@@ -18,6 +18,7 @@ const BookSittingAppointment = ({
   tsid,
   tp_id,
   appoint_id,
+  currentSitting,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -335,7 +336,9 @@ const BookSittingAppointment = ({
         dispatch(toggleTableRefresh());
         timelineData(getPatientData[0]?.uhid);
         onClose();
-        navigate(`/TreatmentDashBoard/${appoint_id}/${tp_id}`);
+        navigate(
+          `/TPrescriptionDash/${appoint_id}/${tp_id}/${currentSitting}/${treatment}`
+        );
       } catch (error) {
         console.log(error);
         cogoToast.error(error?.response?.data?.message);

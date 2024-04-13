@@ -17,6 +17,7 @@ const TreatmentForm = () => {
   const [getPatientData, setGetPatientData] = useState([]);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  console.log(user.currentUser.employee_ID);
   const branch = user.currentUser.branch_name;
   console.log(branch);
   const [treatments, setTreatments] = useState([]);
@@ -115,6 +116,19 @@ const TreatmentForm = () => {
     (treatments[0]?.totalCost * dataArray?.length * formData.disc_amt) / 100;
 
   console.log(netAmount);
+  const partialPay = netAmount - securityAmt[0]?.remaining_amount;
+  const directRecAmount = () => {
+    if (securityAmt[0]?.remaining_amount <= 0) {
+      return netAmount;
+    } else if (securityAmt[0]?.remaining_amount < netAmount) {
+      return netAmount - securityAmt[0]?.remaining_amount;
+    } else {
+      return 0;
+    }
+  };
+  console.log("part pay", partialPay);
+  const partPay = directRecAmount();
+  console.log(partPay);
 
   const formDetails = {
     branch: branch,
@@ -128,6 +142,8 @@ const TreatmentForm = () => {
     disc_amt: formData.disc_amt,
     total_amt: treatments[0]?.totalCost * dataArray?.length,
     net_amount: netAmount,
+    dir_rec_amt: partPay,
+    dir_rec_doctor_id: user.currentUser.employee_ID,
     sitting_payment_status: formData.sitting_payment_status,
     note: formData.note,
   };
@@ -170,7 +186,7 @@ const TreatmentForm = () => {
         getPatientDetail();
         getTreatmentList();
         navigate(
-          `/TPrescriptionDash/${appoint_id}/${tp_id}/${treatments[0]?.current_sitting}`
+          `/TPrescriptionDash/${appoint_id}/${tp_id}/${treatments[0]?.current_sitting}/${treatment}`
         );
         // navigate(`/TreatmentDashBoard/${appoint_id}/${tp_id}`);
       } else {
@@ -247,7 +263,14 @@ const TreatmentForm = () => {
   }, []);
 
   console.log(securityAmt[0]?.remaining_amount);
-  const remaining_amount = securityAmt[0]?.remaining_amount - netAmount;
+  const securityRemAmt = () => {
+    if (securityAmt[0]?.remaining_amount < netAmount) {
+      return 0;
+    } else {
+      return securityAmt[0]?.remaining_amount - netAmount;
+    }
+  };
+  const remaining_amount = securityRemAmt();
   console.log(remaining_amount);
   const MakePaymentViaSecurityAmount = async () => {
     try {
@@ -486,9 +509,7 @@ const TreatmentForm = () => {
                       <label htmlFor="" class="form-label fw-bold">
                         Remaining Security Amount :{" "}
                         <strong style={{ color: "red" }}>
-                          {!formData.disc_amt
-                            ? securityAmt[0]?.remaining_amount || 0
-                            : remaining_amount}
+                          {securityAmt[0]?.remaining_amount}
                         </strong>
                       </label>
                       <div>
@@ -526,10 +547,19 @@ const TreatmentForm = () => {
                   <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
-                        {!showDirect
+                        {!showDirect || partPay > 0
                           ? "Do you want to make payment directly"
                           : "Payment Status"}
                       </label>
+
+                      {partPay > 0 && (
+                        <>
+                          <small className="ms-2" style={{ color: "red" }}>
+                            (Remaining Net Payment :{" "}
+                            {netAmount - securityAmt[0]?.remaining_amount})
+                          </small>
+                        </>
+                      )}
                       <select
                         class="form-control"
                         id=""
@@ -537,7 +567,7 @@ const TreatmentForm = () => {
                         onChange={handleChange}
                         value={formData.sitting_payment_status}
                       >
-                        {!showDirect ? (
+                        {!showDirect || partPay > 0 ? (
                           <>
                             {" "}
                             <option value="">-select-</option>
@@ -597,6 +627,7 @@ const TreatmentForm = () => {
                       getPatientData={getPatientData}
                       treatment={treatment}
                       tsid={tsid}
+                      currentSitting={treatments[0]?.current_sitting}
                       appoint_id={appoint_id}
                       tp_id={tp_id}
                       onClose={() => setShowBookingPopup(false)}

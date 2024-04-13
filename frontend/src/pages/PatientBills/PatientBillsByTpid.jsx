@@ -3,11 +3,9 @@ import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { setUser } from "../../../../redux/user/userSlice";
 
-const ViewTreatPrescription = () => {
-  const { id, tpid, sitting, treatment } = useParams();
-  console.log(id);
+const PatientBillsByTpid = () => {
+  const { tpid } = useParams();
   const navigate = useNavigate();
   const [getPatientData, setGetPatientData] = useState([]);
   const user = useSelector((state) => state.user);
@@ -19,93 +17,93 @@ const ViewTreatPrescription = () => {
   const [getTreatSug, setGetTreatSug] = useState([]);
 
   // Get Patient Details START
-  const getPatientDetail = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
-      );
-      setGetPatientData(res.data.result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   const getPatientDetail = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+  //       );
+  //       setGetPatientData(res.data.result);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-  useEffect(() => {
-    getPatientDetail();
-  }, []);
+  //   useEffect(() => {
+  //     getPatientDetail();
+  //   }, []);
   // Get Patient Details END
 
   // Get Patient Examintion Details START
-  const getExaminDetail = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalDataByID/${id}/${tpid}`
-      );
-      setGetExaminData(res.data);
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   const getExaminDetail = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `http://localhost:8888/api/doctor/getDentalDataByID/${id}/${tpid}`
+  //       );
+  //       setGetExaminData(res.data);
+  //       console.log(res.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-  useEffect(() => {
-    getExaminDetail();
-  }, []);
+  //   useEffect(() => {
+  //     getExaminDetail();
+  //   }, []);
   // Get Patient Examintion Details END
 
   // Get Patient Treatment Details START
-  const getTreatDetail = async () => {
-    try {
-      const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentDetailsViaSitting/${branch}/${id}/${tpid}/${sitting}/${treatment}`
-      );
-      setGetTreatData(data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   const getTreatDetail = async () => {
+  //     try {
+  //       const { data } = await axios.get(
+  //         `http://localhost:8888/api/doctor/getTreatmentDetailsViaSitting/${branch}/${id}/${tpid}/${sitting}`
+  //       );
+  //       setGetTreatData(data);
+  //       console.log(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-  console.log(getTreatData);
-  useEffect(() => {
-    getTreatDetail();
-  }, []);
+  //   console.log(getTreatData);
+  //   useEffect(() => {
+  //     getTreatDetail();
+  //   }, []);
   // Get Patient Treatment Details END
 
   // Get Treatment Medical Prescription Data START
-  const getTreatPrescriptionByAppointId = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatPrescriptionByAppointId/${id}/${tpid}/${treatment}`
-      );
-      setGetTreatMedicine(res.data);
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   const getTreatPrescriptionByAppointId = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `http://localhost:8888/api/doctor/getTreatPrescriptionByAppointId/${id}/${tpid}`
+  //       );
+  //       setGetTreatMedicine(res.data);
+  //       console.log(res.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-  useEffect(() => {
-    getTreatPrescriptionByAppointId();
-  }, []);
+  //   useEffect(() => {
+  //     getTreatPrescriptionByAppointId();
+  //   }, []);
   // Get Treatment Medical Prescription Data END
 
   // Get Treatment Suggest START
-  const getTreatmentSuggestAppointId = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}`
-      );
-      setGetTreatSug(res.data.data);
-      console.log(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   const getTreatmentSuggestAppointId = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `http://localhost:8888/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}`
+  //       );
+  //       setGetTreatSug(res.data.data);
+  //       console.log(res.data.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-  useEffect(() => {
-    getTreatmentSuggestAppointId();
-  }, []);
+  //   useEffect(() => {
+  //     getTreatmentSuggestAppointId();
+  //   }, []);
   // Get Treatment Suggest END
 
   const handleButton = async () => {
@@ -143,7 +141,6 @@ const ViewTreatPrescription = () => {
                       {user.currentUser.employee_mobile}
                     </p>
                     <p className="m-0 fs-5">{user.currentUser.email}</p>
-                    <p className="fs-5 m-0">Sitting Number : {sitting}</p>
                   </div>
                 </div>
               </div>
@@ -292,7 +289,7 @@ const ViewTreatPrescription = () => {
   );
 };
 
-export default ViewTreatPrescription;
+export default PatientBillsByTpid;
 const Wrapper = styled.div`
   overflow: hidden;
   background-color: white;

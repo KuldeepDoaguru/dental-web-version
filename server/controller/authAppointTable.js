@@ -41,42 +41,18 @@ const getAppointmentsWithPatientDetails = (req, res) => {
 };
 
 const getAppointmentsWithPatientDetailsById = (req, res) => {
-  // const appointmentId = req.params.id;
-  const appointmentId = req.params.id;
+  const tpid = req.params.tpid;
 
-  const sql = `
-        SELECT 
-            a.appoint_id,
-            a.appointment_dateTime,
-            a.treatment_provided,
-            a.notes,
-            a.appointment_status,
-            p.uhid, 
-            p.patient_name,
-            p.mobileno,
-            p.dob,
-            p.age,
-            p.weight,
-            p.bloodgroup,
-            p.disease,
-            p.allergy,
-            p.patient_type
-        FROM 
-        appointments AS a
-        JOIN 
-            patient_details AS p ON a.patient_uhid = p.uhid
-        WHERE
-            a.appoint_id = ?
-    `;
+  const sql = `SELECT * FROM treatment_package JOIN patient_details ON patient_details.uhid = treatment_package.uhid WHERE tp_id = ?`;
 
-  db.query(sql, [appointmentId], (err, result) => {
+  db.query(sql, [tpid], (err, result) => {
     if (err) {
-      console.error("Error executing query:", err.stack);
+      console.error("Error executing query:", err.message);
       return res.status(500).json({ error: "Internal server error" });
     } else if (result.length === 0) {
-      return res.status(404).json({ error: "Appointment not found" });
+      return res.status(404).json({ error: "TPID not found" });
     } else {
-      return res.status(200).json({ message: "Get appointment by ID", result });
+      return res.status(200).json({ message: "Get data by TPID", result });
     }
   });
 };

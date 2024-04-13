@@ -22,6 +22,7 @@ import SecurityAmount from "./components/Doctor/Treatment Suggestion/SecurityAmo
 import PrintSecurityAmt from "./components/Doctor/Treatment Suggestion/PrintSecurityAmt";
 import CreatePrescrip from "./components/Doctor/Prescription/CreatePrescrip";
 import { useSelector } from "react-redux";
+import PatientBillsByTpid from "./pages/PatientBills/PatientBillsByTpid";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -126,19 +127,26 @@ function App() {
         }
       />
       <Route
-        path="/TPrescriptionDash/:id/:tpid/:sitting"
+        path="/TPrescriptionDash/:id/:tpid/:sitting/:treatment"
         element={
           user.currentUser === null ? <DoctorLogin /> : <TPrescriptionDash />
         }
       />
       <Route
-        path="/ViewTreatPrescription/:id"
+        path="/ViewTreatPrescription/:id/:tpid/:sitting/:treatment"
         element={
           user.currentUser === null ? (
             <DoctorLogin />
           ) : (
             <ViewTreatPrescription />
           )
+        }
+      />
+
+      <Route
+        path="/ViewPatientTotalBill/:tpid"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <PatientBillsByTpid />
         }
       />
       <Route

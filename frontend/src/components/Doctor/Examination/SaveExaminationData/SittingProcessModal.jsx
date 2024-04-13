@@ -22,9 +22,9 @@ const SittingProcessModal = ({ onClose, selectedData }) => {
   const [showBook, setShowBook] = useState(false);
   const [formData, setFormData] = useState({
     current_sitting:
-      selectedData.treatment_status === "pending"
-        ? selectedData.current_sitting
-        : selectedData.current_sitting + 1,
+      selectedData.treatment_status === "ongoing"
+        ? selectedData.current_sitting + 1
+        : selectedData.current_sitting,
     treatment_status: "",
   });
 
@@ -115,8 +115,7 @@ const SittingProcessModal = ({ onClose, selectedData }) => {
                       ) : (
                         <>
                           <option value="">-select-</option>
-                          <option value="pending">Pending</option>
-                          <option value="ongoing">Ongoing</option>
+                          <option value="ongoing">Consider Sitting</option>
                         </>
                       )}
                     </select>

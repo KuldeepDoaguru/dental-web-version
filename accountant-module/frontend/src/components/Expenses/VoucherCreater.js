@@ -150,7 +150,7 @@ const VoucherCreater = () => {
                               <input
                                 class="rounded"
                                 type="number"
-                                placeholder="Ent Amount"
+                                placeholder="Enter Amount"
                                 name="voucher_amount"
                                 value={vdata.voucher_amount}
                                 onChange={handleChange}

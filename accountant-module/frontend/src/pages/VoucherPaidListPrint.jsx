@@ -1,10 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import { IoArrowBackSharp } from "react-icons/io5";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const VoucherPaidListPrint = () => {
+  const { vid } = useParams();
+  const user = useSelector((state) => state.user);
+  const { refreshTable } = useSelector((state) => state.user);
+  const branch = user.branch;
+  const [getVoucher, setGetVoucher] = useState([]);
+
+  const getVoucherDataByIdBranch = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8888/api/v1/accountant/voucher/${branch}/${vid}`
+      );
+      console.log(response.data);
+      setGetVoucher(response.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    getVoucherDataByIdBranch();
+  }, []); // Ensure this effect runs only once, hence the empty dependency array
+
   const goBack = () => {
     window.history.go(-1);
   };
@@ -44,13 +68,13 @@ const VoucherPaidListPrint = () => {
             <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-6 col-sm-6">
               <div className="d-flex rounded mt-5">
                 <h4 className="ms-3"> Name </h4>
-                <h4 className="ms-1"> : Vinay Dhariya </h4>
+                <h4 className="ms-1"> : {getVoucher[0]?.for_name}</h4>
               </div>
             </div>
 
             <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-4 ms-lg-4 ms-sm-5 ">
               <h5 className="mt-5 ms-lg-5 ms-md-5 ms-sm-4">
-                Date : 23/04/2024
+                Date : {getVoucher[0]?.voucher_date}
               </h5>
             </div>
           </div>

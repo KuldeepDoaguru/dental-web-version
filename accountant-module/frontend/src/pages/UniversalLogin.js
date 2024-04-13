@@ -58,6 +58,9 @@ const UniversalLogin = () => {
         name: response.data.user.email,
         id: response.data.user.employee_ID,
         branch: response.data.user.branch,
+        employee_name: response.data.user.employee_name,
+        employee_mobile: response.data.user.employee_mobile,
+        employee_designation: response.data.user.employee_designation,
       };
       localStorage.setItem("userData", JSON.stringify(userData));
       dispatch(setUser(userData));

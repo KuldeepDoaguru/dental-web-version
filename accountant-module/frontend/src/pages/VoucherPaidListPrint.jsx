@@ -5,12 +5,14 @@ import Header from "../components/Header";
 import { IoArrowBackSharp } from "react-icons/io5";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import numToWords from "num-to-words";
 
 const VoucherPaidListPrint = () => {
   const { vid } = useParams();
   const user = useSelector((state) => state.user);
   const { refreshTable } = useSelector((state) => state.user);
   const branch = user.branch;
+  const employeeName = user.employee_name;
   const [getVoucher, setGetVoucher] = useState([]);
 
   const getVoucherDataByIdBranch = async () => {
@@ -27,7 +29,9 @@ const VoucherPaidListPrint = () => {
 
   useEffect(() => {
     getVoucherDataByIdBranch();
-  }, []); // Ensure this effect runs only once, hence the empty dependency array
+  }, []);
+
+  const amountInWords = numToWords(getVoucher[0]?.voucher_amount);
 
   const goBack = () => {
     window.history.go(-1);
@@ -67,14 +71,14 @@ const VoucherPaidListPrint = () => {
           <div className="row  mt-4  d-flex justify-content-center">
             <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-6 col-sm-6">
               <div className="d-flex rounded mt-5">
-                <h4 className="ms-3"> Name </h4>
-                <h4 className="ms-1"> : {getVoucher[0]?.for_name}</h4>
+                <h4 className="ms-3"> Branch </h4>
+                <h4 className="ms-1"> : {getVoucher[0]?.branch_name}</h4>
               </div>
             </div>
 
             <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-4 ms-lg-4 ms-sm-5 ">
-              <h5 className="mt-5 ms-lg-5 ms-md-5 ms-sm-4">
-                Date : {getVoucher[0]?.voucher_date}
+              <h5 className="mt-5 ms-lg-3 ms-md-5 ms-sm-4">
+                Date : {getVoucher[0]?.voucher_date.split("T")[0]}
               </h5>
             </div>
           </div>
@@ -90,22 +94,22 @@ const VoucherPaidListPrint = () => {
                       <td className="table-sno" style={{ width: "40%" }}>
                         <td className="table-sno" style={{ width: "85%" }}>
                           <td className="table-sno" style={{ width: "85%" }}>
-                            <h6>DEBIT :</h6>
+                            <h6>Name :</h6>
                           </td>
                           <td className="table-sno" style={{ width: "85%" }}>
-                            <h6> 1250</h6>
+                            <h6> {getVoucher[0]?.for_name}</h6>
                           </td>
                         </td>
                       </td>
                       <td className="table-small" style={{ width: "15%" }}>
                         <h6>AMOUNT Rs.</h6>
                       </td>
-                      <td className="table-small" style={{ width: "5%" }}>
+                      {/* <td className="table-small" style={{ width: "5%" }}>
                         <h6>Ps.</h6>
-                      </td>
+                      </td> */}
                     </tr>
                   </tbody>
-                  <tbody>
+                  {/* <tbody>
                     <tr className="table-row">
                       <td className="table-sno" style={{ width: "40%" }}>
                         <td className="table-sno" style={{ width: "85%" }}>
@@ -120,7 +124,7 @@ const VoucherPaidListPrint = () => {
                       <td className="table-small" style={{ width: "15%" }}></td>
                       <td className="table-small" style={{ width: "5%" }}></td>
                     </tr>
-                  </tbody>
+                  </tbody> */}
                   <tbody>
                     <tr className="table-row">
                       <td className="table-small" style={{ width: "20%" }}>
@@ -129,20 +133,18 @@ const VoucherPaidListPrint = () => {
                             <h6>Paid For :</h6>
                           </td>
                           <td className="table-sno" style={{ width: "85%" }}>
-                            <h6>Tea </h6>
+                            <h6>{getVoucher[0]?.for_use} </h6>
                           </td>
                         </td>
                       </td>
-                      <td className="table-small" style={{ width: "20%" }}>
-                        300
-                      </td>
-                      <td className="table-small" style={{ width: "20%" }}>
+                      <td className="table-small" style={{ width: "20%" }}></td>
+                      {/* <td className="table-small" style={{ width: "20%" }}>
                         00
-                      </td>
+                      </td> */}
                     </tr>
                   </tbody>
 
-                  <tbody>
+                  {/* <tbody>
                     <tr className="table-row">
                       <td className="table-sno" style={{ width: "85%" }}>
                         <td className="table-sno" style={{ width: "13%" }}>
@@ -177,24 +179,24 @@ const VoucherPaidListPrint = () => {
                         00
                       </td>
                     </tr>
-                  </tbody>
+                  </tbody> */}
                   <tbody>
                     <tr className="table-row">
                       <td className="table-sno" style={{ width: "60%" }}>
                         <td className="table-sno" style={{ width: "85%" }}>
-                          <h6>Paid by Cash / Cheque No.</h6>
+                          <h6>Create By : {employeeName}</h6>
                         </td>
                         <td className="table-small" style={{ width: "6%" }}>
                           <h6>TOTAL</h6>
                         </td>
                       </td>
                       <td className="table-small" style={{ width: "20%" }}>
-                        <h6>1250</h6>
+                        <h6>{getVoucher[0]?.voucher_amount}</h6>
                       </td>
-
+                      {/* 
                       <td className="table-small" style={{ width: "20%" }}>
                         00
-                      </td>
+                      </td> */}
                     </tr>
                   </tbody>
                 </table>
@@ -208,8 +210,8 @@ const VoucherPaidListPrint = () => {
             <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
               <div className="d-flex justify-content-start">
                 <h6 className="fw-bold">
-                  Rupees (in Words) : Indian Rupee One Thousand Two Hundred
-                  Fifty Only
+                  Rupees (in Words) :{" "}
+                  <span className="text-uppercase">{amountInWords}</span>
                 </h6>
               </div>
             </div>

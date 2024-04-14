@@ -15,95 +15,113 @@ const PatientBillsByTpid = () => {
   const [getTreatData, setGetTreatData] = useState([]);
   const [getTreatMedicine, setGetTreatMedicine] = useState([]);
   const [getTreatSug, setGetTreatSug] = useState([]);
+  const [getBranch, setGetBranch] = useState([]);
 
+  const getBranchDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/doctor/getBranchDetails/${branch}`
+      );
+      console.log(data);
+      setGetBranch(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(getBranch[0]?.hospital_name);
   // Get Patient Details START
-  //   const getPatientDetail = async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
-  //       );
-  //       setGetPatientData(res.data.result);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const getPatientDetail = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+      );
+      setGetPatientData(res.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  //   useEffect(() => {
-  //     getPatientDetail();
-  //   }, []);
+  console.log(getPatientData[0]?.address);
+  useEffect(() => {
+    getPatientDetail();
+    getBranchDetails();
+  }, []);
   // Get Patient Details END
 
   // Get Patient Examintion Details START
-  //   const getExaminDetail = async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         `http://localhost:8888/api/doctor/getDentalDataByID/${id}/${tpid}`
-  //       );
-  //       setGetExaminData(res.data);
-  //       console.log(res.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const getExaminDetail = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8888/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
+      );
+      setGetExaminData(res.data);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  //   useEffect(() => {
-  //     getExaminDetail();
-  //   }, []);
+  useEffect(() => {
+    getExaminDetail();
+  }, []);
   // Get Patient Examintion Details END
 
   // Get Patient Treatment Details START
-  //   const getTreatDetail = async () => {
-  //     try {
-  //       const { data } = await axios.get(
-  //         `http://localhost:8888/api/doctor/getTreatmentDetailsViaSitting/${branch}/${id}/${tpid}/${sitting}`
-  //       );
-  //       setGetTreatData(data);
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const getTreatDetail = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/doctor/getTreatmentDetailsViaTpid/${tpid}/${branch}`
+      );
+      setGetTreatData(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  //   console.log(getTreatData);
-  //   useEffect(() => {
-  //     getTreatDetail();
-  //   }, []);
+  console.log(getTreatData);
+  useEffect(() => {
+    getTreatDetail();
+  }, []);
   // Get Patient Treatment Details END
 
   // Get Treatment Medical Prescription Data START
-  //   const getTreatPrescriptionByAppointId = async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         `http://localhost:8888/api/doctor/getTreatPrescriptionByAppointId/${id}/${tpid}`
-  //       );
-  //       setGetTreatMedicine(res.data);
-  //       console.log(res.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const getTreatPrescriptionByAppointId = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/doctor/getTreatPrescriptionByTpid/${tpid}/${branch}`
+      );
+      setGetTreatMedicine(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  //   useEffect(() => {
-  //     getTreatPrescriptionByAppointId();
-  //   }, []);
+  useEffect(() => {
+    getTreatPrescriptionByAppointId();
+  }, []);
   // Get Treatment Medical Prescription Data END
 
   // Get Treatment Suggest START
-  //   const getTreatmentSuggestAppointId = async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         `http://localhost:8888/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}`
-  //       );
-  //       setGetTreatSug(res.data.data);
-  //       console.log(res.data.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const getTreatmentSuggestAppointId = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/doctor/getTreatSuggestViaTpid/${tpid}/${branch}`
+      );
+      setGetTreatSug(data.data);
+      console.log(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  //   useEffect(() => {
-  //     getTreatmentSuggestAppointId();
-  //   }, []);
+  useEffect(() => {
+    getTreatmentSuggestAppointId();
+  }, []);
+
+  console.log(getTreatSug);
   // Get Treatment Suggest END
 
   const handleButton = async () => {
@@ -117,7 +135,293 @@ const PatientBillsByTpid = () => {
   return (
     <>
       <Wrapper>
-        <div className="container-fluid dummy-cont h-100">
+        {/* branch details */}
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+              <div className="clinic-logo">
+                <img
+                  src="https://res.cloudinary.com/duiiayf3d/image/upload/v1699947747/samples/landscapes/landscape-panorama.jpg"
+                  alt=""
+                  className="img-fluid"
+                />
+              </div>
+            </div>
+            <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-6 col-sm-12 col-12">
+              <div className="header-left">
+                <h1 className="text-center">Invoice</h1>
+                <hr />
+                <h5>
+                  <strong>Clinic Name :</strong>{" "}
+                  <span
+                    className="fw-bold text-capitalize"
+                    style={{ color: "#00b894" }}
+                  >
+                    {getBranch[0]?.hospital_name}
+                  </span>
+                </h5>
+                <hr />
+                <h5>
+                  <strong>Address :</strong>{" "}
+                  <span
+                    className="fw-bold text-capitalize"
+                    style={{ color: "#00b894" }}
+                  >
+                    {getBranch[0]?.branch_address}
+                  </span>
+                </h5>
+                <hr />
+                <h5>
+                  <strong>Phone No. :</strong>{" "}
+                  <span
+                    className="fw-bold text-capitalize"
+                    style={{ color: "#00b894" }}
+                  >
+                    {getBranch[0]?.branch_contact}
+                  </span>
+                </h5>
+                <hr />
+                <h5>
+                  <strong>Email ID :</strong>{" "}
+                  <span
+                    className="fw-bold text-capitalize"
+                    style={{ color: "#00b894" }}
+                  >
+                    {getBranch[0]?.branch_email}
+                  </span>
+                </h5>
+                <hr />
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* patient details */}
+        <div className="container-fluid">
+          <div className="heading-title">
+            <h4>Patient Details :</h4>
+          </div>
+          <table className="table table-bordered border">
+            <tbody>
+              {getPatientData?.map((item, index) => (
+                <React.Fragment key={index}>
+                  <tr>
+                    <th scope="row">UHID</th>
+                    <td>{item.uhid}</td>
+                    <th scope="row">Gender</th>
+                    <td>{item.gender}</td>
+                  </tr>
+
+                  <tr>
+                    <th scope="row">Name</th>
+                    <td>{item.patient_name}</td>
+                    <th scope="row">Age</th>
+                    <td>{item.age}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Address</th>
+                    <td>{item.address}</td>
+                    <th scope="row">Invoice No.</th>
+                    <td>{tpid}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Mobile No.</th>
+                    <td>{item.mobileno}</td>
+                    <th scope="row">Date</th>
+                    <td>{item.allergy}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Email</th>
+                    <td>{item.emailid}</td>
+                    <th scope="row">Treatment Package ID</th>
+                    <td>{tpid}</td>
+                  </tr>
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* doctor details */}
+        <div className="container-fluid">
+          <div className="heading-title">
+            <h4>Doctor Details :</h4>
+          </div>
+          <div className="d-flex justify-content-between">
+            <div className="text-start docDetails">
+              <p>
+                <strong>Doctor Name :</strong> Dr.{" "}
+                {user.currentUser.employee_name}
+              </p>
+              <p>
+                <strong>Mobile :</strong> {user.currentUser.employee_mobile}
+              </p>
+              <p>
+                <strong>Email :</strong> {user.currentUser.email}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* patient observation */}
+        <div className="container-fluid">
+          <div className="heading-title">
+            <h4>Patient Observation :</h4>
+          </div>
+          <table className="table table-bordered border">
+            <thead>
+              <tr>
+                <th>Seleted Teeth</th>
+                <th>Disease</th>
+                <th>Chief Complain</th>
+                <th>On Exmination</th>
+                <th>Advice</th>
+              </tr>
+            </thead>
+            {getExaminData?.map((item, index) => (
+              <tbody>
+                <React.Fragment>
+                  <tr>
+                    <td>{item.selected_teeth}</td>
+                    <td>{item.disease}</td>
+                    <td>{item.chief_complain}</td>
+                    <td>{item.on_examination}</td>
+                    <td>{item.advice}</td>
+                  </tr>
+                </React.Fragment>
+              </tbody>
+            ))}
+          </table>
+        </div>
+
+        {/* treatment provided */}
+        <div className="container-fluid">
+          <div className="heading-title">
+            <h4>Treatment Procedure :</h4>
+          </div>
+          <div className="Treatment">
+            {/* <p className="text-start fs-4 fw-bold">Treatment Procedure</p> */}
+            <table className="table table-bordered border">
+              <thead>
+                <tr>
+                  <th>Sitting Number</th>
+                  <th>Treatment</th>
+                  <th>Teeth</th>
+                  <th>Qty</th>
+                  <th>Cost</th>
+                  <th>Cst * Qty</th>
+                  <th>Disc %</th>
+                  <th>Final Cost</th>
+                </tr>
+              </thead>
+              {getTreatData?.map((item, index) => (
+                <tbody>
+                  <React.Fragment>
+                    <tr
+                      className={
+                        index % 2 === 0 ? "table-primary" : "table-info"
+                      }
+                    >
+                      <td>{item.sitting_number}</td>
+                      <td>{item.dental_treatment}</td>
+                      <td>{item.no_teeth}</td>
+                      <td>{item.qty}</td>
+                      <td>{item.cost_amt}</td>
+                      <td>{item.total_amt}</td>
+                      <td>{item.disc_amt}</td>
+                      <td>{item.net_amount}</td>
+                    </tr>
+                  </React.Fragment>
+                </tbody>
+              ))}
+              <tfoot>
+                <tr>
+                  <td
+                    colSpan="7"
+                    style={{ textAlign: "center", color: "white" }}
+                    className="heading-title"
+                  >
+                    Total Cost:
+                  </td>
+                  <td className="heading-title" style={{ color: "white" }}>
+                    {/* Calculate total cost here */}
+                    {/* Assuming getTreatData is an array of objects with 'net_amount' property */}
+                    {getTreatData.reduce(
+                      (total, item) => total + item.net_amount,
+                      0
+                    )}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div className="container-fluid">
+          <div className="row gutter">
+            <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+              <div className="border">
+                <div className="heading-title mt-0">
+                  <h4>Total Amount In Words :</h4>
+                </div>
+                <div className="text-word"></div>
+              </div>
+              <div className="border">
+                <div className="heading-title mt-0">
+                  <h4>Payment Info :</h4>
+                </div>
+                <div className="">
+                  <table className="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 border p-1">
+                          Account No.:
+                        </td>
+                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 border p-1">
+                          Account No.:
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 border p-1">
+                          Account Name:
+                        </td>
+                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 border p-1">
+                          Account No.:
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 border p-1">
+                          Bank Name:
+                        </td>
+                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 border p-1">
+                          Account No.:
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 border p-1">
+                          IFSC/Bank Code:
+                        </td>
+                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 border p-1">
+                          Account No.:
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 border p-1">
+                          UPI ID:
+                        </td>
+                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 border p-1">
+                          Account No.:
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12"></div>
+          </div>
+        </div>
+
+        {/* previous bill structure */}
+        {/* <div className="container-fluid dummy-cont h-100">
           <div className="headerimg">
             <img
               src="https://res.cloudinary.com/duiiayf3d/image/upload/v1699947747/samples/landscapes/landscape-panorama.jpg"
@@ -133,7 +437,7 @@ const PatientBillsByTpid = () => {
                     <p className="fs-5">
                       ({user.currentUser.employee_designation})
                     </p>
-                    <p className="fs-5 m-0">Treatment Package ID : {tpid}</p>
+                    
                   </div>
                   <div className="text-start">
                     <h5>Mobile Number</h5>
@@ -149,8 +453,8 @@ const PatientBillsByTpid = () => {
                   {getPatientData?.map((item, index) => (
                     <React.Fragment key={index}>
                       <tr>
-                        <th scope="row">Appoint ID</th>
-                        <td>{item.appoint_id}</td>
+                        <th scope="row">Treatment Package ID</th>
+                        <td>{tpid}</td>
                         <th scope="row">Blood Group</th>
                         <td>{item.bloodgroup}</td>
                       </tr>
@@ -170,14 +474,7 @@ const PatientBillsByTpid = () => {
                   ))}
                 </tbody>
               </table>
-              <div className="treatment">
-                {/* <p className="fs-4 fw-bold">Treatment</p> */}
-                {getTreatSug?.map((item, index) => (
-                  <div key={index}>
-                    <p className="fs-6 px-3">{item.treatment_name}</p>
-                  </div>
-                ))}
-              </div>
+             
               <div className="diagnosis">
                 <p className="text-start fs-4 fw-bold">Diagnosis</p>
                 <table className="table table-bordered border">
@@ -210,6 +507,7 @@ const PatientBillsByTpid = () => {
                 <table className="table table-bordered border">
                   <thead>
                     <tr>
+                      <th>Sitting Number</th>
                       <th>Treatment</th>
                       <th>Teeth</th>
                       <th>Qty</th>
@@ -224,6 +522,7 @@ const PatientBillsByTpid = () => {
                     <tbody>
                       <React.Fragment>
                         <tr>
+                          <td>{item.sitting_number}</td>
                           <td>{item.dental_treatment}</td>
                           <td>{item.no_teeth}</td>
                           <td>{item.qty}</td>
@@ -243,6 +542,7 @@ const PatientBillsByTpid = () => {
                 <table className="table table-bordered border">
                   <thead>
                     <tr>
+                      <th>Sitting Number</th>
                       <th>Medicine Name</th>
                       <th>Dosage</th>
                       <th>Frequency</th>
@@ -254,6 +554,7 @@ const PatientBillsByTpid = () => {
                     <tbody>
                       <React.Fragment>
                         <tr>
+                          <td>{item.sitting_number}</td>
                           <td>{item.medicine_name}</td>
                           <td>{item.dosage}</td>
                           <td>{item.frequency}</td>
@@ -283,7 +584,7 @@ const PatientBillsByTpid = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </Wrapper>
     </>
   );
@@ -334,5 +635,38 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-top: 2rem;
+  }
+  .clinic-logo {
+    height: 13rem;
+    img {
+      height: 100%;
+    }
+  }
+  .heading-title {
+    background-color: #34495e;
+    margin-top: 1rem;
+    padding: 2px;
+    padding-left: 0.5rem;
+    border-radius: 3px;
+    h4 {
+      color: white;
+    }
+  }
+
+  .docDetails {
+    p {
+      margin: 0rem;
+    }
+  }
+
+  hr {
+    margin: 0.2rem;
+  }
+  .text-word {
+    height: 3rem;
+  }
+
+  .gutter {
+    --bs-gutter-x: 0rem !important;
   }
 `;

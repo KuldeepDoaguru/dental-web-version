@@ -582,6 +582,53 @@ const generateFinalBillwithTpid = (req, res) => {
   }
 };
 
+const getTreatmentDetailsViaTpid = (req, res) => {
+  try {
+    const { tpid, branch } = req.params;
+    const selectQuery =
+      "SELECT * FROM dental_treatment WHERE tp_id = ? AND branch_name = ?";
+    db.query(selectQuery, [tpid, branch], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
+const getTreatPrescriptionByTpid = (req, res) => {
+  const { tpid, branch } = req.params;
+
+  const sql =
+    "SELECT * FROM dental_prescription WHERE tp_id = ? AND branch_name = ?";
+
+  db.query(sql, [tpid, branch], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.status(200).json(results);
+    }
+  });
+};
+
+const getBranchDetails = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM branches WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   getTreatmentList,
   insertTreatmentData,
@@ -604,4 +651,7 @@ module.exports = {
   getTreatmentDetailsViaSitting,
   getTreatmentDataViaBranchAndTpid,
   generateFinalBillwithTpid,
+  getTreatmentDetailsViaTpid,
+  getTreatPrescriptionByTpid,
+  getBranchDetails,
 };

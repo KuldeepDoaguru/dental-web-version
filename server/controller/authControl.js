@@ -551,6 +551,30 @@ const updateTreatSittingStatus = (req, res) => {
   }
 };
 
+const getDentalDataByTpid = (req, res) => {
+  const tpid = req.params.tpid;
+  const branch = req.params.branch;
+
+  const sql =
+    "SELECT * FROM dental_examination WHERE tp_id = ? AND branch_name = ?";
+  db.query(sql, [tpid, branch], (err, result) => {
+    if (err) {
+      console.error("Error retrieving data: ", err);
+      res.status(500).send("Error retrieving data: " + err.message);
+      return;
+    }
+
+    if (result.length === 0) {
+      res
+        .status(404)
+        .send("No data found for appointment ID: " + appointmentId);
+      return;
+    }
+
+    res.status(200).json(result);
+  });
+};
+
 module.exports = {
   dentalPediatric,
   updateDentalPediatric,
@@ -569,4 +593,5 @@ module.exports = {
   deleteTreatSuggestion,
   getFilteredTreat,
   updateTreatSittingStatus,
+  getDentalDataByTpid,
 };

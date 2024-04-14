@@ -15,6 +15,7 @@ const NewTreatmentTable = () => {
   const [modalIndex, setModalIndex] = useState(null);
   const [getExamTeeth, setGetExamTeeth] = useState([]);
   const [getPatientData, setGetPatientData] = useState([]);
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;

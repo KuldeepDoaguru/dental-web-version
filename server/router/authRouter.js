@@ -20,6 +20,7 @@ const {
   updateTreatSittingStatus,
   deleteTreatSuggestion,
   getFilteredTreat,
+  getDentalDataByTpid,
 } = require("../controller/authControl.js");
 const {
   getAppointmentsWithPatientDetails,
@@ -70,6 +71,9 @@ const {
   getTreatmentDetailsViaSitting,
   getTreatmentDataViaBranchAndTpid,
   generateFinalBillwithTpid,
+  getTreatmentDetailsViaTpid,
+  getTreatPrescriptionByTpid,
+  getBranchDetails,
 } = require("../controller/authTreatment.js");
 const {
   uploadImage,
@@ -84,6 +88,7 @@ const {
   getBranchDetail,
   getTreatment,
   getDoctorDataByBranchWithLeave,
+  getTreatSuggestViaTpid,
 } = require("../controller/authBook.js");
 
 const router = express.Router();
@@ -92,6 +97,7 @@ const router = express.Router();
 router.post("/dentalPediatric", dentalPediatric);
 router.put("/updatedentalPediatric/:id", updateDentalPediatric);
 router.get("/getDentalDataByID/:appointmentId/:tpid", getDentalDataByID);
+router.get("/getDentalDataByTpid/:tpid/:branch", getDentalDataByTpid);
 router.get("/getDentalPatientDataByID/:patientUHID", getDentalPatientDataByID);
 router.get("/getDentalPatientByID/:patientUHID", getDentalPatientByID);
 router.delete("/deleteDentalPediatric/:id", deleteDentalPediatric);
@@ -177,6 +183,11 @@ router.get(
   "/getTreatPrescriptionByAppointId/:appoint_id/:tpid/:treatment",
   getTreatPrescriptionByAppointId
 );
+
+router.get(
+  "/getTreatPrescriptionByTpid/:tpid/:branch",
+  getTreatPrescriptionByTpid
+);
 router.delete("/deleteTreatPrescriptionById/:id", deleteTreatPrescriptionById);
 router.put("/updateAppointStatus/:appointId", updateAppointStatus);
 router.get("/onGoingTreat/:patientUHID", onGoingTreat);
@@ -216,6 +227,7 @@ router.get("/get-patientBill-data/:patientUHID", getPatientBillUHID);
 //  Booking Appointment START here......
 router.post("/bookAppointment", bookAppointment);
 router.get("/getTreatSuggest/:appoint_id", getTreatSuggest);
+router.get("/getTreatSuggestViaTpid/:tpid/:branch", getTreatSuggestViaTpid);
 //  Booking Appointment END here......
 
 //  Patient Profile START here......
@@ -258,6 +270,11 @@ router.get(
   "/getTreatmentDetailsViaSitting/:branch/:appoint_id/:tpid/:sitting/:treatment",
   getTreatmentDetailsViaSitting
 );
+
+router.get(
+  "/getTreatmentDetailsViaTpid/:tpid/:branch",
+  getTreatmentDetailsViaTpid
+);
 router.get(
   "/getTreatmentDataViaBranchAndTpid/:tpid/:branch",
   getTreatmentDataViaBranchAndTpid
@@ -265,5 +282,6 @@ router.get(
 
 //patient bill via tpid
 router.post("/generateFinalBillwithTpid", generateFinalBillwithTpid);
+router.get("/getBranchDetails/:branch", getBranchDetails);
 
 module.exports = { authRoutes: router };

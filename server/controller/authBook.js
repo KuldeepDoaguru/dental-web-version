@@ -340,6 +340,39 @@ const getDoctorDataByBranchWithLeave = (req, res) => {
   }
 };
 
+const getTreatSuggestViaTpid = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const branch = req.params.branch;
+    const sql = `SELECT * FROM treat_suggest WHERE tp_id = ? AND branch_name = ?`;
+    db.query(sql, [tpid, branch], (err, result) => {
+      if (err) {
+        return res.status(400).json({
+          success: false,
+          message: "Failed to query database",
+          error: err,
+        });
+      } else {
+        if (result.length === 0) {
+          return res
+            .status(404)
+            .json({ success: false, message: "No data found" });
+        }
+        return res.status(200).json({
+          success: true,
+          message: "Data retrieved successfully",
+          data: result,
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   bookAppointment,
   getTreatSuggest,
@@ -349,4 +382,5 @@ module.exports = {
   getBranchDetail,
   getTreatment,
   getDoctorDataByBranchWithLeave,
+  getTreatSuggestViaTpid,
 };

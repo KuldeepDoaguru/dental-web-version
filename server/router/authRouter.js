@@ -74,6 +74,7 @@ const {
   getTreatmentDetailsViaTpid,
   getTreatPrescriptionByTpid,
   getBranchDetails,
+  billDetailsViaTpid,
 } = require("../controller/authTreatment.js");
 const {
   uploadImage,
@@ -283,5 +284,6 @@ router.get(
 //patient bill via tpid
 router.post("/generateFinalBillwithTpid", generateFinalBillwithTpid);
 router.get("/getBranchDetails/:branch", getBranchDetails);
+router.get("/billDetailsViaTpid/:tpid", billDetailsViaTpid);
 
 module.exports = { authRoutes: router };

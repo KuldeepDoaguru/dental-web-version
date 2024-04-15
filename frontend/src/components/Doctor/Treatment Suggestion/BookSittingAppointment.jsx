@@ -55,7 +55,7 @@ const BookSittingAppointment = ({
     appointment_created_by: employee_name,
     appointment_created_by_ID: employee_ID,
     notes: "",
-    appointment_status: "Appoint",
+    appointment_status: "ongoing",
   });
 
   console.log(data);
@@ -336,9 +336,7 @@ const BookSittingAppointment = ({
         dispatch(toggleTableRefresh());
         timelineData(getPatientData[0]?.uhid);
         onClose();
-        navigate(
-          `/TPrescriptionDash/${appoint_id}/${tp_id}/${currentSitting}/${treatment}`
-        );
+        navigate(`/TPrescriptionDash/${tp_id}/${currentSitting}/${treatment}`);
       } catch (error) {
         console.log(error);
         cogoToast.error(error?.response?.data?.message);

@@ -22,7 +22,7 @@ const ViewTreatPrescription = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
       setGetPatientData(res.data.result);
     } catch (error) {
@@ -39,7 +39,7 @@ const ViewTreatPrescription = () => {
   const getExaminDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalDataByID/${id}/${tpid}`
+        `http://localhost:8888/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
       );
       setGetExaminData(res.data);
       console.log(res.data);

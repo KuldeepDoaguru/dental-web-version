@@ -83,7 +83,7 @@ function App() {
         }
       />
       <Route
-        path="/TreatmentDashBoard/:id/:tpid"
+        path="/TreatmentDashBoard/:tpid"
         element={
           user.currentUser === null ? <DoctorLogin /> : <TreatmentDashBoard />
         }
@@ -99,7 +99,7 @@ function App() {
         }
       />
       <Route
-        path="/treatmentDashTwo/:tsid/:appoint_id/:tp_id/:treatment"
+        path="/treatmentDashTwo/:tsid/:tp_id/:treatment"
         element={
           user.currentUser === null ? <DoctorLogin /> : <TreatmentDashTwo />
         }
@@ -127,13 +127,13 @@ function App() {
         }
       />
       <Route
-        path="/TPrescriptionDash/:id/:tpid/:sitting/:treatment"
+        path="/TPrescriptionDash/:tpid/:sitting/:treatment"
         element={
           user.currentUser === null ? <DoctorLogin /> : <TPrescriptionDash />
         }
       />
       <Route
-        path="/ViewTreatPrescription/:id/:tpid/:sitting/:treatment"
+        path="/ViewTreatPrescription/:tpid/:sitting/:treatment"
         element={
           user.currentUser === null ? (
             <DoctorLogin />

@@ -43,7 +43,7 @@ const NewTreatPrescription = () => {
   const getPatientDetail = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
       setGetPatientData(data.result);
     } catch (error) {
@@ -60,7 +60,7 @@ const NewTreatPrescription = () => {
   const getExaminDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalDataByID/${id}/${tpid}`
+        `http://localhost:8888/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
       );
       setGetExaminData(res.data);
       console.log(res.data);
@@ -292,9 +292,7 @@ const NewTreatPrescription = () => {
 
       // Check if bill data was fetched successfully
       if (billResponse.data.success) {
-        navigate(
-          `/ViewTreatPrescription/${id}/${tpid}/${sitting}/${treatment}`
-        );
+        navigate(`/ViewTreatPrescription/${tpid}/${sitting}/${treatment}`);
       } else {
         console.error("Error fetching bill data:", billResponse.data.message);
       }

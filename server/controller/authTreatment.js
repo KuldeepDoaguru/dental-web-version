@@ -558,6 +558,8 @@ const generateFinalBillwithTpid = (req, res) => {
           if (err) {
             res.status(400).json({ success: false, message: err.message });
           }
+          const bill_id = result.insertId;
+          const bill_date = new Date();
           const resultField = {
             uhid: uhid,
             tpid: tp_id,
@@ -567,6 +569,9 @@ const generateFinalBillwithTpid = (req, res) => {
             patient_email: patient_email,
             doctor_name: assigned_doctor_name,
             total_amount: total_amount,
+            bill_id: bill_id,
+            bill_date: bill_date,
+            ...result[0],
           };
           res.status(200).json({ success: true, data: resultField });
         });
@@ -629,6 +634,21 @@ const getBranchDetails = (req, res) => {
   }
 };
 
+const billDetailsViaTpid = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const selectQuery = "SELECT * FROM patient_bills WHERE tp_id = ?";
+    db.query(selectQuery, tpid, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
 module.exports = {
   getTreatmentList,
   insertTreatmentData,
@@ -654,4 +674,5 @@ module.exports = {
   getTreatmentDetailsViaTpid,
   getTreatPrescriptionByTpid,
   getBranchDetails,
+  billDetailsViaTpid,
 };

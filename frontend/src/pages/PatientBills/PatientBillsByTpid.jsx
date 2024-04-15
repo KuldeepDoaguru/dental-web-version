@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import numWords from "num-words";
 
 const PatientBillsByTpid = () => {
   const { tpid } = useParams();
@@ -16,6 +17,7 @@ const PatientBillsByTpid = () => {
   const [getTreatMedicine, setGetTreatMedicine] = useState([]);
   const [getTreatSug, setGetTreatSug] = useState([]);
   const [getBranch, setGetBranch] = useState([]);
+  const [billDetails, setBillDetails] = useState([]);
 
   const getBranchDetails = async () => {
     try {
@@ -117,10 +119,6 @@ const PatientBillsByTpid = () => {
     }
   };
 
-  useEffect(() => {
-    getTreatmentSuggestAppointId();
-  }, []);
-
   console.log(getTreatSug);
   // Get Treatment Suggest END
 
@@ -132,26 +130,50 @@ const PatientBillsByTpid = () => {
     }
   };
 
+  const totalBillvalueWithoutGst = getTreatData?.reduce(
+    (total, item) => total + item.net_amount,
+    0
+  );
+
+  console.log(totalBillvalueWithoutGst);
+
+  const getBillDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/doctor/billDetailsViaTpid/${tpid}`
+      );
+      setBillDetails(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTreatmentSuggestAppointId();
+    getBillDetails();
+  }, []);
+
+  console.log(billDetails);
   return (
     <>
       <Wrapper>
         {/* branch details */}
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+            <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
               <div className="clinic-logo">
                 <img
-                  src="https://res.cloudinary.com/duiiayf3d/image/upload/v1699947747/samples/landscapes/landscape-panorama.jpg"
+                  src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1708075638/dental%20guru/Login-page_1_cwadmt.png"
                   alt=""
                   className="img-fluid"
                 />
               </div>
             </div>
-            <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-6 col-sm-12 col-12">
+            <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
               <div className="header-left">
-                <h1 className="text-center">Invoice</h1>
+                <h3 className="text-center">Invoice</h3>
                 <hr />
-                <h5>
+                <h6>
                   <strong>Clinic Name :</strong>{" "}
                   <span
                     className="fw-bold text-capitalize"
@@ -159,9 +181,19 @@ const PatientBillsByTpid = () => {
                   >
                     {getBranch[0]?.hospital_name}
                   </span>
-                </h5>
+                </h6>
                 <hr />
-                <h5>
+                <h6>
+                  <strong>Branch Name :</strong>{" "}
+                  <span
+                    className="fw-bold text-capitalize"
+                    style={{ color: "#00b894" }}
+                  >
+                    {getBranch[0]?.branch_name}
+                  </span>
+                </h6>
+                <hr />
+                <h6>
                   <strong>Address :</strong>{" "}
                   <span
                     className="fw-bold text-capitalize"
@@ -169,9 +201,9 @@ const PatientBillsByTpid = () => {
                   >
                     {getBranch[0]?.branch_address}
                   </span>
-                </h5>
+                </h6>
                 <hr />
-                <h5>
+                <h6>
                   <strong>Phone No. :</strong>{" "}
                   <span
                     className="fw-bold text-capitalize"
@@ -179,21 +211,18 @@ const PatientBillsByTpid = () => {
                   >
                     {getBranch[0]?.branch_contact}
                   </span>
-                </h5>
+                </h6>
                 <hr />
-                <h5>
+                <h6>
                   <strong>Email ID :</strong>{" "}
-                  <span
-                    className="fw-bold text-capitalize"
-                    style={{ color: "#00b894" }}
-                  >
+                  <span className="fw-bold" style={{ color: "#00b894" }}>
                     {getBranch[0]?.branch_email}
                   </span>
-                </h5>
-                <hr />
+                </h6>
               </div>
             </div>
           </div>
+          <hr />
         </div>
         {/* patient details */}
         <div className="container-fluid">
@@ -221,13 +250,13 @@ const PatientBillsByTpid = () => {
                     <th scope="row">Address</th>
                     <td>{item.address}</td>
                     <th scope="row">Invoice No.</th>
-                    <td>{tpid}</td>
+                    <td>{billDetails[0]?.bill_id}</td>
                   </tr>
                   <tr>
                     <th scope="row">Mobile No.</th>
                     <td>{item.mobileno}</td>
                     <th scope="row">Date</th>
-                    <td>{item.allergy}</td>
+                    <td>{billDetails[0]?.bill_date.split("T")[0]}</td>
                   </tr>
                   <tr>
                     <th scope="row">Email</th>
@@ -336,12 +365,12 @@ const PatientBillsByTpid = () => {
                 <tr>
                   <td
                     colSpan="7"
-                    style={{ textAlign: "center", color: "white" }}
+                    style={{ textAlign: "center" }}
                     className="heading-title"
                   >
                     Total Cost:
                   </td>
-                  <td className="heading-title" style={{ color: "white" }}>
+                  <td className="heading-title">
                     {/* Calculate total cost here */}
                     {/* Assuming getTreatData is an array of objects with 'net_amount' property */}
                     {getTreatData.reduce(
@@ -354,237 +383,98 @@ const PatientBillsByTpid = () => {
             </table>
           </div>
         </div>
-
+        {/* terms and condition */}
         <div className="container-fluid">
           <div className="row gutter">
-            <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+            <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
               <div className="border">
                 <div className="heading-title mt-0">
                   <h4>Total Amount In Words :</h4>
                 </div>
-                <div className="text-word"></div>
+                <div className="text-word">
+                  <p className="m-0">{numWords(totalBillvalueWithoutGst)}</p>
+                </div>
               </div>
-              <div className="border">
+              <div className="">
                 <div className="heading-title mt-0">
                   <h4>Payment Info :</h4>
                 </div>
                 <div className="">
-                  <table className="table table-bordered">
+                  <table className="table table-bordered mb-0">
                     <tbody>
                       <tr>
-                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 border p-1">
+                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 border p-1">
                           Account No.:
                         </td>
-                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 border p-1">
-                          Account No.:
-                        </td>
+                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 border p-1"></td>
                       </tr>
                       <tr>
-                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 border p-1">
+                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 border p-1">
                           Account Name:
                         </td>
-                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 border p-1">
-                          Account No.:
-                        </td>
+                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 border p-1"></td>
                       </tr>
                       <tr>
-                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 border p-1">
+                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 border p-1">
                           Bank Name:
                         </td>
-                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 border p-1">
-                          Account No.:
-                        </td>
+                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 border p-1"></td>
                       </tr>
                       <tr>
-                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 border p-1">
+                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 border p-1">
                           IFSC/Bank Code:
                         </td>
-                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 border p-1">
-                          Account No.:
-                        </td>
+                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 border p-1"></td>
                       </tr>
                       <tr>
-                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 border p-1">
+                        <td className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4 border p-1">
                           UPI ID:
                         </td>
-                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12 border p-1">
-                          Account No.:
-                        </td>
+                        <td className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8 border p-1"></td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
             </div>
-            <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12"></div>
-          </div>
-        </div>
-
-        {/* previous bill structure */}
-        {/* <div className="container-fluid dummy-cont h-100">
-          <div className="headerimg">
-            <img
-              src="https://res.cloudinary.com/duiiayf3d/image/upload/v1699947747/samples/landscapes/landscape-panorama.jpg"
-              alt=""
-            />
-          </div>
-          <div className="row">
-            <div className="col-lg-12 col-md-12 col-sm-12">
-              <div className="doctor-detail">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className="text-start">
-                    <h2>Dr. {user.currentUser.employee_name}</h2>
-                    <p className="fs-5">
-                      ({user.currentUser.employee_designation})
-                    </p>
-                    
-                  </div>
-                  <div className="text-start">
-                    <h5>Mobile Number</h5>
-                    <p className="m-0 fs-5">
-                      {user.currentUser.employee_mobile}
-                    </p>
-                    <p className="m-0 fs-5">{user.currentUser.email}</p>
-                  </div>
-                </div>
-              </div>
-              <table className="table table-bordered border">
-                <tbody>
-                  {getPatientData?.map((item, index) => (
-                    <React.Fragment key={index}>
-                      <tr>
-                        <th scope="row">Treatment Package ID</th>
-                        <td>{tpid}</td>
-                        <th scope="row">Blood Group</th>
-                        <td>{item.bloodgroup}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Patient Name</th>
-                        <td>{item.patient_name}</td>
-                        <th scope="row">Disease</th>
-                        <td>{item.disease}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Patient Mobile No.</th>
-                        <td>{item.mobileno}</td>
-                        <th scope="row">Allergy</th>
-                        <td>{item.allergy}</td>
-                      </tr>
-                    </React.Fragment>
-                  ))}
-                </tbody>
-              </table>
-             
-              <div className="diagnosis">
-                <p className="text-start fs-4 fw-bold">Diagnosis</p>
-                <table className="table table-bordered border">
-                  <thead>
+            <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+              <div className="">
+                <table className="table table-bordered mb-0">
+                  <tbody>
                     <tr>
-                      <th>Seleted Teeth</th>
-                      <th>Disease</th>
-                      <th>Chief Complain</th>
-                      <th>On Exmination</th>
-                      <th>Advice</th>
+                      <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-end total-tr">
+                        Total Amount:
+                      </td>
+                      <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-center total-tr">
+                        {totalBillvalueWithoutGst}
+                      </td>
                     </tr>
-                  </thead>
-                  {getExaminData?.map((item, index) => (
-                    <tbody>
-                      <React.Fragment>
-                        <tr>
-                          <td>{item.selected_teeth}</td>
-                          <td>{item.disease}</td>
-                          <td>{item.chief_complain}</td>
-                          <td>{item.on_examination}</td>
-                          <td>{item.advice}</td>
-                        </tr>
-                      </React.Fragment>
-                    </tbody>
-                  ))}
+                  </tbody>
                 </table>
               </div>
-              <div className="Treatment">
-                <p className="text-start fs-4 fw-bold">Treatment Procedure</p>
-                <table className="table table-bordered border">
-                  <thead>
-                    <tr>
-                      <th>Sitting Number</th>
-                      <th>Treatment</th>
-                      <th>Teeth</th>
-                      <th>Qty</th>
-                      <th>Cost</th>
-                      <th>Cst * Qty</th>
-                      <th>Disc %</th>
-                      <th>Final Cost</th>
-                      <th>Note</th>
-                    </tr>
-                  </thead>
-                  {getTreatData?.map((item, index) => (
-                    <tbody>
-                      <React.Fragment>
-                        <tr>
-                          <td>{item.sitting_number}</td>
-                          <td>{item.dental_treatment}</td>
-                          <td>{item.no_teeth}</td>
-                          <td>{item.qty}</td>
-                          <td>{item.cost_amt}</td>
-                          <td>{item.total_amt}</td>
-                          <td>{item.disc_amt}</td>
-                          <td>{item.net_amount}</td>
-                          <td>{item.note}</td>
-                        </tr>
-                      </React.Fragment>
-                    </tbody>
-                  ))}
-                </table>
-              </div>
-              <div className="Medicine">
-                <p className="text-start fs-4 fw-bold">Medicine Details</p>
-                <table className="table table-bordered border">
-                  <thead>
-                    <tr>
-                      <th>Sitting Number</th>
-                      <th>Medicine Name</th>
-                      <th>Dosage</th>
-                      <th>Frequency</th>
-                      <th>Duration</th>
-                      <th>Note</th>
-                    </tr>
-                  </thead>
-                  {getTreatMedicine?.map((item, index) => (
-                    <tbody>
-                      <React.Fragment>
-                        <tr>
-                          <td>{item.sitting_number}</td>
-                          <td>{item.medicine_name}</td>
-                          <td>{item.dosage}</td>
-                          <td>{item.frequency}</td>
-                          <td>{item.duration}</td>
-                          <td>{item.note}</td>
-                        </tr>
-                      </React.Fragment>
-                    </tbody>
-                  ))}
-                </table>
-              </div>
-              <div className="sign-seal">
-                <div>
-                  <h4>Doctor's signature</h4>
+              <div className="border">
+                <div className="text-terms"></div>
+                <div className="heading-title mt-0">
+                  <h5 className="text-center">Clinic Seal & Signature</h5>
                 </div>
-                <div>
-                  <h4>Patient's signature</h4>
-                </div>
-              </div>
-              <div className="text-center">
-                <button
-                  className="btn btn-success no-print mx-3 mb-3 mt-2 no-print"
-                  onClick={handleButton}
-                >
-                  Print
-                </button>
               </div>
             </div>
           </div>
-        </div> */}
+          <div className="border">
+            <div className="heading-title mt-0">
+              <h4>Terms and Conditions :</h4>
+            </div>
+            <div className="text-termslong"></div>
+          </div>
+        </div>
+        {/* print button */}
+        <div className="container-fluid">
+          <div className="d-flex justify-content-center align-items-center">
+            <button className="btn btn-info no-print" onClick={handleButton}>
+              Print
+            </button>
+          </div>
+        </div>
       </Wrapper>
     </>
   );
@@ -637,20 +527,30 @@ const Wrapper = styled.div`
     margin-top: 2rem;
   }
   .clinic-logo {
-    height: 13rem;
+    height: 10rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     img {
       height: 100%;
+      width: 100%;
     }
   }
   .heading-title {
-    background-color: #34495e;
-    margin-top: 1rem;
+    /* background-color: #34495e; */
+    /* margin-top: 1rem; */
     padding: 2px;
-    padding-left: 0.5rem;
     border-radius: 3px;
-    h4 {
+    /* h4 {
       color: white;
     }
+    h5 {
+      color: white;
+    } */
+  }
+  h4,
+  h6 {
+    margin-bottom: 0.1rem;
   }
 
   .docDetails {
@@ -663,10 +563,31 @@ const Wrapper = styled.div`
     margin: 0.2rem;
   }
   .text-word {
-    height: 3rem;
+    height: auto;
+  }
+
+  .text-terms {
+    height: 12.5rem;
   }
 
   .gutter {
     --bs-gutter-x: 0rem !important;
+  }
+
+  /* .total-tr {
+    background-color: #34495e;
+    color: white;
+  } */
+
+  table > :not(caption) > * > * {
+    padding: 0.2rem 0.2rem;
+  }
+
+  table {
+    margin-bottom: 0.3rem;
+  }
+
+  .text-termslong {
+    height: 2rem;
   }
 `;

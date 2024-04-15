@@ -167,9 +167,7 @@ const AppointTable = () => {
           <div className="d-flex justify-content-between mb-3 widget-header appointMain">
             <h5 className="widget-title m-0 pt-2" id="title">
               Current Appointment
-              <h5 className="d-inline">
-                Total - {filterTableData.length}
-              </h5>
+              <h5 className="d-inline">Total - {filterTableData.length}</h5>
             </h5>
 
             <div className="pt-1">
@@ -264,7 +262,8 @@ const AppointTable = () => {
                         {/* Option 1 */}
                         <ul className="dropdown-menu">
                           {item.appointment_status !== "Complete" &&
-                            item.appointment_status !== "Check Out" && item.appointment_status !== "Appoint" &&(
+                            item.appointment_status !== "Check Out" &&
+                            item.appointment_status !== "Appoint" && (
                               <>
                                 <li>
                                   <button
@@ -404,36 +403,36 @@ const Wrapper = styled.div`
       width: 5rem;
     }
   }
-  .appointMain{
-    h5{
-        font-size: 24px;
-        margin: 0 0 0 20px;
-      }
-    .arrow{
-        font-size: 35px;
-      }
+  .appointMain {
+    h5 {
+      font-size: 24px;
+      margin: 0 0 0 20px;
+    }
+    .arrow {
+      font-size: 35px;
+    }
     @media screen and (min-width: 750px) and (max-width: 850px) {
-      h5{
+      h5 {
         font-size: 15px;
         margin: 0 0 0 10px;
       }
-      .arrow{
+      .arrow {
         font-size: 25px;
       }
-      .inputSearch{
+      .inputSearch {
         padding: 0;
         margin: 0;
       }
     }
     @media screen and (min-width: 851px) and (max-width: 1024px) {
-      h5{
+      h5 {
         font-size: 15px;
         margin: 0 0 0 10px;
       }
-      .arrow{
+      .arrow {
         font-size: 25px;
       }
-      .inputSearch{
+      .inputSearch {
         padding: 0;
         margin: 0;
       }

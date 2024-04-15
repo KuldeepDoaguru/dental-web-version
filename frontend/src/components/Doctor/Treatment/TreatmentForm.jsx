@@ -186,7 +186,7 @@ const TreatmentForm = () => {
         getPatientDetail();
         getTreatmentList();
         navigate(
-          `/TPrescriptionDash/${appoint_id}/${tp_id}/${treatments[0]?.current_sitting}/${treatment}`
+          `/TPrescriptionDash/${tp_id}/${treatments[0]?.current_sitting}/${treatment}`
         );
         // navigate(`/TreatmentDashBoard/${appoint_id}/${tp_id}`);
       } else {
@@ -204,7 +204,7 @@ const TreatmentForm = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${appoint_id}`
+        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${tp_id}`
       );
 
       const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;

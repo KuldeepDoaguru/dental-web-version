@@ -15,6 +15,7 @@ const NewTreatmentTable = () => {
   const [modalIndex, setModalIndex] = useState(null);
   const [getExamTeeth, setGetExamTeeth] = useState([]);
   const [getPatientData, setGetPatientData] = useState([]);
+  const [billData, setBillData] = useState([]);
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -79,6 +80,8 @@ const NewTreatmentTable = () => {
     total_amount: totalFinalBillValue,
   };
 
+  console.log(billInputField);
+
   const generateFinalBill = async () => {
     try {
       const res = await axios.post(
@@ -86,11 +89,15 @@ const NewTreatmentTable = () => {
         billInputField
       );
       console.log(res);
+      setBillData(res.data);
       alert("bill generated successfully");
+      navigate(`/ViewPatientTotalBill/${tpid}`);
     } catch (error) {
       console.log(error);
     }
   };
+
+  console.log(billData);
 
   const handleNavigate = async () => {
     navigate(`/ViewPatientTotalBill/${tpid}`);
@@ -148,7 +155,6 @@ const NewTreatmentTable = () => {
                 <th>Discount %</th>
                 <th>Final Cost</th>
                 <th>Note</th>
-                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -196,115 +202,9 @@ const NewTreatmentTable = () => {
                             aria-label="Close"
                           ></button>
                         </div>
-                        <div className="modal-body">
-                          {/* <form>
-                            <div data-mdb-input-init class="form-outline mb-4">
-                              <input
-                                type="text"
-                                id={`dental_treatment-${index}`}
-                                name="dental_treatment"
-                                value={formData.dental_treatment}
-                                class="form-control"
-                                onChange={handleChange}
-                                placeholder="Dental Treatment"
-                                readOnly
-                              />
-                            </div>
-
-                            <div data-mdb-input-init class="form-outline mb-4">
-                              <input
-                                type="text"
-                                id={`no_teeth-${index}`}
-                                name="no_teeth"
-                                value={formData.no_teeth}
-                                class="form-control"
-                                onChange={handleChange}
-                                placeholder="Teeth No."
-                              />
-                            </div>
-
-                            <div data-mdb-input-init class="form-outline mb-4">
-                              <input
-                                type="text"
-                                id={`qty-${index}`}
-                                name="qty"
-                                value={formData.qty}
-                                class="form-control"
-                                onChange={handleChange}
-                                placeholder="Quantity"
-                              />
-                            </div>
-
-                            <div data-mdb-input-init class="form-outline mb-4">
-                              <input
-                                type="text"
-                                id={`original_cost_amt-${index}`}
-                                name="original_cost_amt"
-                                value={formData.original_cost_amt}
-                                class="form-control"
-                                onChange={handleChange}
-                                placeholder="Teeth Cost"
-                              />
-                            </div>
-
-                            <div data-mdb-input-init class="form-outline mb-4">
-                              <input
-                                type="text"
-                                id={`disc_amt-${index}`}
-                                name="disc_amt"
-                                value={formData.disc_amt}
-                                class="form-control"
-                                onChange={handleChange}
-                                placeholder="Discount %"
-                              />
-                            </div>
-
-                            <div data-mdb-input-init class="form-outline mb-4">
-                              <input
-                                type="text"
-                                id={`total_amt-${index}`}
-                                name="total_amt"
-                                value={formData.total_amt}
-                                class="form-control"
-                                onChange={handleChange}
-                                placeholder="Final Cost"
-                              />
-                            </div>
-
-                            <div data-mdb-input-init class="form-outline mb-4">
-                              <input
-                                type="text"
-                                id={`note-${index}`}
-                                name="note"
-                                value={formData.note}
-                                class="form-control"
-                                onChange={handleChange}
-                                placeholder="Note"
-                              />
-                            </div>
-
-                            <div className="text-center">
-                              <button
-                                class="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                              >
-                                Update
-                              </button>
-                            </div>
-                          </form> */}
-                        </div>
                       </div>
                     </div>
                   </div>
-
-                  <td>
-                    {/* <button
-                      className="btn btn-danger"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      <FaPrescriptionBottleMedical size={25} />
-                    </button> */}
-                  </td>
                 </tr>
               ))}
             </tbody>

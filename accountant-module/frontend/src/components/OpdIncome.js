@@ -174,6 +174,21 @@ const OpdIncome = () => {
   console.log(totalOpdYearlyValue);
   //*********************************************************************************** */
 
+  const [selectedData, setSelectedData] = useState(filterForOpdToday);
+
+  const handleChangeSelect = (e) => {
+    const { value } = e.target;
+    if (value === "today") {
+      setSelectedData(filterForOpdToday);
+    } else if (value === "yesterday") {
+      setSelectedData(filterForOpdYesterday);
+    } else if (value === "monthly") {
+      setSelectedData(filterForOpdMonthly);
+    } else if (value === "yearly") {
+      setSelectedData(filterForOpdYearly);
+    }
+  };
+
   return (
     <Container>
       <BranchDetails />
@@ -269,16 +284,48 @@ const OpdIncome = () => {
             <div className="container-fluid mt-4">
               <h2 className="text-center">All Received OPD Payment</h2>
               <div className="container-fluid mt-5">
-                <div className="mb-2">
-                  <label>search by patient name :</label>
-                  <input
-                    type="text"
-                    placeholder="search by patient name"
-                    className="mx-3 p-1 rounded"
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value.toLowerCase())}
-                  />
+                <div className="row mb-2">
+                  <div className=" d-flex justify-content-evenly align-items-center">
+                    <div className="col-6">
+                      <label className="fs-5">search by patient name :</label>
+                      <input
+                        type="text"
+                        placeholder="search by patient name"
+                        className="mx-3 p-1 rounded"
+                        value={keyword}
+                        onChange={(e) =>
+                          setKeyword(e.target.value.toLowerCase())
+                        }
+                      />
+                    </div>
+                    <div className="col-6 Heading d-flex">
+                      {/* <h2>Weekly Income</h2> */}
+                      <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                          <lable className="fs-5">Select Period :</lable>
+                        </div>
+
+                        <div className="mx-2">
+                          <select
+                            class="form-select"
+                            aria-label="Default select example"
+                            // value={designation}
+                            onChange={handleChangeSelect}
+                          >
+                            {/* <option value="">Select-period</option> */}
+                            <option value="today" selected>
+                              Today
+                            </option>
+                            <option value="yesterday">Yesterday</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
                 <div class="table-responsive rounded">
                   <table class="table table-bordered rounded shadow">
                     <thead className="table-head">
@@ -297,7 +344,7 @@ const OpdIncome = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {filterForOpdList
+                      {selectedData
                         ?.filter((val) => {
                           const name = val.patient_name.toLowerCase();
                           const lowerKeyword = keyword.toLowerCase();

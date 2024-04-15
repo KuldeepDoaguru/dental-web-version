@@ -121,7 +121,7 @@ const TotalIncome = () => {
                     </div>
                   </div> */}
 
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-sm-8 col-8 col-md-4 my-3 p-0">
+                  {/* <div className="col-xxl-3 col-xl-3 col-lg-3 col-sm-8 col-8 col-md-4 my-3 p-0">
                     <div className="card">
                       <div className="card-body d-flex justify-content-center flex-column mb-3">
                         <div className="text-light fs-1">
@@ -137,7 +137,7 @@ const TotalIncome = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="container">
                   <div class="table-responsive mt-4">
@@ -147,9 +147,9 @@ const TotalIncome = () => {
                           <th>Date</th>
                           <th>OPD Income</th>
                           <th>Treatment Income</th>
-                          <th>Radiology Income</th>
+                          {/* <th>Radiology Income</th>
                           <th>Pathology Income</th>
-                          <th>Pharmacy Income</th>
+                          <th>Pharmacy Income</th> */}
                           <th>Total Income</th>
                         </tr>
                       </thead>
@@ -158,12 +158,12 @@ const TotalIncome = () => {
                           <td>07/04/2024</td>
                           <td>28000</td>
                           <td>350000</td>
-                          <td>42000</td>
+                          {/* <td>42000</td>
                           <td>64000</td>
-                          <td>280000</td>
+                          <td>280000</td> */}
                           <td>872000</td>
                         </tr>
-                        <tr className="table-row">
+                        {/* <tr className="table-row">
                           <td>14/04/2024</td>
                           <td>28000</td>
                           <td>350000</td>
@@ -198,7 +198,7 @@ const TotalIncome = () => {
                           <td>16000</td>
                           <td>80000</td>
                           <td>216000</td>
-                        </tr>
+                        </tr> */}
                       </tbody>
                     </table>
                   </div>

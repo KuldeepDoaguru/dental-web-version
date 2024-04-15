@@ -37,6 +37,7 @@ const {
   applyLeave,
   getAppointmentById,
   getVoucherDataByBranchID,
+  getTreatmentTotal,
 } = require("../controllers/accountantController");
 const {
   getEmployeeListByBranchByID,
@@ -102,5 +103,6 @@ router.post("/apply-leave", applyLeave);
 router.get("/get-leaves/:branch/:employee_Id", getLeaves);
 router.get("/get-appointment-by-id/:branch/:appointmentId", getAppointmentById);
 router.get("/voucher/:branch/:id", getVoucherDataByBranchID);
+router.get("/getTreatmentTotal/:branch", getTreatmentTotal);
 
 module.exports = router;

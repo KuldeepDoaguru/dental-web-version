@@ -199,7 +199,7 @@ const Sider = () => {
                 id="submenu3"
                 data-bs-parent="#submenu3"
               >
-                <li class="w-100">
+                {/* <li class="w-100">
                   <Link
                     to="/StaffSalary"
                     class={`nav-link  ${getSidebarClass("/StaffSalary")}`}
@@ -212,7 +212,7 @@ const Sider = () => {
                     </span>
                   </Link>
                   <hr />
-                </li>
+                </li> */}
 
                 <li>
                   <Link
@@ -244,7 +244,7 @@ const Sider = () => {
                   <hr />
                 </li>
 
-                <li>
+                {/* <li>
                   <Link
                     to="/NewPurchase"
                     class={`nav-link  ${getSidebarClass("/NewPurchase")}`}
@@ -257,7 +257,7 @@ const Sider = () => {
                     </span>
                   </Link>
                   <hr />
-                </li>
+                </li> */}
               </ul>
             </li>
             <hr />

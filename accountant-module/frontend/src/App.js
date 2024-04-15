@@ -12,15 +12,15 @@ import Accountant from "./components/Accountant/Home";
 // import Card from "./components/accountant/Card";
 import PharmacyMainIncome from "./components/Income/PharmacyMainIncome";
 import TreatmentMainInCome from "./components/Income/TreatmentMainInCome";
-import NewPurchase from "./components/Expenses/NewPurchase";
+// import NewPurchase from "./components/Expenses/NewPurchase";
 import VoucherCreater from "./components/Expenses/VoucherCreater";
 import VoucherList from "./components/Expenses/VoucherList";
-import Monthly from "./components/TotalIncome/Monthly";
+// import Monthly from "./components/TotalIncome/Monthly";
 import TodayIncome from "./components/TotalIncome/TodayIncome";
-import WeeklyIncome from "./components/TotalIncome/WeeklyIncome";
-import Yearly from "./components/TotalIncome/Yearly";
+// import WeeklyIncome from "./components/TotalIncome/WeeklyIncome";
+// import Yearly from "./components/TotalIncome/Yearly";
 import RightSider from "./components/RightSider";
-import StaffSalary from "./components/Expenses/StaffSalary";
+// import StaffSalary from "./components/Expenses/StaffSalary";
 import AccountantsSalary from "./components/AccountantSalary/AccountantsSalary";
 import AccountantSalaryMain from "./components/AccountantSalary/AccountantSalaryMain";
 import ReceptionistSalary from "./components/ReceptionistSalary/ReceptionistSalary";
@@ -64,7 +64,7 @@ import SecurityAmount from "./pages/SecurityAmount";
 import AccountReportDash from "./pages/AccountReportDash";
 import SecAmountReport from "./pages/AllReport/SecAmountReport";
 import InvoiceReport from "./pages/AllReport/InvoiceReport";
-import IncomeReports from "./pages/AllReport/OpdReportDownload";
+// import IncomeReports from "./pages/AllReport/OpdReportDownload";
 import OpdReportDownload from "./pages/AllReport/OpdReportDownload";
 import TreatIncomeDownload from "./pages/AllReport/TreatIncomeDownload";
 import DuePaymentReport from "./pages/AllReport/DuePaymentReport";
@@ -92,8 +92,8 @@ function App() {
         <Route path="/clinic-setting" element={<ClinicSetting />} />
         <Route path="/Card" element={<Cards />} />
         <Route path="/treatment-income" element={<TreatmentMainInCome />} />
-        <Route path="/NewPurchase" element={<NewPurchase />} />
-        <Route path="/StaffSalary" element={<StaffSalary />} />
+        {/* <Route path="/NewPurchase" element={<NewPurchase />} /> */}
+        {/* <Route path="/StaffSalary" element={<StaffSalary />} /> */}
         <Route path="/VoucherCreater" element={<VoucherCreater />} />
         <Route path="/VoucherList" element={<VoucherList />} />
         {/* <Route path="/Monthly" element={<Monthly />} /> */}

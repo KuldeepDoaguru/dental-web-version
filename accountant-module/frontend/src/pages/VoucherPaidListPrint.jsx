@@ -211,7 +211,9 @@ const VoucherPaidListPrint = () => {
               <div className="d-flex justify-content-start">
                 <h6 className="fw-bold">
                   Rupees (in Words) :{" "}
-                  <span className="text-uppercase">{amountInWords}</span>
+                  <span className="text-uppercase">
+                    {amountInWords + " " + "Rupees"}
+                  </span>
                 </h6>
               </div>
             </div>

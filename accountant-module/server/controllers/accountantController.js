@@ -1277,6 +1277,109 @@ const getAppointmentById = (req, res) => {
   }
 };
 
+// const getTreatmentTotal = (req, res) => {
+//   try {
+//     const branch = req.params.branch;
+//     const sql = `
+//       SELECT
+//         a.branch_name,
+//         a.appoint_id,
+//         a.assigned_doctor_name,
+//         a.assigned_doctor_id,
+//         a.appointment_dateTime,
+//         p.uhid,
+//         p.patient_name,
+//         p.mobileno,
+//         dt.dental_treatment,
+//         dt.net_amount
+//       FROM
+//         appointments AS a
+//       JOIN
+//         patient_details AS p ON a.patient_uhid = p.uhid
+//       LEFT JOIN
+//       dental_treatment AS dt ON a.patient_uhid = dt.patient_uhid
+//       WHERE
+//         a.branch_name = ?
+
+//     `;
+
+//     db.query(sql, [branch], (err, results) => {
+//       if (err) {
+//         console.error("Error fetching appointment from MySql:", err);
+//         res.status(500).json({ error: "Error fetching appointment" });
+//       } else {
+//         if (results.length === 0) {
+//           res.status(404).json({ message: "Appointment not found" });
+//         } else {
+//           res.status(200).json({
+//             data: results[0],
+//             message: "Appointment fetched successfully",
+//           });
+//         }
+//       }
+//     });
+//   } catch (error) {
+//     console.error("Error fetching appointment from MySql:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Error in fetching appointment",
+//       error: error.message,
+//     });
+//   }
+// };
+
+const getTreatmentTotal = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const sql = `
+      SELECT 
+        a.branch_name,
+        a.appoint_id,
+        a.assigned_doctor_name,
+        a.assigned_doctor_id,
+        a.appointment_dateTime,
+        p.uhid,
+        p.patient_name,
+        p.mobileno,
+        dt.dental_treatment,
+        dt.net_amount,
+        dt.sitting_payment_status
+      FROM 
+        dental_treatment AS dt
+      JOIN 
+        appointments AS a ON dt.appointment_id = a.appoint_id
+      JOIN 
+        patient_details AS p ON a.patient_uhid = p.uhid
+      WHERE
+        dt.branch_name = ? AND
+        dt.sitting_payment_status = 'Received'
+    `;
+
+    db.query(sql, [branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching treatment data from MySql:", err);
+        res.status(500).json({ error: "Error fetching treatment data" });
+      } else {
+        if (results.length === 0) {
+          res.status(404).json({ message: "No data found" });
+        } else {
+          res.status(200).json({
+            results,
+            message: "Treatment data fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching treatment data from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetching treatment data",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   accountantLoginUser,
   sendOtp,
@@ -1314,4 +1417,5 @@ module.exports = {
   applyLeave,
   getAppointmentById,
   getVoucherDataByBranchID,
+  getTreatmentTotal,
 };

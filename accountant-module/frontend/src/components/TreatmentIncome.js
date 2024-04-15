@@ -22,9 +22,9 @@ const TreatmentIncome = () => {
   const getTreatmentAmt = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getTreatmentAmountByBranch/${user.branch}`
+        `http://localhost:8888/api/v1/accountant/getTreatmentTotal/${user.branch}`
       );
-      setTreatAmount(data);
+      setTreatAmount(data.results);
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +37,7 @@ const TreatmentIncome = () => {
   console.log(treatAmount);
 
   const filterForOpdList = treatAmount.filter((item) => {
-    return item.treatment_provided !== "OPD";
+    return item.dental_treatment !== "OPD";
   });
 
   console.log(filterForOpdList);
@@ -54,8 +54,7 @@ const TreatmentIncome = () => {
   //filter for today's opd income
   const filterForOpdToday = treatAmount.filter((item) => {
     return (
-      item.treatment_provided !== "OPD" &&
-      item.payment_Status === "paid" &&
+      item.dental_treatment !== "OPD" &&
       item.appointment_dateTime?.split("T")[0] === formattedDate
     );
   });
@@ -65,7 +64,7 @@ const TreatmentIncome = () => {
     try {
       let total = 0;
       filterForOpdToday.forEach((item) => {
-        total = total + parseFloat(item.opd_amount);
+        total = total + parseFloat(item.net_amount);
       });
       console.log(total);
       return total;
@@ -92,8 +91,7 @@ const TreatmentIncome = () => {
 
   const filterForOpdYesterday = treatAmount.filter((item) => {
     return (
-      item.treatment_provided !== "OPD" &&
-      item.payment_Status === "paid" &&
+      item.dental_treatment !== "OPD" &&
       item.appointment_dateTime?.split("T")[0] === yesterdayDate
     );
   });
@@ -103,7 +101,7 @@ const TreatmentIncome = () => {
     try {
       let total = 0;
       filterForOpdYesterday.forEach((item) => {
-        total = total + parseFloat(item.opd_amount);
+        total = total + parseFloat(item.net_amount);
       });
       console.log(total);
       return total;
@@ -121,8 +119,7 @@ const TreatmentIncome = () => {
   //filter for monthly opd income
   const filterForOpdMonthly = treatAmount.filter((item) => {
     return (
-      item.treatment_provided !== "OPD" &&
-      item.payment_Status === "paid" &&
+      item.dental_treatment !== "OPD" &&
       item.appointment_dateTime?.split("T")[0].slice(0, 7) ===
         formattedDate.slice(0, 7)
     );
@@ -133,7 +130,7 @@ const TreatmentIncome = () => {
     try {
       let total = 0;
       filterForOpdMonthly.forEach((item) => {
-        total = total + parseFloat(item.opd_amount);
+        total = total + parseFloat(item.net_amount);
       });
       console.log(total);
       return total;
@@ -151,8 +148,7 @@ const TreatmentIncome = () => {
   //filter for monthly opd income
   const filterForOpdYearly = treatAmount.filter((item) => {
     return (
-      item.treatment_provided !== "OPD" &&
-      item.payment_Status === "paid" &&
+      item.dental_treatment !== "OPD" &&
       item.appointment_dateTime?.split("T")[0].slice(0, 4) ===
         formattedDate.slice(0, 4)
     );
@@ -163,7 +159,7 @@ const TreatmentIncome = () => {
     try {
       let total = 0;
       filterForOpdYearly.forEach((item) => {
-        total = total + parseFloat(item.paid_amount);
+        total = total + parseFloat(item.net_amount);
       });
       console.log(total);
       return total;
@@ -176,6 +172,20 @@ const TreatmentIncome = () => {
   const totalOpdYearlyValue = totalOpdYearlyPrice();
   console.log(totalOpdYearlyValue);
   //*********************************************************************************** */
+  const [selectedData, setSelectedData] = useState(filterForOpdList);
+
+  const handleChangeSelect = (e) => {
+    const { value } = e.target;
+    if (value === "today") {
+      setSelectedData(filterForOpdToday);
+    } else if (value === "yesterday") {
+      setSelectedData(filterForOpdYesterday);
+    } else if (value === "monthly") {
+      setSelectedData(filterForOpdMonthly);
+    } else if (value === "yearly") {
+      setSelectedData(filterForOpdYearly);
+    }
+  };
 
   return (
     <>
@@ -273,15 +283,46 @@ const TreatmentIncome = () => {
               <div className="container mt-5">
                 {/* <h2 className="text-center">Treatment Payment</h2> */}
                 <div className="container mt-5">
-                  <div className="mb-2">
-                    <label>search by patient name :</label>
-                    <input
-                      type="text"
-                      placeholder="search by patient name"
-                      className="mx-3 p-1 rounded"
-                      value={keyword}
-                      onChange={(e) => setKeyword(e.target.value.toLowerCase())}
-                    />
+                  <div className="row mb-2">
+                    <div className="d-flex justify-content-evenly align-items-center">
+                      <div className="col-6">
+                        <label>search by patient name :</label>
+                        <input
+                          type="text"
+                          placeholder="search by patient name"
+                          className="mx-3 p-1 rounded"
+                          value={keyword}
+                          onChange={(e) =>
+                            setKeyword(e.target.value.toLowerCase())
+                          }
+                        />
+                      </div>
+                      <div className="col-6 Heading d-flex">
+                        {/* <h2>Weekly Income</h2> */}
+                        <div className="d-flex justify-content-between align-items-center">
+                          <div>
+                            <lable className="fs-5">Select Period :</lable>
+                          </div>
+
+                          <div className="mx-2">
+                            <select
+                              class="form-select"
+                              aria-label="Default select example"
+                              // value={designation}
+                              onChange={handleChangeSelect}
+                            >
+                              {/* <option value="">Select-period</option> */}
+                              <option value="today" selected>
+                                Today
+                              </option>
+                              <option value="yesterday">Yesterday</option>
+                              <option value="monthly">Monthly</option>
+                              <option value="yearly">Yearly</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="table-responsive rounded">
                     <table class="table table-bordered rounded shadow">
@@ -302,7 +343,7 @@ const TreatmentIncome = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {filterForOpdList
+                        {selectedData
                           ?.filter((val) => {
                             const name = val.patient_name.toLowerCase();
                             const lowerKeyword = keyword.toLowerCase();
@@ -329,10 +370,10 @@ const TreatmentIncome = () => {
                                 <td>{item.mobileno}</td>
                                 <td>{item.assigned_doctor_name}</td>
                                 <td>{item.assigned_doctor_id}</td>
-                                <td>{item.treatment_provided}</td>
-                                <td>{item.paid_amount}</td>
+                                <td>{item.dental_treatment}</td>
+                                <td>{item.net_amount}</td>
                                 <td>{item.payment_Mode}</td>
-                                <td>{item.payment_Status}</td>
+                                <td>{item.sitting_payment_status}</td>
                                 <td>
                                   {item.payment_Status !== "Pending" &&
                                   item.payment_Status !== "" ? (

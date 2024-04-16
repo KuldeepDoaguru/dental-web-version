@@ -1,12 +1,61 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import BranchDetails from "../../components/BranchDetails";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import moment from "moment";
+import * as XLSX from "xlsx";
 
 const VoucherReport = () => {
+  const user = useSelector((state) => state.user);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
+  const [vlist, setVlist] = useState([]);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  const getVoucherList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getVoucherListByBranch/${user.branch}`
+      );
+      setVlist(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getVoucherList();
+  }, []);
+
+  const handleDownload = () => {
+    const filteredData = vlist.filter((item) => {
+      const date = moment(item.voucher_date).format("YYYY-MM-DD");
+      return moment(date).isBetween(fromDate, toDate, null, "[]");
+    });
+
+    const formattedData = filteredData.map((item) => ({
+      SN: item.voucher_id,
+      Name: item.for_name,
+      For: item.for_use,
+      Amount: item.voucher_amount,
+      Date: moment(item.voucher_date).format("YYYY-MM-DD"),
+      "Created by": item.created_by,
+      // Add more fields as needed
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, worksheet, "Report");
+    XLSX.writeFile(wb, "voucherReport.xlsx");
+  };
+
   const goBack = () => {
     window.history.go(-1);
   };
@@ -55,9 +104,8 @@ const VoucherReport = () => {
                               name=""
                               id=""
                               className="p-2 rounded"
-                              // onChange={(e) =>
-                              //   setFromDate(e.target.value)
-                              // }
+                              value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}
                             />
                           </div>
                           <div className="mx-2">To</div>
@@ -67,63 +115,58 @@ const VoucherReport = () => {
                               name=""
                               id=""
                               className="p-2 rounded"
-                              // onChange={(e) => setToDate(e.target.value)}
+                              value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
-                          <button className="btn btn-warning mx-2">
+                          <button
+                            className="btn btn-warning mx-2"
+                            onClick={handleDownload}
+                          >
                             Download Report
                           </button>
                         </div>
                       </form>
                     </div>
-                    <div
-                      className="container-fluid mt-1 rounded"
-                      style={{ overflowX: "auto" }}
-                    >
+                    <div className="container-fluid mt-1 rounded">
                       <div class="table-responsive rounded">
                         <table class="table table-bordered rounded shadow">
                           <thead className="table-head">
                             <tr>
-                              <th className="thead">ID</th>
-                              <th className="thead">Bill Date</th>
-                              <th className="thead">UHID</th>
-                              <th className="thead">Branch</th>
-                              <th className="thead">Patient Name</th>
-                              <th className="thead">Patient Number</th>
-                              <th className="thead">Assigned Doctor</th>
-                              <th className="thead">Treatment</th>
-                              <th className="thead">Total Amount</th>
-                              <th className="thead">Paid Amount</th>
-                              <th className="thead">Pending Amount</th>
+                              <th className="table-sno">SN</th>
+                              <th className="table-small">Name</th>
+                              <th className="table-small">For</th>
+                              <th className="table-small">Amount</th>
+                              <th className="table-small">Date</th>
+                              <th>Created by</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="table-row">
-                              <td className="thead">1</td>
-                              <td className="thead">18-03-2024</td>
-                              <td className="thead">1</td>
-                              <td className="thead">DHID001</td>
-                              <td className="thead">Shubham Singh</td>
-                              <td className="thead">8602161019</td>
-                              <td className="thead">Mohit</td>
-                              <td className="thead">10000</td>
-                              <td className="thead">Paid</td>
-                              <td className="thead">5000</td>
-                              <td className="thead">0</td>
-                            </tr>
-                            <tr className="table-row">
-                              <td className="thead">1</td>
-                              <td className="thead">18-03-2024</td>
-                              <td className="thead">1</td>
-                              <td className="thead">DHID001</td>
-                              <td className="thead">Shubham Singh</td>
-                              <td className="thead">8602161019</td>
-                              <td className="thead">Mohit</td>
-                              <td className="thead">10000</td>
-                              <td className="thead">Paid</td>
-                              <td className="thead">5000</td>
-                              <td className="thead">0</td>
-                            </tr>
+                            {vlist?.map((item) => (
+                              <>
+                                <tr className="table-row">
+                                  <td className="table-sno">
+                                    {item.voucher_id}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.for_name}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.for_use}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.voucher_amount}
+                                  </td>
+
+                                  <td className="table-small">
+                                    {item.voucher_date.split("T")[0]}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.created_by}
+                                  </td>
+                                </tr>
+                              </>
+                            ))}
                           </tbody>
                         </table>
                       </div>

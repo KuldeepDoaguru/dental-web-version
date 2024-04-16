@@ -9,6 +9,7 @@ import { GiTakeMyMoney } from "react-icons/gi";
 import BranchDetails from "./BranchDetails";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import moment from "moment";
 
 const TreatmentIncome = () => {
   const user = useSelector((state) => state.user);
@@ -60,11 +61,15 @@ const TreatmentIncome = () => {
   });
 
   console.log(filterForOpdToday);
+
+  console.log(filterForOpdToday);
   const totalOpdTodayPrice = () => {
     try {
       let total = 0;
       filterForOpdToday.forEach((item) => {
-        total = total + parseFloat(item.net_amount);
+        let amt = item.net_amount;
+        total = amt ? (total = total + parseFloat(item.net_amount)) : total;
+        // total = total + parseFloat(item.net_amount);
       });
       console.log(total);
       return total;
@@ -101,7 +106,9 @@ const TreatmentIncome = () => {
     try {
       let total = 0;
       filterForOpdYesterday.forEach((item) => {
-        total = total + parseFloat(item.net_amount);
+        let amt = item.net_amount;
+        total = amt ? (total = total + parseFloat(item.net_amount)) : total;
+        // total = total + parseFloat(item.net_amount);
       });
       console.log(total);
       return total;
@@ -130,7 +137,10 @@ const TreatmentIncome = () => {
     try {
       let total = 0;
       filterForOpdMonthly.forEach((item) => {
-        total = total + parseFloat(item.net_amount);
+        let amt = item.net_amount;
+        total = amt ? (total = total + parseFloat(item.net_amount)) : total;
+
+        // total = total + parseFloat(item.net_amount);
       });
       console.log(total);
       return total;
@@ -159,7 +169,9 @@ const TreatmentIncome = () => {
     try {
       let total = 0;
       filterForOpdYearly.forEach((item) => {
-        total = total + parseFloat(item.net_amount);
+        let amt = item.net_amount;
+        total = amt ? (total = total + parseFloat(item.net_amount)) : total;
+        // total = total + parseFloat(item.net_amount);
       });
       console.log(total);
       return total;
@@ -172,7 +184,8 @@ const TreatmentIncome = () => {
   const totalOpdYearlyValue = totalOpdYearlyPrice();
   console.log(totalOpdYearlyValue);
   //*********************************************************************************** */
-  const [selectedData, setSelectedData] = useState(filterForOpdList);
+
+  const [selectedData, setSelectedData] = useState(filterForOpdToday);
 
   const handleChangeSelect = (e) => {
     const { value } = e.target;
@@ -186,6 +199,12 @@ const TreatmentIncome = () => {
       setSelectedData(filterForOpdYearly);
     }
   };
+  useEffect(() => {
+    const setData = () => {
+      setSelectedData(filterForOpdToday);
+    };
+    setData();
+  }, [treatAmount]);
 
   return (
     <>
@@ -337,7 +356,8 @@ const TreatmentIncome = () => {
                           <th className="sticky">Doctor ID</th>
                           <th className="sticky">Treatment</th>
                           <th className="sticky">Treatment Fee</th>
-                          <th className="sticky">Payment Mode</th>
+                          {/* <th className="sticky">Payment Mode</th> */}
+                          <th className="sticky">Payment Date</th>
                           <th className="sticky">Payment Status</th>
                           <th className="sticky">Action</th>
                         </tr>
@@ -364,7 +384,11 @@ const TreatmentIncome = () => {
                             <>
                               <tr className="table-row">
                                 <td>{item.appoint_id}</td>
-                                <td>{item.appointment_dateTime}</td>
+                                <td>
+                                  {moment(item.appointment_dateTime).format(
+                                    "YYYY-MM-DD h:mm A"
+                                  )}
+                                </td>
                                 <td>{item.uhid}</td>
                                 <td>{item.patient_name}</td>
                                 <td>{item.mobileno}</td>
@@ -372,13 +396,14 @@ const TreatmentIncome = () => {
                                 <td>{item.assigned_doctor_id}</td>
                                 <td>{item.dental_treatment}</td>
                                 <td>{item.net_amount}</td>
-                                <td>{item.payment_Mode}</td>
+                                {/* <td>{item.payment_Mode}</td> */}
+                                <td>{item.date.split("T")[0]}</td>
                                 <td>{item.sitting_payment_status}</td>
                                 <td>
                                   {item.payment_Status !== "Pending" &&
                                   item.payment_Status !== "" ? (
                                     <Link
-                                      to={`/TreatmentBills/${item.appoint_id}`}
+                                      to={`/TreatmentBills/${item.appoint_id}/${item.uhid}`}
                                     >
                                       <button
                                         className="btn"
@@ -452,7 +477,7 @@ const Container = styled.div`
   }
 
   .table-responsive {
-    height: 30rem;
+    max-height: 30rem;
     overflow: auto;
   }
 
@@ -461,6 +486,10 @@ const Container = styled.div`
     color: #fff;
     font-weight: bold;
     position: sticky;
+    white-space: nowrap;
+  }
+  td {
+    white-space: nowrap;
   }
 
   .sticky {

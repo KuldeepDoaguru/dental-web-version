@@ -104,7 +104,7 @@ const AccountReportDash = () => {
                               </Link>
                             </div>
 
-                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                            {/* <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/staff-salary-report">
                                 <div className="card">
                                   <div class="card-body">
@@ -114,7 +114,7 @@ const AccountReportDash = () => {
                                   </div>
                                 </div>
                               </Link>
-                            </div>
+                            </div> */}
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/voucher-report">
                                 <div className="card">
@@ -127,7 +127,7 @@ const AccountReportDash = () => {
                               </Link>
                             </div>
 
-                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                            {/* <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/purchase-report">
                                 <div className="card">
                                   <div class="card-body">
@@ -137,7 +137,7 @@ const AccountReportDash = () => {
                                   </div>
                                 </div>
                               </Link>
-                            </div>
+                            </div> */}
                           </div>
                         </div>
                       </div>

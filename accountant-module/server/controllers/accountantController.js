@@ -1343,7 +1343,12 @@ const getTreatmentTotal = (req, res) => {
         p.mobileno,
         dt.dental_treatment,
         dt.net_amount,
-        dt.sitting_payment_status
+        dt.sitting_payment_status,
+        dt.qty,
+        dt.total_amt,
+        dt.disc_amt,
+        dt.cost_amt,
+        dt.date
       FROM 
         dental_treatment AS dt
       JOIN 
@@ -1356,6 +1361,64 @@ const getTreatmentTotal = (req, res) => {
     `;
 
     db.query(sql, [branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching treatment data from MySql:", err);
+        res.status(500).json({ error: "Error fetching treatment data" });
+      } else {
+        if (results.length === 0) {
+          res.status(404).json({ message: "No data found" });
+        } else {
+          res.status(200).json({
+            results,
+            message: "Treatment data fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching treatment data from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetching treatment data",
+      error: error.message,
+    });
+  }
+};
+
+const getTreatmentTotalById = (req, res) => {
+  try {
+    const appointID = req.params.appointID;
+    const uhid = req.params.uhid;
+    const sql = `
+      SELECT 
+        a.branch_name,
+        a.appoint_id,
+        a.assigned_doctor_name,
+        a.assigned_doctor_id,
+        a.appointment_dateTime,
+        p.uhid,
+        p.patient_name,
+        p.mobileno,
+        dt.dental_treatment,
+        dt.net_amount,
+        dt.sitting_payment_status,
+        dt.qty,
+        dt.total_amt,
+        dt.disc_amt,
+        dt.cost_amt,
+        dt.date
+      FROM 
+        dental_treatment AS dt
+      JOIN 
+        appointments AS a ON dt.appointment_id = a.appoint_id
+      JOIN 
+        patient_details AS p ON a.patient_uhid = p.uhid
+      WHERE
+        a.appoint_id = ? AND 
+        p.uhid = ?
+    `;
+
+    db.query(sql, [appointID, uhid], (err, results) => {
       if (err) {
         console.error("Error fetching treatment data from MySql:", err);
         res.status(500).json({ error: "Error fetching treatment data" });
@@ -1418,4 +1481,5 @@ module.exports = {
   getAppointmentById,
   getVoucherDataByBranchID,
   getTreatmentTotal,
+  getTreatmentTotalById
 };

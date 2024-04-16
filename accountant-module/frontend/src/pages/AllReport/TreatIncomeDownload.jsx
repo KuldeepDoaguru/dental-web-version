@@ -5,8 +5,63 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import BranchDetails from "../../components/BranchDetails";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import moment from "moment";
+import * as XLSX from "xlsx";
 
 const TreatIncomeDownload = () => {
+  const user = useSelector((state) => state.user);
+  console.log("User State:", user);
+  const [treatAmount, setTreatAmount] = useState([]);
+
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  const getTreatmentAmt = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getTreatmentTotal/${user.branch}`
+      );
+      setTreatAmount(data.results);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTreatmentAmt();
+  }, []);
+
+  const handleDownload = () => {
+    const filteredData = treatAmount.filter((item) => {
+      const date = moment(item.appointment_dateTime).format("YYYY-MM-DD");
+      return moment(date).isBetween(fromDate, toDate, null, "[]");
+    });
+
+    const formattedData = filteredData.map((item) => ({
+      "Appointment ID": item.appoint_id,
+      "Appointment Date": moment(item.appointment_dateTime).format(
+        "YYYY-MM-DD h:mm A"
+      ),
+      "Patient UHID": item.uhid,
+      "Patient Name": item.patient_name,
+      Contact: item.mobileno,
+      "Doctor Name": item.assigned_doctor_name,
+      "Doctor ID": item.assigned_doctor_id,
+      Treatment: item.dental_treatment,
+      "Treatment Fee": item.net_amount,
+      "Payment Date": item.date.split("T")[0],
+      "Payment Status": item.sitting_payment_status,
+      // Add more fields as needed
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, worksheet, "Report");
+    XLSX.writeFile(wb, "treatmentReport.xlsx");
+  };
+
   const goBack = () => {
     window.history.go(-1);
   };
@@ -55,9 +110,8 @@ const TreatIncomeDownload = () => {
                               name=""
                               id=""
                               className="p-2 rounded"
-                              // onChange={(e) =>
-                              //   setFromDate(e.target.value)
-                              // }
+                              value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}
                             />
                           </div>
                           <div className="mx-2">To</div>
@@ -67,10 +121,14 @@ const TreatIncomeDownload = () => {
                               name=""
                               id=""
                               className="p-2 rounded"
-                              // onChange={(e) => setToDate(e.target.value)}
+                              value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
-                          <button className="btn btn-warning mx-2">
+                          <button
+                            className="btn btn-warning mx-2"
+                            onClick={handleDownload}
+                          >
                             Download Report
                           </button>
                         </div>
@@ -84,46 +142,44 @@ const TreatIncomeDownload = () => {
                         <table class="table table-bordered rounded shadow">
                           <thead className="table-head">
                             <tr>
-                              <th className="thead">ID</th>
-                              <th className="thead">Bill Date</th>
-                              <th className="thead">UHID</th>
-                              <th className="thead">Branch</th>
-                              <th className="thead">Patient Name</th>
-                              <th className="thead">Patient Number</th>
-                              <th className="thead">Assigned Doctor</th>
-                              <th className="thead">Treatment</th>
-                              <th className="thead">Total Amount</th>
-                              <th className="thead">Paid Amount</th>
-                              <th className="thead">Pending Amount</th>
+                              <th className="sticky">Appointment ID</th>
+                              <th className="sticky">Appointment Date</th>
+                              <th className="sticky">Patient UHID</th>
+                              <th className="sticky">Patient Name</th>
+                              <th className="sticky">Contact</th>
+                              <th className="sticky">Doctor Name</th>
+                              <th className="sticky">Doctor ID</th>
+                              <th className="sticky">Treatment</th>
+                              <th className="sticky">Treatment Fee</th>
+                              {/* <th className="sticky">Payment Mode</th> */}
+                              <th className="sticky">Payment Date</th>
+                              <th className="sticky">Payment Status</th>
+                              {/* <th className="sticky">Action</th> */}
                             </tr>
                           </thead>
                           <tbody>
-                            <tr className="table-row">
-                              <td className="thead">1</td>
-                              <td className="thead">18-03-2024</td>
-                              <td className="thead">1</td>
-                              <td className="thead">DHID001</td>
-                              <td className="thead">Shubham Singh</td>
-                              <td className="thead">8602161019</td>
-                              <td className="thead">Mohit</td>
-                              <td className="thead">10000</td>
-                              <td className="thead">Paid</td>
-                              <td className="thead">5000</td>
-                              <td className="thead">0</td>
-                            </tr>
-                            <tr className="table-row">
-                              <td className="thead">1</td>
-                              <td className="thead">18-03-2024</td>
-                              <td className="thead">1</td>
-                              <td className="thead">DHID001</td>
-                              <td className="thead">Shubham Singh</td>
-                              <td className="thead">8602161019</td>
-                              <td className="thead">Mohit</td>
-                              <td className="thead">10000</td>
-                              <td className="thead">Paid</td>
-                              <td className="thead">5000</td>
-                              <td className="thead">0</td>
-                            </tr>
+                            {treatAmount.map((item) => (
+                              <>
+                                <tr className="table-row">
+                                  <td>{item.appoint_id}</td>
+                                  <td>
+                                    {moment(item.appointment_dateTime).format(
+                                      "YYYY-MM-DD h:mm A"
+                                    )}
+                                  </td>
+                                  <td>{item.uhid}</td>
+                                  <td>{item.patient_name}</td>
+                                  <td>{item.mobileno}</td>
+                                  <td>{item.assigned_doctor_name}</td>
+                                  <td>{item.assigned_doctor_id}</td>
+                                  <td>{item.dental_treatment}</td>
+                                  <td>{item.net_amount}</td>
+                                  {/* <td>{item.payment_Mode}</td> */}
+                                  <td>{item.date.split("T")[0]}</td>
+                                  <td>{item.sitting_payment_status}</td>
+                                </tr>
+                              </>
+                            ))}
                           </tbody>
                         </table>
                       </div>
@@ -147,8 +203,26 @@ const Container = styled.div`
     font-weight: bold;
     color: white;
   }
+  .table-responsive {
+    max-height: 30rem;
+    overflow: auto;
+  }
+
   th {
     background-color: #201658;
+    color: #fff;
+    font-weight: bold;
+    position: sticky;
+    white-space: nowrap;
+  }
+  td {
+    white-space: nowrap;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
     color: white;
+    z-index: 1;
   }
 `;

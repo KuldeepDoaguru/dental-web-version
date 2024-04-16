@@ -26,7 +26,8 @@
     "recharts": "^2.9.3",
     "redux-persist": "^6.0.0",
     "styled-components": "^6.0.8",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "set PORT=3333 && react-scripts start",

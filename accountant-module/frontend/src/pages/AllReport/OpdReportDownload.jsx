@@ -1,12 +1,65 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import BranchDetails from "../../components/BranchDetails";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import moment from "moment";
+import * as XLSX from "xlsx";
 
 const OpdReportDownload = () => {
+  const user = useSelector((state) => state.user);
+  console.log("User State:", user);
+
+  const [opdAmount, setOpdAmount] = useState([]);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  const getOpdAmt = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getAppointmentData/${user.branch}`
+      );
+      setOpdAmount(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getOpdAmt();
+  }, []);
+
+  const handleDownload = () => {
+    const filteredData = opdAmount.filter((item) => {
+      const date = moment(item.appointment_dateTime).format("YYYY-MM-DD");
+      return moment(date).isBetween(fromDate, toDate, null, "[]");
+    });
+
+    const formattedData = filteredData.map((item) => ({
+      "Appointment ID": item.appoint_id,
+      "Appointment Date": moment(item.appointment_dateTime).format(
+        "YYYY-MM-DD h:mm A"
+      ),
+      "Patient UHID": item.uhid,
+      "Patient Name": item.patient_name,
+      Contact: item.mobileno,
+      "Doctor Name": item.assigned_doctor_name,
+      "Doctor ID": item.assigned_doctor_id,
+      "Consultation Fee": item.opd_amount,
+      "Payment Mode": item.payment_Mode,
+      "Payment Status": item.payment_Status,
+      // Add more fields as needed
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, worksheet, "Report");
+    XLSX.writeFile(wb, "opdReport.xlsx");
+  };
+
   const goBack = () => {
     window.history.go(-1);
   };
@@ -45,7 +98,7 @@ const OpdReportDownload = () => {
                   </div>
                 </div>
                 <div className="container">
-                  <div class="table-responsive mt-4">
+                  <div class=" mt-4">
                     <div className="d-flex justify-content-between mb-2">
                       <form>
                         <div className="d-flex justify-content-between">
@@ -55,9 +108,8 @@ const OpdReportDownload = () => {
                               name=""
                               id=""
                               className="p-2 rounded"
-                              // onChange={(e) =>
-                              //   setFromDate(e.target.value)
-                              // }
+                              value={fromDate}
+                              onChange={(e) => setFromDate(e.target.value)}
                             />
                           </div>
                           <div className="mx-2">To</div>
@@ -67,66 +119,55 @@ const OpdReportDownload = () => {
                               name=""
                               id=""
                               className="p-2 rounded"
-                              // onChange={(e) => setToDate(e.target.value)}
+                              value={toDate}
+                              onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
-                          <button className="btn btn-warning mx-2">
+                          <button
+                            className="btn btn-warning mx-2"
+                            onClick={handleDownload}
+                          >
                             Download Report
                           </button>
                         </div>
                       </form>
                     </div>
-                    <div
-                      className="container-fluid mt-1 rounded"
-                      style={{ overflowX: "auto" }}
-                    >
-                      <div class="table-responsive rounded">
-                        <table class="table table-bordered rounded shadow">
-                          <thead className="table-head">
-                            <tr>
-                              <th className="thead">ID</th>
-                              <th className="thead">Bill Date</th>
-                              <th className="thead">UHID</th>
-                              <th className="thead">Branch</th>
-                              <th className="thead">Patient Name</th>
-                              <th className="thead">Patient Number</th>
-                              <th className="thead">Assigned Doctor</th>
-                              <th className="thead">Treatment</th>
-                              <th className="thead">Total Amount</th>
-                              <th className="thead">Paid Amount</th>
-                              <th className="thead">Pending Amount</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr className="table-row">
-                              <td className="thead">1</td>
-                              <td className="thead">18-03-2024</td>
-                              <td className="thead">1</td>
-                              <td className="thead">DHID001</td>
-                              <td className="thead">Shubham Singh</td>
-                              <td className="thead">8602161019</td>
-                              <td className="thead">Mohit</td>
-                              <td className="thead">10000</td>
-                              <td className="thead">Paid</td>
-                              <td className="thead">5000</td>
-                              <td className="thead">0</td>
-                            </tr>
-                            <tr className="table-row">
-                              <td className="thead">1</td>
-                              <td className="thead">18-03-2024</td>
-                              <td className="thead">1</td>
-                              <td className="thead">DHID001</td>
-                              <td className="thead">Shubham Singh</td>
-                              <td className="thead">8602161019</td>
-                              <td className="thead">Mohit</td>
-                              <td className="thead">10000</td>
-                              <td className="thead">Paid</td>
-                              <td className="thead">5000</td>
-                              <td className="thead">0</td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
+
+                    <div class="table-responsive rounded">
+                      <table class="table table-bordered rounded shadow">
+                        <thead className="table-head">
+                          <tr>
+                            <th className="sticky">Appointment ID</th>
+                            <th className="sticky">Appointment Date</th>
+                            <th className="sticky">Patient UHID</th>
+                            <th className="sticky">Patient Name</th>
+                            <th className="sticky">Contact</th>
+                            <th className="sticky">Doctor Name</th>
+                            <th className="sticky">Doctor ID</th>
+                            <th className="sticky">Consultation Fee</th>
+                            <th className="sticky">Payment Mode</th>
+                            <th className="sticky">Payment Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {opdAmount?.map((item) => (
+                            <>
+                              <tr className="table-row">
+                                <td>{item.appoint_id}</td>
+                                <td>{item.appointment_dateTime}</td>
+                                <td>{item.uhid}</td>
+                                <td>{item.patient_name}</td>
+                                <td>{item.mobileno}</td>
+                                <td>{item.assigned_doctor_name}</td>
+                                <td>{item.assigned_doctor_id}</td>
+                                <td>{item.opd_amount}</td>
+                                <td>{item.payment_Mode}</td>
+                                <td>{item.payment_Status}</td>
+                              </tr>
+                            </>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -147,8 +188,23 @@ const Container = styled.div`
     font-weight: bold;
     color: white;
   }
+
+  .table-responsive {
+    height: 30rem;
+    overflow: auto;
+  }
+
   th {
     background-color: #201658;
+    color: #fff;
+    font-weight: bold;
+    position: sticky;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
     color: white;
+    z-index: 1;
   }
 `;

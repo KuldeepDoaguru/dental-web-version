@@ -132,7 +132,7 @@ function App() {
         <Route path="/PharmacyBills" element={<PharmacyBills />} />
         <Route path="/OpdBills/:bid" element={<OpdBills />} />
         <Route path="/PatientsLabBills" element={<PatientsLabBills />} />
-        <Route path="/TreatmentBills/:bid" element={<TreatmentBills />} />
+        <Route path="/TreatmentBills/:bid/:uhid" element={<TreatmentBills />} />
         <Route path="/PaySlip/:slid" element={<PaySlip />} />
         <Route path="/AllDuaAmount" element={<AllDuaAmount />} />
         <Route path="/VoucherPaid" element={<VoucherPaid />} />

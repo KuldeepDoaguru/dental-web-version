@@ -40,7 +40,7 @@ const VoucherList = () => {
               <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 p-0">
                 <Sider />
               </div>
-              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10">
+              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10"> 
                 <div className="container-fluid">
                   <BranchDetails />
                   <div className="container mt-4">

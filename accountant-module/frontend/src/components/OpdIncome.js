@@ -9,6 +9,7 @@ import { GiTakeMyMoney } from "react-icons/gi";
 import BranchDetails from "./BranchDetails";
 import { useSelector } from "react-redux";
 import axios from "axios";
+
 const OpdIncome = () => {
   const user = useSelector((state) => state.user);
   console.log(

@@ -144,7 +144,7 @@ function App() {
         <Route path="/PatientHomeProfile" element={<PatientHomeProfile />} />
         <Route path="/Navbar" element={<Navbar />} />
         <Route
-          path="/PatintDuePaymentPrint/:bid"
+          path="/PatintDuePaymentPrint/:bid/:tpid/:uhid"
           element={<PatintDuePaymentPrint />}
         />
         <Route

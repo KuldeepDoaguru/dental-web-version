@@ -39,6 +39,8 @@ const {
   getVoucherDataByBranchID,
   getTreatmentTotal,
   getTreatmentTotalById,
+  getSecurityAmountDataByTPUHID,
+  updateRemainingAmount,
 } = require("../controllers/accountantController");
 const {
   getEmployeeListByBranchByID,
@@ -106,5 +108,10 @@ router.get("/get-appointment-by-id/:branch/:appointmentId", getAppointmentById);
 router.get("/voucher/:branch/:id", getVoucherDataByBranchID);
 router.get("/getTreatmentTotal/:branch", getTreatmentTotal);
 router.get("/getTreatmentTotal/:appointID/:uhid", getTreatmentTotalById);
+router.get(
+  "/getSecurityAmountDataByTPUHID/:tpid/:uhid",
+  getSecurityAmountDataByTPUHID
+);
+router.put("/updateRemainingAmount/:tp_id/:uhid", updateRemainingAmount);
 
 module.exports = router;

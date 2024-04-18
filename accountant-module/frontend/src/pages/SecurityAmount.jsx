@@ -463,6 +463,8 @@ const SecurityAmount = () => {
                             <th>Patient Number</th>
                             <th>Assigned Doctor</th>
                             <th>Security Amount</th>
+                            <th>Payment Mode</th>
+                            <th>Transaction Id</th>
                             <th>Payment Status</th>
                             <th>Action</th>
                             <th>Print</th>
@@ -491,6 +493,8 @@ const SecurityAmount = () => {
                                   <td>{item.patient_number}</td>
                                   <td>{item.assigned_doctor}</td>
                                   <td>{item.amount}</td>
+                                  <td>{item.payment_Mode}</td>
+                                  <td>{item.transaction_Id}</td>
                                   <td>
                                     <div className="d-flex">
                                       <h6>{item.payment_status}</h6>
@@ -705,7 +709,15 @@ const Container = styled.div`
     th {
       background-color: #201658;
       color: white;
+      white-space: nowrap;
     }
+    td {
+      white-space: nowrap;
+    }
+  }
+
+  button {
+    white-space: nowrap;
   }
 
   .btnbox {

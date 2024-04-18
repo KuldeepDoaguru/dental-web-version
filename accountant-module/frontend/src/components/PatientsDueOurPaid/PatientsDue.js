@@ -54,13 +54,12 @@ const PatientsDue = () => {
                             <table class="table table-bordered rounded shadow">
                               <thead className="table-head">
                                 <tr>
-                                  <th className="table-sno sticky">
-                                    Appointment ID
-                                  </th>
+                                  <th className="table-sno sticky">TPID</th>
                                   <th className="sticky">Patient UHID</th>
                                   <th className=" sticky">Patients Name</th>
+                                  <th className=" sticky">Patients Mobile</th>
+                                  <th className=" sticky">Patients Email</th>
                                   <th className=" sticky">Doctor Name</th>
-                                  <th className=" sticky">Treatment's</th>
                                   <th className=" sticky">Total Amount</th>
                                   <th className=" sticky">Paid Amount</th>
                                   <th className=" sticky">Due Amount</th>
@@ -74,25 +73,24 @@ const PatientsDue = () => {
                                   <>
                                     <tr className="table-row">
                                       <td className="table-sno">
-                                        {item.appoint_id}
+                                        {item.tp_id}
                                       </td>
                                       <td>{item.uhid}</td>
                                       <td>{item.patient_name}</td>
+                                      <td>{item.patient_mobile}</td>
+                                      <td>{item.patient_email}</td>
                                       <td>{item.assigned_doctor_name}</td>
-                                      <td>{item.dental_treatment}</td>
                                       <td>{item.total_amount}</td>
                                       <td>{item.paid_amount}</td>
                                       <td>
-                                        {item.paid_amount
-                                          ? 0
-                                          : item.total_amount}
+                                        {item.total_amount - item.paid_amount}
                                       </td>
                                       <td>{item.bill_date.split("T")[0]}</td>
                                       <td>
                                         {item.total_amount >
                                         item.paid_amount ? (
                                           <Link
-                                            to={`/PatintDuePaymentPrint/${item.bill_id}`}
+                                            to={`/PatintDuePaymentPrint/${item.bill_id}/${item.tp_id}/${item.uhid}`}
                                           >
                                             <button
                                               className="btn"

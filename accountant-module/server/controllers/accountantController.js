@@ -546,6 +546,24 @@ const getSecurityAmountDataByBranch = (req, res) => {
   }
 };
 
+const getSecurityAmountDataByTPUHID = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const uhid = req.params.uhid;
+    const selectQuery =
+      "SELECT * FROM security_amount WHERE tp_id = ? AND uhid = ?";
+    db.query(selectQuery, [tpid, uhid], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ success: false, message: error.message });
+  }
+};
+
 const updateSecurityAmount = (req, res) => {
   try {
     const sid = req.params.sid;
@@ -1443,6 +1461,36 @@ const getTreatmentTotalById = (req, res) => {
   }
 };
 
+const updateRemainingAmount = (req, res) => {
+  try {
+    const { tp_id, uhid } = req.params;
+    const { remaining_amount } = req.body;
+
+    const updateQuery =
+      "UPDATE security_amount SET remaining_amount = ? WHERE tp_id = ? AND uhid = ?";
+
+    db.query(updateQuery, [remaining_amount, tp_id, uhid], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+        return;
+      }
+      if (result.affectedRows === 0) {
+        res.status(404).json({ success: false, message: "Record not found" });
+        return;
+      }
+      res
+        .status(200)
+        .json({
+          success: true,
+          message: "Remaining amount updated successfully",
+        });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   accountantLoginUser,
   sendOtp,
@@ -1481,5 +1529,7 @@ module.exports = {
   getAppointmentById,
   getVoucherDataByBranchID,
   getTreatmentTotal,
-  getTreatmentTotalById
+  getTreatmentTotalById,
+  getSecurityAmountDataByTPUHID,
+  updateRemainingAmount,
 };

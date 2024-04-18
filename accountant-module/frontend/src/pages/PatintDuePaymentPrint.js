@@ -9,14 +9,13 @@ import { useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
 
 const PatintDuePaymentPrint = () => {
-  const { bid } = useParams();
+  const { bid, tpid, uhid } = useParams();
   const user = useSelector((state) => state.user);
   const [branchData, setBranchData] = useState([]);
   const [billAmount, setBillAmount] = useState([]);
-  console.log(
-    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
-  );
+  const [saAmt, setSaAmt] = useState([]);
   console.log("User State:", user);
+  console.log(bid, tpid, uhid);
 
   const goBack = () => {
     window.history.go(-1);
@@ -28,6 +27,18 @@ const PatintDuePaymentPrint = () => {
         `http://localhost:8888/api/v1/accountant/getBranchDetailsByBranch/${user.branch}`
       );
       setBranchData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const secuirtyAmtBytpuhid = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getSecurityAmountDataByTPUHID/${tpid}/${uhid}`
+      );
+      console.log(res.data);
+      setSaAmt(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -47,6 +58,7 @@ const PatintDuePaymentPrint = () => {
   useEffect(() => {
     branchDetails();
     getBillDetails();
+    secuirtyAmtBytpuhid();
   }, []);
 
   console.log(branchData);
@@ -60,14 +72,37 @@ const PatintDuePaymentPrint = () => {
 
   console.log(formattedDate);
 
+  const dueAmt = billAmount[0]?.total_amount - billAmount[0]?.paid_amount;
+
+  let totalPaidAmount = 0;
+  if (dueAmt >= 0) {
+    if (dueAmt >= saAmt[0]?.remaining_amount) {
+      totalPaidAmount = saAmt[0]?.remaining_amount;
+    } else {
+      totalPaidAmount = dueAmt;
+    }
+  } else if (dueAmt <= saAmt[0]?.remaining_amount) {
+    totalPaidAmount = dueAmt;
+  }
+
+  const remainingSecurityAmount = saAmt[0]?.remaining_amount - totalPaidAmount;
+
+  // If dueAmt is negative, meaning there is an overpayment, we set totalPaidAmount to 0
+  if (dueAmt < 0) {
+    totalPaidAmount = 0;
+  }
+
+  const finalAmt = dueAmt - totalPaidAmount;
+
+  console.log("Total Paid Amount:", totalPaidAmount);
+  console.log("Remaining Security Amount:", remainingSecurityAmount);
+
   const makePayment = async () => {
     try {
       const response = await axios.put(
         `http://localhost:8888/api/v1/accountant/makeBillPayment/${user.branch}/${bid}`,
         {
-          paid_amount:
-            Number(billAmount[0]?.total_amount) +
-            Number(billAmount[0]?.total_amount) * 0.18,
+          paid_amount: totalPaidAmount,
           payment_status: "paid",
           payment_date_time: formattedDate,
         }
@@ -90,6 +125,8 @@ const PatintDuePaymentPrint = () => {
     window.location.reload();
     document.body.innerHTML = originalContent;
   };
+
+  console.log(saAmt[0]?.remaining_amount);
 
   return (
     <>
@@ -216,43 +253,54 @@ const PatintDuePaymentPrint = () => {
                             <th scope="row">
                               {billAmount[0]?.bill_date.split("T")[0]}
                             </th>
-                            <td>{billAmount[0]?.dental_treatment}</td>
-                            <td>{billAmount[0]?.total_amount}</td>
+
+                            <td className="text-end"></td>
+                            <td></td>
                           </tr>
                           <tr>
                             <td colspan="2">
                               <h6>
                                 Add additional notes and payment information{" "}
                                 <span class="space"></span>
-                                SubTotal
+                                Total Treatments Amount
                               </h6>
                             </td>
 
-                            <td className="fw-bolder">₹1000</td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                              <h6>
-                                <span class="spaces"></span>Gst(18%)
-                              </h6>
-                            </td>
                             <td className="fw-bolder">
-                              ₹ {Number(billAmount[0]?.total_amount) * 0.18}
+                              {billAmount[0]?.total_amount}
                             </td>
                           </tr>
                           <tr>
                             <td colspan="2">
                               <h6>
-                                <span class="spaces"></span>Net Amount
+                                <span class="spaces"></span>
+                                Remaining Secuirty Amount
                               </h6>
                             </td>
+
                             <td className="fw-bolder">
-                              ₹{" "}
-                              {Number(billAmount[0]?.total_amount) +
-                                Number(billAmount[0]?.total_amount) * 0.18}
+                              {saAmt[0]?.remaining_amount}
                             </td>
                           </tr>
                           <tr>
+                            <td colspan="2">
+                              <h6>
+                                <span class="spaces"></span>Paid Amount
+                              </h6>
+                            </td>
+                            <td className="fw-bolder">
+                              ₹ {billAmount[0]?.paid_amount}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <h6>
+                                <span class="spaces"></span>Total Due Amount
+                              </h6>
+                            </td>
+                            <td className="fw-bolder">₹ {finalAmt}</td>
+                          </tr>
+                          {/* <tr>
                             <td colspan="2">
                               <h6>
                                 <span class="spaces"></span>Paid Amount
@@ -263,7 +311,7 @@ const PatintDuePaymentPrint = () => {
                                 ? billAmount[0]?.paid_amount
                                 : "-"}
                             </td>
-                          </tr>
+                          </tr> */}
                         </tbody>
                       </table>
 

@@ -36,6 +36,7 @@ const insertTreatmentData = (req, res) => {
     total_amt,
     net_amount,
     dir_rec_amt,
+    sec_rec_amt,
     dir_rec_doctor_id,
     sitting_payment_status,
     note,
@@ -44,7 +45,7 @@ const insertTreatmentData = (req, res) => {
   try {
     // Insert treatment details into the database
     db.query(
-      "INSERT INTO dental_treatment (exam_id, tp_id, branch_name, appointment_id, sitting_number, patient_uhid, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, net_amount, dir_rec_amt, dir_rec_doctor_id,sitting_payment_status, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)",
+      "INSERT INTO dental_treatment (exam_id, tp_id, branch_name, appointment_id, sitting_number, patient_uhid, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, net_amount, dir_rec_amt, sec_rec_amt, dir_rec_doctor_id,sitting_payment_status, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?)",
       [
         examId,
         tpid,
@@ -60,6 +61,7 @@ const insertTreatmentData = (req, res) => {
         total_amt,
         net_amount,
         dir_rec_amt,
+        sec_rec_amt,
         dir_rec_doctor_id,
         sitting_payment_status,
         note,
@@ -484,21 +486,44 @@ const updateSecurityAmountAfterPayment = (req, res) => {
   }
 };
 
-const getTreatmentDetailsViaSitting = (req, res) => {
+const updateRecSecAmountAfterPayment = (req, res) => {
+  const tpid = req.params.tpid;
+  const { sec_rec_amt, sitting_payment_status } = req.body;
   try {
-    const { branch, appoint_id, tpid, sitting, treatment } = req.params;
-    const selectQuery =
-      "SELECT * FROM dental_treatment WHERE branch_name = ? AND appointment_id = ? AND tp_id = ? AND sitting_number = ? AND dental_treatment = ?";
+    const updateQuery = `UPDATE dental_treatment SET sec_rec_amt = ?, sitting_payment_status = ? WHERE tp_id = ?`;
     db.query(
-      selectQuery,
-      [branch, appoint_id, tpid, sitting, treatment],
-      (err, result) => {
+      updateQuery,
+      [sec_rec_amt, sitting_payment_status, tpid],
+      (err, results) => {
         if (err) {
-          res.status(400).json({ success: false, message: err.message });
+          return res
+            .status(400)
+            .json({ success: false, message: "Invalid tpid" });
+        } else {
+          return res.status(200).json({
+            success: true,
+            message: "Amount updated successfully",
+            results,
+          });
         }
-        res.status(200).send(result);
       }
     );
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getTreatmentDetailsViaSitting = (req, res) => {
+  try {
+    const { branch, tpid, sitting } = req.params;
+    const selectQuery =
+      "SELECT * FROM dental_treatment WHERE branch_name = ? AND tp_id = ? AND sitting_number = ?";
+    db.query(selectQuery, [branch, tpid, sitting], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: "internal server error" });
@@ -534,6 +559,8 @@ const generateFinalBillwithTpid = (req, res) => {
       patient_email,
       assigned_doctor_name,
       total_amount,
+      paid_amount,
+      pay_by_sec_amt,
     } = req.body;
     const selectQuery = "SELECT * FROM patient_bills WHERE tp_id = ?";
     db.query(selectQuery, tp_id, (err, result) => {
@@ -541,7 +568,7 @@ const generateFinalBillwithTpid = (req, res) => {
         return res.status(400).json({ success: false, message: err.message });
       }
       if (result && result.length === 0) {
-        const insertQuery = `INSERT INTO patient_bills (uhid,	tp_id,	branch_name,	patient_name,	patient_mobile,	patient_email,	assigned_doctor_name,	total_amount) VALUES (?,?,?,?,?,?,?,?)`;
+        const insertQuery = `INSERT INTO patient_bills (uhid,	tp_id,	branch_name,	patient_name,	patient_mobile,	patient_email,	assigned_doctor_name,	total_amount, paid_amount, pay_by_sec_amt) VALUES (?,?,?,?,?,?,?,?, ?, ?)`;
 
         const insertParams = [
           uhid,
@@ -552,13 +579,15 @@ const generateFinalBillwithTpid = (req, res) => {
           patient_email,
           assigned_doctor_name,
           total_amount,
+          paid_amount,
+          pay_by_sec_amt,
         ];
 
         db.query(insertQuery, insertParams, (err, result) => {
           if (err) {
             res.status(400).json({ success: false, message: err.message });
           }
-          const bill_id = result.insertId;
+          const bill_id = result?.insertId;
           const bill_date = new Date();
           const resultField = {
             uhid: uhid,
@@ -675,4 +704,5 @@ module.exports = {
   getTreatPrescriptionByTpid,
   getBranchDetails,
   billDetailsViaTpid,
+  updateRecSecAmountAfterPayment,
 };

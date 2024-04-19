@@ -82,6 +82,8 @@ const AppointTable = () => {
     console.log(filteredResults);
   };
 
+  console.log(filterTableData);
+
   const timelineForStartTreat = async (uhid) => {
     try {
       const response = await axios.post(
@@ -116,7 +118,14 @@ const AppointTable = () => {
     }
   };
 
-  const handleAction = async (action, appointId, uhid) => {
+  const handleAction = async (
+    action,
+    appointId,
+    uhid,
+    appointment_status,
+    tpid
+  ) => {
+    console.log(appointment_status);
     try {
       let requestBody = {
         action,
@@ -144,9 +153,14 @@ const AppointTable = () => {
         requestBody
       );
 
-      if (action === "In Treatment") {
+      if (action === "ongoing") {
         timelineForStartTreat(uhid);
-        navigate(`/examination-Dashboard/${appointId}/${uhid}`);
+        // alert(appointment_status);
+        if (appointment_status === "ongoing") {
+          navigate(`/TreatmentDashBoard/${tpid}`);
+        } else {
+          navigate(`/examination-Dashboard/${appointId}/${uhid}`);
+        }
       }
 
       const res = await axios.get(
@@ -270,9 +284,11 @@ const AppointTable = () => {
                                     className="dropdown-item mx-0"
                                     onClick={() =>
                                       handleAction(
-                                        "In Treatment",
+                                        "ongoing",
                                         item.appoint_id,
-                                        item.uhid
+                                        item.uhid,
+                                        item.appointment_status,
+                                        item.tp_id
                                       )
                                     }
                                     // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'In Treatment'}

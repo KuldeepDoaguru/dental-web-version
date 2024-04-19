@@ -57,7 +57,7 @@ const ViewTreatPrescription = () => {
   const getTreatDetail = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentDetailsViaSitting/${branch}/${id}/${tpid}/${sitting}/${treatment}`
+        `http://localhost:8888/api/doctor/getTreatmentDetailsViaSitting/${branch}/${tpid}/${sitting}`
       );
       setGetTreatData(data);
       console.log(data);

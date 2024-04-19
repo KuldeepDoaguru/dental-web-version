@@ -5,6 +5,7 @@ import axios from "axios";
 import { FaTooth } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import BookSittingAppointment from "../Treatment Suggestion/BookSittingAppointment";
+import cogoToast from "cogo-toast";
 // import EditAppointment from "./";
 
 const TreatmentForm = () => {
@@ -142,7 +143,13 @@ const TreatmentForm = () => {
     disc_amt: formData.disc_amt,
     total_amt: treatments[0]?.totalCost * dataArray?.length,
     net_amount: netAmount,
-    dir_rec_amt: partPay,
+    dir_rec_amt: !showDirect
+      ? netAmount
+      : netAmount - securityAmt[0]?.remaining_amount,
+    sec_rec_amt:
+      securityAmt[0]?.remaining_amount > netAmount
+        ? netAmount
+        : securityAmt[0]?.remaining_amount,
     dir_rec_doctor_id: user.currentUser.employee_ID,
     sitting_payment_status: formData.sitting_payment_status,
     note: formData.note,
@@ -186,7 +193,7 @@ const TreatmentForm = () => {
         getPatientDetail();
         getTreatmentList();
         navigate(
-          `/TPrescriptionDash/${tp_id}/${treatments[0]?.current_sitting}/${treatment}`
+          `/TPrescriptionDash/${tsid}/${tp_id}/${treatments[0]?.current_sitting}/${treatment}`
         );
         // navigate(`/TreatmentDashBoard/${appoint_id}/${tp_id}`);
       } else {
@@ -272,6 +279,29 @@ const TreatmentForm = () => {
   };
   const remaining_amount = securityRemAmt();
   console.log(remaining_amount);
+
+  const updateAmountAfterPayViaSecAmount = async () => {
+    try {
+      const res = await axios.put(
+        `http://localhost:8888/api/doctor/updateRecSecAmountAfterPayment/${tp_id}`,
+        {
+          sec_rec_amt:
+            securityAmt[0]?.remaining_amount > netAmount
+              ? netAmount
+              : securityAmt[0]?.remaining_amount,
+          sitting_payment_status:
+            netAmount > securityAmt[0]?.remaining_amount
+              ? "pending"
+              : "Received",
+        }
+      );
+      console.log(res);
+      cogoToast.success("Amount Paid via Security Amount");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const MakePaymentViaSecurityAmount = async () => {
     try {
       const res = await axios.put(
@@ -280,11 +310,13 @@ const TreatmentForm = () => {
       );
       console.log(res);
       setShowDirect(true);
+      // updateAmountAfterPayViaSecAmount();
     } catch (error) {
       console.log(error);
     }
   };
 
+  console.log(showDirect, partPay);
   return (
     <>
       <Wrapper>
@@ -552,11 +584,21 @@ const TreatmentForm = () => {
                           : "Payment Status"}
                       </label>
 
-                      {partPay > 0 && (
+                      {!showDirect ? (
                         <>
                           <small className="ms-2" style={{ color: "red" }}>
                             (Remaining Net Payment :{" "}
-                            {netAmount - securityAmt[0]?.remaining_amount})
+                            {netAmount <= 0 ? 0 : netAmount})
+                          </small>
+                        </>
+                      ) : (
+                        <>
+                          <small className="ms-2" style={{ color: "red" }}>
+                            (Remaining Net Payment :{" "}
+                            {netAmount - securityAmt[0]?.remaining_amount <= 0
+                              ? 0
+                              : netAmount - securityAmt[0]?.remaining_amount}
+                            )
                           </small>
                         </>
                       )}

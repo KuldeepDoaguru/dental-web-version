@@ -9,7 +9,7 @@ import { FaLocationArrow } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 
 const NewTreatPrescription = () => {
-  const { id, tpid, sitting, treatment } = useParams();
+  const { tsid, id, tpid, sitting, treatment } = useParams();
   console.log(id);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -19,6 +19,7 @@ const NewTreatPrescription = () => {
   const [getPatientData, setGetPatientData] = useState([]);
   const [getExaminData, setGetExaminData] = useState([]);
   const [getTreatData, setGetTreatData] = useState([]);
+  const [treatments, setTreatments] = useState([]);
   const [prescriptionData, setPrescriptionData] = useState({
     branch_name: branch,
     patient_uhid: "",
@@ -39,6 +40,20 @@ const NewTreatPrescription = () => {
   console.log(getlab);
   // console.log(prescriptionData)
 
+  const getTreatmentList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/doctor/getExaminedataByIdandexamine/${tsid}/${tpid}`
+      );
+      console.log(data);
+      setTreatments(data);
+    } catch (error) {
+      console.log("Error fetching treatments:", error);
+    }
+  };
+
+  console.log(treatments[0]?.disease);
+
   // Get Patient Details START
   const getPatientDetail = async () => {
     try {
@@ -53,6 +68,7 @@ const NewTreatPrescription = () => {
 
   useEffect(() => {
     getPatientDetail();
+    getTreatmentList();
   }, []);
   // Get Patient Details END
 
@@ -121,8 +137,8 @@ const NewTreatPrescription = () => {
   const medicineInput = {
     branch_name: branch,
     patient_uhid: getPatientData[0]?.uhid,
-    desease: prescriptionData.desease,
-    treatment: prescriptionData.treatment,
+    desease: treatments[0]?.disease,
+    treatment: treatment,
     medicine_name: prescriptionData.medicine_name,
     dosage: prescriptionData.dosage,
     frequency: prescriptionData.frequency,
@@ -528,7 +544,7 @@ const NewTreatPrescription = () => {
                 <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-6 col-6">
                   <div className="form-outline">
                     <label>Treatment</label>
-                    <select
+                    {/* <select
                       className="form-select w-100"
                       name="treatment"
                       aria-label="Default select example"
@@ -541,26 +557,24 @@ const NewTreatPrescription = () => {
                           {item.treatment_name}
                         </option>
                       ))}
-                    </select>
+                    </select> */}
+                    <input
+                      type="text"
+                      value={treatment}
+                      readOnly
+                      className="rounded"
+                    />
                   </div>
                 </div>
                 <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-6 col-6">
                   <div className="form-outline">
                     <label>Desease</label>
-                    <select
-                      className="form-select w-100"
-                      name="desease"
-                      aria-label="Default select example"
-                      onChange={handleChange}
-                      value={prescriptionData.desease}
-                    >
-                      <option value="">-select desease-</option>
-                      {getExaminData.map((item, index) => (
-                        <option key={index} value={item.disease}>
-                          {item.disease}
-                        </option>
-                      ))}
-                    </select>
+                    <input
+                      type="text"
+                      value={treatments[0]?.disease}
+                      readOnly
+                      className="rounded"
+                    />
                   </div>
                 </div>
                 <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-6 col-6">

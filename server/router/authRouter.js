@@ -75,6 +75,7 @@ const {
   getTreatPrescriptionByTpid,
   getBranchDetails,
   billDetailsViaTpid,
+  updateRecSecAmountAfterPayment,
 } = require("../controller/authTreatment.js");
 const {
   uploadImage,
@@ -267,8 +268,14 @@ router.put(
   "/updateSecurityAmountAfterPayment/:tp_id",
   updateSecurityAmountAfterPayment
 );
+
+router.put(
+  "/updateRecSecAmountAfterPayment/:tpid",
+  updateRecSecAmountAfterPayment
+);
+
 router.get(
-  "/getTreatmentDetailsViaSitting/:branch/:appoint_id/:tpid/:sitting/:treatment",
+  "/getTreatmentDetailsViaSitting/:branch/:tpid/:sitting",
   getTreatmentDetailsViaSitting
 );
 

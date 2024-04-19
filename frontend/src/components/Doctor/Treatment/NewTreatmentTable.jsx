@@ -52,6 +52,7 @@ const NewTreatmentTable = () => {
   };
 
   console.log(treatmentData);
+  //total bill amount
   const totalFinalBillPrice = () => {
     try {
       let total = 0;
@@ -69,6 +70,42 @@ const NewTreatmentTable = () => {
   const totalFinalBillValue = totalFinalBillPrice();
   console.log(totalFinalBillValue);
 
+  //total paid amount
+  const totalPaidAmount = () => {
+    try {
+      let total = 0;
+      treatmentData.forEach((item) => {
+        total = total + parseFloat(item.dir_rec_amt);
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+  const totalPaidValue = totalPaidAmount();
+  console.log(totalPaidValue);
+
+  //total security amount used
+  const totalSecurityAmountUsed = () => {
+    try {
+      let total = 0;
+      treatmentData.forEach((item) => {
+        total = total + parseFloat(Number(item.sec_rec_amt));
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+  const totSecurityAmountUsedValue = totalSecurityAmountUsed();
+  console.log(totSecurityAmountUsedValue);
+
   const billInputField = {
     uhid: getPatientData[0]?.uhid,
     tp_id: tpid,
@@ -78,6 +115,8 @@ const NewTreatmentTable = () => {
     patient_email: getPatientData[0]?.emailid,
     assigned_doctor_name: doctor,
     total_amount: totalFinalBillValue,
+    paid_amount: totalPaidValue,
+    pay_by_sec_amt: totSecurityAmountUsedValue,
   };
 
   console.log(billInputField);

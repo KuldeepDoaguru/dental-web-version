@@ -99,7 +99,7 @@ function App() {
         }
       />
       <Route
-        path="/treatmentDashTwo/:tsid/:tp_id/:treatment"
+        path="/treatmentDashTwo/:tsid/:appid/:tp_id/:treatment"
         element={
           user.currentUser === null ? <DoctorLogin /> : <TreatmentDashTwo />
         }
@@ -127,7 +127,7 @@ function App() {
         }
       />
       <Route
-        path="/TPrescriptionDash/:tpid/:sitting/:treatment"
+        path="/TPrescriptionDash/:tsid/:tpid/:sitting/:treatment"
         element={
           user.currentUser === null ? <DoctorLogin /> : <TPrescriptionDash />
         }

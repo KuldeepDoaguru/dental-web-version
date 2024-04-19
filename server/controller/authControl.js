@@ -24,10 +24,11 @@ const dentalPediatric = (req, res) => {
 
     // If the disease does not exist, insert a new row
     const insertQuery =
-      "INSERT INTO dental_examination (appointment_id, tp_id, patient_uhid, selected_teeth, disease, chief_complain, advice, on_examination, diagnosis_category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      "INSERT INTO dental_examination (appointment_id, tp_id, branch_name, patient_uhid, selected_teeth, disease, chief_complain, advice, on_examination, diagnosis_category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     const values = [
       data.appointment_id,
       data.tpid,
+      data.branch,
       data.patient_uhid,
       data.selectedTeeth,
       data.disease,
@@ -565,9 +566,7 @@ const getDentalDataByTpid = (req, res) => {
     }
 
     if (result.length === 0) {
-      res
-        .status(404)
-        .send("No data found for appointment ID: " + appointmentId);
+      res.status(404).send("No data found for appointment ID: " + tpid);
       return;
     }
 

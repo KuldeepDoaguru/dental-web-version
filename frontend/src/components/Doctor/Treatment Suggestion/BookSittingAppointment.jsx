@@ -48,6 +48,7 @@ const BookSittingAppointment = ({
   const [data, setData] = useState({
     patient_uhid: getPatientData[0]?.uhid,
     branch: branch_name,
+    tp_id: tp_id,
     assigned_doctor_name: employee_name,
     assigned_doctor_id: employee_ID,
     appointment_dateTime: "",
@@ -336,7 +337,9 @@ const BookSittingAppointment = ({
         dispatch(toggleTableRefresh());
         timelineData(getPatientData[0]?.uhid);
         onClose();
-        navigate(`/TPrescriptionDash/${tp_id}/${currentSitting}/${treatment}`);
+        navigate(
+          `/TPrescriptionDash/${tsid}/${tp_id}/${currentSitting}/${treatment}`
+        );
       } catch (error) {
         console.log(error);
         cogoToast.error(error?.response?.data?.message);

@@ -706,21 +706,24 @@ const PediatricDentalTest = ({ tpid }) => {
     }
   };
 
+  const formData = {
+    appointment_id: id,
+    tpid: tpid,
+    branch: branch,
+    patient_uhid: inputItem.patient_uhid,
+    selectedTeeth: inputItem.selectTeeth.join(", "),
+    disease: inputItem.desease,
+    chiefComplain: inputItem.chiefComplain,
+    advice: inputItem.advice,
+    onExamination: inputItem.onExamination,
+    diagnosis_category: inputItem.diagnosis_category,
+  };
+
+  console.log(formData);
   const handleSave = async (e) => {
     e.preventDefault();
 
     // Prepare data to send to the backend
-    const formData = {
-      appointment_id: id,
-      tpid: tpid,
-      patient_uhid: inputItem.patient_uhid,
-      selectedTeeth: inputItem.selectTeeth.join(", "),
-      disease: inputItem.desease,
-      chiefComplain: inputItem.chiefComplain,
-      advice: inputItem.advice,
-      onExamination: inputItem.onExamination,
-      diagnosis_category: inputItem.diagnosis_category,
-    };
 
     try {
       const response = await axios.post(

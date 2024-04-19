@@ -278,6 +278,8 @@ const getAllSecurityAmounts = (req, res) => {
 const getAppointmentsWithPatientDetailsTreatSugg = (req, res) => {
   const sql = `
         SELECT 
+        a.tp_id,
+        a.branch_name,
             a.appoint_id,
             a.appointment_dateTime,
             a.treatment_provided,
@@ -426,6 +428,7 @@ const bookSittingAppointment = (req, res) => {
     const {
       patient_uhid,
       branch,
+      tp_id,
       assigned_doctor_name,
       assigned_doctor_id,
       appointment_dateTime,
@@ -440,13 +443,14 @@ const bookSittingAppointment = (req, res) => {
 
     const bookAppointmentQuery = `
       INSERT INTO appointments (
-          patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided,  appointment_created_by, appointment_created_by_emp_id, notes, appointment_status, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          patient_uhid, branch_name, tp_id, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided,  appointment_created_by, appointment_created_by_emp_id, notes, appointment_status, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
 
     const bookAppointmentParams = [
       patient_uhid,
       branch,
+      tp_id,
       assigned_doctor_name,
       assigned_doctor_id,
       appointment_dateTime,

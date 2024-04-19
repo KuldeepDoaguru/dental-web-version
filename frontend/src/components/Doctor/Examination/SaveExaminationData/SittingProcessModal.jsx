@@ -24,7 +24,7 @@ const SittingProcessModal = ({ onClose, selectedData }) => {
     current_sitting:
       selectedData.treatment_status === "ongoing"
         ? selectedData.current_sitting + 1
-        : selectedData.current_sitting,
+        : 1,
     treatment_status: "",
   });
 
@@ -86,13 +86,12 @@ const SittingProcessModal = ({ onClose, selectedData }) => {
                     </select>
                   </div> */}
                   <div class="mb-3">
-                    <label for="recipient-id" class="col-form-label">
+                    <label for="" class="col-form-label">
                       Current Sitting
                     </label>
                     <input
                       type="text"
                       class="form-control"
-                      id="recipient-id"
                       name="current_sitting"
                       value={formData.current_sitting}
                     />

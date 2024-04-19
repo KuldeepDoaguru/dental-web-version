@@ -41,6 +41,7 @@ const {
   getTreatmentTotalById,
   getSecurityAmountDataByTPUHID,
   updateRemainingAmount,
+  updateRemainingSecurityAmount,
 } = require("../controllers/accountantController");
 const {
   getEmployeeListByBranchByID,
@@ -113,5 +114,9 @@ router.get(
   getSecurityAmountDataByTPUHID
 );
 router.put("/updateRemainingAmount/:tp_id/:uhid", updateRemainingAmount);
+router.put(
+  "/updateRemainingSecurityAmount/:tp_id/:uhid",
+  updateRemainingSecurityAmount
+);
 
 module.exports = router;

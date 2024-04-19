@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Header from "../components/Header";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Sider from "../components/Sider";
 import { IoArrowBackSharp } from "react-icons/io5";
 import axios from "axios";
@@ -9,16 +9,30 @@ import { useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
 
 const PatintDuePaymentPrint = () => {
+  const navigate = useNavigate();
   const { bid, tpid, uhid } = useParams();
   const user = useSelector((state) => state.user);
+  console.log(user);
   const [branchData, setBranchData] = useState([]);
   const [billAmount, setBillAmount] = useState([]);
   const [saAmt, setSaAmt] = useState([]);
-  console.log("User State:", user);
+
+  const [data, setData] = useState({
+    payment_mode: "",
+    transaction_Id: "",
+    note: "",
+  });
   console.log(bid, tpid, uhid);
+  console.log(data);
 
   const goBack = () => {
     window.history.go(-1);
+  };
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+
+    setData({ ...data, [name]: value });
   };
 
   const branchDetails = async () => {
@@ -72,20 +86,30 @@ const PatintDuePaymentPrint = () => {
 
   console.log(formattedDate);
 
-  const dueAmt = billAmount[0]?.total_amount - billAmount[0]?.paid_amount;
+  const dueAmt =
+    billAmount[0]?.total_amount -
+    (billAmount[0]?.paid_amount + billAmount[0]?.pay_by_sec_amt);
 
   let totalPaidAmount = 0;
   if (dueAmt >= 0) {
-    if (dueAmt >= saAmt[0]?.remaining_amount) {
-      totalPaidAmount = saAmt[0]?.remaining_amount;
+    if (
+      dueAmt >= (saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0)
+    ) {
+      totalPaidAmount = saAmt[0]?.remaining_amount
+        ? saAmt[0]?.remaining_amount
+        : 0;
     } else {
       totalPaidAmount = dueAmt;
     }
-  } else if (dueAmt <= saAmt[0]?.remaining_amount) {
+  } else if (
+    dueAmt <= (saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0)
+  ) {
     totalPaidAmount = dueAmt;
   }
 
-  const remainingSecurityAmount = saAmt[0]?.remaining_amount - totalPaidAmount;
+  const remainingSecurityAmount =
+    (saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0) -
+    totalPaidAmount;
 
   // If dueAmt is negative, meaning there is an overpayment, we set totalPaidAmount to 0
   if (dueAmt < 0) {
@@ -97,18 +121,53 @@ const PatintDuePaymentPrint = () => {
   console.log("Total Paid Amount:", totalPaidAmount);
   console.log("Remaining Security Amount:", remainingSecurityAmount);
 
+  const updateRemainingSecurity = async () => {
+    console.log(remainingSecurityAmount);
+    try {
+      console.log(remainingSecurityAmount);
+      const response = await axios.put(
+        `http://localhost:8888/api/v1/accountant/updateRemainingSecurityAmount/${tpid}/${uhid}`,
+        {
+          remaining_amount: remainingSecurityAmount,
+        }
+      );
+      cogoToast.success("update remaining Successfully amt");
+      console.log(remainingSecurityAmount);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const makePayment = async () => {
     try {
       const response = await axios.put(
         `http://localhost:8888/api/v1/accountant/makeBillPayment/${user.branch}/${bid}`,
         {
-          paid_amount: totalPaidAmount,
+          paid_amount: billAmount[0]?.total_amount,
           payment_status: "paid",
           payment_date_time: formattedDate,
+          payment_mode: data.payment_mode,
+          transaction_Id: data.transaction_Id,
+          note: data.note,
+          receiver_name: user.employee_name,
+          receiver_emp_id: user.id,
         }
       );
-      cogoToast.success("payment successful");
-      getBillDetails();
+      if (response.data.success) {
+        cogoToast.success("payment successful");
+        getBillDetails();
+        console.log(response.data);
+        updateRemainingSecurity();
+        setData({
+          payment_mode: "",
+          transaction_Id: "",
+          note: "",
+        });
+        navigate("/PatientsDue");
+      } else {
+        cogoToast.success("Failed to paid bill");
+      }
     } catch (error) {
       console.log(error);
     }
@@ -273,19 +332,8 @@ const PatintDuePaymentPrint = () => {
                           <tr>
                             <td colspan="2">
                               <h6>
-                                <span class="spaces"></span>
-                                Remaining Secuirty Amount
-                              </h6>
-                            </td>
-
-                            <td className="fw-bolder">
-                              {saAmt[0]?.remaining_amount}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                              <h6>
-                                <span class="spaces"></span>Paid Amount
+                                <span class="spaces"></span>Previous Paid By
+                                Direct Amount
                               </h6>
                             </td>
                             <td className="fw-bolder">
@@ -295,23 +343,55 @@ const PatintDuePaymentPrint = () => {
                           <tr>
                             <td colspan="2">
                               <h6>
-                                <span class="spaces"></span>Total Due Amount
-                              </h6>
-                            </td>
-                            <td className="fw-bolder">₹ {finalAmt}</td>
-                          </tr>
-                          {/* <tr>
-                            <td colspan="2">
-                              <h6>
-                                <span class="spaces"></span>Paid Amount
+                                <span class="spaces"></span>Previous Paid By
+                                Secuirty Amount
                               </h6>
                             </td>
                             <td className="fw-bolder">
-                              {billAmount[0]?.paid_amount !== null
-                                ? billAmount[0]?.paid_amount
-                                : "-"}
+                              ₹ {billAmount[0]?.pay_by_sec_amt}
                             </td>
-                          </tr> */}
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <h6>
+                                <span class="spaces"></span>Total Due Amount
+                              </h6>
+                            </td>
+                            <td className="fw-bolder">₹ {dueAmt}</td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <h6>
+                                <span class="spaces"></span>
+                                Remaining Secuirty Amount
+                              </h6>
+                            </td>
+
+                            <td className="fw-bolder">
+                              {saAmt[0]?.remaining_amount
+                                ? saAmt[0]?.remaining_amount
+                                : 0}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <h6>
+                                <span class="spaces"></span>Refund / Remaning
+                                Amount
+                              </h6>
+                            </td>
+                            <td className="fw-bolder">
+                              {remainingSecurityAmount}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2">
+                              <h6>
+                                <span class="spaces"></span>Final Due Amount
+                              </h6>
+                            </td>
+                            <td className="fw-bolder">{finalAmt}</td>
+                          </tr>
                         </tbody>
                       </table>
 
@@ -362,7 +442,71 @@ const PatintDuePaymentPrint = () => {
                     Do you want to make payment
                   </h1>
                 </div>
+                <div className="modal-body">
+                  <form>
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="form1Example1">
+                        Due Amount
+                      </label>
+                      <input
+                        name="note"
+                        type="text"
+                        id="form1Example2"
+                        class="form-control"
+                        value={finalAmt}
+                        readOnly
+                      />
+                    </div>
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="form1Example1">
+                        Payment Mode
+                      </label>
+                      <select
+                        name="payment_mode"
+                        value={data.payment_mode}
+                        onChange={(e) => handleChange(e)}
+                        className="p-1 w-100 rounded"
+                        required
+                      >
+                        <option value="" selected>
+                          Select Payment Method
+                        </option>
+                        <option value="cash">Cash</option>
+                        <option value="online">Online</option>
+                      </select>
+                    </div>
 
+                    {data.payment_mode === "online" && (
+                      <div data-mdb-input-init class="form-outline mb-4">
+                        <label class="form-label" for="form1Example2">
+                          Transaction ID
+                        </label>
+                        <input
+                          type="text"
+                          id="form1Example2"
+                          class="form-control"
+                          name="transaction_Id"
+                          value={data.transaction_Id}
+                          onChange={(e) => handleChange(e)}
+                        />
+                      </div>
+                    )}
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                      <label class="form-label" for="form1Example2">
+                        Note
+                      </label>
+                      <input
+                        name="note"
+                        type="text"
+                        id="form1Example2"
+                        class="form-control"
+                        value={data.note}
+                        onChange={(e) => handleChange(e)}
+                      />
+                    </div>
+                  </form>
+                </div>
                 <div class="modal-footer">
                   <button
                     type="button"

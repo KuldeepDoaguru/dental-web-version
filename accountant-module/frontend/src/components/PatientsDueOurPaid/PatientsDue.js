@@ -26,6 +26,13 @@ const PatientsDue = () => {
     }
   };
 
+  console.log(patBill);
+  const filterForUnPaidBills = patBill?.filter((item) => {
+    return item.payment_status !== "paid";
+  });
+
+  console.log(filterForUnPaidBills);
+
   useEffect(() => {
     getPatBills();
   }, []);
@@ -61,7 +68,12 @@ const PatientsDue = () => {
                                   <th className=" sticky">Patients Email</th>
                                   <th className=" sticky">Doctor Name</th>
                                   <th className=" sticky">Total Amount</th>
-                                  <th className=" sticky">Paid Amount</th>
+                                  <th className=" sticky">
+                                    Paid By Direct Amount
+                                  </th>
+                                  <th className=" sticky">
+                                    Paid By Secuirty Amt
+                                  </th>
                                   <th className=" sticky">Due Amount</th>
                                   <th className=" sticky">Bill Date</th>
                                   <th className=" sticky">Action</th>
@@ -69,7 +81,7 @@ const PatientsDue = () => {
                               </thead>
 
                               <tbody>
-                                {patBill?.map((item) => (
+                                {filterForUnPaidBills?.map((item) => (
                                   <>
                                     <tr className="table-row">
                                       <td className="table-sno">
@@ -82,8 +94,11 @@ const PatientsDue = () => {
                                       <td>{item.assigned_doctor_name}</td>
                                       <td>{item.total_amount}</td>
                                       <td>{item.paid_amount}</td>
+                                      <td>{item.pay_by_sec_amt}</td>
                                       <td>
-                                        {item.total_amount - item.paid_amount}
+                                        {item.total_amount -
+                                          (item.paid_amount +
+                                            item.pay_by_sec_amt)}
                                       </td>
                                       <td>{item.bill_date.split("T")[0]}</td>
                                       <td>

@@ -669,6 +669,51 @@ const updateRefundAmount = (req, res) => {
   }
 };
 
+const updateRemainingSecurityAmount = (req, res) => {
+  try {
+    const tpid = req.params.tp_id;
+    const uhid = req.params.uhid;
+
+    const { remaining_amount } = req.body;
+    console.log(remaining_amount);
+
+    // Checking if all required fields are present in the request body
+
+    const selectQuery =
+      "SELECT * FROM security_amount WHERE tp_id = ? AND  uhid = ?";
+    db.query(selectQuery, [tpid, uhid], (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateQuery = `UPDATE security_amount SET remaining_amount = ? WHERE tp_id = ? AND uhid = ?`;
+
+        db.query(updateQuery, [remaining_amount, tpid, uhid], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Failed to update details",
+            });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "remaining amount update Successfully",
+            });
+          }
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Data not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 const updatePatientSecurityAmt = (req, res) => {
   try {
     const sid = req.params.sid;
@@ -776,7 +821,16 @@ const makeBillPayment = (req, res) => {
   try {
     const bid = req.params.bid;
     const branch = req.params.branch;
-    const { paid_amount, payment_status, payment_date_time } = req.body;
+    const {
+      paid_amount,
+      payment_status,
+      payment_date_time,
+      payment_mode,
+      transaction_Id,
+      note,
+      receiver_name,
+      receiver_emp_id,
+    } = req.body;
     const selectQuery =
       "SELECT * FROM patient_bills WHERE branch_name = ? AND bill_id = ?";
 
@@ -801,6 +855,26 @@ const makeBillPayment = (req, res) => {
         if (payment_date_time) {
           updateFields.push("payment_date_time = ?");
           updateValues.push(payment_date_time);
+        }
+        if (payment_mode) {
+          updateFields.push("payment_mode = ?");
+          updateValues.push(payment_mode);
+        }
+        if (transaction_Id) {
+          updateFields.push("transaction_Id = ?");
+          updateValues.push(transaction_Id);
+        }
+        if (note) {
+          updateFields.push("note = ?");
+          updateValues.push(note);
+        }
+        if (receiver_name) {
+          updateFields.push("receiver_name = ?");
+          updateValues.push(receiver_name);
+        }
+        if (receiver_emp_id) {
+          updateFields.push("receiver_emp_id = ?");
+          updateValues.push(receiver_emp_id);
         }
 
         const updateQuery = `UPDATE patient_bills SET ${updateFields.join(
@@ -1478,12 +1552,10 @@ const updateRemainingAmount = (req, res) => {
         res.status(404).json({ success: false, message: "Record not found" });
         return;
       }
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Remaining amount updated successfully",
-        });
+      res.status(200).json({
+        success: true,
+        message: "Remaining amount updated successfully",
+      });
     });
   } catch (error) {
     console.log(error);
@@ -1532,4 +1604,5 @@ module.exports = {
   getTreatmentTotalById,
   getSecurityAmountDataByTPUHID,
   updateRemainingAmount,
+  updateRemainingSecurityAmount,
 };

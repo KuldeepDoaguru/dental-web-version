@@ -28,7 +28,7 @@ const PatientsPaid = () => {
 
   console.log(paidList);
   const filterForPaidBills = paidList?.filter((item) => {
-    return item.paid_amount !== null;
+    return item.payment_status === "paid";
   });
 
   console.log(filterForPaidBills);
@@ -61,11 +61,11 @@ const PatientsPaid = () => {
                                 <tr>
                                   <th className="sticky">Bill ID</th>
                                   <th className="sticky">Bill Date</th>
-                                  <th className="sticky">Appointment ID</th>
+                                  <th className="sticky">TPID</th>
                                   <th className="sticky">Patient UHID</th>
                                   <th className="sticky">Patient Name</th>
+                                  <th className="sticky">Patient No</th>
                                   <th className="sticky">Doctor Name</th>
-                                  <th className="sticky">Treatment</th>
                                   <th className="sticky">Total Amount</th>
                                   <th className="sticky">Paid Amount</th>
                                   <th className="sticky">Payment Date</th>
@@ -78,11 +78,11 @@ const PatientsPaid = () => {
                                     <tr className="table-row">
                                       <td>{item.bill_id}</td>
                                       <td>{item.bill_date.split("T")[0]}</td>
-                                      <td>{item.appoint_id}</td>
+                                      <td>{item.tp_id}</td>
                                       <td>{item.uhid}</td>
                                       <td>{item.patient_name}</td>
+                                      <td>{item.patient_mobile}</td>
                                       <td>{item.assigned_doctor_name}</td>
-                                      <td>{item.dental_treatment}</td>
                                       <td>{item.total_amount}</td>
                                       <td>{item.paid_amount}</td>
                                       <td>

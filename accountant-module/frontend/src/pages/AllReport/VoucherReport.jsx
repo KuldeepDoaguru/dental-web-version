@@ -11,9 +11,6 @@ import * as XLSX from "xlsx";
 
 const VoucherReport = () => {
   const user = useSelector((state) => state.user);
-  console.log(
-    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
-  );
   console.log("User State:", user);
   const [vlist, setVlist] = useState([]);
   const [fromDate, setFromDate] = useState("");

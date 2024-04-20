@@ -75,6 +75,7 @@ import PurchaseReport from "./pages/AllReport/PurchaseReport";
 import AttendanceLeave from "./pages/AttendanceLeave";
 import PasswordReset from "./pages/PasswordReset";
 import SecurityAmtPrint from "./pages/SecurityAmtPrint";
+import PatientBillsByTpid from "./pages/BillPage/PatientBillsByTpid";
 
 function App() {
   return (
@@ -170,6 +171,10 @@ function App() {
         <Route path="/purchase-report" element={<PurchaseReport />} />
         <Route path="/attendance-leave" element={<AttendanceLeave />} />
         <Route path="/password-reset" element={<PasswordReset />} />
+        <Route
+          path="/patient-bill/:billid/:tpid"
+          element={<PatientBillsByTpid />}
+        />
         <Route
           path="/security-amount-reciept/:sid"
           element={<SecurityAmtPrint />}

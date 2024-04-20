@@ -19,7 +19,7 @@ const SecurityAmount = () => {
   console.log("User State:", user);
   const [patData, setPatData] = useState([]);
   const [securityList, setSecurityList] = useState([]);
-  const [refAmount, setRefAmount] = useState("");
+  // const [refAmount, setRefAmount] = useState("");
   const [keyword, setKeyword] = useState("");
   const [showEditSecAmount, setShowEditSecAmount] = useState(false);
   const [showPaySecAmount, setShowPaySecAmount] = useState(false);
@@ -143,10 +143,10 @@ const SecurityAmount = () => {
 
   const openSecAmountSubPopup = (id) => {
     setShowEditSecAmount(true);
-    getTotaloutstanding(id);
+    // getTotaloutstanding(id);
     setSelected(id);
+    console.log(id);
   };
-
   const closeUpdatePopup = () => {
     setShowEditSecAmount(false);
     setShowPaySecAmount(false);
@@ -171,42 +171,42 @@ const SecurityAmount = () => {
 
   console.log(filterForSecAmountDef);
 
-  const getTotaloutstanding = async (id) => {
-    console.log(id);
-    try {
-      const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getSecurityAmountDataBySID/${id}`
-      );
-      console.log(data);
-      setOutStanding(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getTotaloutstanding = async (id) => {
+  //   console.log(id);
+  //   try {
+  //     const { data } = await axios.get(
+  //       `http://localhost:8888/api/v1/accountant/getSecurityAmountDataBySID/${id}`
+  //     );
+  //     console.log(data);
+  //     setOutStanding(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  console.log(outStanding);
-  const filterForOut = outStanding?.filter((item) => {
-    return item.payment_status !== "success";
-  });
+  // console.log(outStanding);
+  // const filterForOut = outStanding?.filter((item) => {
+  //   return item.payment_status !== "success";
+  // });
 
-  console.log(filterForOut);
+  // console.log(filterForOut);
 
-  const totalPrice = () => {
-    try {
-      let total = 0;
-      filterForOut.forEach((item) => {
-        total = total + parseFloat(item.total_amount);
-      });
-      console.log(total);
-      return total;
-    } catch (error) {
-      console.log(error);
-      return 0;
-    }
-  };
+  // const totalPrice = () => {
+  //   try {
+  //     let total = 0;
+  //     filterForOut.forEach((item) => {
+  //       total = total + parseFloat(item.total_amount);
+  //     });
+  //     console.log(total);
+  //     return total;
+  //   } catch (error) {
+  //     console.log(error);
+  //     return 0;
+  //   }
+  // };
 
-  const totalValue = totalPrice();
-  console.log(totalValue);
+  // const totalValue = totalPrice();
+  // console.log(totalValue);
 
   const MakeRefund = async (e) => {
     e.preventDefault();
@@ -217,7 +217,8 @@ const SecurityAmount = () => {
           refund_date: date,
           refund_by: user.name,
           payment_status: "Refunded",
-          refund_amount: refAmount,
+          refund_amount: filterForSecAmountDef[0]?.remaining_amount,
+          remaining_amount: 0,
         }
       );
       cogoToast.success("Amount Refunded Successfully");
@@ -228,21 +229,19 @@ const SecurityAmount = () => {
     }
   };
 
-  console.log(refAmount);
+  // const makeRefData = () => {
+  //   if (outStanding.length === 0) {
+  //     return filterForSecAmountDef[0]?.amount;
+  //   } else {
+  //     return outStanding[0]?.amount - totalValue;
+  //   }
+  // };
 
-  const makeRefData = () => {
-    if (outStanding.length === 0) {
-      return filterForSecAmountDef[0]?.amount;
-    } else {
-      return outStanding[0]?.amount - totalValue;
-    }
-  };
-
-  const amtRefund = makeRefData();
-  console.log(amtRefund);
-  useEffect(() => {
-    setRefAmount(amtRefund);
-  }, [amtRefund]);
+  // const amtRefund = makeRefData();
+  // console.log(amtRefund);
+  // useEffect(() => {
+  //   setRefAmount(amtRefund);
+  // }, [amtRefund]);
 
   const paySecurityCash = async (e) => {
     e.preventDefault();
@@ -462,7 +461,8 @@ const SecurityAmount = () => {
                             <th>Patient Name</th>
                             <th>Patient Number</th>
                             <th>Assigned Doctor</th>
-                            <th>Security Amount</th>
+                            <th>Deposit Security Amount</th>
+                            <th>Remaning Security Amount</th>
                             <th>Payment Mode</th>
                             <th>Transaction Id</th>
                             <th>Payment Status</th>
@@ -493,6 +493,7 @@ const SecurityAmount = () => {
                                   <td>{item.patient_number}</td>
                                   <td>{item.assigned_doctor}</td>
                                   <td>{item.amount}</td>
+                                  <td>{item.remaining_amount}</td>
                                   <td>{item.payment_Mode}</td>
                                   <td>{item.transaction_Id}</td>
                                   <td>
@@ -515,9 +516,10 @@ const SecurityAmount = () => {
                                     </div>
                                   </td>
                                   <td>
+                                    {/* {item?.remaining_amount === 0 && ( */}
                                     <button
                                       className={`mx-2 btn btn-warning ${
-                                        item.payment_status === "Pending"
+                                        item.remaining_amount === 0
                                           ? "disabled"
                                           : ""
                                       } `}
@@ -527,6 +529,7 @@ const SecurityAmount = () => {
                                     >
                                       Make Refund
                                     </button>
+                                    {/* )} */}
                                   </td>
                                   <td>
                                     <Link
@@ -570,15 +573,18 @@ const SecurityAmount = () => {
                     </div>
                     <div class="mb-3">
                       <label for="exampleFormControlInput1" class="form-label">
-                        Total Outstanding - {totalValue}
+                        {/* Total Outstanding - {totalValue} */}
+                        Remaning Secuirty Amount -{" "}
+                        {filterForSecAmountDef[0]?.remaining_amount}
                       </label>
                     </div>
                     <div class="mb-3">
                       <label for="exampleFormControlInput1" class="form-label">
                         Refund Amount :
-                        {outStanding.length === 0
+                        {/* {outStanding.length === 0
                           ? filterForSecAmountDef[0]?.amount
-                          : outStanding[0]?.amount - totalValue}
+                          : outStanding[0]?.amount - totalValue} */}
+                        {filterForSecAmountDef[0]?.remaining_amount}
                       </label>
                       {/* <input
                         type="text"

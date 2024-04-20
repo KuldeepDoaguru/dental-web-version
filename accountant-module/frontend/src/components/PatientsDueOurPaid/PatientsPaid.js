@@ -67,7 +67,12 @@ const PatientsPaid = () => {
                                   <th className="sticky">Patient No</th>
                                   <th className="sticky">Doctor Name</th>
                                   <th className="sticky">Total Amount</th>
-                                  <th className="sticky">Paid Amount</th>
+                                  <th className="sticky">
+                                    Paid By Direct Amount
+                                  </th>
+                                  <th className="sticky">
+                                    Paid By Secuirty Amt
+                                  </th>
                                   <th className="sticky">Payment Date</th>
                                   <th className="sticky">Action</th>
                                 </tr>
@@ -85,12 +90,14 @@ const PatientsPaid = () => {
                                       <td>{item.assigned_doctor_name}</td>
                                       <td>{item.total_amount}</td>
                                       <td>{item.paid_amount}</td>
+                                      <td>{item.pay_by_sec_amt}</td>
                                       <td>
                                         {item.payment_date_time?.split("T")[0]}
                                       </td>
                                       <td>
                                         <Link
-                                          to={`/PatintPaidPaymentPrint/${item.bill_id}`}
+                                          // to={`/PatintPaidPaymentPrint/${item.bill_id}`}
+                                          to={`/patient-bill/${item.bill_id}/${item.tp_id}`}
                                         >
                                           <button
                                             className="btn"

@@ -34,13 +34,39 @@ const SecAmountReport = () => {
     getSecurityAmountList();
   }, []);
 
+  // const handleDownload = () => {
+  //   const filteredData = securityList.filter((item) => {
+  //     const date = moment(item.date).format("YYYY-MM-DD");
+  //     return moment(date).isBetween(fromDate, toDate, null, "[]");
+  //   });
+
+  //   const formattedData = securityList.map((item) => ({
+  //     Date: item.date.split("T")[0],
+  //     "Appointment ID": item.appointment_id,
+  //     UHID: item.uhid,
+  //     "Patient Name": item.patient_name,
+  //     "Patient Number": item.patient_number,
+  //     "Assigned Doctor": item.assigned_doctor,
+  //     "Security Amount": item.amount,
+  //     "Payment Mode": item.payment_Mode,
+  //     "Transaction Id": item.transaction_Id,
+  //     "Payment Status": item.payment_status,
+  //   }));
+
+  //   const worksheet = XLSX.utils.json_to_sheet(formattedData);
+  //   const wb = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(wb, worksheet, "Report");
+  //   XLSX.writeFile(wb, "secuirtyamount.xlsx");
+  // };
   const handleDownload = () => {
     const filteredData = securityList.filter((item) => {
       const date = moment(item.date).format("YYYY-MM-DD");
       return moment(date).isBetween(fromDate, toDate, null, "[]");
     });
 
-    const formattedData = securityList.map((item) => ({
+    const formattedData = filteredData.map((item) => ({
+      "Security Amount ID": item.sa_id,
+      TPID: item.tp_id,
       Date: item.date.split("T")[0],
       "Appointment ID": item.appointment_id,
       UHID: item.uhid,
@@ -48,15 +74,20 @@ const SecAmountReport = () => {
       "Patient Number": item.patient_number,
       "Assigned Doctor": item.assigned_doctor,
       "Security Amount": item.amount,
+      "Remaining Amount": item.remaining_amount,
       "Payment Mode": item.payment_Mode,
       "Transaction Id": item.transaction_Id,
       "Payment Status": item.payment_status,
+      "Refund Amount": item.refund_amount,
+      "Refund Date": item.refund_date.split("T")[0],
+      "Received By": item.received_by,
+      "Refund By": item.refund_by,
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(formattedData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, worksheet, "Report");
-    XLSX.writeFile(wb, "secuirtyamount.xlsx");
+    XLSX.writeFile(wb, "securityamount_report.xlsx");
   };
 
   const goBack = () => {
@@ -138,6 +169,8 @@ const SecAmountReport = () => {
                               <table class="table table-bordered">
                                 <thead className="table-head">
                                   <tr>
+                                    <th>Security Amount ID</th>
+                                    <th>TPID</th>
                                     <th>Date</th>
                                     <th>Appointment ID</th>
                                     <th>UHID</th>
@@ -145,15 +178,22 @@ const SecAmountReport = () => {
                                     <th>Patient Number</th>
                                     <th>Assigned Doctor</th>
                                     <th>Security Amount</th>
+                                    <th>Remaning Amount</th>
                                     <th>Payment Mode</th>
                                     <th>Transaction Id</th>
                                     <th>Payment Status</th>
+                                    <th>Refund Amount</th>
+                                    <th>Refund Date</th>
+                                    <th>Received By</th>
+                                    <th>Refund By</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   {securityList.map((item) => (
                                     <>
                                       <tr className="table-row">
+                                        <td>{item.sa_id}</td>
+                                        <td>{item.tp_id}</td>
                                         <td>{item.date.split("T")[0]}</td>
                                         <td>{item.appointment_id}</td>
                                         <td>{item.uhid}</td>
@@ -161,9 +201,16 @@ const SecAmountReport = () => {
                                         <td>{item.patient_number}</td>
                                         <td>{item.assigned_doctor}</td>
                                         <td>{item.amount}</td>
+                                        <td>{item.remaining_amount}</td>
                                         <td>{item.payment_Mode}</td>
                                         <td>{item.transaction_Id}</td>
                                         <td>{item.payment_status}</td>
+                                        <td>{item.refund_amount}</td>
+                                        <td>
+                                          {item.refund_date.split("T")[0]}
+                                        </td>
+                                        <td>{item.received_by}</td>
+                                        <td>{item.refund_by}</td>
                                       </tr>
                                     </>
                                   ))}
@@ -196,5 +243,9 @@ const Container = styled.div`
   th {
     background-color: #201658;
     color: white;
+    white-space: nowrap;
+  }
+  td {
+    white-space: nowrap;
   }
 `;

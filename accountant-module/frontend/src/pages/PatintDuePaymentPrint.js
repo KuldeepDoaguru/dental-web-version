@@ -121,6 +121,13 @@ const PatintDuePaymentPrint = () => {
   console.log("Total Paid Amount:", totalPaidAmount);
   console.log("Remaining Security Amount:", remainingSecurityAmount);
 
+  const updatedPay_by_sec_amt =
+    billAmount[0]?.pay_by_sec_amt +
+    ((saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0) -
+      remainingSecurityAmount);
+
+  const updatedPaidAmt = billAmount[0]?.paid_amount + finalAmt;
+
   const updateRemainingSecurity = async () => {
     console.log(remainingSecurityAmount);
     try {
@@ -144,7 +151,7 @@ const PatintDuePaymentPrint = () => {
       const response = await axios.put(
         `http://localhost:8888/api/v1/accountant/makeBillPayment/${user.branch}/${bid}`,
         {
-          paid_amount: billAmount[0]?.total_amount,
+          paid_amount: updatedPaidAmt,
           payment_status: "paid",
           payment_date_time: formattedDate,
           payment_mode: data.payment_mode,
@@ -152,6 +159,7 @@ const PatintDuePaymentPrint = () => {
           note: data.note,
           receiver_name: user.employee_name,
           receiver_emp_id: user.id,
+          pay_by_sec_amt: updatedPay_by_sec_amt,
         }
       );
       if (response.data.success) {

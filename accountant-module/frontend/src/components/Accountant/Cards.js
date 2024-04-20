@@ -98,7 +98,7 @@ const Cards = () => {
     try {
       let total = 0;
       filterForTreatAppointToday.forEach((item) => {
-        total = total + item.net_amount;
+        total = total + (item.net_amount ? item.net_amount : 0);
       });
       // console.log(total);
       return total;

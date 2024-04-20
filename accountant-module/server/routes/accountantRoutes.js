@@ -42,6 +42,13 @@ const {
   getSecurityAmountDataByTPUHID,
   updateRemainingAmount,
   updateRemainingSecurityAmount,
+  billDetailsViaTpid,
+  getTreatSuggestViaTpid,
+  getTreatPrescriptionByTpid,
+  getTreatmentDetailsViaTpid,
+  getDentalDataByTpid,
+  getAppointmentsWithPatientDetailsById,
+  getEmployeeDetails,
 } = require("../controllers/accountantController");
 const {
   getEmployeeListByBranchByID,
@@ -86,6 +93,7 @@ router.get(
 
 router.put("/makeBillPayment/:branch/:bid", makeBillPayment);
 router.get("/paidBillLIst/:branch", paidBillLIst);
+router.get("/getEmployeeDetails/:branch/:id", getEmployeeDetails);
 router.get("/paidBillDetails/:branch/:bid", paidBillDetails);
 router.get("/getEmployeeListByBranch/:branch", getEmployeeListByBranch);
 router.post("/addEmployeeSalary/:branch", addEmployeeSalary);
@@ -117,6 +125,24 @@ router.put("/updateRemainingAmount/:tp_id/:uhid", updateRemainingAmount);
 router.put(
   "/updateRemainingSecurityAmount/:tp_id/:uhid",
   updateRemainingSecurityAmount
+);
+
+// Final Bill routers
+
+router.get("/billDetailsViaTpid/:tpid", billDetailsViaTpid);
+router.get("/getTreatSuggestViaTpid/:tpid/:branch", getTreatSuggestViaTpid);
+router.get(
+  "/getTreatPrescriptionByTpid/:tpid/:branch",
+  getTreatPrescriptionByTpid
+);
+router.get(
+  "/getTreatmentDetailsViaTpid/:tpid/:branch",
+  getTreatmentDetailsViaTpid
+);
+router.get("/getDentalDataByTpid/:tpid/:branch", getDentalDataByTpid);
+router.get(
+  "/getAppointmentsWithPatientDetailsById/:tpid",
+  getAppointmentsWithPatientDetailsById
 );
 
 module.exports = router;

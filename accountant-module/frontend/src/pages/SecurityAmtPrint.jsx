@@ -51,6 +51,7 @@ const SecurityAmtPrint = () => {
         `http://localhost:8888/api/v1/accountant/getSecurityAmountDataBySID/${sid}`
       );
       setRecData(data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -82,7 +83,7 @@ const SecurityAmtPrint = () => {
                     <th className="text-start">Appointment Id</th>
                     <td className="text-capitalize">
                       {": "}
-                      {recData[0]?.appoint_id}
+                      {recData[0]?.appointment_id}
                     </td>
 
                     <th scope="col" className="text-start">
@@ -114,7 +115,7 @@ const SecurityAmtPrint = () => {
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {recData[0]?.patient_mobile}
+                      {recData[0]?.mobileno}
                     </td>
                     <th scope="col" className="text-start">
                       Appointment Date
@@ -131,7 +132,7 @@ const SecurityAmtPrint = () => {
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {recData[0]?.assigned_doctor_name}
+                      {recData[0]?.assigned_doctor}
                     </td>
                     <th scope="col" className="text-start">
                       {" "}
@@ -166,7 +167,7 @@ const SecurityAmtPrint = () => {
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {recData[0]?.payment_Status}
+                      {recData[0]?.payment_status}
                     </td>
                   </tr>
                   <tr></tr>

@@ -12,10 +12,10 @@ import Sider from "../components/Sider";
 
 const AccountantProfile = () => {
   //   const dispatch = useDispatch();
-  //   const user = useSelector((state) => state.user);
-  //   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  //   console.log("User State:", user);
-  //   const branch = useSelector((state) => state.branch);
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = user.branch;
   //   console.log(`User Name: ${branch?.name}`);
   const { eid } = useParams();
   const location = useLocation();
@@ -106,21 +106,21 @@ const AccountantProfile = () => {
     setShowEditEmployee(false);
   };
 
-  //   const getEmployeeData = async () => {
-  //     try {
-  //       const { data } = await axios.get(
-  //         `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeDetails/${branch?.name}/${user.id}`
-  //       );
-  //       console.log(data);
-  //       setEmpData(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const getEmployeeData = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/v1/accountant/getEmployeeDetails/${branch}/${user.id}`
+      );
+      console.log(data);
+      setEmpData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  //   useState(() => {
-  //     getEmployeeData();
-  //   }, []);
+  useState(() => {
+    getEmployeeData();
+  }, []);
 
   console.log(empData);
 
@@ -183,14 +183,14 @@ const AccountantProfile = () => {
                             {" "}
                             <h3>Employee Profile</h3>
                           </div>
-                          <div>
+                          {/* <div>
                             <button
                               className="btn btn-warning fw-bold shadow"
                               onClick={() => openEditEmployeePopup()}
                             >
                               Update Details
                             </button>
-                          </div>
+                          </div> */}
                         </div>
 
                         <hr />
@@ -811,7 +811,6 @@ const Container = styled.div`
   }
 
   p {
-    font-size: 1.2rem;
   }
 
   .select-style {

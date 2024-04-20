@@ -51,7 +51,8 @@ const PaidPaymentReport = () => {
       "Patient Email": item.patient_email,
       "Assigned Doctor": item.assigned_doctor_name,
       "Total Amount": item.total_amount,
-      "Paid Amount": item.paid_amount,
+      "Paid By Direct Amount": item.paid_amount,
+      "Paid By Secuirty Amt": item.pay_by_sec_amt,
       "Payment Status": item.payment_status,
       "Payment Date Time": item.payment_date_time?.split("T")[0],
       "Receiver Name": item.receiver_name,
@@ -157,7 +158,8 @@ const PaidPaymentReport = () => {
                               <th className="thead">Patient Email</th>
                               <th className="thead">Assigned Doctor</th>
                               <th className="thead">Total Amount</th>
-                              <th className="thead">Paid Amount</th>
+                              <th className="thead">Paid By Direct Amount</th>
+                              <th className="thead">Paid By Secuirty Amt</th>
                               <th className="thead">Payment Status</th>
                               <th className="thead">Payment Date Time</th>
                               <th className="thead">Receiver Name</th>
@@ -179,6 +181,7 @@ const PaidPaymentReport = () => {
                                   <td>{item.assigned_doctor_name}</td>
                                   <td>{item.total_amount}</td>
                                   <td>{item.paid_amount}</td>
+                                  <td>{item.pay_by_sec_amt}</td>
                                   <td>{item.payment_status}</td>
                                   <td>
                                     {item.payment_date_time?.split("T")[0]}

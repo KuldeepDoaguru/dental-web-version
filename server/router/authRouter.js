@@ -76,6 +76,12 @@ const {
   getBranchDetails,
   billDetailsViaTpid,
   updateRecSecAmountAfterPayment,
+  getAttendancebyempId,
+  getLeaves,
+  getTodayAttendance,
+  MarkAttendanceLogin,
+  MarkAttendanceLogout,
+  applyLeave,
 } = require("../controller/authTreatment.js");
 const {
   uploadImage,
@@ -292,5 +298,14 @@ router.get(
 router.post("/generateFinalBillwithTpid", generateFinalBillwithTpid);
 router.get("/getBranchDetails/:branch", getBranchDetails);
 router.get("/billDetailsViaTpid/:tpid", billDetailsViaTpid);
+router.get("/getAttendancebyempId/:branch/:employee_ID", getAttendancebyempId);
+router.get("/get-leaves/:branch/:employee_Id", getLeaves);
+router.get(
+  "/getTodayAttendance/:branch/:employee_ID/:date",
+  getTodayAttendance
+);
+router.post("/markAttendanceLogin", MarkAttendanceLogin);
+router.put("/markAttendanceLogout", MarkAttendanceLogout);
+router.post("/apply-leave", applyLeave);
 
 module.exports = { authRoutes: router };

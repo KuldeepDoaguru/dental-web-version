@@ -123,7 +123,7 @@ const NewTreatPrescription = () => {
         "http://localhost:8888/api/doctor/insertTimelineEvent",
         {
           type: "Medical Prescription",
-          description: "Add Medicine",
+          description: "Medicine Added Successfully",
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
         }
@@ -286,7 +286,7 @@ const NewTreatPrescription = () => {
         "http://localhost:8888/api/doctor/insertTimelineEvent",
         {
           type: "Bill Data",
-          description: "Add Bill Data Patient Table",
+          description: "Bill Generated for the sitting",
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
         }

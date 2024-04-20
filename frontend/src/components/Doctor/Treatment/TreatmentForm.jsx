@@ -101,8 +101,11 @@ const TreatmentForm = () => {
       const response = await axios.post(
         "http://localhost:8888/api/doctor/insertTimelineEvent",
         {
-          type: "Treatment Producer",
-          description: "Treatment Start",
+          type: "Treatment Procedure",
+          description:
+            treatStats === "yes"
+              ? `${treatment} Treatment Done, TPID : ${tp_id}`
+              : `Sitting Done, TPID : ${tp_id}`,
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
         }
@@ -302,6 +305,25 @@ const TreatmentForm = () => {
     }
   };
 
+  const timelineForMakePayViaSecurity = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        {
+          type: "Security Amount Used",
+          description: `${
+            securityAmt[0]?.remaining_amount - remaining_amount
+          } security amount used`,
+          branch: branch,
+          patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const MakePaymentViaSecurityAmount = async () => {
     try {
       const res = await axios.put(
@@ -309,6 +331,7 @@ const TreatmentForm = () => {
         { remaining_amount: remaining_amount }
       );
       console.log(res);
+      timelineForMakePayViaSecurity();
       setShowDirect(true);
       // updateAmountAfterPayViaSecAmount();
     } catch (error) {
@@ -672,6 +695,7 @@ const TreatmentForm = () => {
                       currentSitting={treatments[0]?.current_sitting}
                       appoint_id={appoint_id}
                       tp_id={tp_id}
+                      treatStats={treatStats}
                       onClose={() => setShowBookingPopup(false)}
                     />
                   )}

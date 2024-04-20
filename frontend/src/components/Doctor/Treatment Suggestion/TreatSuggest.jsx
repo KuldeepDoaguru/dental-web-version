@@ -149,7 +149,7 @@ const TreatSuggest = () => {
         "http://localhost:8888/api/doctor/insertTimelineEvent",
         {
           type: "Treatment Suggest",
-          description: "Select Treatment Plan",
+          description: `Select Treatment : ${formData.treatment_name} for desease : ${formData.desease}`,
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
         }

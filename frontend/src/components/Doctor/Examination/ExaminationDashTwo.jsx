@@ -28,6 +28,23 @@ const ExaminationDashTwo = () => {
 
   console.log(treatData);
 
+  const timelineForExamination = async (cat) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        {
+          type: "Examiantion",
+          description: `Selected Category ${cat}`,
+          branch: branch,
+          patientId: uhid,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const addPackageTreat = async (updatedTreatData) => {
     try {
       const { data } = await axios.post(
@@ -36,6 +53,7 @@ const ExaminationDashTwo = () => {
       );
       console.log(data.result);
       cogoToast.success("treatment started added");
+      timelineForExamination(data.result.diagnosis_category);
       if (data.result.diagnosis_category === "Dental-X") {
         navigate(
           `/ExaminationDashBoardPatient/${id}/${data.result.diagnosis_category}/${data.result.insertId}`
@@ -58,6 +76,8 @@ const ExaminationDashTwo = () => {
       console.log(error);
     }
   };
+
+  console.log(dcat);
 
   useEffect(() => {
     if (dcat) {

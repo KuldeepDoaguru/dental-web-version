@@ -23,6 +23,7 @@ import PrintSecurityAmt from "./components/Doctor/Treatment Suggestion/PrintSecu
 import CreatePrescrip from "./components/Doctor/Prescription/CreatePrescrip";
 import { useSelector } from "react-redux";
 import PatientBillsByTpid from "./pages/PatientBills/PatientBillsByTpid";
+import AttendanceLeave from "./pages/DoctorPage/AttendanceLeave";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -170,6 +171,13 @@ function App() {
       <Route
         path="/all-patient"
         element={user.currentUser === null ? <DoctorLogin /> : <AllPatient />}
+      />
+
+      <Route
+        path="/attendance-dashboard"
+        element={
+          user.currentUser === null ? <DoctorLogin /> : <AttendanceLeave />
+        }
       />
 
       {/* ****************** Doctor Routes End Here ******************* */}

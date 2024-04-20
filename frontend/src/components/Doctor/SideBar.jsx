@@ -13,6 +13,7 @@ import { IoPeople } from "react-icons/io5";
 import { CiMedicalClipboard } from "react-icons/ci";
 import { clearUser } from "../../redux/user/userSlice";
 import { useDispatch } from "react-redux";
+import { BsFileEarmarkPerson } from "react-icons/bs";
 
 const Sider = () => {
   const location = useLocation();
@@ -23,14 +24,14 @@ const Sider = () => {
     return location.pathname === path ? "active-nav" : "";
   };
 
-  const handleLogout = () =>{
-    const isConfirmed = window.confirm('Are you sure you want to Logout?');
+  const handleLogout = () => {
+    const isConfirmed = window.confirm("Are you sure you want to Logout?");
     if (!isConfirmed) {
       return;
     }
-    navigate("/")
-    dispatch(clearUser())
-  }
+    navigate("/");
+    dispatch(clearUser());
+  };
 
   return (
     <Wrapper>
@@ -43,13 +44,11 @@ const Sider = () => {
             <li>
               <Link
                 to="/doctor-dashboard"
-                className={`link-div ${getSidebarClass(
-                  "/doctor-dashboard"
-                )}`}
+                className={`link-div ${getSidebarClass("/doctor-dashboard")}`}
               >
                 <div>
                   {/* <i className="fs-4 bi bi-house-door-fill"></i> */}
-                  <IoHome className="icon"/>
+                  <IoHome className="icon" />
                 </div>
                 <div>
                   <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
@@ -58,191 +57,34 @@ const Sider = () => {
                 </div>
               </Link>
             </li>
-            {/* <hr/> */}
-            {/* <li>
-              <Link
-                to="/all-appoint"
-                className={`link-div ${getSidebarClass(
-                  "/all-appoint"
-                )}`}
-              >
-                <div>
-                  <i className="fs-4 bi bi-table"></i>
-                </div>
-                <div>
-                  <h3 className="d-none d-sm-inline fs-6" id="navleft2">
-                    Treatment Que
-                  </h3>
-                </div>
-              </Link>
-            </li> */}
-            {/* <hr /> */}
-            {/* <li>
-              <Link
-                to="/examination-Dashboard"
-                className={`link-div ${getSidebarClass(
-                  "/examination-Dashboard"
-                )}`}
-              >
-                <div>
-                <SiCodereview className="fs-3 bi bi-house-door-fill"/>
-                </div>
-                <div>
-                  <h3 className="d-none d-sm-inline fs-6" id="navleft2">
-                    Examination
-                  </h3>
-                </div>
-              </Link>
-            </li> */}
-            {/* <hr /> */}
-            {/* <li>
-              <Link
-                to="/TreatmentDashBoard"
-                className={`link-div ${getSidebarClass("/TreatmentDashBoard")}`}
-              >
-                <div>
-                <SiAddthis className="fs-3 bi bi-house-door-fill" />
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                    Treatment
-                  </h3>
-                </div>
-              </Link>
-            </li> */}
-            {/* <hr />
+            <hr />
             <li>
               <Link
-                to="/bill_section"
-                className={`link-div ${getSidebarClass("/bill_section")}`}
+                to="/attendance-dashboard"
+                className={`link-div ${getSidebarClass(
+                  "/attendance-dashboard"
+                )}`}
               >
                 <div>
-                <ImLab className="fs-3 bi bi-house-door-fill" />
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                  Laboratory 
-                  </h3>
-                </div>
-              </Link>
-            </li> */}
-            {/* <hr /> */}
-            {/* <li>
-              <Link
-                to="/CreatePrescrip"
-                className={`link-div ${getSidebarClass("/CreatePrescrip")}`}
-              >
-                <div>
-                  <CiMedicalClipboard className="icon"/>
+                  {/* <i className="fs-4 bi bi-house-door-fill"></i> */}
+                  <BsFileEarmarkPerson className="fs-2 text-white" />
                 </div>
                 <div>
                   <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
-                  Prescription
-                  </h3>
-                </div>
-              </Link>
-            </li> */}
-            {/* <hr/>
-            <li>
-              <Link
-                to="/HistoryDashBoard"
-                className={`link-div ${getSidebarClass("/HistoryDashBoard")}`}
-              >
-                <div>
-                  <FaHistory className="icon" />
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                    History
-                  </h3>
-                </div>
-              </Link>
-            </li> */}
-             {/* <hr/>
-            <li>
-              <Link
-                to="/all-patient"
-                className={`link-div ${getSidebarClass("/all-patient")}`}
-              >
-                <div>
-                <IoPeople className="icon" />
-                </div>
-                <div>
-                <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
-                     AllPatient
-                  </h3>
-                </div>
-              </Link>
-            </li> */}
-             <hr />
-            {/*<li>
-              <Link
-                to="/doctor_section"
-                className={`link-div ${getSidebarClass("/doctor_section")}`}
-              >
-                <div>
-                  <i className="fs-4 bi bi-person-fill"></i>
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                    Doctor
-                  </h3>
-                </div>
-              </Link>
-            </li> */}
-            {/* <hr />
-
-            <li>
-              <Link to="/lab" className={`link-div ${getSidebarClass("/lab")}`}>
-                <div>
-                  <i className="fs-4 bi bi-file-medical"></i>
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                    Lab
+                    Attendance
                   </h3>
                 </div>
               </Link>
             </li>
-            <hr /> */}
-
-            {/* <li>
-              <Link
-                to="/video"
-                className={`link-div ${getSidebarClass("/video")}`}
-              >
-                <div>
-                  <i className="fs-4 bi bi-camera-video"></i>
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                    Video
-                  </h3>
-                </div>
-              </Link>
-            </li>
-            <hr /> */}
-            {/* <li>
-              <div className={`link-div ${getSidebarClass("/settings")}`}>
-                <div>
-                  <i className="fs-4 bi bi-gear"></i>
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft">
-                    Settings
-                  </h3>
-                </div>
-              </div>
-            </li> */}
-            {/* <hr /> */}
+            <hr />
             <li>
               <div className="link-div" onClick={handleLogout}>
                 <div>
                   {/* <i className="fs-4 bi bi-power"></i> */}
-                  <ImSwitch className="icon"/>
+                  <ImSwitch className="icon" />
                 </div>
                 <div className="text-light">
-                Logout
+                  Logout
                   {/* <button className="btn btn-danger d-none d-sm-inline">
                     Logout
                   </button> */}
@@ -306,11 +148,11 @@ const Wrapper = styled.div`
   }
 
   .active-nav {
-    background-color:  #8ae6ff;
+    background-color: #8ae6ff;
     padding: 1rem;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
   }
-  .icon{
+  .icon {
     color: white;
     font-size: 2rem;
     @media screen and (min-width: 768px) and (max-width: 1024px) {

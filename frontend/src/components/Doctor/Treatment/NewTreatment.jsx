@@ -36,6 +36,8 @@ const NewTreatment = () => {
     }
   };
 
+  console.log(getPatientData[0]?.uhid);
+
   useEffect(() => {
     getPatientDetail();
   }, []);
@@ -251,6 +253,7 @@ const NewTreatment = () => {
           <SittingProcessModal
             onClose={() => setShowEditPopup(false)}
             selectedData={selectedData}
+            uhid={getPatientData[0]?.uhid}
           />
         )}
         <div>

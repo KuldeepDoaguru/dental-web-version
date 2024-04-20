@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from "react-router-dom";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { RiLoader2Fill } from "react-icons/ri";
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleTableRefresh } from '../../../redux/user/userSlice'; 
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTableRefresh } from "../../../redux/user/userSlice";
 import { GiFastBackwardButton } from "react-icons/gi";
 import cogoToast from "cogo-toast";
 import teeth18 from "../Assest/teeth1.png";
@@ -307,35 +307,35 @@ import rootbtn from "../Assest/Examination Buttons/rootstump1.png";
 import suparabtn from "../Assest/Examination Buttons/Supra erupted1.png";
 import SaveData from "./SaveExaminationData/SaveData";
 
-const ExaminationPatientTest = () => {
-  const { id } = useParams();
+const ExaminationPatientTest = ({ tpid }) => {
+  const { id, dcat } = useParams();
   console.log(id);
   const [selectedTeeth, setSelectedTeeth] = useState([]);
-  // const [inputItemList, setInputItemList] = useState([]); 
+  // const [inputItemList, setInputItemList] = useState([]);
   const [inputItem, setInputItem] = useState({
     appointment_id: id,
     patient_uhid: null,
-    selectTeeth: [], 
+    selectTeeth: [],
     desease: "",
     chiefComplain: "",
     advice: "",
     onExamination: "",
+    diagnosis_category: dcat,
   });
-  const [selectAllTeeth, setSelectAllTeeth] = useState(false); 
+  const [selectAllTeeth, setSelectAllTeeth] = useState(false);
   const [isFormFilled, setIsFormFilled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [getPatientData, setGetPatientData] = useState([]);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
-    console.log(branch);
+  console.log(branch);
 
   // console.log(getPatientData[0].uhid);
 
   useEffect(() => {
-
     const timeout = setTimeout(() => {
-      setIsLoading(false)
+      setIsLoading(false);
     }, 1000);
 
     return () => clearTimeout(timeout);
@@ -353,7 +353,7 @@ const ExaminationPatientTest = () => {
         : prevSelectedTeeth.filter((val) => val !== toothNumber)
     );
 
-    setInputItem((prevInputItem) => ({ 
+    setInputItem((prevInputItem) => ({
       ...prevInputItem,
       selectTeeth: checked
         ? [...prevInputItem.selectTeeth, toothNumber]
@@ -379,6 +379,41 @@ const ExaminationPatientTest = () => {
   };
 
   console.log(selectedTeeth);
+
+  const toothDefaultMapping = {
+    18: teeth18,
+    17: teeth17,
+    16: teeth16,
+    15: teeth15,
+    14: teeth14,
+    13: teeth13,
+    12: teeth12,
+    11: teeth11,
+    21: teeth21,
+    22: teeth22,
+    23: teeth23,
+    24: teeth24,
+    25: teeth25,
+    26: teeth26,
+    27: teeth27,
+    28: teeth28,
+    48: teeth48,
+    47: teeth47,
+    46: teeth46,
+    45: teeth45,
+    44: teeth44,
+    43: teeth43,
+    42: teeth42,
+    41: teeth41,
+    31: teeth31,
+    32: teeth32,
+    33: teeth33,
+    34: teeth34,
+    35: teeth35,
+    36: teeth36,
+    37: teeth37,
+    38: teeth38,
+  };
 
   const toothImageMapping = {
     18: cariesT1,
@@ -416,25 +451,26 @@ const ExaminationPatientTest = () => {
     // Add more mappings as needed
   };
 
+  const crNull = () => {
+    cogoToast.error("Please Select Teeth");
+  };
+
   const caries = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Caries")) {
-      updatedDisease = inputItem.desease.replace(", Caries", "").replace("Caries", "");
-    } else {
-      updatedDisease = inputItem.desease ? inputItem.desease + ", Caries" : "Caries";
-    }
+    // Check if "Caries" is already present in the disease array
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Caries" ? "" : "Caries",
+    }));
 
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease,
-    };
-    setInputItem(newInputItem);
-
-    // Additional logic here if needed
+    // Update the tooth images
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
-      if (toothElement && toothImageMapping[toothId]) {
-        toothElement.src = toothImageMapping[toothId];
+      if (toothElement) {
+        if (inputItem.desease && inputItem.desease === "Caries") {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothImageMapping[toothId];
+        }
       }
     });
   };
@@ -480,23 +516,20 @@ const ExaminationPatientTest = () => {
   };
 
   const fracture = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Fracture")) {
-      updatedDisease = inputItem.desease.replace(", Fracture", "").replace("Fracture", "");
-    } else {
-      updatedDisease = inputItem.desease ? inputItem.desease + ", Fracture" : "Fracture";
-    }
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease
-    };
-    setInputItem(newInputItem);
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Fracture" ? "" : "Fracture",
+    }));
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
-      if (toothElement && toothfractureImageMapping[toothId]) {
-        toothElement.src = toothfractureImageMapping[toothId];
+      if (toothElement) {
+        if (inputItem.desease && inputItem.desease === "Fracture") {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothfractureImageMapping[toothId];
+        }
       }
     });
   };
@@ -541,23 +574,20 @@ const ExaminationPatientTest = () => {
   };
 
   const impacted = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Impacted")) {
-      updatedDisease = inputItem.desease.replace(", Impacted", "").replace("Impacted", "");
-    } else {
-      updatedDisease = inputItem.desease ? inputItem.desease + ", Impacted" : "Impacted";
-    }
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease
-    };
-    setInputItem(newInputItem);
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Impacted" ? "" : "Impacted",
+    }));
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
-      if (toothElement && toothimpactedImageMapping[toothId]) {
-        toothElement.src = toothimpactedImageMapping[toothId];
+      if (toothElement) {
+        if (inputItem.desease && inputItem.desease.includes("Impacted")) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothimpactedImageMapping[toothId];
+        }
       }
     });
   };
@@ -603,23 +633,19 @@ const ExaminationPatientTest = () => {
   };
 
   const missing = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Missing Tooth")) {
-      updatedDisease = inputItem.desease.replace(", Missing Tooth", "").replace("Missing Tooth", "");
-    } else {
-      updatedDisease = inputItem.desease ? inputItem.desease + ", Missing Tooth" : "Missing Tooth";
-    }
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease
-    };
-    setInputItem(newInputItem);
-
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Missing Tooth" ? "" : "Missing Tooth",
+    }));
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
-      if (toothElement && toothmissingImageMapping[toothId]) {
-        toothElement.src = toothmissingImageMapping[toothId];
+      if (toothElement) {
+        if (inputItem.desease && inputItem.desease.includes("Missing Tooth")) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothmissingImageMapping[toothId];
+        }
       }
     });
   };
@@ -665,23 +691,19 @@ const ExaminationPatientTest = () => {
   };
 
   const mobility = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Mobility")) {
-      updatedDisease = inputItem.desease.replace(", Mobility", "").replace("Mobility", "");
-    } else {
-      updatedDisease = inputItem.desease ? inputItem.desease + ", Mobility" : "Mobility";
-    }
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease
-    };
-    setInputItem(newInputItem);
-
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Mobility" ? "" : "Mobility",
+    }));
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
-      if (toothElement && toothmobilityImageMapping[toothId]) {
-        toothElement.src = toothmobilityImageMapping[toothId];
+      if (toothElement) {
+        if (inputItem.desease && inputItem.desease.includes("Mobility")) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothmobilityImageMapping[toothId];
+        }
       }
     });
   };
@@ -727,23 +749,25 @@ const ExaminationPatientTest = () => {
   };
 
   const periapical = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Periapical Abscess")) {
-      updatedDisease = inputItem.desease.replace(", Periapical Abscess", "").replace("Periapical Abscess", "");
-    } else {
-      updatedDisease = inputItem.desease ? inputItem.desease + ", Periapical Abscess" : "Periapical Abscess";
-    }
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease
-    };
-    setInputItem(newInputItem);
-
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease:
+        prevInputItem.desease === "Periapical Abscess"
+          ? ""
+          : "Periapical Abscess",
+    }));
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
-      if (toothElement && toothperiapicalImageMapping[toothId]) {
-        toothElement.src = toothperiapicalImageMapping[toothId];
+      if (toothElement) {
+        if (
+          inputItem.desease &&
+          inputItem.desease.includes("Periapical Abscess")
+        ) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothperiapicalImageMapping[toothId];
+        }
       }
     });
   };
@@ -789,23 +813,20 @@ const ExaminationPatientTest = () => {
   };
 
   const root = () => {
-    let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Root Stump")) {
-      updatedDisease = inputItem.desease.replace(", Root Stump", "").replace("Root Stump", "");
-    } else {
-      updatedDisease = inputItem.desease ? inputItem.desease + ", Root Stump" : "Root Stump";
-    }
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease
-    };
-    setInputItem(newInputItem);
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Root Stump" ? "" : "Root Stump",
+    }));
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
-      if (toothElement && toothrootImageMapping[toothId]) {
-        toothElement.src = toothrootImageMapping[toothId];
+      if (toothElement) {
+        if (inputItem.desease && inputItem.desease.includes("Root Stump")) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothrootImageMapping[toothId];
+        }
       }
     });
   };
@@ -851,22 +872,19 @@ const ExaminationPatientTest = () => {
 
   const supara = () => {
     let updatedDisease;
-    if (inputItem.desease && inputItem.desease.includes("Supra Erupted")) {
-      updatedDisease = inputItem.desease.replace(", Supra Erupted", "").replace("Supra Erupted", "");
-    } else {
-      updatedDisease = inputItem.desease ? inputItem.desease + ", Supra Erupted" : "Supra Erupted";
-    }
-    const newInputItem = {
-      ...inputItem,
-      desease: updatedDisease
-    };
-    setInputItem(newInputItem);
-
+    setInputItem((prevInputItem) => ({
+      ...prevInputItem,
+      desease: prevInputItem.desease === "Supra Erupted" ? "" : "Supra Erupted",
+    }));
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
-      if (toothElement && toothsuparaImageMapping[toothId]) {
-        toothElement.src = toothsuparaImageMapping[toothId];
+      if (toothElement) {
+        if (inputItem.desease && inputItem.desease.includes("Supra Erupted")) {
+          toothElement.src = toothDefaultMapping[toothId];
+        } else {
+          toothElement.src = toothsuparaImageMapping[toothId];
+        }
       }
     });
   };
@@ -882,60 +900,55 @@ const ExaminationPatientTest = () => {
 
     setIsFormFilled(
       !!inputItem.selectTeeth.length ||
-      inputItem.desease ||
-      inputItem.chiefComplain ||
-      inputItem.advice ||
-      inputItem.onExamination
+        inputItem.desease ||
+        inputItem.chiefComplain ||
+        inputItem.advice ||
+        inputItem.onExamination
     );
   };
 
   const timelineForExamination = async () => {
-
     try {
-        const response = await axios.post(
-            "http://localhost:8888/api/doctor/insertTimelineEvent",
-            {
-                type: "Examiantion",
-                description: "Add Teeth DentalX",
-                branch: branch,
-                patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
-            }
-        );
-        console.log(response);
+      const response = await axios.post(
+        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        {
+          type: "Examiantion",
+          description: "Add Teeth DentalX",
+          branch: branch,
+          patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        }
+      );
+      console.log(response);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-};
+  };
 
+  const formData = {
+    appointment_id: id,
+    tpid: tpid,
+    branch: branch,
+    patient_uhid: inputItem.patient_uhid,
+    selectedTeeth: inputItem.selectTeeth.join(", "),
+    disease: inputItem.desease,
+    chiefComplain: inputItem.chiefComplain,
+    advice: inputItem.advice,
+    onExamination: inputItem.onExamination,
+    diagnosis_category: inputItem.diagnosis_category,
+  };
+
+  console.log(formData);
   const handleSave = async (e) => {
     e.preventDefault();
 
-    // Prepare data to send to the backend
-    const formData = {
-      appointment_id: id, 
-      patient_uhid: inputItem.patient_uhid,
-      selectedTeeth: inputItem.selectTeeth.join(", "),
-      disease: inputItem.desease,
-      chiefComplain: inputItem.chiefComplain,
-      advice: inputItem.advice,
-      onExamination: inputItem.onExamination
-    };
-
     try {
-      const response = await axios.post('http://localhost:8888/api/doctor/dentalPediatric', formData);
+      const response = await axios.post(
+        "http://localhost:8888/api/doctor/dentalPediatric",
+        formData
+      );
       console.log(response.data);
       dispatch(toggleTableRefresh());
       timelineForExamination();
-      // window.location.reload();
-    } catch (error) {
-      console.error('Error:', error);
-    }
-
-      // Push the current inputItem to inputItemList
-      // setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
-
-      // console.log("Before resetting inputItem:", inputItem);
-  
       setInputItem({
         appointment_id: id,
         selectTeeth: [],
@@ -944,46 +957,20 @@ const ExaminationPatientTest = () => {
         advice: "",
         onExamination: "",
       });
-  
-      console.log("After resetting inputItem:", inputItem);
-  
-      // Clear the checked property of all checkboxes
       setTimeout(() => {
         const checkboxes = document.querySelectorAll('input[type="checkbox"]');
         checkboxes.forEach((checkbox) => {
           checkbox.checked = false;
         });
       });
-  
+
       setSelectedTeeth([]);
+      // window.location.reload();
+    } catch (error) {
+      console.error("Error:", error);
+      cogoToast.error(error.response.data.message);
+    }
   };
-
-  // const handleAddNew = () => {
-  //   // Push the current inputItem to inputItemList
-  //   setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
-
-  //   // console.log("Before resetting inputItem:", inputItem);
-
-  //   setInputItem({
-  //     selectTeeth: [],
-  //     desease: "",
-  //     chiefComplain: "",
-  //     advice: "",
-  //     onExamination: "",
-  //   });
-
-  //   console.log("After resetting inputItem:", inputItem);
-
-  //   // Clear the checked property of all checkboxes
-  //   setTimeout(() => {
-  //     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  //     checkboxes.forEach((checkbox) => {
-  //       checkbox.checked = false;
-  //     });
-  //   });
-
-  //   setSelectedTeeth([]);
-  // };
 
   useEffect(() => {
     setInputItem((prevState) => ({
@@ -999,34 +986,18 @@ const ExaminationPatientTest = () => {
     } else {
       navigate(`/ExaminationDashBoardPediatric/${id}`);
     }
-  }
+  };
 
-  // const editItem = (index) => {
-  //   const selectedItem = inputItemList[index]; // Get the item to edit
-  //   setInputItem({
-  //     selectTeeth: selectedItem.selectTeeth,
-  //     desease: selectedItem.desease,
-  //     chiefComplain: selectedItem.chiefComplain,
-  //     advice: selectedItem.advice,
-  //     onExamination: selectedItem.onExamination,
-  //   });
-  // };
-
-  // const deleteItem = (index) => {
-  //   // Your logic to delete the item at the given index
-  //   const newList = [...inputItemList];
-  //   newList.splice(index, 1);
-  //   setInputItemList(newList);
-  // };
-
-  const getPatientDetail = async () =>{
+  const getPatientDetail = async () => {
     try {
-      const res = await axios.get(`http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`);
+      const res = await axios.get(
+        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+      );
 
       const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
-      setInputItem(prevInputItem => ({
-          ...prevInputItem,
-          patient_uhid: uhid
+      setInputItem((prevInputItem) => ({
+        ...prevInputItem,
+        patient_uhid: uhid,
       }));
 
       setGetPatientData(res.data.result);
@@ -1034,17 +1005,16 @@ const ExaminationPatientTest = () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     getPatientDetail();
   }, []);
 
-  const handleSaveContinue = () =>{
-    // navigate(`/TreatmentDashBoard/${id}`); 
-    navigate(`/treatmentSuggestion/${id}`); 
-  }
-
+  const handleSaveContinue = () => {
+    // navigate(`/TreatmentDashBoard/${id}`);
+    navigate(`/treatmentSuggestion/${id}`);
+  };
 
   return (
     <>
@@ -1052,44 +1022,72 @@ const ExaminationPatientTest = () => {
         <div className="container">
           <div className="row">
             <div className="col-md-12 text-start p-3">
-            <button className="btn btn-secondary mx-3" onClick={()=>window.history.back()}><GiFastBackwardButton size={21}/></button>
-              <button className="btn btn-info text-light" onClick={handleRedirect}>
-                Pediatric Dental-X Chart
+              <button
+                className="btn btn-secondary mx-3"
+                onClick={() => window.history.back()}
+              >
+                <GiFastBackwardButton size={21} />
               </button>
+              {/* <button
+                className="btn btn-info text-light"
+                onClick={handleRedirect}
+              >
+                Pediatric Dental-X Chart
+              </button> */}
             </div>
           </div>
           <div className="row shadow-sm p-3 mb-3 bg-body rounded patient">
-            {getPatientData.map((item, index)=>(
+            {getPatientData.map((item, index) => (
               <>
-            <div key={index} className="col-lg-12 d-flex justify-content-between align-items-center">
-              <div className="col-lg-4">
-                <p><strong>Appoint ID</strong> : {item.appoint_id}</p>
-              </div>
-              <div className="col-lg-4">
-                <p><strong>Patient Name</strong> : {item.patient_name}</p>
-              </div>
-              <div className="col-lg-4">
-                <p><strong>Patient Mobile No.</strong> : {item.mobileno}</p>
-              </div>
-            </div>
-            <div key={index + 'secondRow'}  className="col-lg-12 d-flex justify-content-between align-items-center">
-              <div className="col-lg-4">
-                <p className="mb-0"><strong>Blood Group</strong> : {item.bloodgroup}</p>
-              </div>
-              <div className="col-lg-4">
-                <p className="mb-0"><strong>Disease</strong> : {item.disease}</p>
-              </div>
-              <div className="col-lg-4">
-                <p className="mb-0"><strong>Allergy</strong> : {item.allergy}</p>
-              </div>
-            </div>
-            </>
+                <div
+                  key={index}
+                  className="col-lg-12 d-flex justify-content-between align-items-center"
+                >
+                  <div className="col-lg-4">
+                    <p>
+                      <strong>Appoint ID</strong> : {item.appoint_id}
+                    </p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p>
+                      <strong>Patient Name</strong> : {item.patient_name}
+                    </p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p>
+                      <strong>Patient Mobile No.</strong> : {item.mobileno}
+                    </p>
+                  </div>
+                </div>
+                <div
+                  key={index + "secondRow"}
+                  className="col-lg-12 d-flex justify-content-between align-items-center"
+                >
+                  <div className="col-lg-4">
+                    <p className="mb-0">
+                      <strong>Blood Group</strong> : {item.bloodgroup}
+                    </p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p className="mb-0">
+                      <strong>Disease</strong> : {item.disease}
+                    </p>
+                  </div>
+                  <div className="col-lg-4">
+                    <p className="mb-0">
+                      <strong>Allergy</strong> : {item.allergy}
+                    </p>
+                  </div>
+                </div>
+              </>
             ))}
           </div>
           {/* dental chart 32 teeth start */}
           {isLoading ? (
             <div>
-              <div className='text-center'><RiLoader2Fill size={45} className="spin" /></div>
+              <div className="text-center">
+                <RiLoader2Fill size={45} className="spin" />
+              </div>
             </div>
           ) : (
             <>
@@ -1650,7 +1648,7 @@ const ExaminationPatientTest = () => {
                 </div>
               </div>
             </>
-            )}
+          )}
           {/* dental chart 32 teeth end */}
 
           <div className="row mt-5">
@@ -1662,17 +1660,23 @@ const ExaminationPatientTest = () => {
                 >
                   {selectAllTeeth ? "Unselect All" : "Select All"}
                 </button>
-                <button
+                {/* <button
                   onClick={() => window.location.reload()}
                   className="btn btn-info text-light mx-2"
                 >
                   Reload
-                </button>
+                </button> */}
               </div>
               <div>
                 <form onSubmit={handleSave}>
-                <input type="hidden" name="appointment_id" value={inputItem.appointment_id} id="form3Example1" class="form-control" />
-                  <div class="row mt-5">
+                  <input
+                    type="hidden"
+                    name="appointment_id"
+                    value={inputItem.appointment_id}
+                    id="form3Example1"
+                    class="form-control"
+                  />
+                  <div class="row mt-3">
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
                         <label className="lable">Select Teeth</label>
@@ -1684,13 +1688,13 @@ const ExaminationPatientTest = () => {
                           readOnly
                           //   value={selectedTeeth.join(", ")}
                           value={inputItem.selectTeeth.join(", ")}
-                        // onChange={handleSelecteditem}
+                          // onChange={handleSelecteditem}
                         />
                       </div>
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
-                      <label className="lable">Dental Condition</label>
+                        <label className="lable">Dental Condition</label>
                         <input
                           type="text"
                           value={inputItem.desease}
@@ -1713,7 +1717,7 @@ const ExaminationPatientTest = () => {
                   <div class="row">
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
-                      <label className="lable">Cheif Complaint</label>
+                        <label className="lable">Cheif Complaint</label>
                         <input
                           type="text"
                           name="chiefComplain"
@@ -1727,7 +1731,7 @@ const ExaminationPatientTest = () => {
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
-                      <label className="lable">Any Advice</label>
+                        <label className="lable">Any Advice</label>
                         <input
                           type="text"
                           id="form8Example4"
@@ -1741,7 +1745,7 @@ const ExaminationPatientTest = () => {
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
-                      <label className="lable">ON Examination</label>
+                        <label className="lable">ON Examination</label>
                         <input
                           type="text"
                           id="form8Example5"
@@ -1760,75 +1764,94 @@ const ExaminationPatientTest = () => {
                       className="btn btn-info text-light mx-3"
                       // onClick={handleAddNew}
                     >
-                      Add New
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-info text-light mx-3"
-                      onClick={handleSaveContinue}
-                    >
-                      Save & Continue
+                      Save
                     </button>
                   </div>
-                </form> 
+                </form>
               </div>
               <div>
-             <SaveData id={id} />
+                <SaveData id={id} tpid={tpid} />
               </div>
             </div>
 
-            <div className="col-lg-2 col-2 dentalButton">
+            <div className="col-lg-2 col-2 bodybutton">
               <div className="d-flex flex-column text-center">
-                <div onClick={() => caries("Caries")} className="p-2">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? caries : crNull}
+                  className="p-2  diseaseMain"
+                >
                   <img
                     src={cariesbtn}
                     alt="caries"
                     className="buttons shadow-sm bg-body rounded"
                   />
                 </div>
-                <div onClick={fracture} className="p-2">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? fracture : crNull}
+                  className="p-2 diseaseMain "
+                >
                   <img
                     src={fracturebtn}
                     alt="fracture"
                     className="buttons shadow-sm bg-body rounded"
                   />
                 </div>
-                <div onClick={impacted} className="p-2">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? impacted : crNull}
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={impactedbtn}
                     alt="impacted"
                     className="buttons shadow-sm bg-body rounded"
                   />
                 </div>
-                <div onClick={missing} className="p-2">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? missing : crNull}
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={missingbtn}
                     alt="missing"
                     className="buttons shadow-sm bg-body rounded"
                   />
                 </div>
-                <div onClick={mobility} className="p-2">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? mobility : crNull}
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={mobilitybtn}
                     alt="mobility"
                     className="buttons shadow-sm bg-body rounded"
                   />
                 </div>
-                <div onClick={periapical} className="p-2">
+                <div
+                  onClick={
+                    inputItem.selectTeeth.length > 0 ? periapical : crNull
+                  }
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={periapicalbtn}
                     alt="periapical"
                     className="buttons shadow-sm bg-body rounded"
                   />
                 </div>
-                <div onClick={root} className="p-2">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? root : crNull}
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={rootbtn}
                     alt="root"
                     className="buttons shadow-sm bg-body rounded"
                   />
                 </div>
-                <div onClick={supara} className="p-2">
+                <div
+                  onClick={inputItem.selectTeeth.length > 0 ? supara : crNull}
+                  className="p-2 diseaseMain"
+                >
                   <img
                     src={suparabtn}
                     alt="supara"
@@ -1846,7 +1869,6 @@ const ExaminationPatientTest = () => {
 
 export default ExaminationPatientTest;
 const Wrapper = styled.div`
-  overflow: hidden;
   .buttons {
     width: 150px;
     cursor: pointer;
@@ -1863,49 +1885,75 @@ const Wrapper = styled.div`
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .buttons {
   }
   button a {
     text-decoration: none;
     color: white;
   }
   @keyframes spin {
-  from {
-    transform: rotate(0deg);
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
 
-.spin {
-  animation: spin 1s linear infinite;
-}
-.lable{
-  font-size: 1.3rem;
-  font-weight: 500;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  padding-left: 0.9rem;
-}
-.patient{
-  @media screen and (min-width: 768px) and (max-width: 1024px) {
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+
+  .patient {
+    @media screen and (min-width: 768px) and (max-width: 1023px) {
       width: 53rem;
       margin-left: 2rem;
     }
-}
-
-.dentalForm{
-  /* @media screen and (min-width: 768px) and (max-width: 1024px) {
-      width: 50rem;
-      margin-left: 1.rem;
-    } */
-}
-.dentalButton{
-  
-}
-.input1{
-  @media screen and (min-width: 868px) and (max-width: 1024px){
-    width: 19rem;
-    margin-left: 0.9rem;
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 37rem;
+      margin-left: 3.2rem;
+    }
   }
-}
+  .setTeeth1 {
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 37rem;
+      margin-left: 3.2rem;
+    }
+  }
+  .headButton {
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 37rem;
+      margin-left: 3.2rem;
+    }
+  }
+  .bodyteeth {
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 37rem;
+      margin-left: 3.2rem;
+    }
+  }
+  .bodybutton {
+    @media screen and (min-width: 480px) and (max-width: 768px) {
+      width: 37rem;
+      margin-left: 3.2rem;
+    }
+  }
+  .lable {
+    font-size: 1.3rem;
+    font-weight: 500;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+      sans-serif;
+    padding-left: 0.9rem;
+  }
+  .diseaseMain .teethDisease {
+    @media screen and (min-width: 992px) and (max-width: 1080px) {
+      width: 125px;
+    }
+    @media screen and (min-width: 769px) and (max-width: 914px) {
+      width: 105px;
+    }
+  }
 `;

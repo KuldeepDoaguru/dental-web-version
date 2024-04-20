@@ -9,7 +9,7 @@ import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
 
-const SittingProcessModal = ({ onClose, selectedData }) => {
+const SittingProcessModal = ({ onClose, selectedData, uhid }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -38,6 +38,23 @@ const SittingProcessModal = ({ onClose, selectedData }) => {
 
   // Access the updated formData in the callback
 
+  const timelineForSitting = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        {
+          type: "Sitting Considered",
+          description: `${formData.current_sitting} Sitting Started`,
+          branch: branch,
+          patientId: uhid,
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   console.log(formData);
   const updateSitting = async (e) => {
     e.preventDefault();
@@ -49,6 +66,7 @@ const SittingProcessModal = ({ onClose, selectedData }) => {
       cogoToast.success("sitting considered");
       console.log(data.result.consider_sitting);
       setTreat(data.result.consider_sitting);
+      timelineForSitting();
       navigate(
         `/treatmentDashTwo/${selectedData.ts_id}/${selectedData.appoint_id}/${selectedData.tp_id}/${selectedData.treatment_name}`
       );

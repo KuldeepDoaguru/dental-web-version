@@ -678,6 +678,299 @@ const billDetailsViaTpid = (req, res) => {
   }
 };
 
+const getAttendancebyempId = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const employee_ID = req.params.employee_ID;
+
+    const sql =
+      "SELECT * FROM employee_attendance WHERE branch = ? AND employee_ID = ? ORDER BY attendance_id DESC";
+
+    db.query(sql, [branch, employee_ID], (err, results) => {
+      if (err) {
+        console.error("Error fetching attendance from MySql:", err);
+        res.status(500).json({ error: "Error fetching Branch  attendance" });
+      } else {
+        res.status(200).json({
+          data: results,
+          message: " attendance fetched successfully",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching  attendance from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched  attendance",
+      error: error.message,
+    });
+  }
+};
+
+const getLeaves = (req, res) => {
+  const branch = req.params.branch;
+  const employee_Id = req.params.employee_Id;
+  try {
+    const sql =
+      "SELECT * FROM employee_leave WHERE branch_name = ? AND employee_ID = ? ORDER BY id DESC";
+
+    db.query(sql, [branch, employee_Id], (err, results) => {
+      if (err) {
+        console.error("Error fetching leaves from MySql:", err);
+        res.status(500).json({ error: "Error fetching leaves" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "leaves fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching leaves from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched leaves",
+      error: error.message,
+    });
+  }
+};
+
+const getTodayAttendance = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const employee_ID = req.params.employee_ID;
+    const date = req.params.date;
+
+    const sql =
+      "SELECT * FROM employee_attendance WHERE branch = ? AND employee_ID = ? AND date = ?";
+
+    db.query(sql, [branch, employee_ID, date], (err, results) => {
+      if (err) {
+        console.error("Error fetching attendance from MySql:", err);
+        res.status(500).json({ error: "Error fetching Branch  attendance" });
+      } else {
+        res.status(200).json({
+          data: results,
+          message: " attendance fetched successfully",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching  attendance from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched  attendance",
+      error: error.message,
+    });
+  }
+};
+
+const MarkAttendanceLogin = (req, res) => {
+  try {
+    const {
+      branch_name,
+      employee_ID,
+      employee_name,
+      employee_designation,
+      date,
+      loginTime,
+    } = req.body;
+
+    // Check if the employee ID for today's date and login time already exists
+    const checkQuery = `
+      SELECT * FROM employee_attendance 
+      WHERE employee_ID = ? AND date = ?`;
+
+    const checkParams = [employee_ID, date];
+
+    db.query(checkQuery, checkParams, (err, result) => {
+      if (err) {
+        console.error("Error in checking attendance:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+
+      if (result.length > 0) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Attendance for this employee on today's date and login time already exists.",
+        });
+      }
+
+      // If validation passes, proceed to insert the attendance record
+      const addQuery = `
+        INSERT INTO employee_attendance(
+          employee_ID,
+          emp_name,
+          branch,
+          employee_designation,
+          date,
+          allday_shift_login_time
+        ) VALUES (?, ?, ?, ?, ?, ?)
+      `;
+
+      const addParams = [
+        employee_ID,
+        employee_name,
+        branch_name,
+        employee_designation,
+        date,
+        loginTime,
+      ];
+
+      db.query(addQuery, addParams, (err, result) => {
+        if (err) {
+          console.error("Error in marking login", err);
+          return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+          });
+        } else {
+          console.log("login marked successfully");
+          return res.status(200).json({
+            success: true,
+            message: "login marked successfully",
+          });
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Error in marking login:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in marking login:",
+      error: error.message,
+    });
+  }
+};
+
+const MarkAttendanceLogout = (req, res) => {
+  try {
+    const {
+      branch_name,
+      employee_ID,
+      employee_name,
+      employee_designation,
+      date,
+      logoutTime,
+    } = req.body;
+
+    // Check if the employee ID for today's date and logout time already exists
+
+    const checkQuery = `
+      SELECT * FROM employee_attendance 
+      WHERE employee_ID = ? AND date = ? AND branch = ? AND allday_shift_logout_time IS NOT NULL `;
+
+    const checkParams = [employee_ID, date, branch_name];
+
+    db.query(checkQuery, checkParams, (err, result) => {
+      if (err) {
+        console.error("Error in checking attendance:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Internal server error",
+        });
+      }
+
+      if (result.length > 0) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Attendance for this employee on today's date and logout time already exists.",
+        });
+      }
+
+      // If validation passes, proceed to update the attendance record
+      const updateQuery = `
+        UPDATE employee_attendance 
+        SET allday_shift_logout_time = ?
+        WHERE employee_ID = ? AND date = ?`;
+
+      const updateParams = [logoutTime, employee_ID, date];
+
+      db.query(updateQuery, updateParams, (err, result) => {
+        if (err) {
+          console.error("Error in marking logout", err);
+          return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+          });
+        } else {
+          console.log("Logout marked successfully");
+          return res.status(200).json({
+            success: true,
+            message: "Logout marked successfully",
+          });
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Error in marking logout:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in marking logout:",
+      error: error.message,
+    });
+  }
+};
+
+const applyLeave = (req, res) => {
+  try {
+    const {
+      employee_ID,
+      employee_name,
+      branch_name,
+      leave_dates,
+      leave_reason,
+      leave_status,
+    } = req.body;
+
+    const addLeaveQuery = `
+    INSERT INTO employee_leave(
+      employee_ID, 
+      employee_name, 
+      branch_name ,
+      leave_dates ,
+      leave_reason ,
+      leave_status 
+    ) VALUES (?, ?, ?, ?, ?, ?)
+`;
+
+    const addLeaveParams = [
+      employee_ID,
+      employee_name,
+      branch_name,
+      leave_dates,
+      leave_reason,
+      leave_status,
+    ];
+
+    db.query(addLeaveQuery, addLeaveParams, (err, Result) => {
+      if (err) {
+        console.error("Error in apply leave:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      } else {
+        console.log("Leave apply successfully");
+        return res.status(200).json({
+          success: true,
+          message: "Leave apply successfully",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error in apply leave:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in apply leave:",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getTreatmentList,
   insertTreatmentData,
@@ -705,4 +998,10 @@ module.exports = {
   getBranchDetails,
   billDetailsViaTpid,
   updateRecSecAmountAfterPayment,
+  getAttendancebyempId,
+  getLeaves,
+  getTodayAttendance,
+  MarkAttendanceLogin,
+  MarkAttendanceLogout,
+  applyLeave,
 };

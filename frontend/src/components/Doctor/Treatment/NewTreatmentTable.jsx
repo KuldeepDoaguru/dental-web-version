@@ -121,6 +121,23 @@ const NewTreatmentTable = () => {
 
   console.log(billInputField);
 
+  const timelineForFinalBill = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        {
+          type: "Final Bill Generation",
+          description: `Final Bill Generated for TPID : ${tpid}`,
+          branch: branch,
+          patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const generateFinalBill = async () => {
     try {
       const res = await axios.post(
@@ -129,6 +146,7 @@ const NewTreatmentTable = () => {
       );
       console.log(res);
       setBillData(res.data);
+      timelineForFinalBill();
       alert("bill generated successfully");
       navigate(`/ViewPatientTotalBill/${tpid}`);
     } catch (error) {

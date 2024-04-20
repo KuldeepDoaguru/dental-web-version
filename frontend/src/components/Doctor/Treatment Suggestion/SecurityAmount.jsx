@@ -150,7 +150,7 @@ const SecurityAmount = () => {
         "http://localhost:8888/api/doctor/insertTimelineEvent",
         {
           type: "Secuirty Amount",
-          description: "Secuirty Amount Added",
+          description: `${formData.amount} Secuirty Amount Added`,
           branch: currentUser ? currentUser.branch_name : "",
           patientId: formData.uhid,
         }

@@ -755,15 +755,6 @@ const PediatricDentalTest = ({ tpid }) => {
       console.error("Error:", error);
       cogoToast.error(error.response.data.message);
     }
-
-    // Push the current inputItem to inputItemList
-    // setInputItemList((prevInputItemList) => [...prevInputItemList, inputItem]);
-
-    // console.log("Before resetting inputItem:", inputItem);
-
-    // console.log("After resetting inputItem:", inputItem);
-
-    // Clear the checked property of all checkboxes
   };
 
   useEffect(() => {
@@ -1323,7 +1314,7 @@ const PediatricDentalTest = ({ tpid }) => {
                     </div>
                     <div class="col">
                       <div data-mdb-input-init class="form-outline">
-                        <label className="lable">Advice</label>
+                        <label className="lable">Any Advice</label>
                         <input
                           type="text"
                           id="form8Example4"
@@ -1356,7 +1347,14 @@ const PediatricDentalTest = ({ tpid }) => {
                       className="btn btn-info text-light mx-3"
                       // onClick={handleAddNew}
                     >
-                      Save
+                      Add New
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-info text-light mx-3"
+                      onClick={handleSaveContinue}
+                    >
+                      Save & Continue
                     </button>
                   </div>
                 </form>

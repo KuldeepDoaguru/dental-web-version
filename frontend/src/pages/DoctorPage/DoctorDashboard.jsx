@@ -9,11 +9,11 @@ const DoctorDashboard = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   // console.log(user);
-  const  branch = user.currentUser.branch_name;
+  const branch = user.currentUser.branch_name;
   // console.log(`User Branch: ${branch}`);
   return (
     <Wrapper>
-      <HeadBar/>
+      <HeadBar />
       <div className="main">
         <div className="container-fluid">
           <div className="row flex-nowrap">
@@ -46,12 +46,12 @@ const DoctorDashboard = () => {
 export default DoctorDashboard;
 
 const Wrapper = styled.div`
-overflow-x: hidden;
-.sc-jiaSJS{
-  @media (min-width: 1024px){
-    width: 64rem;
+  overflow-x: hidden;
+  .sc-jiaSJS {
+    @media (min-width: 1024px) {
+      width: 64rem;
+    }
   }
-}
   .main {
     height: 100%;
     background-color: #e6ecf1;
@@ -64,18 +64,19 @@ overflow-x: hidden;
     width: 100%;
     height: 54rem;
     background-color: #004aad;
-}
- h3{
-  font-family: 'Poppins', sans-serif;
-  font-size: 2.5rem;
- }
- p{
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-size: 1.5rem;
-  margin: 0 0 8px;
- }
- .appointTable{
-  @media screen and (min-width: 768px) and (max-width: 850px) {
+  }
+  h3 {
+    font-family: "Poppins", sans-serif;
+    font-size: 2.5rem;
+  }
+  p {
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-size: 1.5rem;
+    margin: 0 0 8px;
+  }
+  .appointTable {
+    @media screen and (min-width: 768px) and (max-width: 850px) {
       width: 44rem;
       margin-left: 1.5rem;
     }
@@ -83,10 +84,11 @@ overflow-x: hidden;
       width: 58rem;
       margin-left: 1.1rem;
     }
- }
+  }
 `;
 
- {/* <div className="col-8 col-md-2 my-3 p-0">
+{
+  /* <div className="col-8 col-md-2 my-3 p-0">
                   <Card
                     title={"Total Patient"}
                     info={"250"}
@@ -154,13 +156,16 @@ overflow-x: hidden;
                     }
                     link={""}
                   />
-                </div> */}
+                </div> */
+}
 
-{/* <div className="row ms-5">
+{
+  /* <div className="row ms-5">
                 <div className="col-lg-11 col-md-12 col-sm-12">
                   <div className="shadow-sm bg-white rounded mt-5 d-flex flex-column ">
                   <h6 className='ms-4 text-center'>Average Patients Visits</h6>
                   <AveragePatientChart />
                   </div>
                 </div>
-              </div> */}
+              </div> */
+}

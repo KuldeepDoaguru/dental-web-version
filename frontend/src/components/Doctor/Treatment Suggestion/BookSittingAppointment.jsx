@@ -19,6 +19,7 @@ const BookSittingAppointment = ({
   tp_id,
   appoint_id,
   currentSitting,
+  treatStats,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -208,6 +209,23 @@ const BookSittingAppointment = ({
 
     setAvailableDoctorOnDate(filteredDoctors);
   }, [selectedDate, doctorWithLeave, doctors]);
+
+  const timelineForNextSittingBooking = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        {
+          type: "Booking for Next Sitting",
+          description: "Next Sitting Scheduled Successfully",
+          branch: branch_name,
+          patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        }
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleBookSittingAppointment = async (e) => {
     e.preventDefault();

@@ -227,7 +227,7 @@ const TreatSuggest = () => {
     <>
       <Wrapper>
         <div className="container main">
-          <div className="row justify-content-center ">
+          <div className="">
             <div className="text-start">
               <button
                 className="btn btn-secondary mb-2"
@@ -235,54 +235,52 @@ const TreatSuggest = () => {
               >
                 <GiFastBackwardButton size={22} />
               </button>
-              <p className="fs-1 shadow-none p-2 bg-light rounded text-center">
-                Treatment Suggestion
-              </p>
             </div>
           </div>
+          <p className="fs-1 p-3 bg-light rounded text-center">
+            Treatment Suggestion
+          </p>
         </div>
         <div className="container patient">
           <div className="row shadow-sm p-3 mb-3 bg-body rounded">
             {getPatientData.map((item, index) => (
               <>
-                <div
-                  key={index}
-                  className="col-lg-12 d-flex justify-content-between align-items-center"
-                >
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Appoint ID</strong> : {item.appoint_id}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Patient Name</strong> : {item.patient_name}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Patient Mobile No.</strong> : {item.mobileno}
-                    </p>
+                <div key={index} className="col-lg-12 ">
+                  <div className="row">
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Treatment PID</strong> : {tpid}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Patient Name</strong> : {item.patient_name}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Patient Mobile No.</strong> : {item.mobileno}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div
-                  key={index + "secondRow"}
-                  className="col-lg-12 d-flex justify-content-between align-items-center"
-                >
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Blood Group</strong> : {item.bloodgroup}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Disease</strong> : {item.disease}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Allergy</strong> : {item.allergy}
-                    </p>
+                <div key={index + "secondRow"} className="col-lg-12 ">
+                  <div className="row">
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Blood Group</strong> : {item.bloodgroup}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Disease</strong> : {item.disease}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Allergy</strong> : {item.allergy}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </>
@@ -514,19 +512,20 @@ export default TreatSuggest;
 const Wrapper = styled.div`
   .main {
     margin-top: 1rem;
+    width: 100% !important;
     @media (min-width: 767px) and (max-width: 913px) {
-      width: 37rem;
+      width: 100%;
     }
     @media (min-width: 992px) and (max-width: 1024px) {
-      width: 47rem;
+      width: 100%;
     }
   }
   .mainbody {
     @media (min-width: 767px) and (max-width: 913px) {
-      width: 37rem;
+      width: 100%;
     }
     @media (min-width: 992px) and (max-width: 1024px) {
-      width: 47rem;
+      width: 100%;
     }
   }
   .form {

@@ -108,7 +108,7 @@ const NewTreatment = () => {
     <>
       <Wrapper>
         <div className="container-fluid main">
-          <div className="row justify-content-center">
+          <div className="">
             {" "}
             {/* Center the content horizontally */}
             <div className="text-start">
@@ -120,61 +120,55 @@ const NewTreatment = () => {
               >
                 <GiFastBackwardButton size={22} />
               </button>
-              <p className="fs-1 shadow-none p-2 bg-light rounded text-center">
-                Treatment Procedure
-              </p>
             </div>
           </div>
+          <p className="fs-1 shadow-none p-2 bg-light rounded text-center">
+            Treatment Procedure
+          </p>
         </div>
 
         <div className="container-fluid patient">
           <div className="row shadow-sm p-3 mb-3 bg-body rounded">
-            <div className="col-lg-4">
-              <p>
-                <strong>Treatment Package ID</strong> : {getExamTeeth[0]?.tp_id}
-              </p>
-            </div>
             {getPatientData.map((item, index) => (
               <>
-                <div
-                  key={index}
-                  className="col-lg-12 d-flex justify-content-between align-items-center"
-                >
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Appoint ID</strong> : {item.appoint_id}
-                    </p>
-                  </div>
+                <div key={index} className="col-lg-12">
+                  <div className="row">
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Treatment Package ID</strong> :{" "}
+                        {getExamTeeth[0]?.tp_id}
+                      </p>
+                    </div>
 
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Patient Name</strong> : {item.patient_name}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Patient Mobile No.</strong> : {item.mobileno}
-                    </p>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Patient Name</strong> : {item.patient_name}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Patient Mobile No.</strong> : {item.mobileno}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div
-                  key={index + "secondRow"}
-                  className="col-lg-12 d-flex justify-content-between align-items-center"
-                >
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Blood Group</strong> : {item.bloodgroup}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Disease</strong> : {item.disease}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Allergy</strong> : {item.allergy}
-                    </p>
+                <div key={index + "secondRow"} className="col-lg-12">
+                  <div className="row">
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Blood Group</strong> : {item.bloodgroup}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Disease</strong> : {item.disease}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Allergy</strong> : {item.allergy}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </>
@@ -284,18 +278,18 @@ const Wrapper = styled.div`
   }
   .main {
     @media screen and (min-width: 768px) and (max-width: 1024px) {
-      width: 41rem;
+      width: 100%;
     }
     @media screen and (min-width: 480px) and (max-width: 768px) {
-      width: 31rem;
+      width: 100%;
     }
   }
   .patient {
     @media screen and (min-width: 768px) and (max-width: 1024px) {
-      width: 53rem;
+      width: 100%;
     }
     @media screen and (min-width: 480px) and (max-width: 768px) {
-      width: 37rem;
+      width: 100%;
     }
   }
 `;

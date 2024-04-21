@@ -161,6 +161,7 @@ const AppointTable = () => {
         } else {
           navigate(`/examination-Dashboard/${appointId}/${uhid}`);
         }
+        window.scrollTo(0, 0);
       }
 
       const res = await axios.get(
@@ -291,7 +292,6 @@ const AppointTable = () => {
                                         item.tp_id
                                       )
                                     }
-                                    // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'In Treatment'}
                                   >
                                     Start Treatment
                                   </button>
@@ -306,7 +306,6 @@ const AppointTable = () => {
                                         item.uhid
                                       )
                                     }
-                                    // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'Cancel'}
                                   >
                                     Cancel Treatment
                                   </button>
@@ -321,7 +320,6 @@ const AppointTable = () => {
                                         item.uhid
                                       )
                                     }
-                                    // disabled={selectedActions[item.appoint_id] !== undefined && selectedActions[item.appoint_id] !== 'On Hold'}
                                   >
                                     Hold
                                   </button>
@@ -329,42 +327,6 @@ const AppointTable = () => {
                               </>
                             )}
                         </ul>
-                        {/* Option 2
-                                                 <ul className="dropdown-menu">
-                                                    {item.appointment_status !== 'Cancelled' && (
-                                                        <li>
-                                                            <button
-                                                                className="dropdown-item mx-0"
-                                                                onClick={() => handleAction('In Treatment', item.appoint_id)}
-                                                                disabled={item.appointment_status !== 'Pending'} // Disable if not in 'Pending' status
-                                                            >
-                                                                Start Treatment
-                                                            </button>
-                                                        </li>
-                                                    )}
-                                                    {item.appointment_status !== 'Cancelled' && (
-                                                        <li>
-                                                            <button
-                                                                className="dropdown-item mx-0"
-                                                                onClick={() => handleAction('Cancel', item.appoint_id)}
-                                                                disabled={item.appointment_status !== 'Pending'} // Disable if not in 'Pending' status
-                                                            >
-                                                                Cancel Treatment
-                                                            </button>
-                                                        </li>
-                                                    )}
-                                                    {item.appointment_status !== 'Cancelled' && (
-                                                        <li>
-                                                            <button
-                                                                className="dropdown-item mx-0"
-                                                                onClick={() => handleAction('On Hold', item.appoint_id)}
-                                                                disabled={item.appointment_status !== 'In Treatment'} // Disable if not in 'In Treatment' status
-                                                            >
-                                                                Hold
-                                                            </button>
-                                                        </li>
-                                                    )}
-                                                </ul> */}
                       </div>
                     </td>
                   </tr>
@@ -385,7 +347,7 @@ const Wrapper = styled.div`
   #tableres {
     margin-top: 0rem;
     @media screen and (max-width: 768px) {
-      width: 20rem;
+      width: 100%;
     }
     @media screen and (min-width: 768px) and (max-width: 1020px) {
       width: 41rem;

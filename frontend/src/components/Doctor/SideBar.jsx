@@ -35,7 +35,7 @@ const Sider = () => {
 
   return (
     <Wrapper>
-      <div className="px-sm-2 px-0" id="sidebar">
+      <div className="px-0" id="sidebar">
         <div className="d-flex flex-column align-items-center  px-3 pt-2">
           <ul
             className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center "
@@ -51,7 +51,10 @@ const Sider = () => {
                   <IoHome className="icon" />
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
+                  <h3
+                    className=" d-none d-sm-inline fs-6 icon-text"
+                    id="navleft1"
+                  >
                     Dashboard
                   </h3>
                 </div>
@@ -70,7 +73,10 @@ const Sider = () => {
                   <BsFileEarmarkPerson className="fs-2 text-white" />
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
+                  <h3
+                    className="d-none d-sm-inline fs-6 icon-text"
+                    id="navleft1"
+                  >
                     Attendance
                   </h3>
                 </div>
@@ -83,7 +89,7 @@ const Sider = () => {
                   {/* <i className="fs-4 bi bi-power"></i> */}
                   <ImSwitch className="icon" />
                 </div>
-                <div className="text-light">
+                <div className="text-light icon-text">
                   Logout
                   {/* <button className="btn btn-danger d-none d-sm-inline">
                     Logout
@@ -121,11 +127,11 @@ const Wrapper = styled.div`
     height: 82rem;
     background-color: #0dcaf0;
     @media screen and (max-width: 768px) {
-      width: 3rem;
+      width: 100%;
       height: 212rem;
     }
     @media screen and (min-width: 768px) and (max-width: 1024px) {
-      width: 7rem;
+      width: 100%;
       height: 110rem;
     }
   }
@@ -156,7 +162,13 @@ const Wrapper = styled.div`
     color: white;
     font-size: 2rem;
     @media screen and (min-width: 768px) and (max-width: 1024px) {
-      font-size: 1.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  .icon-text {
+    @media screen and (max-width: 1024px) {
+      display: none !important;
     }
   }
 `;

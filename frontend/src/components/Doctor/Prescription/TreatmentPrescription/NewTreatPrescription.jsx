@@ -348,9 +348,7 @@ const NewTreatPrescription = () => {
         <div className="container">
           <div className="row shadow-sm p-3 mb-3 bg-body rounded">
             <legend className="">Patient Details</legend>
-            <p>
-              <strong>Treatment Package :{tpid}</strong>
-            </p>
+            <p></p>
             {getPatientData?.map((item, index) => (
               <>
                 <div
@@ -359,7 +357,7 @@ const NewTreatPrescription = () => {
                 >
                   <div className="col-lg-4">
                     <p>
-                      <strong>Appoint ID</strong> : {item.appoint_id}
+                      <strong>Treatment Package :{tpid}</strong>
                     </p>
                   </div>
                   <div className="col-lg-4">

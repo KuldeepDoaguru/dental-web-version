@@ -17,10 +17,10 @@ const DoctorDashboard = () => {
       <div className="main">
         <div className="container-fluid">
           <div className="row flex-nowrap">
-            <div className="col-lg-1 col-1 p-0">
+            <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-2 col-2 p-0">
               <SideBar />
             </div>
-            <div className="col-lg-11 col-11 ps-0">
+            <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-10 col-10 ps-0">
               <div className="row d-flex justify-content-between mx-3">
                 {/* <div className="col-12 col-md-4 "> */}
                 <div className="col-12 col-lg-12 text-center mt-3">
@@ -77,12 +77,16 @@ const Wrapper = styled.div`
   }
   .appointTable {
     @media screen and (min-width: 768px) and (max-width: 850px) {
-      width: 44rem;
+      width: 100%;
       margin-left: 1.5rem;
     }
     @media screen and (min-width: 851px) and (max-width: 1024px) {
-      width: 58rem;
+      width: 100%;
       margin-left: 1.1rem;
+    }
+    @media screen and (max-width: 767px) {
+      width: 100%;
+      margin-left: 1.5rem;
     }
   }
 `;

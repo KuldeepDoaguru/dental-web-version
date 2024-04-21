@@ -109,6 +109,8 @@ const LoginDoctor = (req, res) => {
             employee_mobile: user.employee_mobile,
             gender: user.gender,
             address: user.address,
+            doctor_expertise: user.doctor_expertise,
+            doctor_education_details: user.doctor_education_details,
             working_days: user.working_days,
             morning_shift_start_time: user.morning_shift_start_time,
             morning_shift_end_time: user.morning_shift_end_time,

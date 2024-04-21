@@ -502,6 +502,7 @@ const SecurityAmount = () => {
                         <thead className="table-head">
                           <tr>
                             <th>Date</th>
+                            <th>TPID</th>
                             <th>Appointment ID</th>
                             <th>UHID</th>
                             <th>Patient Name</th>
@@ -519,6 +520,7 @@ const SecurityAmount = () => {
                           {securityAmt.map((item, index) => (
                             <tr className="table-row" key={index}>
                               <td>{item.date}</td>
+                              <td>{tpid}</td>
                               <td>{item.appointment_id}</td>
                               <td>{item.uhid}</td>
                               <td>{item.patient_name}</td>

@@ -127,7 +127,7 @@ const ExaminationDashTwo = () => {
                 </div>
               </div>
             </div>
-            <div className="co-lg-6 col-6">
+            <div className="co-lg-6 col-6 dental-des">
               <div className="d-flex justify-content-center-start align-items-start">
                 <img
                   src={examinationImage}
@@ -160,6 +160,10 @@ const Wrapper = styled.div`
     font-size: 2.5rem;
     color: black;
   }
-  .dental {
+  .dental-des {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
   }
 `;

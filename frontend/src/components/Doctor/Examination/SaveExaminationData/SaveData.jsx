@@ -130,7 +130,7 @@ const SaveData = ({ id, tpid }) => {
 
   return (
     <Wrapper>
-      <div className="container">
+      <div className="container-fluid">
         <div className="row">
           <h2>Saved Data</h2>
           {data && data?.length > 0 ? (

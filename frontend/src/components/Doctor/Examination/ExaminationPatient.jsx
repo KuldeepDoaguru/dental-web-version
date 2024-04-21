@@ -1019,11 +1019,11 @@ const ExaminationPatientTest = ({ tpid }) => {
   return (
     <>
       <Wrapper>
-        <div className="container">
+        <div className="container-fluid">
           <div className="row">
             <div className="col-md-12 text-start p-3">
               <button
-                className="btn btn-secondary mx-3"
+                className="btn btn-secondary"
                 onClick={() => window.history.back()}
               >
                 <GiFastBackwardButton size={21} />
@@ -1039,44 +1039,42 @@ const ExaminationPatientTest = ({ tpid }) => {
           <div className="row shadow-sm p-3 mb-3 bg-body rounded patient">
             {getPatientData.map((item, index) => (
               <>
-                <div
-                  key={index}
-                  className="col-lg-12 d-flex justify-content-between align-items-center"
-                >
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Appoint ID</strong> : {item.appoint_id}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Patient Name</strong> : {item.patient_name}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Patient Mobile No.</strong> : {item.mobileno}
-                    </p>
+                <div key={index} className="col-lg-12">
+                  <div className="row">
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Treatment PID</strong> : {tpid}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Patient Name</strong> : {item.patient_name}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Patient Mobile No.</strong> : {item.mobileno}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div
-                  key={index + "secondRow"}
-                  className="col-lg-12 d-flex justify-content-between align-items-center"
-                >
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Blood Group</strong> : {item.bloodgroup}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Disease</strong> : {item.disease}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Allergy</strong> : {item.allergy}
-                    </p>
+                <div key={index + "secondRow"} className="col-lg-12">
+                  <div className="row">
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Blood Group</strong> : {item.bloodgroup}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Disease</strong> : {item.disease}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Allergy</strong> : {item.allergy}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </>
@@ -1652,7 +1650,7 @@ const ExaminationPatientTest = ({ tpid }) => {
           {/* dental chart 32 teeth end */}
 
           <div className="row mt-5">
-            <div className="col-lg-10 col-10 dentalForm">
+            <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-9 col-sm-9 col-9 bodyteeth">
               <div className="text-center">
                 <button
                   onClick={handleClick}
@@ -1677,7 +1675,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                     class="form-control"
                   />
                   <div class="row mt-3">
-                    <div class="col">
+                    <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                       <div data-mdb-input-init class="form-outline">
                         <label className="lable">Select Teeth</label>
                         <input
@@ -1692,7 +1690,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                         />
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                       <div data-mdb-input-init class="form-outline">
                         <label className="lable">Dental Condition</label>
                         <input
@@ -1715,7 +1713,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                   <hr />
 
                   <div class="row">
-                    <div class="col">
+                    <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
                       <div data-mdb-input-init class="form-outline">
                         <label className="lable">Cheif Complaint</label>
                         <input
@@ -1729,7 +1727,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                         />
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
                       <div data-mdb-input-init class="form-outline">
                         <label className="lable">Any Advice</label>
                         <input
@@ -1743,7 +1741,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                         />
                       </div>
                     </div>
-                    <div class="col">
+                    <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
                       <div data-mdb-input-init class="form-outline">
                         <label className="lable">ON Examination</label>
                         <input
@@ -1769,12 +1767,9 @@ const ExaminationPatientTest = ({ tpid }) => {
                   </div>
                 </form>
               </div>
-              <div>
-                <SaveData id={id} tpid={tpid} />
-              </div>
             </div>
 
-            <div className="col-lg-2 col-2 bodybutton">
+            <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-3 col-sm-3 col-3 bodybutton">
               <div className="d-flex flex-column text-center">
                 <div
                   onClick={inputItem.selectTeeth.length > 0 ? caries : crNull}
@@ -1860,6 +1855,9 @@ const ExaminationPatientTest = ({ tpid }) => {
                 </div>
               </div>
             </div>
+            <div>
+              <SaveData id={id} tpid={tpid} />
+            </div>
           </div>
         </div>
       </Wrapper>
@@ -1909,12 +1907,12 @@ const Wrapper = styled.div`
 
   .patient {
     @media screen and (min-width: 768px) and (max-width: 1023px) {
-      width: 53rem;
-      margin-left: 2rem;
+      width: 100%;
+      margin-left: 0rem;
     }
     @media screen and (min-width: 480px) and (max-width: 768px) {
-      width: 37rem;
-      margin-left: 3.2rem;
+      width: 100%;
+      margin-left: 0rem;
     }
   }
   .setTeeth1 {
@@ -1931,14 +1929,14 @@ const Wrapper = styled.div`
   }
   .bodyteeth {
     @media screen and (min-width: 480px) and (max-width: 768px) {
-      width: 37rem;
-      margin-left: 3.2rem;
+      /* width: 37rem; */
+      margin-left: 0rem;
     }
   }
   .bodybutton {
     @media screen and (min-width: 480px) and (max-width: 768px) {
-      width: 37rem;
-      margin-left: 3.2rem;
+      /* width: 100%; */
+      margin-left: 0rem;
     }
   }
   .lable {

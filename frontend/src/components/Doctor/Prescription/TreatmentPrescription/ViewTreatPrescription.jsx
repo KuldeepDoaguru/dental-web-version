@@ -11,12 +11,26 @@ const ViewTreatPrescription = () => {
   const navigate = useNavigate();
   const [getPatientData, setGetPatientData] = useState([]);
   const user = useSelector((state) => state.user);
+  console.log(user);
   const branch = user.currentUser.branch_name;
   console.log(branch);
   const [getExaminData, setGetExaminData] = useState([]);
   const [getTreatData, setGetTreatData] = useState([]);
   const [getTreatMedicine, setGetTreatMedicine] = useState([]);
   const [getTreatSug, setGetTreatSug] = useState([]);
+  const [getBranch, setGetBranch] = useState([]);
+
+  const getBranchDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:8888/api/doctor/getBranchDetails/${branch}`
+      );
+      console.log(data);
+      setGetBranch(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Get Patient Details START
   const getPatientDetail = async () => {
@@ -32,6 +46,7 @@ const ViewTreatPrescription = () => {
 
   useEffect(() => {
     getPatientDetail();
+    getBranchDetails();
   }, []);
   // Get Patient Details END
 
@@ -119,41 +134,57 @@ const ViewTreatPrescription = () => {
   return (
     <>
       <Wrapper>
-        <div className="container-fluid dummy-cont h-100">
-          <div className="headerimg">
-            <img
-              src="https://res.cloudinary.com/duiiayf3d/image/upload/v1699947747/samples/landscapes/landscape-panorama.jpg"
-              alt=""
-            />
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+              <div className="clinic-logo">
+                <img
+                  src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1708075638/dental%20guru/Login-page_1_cwadmt.png"
+                  alt=""
+                  className="img-fluid"
+                />
+              </div>
+            </div>
+            <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+              <div className="header-left">
+                <h3 className="text-end">
+                  Dr. {user.currentUser.employee_name}
+                </h3>
+                <h6
+                  className="fw-bold text-capitalize text-end"
+                  style={{ color: "#00b894" }}
+                >
+                  {user.currentUser.doctor_expertise}
+                </h6>
+
+                <h6 className="fw-bold text-capitalize text-end">
+                  {user.currentUser.doctor_education_details}
+                </h6>
+
+                <h6 className="fw-bold text-capitalize text-end">
+                  {getBranch[0]?.hospital_name}
+                </h6>
+                <h6 className="fw-bold text-capitalize text-end">
+                  {user.currentUser.employee_mobile}
+                </h6>
+              </div>
+            </div>
           </div>
+          <hr />
+        </div>
+        <div className="container-fluid dummy-cont h-100">
           <div className="row">
             <div className="col-lg-12 col-md-12 col-sm-12">
-              <div className="doctor-detail">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className="text-start">
-                    <h2>Dr. {user.currentUser.employee_name}</h2>
-                    <p className="fs-5">
-                      ({user.currentUser.employee_designation})
-                    </p>
-                    <p className="fs-5 m-0">Treatment Package ID : {tpid}</p>
-                  </div>
-                  <div className="text-start">
-                    <h5>Mobile Number</h5>
-                    <p className="m-0 fs-5">
-                      {user.currentUser.employee_mobile}
-                    </p>
-                    <p className="m-0 fs-5">{user.currentUser.email}</p>
-                    <p className="fs-5 m-0">Sitting Number : {sitting}</p>
-                  </div>
-                </div>
-              </div>
+              <h6 className="fw-bold text-capitalize text-end">
+                Sitting Number : {sitting}
+              </h6>
               <table className="table table-bordered border">
                 <tbody>
                   {getPatientData?.map((item, index) => (
                     <React.Fragment key={index}>
                       <tr>
-                        <th scope="row">Appoint ID</th>
-                        <td>{item.appoint_id}</td>
+                        <th scope="row">Treatment Package ID</th>
+                        <td>{tpid}</td>
                         <th scope="row">Blood Group</th>
                         <td>{item.bloodgroup}</td>
                       </tr>
@@ -337,5 +368,16 @@ const Wrapper = styled.div`
     justify-content: space-between;
     align-items: center;
     margin-top: 2rem;
+  }
+
+  .clinic-logo {
+    height: 9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      height: 100%;
+      width: 100%;
+    }
   }
 `;

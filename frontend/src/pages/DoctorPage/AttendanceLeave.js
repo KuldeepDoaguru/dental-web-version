@@ -173,14 +173,16 @@ const AttendanceLeave = () => {
                   <div className="container-fluid">
                     <div className="row mt-3">
                       <div className="col-12">
-                        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                          <div class="container d-flex justify-content-center">
-                            <h2 className="">Attendance and Leave Details</h2>
+                        <div class="bg-body-tertiary p-3">
+                          <div className="row">
+                            <div class="col-xxl-10 col-xl-10 col-md-10 col-sm-10 col-10 container d-flex justify-content-center">
+                              <h2 className="">Attendance and Leave Details</h2>
+                            </div>
+                            <div className="col-xxl-2 col-xl-2 col-md-2 col-sm-2 col-2">
+                              <ApplyLeave />
+                            </div>
                           </div>
-                          <div className="">
-                            <ApplyLeave />
-                          </div>
-                        </nav>
+                        </div>
                       </div>
                       <div className="container-fluid">
                         <div className="container-fluid">
@@ -418,7 +420,7 @@ const Container = styled.div`
   .table {
     overflow-x: auto;
     th {
-      background-color: #201658;
+      background-color: #0dcaf0;
       color: white;
       min-width: 7rem;
     }

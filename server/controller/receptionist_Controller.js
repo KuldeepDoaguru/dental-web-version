@@ -1752,21 +1752,103 @@ const getDoctorDataByBranchWithLeave = (req, res) => {
   }
 };
 
-const getPatientSecurityAmt = (req, res) => {
+// const getPatientSecurityAmt = (req, res) => {
   
-  const branch = req.params.branch;
-  const sql = `SELECT * from security_amount WHERE branch_name = ?  `;
+//   const branch = req.params.branch;
+//   const sql = `SELECT * from security_amount WHERE branch_name = ?  `;
 
-  db.query(sql,[branch], (err, result) => {
+//   db.query(sql,[branch], (err, result) => {
+//       if (err) {
+//           console.error('Error executing query:', err.stack);
+//           return res.status(500).json({success:false, error: 'Internal server error' });
+//       } else if (result.length === 0) {
+//           return res.status(404).json({success:false, error: "Not Found Data" });
+//       } else {
+//           return res.status(200).json({success: true, message: 'Access data Successfully',data : result });
+//       }
+//   });
+// };
+
+const getSecurityAmountDataByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM security_amount WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
       if (err) {
-          console.error('Error executing query:', err.stack);
-          return res.status(500).json({success:false, error: 'Internal server error' });
-      } else if (result.length === 0) {
-          return res.status(404).json({success:false, error: "Not Found Data" });
-      } else {
-          return res.status(200).json({success: true, message: 'Access data Successfully',data : result });
+        res.status(400).json({ success: false, message: err.message });
       }
-  });
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+const updateRefundAmount = (req, res) => {
+  try {
+    const sid = req.params.sid;
+    const {
+      refund_amount,
+      refund_date,
+      refund_by,
+      payment_status,
+      remaining_amount,
+    } = req.body;
+    console.log(req.body);
+    // Checking if all required fields are present in the request body
+    if (!refund_amount || !refund_date || !refund_by || !payment_status) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+   
+
+    const selectQuery = "SELECT * FROM security_amount WHERE sa_id = ?";
+    db.query(selectQuery, sid, (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateQuery = `UPDATE security_amount SET refund_amount = ?, refund_date = ?, refund_by = ?, payment_status = ?, remaining_amount = ? WHERE sa_id = ?`;
+
+        db.query(
+          updateQuery,
+          [
+            refund_amount,
+            refund_date,
+            refund_by,
+            payment_status,
+            remaining_amount,
+            sid,
+          ],
+          (err, result) => {
+            if (err) {
+              return res.status(500).json({
+                success: false,
+                message: "Failed to update details",
+              });
+            } else {
+              return res.status(200).json({
+                success: true,
+                message: "Amount Refund Successfully",
+              });
+            }
+          }
+        );
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Data not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 const getSinglePatientSecurityAmt = (req, res) => {
@@ -1791,7 +1873,7 @@ const getSecurityAmountDataBySID = (req, res) => {
   try {
     const sid = req.params.sid;
     const selectQuery =
-      "SELECT * FROM security_amount JOIN patient_bills ON security_amount.appointment_id = patient_bills.appoint_id WHERE security_amount.sa_id = ?";
+      "SELECT * FROM security_amount JOIN patient_details ON security_amount.uhid = patient_details.uhid WHERE security_amount.sa_id = ?";
     db.query(selectQuery, sid, (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });
@@ -1804,25 +1886,35 @@ const getSecurityAmountDataBySID = (req, res) => {
   }
 };
 
+const getPatientBillsByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
 
 const updatePatientSecurityAmt = (req, res) => {
   try {
-    const {
-      sa_id  ,
-      amount ,
-      payment_status ,
-      payment_Mode,
-      transaction_Id	,
-      notes ,
-  
-      received_by,
-    } = req.body;
+    const sid = req.params.sid;
+    const { payment_status, payment_Mode, transaction_Id, notes, received_by, remaining_amount } =
+      req.body;
 
     const payment_date = new Date();
 
+    console.log(req.body)
+
     const updatePatientQuery = `
           UPDATE security_amount
-          SET payment_status = ? , payment_Mode = ? , transaction_Id = ?, received_by = ? , payment_date = ?, notes = ?
+          SET payment_status = ? , payment_Mode = ? , transaction_Id = ?, received_by = ? , payment_date = ?, notes = ?, remaining_amount = ?
           WHERE sa_id = ?
       `;
 
@@ -1833,7 +1925,8 @@ const updatePatientSecurityAmt = (req, res) => {
       received_by,
       payment_date,
       notes,
-      sa_id,
+      remaining_amount,
+      sid,
     ];
 
     db.query(
@@ -1864,56 +1957,117 @@ const updatePatientSecurityAmt = (req, res) => {
   }
 };
 
-const updateRefundAmount = (req, res) => {
-  try {
-    const sid = req.params.sid;
-    const { refund_amount, refund_date, refund_by, payment_status } = req.body;
 
-    // Checking if all required fields are present in the request body
-    if (!refund_amount || !refund_date || !refund_by || !payment_status) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required",
-      });
-    }
 
-    const selectQuery = "SELECT * FROM security_amount WHERE sa_id = ?";
-    db.query(selectQuery, sid, (err, result) => {
-      if (err) {
-        return res.status(400).json({ success: false, message: err.message });
-      }
-      if (result && result.length > 0) {
-        const updateQuery = "UPDATE security_amount SET refund_amount = ?, refund_date = ?, refund_by = ?, payment_status = ? WHERE sa_id = ?";
+// const updatePatientSecurityAmt = (req, res) => {
+//   try {
+//     const {
+//       sa_id  ,
+//       amount ,
+//       payment_status ,
+//       payment_Mode,
+//       transaction_Id	,
+//       notes ,
+  
+//       received_by,
+//     } = req.body;
 
-        db.query(
-          updateQuery,
-          [refund_amount, refund_date, refund_by, payment_status, sid],
-          (err, result) => {
-            if (err) {
-              return res.status(500).json({
-                success: false,
-                message: "Failed to update details",
-              });
-            } else {
-              return res.status(200).json({
-                success: true,
-                message: "Amount Refund Successfully",
-              });
-            }
-          }
-        );
-      } else {
-        return res.status(404).json({
-          success: false,
-          message: "Data not found",
-        });
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
+//     const payment_date = new Date();
+
+//     const updatePatientQuery = `
+//           UPDATE security_amount
+//           SET payment_status = ? , payment_Mode = ? , transaction_Id = ?, received_by = ? , payment_date = ?, notes = ?
+//           WHERE sa_id = ?
+//       `;
+
+//     const updatePatientParams = [
+//       payment_status,
+//       payment_Mode,
+//       transaction_Id,
+//       received_by,
+//       payment_date,
+//       notes,
+//       sa_id,
+//     ];
+
+//     db.query(
+//       updatePatientQuery,
+//       updatePatientParams,
+//       (Err, appointmentResult) => {
+//         if (Err) {
+//           console.error("Error updating Patient:", Err);
+//           return res
+//             .status(500)
+//             .json({ success: false, message: "Internal server error" });
+//         } else {
+//           console.log("Payment added successfully");
+//           return res.status(200).json({
+//             success: true,
+//             message: "Payment added successfully",
+//           });
+//         }
+//       }
+//     );
+//   } catch (error) {
+//     console.error("Error in adding Payment", error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Error in adding Payment",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// const updateRefundAmount = (req, res) => {
+//   try {
+//     const sid = req.params.sid;
+//     const { refund_amount, refund_date, refund_by, payment_status } = req.body;
+
+//     // Checking if all required fields are present in the request body
+//     if (!refund_amount || !refund_date || !refund_by || !payment_status) {
+//       return res.status(400).json({
+//         success: false,
+//         message: "All fields are required",
+//       });
+//     }
+
+//     const selectQuery = "SELECT * FROM security_amount WHERE sa_id = ?";
+//     db.query(selectQuery, sid, (err, result) => {
+//       if (err) {
+//         return res.status(400).json({ success: false, message: err.message });
+//       }
+//       if (result && result.length > 0) {
+//         const updateQuery = "UPDATE security_amount SET refund_amount = ?, refund_date = ?, refund_by = ?, payment_status = ? WHERE sa_id = ?";
+
+//         db.query(
+//           updateQuery,
+//           [refund_amount, refund_date, refund_by, payment_status, sid],
+//           (err, result) => {
+//             if (err) {
+//               return res.status(500).json({
+//                 success: false,
+//                 message: "Failed to update details",
+//               });
+//             } else {
+//               return res.status(200).json({
+//                 success: true,
+//                 message: "Amount Refund Successfully",
+//               });
+//             }
+//           }
+//         );
+//       } else {
+//         return res.status(404).json({
+//           success: false,
+//           message: "Data not found",
+//         });
+//       }
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ success: false, message: error.message });
+//   }
+// };
 
 
 const insertTimelineEvent = (req, res) => {
@@ -2188,6 +2342,198 @@ const verifyOtp = (req, res) => {
   }
 };
 
+const getBranchDetailsByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery = "SELECT * FROM branches WHERE branch_name = ?";
+    db.query(getQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).json(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getSecurityAmountDataByTPUHID = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const uhid = req.params.uhid;
+    const selectQuery =
+      "SELECT * FROM security_amount WHERE tp_id = ? AND uhid = ?";
+    db.query(selectQuery, [tpid, uhid], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getPatientBillsAndSecurityAmountByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const bid = req.params.bid;
+    const selectQuery =
+      "SELECT * FROM patient_bills WHERE branch_name = ? AND bill_id = ?";
+    db.query(selectQuery, [branch, bid], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const updateRemainingSecurityAmount = (req, res) => {
+  try {
+    const tpid = req.params.tp_id;
+    const uhid = req.params.uhid;
+
+    const { remaining_amount } = req.body;
+    console.log(remaining_amount);
+
+    // Checking if all required fields are present in the request body
+
+    const selectQuery =
+      "SELECT * FROM security_amount WHERE tp_id = ? AND  uhid = ?";
+    db.query(selectQuery, [tpid, uhid], (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateQuery = `UPDATE security_amount SET remaining_amount = ? WHERE tp_id = ? AND uhid = ?`;
+
+        db.query(updateQuery, [remaining_amount, tpid, uhid], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Failed to update details",
+            });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "remaining amount update Successfully",
+            });
+          }
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Data not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const makeBillPayment = (req, res) => {
+  try {
+    const bid = req.params.bid;
+    const branch = req.params.branch;
+    const {
+      paid_amount,
+      payment_status,
+      payment_date_time,
+      payment_mode,
+      transaction_Id,
+      note,
+      receiver_name,
+      receiver_emp_id,
+      pay_by_sec_amt,
+    } = req.body;
+    const selectQuery =
+      "SELECT * FROM patient_bills WHERE branch_name = ? AND bill_id = ?";
+
+    db.query(selectQuery, [branch, bid], (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateFields = [];
+        const updateValues = [];
+
+        if (paid_amount) {
+          updateFields.push("paid_amount = ?");
+          updateValues.push(paid_amount);
+        }
+
+        if (payment_status) {
+          updateFields.push("payment_status = ?");
+          updateValues.push(payment_status);
+        }
+
+        if (payment_date_time) {
+          updateFields.push("payment_date_time = ?");
+          updateValues.push(payment_date_time);
+        }
+        if (payment_mode) {
+          updateFields.push("payment_mode = ?");
+          updateValues.push(payment_mode);
+        }
+        if (transaction_Id) {
+          updateFields.push("transaction_Id = ?");
+          updateValues.push(transaction_Id);
+        }
+        if (note) {
+          updateFields.push("note = ?");
+          updateValues.push(note);
+        }
+        if (receiver_name) {
+          updateFields.push("receiver_name = ?");
+          updateValues.push(receiver_name);
+        }
+        if (receiver_emp_id) {
+          updateFields.push("receiver_emp_id = ?");
+          updateValues.push(receiver_emp_id);
+        }
+        if (pay_by_sec_amt) {
+          updateFields.push("pay_by_sec_amt = ?");
+          updateValues.push(pay_by_sec_amt);
+        }
+
+        const updateQuery = `UPDATE patient_bills SET ${updateFields.join(
+          ", "
+        )} WHERE branch_name = ? AND bill_id = ?`;
+
+        db.query(updateQuery, [...updateValues, branch, bid], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Failed to update details",
+            });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "Payment updated successfully",
+            });
+          }
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Branch/bill not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   addPatient,
   getDisease,
@@ -2215,8 +2561,8 @@ module.exports = {
   getPatientTimeline,
   getAllAppointmentByPatientId,
   updateAppointmentStatusCancelOpd,
-  getPatientSecurityAmt,
   updatePatientSecurityAmt,
+  getSecurityAmountDataByBranch,
   getSecurityAmountDataBySID,
   updateRefundAmount,
   getSinglePatientSecurityAmt,
@@ -2226,5 +2572,11 @@ module.exports = {
   MarkAttendanceLogin,
   MarkAttendanceLogout,
   getTodayAttendance,
-  getAttendancebyempId
+  getAttendancebyempId,
+  getPatientBillsByBranch,
+  getBranchDetailsByBranch,
+  getSecurityAmountDataByTPUHID,
+  getPatientBillsAndSecurityAmountByBranch,
+  updateRemainingSecurityAmount,
+  makeBillPayment
 };

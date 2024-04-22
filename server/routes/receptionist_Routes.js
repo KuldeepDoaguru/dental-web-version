@@ -1,6 +1,6 @@
 
 const express = require("express");
-const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent, getPatientTimeline, getAllAppointmentByPatientId, updateAppointmentStatusCancelOpd, getPatientSecurityAmt, updatePatientSecurityAmt, getSecurityAmountDataBySID, updateRefundAmount, getSinglePatientSecurityAmt, getPatientDeatilsByUhid, applyLeave, getLeaves, MarkAttendanceLogin, MarkAttendanceLogout, getTodayAttendance, getAttendancebyempId } = require("../controller/receptionist_Controller");
+const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent, getPatientTimeline, getAllAppointmentByPatientId, updateAppointmentStatusCancelOpd, getPatientSecurityAmt, updatePatientSecurityAmt, getSecurityAmountDataBySID, updateRefundAmount, getSinglePatientSecurityAmt, getPatientDeatilsByUhid, applyLeave, getLeaves, MarkAttendanceLogin, MarkAttendanceLogout, getTodayAttendance, getAttendancebyempId, getSecurityAmountDataByBranch, getPatientBillsByBranch, getBranchDetailsByBranch, getSecurityAmountDataByTPUHID, getPatientBillsAndSecurityAmountByBranch, updateRemainingSecurityAmount, makeBillPayment } = require("../controller/receptionist_Controller");
 const router = express.Router();
 
 router.post('/add-patient',addPatient);
@@ -32,15 +32,36 @@ router.delete('/delete-inquiry/:id',deleteInquiry);
 router.get('/getPatientTimeline/:branch/:patientId',getPatientTimeline)
 router.get('/getPatientDeatilsByUhid/:branch/:uhid',getPatientDeatilsByUhid)
 router.get('/getAllAppointmentByPatientId/:branch/:patientId',getAllAppointmentByPatientId)
-router.get('/patient-securityAmt/:branch', getPatientSecurityAmt);
+router.get(
+    "/getSecurityAmountDataByBranch/:branch",
+    getSecurityAmountDataByBranch
+  );
 router.get('/getSecurityAmountDataBySID/:sid', getSecurityAmountDataBySID);
 router.get('/getSinglePatientSecurityAmt/:branch/:sid', getSinglePatientSecurityAmt);
-router.put('/updatePatientSecurityAmt',updatePatientSecurityAmt);
+router.put("/updatePatientSecurityAmt/:sid", updatePatientSecurityAmt);
 router.put('/updateRefundAmount/:sid',updateRefundAmount);
 router.post('/markAttendanceLogin', MarkAttendanceLogin);
 router.put('/markAttendanceLogout', MarkAttendanceLogout);
 router.get('/getTodayAttendance/:branch/:employee_ID/:date', getTodayAttendance);
 router.get('/getAttendancebyempId/:branch/:employee_ID', getAttendancebyempId);
+router.get("/getPatientBillsByBranch/:branch", getPatientBillsByBranch);
+
+router.get("/getBranchDetailsByBranch/:branch", getBranchDetailsByBranch);
+router.get(
+    "/getSecurityAmountDataByTPUHID/:tpid/:uhid",
+    getSecurityAmountDataByTPUHID
+  );
+  router.get(
+    "/getPatientBillsAndSecurityAmountByBranch/:branch/:bid",
+    getPatientBillsAndSecurityAmountByBranch
+  );
+
+  router.put(
+    "/updateRemainingSecurityAmount/:tp_id/:uhid",
+    updateRemainingSecurityAmount
+  );
+
+  router.put("/makeBillPayment/:branch/:bid", makeBillPayment);
 
 
 

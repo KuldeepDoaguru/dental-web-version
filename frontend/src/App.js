@@ -31,6 +31,8 @@ import SecurityAmount from "./pages/receptionist/SecurityAmount ";
 import PrintSecurityAmt from "./components/receptionist/SecurityAmount/PrintSecurityAmt";
 import BranchInfo from "./pages/receptionist/BranchInfo";
 import AttendanceLeave from "./pages/receptionist/AttendanceLeave";
+import PatientsDue from "./pages/receptionist/PatientsDue";
+import PatintDuePaymentPrint from "./pages/receptionist/PatintDuePaymentPrint";
 
 function App() {
 
@@ -64,6 +66,8 @@ function App() {
     <Route path='/opd_collection' element={user.currentUser=== null ? <UniversalLogin/>  :<OpdCollection/>}/>
     <Route path='/receptionist_profile' element={ user.currentUser=== null ? <UniversalLogin/>  :<Profile/>}/>
     <Route path='/security_amount' element={ user.currentUser=== null ? <UniversalLogin/>  :<SecurityAmount/>}/>
+    <Route path='/due_amount' element={ user.currentUser=== null ? <UniversalLogin/>  :<PatientsDue/>}/>
+    <Route path='/PatintDuePaymentPrint/:bid/:tpid/:uhid' element={ user.currentUser=== null ? <UniversalLogin/>  :<PatintDuePaymentPrint/>}/>
     <Route path='/branch-details' element={ user.currentUser=== null ? <UniversalLogin/>  :<BranchInfo/>}/>
     <Route path='/attendanceLeave' element={ user.currentUser=== null ? <UniversalLogin/>  :<AttendanceLeave/>}/>
 

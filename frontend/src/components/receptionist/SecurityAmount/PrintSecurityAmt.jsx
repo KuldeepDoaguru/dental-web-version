@@ -223,7 +223,7 @@ console.log(data)
     <div className='row'>
          <div className='col-6 d-flex align-items-end '>
              <div>
-              <h6 className='ms-5 preparedBy'>Prepared by <span className='text-uppercase'>{data?.appointment_created_by}</span></h6>
+              <h6 className='ms-5 preparedBy'>Prepared by :<span className='text-uppercase'>{data[0]?.received_by}</span></h6>
              </div>
          </div>
 

@@ -24,6 +24,8 @@ import CreatePrescrip from "./components/Doctor/Prescription/CreatePrescrip";
 import { useSelector } from "react-redux";
 import PatientBillsByTpid from "./pages/PatientBills/PatientBillsByTpid";
 import AttendanceLeave from "./pages/DoctorPage/AttendanceLeave";
+import PatintDuePaymentPrint from "./pages/PatientBills/PatintDuePaymentPrint";
+import PasswordReset from "./pages/PasswordReset";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -179,6 +181,18 @@ function App() {
           user.currentUser === null ? <DoctorLogin /> : <AttendanceLeave />
         }
       />
+
+      <Route
+        path="/patient-due-payment-print/:tpid"
+        element={
+          user.currentUser === null ? (
+            <DoctorLogin />
+          ) : (
+            <PatintDuePaymentPrint />
+          )
+        }
+      />
+      <Route path="/password-reset" element={<PasswordReset />} />
 
       {/* ****************** Doctor Routes End Here ******************* */}
 

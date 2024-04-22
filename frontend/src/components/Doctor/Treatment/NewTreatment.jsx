@@ -266,7 +266,7 @@ const Wrapper = styled.div`
   }
   .container-fluid {
     @media (min-width: 765px) and (max-width: 1024px) {
-      width: 40rem;
+      /* width: 40rem; */
     }
   }
   .container-fluid .p {

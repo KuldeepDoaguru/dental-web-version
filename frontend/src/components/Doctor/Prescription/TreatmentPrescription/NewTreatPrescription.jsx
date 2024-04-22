@@ -351,44 +351,42 @@ const NewTreatPrescription = () => {
             <p></p>
             {getPatientData?.map((item, index) => (
               <>
-                <div
-                  key={index}
-                  className="col-lg-12 d-flex justify-content-between align-items-center"
-                >
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Treatment Package :{tpid}</strong>
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Patient Name</strong> : {item.patient_name}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p>
-                      <strong>Patient Mobile No.</strong> : {item.mobileno}
-                    </p>
+                <div key={index} className="col-lg-12">
+                  <div className="row">
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Treatment Package :{tpid}</strong>
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Patient Name</strong> : {item.patient_name}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p>
+                        <strong>Patient Mobile No.</strong> : {item.mobileno}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div
-                  key={index + "secondRow"}
-                  className="col-lg-12 d-flex justify-content-between align-items-center"
-                >
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Blood Group</strong> : {item.bloodgroup}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Disease</strong> : {item.disease}
-                    </p>
-                  </div>
-                  <div className="col-lg-4">
-                    <p className="mb-0">
-                      <strong>Allergy</strong> : {item.allergy}
-                    </p>
+                <div key={index + "secondRow"} className="col-lg-12">
+                  <div className="row">
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Blood Group</strong> : {item.bloodgroup}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Disease</strong> : {item.disease}
+                      </p>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                      <p className="mb-0">
+                        <strong>Allergy</strong> : {item.allergy}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </>
@@ -429,69 +427,6 @@ const NewTreatPrescription = () => {
             </table>
           </div>
         </div>
-        {/* Treatment Suggest */}
-        {/* <div className="container">
-          <legend className="">Treatment Suggest</legend>
-          <div className="table-responsive rounded">
-            <table
-              className="table table-bordered table-striped border"
-              style={{ overflowX: "scroll" }}
-            >
-              <thead>
-                <tr>
-                  <th>Desease</th>
-                  <th>Treatment Name</th>
-                  <th>Note</th>
-                </tr>
-              </thead>
-              <tbody>
-                {getTreatData?.map((item) => (
-                  <>
-                    <tr>
-                      <td>{item.desease}</td>
-                      <td>{item.treatment_name}</td>
-                      <td>{item.note}</td>
-                    </tr>
-                  </>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div> */}
-        {/* lab test */}
-        {/* <div className="container">
-          <legend className="">Patient Laboratory Test</legend>
-          <div className="table-responsive rounded">
-            <table
-              className="table table-bordered table-striped border"
-              style={{ overflowX: "scroll" }}
-            >
-              <thead>
-                <tr>
-                  <th>Lab Test</th>
-                  <th>Date</th>
-                  <th>Note</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>-</td>
-                </tr>
-                {getlab?.map((item) => (
-                  <>
-                    <tr>
-                      <td>{item.test_name}</td>
-                      <td>{item.date}</td>
-                      <td>{item.note}</td>
-                    </tr>
-                  </>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div> */}
 
         {/* Patient Treatment Details */}
         <div className="container">
@@ -539,7 +474,7 @@ const NewTreatPrescription = () => {
           <div className="row shadow-sm p-3 mb-3 bg-body rounded">
             <form onSubmit={handleSubmit}>
               <div className="row">
-                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-6 col-6">
+                <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div className="form-outline">
                     <label>Treatment</label>
                     {/* <select
@@ -564,7 +499,7 @@ const NewTreatPrescription = () => {
                     />
                   </div>
                 </div>
-                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-6 col-6">
+                <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div className="form-outline">
                     <label>Desease</label>
                     <input
@@ -575,7 +510,7 @@ const NewTreatPrescription = () => {
                     />
                   </div>
                 </div>
-                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-6 col-6">
+                <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div className="form-outline">
                     <label>Medicine Name</label>
                     <select
@@ -594,7 +529,7 @@ const NewTreatPrescription = () => {
                     </select>
                   </div>
                 </div>
-                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-6 col-6">
+                <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Dosage</label>
                     <input
@@ -608,7 +543,7 @@ const NewTreatPrescription = () => {
                     />
                   </div>
                 </div>
-                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-6 col-6">
+                <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Frequency</label>
                     <select
@@ -630,7 +565,7 @@ const NewTreatPrescription = () => {
                     </select>
                   </div>
                 </div>
-                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-6 col-6">
+                <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Duration</label>
                     <select
@@ -655,7 +590,7 @@ const NewTreatPrescription = () => {
                     </select>
                   </div>
                 </div>
-                <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6">
+                <div className="col-xxl-4 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Note</label>
                     <textarea
@@ -669,7 +604,7 @@ const NewTreatPrescription = () => {
                     />
                   </div>
                 </div>
-                <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-6 col-6">
+                <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div className="d-flex justify-content-center align-items-center h-100">
                     <button
                       className="btn btn-secondary fs-5 mt-4"

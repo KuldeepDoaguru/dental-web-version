@@ -48,6 +48,13 @@ const {
   getPatientBillUHID,
   insertTimelineEvent,
   getPatientTimeline,
+  getSecurityAmountDataByTPUHID,
+  getPatientBillsAndSecurityAmountByBranch,
+  updateRemainingSecurityAmount,
+  makeBillPayment,
+  sendOtp,
+  verifyOtp,
+  resetPassword,
 } = require("../controller/authBranch.js");
 const {
   getTreatmentList,
@@ -307,5 +314,23 @@ router.get(
 router.post("/markAttendanceLogin", MarkAttendanceLogin);
 router.put("/markAttendanceLogout", MarkAttendanceLogout);
 router.post("/apply-leave", applyLeave);
+router.get(
+  "/getSecurityAmountDataByTPUHID/:tpid",
+  getSecurityAmountDataByTPUHID
+);
+router.get(
+  "/getPatientBillsAndSecurityAmountByBranch/:branch/:tpid",
+  getPatientBillsAndSecurityAmountByBranch
+);
+
+router.put(
+  "/updateRemainingSecurityAmount/:tpid",
+  updateRemainingSecurityAmount
+);
+
+router.put("/makeBillPayment/:tpid/:branch", makeBillPayment);
+router.post("/sendOtp", sendOtp);
+router.post("/verifyOtp", verifyOtp);
+router.put("/resetPassword", resetPassword);
 
 module.exports = { authRoutes: router };

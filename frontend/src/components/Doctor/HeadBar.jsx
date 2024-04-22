@@ -56,9 +56,7 @@ const HeadBar = () => {
                   </a>
                   <ul className="dropdown-menu second-dropdown">
                     <li className="text-center">
-                      <Link to="/profileDashboard">
-                        View Profile
-                        </Link>
+                      <Link to="/profileDashboard">View Profile</Link>
                     </li>
                     {/* <li>
                       <hr className="dropdown-divider" />
@@ -85,12 +83,12 @@ const HeadBar = () => {
 
 export default HeadBar;
 const Wrapper = styled.div`
-nav{
-  width: 100%;
-  @media (min-width: 820px) and (max-width: 1024px){
+  nav {
     width: 100%;
+    @media (min-width: 820px) and (max-width: 1024px) {
+      width: 100%;
+    }
   }
-}
   #userid {
     /* margin-left: -10rem; */
     list-style-type: none;
@@ -116,7 +114,7 @@ nav{
   .second-dropdown {
     margin-left: -5rem;
     width: fit-content;
-    @media screen and (max-width: 500px) {
+    @media screen and (max-width: 1000px) {
       margin-left: 0rem;
     }
   }
@@ -135,7 +133,7 @@ nav{
       list-style: none !important;
     }
   }
-  a{
+  a {
     text-decoration: none;
     color: black;
   }

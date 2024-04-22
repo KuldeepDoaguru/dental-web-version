@@ -2,6 +2,12 @@ const express = require("express");
 const db = require("../connect.js");
 const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+
+dotenv.config();
+
+const PORT = process.env.PORT;
 
 const getBranch = (req, res) => {
   try {
@@ -338,6 +344,334 @@ const getPatientTimeline = (req, res) => {
   }
 };
 
+const getSecurityAmountDataByTPUHID = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const selectQuery = "SELECT * FROM security_amount WHERE tp_id = ?";
+    db.query(selectQuery, tpid, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const getPatientBillsAndSecurityAmountByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const tpid = req.params.tpid;
+    const selectQuery =
+      "SELECT * FROM patient_bills WHERE branch_name = ? AND tp_id = ?";
+    db.query(selectQuery, [branch, tpid], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const updateRemainingSecurityAmount = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const { remaining_amount } = req.body;
+    console.log(remaining_amount);
+
+    // Checking if all required fields are present in the request body
+
+    const selectQuery = "SELECT * FROM security_amount WHERE tp_id = ?";
+    db.query(selectQuery, tpid, (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateQuery = `UPDATE security_amount SET remaining_amount = ? WHERE tp_id = ?`;
+
+        db.query(updateQuery, [remaining_amount, tpid], (err, result) => {
+          if (err) {
+            return res.status(500).json({
+              success: false,
+              message: "Failed to update details",
+            });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "remaining amount update Successfully",
+            });
+          }
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Data not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+const makeBillPayment = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const branch = req.params.branch;
+    const {
+      paid_amount,
+      payment_status,
+      payment_date_time,
+      payment_mode,
+      transaction_Id,
+      note,
+      receiver_name,
+      receiver_emp_id,
+      pay_by_sec_amt,
+    } = req.body;
+    const selectQuery =
+      "SELECT * FROM patient_bills WHERE branch_name = ? AND tp_id = ?";
+
+    db.query(selectQuery, [branch, tpid], (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateFields = [];
+        const updateValues = [];
+
+        if (paid_amount) {
+          updateFields.push("paid_amount = ?");
+          updateValues.push(paid_amount);
+        }
+
+        if (payment_status) {
+          updateFields.push("payment_status = ?");
+          updateValues.push(payment_status);
+        }
+
+        if (payment_date_time) {
+          updateFields.push("payment_date_time = ?");
+          updateValues.push(payment_date_time);
+        }
+        if (payment_mode) {
+          updateFields.push("payment_mode = ?");
+          updateValues.push(payment_mode);
+        }
+        if (transaction_Id) {
+          updateFields.push("transaction_Id = ?");
+          updateValues.push(transaction_Id);
+        }
+        if (note) {
+          updateFields.push("note = ?");
+          updateValues.push(note);
+        }
+        if (receiver_name) {
+          updateFields.push("receiver_name = ?");
+          updateValues.push(receiver_name);
+        }
+        if (receiver_emp_id) {
+          updateFields.push("receiver_emp_id = ?");
+          updateValues.push(receiver_emp_id);
+        }
+        if (pay_by_sec_amt) {
+          updateFields.push("pay_by_sec_amt = ?");
+          updateValues.push(pay_by_sec_amt);
+        }
+
+        const updateQuery = `UPDATE patient_bills SET ${updateFields.join(
+          ", "
+        )} WHERE branch_name = ? AND tp_id = ?`;
+
+        db.query(
+          updateQuery,
+          [...updateValues, branch, tpid],
+          (err, result) => {
+            if (err) {
+              return res.status(500).json({
+                success: false,
+                message: "Failed to update details",
+              });
+            } else {
+              return res.status(200).json({
+                success: true,
+                message: "Payment updated successfully",
+              });
+            }
+          }
+        );
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "Branch/bill not found",
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const sendOtp = (req, res) => {
+  const { email } = req.body;
+
+  // random otp
+  function generateOTP(length) {
+    const chars = "0123456789";
+    let otp = "";
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      otp += chars[randomIndex];
+    }
+
+    return otp;
+  }
+
+  const OTP = generateOTP(6);
+
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAILSENDER,
+        pass: process.env.EMAILPASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAILSENDER,
+      to: email,
+      subject: "Password Reset OTP",
+      text: `Your OTP for password reset is: ${OTP}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+        return res
+          .status(500)
+          .json("An error occurred while sending the email.");
+      } else {
+        console.log("OTP sent:", info.response);
+
+        const selectQuery = "SELECT * FROM otpcollections WHERE email = ?";
+        db.query(selectQuery, email, (err, result) => {
+          if (err) {
+            res.status(400).json({ success: false, message: err.message });
+          }
+          if (result && result.length > 0) {
+            const updateQuery =
+              "UPDATE otpcollections SET code = ? WHERE email = ?";
+            db.query(updateQuery, [OTP, email], (upErr, upResult) => {
+              if (upErr) {
+                res
+                  .status(400)
+                  .json({ success: false, message: upErr.message });
+              }
+              res.status(200).send(upResult);
+            });
+          } else {
+            // Assuming you have a 'db' object for database operations
+            db.query(
+              "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)",
+              [email, OTP],
+              (err, result) => {
+                if (err) {
+                  console.error(err);
+                  return res
+                    .status(500)
+                    .send({ message: "Failed to store OTP" });
+                }
+
+                res.status(200).json({ message: "OTP sent successfully" });
+              }
+            );
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("An error occurred.");
+  }
+};
+
+const verifyOtp = (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    db.query(
+      "SELECT * FROM otpcollections WHERE email = ? AND code = ?",
+      [email, otp],
+      (err, result) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        }
+        if (result.length > 0) {
+          return res
+            .status(200)
+            .json({ success: true, message: "Otp verification  success" });
+        } else {
+          return res
+            .status(404)
+            .json({ success: false, message: "Invalid email or OTP" });
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const resetPassword = (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const selectQuery =
+      "SELECT * FROM employee_register WHERE employee_email = ?";
+    db.query(selectQuery, email, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length) {
+        const saltRounds = 10;
+        const hashedPassword = bcrypt.hashSync(password, saltRounds);
+        console.log(hashedPassword);
+        const updateQuery = `UPDATE employee_register SET employee_password = ? WHERE employee_email = ?`;
+        db.query(updateQuery, [hashedPassword, email], (err, result) => {
+          if (err) {
+            return res
+              .status(400)
+              .json({ success: false, message: err.message });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "Details updated successfully",
+            });
+          }
+        });
+      } else {
+        return res
+          .status(404)
+          .json({ success: false, message: "email not found" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getBranch,
   LoginDoctor,
@@ -346,4 +680,11 @@ module.exports = {
   getPatientBillUHID,
   insertTimelineEvent,
   getPatientTimeline,
+  getSecurityAmountDataByTPUHID,
+  getPatientBillsAndSecurityAmountByBranch,
+  updateRemainingSecurityAmount,
+  makeBillPayment,
+  sendOtp,
+  verifyOtp,
+  resetPassword,
 };

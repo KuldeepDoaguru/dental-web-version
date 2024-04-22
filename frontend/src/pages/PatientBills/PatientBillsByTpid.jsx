@@ -473,6 +473,12 @@ const PatientBillsByTpid = () => {
             <button className="btn btn-info no-print" onClick={handleButton}>
               Print
             </button>
+            <button
+              className="btn btn-success ms-2 no-print"
+              onClick={() => navigate(`/patient-due-payment-print/${tpid}`)}
+            >
+              Pay Now
+            </button>
           </div>
         </div>
       </Wrapper>

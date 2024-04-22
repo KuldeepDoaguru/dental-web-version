@@ -15,49 +15,50 @@ const DoctorLogin = () => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [verification, setVerification] = useState(false);
   const [localhost, setLocalhost] = useState([]);
-  const [braches,setBranches] = useState([]);
-  const [selectedBranch,setSelectedBranch] = useState("");
+  const [braches, setBranches] = useState([]);
+  const [selectedBranch, setSelectedBranch] = useState("");
 
-const getBranches = async ()=>{
-  try{
-     const response = await axios.get("http://localhost:8888/api/doctor/get-branches")
-     console.log(response)
-     setBranches(response.data.data)
-  }
-  catch(error){
-    console.log(error)
-  }
-}
+  const getBranches = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8888/api/doctor/get-branches"
+      );
+      console.log(response);
+      setBranches(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-useEffect(()=>{
-  getBranches()
-},[]);
+  useEffect(() => {
+    getBranches();
+  }, []);
 
-const handleSelectBranch = (e)=>{
-      setSelectedBranch(e.target.value);
-}
+  const handleSelectBranch = (e) => {
+    setSelectedBranch(e.target.value);
+  };
 
-console.log(selectedBranch)
+  console.log(selectedBranch);
   const receptionistLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:8888/api/doctor/doctor-login",
-        { 
+        {
           email,
           password,
-          branch_name: selectedBranch
+          branch_name: selectedBranch,
         }
       );
 
       console.log(response.data);
-      
+
       // cogoToast.success(response.data.message);
       setLocalhost(response.data);
       if (response.data.success === "true") {
         // sendOtp();
         cogoToast.success(response.data.message);
-        dispatch(setUser(response.data.user))
+        dispatch(setUser(response.data.user));
         navigate("/doctor-dashboard");
         // setPopupVisible(true);
       } else {
@@ -101,20 +102,28 @@ console.log(selectedBranch)
                             id=""
                             className="p-2 rounded shadow select-style"
                             onChange={handleSelectBranch}
-                            
                           >
-                             <option value="">Select Branch</option>
-                            {braches?.map((branch)=>{
-                              return <option value={branch.branch_name} key={branch.branch_id}>{branch.branch_name}</option> 
+                            <option value="">Select Branch</option>
+                            {braches?.map((branch) => {
+                              return (
+                                <option
+                                  value={branch.branch_name}
+                                  key={branch.branch_id}
+                                >
+                                  {branch.branch_name}
+                                </option>
+                              );
                             })}
-                           
                           </select>
                         </div>
                         <p className="text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                         Doctor's Login
+                          Doctor's Login
                         </p>
 
-                        <form className="mx-1 mx-md-4" onSubmit={receptionistLogin}>
+                        <form
+                          className="mx-1 mx-md-4"
+                          onSubmit={receptionistLogin}
+                        >
                           <div className="d-flex flex-row align-items-center mb-4">
                             <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
                             <div className="form-outline flex-fill mb-0">
@@ -157,13 +166,11 @@ console.log(selectedBranch)
                             </div>
                           </div>
 
-                          {/* <div className="col-5 ms-3">
+                          <div className="col-5 ms-3">
                             <p>
-                              <Link to="/receptionist_registration">
-                                Forgot Password?
-                              </Link>
+                              <Link to="/password-reset">Forgot Password?</Link>
                             </p>
-                          </div> */}
+                          </div>
 
                           <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                             {/* <Link to="/superadmin-dashboard"></Link> */}

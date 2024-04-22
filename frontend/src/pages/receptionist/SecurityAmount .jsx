@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Header from '../../components/receptionist/Header'
 import Sider from '../../components/receptionist/Sider'
-import { Link } from 'react-router-dom'
 import { Table, Input, Button, Form } from "react-bootstrap";
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,35 +9,180 @@ import EditPatientDetails from '../../components/receptionist/AllPatients/EditPa
 import moment from 'moment'
 import MakePayment from '../../components/receptionist/SecurityAmount/MakePayment';
 import cogoToast from 'cogo-toast';
+import { Link, useNavigate } from "react-router-dom";
 
 function SecurityAmount() {
   
   const {refreshTable,currentUser} = useSelector((state) => state.user);
   const  branch = currentUser.branch_name
   const [patients, setPatients] = useState([]);
-  
-  const [showEditPatientPopup, setShowEditPatientPopup] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
-  const [filteredData, setFilteredData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
 
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+  console.log(
+    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  );
+  console.log("User State:", user);
+  const [patData, setPatData] = useState([]);
+  const [securityList, setSecurityList] = useState([]);
+  // const [refAmount, setRefAmount] = useState("");
+  const [keyword, setKeyword] = useState("");
   const [showEditSecAmount, setShowEditSecAmount] = useState(false);
+  const [showPaySecAmount, setShowPaySecAmount] = useState(false);
   const [outStanding, setOutStanding] = useState([]);
   const [selected, setSelected] = useState();
-  const date = new Date();
-  const [refAmount, setRefAmount] = useState("");
+  // const [refAmount, setRefAmount] = useState();
+  const [addSecurityAmount, setAddSecurityAmount] = useState({
+    branch_name: user.branch,
+    date: "",
+    appointment_id: "",
+    uhid: "",
+    patient_name: "",
+    patient_number: "",
+    assigned_doctor: "",
+    amount: "",
+    payment_status: "",
+    received_by: user.name,
+  });
 
-  const filterForSecAmountDef = patients.filter((item) => {
-    return item.sa_id === selected;
+  const date = new Date();
+  console.log(date);
+
+  const [refund, setRefund] = useState({
+    refund_date: date,
+    refund_by: user.name,
+    payment_status: "Refunded",
   });
 
   
 
+
+  const handlePaySecChange = (e) => {
+    const { name, value } = e.target;
+    setData({
+      ...data,
+      [name]: value,
+    });
+  };
+
   
+
+  const handleInput = async (event) => {
+    const { name, value } = event.target;
+    if (name === "appointment_id") {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:8888/api/v1/accountant/getAppointmentDetailsViaID/${value}`
+        );
+       
+        if (data) {
+          setAddSecurityAmount((prevData) => ({
+            ...prevData,
+            uhid: data[0]?.patient_uhid,
+            patient_name: data[0]?.patient_name,
+            patient_number: data[0]?.mobileno,
+            assigned_doctor: data[0]?.assigned_doctor_name,
+            appointment_id: value,
+          }));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // For other input fields, update the state as before
+      setAddSecurityAmount((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+
+  console.log(refund);
+
+  // const handleInputChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setRefund({ ...refund, [name]: value !== "" ? parseFloat(value) : "" });
+  // };
+
+  const insertSecurityAmount = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:8888/api/v1/accountant/addSecurityAmount",
+        addSecurityAmount
+      );
+      console.log(response);
+      cogoToast.success("Security Amount Submitted Successfully");
+    } catch (error) {
+      console.log(error);
+      cogoToast.success("failed to submit security amount");
+    }
+  };
+
+  const getSecurityAmountList = async () => {
+    try {
+      const { data } = await axios.get(
+        `http://localhost:4000/api/v1/receptionist/getSecurityAmountDataByBranch/${branch}`
+      );
+      setSecurityList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const makePaymentNow = async (id) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8888/api/v1/accountant/updateSecurityAmount/${id}`
+      );
+      getSecurityAmountList();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const openSecAmountSubPopup = (id) => {
+    setShowEditSecAmount(true);
+    // getTotaloutstanding(id);
+    setSelected(id);
+    console.log(id);
+  };
+  const closeUpdatePopup = () => {
+    setShowEditSecAmount(false);
+    setShowPaySecAmount(false);
+  };
+
+  const openSecurityAmtPay = (id) => {
+    setShowPaySecAmount(true);
+    setSelected(id);
+  };
+
+  useEffect(() => {
+    getSecurityAmountList();
+  }, []);
+
+  console.log(securityList);
+  console.log(selected);
+  // alert(selected);
+
+  const filterForSecAmountDef = securityList.filter((item) => {
+    return item.sa_id === selected;
+  });
+
+  console.log(filterForSecAmountDef);
+
+  const [data, setData] = useState({
+    payment_status: "Success",
+    payment_Mode: "",
+    transaction_Id: "",
+    notes: "",
+    received_by: currentUser.employee_name,
+    
+
+  });
+  console.log(data)
 
   const MakeRefund = async (e) => {
     e.preventDefault();
@@ -49,103 +193,172 @@ function SecurityAmount() {
           refund_date: date,
           refund_by: currentUser.employee_name,
           payment_status: "Refunded",
-          refund_amount: refAmount,
+          refund_amount: filterForSecAmountDef[0]?.remaining_amount,
+          remaining_amount: 0,
         }
       );
       cogoToast.success("Amount Refunded Successfully");
-      getPatient();
+      getSecurityAmountList();
       closeUpdatePopup();
     } catch (error) {
       console.log(error);
+      cogoToast.error(error?.response?.data?.message);
     }
   };
 
-  const openSecAmountSubPopup = (id) => {
-    setShowEditSecAmount(true);
-    getTotaloutstanding(id);
-    setSelected(id);
-  };
-
-  const closeUpdatePopup = () => {
-    setShowEditSecAmount(false);
-    
-  };
 
 
+  const paySecurityCash = async (e) => {
+    e.preventDefault();
+  const updatedData = {
+          ...data,
+          remaining_amount : filterForSecAmountDef[0]?.amount
+    }
 
-  const getTotaloutstanding = async (id) => {
-    console.log(id);
+    console.log(updatedData);
     try {
-      const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/getSecurityAmountDataBySID/${id}`
+      const response = await axios.put(
+        `http://localhost:4000/api/v1/receptionist/updatePatientSecurityAmt/${selected}`,
+        updatedData
       );
-      console.log(data);
-      setOutStanding(data);
+      cogoToast.success("Amount Paid Successfully");
+      getSecurityAmountList();
+      closeUpdatePopup();
     } catch (error) {
       console.log(error);
+      cogoToast.error(error?.response?.data?.message);
     }
   };
+  
+//   const [showEditPatientPopup, setShowEditPatientPopup] = useState(false);
+//   const [selectedPatient, setSelectedPatient] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const filterForOut = outStanding?.filter((item) => {
-    return item.payment_status !== "success";
-  });
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const totalPrice = () => {
-    try {
-      let total = 0;
-      filterForOut.forEach((item) => {
-        total = total + parseFloat(item.total_amount);
-      });
-      console.log(total);
-      return total;
-    } catch (error) {
-      console.log(error);
-      return 0;
-    }
-  };
+
+//   const [showEditSecAmount, setShowEditSecAmount] = useState(false);
+//   const [outStanding, setOutStanding] = useState([]);
+//   const [selected, setSelected] = useState();
+//   const date = new Date();
+//   const [refAmount, setRefAmount] = useState("");
+
+//   const filterForSecAmountDef = patients.filter((item) => {
+//     return item.sa_id === selected;
+//   });
+
+  
+
+  
+
+//   const MakeRefund = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await axios.put(
+//         `http://localhost:4000/api/v1/receptionist/updateRefundAmount/${selected}`,
+//         {
+//           refund_date: date,
+//           refund_by: currentUser.employee_name,
+//           payment_status: "Refunded",
+//           refund_amount: refAmount,
+//         }
+//       );
+//       cogoToast.success("Amount Refunded Successfully");
+//       getPatient();
+//       closeUpdatePopup();
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+//   const openSecAmountSubPopup = (id) => {
+//     setShowEditSecAmount(true);
+//     getTotaloutstanding(id);
+//     setSelected(id);
+//   };
+
+//   const closeUpdatePopup = () => {
+//     setShowEditSecAmount(false);
+    
+//   };
+
+
+
+//   const getTotaloutstanding = async (id) => {
+//     console.log(id);
+//     try {
+//       const { data } = await axios.get(
+//         `http://localhost:4000/api/v1/receptionist/getSecurityAmountDataBySID/${id}`
+//       );
+//       console.log(data);
+//       setOutStanding(data);
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+
+//   const filterForOut = outStanding?.filter((item) => {
+//     return item.payment_status !== "success";
+//   });
+
+//   const totalPrice = () => {
+//     try {
+//       let total = 0;
+//       filterForOut.forEach((item) => {
+//         total = total + parseFloat(item.total_amount);
+//       });
+//       console.log(total);
+//       return total;
+//     } catch (error) {
+//       console.log(error);
+//       return 0;
+//     }
+//   };
  
-  const totalValue = totalPrice();
+//   const totalValue = totalPrice();
 
 
 
-  const makeRefData = () => {
-    if (outStanding.length === 0) {
-      return filterForSecAmountDef[0]?.amount;
-    } else {
-      return outStanding[0]?.amount - totalValue;
-    }
-  };
-  console.log(totalValue)
-  const amtRefund = makeRefData();
-  console.log(amtRefund);
-  useEffect(() => {
-    setRefAmount(amtRefund);
-  }, [amtRefund]);
+//   const makeRefData = () => {
+//     if (outStanding.length === 0) {
+//       return filterForSecAmountDef[0]?.amount;
+//     } else {
+//       return outStanding[0]?.amount - totalValue;
+//     }
+//   };
+//   console.log(totalValue)
+//   const amtRefund = makeRefData();
+//   console.log(amtRefund);
+//   useEffect(() => {
+//     setRefAmount(amtRefund);
+//   }, [amtRefund]);
 
-  const getPatient = async () =>{
-    try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/patient-securityAmt/${branch}`);
-      console.log(response);
-      setPatients(response?.data?.data)
-     }
-     catch(error){
-        console.log(error)
-     }
+//   const getPatient = async () =>{
+//     try{
+//       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/patient-securityAmt/${branch}`);
+//       console.log(response);
+//       setPatients(response?.data?.data)
+//      }
+//      catch(error){
+//         console.log(error)
+//      }
     
-  }
+//   }
 
-  console.log(patients)
+//   console.log(patients)
 
-  useEffect(()=>{
-    getPatient();
+//   useEffect(()=>{
+//     getPatient();
     
     
- },[refreshTable]);
+//  },[refreshTable]);
 
- const handleEditPatient = (Patient)=>{
-  setSelectedPatient(Patient);
-  setShowEditPatientPopup(true);
-}
+//  const handleEditPatient = (Patient)=>{
+//   setSelectedPatient(Patient);
+//   setShowEditPatientPopup(true);
+// }
 
 
 
@@ -157,7 +370,7 @@ function SecurityAmount() {
     setSearchTerm(searchTerm);
     setCurrentPage(1); // Reset to the first page when searching
 
-    const filteredResults = patients.filter((row) =>
+    const filteredResults = securityList.filter((row) =>
       row?.patient_name.toLowerCase().includes(searchTerm) || row?.patient_number.includes(searchTerm) || row?.uhid.toLowerCase().includes(searchTerm)
     );
 
@@ -174,10 +387,10 @@ const handleRowsPerPageChange = (event) => {
 // Pagination functions
 const indexOfLastRow = currentPage * rowsPerPage;
 const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : patients.slice(indexOfFirstRow, indexOfLastRow);
+const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : securityList.slice(indexOfFirstRow, indexOfLastRow);
 
 
-const totalPages = Math.ceil(patients.length / rowsPerPage);
+const totalPages = Math.ceil(securityList.length / rowsPerPage);
 
 const paginate = (pageNumber) => {
   if (pageNumber > 0 && pageNumber <= totalPages) {
@@ -186,7 +399,7 @@ const paginate = (pageNumber) => {
 };
 
 const pageNumbers = [];
-for (let i = 1; i <= Math.ceil(patients.length / rowsPerPage); i++) {
+for (let i = 1; i <= Math.ceil(securityList.length / rowsPerPage); i++) {
   pageNumbers.push(i);
 }
 
@@ -297,7 +510,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                       </Form.Control>
                     </Form.Group>
     </div>
-    <div><h5>Total Patients - {patients.length}</h5></div>
+    <div><h5>Total Patients - {securityList.length}</h5></div>
     
 {/* <div class="dropdown" id='drop'>
   
@@ -324,67 +537,94 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                         <thead>
                           <tr>
                           <th>Date</th>
-                            <th>App. ID</th>
+                            <th>Appointment ID</th>
                             <th>UHID</th>
                             <th>Patient Name</th>
-                            <th>Mobile</th>
-                            <th>Doctor</th>
-                            <th>Security Amount</th>
-                            <th>Payment Status</th>
+                            <th>Patient Number</th>
+                            <th>Assigned Doctor</th>
+                            <th>Deposit Security Amount</th>
+                            <th>Remaning Security Amount</th>
                             <th>Payment Mode</th>
                             <th>Transaction Id</th>
                             <th>Payment Date</th>
                             <th>Refund Date</th>
+                            <th>Payment Status</th>
                             <th>Refund Amount</th>
-
-                            <th>Notes</th>
                             <th>Action</th>
                             <th>Print</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {currentRows.map((data,index)=>(
-                             <tr key={index}>
-                             <td>{data?.date ? moment(data?.date, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY') : ""}</td>
-                             <td>{data.appointment_id}</td>
-                             <td><Link to={`/patient_profile/${data.uhid}`}>{data.uhid}</Link></td>
-                             <td>{data.patient_name}</td>
-                             <td>{data.patient_number}</td>
-                             <td>{data.assigned_doctor}</td>
- 
-                             <td>{data.amount}</td>
-                             <td>{data.payment_status}</td>
-                             <td>{data.payment_Mode}</td>
-                             <td>{data.transaction_Id}</td>
-                             <td>{data.payment_date ? moment(data?.payment_date).format('DD/MM/YYYY') : ""}</td>
-                             <td>{data?.refund_date ? moment(data?.refund_date, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY') : ""}</td>
-                             <td>{data?.refund_amount}</td>
-                             <td>{data.notes}</td>
-                             
-                           
-                            
-                             <td ><div className='dropdown'>
-                             <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Action
-  </button>
-  <ul className="dropdown-menu">
-   
- {data.payment_status === "success" &&  <li><a className="dropdown-item mx-0"  onClick={() =>
-                                        openSecAmountSubPopup(data.sa_id)
-                                      }>Rufund</a></li> } 
- {data.payment_status === "pending" &&  <li><a className="dropdown-item mx-0" onClick={()=>handleEditPatient(data)}>Make Payment</a></li> } 
- 
- 
-  
- 
-  </ul>
-  </div></td>
-  <td> {data.payment_status === "success" ? (<Link to={`/print_security_amount/${data.sa_id}`}>  <button type="button" className="btn btn-primary">Print</button> </Link>) : (  <button type="button" className="btn btn-primary" disabled>Print</button>)} </td>
-                           </tr>
-                          ))}
-                          
-                          
-                         
+                        {currentRows.map((item) => (
+                              <>
+                                <tr className="table-row">
+                                  <td>{item.date.split("T")[0]}</td>
+                                  <td>{item.appointment_id}</td>
+                                  <td>{item.uhid}</td>
+                                  <td>{item.patient_name}</td>
+                                  <td>{item.patient_number}</td>
+                                  <td>{item.assigned_doctor}</td>
+                                  <td>{item.amount}</td>
+                                  <td>{item.remaining_amount}</td>
+                                  <td>{item.payment_Mode}</td>
+                                  <td>{item.transaction_Id}</td>
+                                  <td>{item.payment_date ? moment(item?.payment_date).format('DD/MM/YYYY') : ""}</td>
+                             <td>{item?.refund_date ? moment(item?.refund_date, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY') : ""}</td>
+                                  <td>
+                                    <div className="d-flex">
+                                      <h6>{item.payment_status}</h6>
+                                      
+                                    </div>
+                                  </td>
+                                  <td>{item.refund_amount}</td>
+                                  <td>
+                                    {/* {item?.remaining_amount === 0 && ( */}
+                                    {
+                                      item.payment_status === "Pending" ? 
+                                      <>
+                                      <button
+                                            className="mx-2 btn btn-info"
+                                            onClick={() =>
+                                              openSecurityAmtPay(item.sa_id)
+                                            }
+                                          >
+                                            Pay now
+                                          </button>
+                                      </>
+
+                                      :
+                                      <>
+                                       <button
+                                      className={`mx-2 btn btn-warning ${
+                                        item.remaining_amount === 0
+                                          ? "disabled"
+                                          : ""
+                                      } `}
+                                      onClick={() =>
+                                        openSecAmountSubPopup(item.sa_id)
+                                      }
+                                    >
+                                      Make Refund
+                                    </button>
+                                      </>
+
+                                    }
+                                   
+                                    {/* )} */}
+                                  </td>
+                                  <td>
+                                    <Link
+                                      to={`/print_security_amount/${item.sa_id}`}
+                                    >
+                                      {item.payment_status !== "Pending" &&  <button className="btn btn-success">
+                                        Print
+                                      </button>}
+                                     
+                                    </Link>
+                                  </td>
+                                </tr>
+                              </>
+                            ))}
                         </tbody>
                       </table>
                     </div>
@@ -400,7 +640,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                           
                         >
                          {/* Showing Page {currentPage} of {totalPages} from {data?.length} entries */}
-                       {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {patients?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {patients?.length} entries</> }  
+                       {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {securityList?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {securityList?.length} entries</> }  
 
                         </h4></div>
                     <div className="col-lg-3 col-md-3 col-sm-3 col-12">
@@ -416,7 +656,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                       
                         <Button
                           onClick={() => paginate(currentPage + 1)}
-                          disabled={indexOfLastRow >= patients.length}
+                          disabled={indexOfLastRow >= securityList.length}
                           variant="success"
                         >
                           Next
@@ -437,7 +677,8 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
 
 
    {/* pop-up for refund amount */}
-   <div
+ {/* pop-up for refund amount */}
+ <div
             className={`popup-container${showEditSecAmount ? " active" : ""}`}
           >
             <div className="popup">
@@ -456,15 +697,18 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                     </div>
                     <div class="mb-3">
                       <label for="exampleFormControlInput1" class="form-label">
-                        Total Outstanding - {totalValue}
+                        {/* Total Outstanding - {totalValue} */}
+                        Remaning Secuirty Amount -{" "}
+                        {filterForSecAmountDef[0]?.remaining_amount}
                       </label>
                     </div>
                     <div class="mb-3">
                       <label for="exampleFormControlInput1" class="form-label">
                         Refund Amount :
-                        {outStanding.length === 0
+                        {/* {outStanding.length === 0
                           ? filterForSecAmountDef[0]?.amount
-                          : outStanding[0]?.amount - totalValue}
+                          : outStanding[0]?.amount - totalValue} */}
+                        {filterForSecAmountDef[0]?.remaining_amount}
                       </label>
                       {/* <input
                         type="text"
@@ -501,9 +745,85 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
 
 
 
-   {showEditPatientPopup && (
-        <MakePayment onClose={() => setShowEditPatientPopup(false)} patientInfo={selectedPatient} />
-      )} 
+      {/* pop-up for Pay security amount */}
+      <div
+            className={`popup-container${showPaySecAmount ? " active" : ""}`}
+          >
+            <div className="popup">
+              <h4 className="text-center">Pay Security Amount</h4>
+              <hr />
+              <form className="d-flex flex-column" onSubmit={paySecurityCash}>
+                <div className="container">
+                  <div>
+                    <div class="mb-3">
+                      <label className="form-label" htmlFor="">
+                        Payment Mode
+                      </label>
+                      <select
+                        className="form-select"
+                        id="payment_Mode"
+                        name="payment_Mode"
+                        value={data.payment_Mode}
+                        required
+                        onChange={handlePaySecChange}
+                      >
+                        <option value="">Select</option>
+                        <option value="cash">Cash</option>
+                        <option value="online">Online</option>
+                      </select>
+                    </div>
+
+                    {data.payment_Mode === "online" && (
+                      <div class="mb-3">
+                        <label className="form-label" for="form6Example1">
+                          Transaction Id
+                        </label>
+                        <input
+                          type="text"
+                          id="form6Example1"
+                          className="form-control"
+                          name="transaction_Id"
+                          onChange={handlePaySecChange}
+                          value={data.transaction_Id}
+                          required
+                        />
+                      </div>
+                    )}
+
+                    <div class="mb-3">
+                      <label className="form-label" for="form6Example1">
+                        Notes
+                      </label>
+                      <input
+                        type="text"
+                        id="form6Example1"
+                        className="form-control"
+                        name="notes"
+                        onChange={handlePaySecChange}
+                        value={data.notes}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="d-flex justify-content-center">
+                  <button type="submit" className="btn btn-success mt-2">
+                    Pay
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger mt-2 mx-2"
+                    onClick={closeUpdatePopup}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          {/* pop-up for Pay security amount */}
+          {/* ************************************************************************************* */}
  
     </Wrapper>
   )

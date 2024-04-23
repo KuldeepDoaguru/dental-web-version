@@ -1,6 +1,6 @@
 
 const express = require("express");
-const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent, getPatientTimeline, getAllAppointmentByPatientId, updateAppointmentStatusCancelOpd, getPatientSecurityAmt, updatePatientSecurityAmt, getSecurityAmountDataBySID, updateRefundAmount, getSinglePatientSecurityAmt, getPatientDeatilsByUhid, applyLeave, getLeaves, MarkAttendanceLogin, MarkAttendanceLogout, getTodayAttendance, getAttendancebyempId, getSecurityAmountDataByBranch, getPatientBillsByBranch, getBranchDetailsByBranch, getSecurityAmountDataByTPUHID, getPatientBillsAndSecurityAmountByBranch, updateRemainingSecurityAmount, makeBillPayment, paidBillLIst, billDetailsViaTpid, getTreatSuggestViaTpid, getTreatPrescriptionByTpid, getTreatmentDetailsViaTpid, getDentalDataByTpid, getAppointmentsWithPatientDetailsById, getTreatmentViaUhid, getBillViaUhid, getExaminationViaUhid, getPrescriptionViaUhid } = require("../controller/receptionist_Controller");
+const { addPatient, getDisease, getTreatment, getPatients, bookAppointment, getDoctorDataByBranch, getAppointments,  updateAppointmentStatus, updateAppointment, LoginReceptionist, getBranch, getDoctorDataByBranchWithLeave, getBranchDetail, updateAppointmentStatusCancel, updatePatientDetails, getBranchHoliday, getPatientById, addInquiry, getInquiries, updateInquiry, deleteInquiry,getAppointmentById, insertTimelineEvent, getPatientTimeline, getAllAppointmentByPatientId, updateAppointmentStatusCancelOpd, getPatientSecurityAmt, updatePatientSecurityAmt, getSecurityAmountDataBySID, updateRefundAmount, getSinglePatientSecurityAmt, getPatientDeatilsByUhid, applyLeave, getLeaves, MarkAttendanceLogin, MarkAttendanceLogout, getTodayAttendance, getAttendancebyempId, getSecurityAmountDataByBranch, getPatientBillsByBranch, getBranchDetailsByBranch, getSecurityAmountDataByTPUHID, getPatientBillsAndSecurityAmountByBranch, updateRemainingSecurityAmount, makeBillPayment, paidBillLIst, billDetailsViaTpid, getTreatSuggestViaTpid, getTreatPrescriptionByTpid, getTreatmentDetailsViaTpid, getDentalDataByTpid, getAppointmentsWithPatientDetailsById, getTreatmentViaUhid, getBillViaUhid, getExaminationViaUhid, getPrescriptionViaUhid, sendOtp, verifyOtp, resetPassword } = require("../controller/receptionist_Controller");
 const router = express.Router();
 
 router.post('/add-patient',addPatient);
@@ -88,6 +88,10 @@ router.get('/getTreatmentViaUhid/:branch/:uhid',getTreatmentViaUhid);
 router.get('/getBillsViaUhid/:branch/:uhid',getBillViaUhid);
 router.get('/getExaminationViaUhid/:branch/:uhid',getExaminationViaUhid);
 router.get('/getPrescriptionViaUhid/:branch/:uhid',getPrescriptionViaUhid);
+
+router.post("/sendOtp", sendOtp);
+router.post("/verifyOtp", verifyOtp);
+router.put("/resetPassword", resetPassword);
 
 
 

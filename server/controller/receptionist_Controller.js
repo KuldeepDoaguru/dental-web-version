@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
 dotenv.config();
+const nodemailer = require("nodemailer");
 
 // const addPatient = (req,res) =>{
 //          try{
@@ -2230,120 +2231,6 @@ const LoginReceptionist = (req, res) => {
   }
 };
 
-const sendOtp = (req, res) => {
-  const { email } = req.body;
-
-  // random otp
-  function generateOTP(length) {
-    const chars = "0123456789";
-    let otp = "";
-
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * chars.length);
-      otp += chars[randomIndex];
-    }
-
-    return otp;
-  }
-
-  const OTP = generateOTP(6);
-
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: process.env.EMAILSENDER,
-        pass: process.env.EMAILPASSWORD,
-      },
-    });
-
-    const mailOptions = {
-      from: process.env.EMAILSENDER,
-      to: email,
-      subject: "Password Reset OTP",
-      text: `Your OTP for password reset is: ${OTP}`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error(error);
-        return res
-          .status(500)
-          .json("An error occurred while sending the email.");
-      } else {
-        console.log("OTP sent:", info.response);
-
-        const selectQuery = "SELECT * FROM otpcollections WHERE email = ?";
-        db.query(selectQuery, email, (err, result) => {
-          if (err) {
-            res.status(400).json({ success: false, message: err.message });
-          }
-          if (result && result.length > 0) {
-            const updateQuery =
-              "UPDATE otpcollections SET code = ? WHERE email = ?";
-            db.query(updateQuery, [OTP, email], (upErr, upResult) => {
-              if (upErr) {
-                res
-                  .status(400)
-                  .json({ success: false, message: upErr.message });
-              }
-              res.status(200).send(upResult);
-            });
-          } else {
-            // Assuming you have a 'db' object for database operations
-            db.query(
-              "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)",
-              [email, OTP],
-              (err, result) => {
-                if (err) {
-                  console.error(err);
-                  return res
-                    .status(500)
-                    .send({ message: "Failed to store OTP" });
-                }
-
-                res.status(200).json({ message: "OTP sent successfully" });
-              }
-            );
-          }
-        });
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json("An error occurred.");
-  }
-};
-
-const verifyOtp = (req, res) => {
-  try {
-    const { email, otp } = req.body;
-    db.query(
-      "SELECT * FROM otpcollections WHERE email = ? AND code = ?",
-      [email, otp],
-      (err, result) => {
-        if (err) {
-          return res
-            .status(500)
-            .json({ success: false, message: "Internal server error" });
-        }
-        if (result.length > 0) {
-          return res
-            .status(200)
-            .json({ success: true, message: "Otp verification  success" });
-        } else {
-          return res
-            .status(404)
-            .json({ success: false, message: "Invalid email or OTP" });
-        }
-      }
-    );
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
-  }
-};
-
 const getBranchDetailsByBranch = (req, res) => {
   try {
     const branch = req.params.branch;
@@ -2776,6 +2663,162 @@ const getPrescriptionViaUhid = (req, res) => {
   }
 };
 
+
+// reset password
+
+const sendOtp = (req, res) => {
+  const { email } = req.body;
+
+  // random otp
+  function generateOTP(length) {
+    const chars = "0123456789";
+    let otp = "";
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      otp += chars[randomIndex];
+    }
+
+    return otp;
+  }
+
+  const OTP = generateOTP(6);
+
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAILSENDER,
+        pass: process.env.EMAILPASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAILSENDER,
+      to: email,
+      subject: "Password Reset OTP",
+      text: `Your OTP for password reset is: ${OTP}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error(error);
+        return res
+          .status(500)
+          .json("An error occurred while sending the email.");
+      } else {
+        console.log("OTP sent:", info.response);
+
+        const selectQuery = "SELECT * FROM otpcollections WHERE email = ?";
+        db.query(selectQuery, email, (err, result) => {
+          if (err) {
+            res.status(400).json({ success: false, message: err.message });
+          }
+          if (result && result.length > 0) {
+            const updateQuery =
+              "UPDATE otpcollections SET code = ? WHERE email = ?";
+            db.query(updateQuery, [OTP, email], (upErr, upResult) => {
+              if (upErr) {
+                res
+                  .status(400)
+                  .json({ success: false, message: upErr.message });
+              }
+              res.status(200).send(upResult);
+            });
+          } else {
+            // Assuming you have a 'db' object for database operations
+            db.query(
+              "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)",
+              [email, OTP],
+              (err, result) => {
+                if (err) {
+                  console.error(err);
+                  return res
+                    .status(500)
+                    .send({ message: "Failed to store OTP" });
+                }
+
+                res.status(200).json({ message: "OTP sent successfully" });
+              }
+            );
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json("An error occurred.");
+  }
+};
+
+const verifyOtp = (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    db.query(
+      "SELECT * FROM otpcollections WHERE email = ? AND code = ?",
+      [email, otp],
+      (err, result) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal server error" });
+        }
+        if (result.length > 0) {
+          return res
+            .status(200)
+            .json({ success: true, message: "Otp verification  success" });
+        } else {
+          return res
+            .status(404)
+            .json({ success: false, message: "Invalid email or OTP" });
+        }
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const resetPassword = (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const selectQuery =
+      "SELECT * FROM employee_register WHERE employee_email = ?";
+    db.query(selectQuery, email, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length) {
+        const saltRounds = 10;
+        const hashedPassword = bcrypt.hashSync(password, saltRounds);
+        console.log(hashedPassword);
+        const updateQuery = `UPDATE employee_register SET employee_password = ? WHERE employee_email = ?`;
+        db.query(updateQuery, [hashedPassword, email], (err, result) => {
+          if (err) {
+            return res
+              .status(400)
+              .json({ success: false, message: err.message });
+          } else {
+            return res.status(200).json({
+              success: true,
+              message: "Details updated successfully",
+            });
+          }
+        });
+      } else {
+        return res
+          .status(404)
+          .json({ success: false, message: "email not found" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   addPatient,
   getDisease,
@@ -2832,6 +2875,11 @@ module.exports = {
   getTreatmentViaUhid,
   getBillViaUhid,
   getExaminationViaUhid,
-  getPrescriptionViaUhid
+  getPrescriptionViaUhid,
+  sendOtp,
+  verifyOtp,
+  resetPassword
+
+
   
 };

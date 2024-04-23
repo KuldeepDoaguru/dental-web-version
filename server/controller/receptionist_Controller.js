@@ -535,6 +535,7 @@ const bookAppointment = (req, res) => {
     const {
       branch_name,
       patient_uhid,
+      tp_id,
       status,
       doctorId,
       doctor_name,
@@ -553,12 +554,13 @@ const bookAppointment = (req, res) => {
 
     const bookAppointmentQuery = `
       INSERT INTO appointments (
-          patient_uhid, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status,opd_amount, payment_Mode, transaction_Id, payment_Status,  notes, appointment_created_by, appointment_created_by_emp_id, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)
+          patient_uhid,	tp_id, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status,opd_amount, payment_Mode, transaction_Id, payment_Status,  notes, appointment_created_by, appointment_created_by_emp_id, created_at
+      ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?)
   `;
 
     const bookAppointmentParams = [
       patient_uhid,
+      tp_id,
       branch_name,
       doctor_name,
       doctorId,
@@ -2534,6 +2536,246 @@ const makeBillPayment = (req, res) => {
   }
 };
 
+const paidBillLIst = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+// Final Bill API's
+
+const billDetailsViaTpid = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const selectQuery = "SELECT * FROM patient_bills WHERE tp_id = ?";
+    db.query(selectQuery, tpid, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
+const getTreatSuggestViaTpid = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const branch = req.params.branch;
+    const sql = `SELECT * FROM treat_suggest WHERE tp_id = ? AND branch_name = ?`;
+    db.query(sql, [tpid, branch], (err, result) => {
+      if (err) {
+        return res.status(400).json({
+          success: false,
+          message: "Failed to query database",
+          error: err,
+        });
+      } else {
+        if (result.length === 0) {
+          return res
+            .status(404)
+            .json({ success: false, message: "No data found" });
+        }
+        return res.status(200).json({
+          success: true,
+          message: "Data retrieved successfully",
+          data: result,
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+const getTreatPrescriptionByTpid = (req, res) => {
+  const { tpid, branch } = req.params;
+
+  const sql =
+    "SELECT * FROM dental_prescription WHERE tp_id = ? AND branch_name = ?";
+
+  db.query(sql, [tpid, branch], (err, results) => {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.status(200).json({ results });
+    }
+  });
+};
+
+const getTreatmentDetailsViaTpid = (req, res) => {
+  try {
+    const { tpid, branch } = req.params;
+    const selectQuery =
+      "SELECT * FROM dental_treatment WHERE tp_id = ? AND branch_name = ?";
+    db.query(selectQuery, [tpid, branch], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).json({ result });
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
+const getDentalDataByTpid = (req, res) => {
+  const tpid = req.params.tpid;
+  const branch = req.params.branch;
+
+  const sql =
+    "SELECT * FROM dental_examination WHERE tp_id = ? AND branch_name = ?";
+  db.query(sql, [tpid, branch], (err, result) => {
+    if (err) {
+      console.error("Error retrieving data: ", err);
+      res.status(500).send("Error retrieving data: " + err.message);
+      return;
+    }
+
+    if (result.length === 0) {
+      res.status(404).send("No data found for appointment ID: " + tpid);
+      return;
+    }
+
+    res.status(200).json({ result });
+  });
+};
+
+const getAppointmentsWithPatientDetailsById = (req, res) => {
+  const tpid = req.params.tpid;
+
+  const sql = `SELECT * FROM treatment_package JOIN patient_details ON patient_details.uhid = treatment_package.uhid WHERE tp_id = ?`;
+
+  db.query(sql, [tpid], (err, result) => {
+    if (err) {
+      console.error("Error executing query:", err.message);
+      return res.status(500).json({ error: "Internal server error" });
+    } else if (result.length === 0) {
+      return res.status(404).json({ error: "TPID not found" });
+    } else {
+      return res.status(200).json({ message: "Get data by TPID", result });
+    }
+  });
+};
+
+// patient profile api
+
+const getTreatmentViaUhid = (req, res) => {
+  const branch = req.params.branch;
+  const uhid = req.params.uhid;
+  try {
+    const sql = "SELECT * FROM treat_suggest WHERE branch_name = ? AND p_uhid = ? ORDER BY ts_id DESC";
+
+    db.query(sql, [branch,uhid], (err, results) => {
+      if (err) {
+        console.error("Error fetching Treatment from MySql:", err);
+        res.status(500).json({ error: "Error fetching Treatment" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Treatment fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Treatment from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Treatment",
+      error: error.message,
+    });
+  }
+};
+const getBillViaUhid = (req, res) => {
+  const branch = req.params.branch;
+  const uhid = req.params.uhid;
+  try {
+    const sql = "SELECT * FROM patient_bills WHERE branch_name = ? AND uhid = ? ORDER BY bill_id DESC";
+
+    db.query(sql, [branch,uhid], (err, results) => {
+      if (err) {
+        console.error("Error fetching Bill from MySql:", err);
+        res.status(500).json({ error: "Error fetching Bill" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Bill fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Bill from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Bill",
+      error: error.message,
+    });
+  }
+};
+const getExaminationViaUhid = (req, res) => {
+  const branch = req.params.branch;
+  const uhid = req.params.uhid;
+  try {
+    const sql = "SELECT * FROM dental_examination WHERE branch_name = ? AND patient_uhid = ? ORDER BY exm_id DESC";
+
+    db.query(sql, [branch,uhid], (err, results) => {
+      if (err) {
+        console.error("Error fetching Examination from MySql:", err);
+        res.status(500).json({ error: "Error fetching Examination" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Examination fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Examination from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Examination",
+      error: error.message,
+    });
+  }
+};
+const getPrescriptionViaUhid = (req, res) => {
+  const branch = req.params.branch;
+  const uhid = req.params.uhid;
+  try {
+    const sql = "SELECT * FROM dental_prescription WHERE branch_name = ? AND patient_uhid = ? ORDER BY id DESC";
+
+    db.query(sql, [branch,uhid], (err, results) => {
+      if (err) {
+        console.error("Error fetching Prescription from MySql:", err);
+        res.status(500).json({ error: "Error fetching Prescription" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Prescription fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Prescription from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Prescription",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   addPatient,
   getDisease,
@@ -2578,5 +2820,18 @@ module.exports = {
   getSecurityAmountDataByTPUHID,
   getPatientBillsAndSecurityAmountByBranch,
   updateRemainingSecurityAmount,
-  makeBillPayment
+  makeBillPayment,
+  paidBillLIst,
+  billDetailsViaTpid,
+  getTreatSuggestViaTpid,
+  getTreatPrescriptionByTpid,
+  getTreatmentDetailsViaTpid,
+  getDentalDataByTpid,
+  getDentalDataByTpid,
+  getAppointmentsWithPatientDetailsById,
+  getTreatmentViaUhid,
+  getBillViaUhid,
+  getExaminationViaUhid,
+  getPrescriptionViaUhid
+  
 };

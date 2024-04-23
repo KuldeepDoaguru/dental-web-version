@@ -31,7 +31,7 @@ function BookAppointment() {
   const [patientTreatmentDetails,setPatientTreatmentDetails] = useState([]);
   const opdCost = treatments?.filter((treatment) => treatment?.treatment_name === "OPD")[0]?.treatment_cost;
   const minDate = new Date();
- 
+ console.log(patientTreatmentDetails);
   
   const [opdAmount, setOpdAmount] = useState(opdCost); // State to store the OPD amount, initialized with opdCost
 
@@ -105,9 +105,9 @@ const handleOpdAmountChange = (e) => {
   const getPatientTreatmentDetails = async (uhid)=>{
     try {
        const response = await axios.get(`http://localhost:4000/api/v1/receptionist/getPatientDeatilsByUhid/${branch}/${uhid}`)
-       console.log(response)
+      
        setPatientTreatmentDetails(response.data.data)
-     
+       
         // setSearchDoctor(patientTreatmentDetails[0]?.doctor_name)
       
     } catch (error) {
@@ -409,8 +409,8 @@ useEffect(()=>{
   setSearchDoctor(filtered[0]?.employee_name ? filtered[0].employee_name : "")
 setSelectedDoctor(filtered[0]);
  
-const filteredTreatment = patientTreatmentDetails.length ? patientTreatmentDetails.filter((treatment) =>
-treatment.treatment_status.toLowerCase().includes("ongoing") || treatment.treatment_status.toLowerCase().includes("pending")
+const filteredTreatment = patientTreatmentDetails?.length ? patientTreatmentDetails?.filter((treatment) =>
+treatment?.treatment_status?.toLowerCase()?.includes("ongoing") || treatment?.treatment_status?.toLowerCase()?.includes("pending")
 )
 : [];
   // Filter treatments that are not in filteredTreatment
@@ -626,6 +626,7 @@ const isDoctorAvailable = (selectedDateTime) => {
     // Slot is available, proceed with booking
     const newAppointment = {
       branch_name : branch,
+      tp_id : patientTreatmentDetails[0]?.tp_id,
       patient_uhid : selectedPatient.uhid,
       doctorId: selectedDoctor.employee_ID,
       doctor_name: selectedDoctor.employee_name,

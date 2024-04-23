@@ -33,6 +33,8 @@ import BranchInfo from "./pages/receptionist/BranchInfo";
 import AttendanceLeave from "./pages/receptionist/AttendanceLeave";
 import PatientsDue from "./pages/receptionist/PatientsDue";
 import PatintDuePaymentPrint from "./pages/receptionist/PatintDuePaymentPrint";
+import PatientsPaid from "./pages/receptionist/PatientsPaid";
+import PatientBillsByTpid from "./pages/receptionist/PatientBillsByTpid";
 
 function App() {
 
@@ -67,7 +69,9 @@ function App() {
     <Route path='/receptionist_profile' element={ user.currentUser=== null ? <UniversalLogin/>  :<Profile/>}/>
     <Route path='/security_amount' element={ user.currentUser=== null ? <UniversalLogin/>  :<SecurityAmount/>}/>
     <Route path='/due_amount' element={ user.currentUser=== null ? <UniversalLogin/>  :<PatientsDue/>}/>
+    <Route path='/paid_amount' element={ user.currentUser=== null ? <UniversalLogin/>  :<PatientsPaid/>}/>
     <Route path='/PatintDuePaymentPrint/:bid/:tpid/:uhid' element={ user.currentUser=== null ? <UniversalLogin/>  :<PatintDuePaymentPrint/>}/>
+    <Route path="/patient-bill/:billid/:tpid" element={ user.currentUser=== null ? <UniversalLogin/>  :<PatientBillsByTpid/>}/>
     <Route path='/branch-details' element={ user.currentUser=== null ? <UniversalLogin/>  :<BranchInfo/>}/>
     <Route path='/attendanceLeave' element={ user.currentUser=== null ? <UniversalLogin/>  :<AttendanceLeave/>}/>
 

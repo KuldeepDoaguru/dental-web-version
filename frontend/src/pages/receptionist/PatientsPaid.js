@@ -11,39 +11,36 @@ import MakePayment from '../../components/receptionist/SecurityAmount/MakePaymen
 import cogoToast from 'cogo-toast';
 import { Link, useNavigate } from "react-router-dom";
 
-function PatientsDue() {
+function PatientsPaid() {
   
   const {refreshTable,currentUser} = useSelector((state) => state.user);
   const  branch = currentUser.branch_name
   
 
   
-  const [patBill, setPatBill] = useState([]);
+  const [paidList, setPaidList] = useState([]);
 
-  const getPatBills = async () => {
+  const getBillPaidList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/getPatientBillsByBranch/${branch}`
+        `http://localhost:4000/api/v1/receptionist/paidBillLIst/${branch}`
       );
-      setPatBill(data);
+      setPaidList(data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(patBill);
-  const filterForUnPaidBills = patBill?.filter((item) => {
-    return item.payment_status !== "paid";
+  console.log(paidList);
+  const filterForPaidBills = paidList?.filter((item) => {
+    return item.payment_status === "paid";
   });
 
-
+  console.log(filterForPaidBills);
 
   useEffect(() => {
-    getPatBills();
+    getBillPaidList();
   }, []);
-
-  console.log(patBill);
-
 
 
 
@@ -69,7 +66,7 @@ function PatientsDue() {
     setSearchTerm(searchTerm);
     setCurrentPage(1); // Reset to the first page when searching
 
-    const filteredResults = filterForUnPaidBills.filter((row) =>
+    const filteredResults = filterForPaidBills.filter((row) =>
       row?.patient_name.toLowerCase().includes(searchTerm) || row?.patient_mobile.includes(searchTerm) || row?.uhid.toLowerCase().includes(searchTerm)
     );
 
@@ -86,10 +83,10 @@ const handleRowsPerPageChange = (event) => {
 // Pagination functions
 const indexOfLastRow = currentPage * rowsPerPage;
 const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : filterForUnPaidBills.slice(indexOfFirstRow, indexOfLastRow);
+const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : filterForPaidBills.slice(indexOfFirstRow, indexOfLastRow);
 
 
-const totalPages = Math.ceil(filterForUnPaidBills.length / rowsPerPage);
+const totalPages = Math.ceil(filterForPaidBills.length / rowsPerPage);
 
 const paginate = (pageNumber) => {
   if (pageNumber > 0 && pageNumber <= totalPages) {
@@ -98,7 +95,7 @@ const paginate = (pageNumber) => {
 };
 
 const pageNumbers = [];
-for (let i = 1; i <= Math.ceil(filterForUnPaidBills.length / rowsPerPage); i++) {
+for (let i = 1; i <= Math.ceil(filterForPaidBills.length / rowsPerPage); i++) {
   pageNumbers.push(i);
 }
 
@@ -174,7 +171,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
     </div>
     <div className="col-lg-11 mt-2" id='set'>
     <div className='text-center'>
-      <h3>All Patients Due Data</h3>
+      <h3>Patients Paid Data</h3>
     </div>
       <div className="row" >
    <div className="col-lg-12" id='head'>
@@ -209,7 +206,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                       </Form.Control>
                     </Form.Group>
     </div>
-    <div><h5>Total Patients - {filterForUnPaidBills.length}</h5></div>
+    <div><h5>Total Patients - {filterForPaidBills.length}</h5></div>
     
 {/* <div class="dropdown" id='drop'>
   
@@ -235,71 +232,55 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                       <table className="table table-bordered table-striped">
                         <thead>
                         <tr>
-                                  <th className="table-sno sticky">TPID</th>
+                                  <th className="sticky">Bill ID</th>
+                                  <th className="sticky">Bill Date</th>
+                                  <th className="sticky">TPID</th>
                                   <th className="sticky">Patient UHID</th>
-                                  <th className=" sticky">Patients Name</th>
-                                  <th className=" sticky">Patients Mobile</th>
-                                  <th className=" sticky">Patients Email</th>
-                                  <th className=" sticky">Doctor Name</th>
-                                  <th className=" sticky">Total Amount</th>
-                                  <th className=" sticky">
+                                  <th className="sticky">Patient Name</th>
+                                  <th className="sticky">Patient No</th>
+                                  <th className="sticky">Doctor Name</th>
+                                  <th className="sticky">Total Amount</th>
+                                  <th className="sticky">
                                     Paid By Direct Amount
                                   </th>
-                                  <th className=" sticky">
+                                  <th className="sticky">
                                     Paid By Secuirty Amt
                                   </th>
-                                  <th className=" sticky">Due Amount</th>
-                                  <th className=" sticky">Bill Date</th>
-                                  <th className=" sticky">Action</th>
+                                  <th className="sticky">Payment Date</th>
+                                  <th className="sticky">Action</th>
                                 </tr>
                         </thead>
                         <tbody>
                         {currentRows?.map((item) => (
                                   <>
                                     <tr className="table-row">
-                                      <td className="table-sno">
-                                        {item.tp_id}
-                                      </td>
+                                      <td>{item.bill_id}</td>
+                                      <td>{item.bill_date.split("T")[0]}</td>
+                                      <td>{item.tp_id}</td>
                                       <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
                                       <td>{item.patient_name}</td>
                                       <td>{item.patient_mobile}</td>
-                                      <td>{item.patient_email}</td>
                                       <td>{item.assigned_doctor_name}</td>
                                       <td>{item.total_amount}</td>
                                       <td>{item.paid_amount}</td>
                                       <td>{item.pay_by_sec_amt}</td>
                                       <td>
-                                        {item.total_amount -
-                                          (item.paid_amount +
-                                            item.pay_by_sec_amt)}
+                                        {item.payment_date_time?.split("T")[0]}
                                       </td>
-                                      <td>{item.bill_date.split("T")[0]}</td>
                                       <td>
-                                        {item.total_amount -
-                                          (item.paid_amount +
-                                            item.pay_by_sec_amt) ? (
-                                          <Link
-                                            to={`/PatintDuePaymentPrint/${item.bill_id}/${item.tp_id}/${item.uhid}`}
+                                        <Link
+                                          // to={`/PatintPaidPaymentPrint/${item.bill_id}`}
+                                          to={`/patient-bill/${item.bill_id}/${item.tp_id}`}
+                                        >
+                                          <button
+                                            className="btn"
+                                            style={{
+                                              backgroundColor: "#FFA600",
+                                            }}
                                           >
-                                            <button
-                                              className="btn"
-                                              style={{
-                                                backgroundColor: "#FFA600",
-                                              }}
-                                            >
-                                              Pay Now
-                                            </button>
-                                          </Link>
-                                        ) : (
-                                          <span>
-                                            <button
-                                              className="btn btn-secondary disabled"
-                                              disabled
-                                            >
-                                              Pay Now
-                                            </button>
-                                          </span>
-                                        )}
+                                            Print
+                                          </button>
+                                        </Link>
                                       </td>
                                     </tr>
                                   </>
@@ -319,7 +300,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                           
                         >
                          {/* Showing Page {currentPage} of {totalPages} from {data?.length} entries */}
-                       {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {filterForUnPaidBills?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {filterForUnPaidBills?.length} entries</> }  
+                       {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {filterForPaidBills?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {filterForPaidBills?.length} entries</> }  
 
                         </h4></div>
                     <div className="col-lg-3 col-md-3 col-sm-3 col-12">
@@ -335,7 +316,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                       
                         <Button
                           onClick={() => paginate(currentPage + 1)}
-                          disabled={indexOfLastRow >= filterForUnPaidBills.length}
+                          disabled={indexOfLastRow >= filterForPaidBills.length}
                           variant="success"
                         >
                           Next
@@ -359,7 +340,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
   )
 }
 
-export default PatientsDue;
+export default PatientsPaid;
 const Wrapper = styled.div`
 overflow: hidden;
 .navbar1{

@@ -173,7 +173,7 @@ function PatintDuePaymentPrint() {
             transaction_Id: "",
             note: "",
           });
-          navigate("/due_amount");
+          navigate(`/patient-bill/${bid}/${tpid}`);
         } else {
           cogoToast.success("Failed to paid bill");
         }
@@ -291,8 +291,8 @@ function PatintDuePaymentPrint() {
                               <div class="card" style={{ width: "18rem" }}>
                                 <div className="ms-4 mt-2">
                                   <h1> ₹{billAmount[0]?.total_amount}</h1>
-                                  <h5 className="text-danger ms-4">
-                                    Patient Net Due
+                                  <h5 className="text-danger">
+                                    Total Treatment Amount
                                   </h5>
                                 </div>
                               </div>
@@ -309,30 +309,27 @@ function PatintDuePaymentPrint() {
                     <hr className="mt-5" />
                   </div>
                 </div>
-                <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-6 col-sm-12 ">
                   <div className="d-flex justify-content-center mt-4">
                     <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-11 col-sm-11">
+                    <div className="table-responsive">
                       <table class="table table-bordered shadow">
                         <thead class="table-primary  rounded">
                           <tr>
-                            <th scope="col">Date</th>
-                            <th scope="col">Description</th>
+                            
+                            <th scope="col"></th>
                             <th scope="col">Amount</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <th scope="row">
-                              {billAmount[0]?.bill_date.split("T")[0]}
-                            </th>
+                          
 
-                            <td className="text-end"></td>
-                            <td></td>
                           </tr>
                           <tr>
-                            <td colspan="2">
+                            <td colspan="1">
                               <h6>
-                                Add additional notes and payment information{" "}
+                               
                                 <span class="space"></span>
                                 Total Treatments Amount
                               </h6>
@@ -343,9 +340,9 @@ function PatintDuePaymentPrint() {
                             </td>
                           </tr>
                           <tr>
-                            <td colspan="2">
+                            <td colspan="1">
                               <h6>
-                                <span class="spaces"></span>Previous Paid By
+                                <span class="space"></span>Previous Paid By
                                 Direct Amount
                               </h6>
                             </td>
@@ -354,9 +351,9 @@ function PatintDuePaymentPrint() {
                             </td>
                           </tr>
                           <tr>
-                            <td colspan="2">
+                            <td colspan="1">
                               <h6>
-                                <span class="spaces"></span>Previous Paid By
+                                <span class="space"></span>Previous Paid By
                                 Secuirty Amount
                               </h6>
                             </td>
@@ -365,17 +362,17 @@ function PatintDuePaymentPrint() {
                             </td>
                           </tr>
                           <tr>
-                            <td colspan="2">
+                            <td colspan="1">
                               <h6>
-                                <span class="spaces"></span>Total Due Amount
+                                <span class="space"></span>Total Due Amount
                               </h6>
                             </td>
                             <td className="fw-bolder">₹ {dueAmt}</td>
                           </tr>
                           <tr>
-                            <td colspan="2">
+                            <td colspan="1">
                               <h6>
-                                <span class="spaces"></span>
+                                <span class="space"></span>
                                 Remaining Secuirty Amount
                               </h6>
                             </td>
@@ -387,9 +384,9 @@ function PatintDuePaymentPrint() {
                             </td>
                           </tr>
                           <tr>
-                            <td colspan="2">
+                            <td colspan="1">
                               <h6>
-                                <span class="spaces"></span>Refund / Remaning
+                                <span class="space"></span>Refundable Security
                                 Amount
                               </h6>
                             </td>
@@ -398,27 +395,28 @@ function PatintDuePaymentPrint() {
                             </td>
                           </tr>
                           <tr>
-                            <td colspan="2">
+                            <td colspan="1">
                               <h6>
-                                <span class="spaces"></span>Final Due Amount
+                                <span class="space"></span>Final Due Amount
                               </h6>
                             </td>
                             <td className="fw-bolder">{finalAmt}</td>
                           </tr>
                         </tbody>
                       </table>
-
+                      </div>
+{/*                    
                       <div className="d-flex justify-content-between">
                         <h4 className="">Thank you </h4>
                         <h4 className="">Auth. signature</h4>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="d-xxl-none d-xl-none d-lg-none col-md-1 col-sm-1"></div>
                   </div>
                 </div>
               </div>
               <div>
-                <div className="container d-flex justify-content-end mb-3">
+                <div className="container d-flex justify-content-center mb-3">
                   <button
                     type="button"
                     class="btn btn-primary hide-during-print"
@@ -428,12 +426,12 @@ function PatintDuePaymentPrint() {
                     Pay Now
                   </button>
 
-                  <button
+                  {/* <button
                     class="btn btn btn-success dum text-capitalize mx-2 hide-during-print"
                     onClick={handlePrint}
                   >
                     Print
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

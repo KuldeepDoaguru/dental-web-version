@@ -560,7 +560,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                                 <tr className="table-row">
                                   <td>{item.date.split("T")[0]}</td>
                                   <td>{item.appointment_id}</td>
-                                  <td>{item.uhid}</td>
+                                  <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
                                   <td>{item.patient_name}</td>
                                   <td>{item.patient_number}</td>
                                   <td>{item.assigned_doctor}</td>

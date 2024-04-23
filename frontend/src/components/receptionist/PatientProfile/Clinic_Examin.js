@@ -73,25 +73,24 @@ const ClinicExamin = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  
-  const [exmData, setExmData] = useState([]);
 
-  const getExamineDetails = async () => {
+  const  branch = user.currentUser.branch_name;
+  
+  const [examinations, setExaminations] = useState([]);
+
+  const getExaminationDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/examinDetailsByPatId/${pid}`
+        `http://localhost:4000/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`
       );
-      setExmData(data);
+      setExaminations(data?.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getExamineDetails();
+    getExaminationDetails();
   }, []);
   return (
     <Wrapper>
@@ -104,26 +103,27 @@ const ClinicExamin = () => {
             <table className="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Branch</th>
-                  <th>Issue</th>
-                  <th>Diagnosis</th>
-                  <th>Investigation</th>
-                  <th>Tooth</th>
-                  <th>Doctor</th>
+                <th>Date</th>
+                      <th>Disease</th>
+                      <th>Chief Complaint</th>
+                      <th>Tooth</th>
+                      <th>Diagnosis</th>
+                      <th>Diagnosis Category</th>
+                      <th>On Examination</th>
                 </tr>
               </thead>
               <tbody>
-                {exmData?.map((item) => (
+                {examinations?.map((item) => (
                   <>
                     <tr>
-                      <td>{item.examin_date?.split("T")[0]}</td>
-                      <td>{item.branch_name}</td>
-                      <td>{item.examin_issue}</td>
-                      <td>{item.diagnosis}</td>
-                      <td>{item.examin_investigation}</td>
-                      <td>{item.tooth}</td>
-                      <td>{item.doctor_name}</td>
+                    <td>{item?.date.split("T")[0]}</td>
+                          <td>{item.disease}</td>
+                          <td>{item.chief_complain}</td>
+
+                          <td>{item.selected_teeth}</td>
+                          <td>{item.advice}</td>
+                          <td>{item.diagnosis_category}</td>
+                          <td>{item.on_examination}</td>
                     </tr>
                   </>
                 ))}

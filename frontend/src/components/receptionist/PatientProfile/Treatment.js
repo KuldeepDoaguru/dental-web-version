@@ -174,29 +174,27 @@ const Treatment = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
 
-  const [patAppointDetails, setPatAppointDetails] = useState([]);
+  const  branch = user.currentUser.branch_name;
 
-  const getAppointDetailsPat = async () => {
+  const [treatments, setTreatments] = useState([]);
+
+  const getTreatmentsDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAppointmentByBranchAndId/${pid}`
+        `http://localhost:4000/api/v1/receptionist/getTreatmentViaUhid/${branch}/${pid}`
       );
-      console.log(data);
-      setPatAppointDetails(data);
+      setTreatments(data?.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getAppointDetailsPat();
+    getTreatmentsDetails()
   }, []);
 
-  console.log(patAppointDetails);
+
 
   return (
     <Wrapper>
@@ -207,24 +205,26 @@ const Treatment = () => {
               <table className="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Date</th>
-                    <th>Treatment</th>
-                    <th>Consultant</th>
-                    <th>Cost</th>
-                    <th>Treatment Status</th>
-                    <th>Payment Status</th>
+                  <th>TPID</th>
+                      <th>Disease</th>
+                      <th>Treatment</th>
+                      <th>Total Sitting</th>
+                      <th>Current Sitting</th>
+                      <th>Current Sitting Status</th>
+                      <th>Treatment Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {patAppointDetails?.map((item) => (
+                  {treatments?.map((item) => (
                     <>
                       <tr>
-                        <td>{item.appointment_dateTime?.split("T")[0]}</td>
-                        <td>{item.treatment_provided}</td>
-                        <td>{item.assigned_doctor}</td>
-                        <td>{item.bill_amount}</td>
+                      <td>{item.tp_id}</td>
+                        <td>{item.desease}</td>
+                        <td>{item.treatment_name}</td>
+                        <td>{item.total_sitting}</td>
+                        <td>{item.current_sitting}</td>
+                        <td>{item.current_sitting_status}</td>
                         <td>{item.treatment_status}</td>
-                        <td>{item.payment_status}</td>
                       </tr>
                     </>
                   ))}

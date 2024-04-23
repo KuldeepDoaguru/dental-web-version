@@ -77,7 +77,7 @@ const Navbar = () => {
             Billing
           </button>
         </li>
-        <li className="nav-item" role="presentation">
+        {/* <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab3"
@@ -90,7 +90,7 @@ const Navbar = () => {
           >
             Payment
           </button>
-        </li>
+        </li> */}
         <li className="nav-item" role="presentation">
           <button
             className="nav-link"

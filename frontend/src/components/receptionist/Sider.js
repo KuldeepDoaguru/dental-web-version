@@ -127,6 +127,7 @@ const Sider = () => {
                 </div>
               </Link>
             </li>
+            <hr/>
             <li>
               <Link
                 to="/due_amount"
@@ -138,6 +139,22 @@ const Sider = () => {
                 <div>
                   <h3 className="text-center " id="navleft1">
                   Due Amount
+                  </h3>
+                </div>
+              </Link>
+            </li>
+            <hr/>
+            <li>
+              <Link
+                to="/paid_amount"
+                className={`link-div ${getSidebarClass("/paid_amount")}`}
+              >
+                <div>
+                <i class="fs-4 bi bi-currency-rupee"></i>
+                </div>
+                <div>
+                  <h3 className="text-center " id="navleft1">
+                  Paid Amount
                   </h3>
                 </div>
               </Link>

@@ -168,17 +168,17 @@ const Appointment = () => {
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
+  const  branch = user.currentUser.branch_name;
   
   const [patAppointDetails, setPatAppointDetails] = useState([]);
 
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAppointmentByBranchAndId/${pid}`
+        `http://localhost:4000/api/v1/receptionist/getAllAppointmentByPatientId/${branch}/${pid}`
       );
       console.log(data);
-      setPatAppointDetails(data);
+      setPatAppointDetails(data?.data);
     } catch (error) {
       console.log(error);
     }
@@ -204,9 +204,9 @@ const Appointment = () => {
                   <tr>
                     <th>Date</th>
                     <th>Appointment Time</th>
-                    <th>Consultant</th>
+                    <th>Doctor</th>
                     <th>Treatment</th>
-                    <th>Cost</th>
+                    
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -221,10 +221,10 @@ const Appointment = () => {
                             .split(".")[0]
                             .slice(0, 5)}
                         </td>
-                        <td>{item.assigned_doctor}</td>
+                        <td>{item.assigned_doctor_name}</td>
                         <td>{item.treatment_provided}</td>
-                        <td>{item.bill_amount}</td>
-                        <td>{item.treatment_status}</td>
+                       
+                        <td>{item.appointment_status}</td>
                       </tr>
                     </>
                   ))}

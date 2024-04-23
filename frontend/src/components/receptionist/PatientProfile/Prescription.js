@@ -70,25 +70,24 @@ const Prescription = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
- 
-  const [presData, setPresData] = useState([]);
 
-  const getPresDetails = async () => {
+  const  branch = user.currentUser.branch_name;
+ 
+  const [prescriptions, setPrescriptions] = useState([]);
+
+  const getPrescriptionDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPrescriptionDetailsById/${pid}`
+        `http://localhost:4000/api/v1/receptionist/getPrescriptionViaUhid/${branch}/${pid}`
       );
-      setPresData(data);
+      setPrescriptions(data?.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    getPresDetails();
+    getPrescriptionDetails()
   }, []);
 
   return (
@@ -102,26 +101,26 @@ const Prescription = () => {
             <table className="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Doctor Name</th>
-                  <th>Medicine Name</th>
-                  <th>Dosage</th>
-                  <th>Frequency</th>
-                  <th>Duration</th>
-                  <th>Note</th>
+                <th>Date</th>
+                      <th>Treatment</th>
+                      <th>Medicine Name</th>
+                      <th>Dosage</th>
+                      <th>Frequency</th>
+                      <th>Duration</th>
+                      <th>Note</th>
                 </tr>
               </thead>
               <tbody>
-                {presData?.map((item) => (
+                {prescriptions?.map((item) => (
                   <>
                     <tr>
-                      <td>{item.prescription_date?.split("T")[0]}</td>
-                      <td>{item.doctor_name}</td>
-                      <td>{item.medicine_name}</td>
-                      <td>{item.dosage}</td>
-                      <td>{item.frequency}</td>
-                      <td>{item.duration}</td>
-                      <td>{item.note}</td>
+                    <td>{item.date?.split("T")[0]}</td>
+                          <td>{item.treatment}</td>
+                          <td>{item.medicine_name}</td>
+                          <td>{item.dosage}</td>
+                          <td>{item.frequency}</td>
+                          <td>{item.duration}</td>
+                          <td>{item.note}</td>
                     </tr>
                   </>
                 ))}

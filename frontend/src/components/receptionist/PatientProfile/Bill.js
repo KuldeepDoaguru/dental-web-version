@@ -184,19 +184,17 @@ const Bill = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
+
+  const  branch = user.currentUser.branch_name;
  
-  const [billData, setBillData] = useState([]);
+  const [bills, setBills] = useState([]);
 
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
+        `http://localhost:4000/api/v1/receptionist/getBillsViaUhid/${branch}/${pid}`
       );
-      console.log(data);
-      setBillData(data);
+      setBills(data?.data);
     } catch (error) {
       console.log(error);
     }
@@ -206,7 +204,7 @@ const Bill = () => {
     getBillDetails();
   }, []);
 
-  console.log(billData);
+  console.log(bills);
 
   return (
     <Wrapper>
@@ -220,31 +218,33 @@ const Bill = () => {
               <table className="table table-bordered table-striped">
                 <thead>
                   <tr>
+                    <th>Bill Date</th>
                     <th>Bill Id</th>
-                    <th>Treatment</th>
-                    <th>Consultant</th>
-                    <th>Cost(INR)</th>
-                    <th>Discount(INR)</th>
-                    <th>Tax%</th>
-                    <th>Net Amount</th>
-                    <th>Paid</th>
-                    <th>Pending</th>
-                    <th>Billing Status</th>
+                   
+                    <th>Doctor</th>
+                    <th>Total Amount(INR)</th>
+                    <th>Direct Paid Amount(INR)</th>
+                  
+                    <th>Pay by Security Amount</th>
+                    <th>Payment Mode</th>
+                    <th>Payment Date</th>
+                    
+                    <th>Payment Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {billData?.map((item) => (
+                  {bills?.map((item) => (
                     <>
                       <tr>
+                        <td>{item.bill_date.split("T")[0]}</td>
                         <td>{item.bill_id}</td>
-                        <td>{item.treatment}</td>
-                        <td>{item.assigned_doctor}</td>
+                      
+                        <td>{item.assigned_doctor_name}</td>
                         <td>{item.total_amount}</td>
-                        <td>{item.discount}</td>
-                        <td>{item.tax_percent}%</td>
-                        <td>{item.net_amount}</td>
                         <td>{item.paid_amount}</td>
-                        <td>{item.pending_amount}</td>
+                        <td>{item.pay_by_sec_amt}</td>
+                        <td>{item.payment_mode}</td>
+                        <td>{item.payment_date_time	}</td>
                         <td>{item.payment_status}</td>
                       </tr>
                     </>
@@ -299,6 +299,13 @@ const Wrapper = styled.div`
       margin-left: -1rem;
     }
   }
+  th{
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
+  }
+
 
   .cont-box {
     width: 68rem;

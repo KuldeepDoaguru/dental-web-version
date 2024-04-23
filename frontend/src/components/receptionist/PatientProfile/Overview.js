@@ -9,29 +9,68 @@ const Overview = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
+
   const  branch = user.currentUser.branch_name;
   
   const [patPendingBill, setPatPendingBill] = useState([]);
   const [patAppointDetails, setPatAppointDetails] = useState([]);
-  const [exmData, setExmData] = useState([]);
+  
 
-  const [presData, setPresData] = useState([]);
+  
   const [nextAppoint, setNextAppoint] = useState(null);
 const [prevAppoint, setPrevAppoint] = useState(null);
 const [sortedAppointments,setSortedAppointments] = useState([]);
+const [treatments, setTreatments] = useState([]);
+const [bills, setBills] = useState([]);
+const [examinations, setExaminations] = useState([]);
+const [prescriptions, setPrescriptions] = useState([]);
 
-  const getPresDetails = async () => {
-    try {
-      const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPrescriptionDetailsById/${pid}`
-      );
-      setPresData(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
+console.log(treatments);
+
+const getTreatmentsDetails = async () => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:4000/api/v1/receptionist/getTreatmentViaUhid/${branch}/${pid}`
+    );
+    setTreatments(data?.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const getPrescriptionDetails = async () => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:4000/api/v1/receptionist/getPrescriptionViaUhid/${branch}/${pid}`
+    );
+    setPrescriptions(data?.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const getBillDetails = async () => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:4000/api/v1/receptionist/getBillsViaUhid/${branch}/${pid}`
+    );
+    setBills(data?.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const getExaminationDetails = async () => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:4000/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`
+    );
+    setExaminations(data?.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+ 
 
   const getPendingBillDetails = async () => {
     try {
@@ -57,30 +96,22 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
     }
   };
 
-  const getExamineDetails = async () => {
-    try {
-      const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/examinDetailsByPatId/${pid}`
-      );
-      setExmData(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 
   console.log(pid);
   useEffect(() => {
     getPendingBillDetails();
     getAppointDetailsPat();
-    getPresDetails();
+    getTreatmentsDetails()
+    getBillDetails()
+    getExaminationDetails();
+    getPrescriptionDetails()
   }, []);
 
-  useEffect(() => {
-    getExamineDetails();
-  }, []);
+ 
 
   
-  const filterForPendingAmount = patPendingBill?.filter((item) => {
+  const filterForPendingAmount = bills?.filter((item) => {
     return item.payment_status === "Pending";
   });
   const total = filterForPendingAmount?.reduce((accumulator, item) => {
@@ -91,46 +122,7 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
 
   const todayDate = new Date();
 
-  // Get year, month, and date
-  // const year = todayDate.getFullYear();
-  // const month = String(todayDate.getMonth() + 1).padStart(2, "0"); // Adding 1 to adjust month, padStart ensures 2 digits
-  // const date = String(todayDate.getDate()).padStart(2, "0"); // Ensuring 2 digits
-
-  // // Format as 'YYYY-MM-DD'
-  // const formattedDate = `${year}-${month}-${date}`;
-
-
-  // const filterForPrevAndNextAppointment = patAppointDetails?.reduce(
-  //   (acc, item) => {
-  //     if (item.appointment_dateTime?.split("T")[0] < formattedDate) {
-  //       acc.prevAppointment = item;
-  //     } else if (item.appointment_dateTime?.split("T")[0] >= formattedDate) {
-  //       acc.nextAppointment = item;
-  //     }
-  //     return acc;
-  //   },
-
-  //   { prevAppointment: null, nextAppointment: null }
-  // );
-
-  // console.log(
-  //   "Previous Appointment:",
-  //   filterForPrevAndNextAppointment.prevAppointment
-  // );
-  // console.log(
-  //   "Next Appointment:",
-  //   filterForPrevAndNextAppointment.nextAppointment?.appointment_dateTime
-  // );
-
-  // const nextAppoint =
-  //   filterForPrevAndNextAppointment.nextAppointment?.appointment_dateTime?.split(
-  //     "T"
-  //   )[0];
-
-  // const prevAppoint =
-  //   filterForPrevAndNextAppointment.prevAppointment?.appointment_dateTime?.split(
-  //     "T"
-  //   )[0];
+ console.log(total);
 
   useEffect(() => {
     // Sort appointments by date
@@ -150,8 +142,8 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
         break;
       }
     }
-  
-    console.log("Previous Appointment:", prevAppointment);
+     
+    console.log(sortedAppointments);
     console.log("Next Appointment:", nextAppointment);
   
     const nextAppointDate = nextAppointment ?  moment(nextAppointment?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A')  : null;
@@ -228,19 +220,23 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
                 <table className="table table-bordered table-striped">
                   <thead>
                     <tr>
-                      <th>Date & Time</th>
+                      {/* <th>Date & Time</th> */}
+                      <th>TPID</th>
+                      <th>Disease</th>
                       <th>Treatment</th>
-                      <th>Doctor Name</th>
+                      <th>Total Sitting</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {sortedAppointments?.slice(-3).map((item) => (
+                    {treatments?.slice(-3).map((item) => (
                       <tr>
-                        <td>{moment(item?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A')}</td>
-                        <td>{item.treatment_provided}</td>
-                        <td>{item.assigned_doctor_name}</td>
-                        <td>{item.appointment_status}</td>
+                        {/* <td>{moment(item?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A')}</td> */}
+                        <td>{item.tp_id}</td>
+                        <td>{item.desease}</td>
+                        <td>{item.treatment_name}</td>
+                        <td>{item.total_sitting}</td>
+                        <td>{item.treatment_status}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -253,18 +249,18 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
                     <tr>
                       <th>Date</th>
                       <th>Bill Amount</th>
-                      <th>Treatment</th>
-                      <th>Doctor Name</th>
+                      <th>Paid Amount</th>
+                      <th>Payment Status</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {patPendingBill?.slice(-3).map((item) => (
+                    {bills?.slice(-3).map((item) => (
                       <>
                         <tr>
                           <td>{item.bill_date.split("T")[0]}</td>
                           <td>{item.total_amount}</td>
-                          <td>{item.treatment}</td>
-                          <td>{item.assigned_doctor}</td>
+                          <td>{item.paid_amount}</td>
+                          <td>{item.payment_status}</td>
                         </tr>
                       </>
                     ))}
@@ -277,24 +273,24 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
                   <thead>
                     <tr>
                       <th>Date</th>
-                      <th>Issue</th>
-                      <th>Investigation</th>
+                      <th>Disease</th>
+                      <th>Chief Complaint</th>
                       <th>Tooth</th>
                       <th>Diagnosis</th>
-                      <th>Doctor Name</th>
+                      <th>On Examination</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {exmData?.slice(-3).map((item) => (
+                    {examinations?.slice(-3).map((item) => (
                       <>
                         <tr>
-                          <td>{item.examin_date?.split("T")[0]}</td>
-                          <td>{item.examin_issue}</td>
-                          <td>{item.examin_investigation}</td>
+                          <td>{item?.date.split("T")[0]}</td>
+                          <td>{item.disease}</td>
+                          <td>{item.chief_complain}</td>
 
-                          <td>{item.tooth}</td>
-                          <td>{item.diagnosis}</td>
-                          <td>{item.doctor_name}</td>
+                          <td>{item.selected_teeth}</td>
+                          <td>{item.advice}</td>
+                          <td>{item.on_examination}</td>
                         </tr>
                       </>
                     ))}
@@ -307,18 +303,20 @@ const [sortedAppointments,setSortedAppointments] = useState([]);
                   <thead>
                     <tr>
                       <th>Date</th>
-                      <th>Doctor Name</th>
+                      <th>Treatment</th>
                       <th>Medicine Name</th>
+                      <th>Duration</th>
                       <th>Note</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {presData?.slice(-3).map((item) => (
+                    {prescriptions?.slice(-6).map((item) => (
                       <>
                         <tr>
-                          <td>{item.prescription_date?.split("T")[0]}</td>
-                          <td>{item.doctor_name}</td>
+                          <td>{item.date?.split("T")[0]}</td>
+                          <td>{item.treatment}</td>
                           <td>{item.medicine_name}</td>
+                          <td>{item.duration}</td>
                           <td>{item.note}</td>
                         </tr>
                       </>

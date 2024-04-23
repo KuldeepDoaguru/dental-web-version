@@ -765,6 +765,7 @@ const Wrapper = styled.div`
     height: 200px;
     width: 180px;
     overflow-y: auto;
+    
   }
   input {
     width: 22rem;

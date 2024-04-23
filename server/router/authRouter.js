@@ -55,6 +55,9 @@ const {
   sendOtp,
   verifyOtp,
   resetPassword,
+  getTreatmentViaUhid,
+  getExaminationViaUhid,
+  getPrescriptionViaUhid,
 } = require("../controller/authBranch.js");
 const {
   getTreatmentList,
@@ -332,5 +335,9 @@ router.put("/makeBillPayment/:tpid/:branch", makeBillPayment);
 router.post("/sendOtp", sendOtp);
 router.post("/verifyOtp", verifyOtp);
 router.put("/resetPassword", resetPassword);
+router.get("/getTreatmentViaUhid/:branch/:uhid", getTreatmentViaUhid);
+router.get("/getExaminationViaUhid/:branch/:uhid", getExaminationViaUhid);
+router.get("/getPrescriptionViaUhid/:branch/:uhid", getPrescriptionViaUhid);
+// router.get('/getAllAppointmentByPatientId/:branch/:patientId',getAllAppointmentByPatientuhiId)
 
 module.exports = { authRoutes: router };

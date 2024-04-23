@@ -7,44 +7,49 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-function PatientProfile() {
-  const {uhid} = useParams();
+const PatientProfile = () => {
+  const { uhid } = useParams();
   console.log(uhid);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const  branch = user.currentUser.branch_name;
+  const branch = user.currentUser.branch_name;
   console.log(`User Branch: ${branch}`);
 
   const [patientData, setPatientData] = useState([]);
   const [ongoing, setOngoing] = useState([]);
 
-  const  getPatientDetails = async () => {
+  const getPatientDetails = async () => {
     try {
-      // const res = await axios.get(`http://localhost:8888/api/doctor/get-Patient-by-id/${branch}/${uhid}`)
-      const res = await axios.get(`http://localhost:8888/api/doctor/get-Patient-by-id/${uhid}`)
+      const res = await axios.get(
+        `http://localhost:8888/api/doctor/get-Patient-by-id/${uhid}`
+      );
       console.log(res.data.data);
-      setPatientData(res?.data?.data)
+      setPatientData(res?.data?.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(()=>{
-    getPatientDetails();
-  }, [])
-
-  const onGoingTreat = async () =>{
+  const onGoingTreat = async () => {
     try {
-      const response = await axios.get(`http://localhost:8888/api/doctor/onGoingTreat/${uhid}`)
+      const response = await axios.get(
+        `http://localhost:8888/api/doctor/getTreatmentViaUhid/${branch}/${uhid}`
+      );
       console.log(response.data);
       setOngoing(response.data);
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+  console.log(ongoing);
+  const filterForOngoing = ongoing?.filter((item) => {
+    return item.treatment_status === "ongoing";
+  });
 
-  useEffect(()=>{
+  console.log(filterForOngoing);
+  useEffect(() => {
     onGoingTreat();
+    getPatientDetails();
   }, []);
 
   return (
@@ -63,9 +68,7 @@ function PatientProfile() {
           </div>
           <div className="row g-2">
             <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-              <h1 className="mt-3">
-                {patientData?.patient_name}
-                </h1>
+              <h1 className="mt-3">{patientData?.patient_name}</h1>
 
               <div className="mt-5">
                 <div className="p-2 bg-light w-100 rounded">
@@ -80,9 +83,7 @@ function PatientProfile() {
                             <strong>UHID :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData.uhid}
-                              </span>
+                            <span className="">{patientData.uhid}</span>
                           </div>
                         </div>
                       </div>
@@ -94,9 +95,7 @@ function PatientProfile() {
                             <strong>Gender :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.gender}
-                              </span>
+                            <span className="">{patientData?.gender}</span>
                           </div>
                         </div>
                       </div>
@@ -108,9 +107,7 @@ function PatientProfile() {
                             <strong>Mobile :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.mobileno}
-                              </span>
+                            <span className="">{patientData?.mobileno}</span>
                           </div>
                         </div>
                       </div>
@@ -122,9 +119,7 @@ function PatientProfile() {
                             <strong>Email :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.emailid}
-                              </span>
+                            <span className="">{patientData?.emailid}</span>
                           </div>
                         </div>
                       </div>
@@ -136,9 +131,7 @@ function PatientProfile() {
                             <strong>DOB :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.dob}
-                              </span>
+                            <span className="">{patientData?.dob}</span>
                           </div>
                         </div>
                       </div>
@@ -150,9 +143,7 @@ function PatientProfile() {
                             <strong>Age</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.age}
-                            </span>
+                            <span className="">{patientData?.age}</span>
                           </div>
                         </div>
                       </div>
@@ -164,9 +155,7 @@ function PatientProfile() {
                             <strong>Address :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.address}
-                              </span>
+                            <span className="">{patientData?.address}</span>
                           </div>
                         </div>
                       </div>
@@ -178,14 +167,12 @@ function PatientProfile() {
                             <strong>Adhaar Number :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.aadhaar_no}
-                              </span>
+                            <span className="">{patientData?.aadhaar_no}</span>
                           </div>
                         </div>
                       </div>
                     </li>
-                   
+
                     <li>
                       <div>
                         <div className="row">
@@ -193,9 +180,7 @@ function PatientProfile() {
                             <strong>Blood Group :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.bloodgroup}
-                            </span>
+                            <span className="">{patientData?.bloodgroup}</span>
                           </div>
                         </div>
                       </div>
@@ -207,9 +192,7 @@ function PatientProfile() {
                             <strong>weight</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.weight}
-                            </span>
+                            <span className="">{patientData?.weight}</span>
                           </div>
                         </div>
                       </div>
@@ -263,9 +246,7 @@ function PatientProfile() {
                             <strong>Allergy :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.allergy}
-                            </span>
+                            <span className="">{patientData?.allergy}</span>
                           </div>
                         </div>
                       </div>
@@ -277,14 +258,12 @@ function PatientProfile() {
                             <strong>disease :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.disease}
-                            </span>
+                            <span className="">{patientData?.disease}</span>
                           </div>
                         </div>
                       </div>
                     </li>
-                   
+
                     <li>
                       <div>
                         <div className="row">
@@ -292,9 +271,7 @@ function PatientProfile() {
                             <strong>Branch :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">
-                              {patientData?.branch_name}
-                            </span>
+                            <span className="">{patientData?.branch_name}</span>
                           </div>
                         </div>
                       </div>
@@ -305,7 +282,13 @@ function PatientProfile() {
               <div>
                 <div className="p-2 bg-light rounded">
                   <h6 className="fw-bold fs-5 mt-2">Ongoing Treatment</h6>
-                  <p className="">{ongoing.ongoingTreatment}</p>
+                  <ul>
+                    {filterForOngoing?.map((item) => (
+                      <>
+                        <li>{item.treatment_name}</li>
+                      </>
+                    ))}
+                  </ul>
                 </div>
                 <div className="container">
                   <ul className=" list-unstyled">
@@ -322,7 +305,7 @@ function PatientProfile() {
             </div>
             <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 col-sm-12">
               <div className="mrgtop">
-                <Navbar uhid={uhid}/> 
+                <Navbar uhid={uhid} />
               </div>
             </div>
           </div>
@@ -330,11 +313,11 @@ function PatientProfile() {
       </div>
     </Wrapper>
   );
-}
+};
 
 export default PatientProfile;
 const Wrapper = styled.div`
-overflow: hidden;
+  overflow: hidden;
   .list-unstyled {
     line-height: 1.9rem;
   }

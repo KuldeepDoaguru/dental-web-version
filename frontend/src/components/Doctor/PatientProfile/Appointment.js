@@ -54,13 +54,12 @@
 //                 <td>Edit/Delete/View</td>
 //               </tr>
 
-           
 //             </tbody>
 //           </table>
 //         </div>
 //       </div>
 //       </div>
-//             <div className="col-lg-3">  
+//             <div className="col-lg-3">
 //               <div className="card" id="card1">
 //             <div className="card-body">
 //               <h6 className="card-title" style={{ color: " #5a626d" }}>
@@ -68,7 +67,7 @@
 //               </h6>
 //               <p className="card-text">
 //                 <ul className="sec" id="section1">
-                    
+
 //                   <div className="data">
 //                     <li className="dotrem text-black">Missed</li>
 
@@ -101,11 +100,11 @@
 //             </div>
 //           </div>
 //           <div className="cal mt-2">
-            
+
 // <Calendar/>
 //           </div>
 //           </div>
-     
+
 //       </div>
 //     </Wrapper>
 //   );
@@ -152,8 +151,6 @@
 //   }
 // `;
 
-
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -164,18 +161,18 @@ import styled from "styled-components";
 
 const Appointment = () => {
   const dispatch = useDispatch();
-  const { pid } = useParams();
+  const { uhid } = useParams();
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  
+  const branch = user.currentUser.branch_name;
+  console.log(uhid, branch);
   const [patAppointDetails, setPatAppointDetails] = useState([]);
 
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getAppointmentByBranchAndId/${pid}`
+        `http://localhost:8888/api/doctor/getAllAppointmentByPatientId/${uhid}/${branch}`
       );
       console.log(data);
       setPatAppointDetails(data);
@@ -204,9 +201,8 @@ const Appointment = () => {
                   <tr>
                     <th>Date</th>
                     <th>Appointment Time</th>
-                    <th>Consultant</th>
+                    <th>Doctor</th>
                     <th>Treatment</th>
-                    <th>Cost</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -214,12 +210,12 @@ const Appointment = () => {
                   {patAppointDetails?.map((item) => (
                     <>
                       <tr>
-                        <td>{item.appointment_dateTime?.split("T")[0]}</td>
+                        {/* <td>{item.appointment_dateTime?.split("T")[0]}</td> */}
                         <td>
                           {item.appointment_dateTime
                             ?.split("T")[1]
-                            .split(".")[0]
-                            .slice(0, 5)}
+                            ?.split(".")[0]
+                            ?.slice(0, 5)}
                         </td>
                         <td>{item.assigned_doctor}</td>
                         <td>{item.treatment_provided}</td>

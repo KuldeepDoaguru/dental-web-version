@@ -390,10 +390,7 @@ const getAllAppointmentByPatientId = (req, res) => {
         if (results.length === 0) {
           res.status(404).json({ message: "Appointment not found" });
         } else {
-          res.status(200).json({
-            data: results,
-            message: "Appointment fetched successfully",
-          });
+          res.status(200).send(results);
         }
       }
     });

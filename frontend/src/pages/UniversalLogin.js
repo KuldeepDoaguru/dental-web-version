@@ -356,7 +356,7 @@ console.log(selectedBranch)
 
                           <div className="col-5 ms-3">
                             <p>
-                              <Link to="/receptionist_registration">
+                              <Link to="/password-reset">
                                 Forgot Password?
                               </Link>
                             </p>

@@ -35,6 +35,7 @@ import PatientsDue from "./pages/receptionist/PatientsDue";
 import PatintDuePaymentPrint from "./pages/receptionist/PatintDuePaymentPrint";
 import PatientsPaid from "./pages/receptionist/PatientsPaid";
 import PatientBillsByTpid from "./pages/receptionist/PatientBillsByTpid";
+import PasswordReset from "./pages/PasswordReset";
 
 function App() {
 
@@ -74,6 +75,8 @@ function App() {
     <Route path="/patient-bill/:billid/:tpid" element={ user.currentUser=== null ? <UniversalLogin/>  :<PatientBillsByTpid/>}/>
     <Route path='/branch-details' element={ user.currentUser=== null ? <UniversalLogin/>  :<BranchInfo/>}/>
     <Route path='/attendanceLeave' element={ user.currentUser=== null ? <UniversalLogin/>  :<AttendanceLeave/>}/>
+
+    <Route path="/password-reset" element={<PasswordReset />} />
 
     {/* receptionist routes end */}
     </Routes>

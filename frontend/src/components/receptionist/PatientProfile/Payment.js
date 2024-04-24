@@ -180,19 +180,19 @@ const Payment = () => {
   
   const [payData, setPayData] = useState([]);
 
-  const getPaymentDetails = async () => {
-    try {
-      const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPaymentDetailsByPatId/${pid}`
-      );
-      setPayData(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getPaymentDetails = async () => {
+  //   try {
+  //     const { data } = await axios.get(
+  //       `http://localhost:7777/api/v1/super-admin/getPaymentDetailsByPatId/${pid}`
+  //     );
+  //     setPayData(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
-    getPaymentDetails();
+    // getPaymentDetails();
   }, []);
 
   return (

@@ -24,7 +24,7 @@ function EditPatientDetails({ onClose, patientInfo, allPatientData }) {
   
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/receptionist/insertTimelineEvent",
+        "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/insertTimelineEvent",
         {
           type: "Patient Profile",
           description: "Patient Profile Updated",
@@ -66,7 +66,7 @@ function EditPatientDetails({ onClose, patientInfo, allPatientData }) {
 
   const getDisease = async () =>{
     try{
-     const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-disease');
+     const response = await axios.get('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-disease');
      console.log(response);
      setDisease(response?.data?.data)
     }
@@ -154,7 +154,7 @@ useEffect(()=>{
   };
    
   try{
-    const response = await axios.put('http://localhost:4000/api/v1/receptionist/update-patient-details', updatedData);
+    const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-patient-details', updatedData);
     console.log(response);
     if(response.data.success){
       cogoToast.success(response?.data?.message);

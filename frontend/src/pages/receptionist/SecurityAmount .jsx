@@ -124,7 +124,7 @@ function SecurityAmount() {
   const getSecurityAmountList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/getSecurityAmountDataByBranch/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getSecurityAmountDataByBranch/${branch}`
       );
       setSecurityList(data);
     } catch (error) {
@@ -188,7 +188,7 @@ function SecurityAmount() {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/v1/receptionist/updateRefundAmount/${selected}`,
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updateRefundAmount/${selected}`,
         {
           refund_date: date,
           refund_by: currentUser.employee_name,
@@ -218,7 +218,7 @@ function SecurityAmount() {
     console.log(updatedData);
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/v1/receptionist/updatePatientSecurityAmt/${selected}`,
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updatePatientSecurityAmt/${selected}`,
         updatedData
       );
       cogoToast.success("Amount Paid Successfully");
@@ -257,7 +257,7 @@ function SecurityAmount() {
 //     e.preventDefault();
 //     try {
 //       const response = await axios.put(
-//         `http://localhost:4000/api/v1/receptionist/updateRefundAmount/${selected}`,
+//         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updateRefundAmount/${selected}`,
 //         {
 //           refund_date: date,
 //           refund_by: currentUser.employee_name,
@@ -290,7 +290,7 @@ function SecurityAmount() {
 //     console.log(id);
 //     try {
 //       const { data } = await axios.get(
-//         `http://localhost:4000/api/v1/receptionist/getSecurityAmountDataBySID/${id}`
+//         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getSecurityAmountDataBySID/${id}`
 //       );
 //       console.log(data);
 //       setOutStanding(data);
@@ -337,7 +337,7 @@ function SecurityAmount() {
 
 //   const getPatient = async () =>{
 //     try{
-//       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/patient-securityAmt/${branch}`);
+//       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/patient-securityAmt/${branch}`);
 //       console.log(response);
 //       setPatients(response?.data?.data)
 //      }
@@ -580,7 +580,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                                   <td>
                                     {/* {item?.remaining_amount === 0 && ( */}
                                     {
-                                      item.payment_status === "Pending" ? 
+                                      item.payment_status === "pending" ? 
                                       <>
                                       <button
                                             className="mx-2 btn btn-info"

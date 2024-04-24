@@ -34,10 +34,10 @@ function OpdCollection() {
   const getAppointments = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`
       );
      
-      const filteredPatients = response?.data?.data.filter(patient =>  patient.created_at.includes(selectedDate) && patient.treatment_provided === "OPD");
+      const filteredPatients = response?.data?.data?.filter(patient =>  patient?.created_at?.includes(selectedDate) && patient.treatment_provided === "OPD");
       setAppointmentData(filteredPatients);
     } catch (error) {
       console.log(error);

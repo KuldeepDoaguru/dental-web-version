@@ -54,7 +54,7 @@ function AddPatient() {
   const getBranchDetail = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-detail/${branch}`
       );
       console.log(response);
       setBranchDetail(response.data.data);
@@ -66,7 +66,7 @@ function AddPatient() {
   const getBranchHolidays = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/get-branch-holidays/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}`
       );
       console.log(response);
       setBranchHolidays(response.data.data);
@@ -153,7 +153,7 @@ function AddPatient() {
   const getPatient = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`
       );
       console.log(response);
       setPatients(response?.data?.data);
@@ -165,7 +165,7 @@ function AddPatient() {
   const getAppointments = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`
       );
       setAppointmentsData(response?.data?.data);
     } catch (error) {
@@ -176,7 +176,7 @@ function AddPatient() {
   const getDoctors = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`
       );
       setDoctors(response?.data?.data);
     } catch (error) {
@@ -188,7 +188,7 @@ function AddPatient() {
   const getDisease = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/v1/receptionist/get-disease"
+        "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-disease"
       );
       console.log(response);
       setDisease(response?.data?.data);
@@ -201,7 +201,7 @@ function AddPatient() {
   const getTreatment = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/v1/receptionist/get-treatments"
+        "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-treatments"
       );
       console.log(response);
       setTreatment(response?.data?.data);
@@ -214,7 +214,7 @@ function AddPatient() {
   const getDoctorsWithLeave = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/get-doctors-with-leave/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}`
       );
       setDoctorWithLeave(response?.data?.data);
     } catch (error) {
@@ -391,7 +391,7 @@ function AddPatient() {
   const timelineData = async (id) => {
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/receptionist/insertTimelineEvent",
+        "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/insertTimelineEvent",
         {
           type: "Add Patient",
           description: "Add Patient and Appointment scheduled",
@@ -592,7 +592,7 @@ function AddPatient() {
 
       try {
         const response = await axios.post(
-          "http://localhost:4000/api/v1/receptionist/add-patient",
+          "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/add-patient",
           newPatient
         );
         console.log(response);

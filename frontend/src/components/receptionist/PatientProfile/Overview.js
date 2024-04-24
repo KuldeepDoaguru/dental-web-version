@@ -11,8 +11,7 @@ const Overview = () => {
   const user = useSelector((state) => state.user);
 
   const  branch = user.currentUser.branch_name;
-  
-  const [patPendingBill, setPatPendingBill] = useState([]);
+
   const [patAppointDetails, setPatAppointDetails] = useState([]);
   
 
@@ -31,7 +30,7 @@ console.log(treatments);
 const getTreatmentsDetails = async () => {
   try {
     const { data } = await axios.get(
-      `http://localhost:4000/api/v1/receptionist/getTreatmentViaUhid/${branch}/${pid}`
+      `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTreatmentViaUhid/${branch}/${pid}`
     );
     setTreatments(data?.data);
   } catch (error) {
@@ -41,7 +40,7 @@ const getTreatmentsDetails = async () => {
 const getPrescriptionDetails = async () => {
   try {
     const { data } = await axios.get(
-      `http://localhost:4000/api/v1/receptionist/getPrescriptionViaUhid/${branch}/${pid}`
+      `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPrescriptionViaUhid/${branch}/${pid}`
     );
     setPrescriptions(data?.data);
   } catch (error) {
@@ -51,7 +50,7 @@ const getPrescriptionDetails = async () => {
 const getBillDetails = async () => {
   try {
     const { data } = await axios.get(
-      `http://localhost:4000/api/v1/receptionist/getBillsViaUhid/${branch}/${pid}`
+      `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getBillsViaUhid/${branch}/${pid}`
     );
     setBills(data?.data);
   } catch (error) {
@@ -61,7 +60,7 @@ const getBillDetails = async () => {
 const getExaminationDetails = async () => {
   try {
     const { data } = await axios.get(
-      `http://localhost:4000/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`
+      `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`
     );
     setExaminations(data?.data);
   } catch (error) {
@@ -70,24 +69,11 @@ const getExaminationDetails = async () => {
 };
 
 
- 
-
-  const getPendingBillDetails = async () => {
-    try {
-      const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
-      );
-      console.log(data);
-      setPatPendingBill(data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/getAllAppointmentByPatientId/${branch}/${pid}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAllAppointmentByPatientId/${branch}/${pid}`
       );
       console.log(data);
       setPatAppointDetails(data?.data);
@@ -100,7 +86,7 @@ const getExaminationDetails = async () => {
 
   console.log(pid);
   useEffect(() => {
-    getPendingBillDetails();
+    
     getAppointDetailsPat();
     getTreatmentsDetails()
     getBillDetails()

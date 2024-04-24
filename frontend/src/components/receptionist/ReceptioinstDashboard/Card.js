@@ -26,7 +26,7 @@ function Card() {
 
   const getAppointments = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`);
 
       
       const filteredPatients = response?.data?.data.filter(patient => patient.appointment_dateTime.includes(selectedDate));
@@ -40,7 +40,7 @@ function Card() {
   const getAppointmentsForOpd = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`
       );
       
       const filteredPatients = response?.data?.data.filter(patient => patient.payment_Status === "paid" && patient.created_at.includes(selectedDate));
@@ -52,7 +52,7 @@ function Card() {
 
   const getNewPatient = async () =>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`);
       console.log(response);
       const todayDate = moment().format('YYYY-MM-DD'); // Get today's date
       const filteredPatients = response?.data?.data.filter(patient => moment(patient.created_at).format('YYYY-MM-DD') === todayDate);
@@ -66,7 +66,7 @@ function Card() {
   
   const getPatient = async () =>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`);
       console.log(response);
       setPatients(response?.data?.data)
      }

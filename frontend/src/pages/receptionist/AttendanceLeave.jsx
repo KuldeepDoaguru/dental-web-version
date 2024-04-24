@@ -40,7 +40,7 @@ const AttendanceLeave = () => {
   const getAttendance = async () => {
      
     try{
-        const response = await axios.get(`http://localhost:4000/api/v1/receptionist/getAttendancebyempId/${branch}/${employeeId}`);
+        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAttendancebyempId/${branch}/${employeeId}`);
         setAttendance(response?.data?.data)
       }
       catch(error){
@@ -55,7 +55,7 @@ const AttendanceLeave = () => {
   const getLeaves = async () => {
      
     try{
-        const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-leaves/${branch}/${employeeId}`);
+        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-leaves/${branch}/${employeeId}`);
         setLeaveData(response?.data?.data)
       }
       catch(error){

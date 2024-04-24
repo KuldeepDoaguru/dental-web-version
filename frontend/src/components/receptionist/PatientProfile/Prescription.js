@@ -78,7 +78,7 @@ const Prescription = () => {
   const getPrescriptionDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/getPrescriptionViaUhid/${branch}/${pid}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPrescriptionViaUhid/${branch}/${pid}`
       );
       setPrescriptions(data?.data);
     } catch (error) {

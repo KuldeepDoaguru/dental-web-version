@@ -23,7 +23,7 @@ function PatientsDue() {
   const getPatBills = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/getPatientBillsByBranch/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientBillsByBranch/${branch}`
       );
       setPatBill(data);
     } catch (error) {
@@ -275,9 +275,6 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                                       </td>
                                       <td>{item.bill_date.split("T")[0]}</td>
                                       <td>
-                                        {item.total_amount -
-                                          (item.paid_amount +
-                                            item.pay_by_sec_amt) ? (
                                           <Link
                                             to={`/PatintDuePaymentPrint/${item.bill_id}/${item.tp_id}/${item.uhid}`}
                                           >
@@ -290,16 +287,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                                               Pay Now
                                             </button>
                                           </Link>
-                                        ) : (
-                                          <span>
-                                            <button
-                                              className="btn btn-secondary disabled"
-                                              disabled
-                                            >
-                                              Pay Now
-                                            </button>
-                                          </span>
-                                        )}
+                                        
                                       </td>
                                     </tr>
                                   </>

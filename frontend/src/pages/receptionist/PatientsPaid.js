@@ -23,7 +23,7 @@ function PatientsPaid() {
   const getBillPaidList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/paidBillLIst/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/paidBillLIst/${branch}`
       );
       setPaidList(data);
     } catch (error) {

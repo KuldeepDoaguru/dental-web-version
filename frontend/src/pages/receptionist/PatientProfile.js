@@ -143,11 +143,9 @@ const PatientProfile = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
+
   const  branch = user.currentUser.branch_name;
  
-  console.log(`User Name: ${branch.name}`);
   const [patientData, setPatientData] = useState([]);
   const [ongoingTreat, setOngoingTreat] = useState([]);
 
@@ -165,7 +163,7 @@ const PatientProfile = () => {
 
   const getPatient = async () =>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patient-by-id/${branch}/${pid}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patient-by-id/${branch}/${pid}`);
       console.log(response);
       setPatientData(response?.data?.data)
      }
@@ -178,10 +176,10 @@ console.log(branch)
   const getOngoingTreat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:7777/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTreatmentViaUhid/${branch}/${pid}`
       );
       console.log(data);
-      setOngoingTreat(data);
+      setOngoingTreat(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -196,7 +194,7 @@ console.log(branch)
   console.log(patientData);
 
   const filterForOngoingTreat = ongoingTreat?.filter((item) => {
-    return item.treatment_status === "Ongoing";
+    return item.treatment_status === "ongoing";
   });
 
   console.log(filterForOngoingTreat);
@@ -454,18 +452,19 @@ console.log(branch)
               <div>
                 <div className="p-2 bg-light rounded">
                   <h6 className="fw-bold mt-2">Ongoing Treatment</h6>
-                </div>
-                <div className="container">
-                  <ul className=" list-unstyled">
+                  <div className="container">
+                  <ul className="ongoing-treat">
                     {filterForOngoingTreat?.map((item) => (
                       <>
                         <li>
-                          <p className="fw-bold">{item.treatment}</p>
+                          <p className="">{item.treatment_name}</p>
                         </li>
                       </>
                     ))}
                   </ul>
                 </div>
+                </div>
+              
               </div>
             </div>
             <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 col-sm-12">
@@ -482,7 +481,7 @@ console.log(branch)
 
 export default PatientProfile;
 const Wrapper = styled.div`
-  .list-unstyled {
+  .ongoing-treat {
     line-height: 1.9rem;
   }
   #sider {

@@ -49,7 +49,7 @@ const [timeSlots, setTimeSlots] = useState([]);
 
 const getBranchDetail = async ()=>{
   try{
-     const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
+     const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-detail/${branch}`)
      console.log(response)
      setBranchDetail(response.data.data)
   }
@@ -60,7 +60,7 @@ const getBranchDetail = async ()=>{
 
 const getDoctors = async ()=>{
   try{
-    const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
+    const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
     setDoctors(response?.data?.data)
   }
   catch(error){
@@ -69,7 +69,7 @@ const getDoctors = async ()=>{
 }
 const getAppointments = async ()=>{
   try{
-    const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
+    const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`);
     setAppointmentsData(response?.data?.data)
   }
   catch(error){

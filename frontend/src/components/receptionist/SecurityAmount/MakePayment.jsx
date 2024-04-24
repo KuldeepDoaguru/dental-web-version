@@ -23,7 +23,7 @@ function MakePayment({ onClose, patientInfo}) {
   
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/receptionist/insertTimelineEvent",
+        "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/insertTimelineEvent",
         {
           type: "Security Amount",
           description: "Security Amount Received",
@@ -86,7 +86,7 @@ function MakePayment({ onClose, patientInfo}) {
 
    
   try{
-    const response = await axios.put('http://localhost:4000/api/v1/receptionist/updatePatientSecurityAmt', data);
+    const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updatePatientSecurityAmt', data);
     console.log(response);
     if(response.data.success){
       cogoToast.success(response?.data?.message);

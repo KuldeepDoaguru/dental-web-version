@@ -182,7 +182,7 @@ const Treatment = () => {
   const getTreatmentsDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/getTreatmentViaUhid/${branch}/${pid}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTreatmentViaUhid/${branch}/${pid}`
       );
       setTreatments(data?.data);
     } catch (error) {

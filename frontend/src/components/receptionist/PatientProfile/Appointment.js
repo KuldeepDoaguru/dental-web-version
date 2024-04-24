@@ -175,7 +175,7 @@ const Appointment = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/getAllAppointmentByPatientId/${branch}/${pid}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAllAppointmentByPatientId/${branch}/${pid}`
       );
       console.log(data);
       setPatAppointDetails(data?.data);
@@ -218,8 +218,8 @@ const Appointment = () => {
                         <td>
                           {item.appointment_dateTime
                             ?.split("T")[1]
-                            .split(".")[0]
-                            .slice(0, 5)}
+                            ?.split(".")[0]
+                            ?.slice(0, 5)}
                         </td>
                         <td>{item.assigned_doctor_name}</td>
                         <td>{item.treatment_provided}</td>

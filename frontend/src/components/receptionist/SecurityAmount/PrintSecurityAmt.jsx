@@ -52,7 +52,7 @@ const PrintSecurityAmt = () => {
     const getBill = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:4000/api/v1/receptionist/getSinglePatientSecurityAmt/${branch}/${SId}`
+            `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getSinglePatientSecurityAmt/${branch}/${SId}`
           );
           console.log(response?.data?.data);
           setData(response?.data?.data);

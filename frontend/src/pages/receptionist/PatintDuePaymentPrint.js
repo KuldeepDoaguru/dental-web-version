@@ -39,7 +39,7 @@ function PatintDuePaymentPrint() {
     const branchDetails = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:4000/api/v1/receptionist/getBranchDetailsByBranch/${branch}`
+          `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getBranchDetailsByBranch/${branch}`
         );
         setBranchData(data);
       } catch (error) {
@@ -50,7 +50,7 @@ function PatintDuePaymentPrint() {
     const secuirtyAmtBytpuhid = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:4000/api/v1/receptionist/getSecurityAmountDataByTPUHID/${tpid}/${uhid}`
+          `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getSecurityAmountDataByTPUHID/${tpid}/${uhid}`
         );
         console.log(res.data);
         setSaAmt(res.data);
@@ -62,7 +62,7 @@ function PatintDuePaymentPrint() {
     const getBillDetails = async () => {
       try {
         const { data } = await axios.get(
-          `http://localhost:4000/api/v1/receptionist/getPatientBillsAndSecurityAmountByBranch/${branch}/${bid}`
+          `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientBillsAndSecurityAmountByBranch/${branch}/${bid}`
         );
         setBillAmount(data);
       } catch (error) {
@@ -134,7 +134,7 @@ function PatintDuePaymentPrint() {
       try {
         console.log(remainingSecurityAmount);
         const response = await axios.put(
-          `http://localhost:4000/api/v1/receptionist/updateRemainingSecurityAmount/${tpid}/${uhid}`,
+          `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updateRemainingSecurityAmount/${tpid}/${uhid}`,
           {
             remaining_amount: remainingSecurityAmount,
           }
@@ -150,7 +150,7 @@ function PatintDuePaymentPrint() {
     const makePayment = async () => {
       try {
         const response = await axios.put(
-          `http://localhost:4000/api/v1/receptionist/makeBillPayment/${branch}/${bid}`,
+          `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/makeBillPayment/${branch}/${bid}`,
           {
             paid_amount: updatedPaidAmt,
             payment_status: "paid",
@@ -165,6 +165,7 @@ function PatintDuePaymentPrint() {
         );
         if (response.data.success) {
           cogoToast.success("payment successful");
+          completeTreatment();
           getBillDetails();
           console.log(response.data);
           updateRemainingSecurity();
@@ -179,6 +180,7 @@ function PatintDuePaymentPrint() {
         }
       } catch (error) {
         console.log(error);
+        cogoToast.error("Failed to paid bill");
       }
     };
   
@@ -195,6 +197,19 @@ function PatintDuePaymentPrint() {
     };
   
     console.log(saAmt[0]?.remaining_amount);
+
+    const completeTreatment = async () => {
+      try {
+        const res = await axios.put(
+          `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updateTreatmentStatus/${branch}/${tpid}`
+        );
+        console.log(res);
+        cogoToast.success("Treatment Completed");
+      } catch (error) {
+        console.log(error.response.data.message);
+        cogoToast.error(error.response.data.message);
+      }
+    };
   
   return (
     <Wrapper>
@@ -309,7 +324,7 @@ function PatintDuePaymentPrint() {
                     <hr className="mt-5" />
                   </div>
                 </div>
-                <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-6 col-sm-12 ">
+                <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
                   <div className="d-flex justify-content-center mt-4">
                     <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-11 col-sm-11">
                     <div className="table-responsive">
@@ -317,7 +332,7 @@ function PatintDuePaymentPrint() {
                         <thead class="table-primary  rounded">
                           <tr>
                             
-                            <th scope="col"></th>
+                            <th scope="col">Payment Details</th>
                             <th scope="col">Amount</th>
                           </tr>
                         </thead>
@@ -330,19 +345,19 @@ function PatintDuePaymentPrint() {
                             <td colspan="1">
                               <h6>
                                
-                                <span class="space"></span>
+                                <span class=""></span>
                                 Total Treatments Amount
                               </h6>
                             </td>
 
                             <td className="fw-bolder">
-                              {billAmount[0]?.total_amount}
+                            ₹ {billAmount[0]?.total_amount}
                             </td>
                           </tr>
                           <tr>
                             <td colspan="1">
                               <h6>
-                                <span class="space"></span>Previous Paid By
+                                <span class=""></span>Previous Paid By
                                 Direct Amount
                               </h6>
                             </td>
@@ -353,7 +368,7 @@ function PatintDuePaymentPrint() {
                           <tr>
                             <td colspan="1">
                               <h6>
-                                <span class="space"></span>Previous Paid By
+                                <span class=""></span>Previous Paid By
                                 Secuirty Amount
                               </h6>
                             </td>
@@ -364,7 +379,7 @@ function PatintDuePaymentPrint() {
                           <tr>
                             <td colspan="1">
                               <h6>
-                                <span class="space"></span>Total Due Amount
+                                <span class=""></span>Total Due Amount
                               </h6>
                             </td>
                             <td className="fw-bolder">₹ {dueAmt}</td>
@@ -372,13 +387,13 @@ function PatintDuePaymentPrint() {
                           <tr>
                             <td colspan="1">
                               <h6>
-                                <span class="space"></span>
+                                <span class=""></span>
                                 Remaining Secuirty Amount
                               </h6>
                             </td>
 
                             <td className="fw-bolder">
-                              {saAmt[0]?.remaining_amount
+                            ₹ {saAmt[0]?.remaining_amount
                                 ? saAmt[0]?.remaining_amount
                                 : 0}
                             </td>
@@ -386,21 +401,21 @@ function PatintDuePaymentPrint() {
                           <tr>
                             <td colspan="1">
                               <h6>
-                                <span class="space"></span>Refundable Security
+                                <span class=""></span>Refundable Security
                                 Amount
                               </h6>
                             </td>
                             <td className="fw-bolder">
-                              {remainingSecurityAmount}
+                            ₹ {remainingSecurityAmount}
                             </td>
                           </tr>
                           <tr>
                             <td colspan="1">
                               <h6>
-                                <span class="space"></span>Final Due Amount
+                                <span class=""></span>Final Due Amount
                               </h6>
                             </td>
-                            <td className="fw-bolder">{finalAmt}</td>
+                            <td className="fw-bolder">₹ {finalAmt}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -417,14 +432,36 @@ function PatintDuePaymentPrint() {
               </div>
               <div>
                 <div className="container d-flex justify-content-center mb-3">
-                  <button
-                    type="button"
-                    class="btn btn-primary hide-during-print"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                  >
-                    Pay Now
-                  </button>
+                {" "}
+                  {dueAmt <= 0 ? (
+                    <>
+                      <button
+                        type="button"
+                        class="btn btn-primary hide-during-print"
+                        disabled
+                      >
+                        Pay Now
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-warning ms-2"
+                        onClick={completeTreatment}
+                      >
+                        Mark Treatment Complete
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        class="btn btn-primary hide-during-print"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                      >
+                        Pay Now
+                      </button>
+                    </>
+                  )}
 
                   {/* <button
                     class="btn btn btn-success dum text-capitalize mx-2 hide-during-print"

@@ -32,7 +32,7 @@ function Inquiry() {
 
   const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
       setDoctors(response?.data?.data)
     }
     catch(error){
@@ -41,7 +41,7 @@ function Inquiry() {
   }
   const getInquiries = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-inquiries/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-inquiries/${branch}`);
       setInquiries(response?.data?.data)
     }
     catch(error){
@@ -205,7 +205,7 @@ const handleSubmit =async (e)=>{
   }
 
     try {
-      const response = await axios.post('http://localhost:4000/api/v1/receptionist/add-inquiry', newData);
+      const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/add-inquiry', newData);
       console.log(response);
       if (response.data.success) {
        cogoToast.success(response?.data?.message);
@@ -250,7 +250,7 @@ const handleDelete = async (id)=>{
   }
  
   try {
-    const response = await axios.delete(`http://localhost:4000/api/v1/receptionist/delete-inquiry/${id}`);
+    const response = await axios.delete(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/delete-inquiry/${id}`);
     console.log(response);
     if (response.data.success) {
         dispatch(toggleTableRefresh());

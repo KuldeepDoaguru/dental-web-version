@@ -14,7 +14,7 @@ const BranchInfo = () => {
     const  branch = currentUser?.branch_name;
     const getBranchDetail = async ()=>{
         try{
-           const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
+           const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-detail/${branch}`)
            console.log(response)
            setBranchDetail(response.data.data)
         }
@@ -25,7 +25,7 @@ const BranchInfo = () => {
     
       const getBranchHolidays = async ()=>{
         try{
-           const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-holidays/${branch}`)
+           const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}`)
            console.log(response)
            setBranchHolidays(response.data.data)
         }

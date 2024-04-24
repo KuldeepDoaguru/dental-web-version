@@ -509,7 +509,7 @@ const getDisease = (req, res) => {
 };
 const getTreatment = (req, res) => {
   try {
-    const sql = "SELECT * FROM treatment_list";
+    const sql = "SELECT * FROM treatment_list_copy";
 
     db.query(sql, (err, results) => {
       if (err) {
@@ -2819,6 +2819,44 @@ const resetPassword = (req, res) => {
   }
 };
 
+const updateTreatmentStatus = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const branch = req.params.branch;
+    const finalStats = "completed";
+    const selectQuery =
+      "SELECT * FROM treatment_package WHERE branch_name = ? AND tp_id = ?";
+    db.query(selectQuery, [branch, tpid], (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateQuery =
+          "UPDATE treatment_package SET package_status = ? WHERE branch_name = ? AND tp_id = ?";
+        db.query(updateQuery, [finalStats, branch, tpid], (err, result) => {
+          if (err) {
+            return res
+              .status(400)
+              .json({ success: false, message: err.message });
+          }
+          if (result) {
+            return res
+              .status(200)
+              .json({ success: true, message: "Treatment Completed" });
+          }
+        });
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, message: "TPID not found" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   addPatient,
   getDisease,
@@ -2878,7 +2916,8 @@ module.exports = {
   getPrescriptionViaUhid,
   sendOtp,
   verifyOtp,
-  resetPassword
+  resetPassword,
+  updateTreatmentStatus
 
 
   

@@ -69,7 +69,7 @@ function Doctor() {
 
   const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
       setDoctors(response?.data?.data)
     }
     catch(error){
@@ -79,7 +79,7 @@ function Doctor() {
 
   const getPatient = async () =>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`);
       console.log(response);
       setPatients(response?.data?.data)
      }
@@ -92,7 +92,7 @@ function Doctor() {
   
   const getAppointments = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`);
       setAppointmentsData(response?.data?.data)
     }
     catch(error){
@@ -103,7 +103,7 @@ function Doctor() {
   const [doctorWithLeave,setDoctorWithLeave] = useState([]);
   const getDoctorsWithLeave = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}`);
       setDoctorWithLeave(response?.data?.data)
     }
     catch(error){
@@ -113,7 +113,7 @@ function Doctor() {
 
   const getBranchDetail = async ()=>{
     try{
-       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-detail/${branch}`)
        console.log(response)
        setBranchDetail(response.data.data)
     }
@@ -123,7 +123,7 @@ function Doctor() {
   }
   const getBranchHolidays = async ()=>{
     try{
-       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-holidays/${branch}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}`)
        console.log(response)
        setBranchHolidays(response.data.data)
     }
@@ -200,14 +200,16 @@ const handleGenrateSlots = () => {
   // Clear any previous time slots
   setTimeSlots([]);
  console.log(selectedDate)
-  // Loop through each doctor to generate time slots
-  availableDoctorOnDate.forEach((doctor) => {
+ console.log(availableDoctorOnDate)
 
+  // Loop through each doctor to generate time slots
+  availableDoctorOnDate?.forEach((doctor) => {
+   
     // for genrate morning time slots
     const morningStartTime = new Date(selectedDate);
     const morningEndTime = new Date(selectedDate);
-    const [morningStartHour, morningStartMinute] = doctor.morning_shift_start_time.split(":").map(Number);
-    const [morningEndHour, MorningEndMinute] = doctor.morning_shift_end_time.split(":").map(Number);
+    const [morningStartHour, morningStartMinute] = doctor?.morning_shift_start_time?.split(":")?.map(Number);
+    const [morningEndHour, MorningEndMinute] = doctor?.morning_shift_end_time?.split(":")?.map(Number);
 
     // Set start and end time
     morningStartTime.setHours(morningStartHour, morningStartMinute, 0);
@@ -227,8 +229,8 @@ const handleGenrateSlots = () => {
     // for genrate evening time slots
     const eveningStartTime = new Date(selectedDate);
     const eveningEndTime = new Date(selectedDate);
-    const [eveningStartHour, eveningStartMinute] = doctor.evening_shift_start_time.split(":").map(Number);
-    const [eveningEndHour, eveningEndMinute] = doctor.evening_shift_end_time.split(":").map(Number);
+    const [eveningStartHour, eveningStartMinute] = doctor?.evening_shift_start_time?.split(":").map(Number);
+    const [eveningEndHour, eveningEndMinute] = doctor?.evening_shift_end_time?.split(":").map(Number);
 
     // Set start and end time
     eveningStartTime.setHours(eveningStartHour, eveningStartMinute, 0);
@@ -239,10 +241,10 @@ const handleGenrateSlots = () => {
 
     // Generate time slots every 15 minutes within doctor's start and end time
     while (currentTime1 < eveningEndTime) {
-      const timeSlot = currentTime1.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+      const timeSlot = currentTime1?.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
       const dateTimeSlot = `${selectedDate} ${timeSlot}`; // Concatenate date and time
       eveningSlots.push(dateTimeSlot);
-      currentTime1.setMinutes(currentTime1.getMinutes() + parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])); // Add 15 minutes
+      currentTime1.setMinutes(currentTime1.getMinutes() + parseInt(branchDetail[0]?.appoint_slot_duration?.split(" ")[0])); // Add 15 minutes
     }
 
     // Add time slots for the current doctor to the state

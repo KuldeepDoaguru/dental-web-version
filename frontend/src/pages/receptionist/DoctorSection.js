@@ -26,7 +26,7 @@ function DoctorSection() {
  
   const getDoctorsWithLeave = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}`);
       setDoctorWithLeave(response?.data?.data)
     }
     catch(error){
@@ -36,7 +36,7 @@ function DoctorSection() {
 
   const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
       setDoctors(response?.data?.data)
     }
     catch(error){
@@ -46,7 +46,7 @@ function DoctorSection() {
 
   const getBranchDetail = async ()=>{
     try{
-       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-detail/${branch}`)
        console.log(response)
        setBranchDetail(response.data.data)
     }

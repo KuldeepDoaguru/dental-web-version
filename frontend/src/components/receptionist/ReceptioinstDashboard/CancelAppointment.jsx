@@ -35,7 +35,7 @@ function CancleAppointment({ onClose, appointmentInfo, allAppointmentData }) {
 
   const getBranchDetail = async ()=>{
     try{
-       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-detail/${branch}`)
        console.log(response)
        setBranchDetail(response.data.data)
     }
@@ -46,7 +46,7 @@ function CancleAppointment({ onClose, appointmentInfo, allAppointmentData }) {
 
   const getBranchHolidays = async ()=>{
     try{
-       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-holidays/${branch}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}`)
        console.log(response)
        setBranchHolidays(response.data.data)
     }
@@ -145,7 +145,7 @@ function CancleAppointment({ onClose, appointmentInfo, allAppointmentData }) {
 
   const getTreatment = async () =>{
     try{
-     const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-treatments');
+     const response = await axios.get('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-treatments');
      console.log(response);
      setTreatment(response?.data?.data)
     }
@@ -157,7 +157,7 @@ function CancleAppointment({ onClose, appointmentInfo, allAppointmentData }) {
  }
  const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
       setDoctors(response?.data?.data)
     }
     catch(error){
@@ -248,7 +248,7 @@ function CancleAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   
     try {
       const response = await axios.post(
-        "http://localhost:4000/api/v1/receptionist/insertTimelineEvent",
+        "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/insertTimelineEvent",
         {
           type: "Cancel Appointment",
           description: "Cancel Appointment",
@@ -269,7 +269,7 @@ function CancleAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   const [doctorWithLeave,setDoctorWithLeave] = useState([]);
   const getDoctorsWithLeave = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}`);
       setDoctorWithLeave(response?.data?.data)
     }
     catch(error){
@@ -296,7 +296,7 @@ const handleCancelAppointment = async (e)=>{
 
     //   try {
     //     // Send a PUT request to your backend endpoint to update the status
-    //     await axios.put(`http://localhost:4000/api/v1/receptionist/cancel-appointment-status-opd`, newAppointment);
+    //     await axios.put(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/cancel-appointment-status-opd`, newAppointment);
     //     // Optionally, you can re-fetch appointments after successful update
         
     //     dispatch(toggleTableRefresh());
@@ -308,7 +308,7 @@ const handleCancelAppointment = async (e)=>{
 
 
       try{
-        const response = await axios.put('http://localhost:4000/api/v1/receptionist/cancel-appointment-status-opd',newAppointment);
+        const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/cancel-appointment-status-opd',newAppointment);
         console.log(response);
         if(response.data.success){
           cogoToast.success(response?.data?.message);

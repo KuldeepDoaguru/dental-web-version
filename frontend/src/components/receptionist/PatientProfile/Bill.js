@@ -192,7 +192,7 @@ const Bill = () => {
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/getBillsViaUhid/${branch}/${pid}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getBillsViaUhid/${branch}/${pid}`
       );
       setBills(data?.data);
     } catch (error) {

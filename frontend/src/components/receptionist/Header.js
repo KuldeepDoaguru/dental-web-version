@@ -30,7 +30,7 @@ function Header() {
                   <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <FaUserAlt />
                   </a>
-                  <ul className="dropdown-menu" style={{ marginLeft: "-2rem" }}>
+                  <ul className="dropdown-menu">
                     <li><Link to='/receptionist_profile' className="dropdown-item">View Profile</Link></li>
                     <li><Link to='/attendanceLeave' className="dropdown-item">View Attendance & Leave</Link></li>
                     <li><Link to='/branch-details' className="dropdown-item">View Clinic Details</Link></li>
@@ -39,9 +39,9 @@ function Header() {
 
                   </ul>
                 </li>
-                <li className="nav-item" id='bell'>
+                {/* <li className="nav-item" id='bell'>
                   <AiFillBell />
-                </li>
+                </li> */}
               </ul>
 
             </div>
@@ -58,9 +58,11 @@ const Wrapper = styled.div`
 box-shadow: 1px 1px 6px black;
 
 #userid{
-    margin-left: -10rem;
+    
+    margin-left: -5rem;
     list-style-type: none;
-    @media screen and  (max-width: 768px) {
+    margin-top: 1rem;
+    @media screen and  (max-width: 1000px) {
         margin-left: 0rem;
         margin-top: 1rem;
     }
@@ -72,6 +74,13 @@ box-shadow: 1px 1px 6px black;
         margin-left: 0rem;
         margin-top: 1rem;
 
+    }
+}
+.dropdown-menu{
+   margin-left: -8rem;
+   @media screen and  (max-width: 1000px) {
+        margin-left: 0rem;
+        
     }
 }
 

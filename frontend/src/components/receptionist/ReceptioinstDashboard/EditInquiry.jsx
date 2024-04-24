@@ -40,7 +40,7 @@ function EditInquiry({ onClose, inquiryInfo }) {
 
  const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
       setDoctors(response?.data?.data)
     }
     catch(error){
@@ -95,7 +95,7 @@ console.log(data)
           }
 
           try {
-            const response = await axios.put('http://localhost:4000/api/v1/receptionist/update-inquiry', updatedInquiry);
+            const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-inquiry', updatedInquiry);
             console.log(response);
             if (response.data.success) {
                 dispatch(toggleTableRefresh());

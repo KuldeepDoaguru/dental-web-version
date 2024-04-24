@@ -81,7 +81,7 @@ const ClinicExamin = () => {
   const getExaminationDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:4000/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`
       );
       setExaminations(data?.data);
     } catch (error) {
@@ -104,12 +104,12 @@ const ClinicExamin = () => {
               <thead>
                 <tr>
                 <th>Date</th>
+                <th>Diagnosis Category</th>
                       <th>Disease</th>
                       <th>Chief Complaint</th>
                       <th>Tooth</th>
-                      <th>Diagnosis</th>
-                      <th>Diagnosis Category</th>
                       <th>On Examination</th>
+                      <th>Advice</th>
                 </tr>
               </thead>
               <tbody>
@@ -117,13 +117,12 @@ const ClinicExamin = () => {
                   <>
                     <tr>
                     <td>{item?.date.split("T")[0]}</td>
+                    <td>{item.diagnosis_category}</td>
                           <td>{item.disease}</td>
                           <td>{item.chief_complain}</td>
-
-                          <td>{item.selected_teeth}</td>
+                         <td>{item.selected_teeth}</td>
+                        <td>{item.on_examination}</td>
                           <td>{item.advice}</td>
-                          <td>{item.diagnosis_category}</td>
-                          <td>{item.on_examination}</td>
                     </tr>
                   </>
                 ))}

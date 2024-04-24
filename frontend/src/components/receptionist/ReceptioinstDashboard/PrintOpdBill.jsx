@@ -52,7 +52,7 @@ const PrintOpdBill = () => {
     const getBill = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:4000/api/v1/receptionist/get-appointment-by-id/${branch}/${appointmentId}`
+            `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointment-by-id/${branch}/${appointmentId}`
           );
           console.log(response?.data?.data);
           setData(response?.data?.data);

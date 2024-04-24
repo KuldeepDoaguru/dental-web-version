@@ -24,7 +24,7 @@ function AllPatient() {
 
   const getPatient = async () =>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`);
       console.log(response);
       setPatients(response?.data?.data)
      }

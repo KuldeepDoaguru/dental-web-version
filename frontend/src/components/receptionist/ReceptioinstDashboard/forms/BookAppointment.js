@@ -83,7 +83,7 @@ const handleOpdAmountChange = (e) => {
  console.log(treatments)
   const getBranchDetail = async ()=>{
     try{
-       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-detail/${branch}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-detail/${branch}`)
        console.log(response)
        setBranchDetail(response.data.data)
     }
@@ -93,7 +93,7 @@ const handleOpdAmountChange = (e) => {
   }
   const getBranchHolidays = async ()=>{
     try{
-       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-branch-holidays/${branch}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}`)
        console.log(response)
        setBranchHolidays(response.data.data)
     }
@@ -104,7 +104,7 @@ const handleOpdAmountChange = (e) => {
 
   const getPatientTreatmentDetails = async (uhid)=>{
     try {
-       const response = await axios.get(`http://localhost:4000/api/v1/receptionist/getPatientDeatilsByUhid/${branch}/${uhid}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientDeatilsByUhid/${branch}/${uhid}`)
       
        setPatientTreatmentDetails(response.data.data)
        
@@ -183,7 +183,7 @@ console.log(treatments)
 
   const getPatient = async () =>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-Patients/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`);
       console.log(response);
       setPatients(response?.data?.data)
      }
@@ -196,7 +196,7 @@ console.log(treatments)
   
   const getAppointments = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-appointments/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`);
       setAppointmentsData(response?.data?.data)
     }
     catch(error){
@@ -206,7 +206,7 @@ console.log(treatments)
 
   const getTreatment = async () =>{
     try{
-     const response = await axios.get('http://localhost:4000/api/v1/receptionist/get-treatments');
+     const response = await axios.get('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-treatments');
      console.log(response);
      setTreatment(response?.data?.data)
     }
@@ -222,7 +222,7 @@ console.log(treatments)
 
   const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
       setDoctors(response?.data?.data)
     }
     catch(error){
@@ -254,7 +254,7 @@ console.log(branchDetail)
  const [doctorWithLeave,setDoctorWithLeave] = useState([]);
   const getDoctorsWithLeave = async ()=>{
     try{
-      const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}`);
       setDoctorWithLeave(response?.data?.data)
     }
     catch(error){
@@ -470,7 +470,7 @@ const timelineData = async (id) => {
   
   try {
     const response = await axios.post(
-      "http://localhost:4000/api/v1/receptionist/insertTimelineEvent",
+      "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/insertTimelineEvent",
       {
         type: "Appointment",
         description: "Appointment scheduled",
@@ -655,7 +655,7 @@ const isDoctorAvailable = (selectedDateTime) => {
     }
 
     try{
-      const response = await axios.post('http://localhost:4000/api/v1/receptionist/book-appointment',newAppointment);
+      const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/book-appointment',newAppointment);
       
       if(response.data.success){
         cogoToast.success(response?.data?.message);

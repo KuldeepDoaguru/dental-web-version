@@ -34,7 +34,7 @@ function ApplyLeave() {
   const getLeaves = async () => {
      
     try{
-        const response = await axios.get(`http://localhost:4000/api/v1/receptionist/get-leaves/${branch}/${employeeId}`);
+        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-leaves/${branch}/${employeeId}`);
         setLeaveData(response?.data?.data)
       }
       catch(error){
@@ -114,7 +114,7 @@ function ApplyLeave() {
     
         }
         try {
-            const response = await axios.post('http://localhost:4000/api/v1/receptionist/apply-leave', updatedFormData);
+            const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/apply-leave', updatedFormData);
             if(response.data.success){
                 cogoToast.success(response?.data?.message);
                 setSelectedDates([]);

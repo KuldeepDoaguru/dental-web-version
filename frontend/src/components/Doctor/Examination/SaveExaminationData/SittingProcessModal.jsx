@@ -41,7 +41,7 @@ const SittingProcessModal = ({ onClose, selectedData, uhid }) => {
   const timelineForSitting = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Sitting Considered",
           description: `${formData.current_sitting} Sitting Started`,
@@ -60,7 +60,7 @@ const SittingProcessModal = ({ onClose, selectedData, uhid }) => {
     e.preventDefault();
     try {
       const { data } = await axios.put(
-        `http://localhost:8888/api/doctor/updateTreatSitting/${branch}/${selectedData.ts_id}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatSitting/${branch}/${selectedData.ts_id}`,
         formData
       );
       cogoToast.success("sitting considered");

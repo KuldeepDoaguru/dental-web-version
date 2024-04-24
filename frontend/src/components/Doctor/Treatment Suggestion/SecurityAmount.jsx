@@ -46,7 +46,7 @@ const SecurityAmount = () => {
   const newGetFetchData = async () => {
     try {
       const resps = await axios.get(
-        `http://localhost:8888/api/doctor/patient-security/${id}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/patient-security/${id}/${branch}`
       );
       const { patient_name, uhid, treatment_name, mobileno, totalCost } =
         resps.data.result[0];
@@ -71,7 +71,7 @@ const SecurityAmount = () => {
   const getListTreatment = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatList/${branch}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatList/${branch}/${tpid}`
       );
       console.log(data);
       setTreatList(data);
@@ -147,7 +147,7 @@ const SecurityAmount = () => {
   const timelineForSecuirty = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Secuirty Amount",
           description: `${formData.amount} Secuirty Amount Added`,
@@ -182,7 +182,7 @@ const SecurityAmount = () => {
       };
 
       const resp = await axios.post(
-        `http://localhost:8888/api/doctor/addSecurityAmount`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/addSecurityAmount`,
         formsCorrect
       );
 
@@ -197,7 +197,7 @@ const SecurityAmount = () => {
   const getSecurityAmt = async () => {
     try {
       const resdata = await axios.get(
-        `http://localhost:8888/api/doctor/getSecurityAmountByAppointmentId/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getSecurityAmountByAppointmentId/${tpid}`
       );
       setSecurityAmt(resdata.data.data);
       console.log(resdata.data.data);
@@ -222,7 +222,7 @@ const SecurityAmount = () => {
   //   };
 
   //   try {
-  //     const response = await axios.put(`http://localhost:8888/api/doctor/update-security-amount/${sa_id}`, updatedata);
+  //     const response = await axios.put(`https://dentalgurudoctor.doaguru.com/api/doctor/update-security-amount/${sa_id}`, updatedata);
 
   //     console.log(response.data);
 

@@ -41,7 +41,7 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8888/api/doctor/updateSecurityAmount/${selectedData.sa_id}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateSecurityAmount/${selectedData.sa_id}`,
         formData
       );
       cogoToast.success("security amount detail updated");

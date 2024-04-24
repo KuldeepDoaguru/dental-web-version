@@ -28,7 +28,7 @@ const NewTreatment = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
       setGetPatientData(res.data.result);
     } catch (error) {
@@ -53,7 +53,7 @@ const NewTreatment = () => {
   const getExamintionTeeth = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getExaminedataById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataById/${tpid}`
       );
       setGetExamTeeth(res.data);
       console.log(res.data);
@@ -78,7 +78,7 @@ const NewTreatment = () => {
   const getUniqueTreatValues = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getFilteredTreat/13/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getFilteredTreat/13/${branch}`
       );
       setUniqueValue(data);
     } catch (error) {
@@ -93,7 +93,7 @@ const NewTreatment = () => {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalDataByID/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByID/${id}`
       );
       setVdata(data);
     } catch (error) {

@@ -48,7 +48,7 @@ const PrintSecurityAmt = () => {
     const getSecurityAmtID = async () => {
       try {
         const resps = await axios.get(
-          `http://localhost:8888/api/doctor/getAllSecurityAmounts/${sa_id}/${branch}`
+          `https://dentalgurudoctor.doaguru.com/api/doctor/getAllSecurityAmounts/${sa_id}/${branch}`
         );
         console.log(resps.data.result);
         setShowData(resps.data.result);

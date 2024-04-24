@@ -34,7 +34,7 @@ const ApplyLeave = () => {
   const getLeaves = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/doctor/get-leaves/${branch}/${employeeId}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-leaves/${branch}/${employeeId}`
       );
       setLeaveData(response?.data?.data);
     } catch (error) {
@@ -98,7 +98,7 @@ const ApplyLeave = () => {
       };
       try {
         const response = await axios.post(
-          "http://localhost:8888/api/doctor/apply-leave",
+          "https://dentalgurudoctor.doaguru.com/api/doctor/apply-leave",
           updatedFormData
         );
         if (response.data.success) {

@@ -910,7 +910,7 @@ const ExaminationPatientTest = ({ tpid }) => {
   const timelineForExamination = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Examiantion",
           description: "Add Teeth DentalX",
@@ -943,7 +943,7 @@ const ExaminationPatientTest = ({ tpid }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/dentalPediatric",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/dentalPediatric",
         formData
       );
       console.log(response.data);
@@ -991,7 +991,7 @@ const ExaminationPatientTest = ({ tpid }) => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
       );
 
       const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;

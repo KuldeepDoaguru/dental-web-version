@@ -38,7 +38,7 @@ const PatintDuePaymentPrint = () => {
   const getBranchDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getBranchDetails/${user.branch_name}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${user.branch_name}`
       );
       console.log(data);
       setBranchData(data);
@@ -52,7 +52,7 @@ const PatintDuePaymentPrint = () => {
   const secuirtyAmtBytpuhid = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getSecurityAmountDataByTPUHID/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getSecurityAmountDataByTPUHID/${tpid}`
       );
       console.log(data);
       setSaAmt(data);
@@ -64,7 +64,7 @@ const PatintDuePaymentPrint = () => {
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getPatientBillsAndSecurityAmountByBranch/${user.branch_name}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getPatientBillsAndSecurityAmountByBranch/${user.branch_name}/${tpid}`
       );
       setBillAmount(data);
     } catch (error) {
@@ -136,7 +136,7 @@ const PatintDuePaymentPrint = () => {
     try {
       console.log(remainingSecurityAmount);
       const response = await axios.put(
-        `http://localhost:8888/api/doctor/updateRemainingSecurityAmount/${tpid}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateRemainingSecurityAmount/${tpid}`,
         {
           remaining_amount: remainingSecurityAmount,
         }
@@ -152,7 +152,7 @@ const PatintDuePaymentPrint = () => {
   const makePayment = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8888/api/doctor/makeBillPayment/${tpid}/${user.branch_name}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/makeBillPayment/${tpid}/${user.branch_name}`,
         {
           paid_amount: updatedPaidAmt,
           payment_status: "paid",
@@ -167,6 +167,7 @@ const PatintDuePaymentPrint = () => {
       );
       if (response.data.success) {
         cogoToast.success("payment successful");
+        completeTreatment();
         getBillDetails();
         console.log(response.data);
         updateRemainingSecurity();
@@ -197,6 +198,19 @@ const PatintDuePaymentPrint = () => {
   };
 
   console.log(saAmt[0]?.remaining_amount);
+
+  const completeTreatment = async () => {
+    try {
+      const res = await axios.put(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatmentStatus/${user.branch_name}/${tpid}`
+      );
+      console.log(res);
+      cogoToast.success("Treatment Completed");
+    } catch (error) {
+      console.log(error.response.data.message);
+      cogoToast.error(error.response.data.message);
+    }
+  };
 
   return (
     <>
@@ -290,7 +304,7 @@ const PatintDuePaymentPrint = () => {
                                 <div className="ms-4 mt-2">
                                   <h1> ₹{billAmount[0]?.total_amount}</h1>
                                   <h5 className="text-danger">
-                                    Net Due Payment
+                                    Total Treatment Amount
                                   </h5>
                                 </div>
                               </div>
@@ -335,7 +349,7 @@ const PatintDuePaymentPrint = () => {
                             </td>
 
                             <td className="fw-bolder amount-width">
-                              {billAmount[0]?.total_amount}
+                              ₹{billAmount[0]?.total_amount}
                             </td>
                           </tr>
                           <tr>
@@ -379,6 +393,7 @@ const PatintDuePaymentPrint = () => {
                             </td>
 
                             <td className="fw-bolder amount-width">
+                              ₹
                               {saAmt[0]?.remaining_amount
                                 ? saAmt[0]?.remaining_amount
                                 : 0}
@@ -391,7 +406,7 @@ const PatintDuePaymentPrint = () => {
                               </h6>
                             </td>
                             <td className="fw-bolder amount-width">
-                              {remainingSecurityAmount}
+                              ₹{remainingSecurityAmount}
                             </td>
                           </tr>
                           <tr>
@@ -401,32 +416,41 @@ const PatintDuePaymentPrint = () => {
                               </h6>
                             </td>
                             <td className="fw-bolder amount-width">
-                              {finalAmt}
+                              ₹{finalAmt}
                             </td>
                           </tr>
                         </tbody>
                       </table>
 
-                      <div className="d-flex justify-content-between">
+                      {/* <div className="d-flex justify-content-between">
                         <h4 className="">Thank you </h4>
                         <h4 className="">Auth. signature</h4>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="d-xxl-none d-xl-none d-lg-none col-md-1 col-sm-1"></div>
                   </div>
                 </div>
               </div>
               <div>
-                <div className="container d-flex justify-content-end mb-3">
+                <div className="container d-flex justify-content-center mb-3">
                   {" "}
-                  {finalAmt === 0 ? (
-                    <button
-                      type="button"
-                      class="btn btn-primary hide-during-print"
-                      disabled
-                    >
-                      Pay Now
-                    </button>
+                  {dueAmt <= 0 ? (
+                    <>
+                      <button
+                        type="button"
+                        class="btn btn-primary hide-during-print"
+                        disabled
+                      >
+                        Pay Now
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-warning ms-2"
+                        onClick={completeTreatment}
+                      >
+                        Mark Treatment Complete
+                      </button>
+                    </>
                   ) : (
                     <>
                       <button

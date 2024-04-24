@@ -22,7 +22,7 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
   const getListTreatment = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatList/${branch}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatList/${branch}/${tpid}`
       );
       console.log(data);
       setTreatList(data);
@@ -58,7 +58,7 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
 
       if (confirmed) {
         const res = await axios.delete(
-          `http://localhost:8888/api/doctor/deleteTreatSuggestion/${id}/${branch}`
+          `https://dentalgurudoctor.doaguru.com/api/doctor/deleteTreatSuggestion/${id}/${branch}`
         );
         console.log(res.data);
         dispatch(toggleTableRefresh());

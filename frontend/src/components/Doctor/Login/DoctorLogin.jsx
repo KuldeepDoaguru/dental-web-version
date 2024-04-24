@@ -21,7 +21,7 @@ const DoctorLogin = () => {
   const getBranches = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8888/api/doctor/get-branches"
+        "https://dentalgurudoctor.doaguru.com/api/doctor/get-branches"
       );
       console.log(response);
       setBranches(response.data.data);
@@ -43,7 +43,7 @@ const DoctorLogin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/doctor-login",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/doctor-login",
         {
           email,
           password,

@@ -10,9 +10,9 @@ const Treatment = () => {
   const { uhid } = useParams();
   console.log(uhid);
   const user = useSelector((state) => state.user);
-  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  // console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = user.currentUser.branch_name;
 
   const [treatDetails, setTreatDetails] = useState([]);
 
@@ -25,7 +25,7 @@ const Treatment = () => {
       // );
 
       const resps = await axios.get(
-        `http://localhost:8888/api/doctor/treatPatientProfile/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentViaUhid/${branch}/${uhid}`
       );
       console.log(resps.data);
       setTreatDetails(resps.data);
@@ -51,11 +51,13 @@ const Treatment = () => {
               <table className="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Date</th>
+                    <th>TPID</th>
+                    <th>Disease</th>
                     <th>Treatment</th>
-                    <th>Consultant</th>
-                    <th>Cost</th>
-                    <th>Treatment Note</th>
+                    <th>Total Sitting</th>
+                    <th>Current Sitting</th>
+                    <th>Current Sitting Status</th>
+                    <th>Treatment Status</th>
                     {/* <th>Payment Status</th> */}
                   </tr>
                 </thead>
@@ -63,11 +65,13 @@ const Treatment = () => {
                   {treatDetails?.map((item) => (
                     <>
                       <tr>
-                        <td>{item.date?.split("T")[0]}</td>
-                        <td>{item.dental_treatment}</td>
-                        <td>{item.assigned_doctor_name}</td>
-                        <td>{item.total_amt}</td>
-                        <td>{item.note}</td>
+                        <td>{item.tp_id}</td>
+                        <td>{item.desease}</td>
+                        <td>{item.treatment_name}</td>
+                        <td>{item.total_sitting}</td>
+                        <td>{item.current_sitting}</td>
+                        <td>{item.current_sitting_status}</td>
+                        <td>{item.treatment_status}</td>
                       </tr>
                     </>
                   ))}

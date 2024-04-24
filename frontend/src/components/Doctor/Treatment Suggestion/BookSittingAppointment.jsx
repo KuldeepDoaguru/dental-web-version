@@ -20,6 +20,7 @@ const BookSittingAppointment = ({
   appoint_id,
   currentSitting,
   treatStats,
+  handleSubmit,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ const BookSittingAppointment = ({
   const getBranchDetail = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/doctor/get-branch-detail/${branch_name}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-branch-detail/${branch_name}`
       );
       console.log(response);
       setBranchDetail(response.data.data);
@@ -83,7 +84,7 @@ const BookSittingAppointment = ({
   const getBranchHolidays = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/get-branch-holidays/${branch_name}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-branch-holidays/${branch_name}`
       );
       console.log(data);
       setBranchHolidays(data.data);
@@ -139,7 +140,7 @@ const BookSittingAppointment = ({
   const getDoctorsWithLeave = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/doctor/get-doctors-with-leave/${branch_name}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-doctors-with-leave/${branch_name}`
       );
       setDoctorWithLeave(response?.data?.data);
     } catch (error) {
@@ -150,7 +151,7 @@ const BookSittingAppointment = ({
   const getDoctorAppoint = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsViaDocId/${branch_name}/${employee_ID}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsViaDocId/${branch_name}/${employee_ID}`
       );
       setDocAppoint(data);
     } catch (error) {
@@ -213,7 +214,7 @@ const BookSittingAppointment = ({
   const timelineForNextSittingBooking = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Booking for Next Sitting",
           description: "Next Sitting Scheduled Successfully",
@@ -347,7 +348,7 @@ const BookSittingAppointment = ({
 
       try {
         const response = await axios.post(
-          "http://localhost:8888/api/doctor/bookSittingAppointment",
+          "https://dentalgurudoctor.doaguru.com/api/doctor/bookSittingAppointment",
           data
         );
         console.log(response);
@@ -355,9 +356,10 @@ const BookSittingAppointment = ({
         dispatch(toggleTableRefresh());
         timelineData(getPatientData[0]?.uhid);
         onClose();
-        navigate(
-          `/TPrescriptionDash/${tsid}/${tp_id}/${currentSitting}/${treatment}`
-        );
+        handleSubmit();
+        // navigate(
+        //   `/TPrescriptionDash/${tsid}/${tp_id}/${currentSitting}/${treatment}`
+        // );
       } catch (error) {
         console.log(error);
         cogoToast.error(error?.response?.data?.message);
@@ -376,7 +378,7 @@ const BookSittingAppointment = ({
   const timelineData = async (id) => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Book Sitting Appointment",
           description: "Book Sitting Appointment",

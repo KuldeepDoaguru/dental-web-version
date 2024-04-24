@@ -11,6 +11,7 @@ import cogoToast from "cogo-toast";
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
   const [appointments, setAppointments] = useState([]);
+  const [treatData, setTreatData] = useState([]);
   const [filterTableData, setFilterTableData] = useState([]);
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(
@@ -35,7 +36,7 @@ const AppointTable = () => {
     const fetchAppointments = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8888/api/doctor/appointtreatSitting?date=${selectedDate}`
+          `https://dentalgurudoctor.doaguru.com/api/doctor/appointtreatSitting?date=${selectedDate}`
         );
         setAppointments(res.data.result);
         const filteredData = res.data.result.filter(
@@ -87,7 +88,7 @@ const AppointTable = () => {
   const timelineForStartTreat = async (uhid) => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Examiantion",
           description: "Start Examintion",
@@ -104,7 +105,7 @@ const AppointTable = () => {
   const timelineForCancelTreat = async (uhid) => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Examiantion",
           description: "Cancel Treatment",
@@ -118,6 +119,23 @@ const AppointTable = () => {
     }
   };
 
+  const getTreatPackageData = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPackageViaTpidUhid/${branch}`
+      );
+      setTreatData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(treatData);
+
+  useEffect(() => {
+    getTreatPackageData();
+  }, []);
+
   const handleAction = async (
     action,
     appointId,
@@ -125,7 +143,7 @@ const AppointTable = () => {
     appointment_status,
     tpid
   ) => {
-    console.log(appointment_status);
+    console.log(appointment_status, tpid);
     try {
       let requestBody = {
         action,
@@ -149,14 +167,17 @@ const AppointTable = () => {
       }
 
       await axios.put(
-        `http://localhost:8888/api/doctor/upDateAppointmentStatus`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/upDateAppointmentStatus`,
         requestBody
       );
 
-      if (action === "ongoing") {
+      if (action === "in treatment") {
         timelineForStartTreat(uhid);
         // alert(appointment_status);
-        if (appointment_status === "ongoing") {
+        const filterForPendingTp = treatData?.filter((item) => {
+          return (item.tp_id = tpid);
+        });
+        if (filterForPendingTp?.package_status !== "completed") {
           navigate(`/TreatmentDashBoard/${tpid}`);
         } else {
           navigate(`/examination-Dashboard/${appointId}/${uhid}`);
@@ -165,7 +186,7 @@ const AppointTable = () => {
       }
 
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/appointtreatSitting?date=${selectedDate}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/appointtreatSitting?date=${selectedDate}`
       );
       setAppointments(res.data.result);
       setFilterTableData(res.data.result);
@@ -285,7 +306,7 @@ const AppointTable = () => {
                                     className="dropdown-item mx-0"
                                     onClick={() =>
                                       handleAction(
-                                        "ongoing",
+                                        "in treatment",
                                         item.appoint_id,
                                         item.uhid,
                                         item.appointment_status,

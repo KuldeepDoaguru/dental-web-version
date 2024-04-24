@@ -21,7 +21,7 @@ const PatientProfile = () => {
   const getPatientDetails = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/get-Patient-by-id/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-Patient-by-id/${uhid}`
       );
       console.log(res.data.data);
       setPatientData(res?.data?.data);
@@ -33,7 +33,7 @@ const PatientProfile = () => {
   const onGoingTreat = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentViaUhid/${branch}/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentViaUhid/${branch}/${uhid}`
       );
       console.log(response.data);
       setOngoing(response.data);

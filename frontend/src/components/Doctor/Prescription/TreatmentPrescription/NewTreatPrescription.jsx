@@ -43,7 +43,7 @@ const NewTreatPrescription = () => {
   const getTreatmentList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getExaminedataByIdandexamine/${tsid}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataByIdandexamine/${tsid}/${tpid}`
       );
       console.log(data);
       setTreatments(data);
@@ -58,7 +58,7 @@ const NewTreatPrescription = () => {
   const getPatientDetail = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
       setGetPatientData(data.result);
     } catch (error) {
@@ -76,7 +76,7 @@ const NewTreatPrescription = () => {
   const getExaminDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
       );
       setGetExaminData(res.data);
       console.log(res.data);
@@ -96,7 +96,7 @@ const NewTreatPrescription = () => {
   const getTreatDetail = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatList/${branch}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatList/${branch}/${tpid}`
       );
       setGetTreatData(data);
       console.log(data);
@@ -120,7 +120,7 @@ const NewTreatPrescription = () => {
   const timelineForMedical = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Medical Prescription",
           description: "Medicine Added Successfully",
@@ -151,7 +151,7 @@ const NewTreatPrescription = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:8888/api/doctor/insertTreatPrescription/${id}/${tpid}/${sitting}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/insertTreatPrescription/${id}/${tpid}/${sitting}`,
         medicineInput
       );
       console.log(response.data);
@@ -190,7 +190,7 @@ const NewTreatPrescription = () => {
   const fetchMedicineOptions = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:8888/api/doctor/getMedicineData"
+        "https://dentalgurudoctor.doaguru.com/api/doctor/getMedicineData"
       );
       setMedicineOptions(data);
     } catch (error) {
@@ -207,7 +207,7 @@ const NewTreatPrescription = () => {
   const getTreatPrescriptionByAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatPrescriptionByAppointId/${id}/${tpid}/${treatment}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${id}/${tpid}/${treatment}`
       );
       setGetTreatMedicine(data);
       console.log(data);
@@ -226,7 +226,7 @@ const NewTreatPrescription = () => {
   const getlabByAppointId = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/lab-data/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-data/${id}`
       );
       setGetlab(res.data.data);
       console.log(res.data.data);
@@ -244,7 +244,7 @@ const NewTreatPrescription = () => {
   const getTreatmentSuggestAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}/${treatment}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}/${treatment}`
       );
       setGetTreatSug(data.data);
       console.log(data);
@@ -267,7 +267,7 @@ const NewTreatPrescription = () => {
 
       if (confirmed) {
         const res = await axios.delete(
-          `http://localhost:8888/api/doctor/deleteTreatPrescriptionById/${id}`
+          `https://dentalgurudoctor.doaguru.com/api/doctor/deleteTreatPrescriptionById/${id}`
         );
         console.log(res.data); // Log response data
 
@@ -283,7 +283,7 @@ const NewTreatPrescription = () => {
   const timelineForBill = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Bill Data",
           description: "Bill Generated for the sitting",
@@ -301,7 +301,7 @@ const NewTreatPrescription = () => {
     try {
       // Make the API call to fetch bill data
       const billResponse = await axios.get(
-        `http://localhost:8888/api/doctor/bill-patient-data/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/bill-patient-data/${id}`
       );
       console.log("Bill data fetched successfully");
       timelineForBill();
@@ -320,7 +320,7 @@ const NewTreatPrescription = () => {
   const grandTotal = async (id) => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentDatasum/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDatasum/${id}`
       );
       setGetSum(res.data.total_amount);
     } catch (error) {

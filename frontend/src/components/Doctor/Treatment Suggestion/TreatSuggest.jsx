@@ -62,7 +62,7 @@ const TreatSuggest = () => {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalDataByID/${id}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByID/${id}/${tpid}`
       );
       setData(data);
     } catch (error) {
@@ -86,7 +86,7 @@ const TreatSuggest = () => {
   const getTreatmentList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/treatmentLists`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/treatmentLists`
       );
       console.log(data);
       setTreatments(data.data);
@@ -100,7 +100,7 @@ const TreatSuggest = () => {
   const getProcedureTreat = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:8888/api/doctor/getProcedureList"
+        "https://dentalgurudoctor.doaguru.com/api/doctor/getProcedureList"
       );
       console.log(data);
       setProcedureTreat(data);
@@ -124,7 +124,7 @@ const TreatSuggest = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
       );
       setGetPatientData(res.data.result);
       console.log(res.data.result);
@@ -146,7 +146,7 @@ const TreatSuggest = () => {
   const timelineForTreatSuggest = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Treatment Suggest",
           description: `Select Treatment : ${formData.treatment_name} for desease : ${formData.desease}`,
@@ -194,7 +194,7 @@ const TreatSuggest = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `http://localhost:8888/api/doctor/insertTreatSuggest`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/insertTreatSuggest`,
         forms
       );
       alert("Successfully added!");

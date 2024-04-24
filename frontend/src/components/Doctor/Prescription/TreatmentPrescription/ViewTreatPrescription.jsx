@@ -23,7 +23,7 @@ const ViewTreatPrescription = () => {
   const getBranchDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getBranchDetails/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${branch}`
       );
       console.log(data);
       setGetBranch(data);
@@ -36,7 +36,7 @@ const ViewTreatPrescription = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
       setGetPatientData(res.data.result);
     } catch (error) {
@@ -54,7 +54,7 @@ const ViewTreatPrescription = () => {
   const getExaminDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
       );
       setGetExaminData(res.data);
       console.log(res.data);
@@ -72,7 +72,7 @@ const ViewTreatPrescription = () => {
   const getTreatDetail = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentDetailsViaSitting/${branch}/${tpid}/${sitting}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDetailsViaSitting/${branch}/${tpid}/${sitting}`
       );
       setGetTreatData(data);
       console.log(data);
@@ -91,7 +91,7 @@ const ViewTreatPrescription = () => {
   const getTreatPrescriptionByAppointId = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatPrescriptionByAppointId/${id}/${tpid}/${treatment}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${id}/${tpid}/${treatment}`
       );
       setGetTreatMedicine(res.data);
       console.log(res.data);
@@ -109,7 +109,7 @@ const ViewTreatPrescription = () => {
   const getTreatmentSuggestAppointId = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}`
       );
       setGetTreatSug(res.data.data);
       console.log(res.data.data);

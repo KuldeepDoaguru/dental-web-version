@@ -46,7 +46,7 @@ const Overview = () => {
   const getPendingBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
+        `https://dentalgurudoctor.doaguru.com/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
       );
       // console.log(data);
       setPatPendingBill(data);
@@ -58,7 +58,7 @@ const Overview = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getAllAppointmentByPatientId/${uhid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAllAppointmentByPatientId/${uhid}/${branch}`
       );
       // console.log(data);
       setPatAppointDetails(data?.data);
@@ -139,7 +139,7 @@ const Overview = () => {
   const fetchLatestDentalPatientData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getExaminationViaUhid/${branch}/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminationViaUhid/${branch}/${uhid}`
       );
       console.log(data); // Assuming your API returns the data directly
       setClinicExam(data);
@@ -156,7 +156,7 @@ const Overview = () => {
   const fetchLatestTreatPatientData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentViaUhid/${branch}/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentViaUhid/${branch}/${uhid}`
       );
       console.log(data);
       setTreatData(data);
@@ -172,7 +172,7 @@ const Overview = () => {
   const fetchLatestPrescriptionPatientData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getPrescriptionViaUhid/${branch}/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getPrescriptionViaUhid/${branch}/${uhid}`
       );
       console.log(data); // Assuming your API returns the data directly
       setPrescpData(data);
@@ -188,7 +188,7 @@ const Overview = () => {
   const fetchLatestBillPatientData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/doctor/get-patientBill-data/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-patientBill-data/${uhid}`
       );
       console.log(response.data); // Assuming your API returns the data directly
       setBillData(response.data);
@@ -217,7 +217,7 @@ const Overview = () => {
   const onGoingTreat = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/doctor/onGoingTreat/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/onGoingTreat/${uhid}`
       );
       console.log(response.data);
       setOngoing(response.data);
@@ -436,7 +436,7 @@ const Overview = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedAppointments?.slice(-3)?.map((item) => (
+                  {sortedAppointments?.slice(0, 3)?.map((item) => (
                     <>
                       {item.notes && (
                         <tr>

@@ -27,7 +27,7 @@ const SaveData = ({ id, tpid }) => {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalDataByID/${id}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByID/${id}/${tpid}`
       );
       setData(data);
     } catch (error) {
@@ -55,7 +55,7 @@ const SaveData = ({ id, tpid }) => {
   const timelineForDelete = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Examiantion",
           description: "Add Teeth Pediatric DentalX",
@@ -75,7 +75,7 @@ const SaveData = ({ id, tpid }) => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8888/api/doctor/updatedentalPediatric/${id}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updatedentalPediatric/${id}`,
         formData
       );
       console.log(response.data);
@@ -111,7 +111,7 @@ const SaveData = ({ id, tpid }) => {
 
       if (confirmed) {
         const res = await axios.delete(
-          `http://localhost:8888/api/doctor/deleteDentalPediatric/${id}`
+          `https://dentalgurudoctor.doaguru.com/api/doctor/deleteDentalPediatric/${id}`
         );
         console.log(res.data);
         setData(data.filter((item) => item.exm_id !== id));

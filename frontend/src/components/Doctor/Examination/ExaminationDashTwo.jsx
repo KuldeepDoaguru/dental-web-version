@@ -31,7 +31,7 @@ const ExaminationDashTwo = () => {
   const timelineForExamination = async (cat) => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Examiantion",
           description: `Selected Category ${cat}`,
@@ -48,7 +48,7 @@ const ExaminationDashTwo = () => {
   const addPackageTreat = async (updatedTreatData) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:8888/api/doctor/addTreatPackageDetails",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/addTreatPackageDetails",
         updatedTreatData
       );
       console.log(data.result);

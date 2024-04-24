@@ -22,7 +22,7 @@ const PatientBillsByTpid = () => {
   const getBranchDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getBranchDetails/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${branch}`
       );
       console.log(data);
       setGetBranch(data);
@@ -36,7 +36,7 @@ const PatientBillsByTpid = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
       setGetPatientData(res.data.result);
     } catch (error) {
@@ -55,7 +55,7 @@ const PatientBillsByTpid = () => {
   const getExaminDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
       );
       setGetExaminData(res.data);
       console.log(res.data);
@@ -73,7 +73,7 @@ const PatientBillsByTpid = () => {
   const getTreatDetail = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentDetailsViaTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDetailsViaTpid/${tpid}/${branch}`
       );
       setGetTreatData(data);
       console.log(data);
@@ -81,6 +81,8 @@ const PatientBillsByTpid = () => {
       console.log(error);
     }
   };
+
+  console.log(getPatientData[0]?.patient_type);
 
   console.log(getTreatData);
   useEffect(() => {
@@ -92,7 +94,7 @@ const PatientBillsByTpid = () => {
   const getTreatPrescriptionByAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatPrescriptionByTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByTpid/${tpid}/${branch}`
       );
       setGetTreatMedicine(data);
       console.log(data);
@@ -110,7 +112,7 @@ const PatientBillsByTpid = () => {
   const getTreatmentSuggestAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatSuggestViaTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatSuggestViaTpid/${tpid}/${branch}`
       );
       setGetTreatSug(data.data);
       console.log(data.data);
@@ -140,7 +142,7 @@ const PatientBillsByTpid = () => {
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/billDetailsViaTpid/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/billDetailsViaTpid/${tpid}`
       );
       setBillDetails(data);
     } catch (error) {
@@ -229,6 +231,9 @@ const PatientBillsByTpid = () => {
           <div className="heading-title">
             <h4>Patient Details :</h4>
           </div>
+          <h6 className="fw-bold">
+            Patient Type : {getPatientData[0]?.patient_type}
+          </h6>
           <table className="table table-bordered border">
             <tbody>
               {getPatientData?.map((item, index) => (

@@ -172,10 +172,10 @@ const Appointment = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getAllAppointmentByPatientId/${uhid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAllAppointmentByPatientId/${uhid}/${branch}`
       );
-      console.log(data);
-      setPatAppointDetails(data);
+      console.log(data.data);
+      setPatAppointDetails(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -210,17 +210,16 @@ const Appointment = () => {
                   {patAppointDetails?.map((item) => (
                     <>
                       <tr>
-                        {/* <td>{item.appointment_dateTime?.split("T")[0]}</td> */}
+                        <td>{item.appointment_dateTime?.split("T")[0]}</td>
                         <td>
                           {item.appointment_dateTime
                             ?.split("T")[1]
                             ?.split(".")[0]
                             ?.slice(0, 5)}
                         </td>
-                        <td>{item.assigned_doctor}</td>
+                        <td>{item.assigned_doctor_name}</td>
                         <td>{item.treatment_provided}</td>
-                        <td>{item.bill_amount}</td>
-                        <td>{item.treatment_status}</td>
+                        <td>{item.appointment_status}</td>
                       </tr>
                     </>
                   ))}

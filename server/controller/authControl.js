@@ -574,6 +574,22 @@ const getDentalDataByTpid = (req, res) => {
   });
 };
 
+const getTreatPackageViaTpidUhid = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM treatment_package WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
 module.exports = {
   dentalPediatric,
   updateDentalPediatric,
@@ -593,4 +609,5 @@ module.exports = {
   getFilteredTreat,
   updateTreatSittingStatus,
   getDentalDataByTpid,
+  getTreatPackageViaTpidUhid,
 };

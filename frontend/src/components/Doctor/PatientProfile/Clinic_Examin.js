@@ -21,7 +21,7 @@
 //                 <th>Investigation</th>
 //                 <th>Added By</th>
 //                 <th>Action</th>
-               
+
 //               </tr>
 //             </thead>
 //             <tbody>
@@ -35,14 +35,8 @@
 //                 <td>Dr.Anurag Varma</td>
 //                 <td>Edit/Delete/View</td>
 
-                
-
 //               </tr>
-          
-              
-             
 
-           
 //             </tbody>
 //           </table>
 //         </div>
@@ -58,7 +52,7 @@
 //     @media screen and (max-width: 768px) {
 //       width: 22rem;
 //       margin-left: -0.1rem;
-  
+
 //     }
 //   }
 // `
@@ -74,11 +68,11 @@ const ClinicExamin = () => {
   // const { pid } = useParams();
   const { uhid } = useParams();
   const user = useSelector((state) => state.user);
-  // console.log(`User Name: ${user.name}, User ID: ${user.id}`); 
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
   const branch = user.currentUser.branch_name;
   console.log(branch);
-  
+
   const [exmData, setExmData] = useState([]);
 
   const getExamineDetails = async () => {
@@ -87,7 +81,7 @@ const ClinicExamin = () => {
       //   `http://localhost:7777/api/v1/super-admin/examinDetailsByPatId/${pid}`
       // );
       const respsData = await axios.get(
-        `http://localhost:8888/api/doctor/getDentalPatientDataByID/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalPatientDataByID/${uhid}`
       );
       setExmData(respsData.data);
       console.log(respsData.data);
@@ -96,6 +90,7 @@ const ClinicExamin = () => {
     }
   };
 
+  console.log(exmData);
   useEffect(() => {
     getExamineDetails();
   }, []);
@@ -111,12 +106,12 @@ const ClinicExamin = () => {
               <thead>
                 <tr>
                   <th>Date</th>
-                  <th>Branch</th>
-                  <th>Issue</th>
-                  <th>Diagnosis</th>
-                  <th>Investigation</th>
+                  <th>Diagnosis Category</th>
+                  <th>Disease</th>
+                  <th>Chief Complaint</th>
                   <th>Tooth</th>
-                  <th>Doctor</th>
+                  <th>On Examination</th>
+                  <th>Advice</th>
                 </tr>
               </thead>
               <tbody>
@@ -124,13 +119,15 @@ const ClinicExamin = () => {
                   <>
                     <tr>
                       {/* <td>{item.examin_date?.split("T")[0]}</td> */}
-                      <td>{item.date}</td>
-                      <td>{item.branch_name}</td>
+                      <td>{item.date?.split("T")[0]}</td>
+                      <td>{item.diagnosis_category}</td>
                       <td>{item.disease}</td>
-                      <td>{item.on_examination}</td>
+
                       <td>{item.chief_complain}</td>
                       <td>{item.selected_teeth}</td>
-                      <td>{item.assigned_doctor_name}</td>
+
+                      <td>{item.on_examination}</td>
+                      <td>{item.advice}</td>
                     </tr>
                   </>
                 ))}

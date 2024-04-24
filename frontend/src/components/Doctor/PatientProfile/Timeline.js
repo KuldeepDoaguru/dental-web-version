@@ -8,16 +8,16 @@ import styled from "styled-components";
 const Timeline = () => {
   const dispatch = useDispatch();
   const { uhid } = useParams();
-  const {currentUser} = useSelector((state) => state.user);
+  const { currentUser } = useSelector((state) => state.user);
 
-  const  branch = currentUser.branch_name;
-  
+  const branch = currentUser.branch_name;
+
   const [patTimeline, setPatTimeline] = useState([]);
 
   const getTimelineDetails = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/doctor/getPatientTimeline/${branch}/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getPatientTimeline/${branch}/${uhid}`
       );
       console.log(response.data.data);
       setPatTimeline(response.data.data);
@@ -25,7 +25,7 @@ const Timeline = () => {
       console.log(error);
     }
   };
-  console.log(patTimeline)
+  console.log(patTimeline);
 
   useEffect(() => {
     getTimelineDetails();
@@ -48,7 +48,7 @@ const Timeline = () => {
                 </tr>
               </thead>
               <tbody>
-                {patTimeline?.map((item)=>(
+                {patTimeline?.map((item) => (
                   <>
                     <tr>
                       <td>{item.event_date}</td>
@@ -57,7 +57,7 @@ const Timeline = () => {
                       <td>{item.event_description}</td>
                     </tr>
                   </>
-                  ))}
+                ))}
               </tbody>
             </table>
           </div>

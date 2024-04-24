@@ -43,7 +43,7 @@ const AttendanceLeave = () => {
   const getAttendance = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getAttendancebyempId/${branch}/${employeeId}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAttendancebyempId/${branch}/${employeeId}`
       );
       setAttendance(data?.data);
       console.log(data?.data);
@@ -61,7 +61,7 @@ const AttendanceLeave = () => {
   const getLeaves = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/get-leaves/${branch}/${employeeId}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-leaves/${branch}/${employeeId}`
       );
       setLeaveData(data?.data);
       console.log(data?.data);

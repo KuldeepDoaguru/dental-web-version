@@ -15,7 +15,7 @@ import Overview from "./Overview";
 import { useParams } from "react-router-dom";
 
 const Navbar = () => {
-  const {uhid} = useParams();
+  const { uhid } = useParams();
   console.log(uhid);
   return (
     <Wrapper>
@@ -77,7 +77,7 @@ const Navbar = () => {
             Billing
           </button>
         </li>
-        <li className="nav-item" role="presentation">
+        {/* <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab3"
@@ -90,8 +90,8 @@ const Navbar = () => {
           >
             Payment
           </button>
-        </li>
-        <li className="nav-item" role="presentation"> 
+        </li> */}
+        <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab4"
@@ -200,7 +200,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Overview uhid={uhid}/>
+                <Overview uhid={uhid} />
               </li>
             </ul>
           </div>
@@ -213,7 +213,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item" id="app">
-                <Appointment uhid={uhid}/> 
+                <Appointment uhid={uhid} />
               </li>
             </ul>
           </div>
@@ -226,7 +226,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Treatment uhid={uhid}/>
+                <Treatment uhid={uhid} />
               </li>
             </ul>
           </div>
@@ -239,11 +239,11 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Bill uhid={uhid}/>
+                <Bill uhid={uhid} />
               </li>
             </ul>
           </div>
-          <div
+          {/* <div
             className="tab-pane fade"
             id="profile-tab-pane3"
             role="tabpanel"
@@ -255,7 +255,7 @@ const Navbar = () => {
                 <Payment />
               </li>
             </ul>
-          </div>
+          </div> */}
           <div
             className="tab-pane fade"
             id="profile-tab-pane4"
@@ -265,7 +265,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Clinic_Examin uhid={uhid}/>
+                <Clinic_Examin uhid={uhid} />
               </li>
             </ul>
           </div>
@@ -278,7 +278,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Prescription uhid={uhid}/>
+                <Prescription uhid={uhid} />
               </li>
             </ul>
           </div>
@@ -343,7 +343,7 @@ const Navbar = () => {
           >
             <ul className="list-group">
               <li className="list-group-item">
-                <Timeline uhid={uhid}/>
+                <Timeline uhid={uhid} />
               </li>
             </ul>
           </div>

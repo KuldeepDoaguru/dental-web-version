@@ -28,7 +28,7 @@ const EditTreatSuggestModal = ({ onClose, selectedData, openBookAppoint }) => {
     try {
       if (selectedData.current_sitting < changeSitting) {
         const { data } = await axios.put(
-          `http://localhost:8888/api/doctor/updateTreatSuggestion/${selectedData.ts_id}/${branch}`,
+          `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatSuggestion/${selectedData.ts_id}/${branch}`,
           { total_sitting: changeSitting }
         );
         cogoToast.success("sitting updated");

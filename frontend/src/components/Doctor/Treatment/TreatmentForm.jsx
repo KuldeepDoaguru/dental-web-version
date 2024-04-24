@@ -47,7 +47,7 @@ const TreatmentForm = () => {
   const getTreatmentList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getExaminedataByIdandexamine/${tsid}/${tp_id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataByIdandexamine/${tsid}/${tp_id}`
       );
       console.log(data);
       setTreatments(data);
@@ -99,7 +99,7 @@ const TreatmentForm = () => {
   const timelineForTreatForm = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Treatment Procedure",
           description:
@@ -122,9 +122,15 @@ const TreatmentForm = () => {
   console.log(netAmount);
   const partialPay = netAmount - securityAmt[0]?.remaining_amount;
   const directRecAmount = () => {
-    if (securityAmt[0]?.remaining_amount <= 0) {
+    if (
+      securityAmt[0]?.payment_status === "success" &&
+      securityAmt[0]?.remaining_amount <= 0
+    ) {
       return netAmount;
-    } else if (securityAmt[0]?.remaining_amount < netAmount) {
+    } else if (
+      securityAmt[0]?.payment_status === "success" &&
+      securityAmt[0]?.remaining_amount < netAmount
+    ) {
       return netAmount - securityAmt[0]?.remaining_amount;
     } else {
       return 0;
@@ -162,7 +168,7 @@ const TreatmentForm = () => {
   const treatmentStatsUpdate = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8888/api/doctor/updateTreatSittingStatus/${branch}/${tsid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatSittingStatus/${branch}/${tsid}`
       );
     } catch (error) {
       console.log(error);
@@ -172,7 +178,7 @@ const TreatmentForm = () => {
   const handleSubmit = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:8888/api/doctor/insertTreatmentData/${tsid}/${appoint_id}/${tp_id}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/insertTreatmentData/${tsid}/${appoint_id}/${tp_id}`,
         formDetails
       );
       if (res.status >= 200 && res.status < 300) {
@@ -214,7 +220,7 @@ const TreatmentForm = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${tp_id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tp_id}`
       );
 
       const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
@@ -259,7 +265,7 @@ const TreatmentForm = () => {
   const getSecurityAmt = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getSecurityAmountByAppointmentId/${tp_id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getSecurityAmountByAppointmentId/${tp_id}`
       );
       setSecurityAmt(data.data);
       console.log(data.data);
@@ -274,10 +280,14 @@ const TreatmentForm = () => {
 
   console.log(securityAmt[0]?.remaining_amount);
   const securityRemAmt = () => {
-    if (securityAmt[0]?.remaining_amount < netAmount) {
-      return 0;
+    if (securityAmt[0]?.payment_status === "success") {
+      if (securityAmt[0]?.remaining_amount < netAmount) {
+        return 0;
+      } else {
+        return securityAmt[0]?.remaining_amount - netAmount;
+      }
     } else {
-      return securityAmt[0]?.remaining_amount - netAmount;
+      return 0;
     }
   };
   const remaining_amount = securityRemAmt();
@@ -286,7 +296,7 @@ const TreatmentForm = () => {
   const updateAmountAfterPayViaSecAmount = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:8888/api/doctor/updateRecSecAmountAfterPayment/${tp_id}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateRecSecAmountAfterPayment/${tp_id}`,
         {
           sec_rec_amt:
             securityAmt[0]?.remaining_amount > netAmount
@@ -308,7 +318,7 @@ const TreatmentForm = () => {
   const timelineForMakePayViaSecurity = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Security Amount Used",
           description: `${
@@ -327,7 +337,7 @@ const TreatmentForm = () => {
   const MakePaymentViaSecurityAmount = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:8888/api/doctor/updateSecurityAmountAfterPayment/${tp_id}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateSecurityAmountAfterPayment/${tp_id}`,
         { remaining_amount: remaining_amount }
       );
       console.log(res);
@@ -560,12 +570,11 @@ const TreatmentForm = () => {
                       <label htmlFor="" class="form-label fw-bold">
                         Remaining Security Amount :{" "}
                         <strong style={{ color: "red" }}>
-                          {securityAmt[0]?.remaining_amount}
+                          {remaining_amount}
                         </strong>
                       </label>
                       <div>
-                        {securityAmt[0]?.remaining_amount > 0 &&
-                        formData.disc_amt ? (
+                        {remaining_amount > 0 && formData.disc_amt ? (
                           !showDirect ? (
                             <button
                               type="button"
@@ -693,6 +702,7 @@ const TreatmentForm = () => {
                       tp_id={tp_id}
                       treatStats={treatStats}
                       onClose={() => setShowBookingPopup(false)}
+                      handleSubmit={() => handleSubmit()}
                     />
                   )}
                   {treatStats === "yes" ? (
@@ -765,7 +775,6 @@ const Wrapper = styled.div`
     height: 200px;
     width: 180px;
     overflow-y: auto;
-    
   }
   input {
     width: 22rem;

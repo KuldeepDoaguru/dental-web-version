@@ -12,13 +12,13 @@ const Bill = () => {
   // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   // console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
- 
+
   const [billData, setBillData] = useState([]);
 
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/get-patientBill-data/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-patientBill-data/${uhid}`
       );
       console.log(data);
       setBillData(data);
@@ -45,29 +45,29 @@ const Bill = () => {
               <table className="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Bill Id</th>
-                    <th>Treatment</th>
-                    <th>Consultant</th>
-                    <th>Cost(INR)</th>
-                    {/* <th>Discount(INR)</th>
-                    <th>Tax%</th> */}
-                    <th>Net Amount</th>
-                    <th>Paid</th>
-                    <th>Pending</th>
-                    <th>Billing Status</th>
+                    <th>Bill Date</th>
+                    <th>Bill ID</th>
+                    <th>Doctor</th>
+                    <th>Total Amount(INR)</th>
+                    <th>Direct Paid Amount(INR)</th>
+                    <th>Pay By Security Amount</th>
+                    <th>Payment Mode</th>
+                    <th>Payment Date</th>
+                    <th>Payment Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {billData?.map((item) => (
                     <>
                       <tr>
+                        <td>{item?.bill_date?.split("T")[0]}</td>
                         <td>{item.bill_id}</td>
-                        <td>{item.dental_treatment}</td>
                         <td>{item.assigned_doctor_name}</td>
-                        <td>{item.cost_amt}</td>
                         <td>{item.total_amount}</td>
                         <td>{item.paid_amount}</td>
-                        <td>{item.pending_amount}</td>
+                        <td>{item.pay_by_sec_amt}</td>
+                        <td>{item.payment_mode}</td>
+                        <td>{item.payment_date_time?.split("T")[0]}</td>
                         <td>{item.payment_status}</td>
                       </tr>
                     </>

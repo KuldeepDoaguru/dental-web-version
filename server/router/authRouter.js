@@ -21,6 +21,7 @@ const {
   deleteTreatSuggestion,
   getFilteredTreat,
   getDentalDataByTpid,
+  getTreatPackageViaTpidUhid,
 } = require("../controller/authControl.js");
 const {
   getAppointmentsWithPatientDetails,
@@ -58,6 +59,7 @@ const {
   getTreatmentViaUhid,
   getExaminationViaUhid,
   getPrescriptionViaUhid,
+  updateTreatmentStatus,
 } = require("../controller/authBranch.js");
 const {
   getTreatmentList,
@@ -338,6 +340,7 @@ router.put("/resetPassword", resetPassword);
 router.get("/getTreatmentViaUhid/:branch/:uhid", getTreatmentViaUhid);
 router.get("/getExaminationViaUhid/:branch/:uhid", getExaminationViaUhid);
 router.get("/getPrescriptionViaUhid/:branch/:uhid", getPrescriptionViaUhid);
+router.put("/updateTreatmentStatus/:branch/:tpid", updateTreatmentStatus);
 // router.get('/getAllAppointmentByPatientId/:branch/:patientId',getAllAppointmentByPatientuhiId)
-
+router.get("/getTreatPackageViaTpidUhid/:branch", getTreatPackageViaTpidUhid);
 module.exports = { authRoutes: router };

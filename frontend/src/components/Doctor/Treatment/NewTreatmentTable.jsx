@@ -28,7 +28,7 @@ const NewTreatmentTable = () => {
   const getPatientDetail = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
       console.log(data.result[0]?.patient_name);
       setGetPatientData(data.result);
@@ -42,7 +42,7 @@ const NewTreatmentTable = () => {
   const fetchTreatmentData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/doctor/getTreatmentDataViaBranchAndTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDataViaBranchAndTpid/${tpid}/${branch}`
       );
       setTreatmentData(data);
       console.log(data);
@@ -124,7 +124,7 @@ const NewTreatmentTable = () => {
   const timelineForFinalBill = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Final Bill Generation",
           description: `Final Bill Generated for TPID : ${tpid}`,
@@ -141,7 +141,7 @@ const NewTreatmentTable = () => {
   const generateFinalBill = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:8888/api/doctor/generateFinalBillwithTpid",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/generateFinalBillwithTpid",
         billInputField
       );
       console.log(res);
@@ -163,7 +163,7 @@ const NewTreatmentTable = () => {
   const getExamintionTeeth = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getExaminedataById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataById/${tpid}`
       );
       setGetExamTeeth(res.data);
       console.log(res.data);

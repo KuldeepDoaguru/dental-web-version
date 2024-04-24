@@ -202,7 +202,7 @@ import SaveData from "./SaveExaminationData/SaveData";
 const PediatricDentalTest = ({ tpid }) => {
   console.log(tpid);
   const { id, dcat } = useParams();
-  console.log(id);
+  console.log(id, dcat);
   const [selectedTeeth, setSelectedTeeth] = useState([]);
   const [teethShow, setTeethShow] = useState();
   // const [inputItemList, setInputItemList] = useState([]);
@@ -692,7 +692,7 @@ const PediatricDentalTest = ({ tpid }) => {
   const timelineForExamination = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/insertTimelineEvent",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Examiantion",
           description: "Add Teeth Pediatric DentalX",
@@ -716,7 +716,7 @@ const PediatricDentalTest = ({ tpid }) => {
     chiefComplain: inputItem.chiefComplain,
     advice: inputItem.advice,
     onExamination: inputItem.onExamination,
-    diagnosis_category: inputItem.diagnosis_category,
+    diagnosis_category: dcat,
   };
 
   console.log(formData);
@@ -727,7 +727,7 @@ const PediatricDentalTest = ({ tpid }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/doctor/dentalPediatric",
+        "https://dentalgurudoctor.doaguru.com/api/doctor/dentalPediatric",
         formData
       );
       console.log(response.data);
@@ -777,7 +777,7 @@ const PediatricDentalTest = ({ tpid }) => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
       );
 
       const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;

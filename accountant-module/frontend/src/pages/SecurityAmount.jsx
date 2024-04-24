@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import cogoToast from "cogo-toast";
+import moment from "moment";
 
 const SecurityAmount = () => {
   const dispatch = useDispatch();
@@ -72,7 +73,7 @@ const SecurityAmount = () => {
     if (name === "appointment_id") {
       try {
         const { data } = await axios.get(
-          `http://localhost:8888/api/v1/accountant/getAppointmentDetailsViaID/${value}`
+          `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getAppointmentDetailsViaID/${value}`
         );
         console.log(data);
         if (data) {
@@ -108,7 +109,7 @@ const SecurityAmount = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/v1/accountant/addSecurityAmount",
+        "https://dentalguruaccountant.doaguru.com/api/v1/accountant/addSecurityAmount",
         addSecurityAmount
       );
       console.log(response);
@@ -122,7 +123,7 @@ const SecurityAmount = () => {
   const getSecurityAmountList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getSecurityAmountDataByBranch/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getSecurityAmountDataByBranch/${user.branch}`
       );
       setSecurityList(data);
     } catch (error) {
@@ -133,7 +134,7 @@ const SecurityAmount = () => {
   const makePaymentNow = async (id) => {
     try {
       const response = await axios.put(
-        `http://localhost:8888/api/v1/accountant/updateSecurityAmount/${id}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/updateSecurityAmount/${id}`
       );
       getSecurityAmountList();
     } catch (error) {
@@ -175,7 +176,7 @@ const SecurityAmount = () => {
   //   console.log(id);
   //   try {
   //     const { data } = await axios.get(
-  //       `http://localhost:8888/api/v1/accountant/getSecurityAmountDataBySID/${id}`
+  //       `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getSecurityAmountDataBySID/${id}`
   //     );
   //     console.log(data);
   //     setOutStanding(data);
@@ -212,7 +213,7 @@ const SecurityAmount = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8888/api/v1/accountant/updateRefundAmount/${selected}`,
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/updateRefundAmount/${selected}`,
         {
           refund_date: date,
           refund_by: user.name,
@@ -247,7 +248,7 @@ const SecurityAmount = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:8888/api/v1/accountant/updatePatientSecurityAmt/${selected}`,
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/updatePatientSecurityAmt/${selected}`,
         data
       );
       cogoToast.success("Amount Paid Successfully");
@@ -465,7 +466,10 @@ const SecurityAmount = () => {
                             <th>Remaning Security Amount</th>
                             <th>Payment Mode</th>
                             <th>Transaction Id</th>
+                            <th>Payment Date</th>
+                            <th>Refund Date</th>
                             <th>Payment Status</th>
+                            <th>Refund Amount</th>
                             <th>Action</th>
                             <th>Print</th>
                           </tr>
@@ -497,27 +501,56 @@ const SecurityAmount = () => {
                                   <td>{item.payment_Mode}</td>
                                   <td>{item.transaction_Id}</td>
                                   <td>
-                                    <div className="d-flex">
-                                      <h6>{item.payment_status}</h6>
-                                      {item.payment_status === "Pending" ? (
-                                        <>
-                                          <button
-                                            className="mx-2 btn btn-info"
-                                            onClick={() =>
-                                              openSecurityAmtPay(item.sa_id)
-                                            }
-                                          >
-                                            Pay now
-                                          </button>
-                                        </>
-                                      ) : (
-                                        <></>
-                                      )}
-                                    </div>
+                                    {item.payment_date
+                                      ? moment(item?.payment_date).format(
+                                          "DD/MM/YYYY"
+                                        )
+                                      : ""}
                                   </td>
                                   <td>
+                                    {item?.refund_date
+                                      ? moment(
+                                          item?.refund_date,
+                                          "YYYY-MM-DDTHH:mm"
+                                        ).format("DD/MM/YYYY")
+                                      : ""}
+                                  </td>
+                                  <td>
+                                    <div className="d-flex">
+                                      <h6>{item.payment_status}</h6>
+                                    </div>
+                                  </td>
+                                  <td>{item.refund_amount}</td>
+                                  <td>
                                     {/* {item?.remaining_amount === 0 && ( */}
-                                    <button
+                                    {item.payment_status === "Pending" ? (
+                                      <>
+                                        <button
+                                          className="mx-2 btn btn-info"
+                                          onClick={() =>
+                                            openSecurityAmtPay(item.sa_id)
+                                          }
+                                        >
+                                          Pay now
+                                        </button>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <button
+                                          className={`mx-2 btn btn-warning ${
+                                            item.remaining_amount === 0
+                                              ? "disabled"
+                                              : ""
+                                          } `}
+                                          onClick={() =>
+                                            openSecAmountSubPopup(item.sa_id)
+                                          }
+                                        >
+                                          Make Refund
+                                        </button>
+                                      </>
+                                    )}
+                                    {/* <button
                                       className={`mx-2 btn btn-warning ${
                                         item.remaining_amount === 0
                                           ? "disabled"
@@ -528,7 +561,7 @@ const SecurityAmount = () => {
                                       }
                                     >
                                       Make Refund
-                                    </button>
+                                    </button> */}
                                     {/* )} */}
                                   </td>
                                   <td>
@@ -625,6 +658,82 @@ const SecurityAmount = () => {
           {/* ***************************************************************************************************** */}
 
           {/* pop-up for Pay security amount */}
+          <div
+            className={`popup-container${showPaySecAmount ? " active" : ""}`}
+          >
+            <div className="popup">
+              <h4 className="text-center">Pay Security Amount</h4>
+              <hr />
+              <form className="d-flex flex-column" onSubmit={paySecurityCash}>
+                <div className="container">
+                  <div>
+                    <div class="mb-3">
+                      <label className="form-label" htmlFor="">
+                        Payment Mode
+                      </label>
+                      <select
+                        className="form-select"
+                        id="payment_Mode"
+                        name="payment_Mode"
+                        value={data.payment_Mode}
+                        required
+                        onChange={handlePaySecChange}
+                      >
+                        <option value="">Select</option>
+                        <option value="cash">Cash</option>
+                        <option value="online">Online</option>
+                      </select>
+                    </div>
+
+                    {data.payment_Mode === "online" && (
+                      <div class="mb-3">
+                        <label className="form-label" for="form6Example1">
+                          Transaction Id
+                        </label>
+                        <input
+                          type="text"
+                          id="form6Example1"
+                          className="form-control"
+                          name="transaction_Id"
+                          onChange={handlePaySecChange}
+                          value={data.transaction_Id}
+                          required
+                        />
+                      </div>
+                    )}
+
+                    <div class="mb-3">
+                      <label className="form-label" for="form6Example1">
+                        Notes
+                      </label>
+                      <input
+                        type="text"
+                        id="form6Example1"
+                        className="form-control"
+                        name="notes"
+                        onChange={handlePaySecChange}
+                        value={data.notes}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="d-flex justify-content-center">
+                  <button type="submit" className="btn btn-success mt-2">
+                    Pay
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger mt-2 mx-2"
+                    onClick={closeUpdatePopup}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+
           <div
             className={`popup-container${showPaySecAmount ? " active" : ""}`}
           >

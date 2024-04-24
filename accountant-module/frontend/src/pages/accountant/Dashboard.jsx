@@ -28,7 +28,7 @@ const Accountant_Dashboard = () => {
   const getTodaysBill = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getBillsByBranch/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getBillsByBranch/${user.branch}`
       );
       setBillList(data);
     } catch (error) {
@@ -55,7 +55,7 @@ const Accountant_Dashboard = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getAppointmentData/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getAppointmentData/${user.branch}`
       );
       console.log(response);
       setAppointmentList(response.data);

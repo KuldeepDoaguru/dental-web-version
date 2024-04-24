@@ -21,7 +21,7 @@ const MarkAttendance = () => {
   const getTodayAttendance = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getTodayAttendance/${branch_name}/${employee_ID}/${date}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getTodayAttendance/${branch_name}/${employee_ID}/${date}`
       );
       setTodayAttendance(response?.data?.data);
     } catch (error) {
@@ -37,7 +37,7 @@ const MarkAttendance = () => {
     const loginTime = moment().format("HH:mm:ss"); // Format current time for login
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/v1/accountant/markAttendanceLogin",
+        "https://dentalguruaccountant.doaguru.com/api/v1/accountant/markAttendanceLogin",
         {
           branch_name,
           employee_ID,
@@ -71,7 +71,7 @@ const MarkAttendance = () => {
     const logoutTime = moment().format("HH:mm:ss"); // Format current time for logout
     try {
       const response = await axios.put(
-        "http://localhost:8888/api/v1/accountant/markAttendanceLogout",
+        "https://dentalguruaccountant.doaguru.com/api/v1/accountant/markAttendanceLogout",
         {
           branch_name,
           employee_ID,

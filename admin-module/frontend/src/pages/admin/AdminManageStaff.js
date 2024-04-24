@@ -223,7 +223,7 @@ const AdminManageStaff = () => {
                             } else if (
                               val.employee_name
                                 .toLowerCase()
-                                .includes(keyword.toLowerCase())
+                                .includes(keyword.toLowerCase()) 
                             ) {
                               return val;
                             }

@@ -72,7 +72,7 @@ const Login = () => {
                               Login
                             </button>
                           </div>
-                          <div className="col-sm-12 col-md-10 text-center ms-4">
+                          {/* <div className="col-sm-12 col-md-10 text-center ms-4">
                             <p>
                               Don't have an account?
                               <Link to="/receptionist_registration">
@@ -80,7 +80,7 @@ const Login = () => {
                                 Register here
                               </Link>
                             </p>
-                          </div>
+                          </div> */}
                         </form>
                       </div>
                       <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1">

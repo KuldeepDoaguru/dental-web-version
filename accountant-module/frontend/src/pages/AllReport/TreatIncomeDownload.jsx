@@ -21,7 +21,7 @@ const TreatIncomeDownload = () => {
   const getTreatmentAmt = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getTreatmentTotal/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getTreatmentTotal/${user.branch}`
       );
       setTreatAmount(data.results);
     } catch (error) {

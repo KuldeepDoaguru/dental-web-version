@@ -19,7 +19,7 @@ const VoucherReport = () => {
   const getVoucherList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getVoucherListByBranch/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getVoucherListByBranch/${user.branch}`
       );
       setVlist(data);
     } catch (error) {

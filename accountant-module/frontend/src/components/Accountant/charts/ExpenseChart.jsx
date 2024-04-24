@@ -107,7 +107,7 @@ const ExpenseChart = () => {
     const getVoucherList = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8888/api/v1/accountant/getVoucherListByBranch/${user.branch}`
+          `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getVoucherListByBranch/${user.branch}`
         );
         setAppointmentList(response.data);
       } catch (error) {

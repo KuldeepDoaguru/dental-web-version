@@ -18,7 +18,7 @@ const VoucherPaidListPrint = () => {
   const getVoucherDataByIdBranch = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/v1/accountant/voucher/${branch}/${vid}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/voucher/${branch}/${vid}`
       );
       console.log(response.data);
       setGetVoucher(response.data);

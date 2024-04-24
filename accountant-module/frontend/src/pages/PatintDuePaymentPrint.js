@@ -38,7 +38,7 @@ const PatintDuePaymentPrint = () => {
   const branchDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getBranchDetailsByBranch/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getBranchDetailsByBranch/${user.branch}`
       );
       setBranchData(data);
     } catch (error) {
@@ -49,7 +49,7 @@ const PatintDuePaymentPrint = () => {
   const secuirtyAmtBytpuhid = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getSecurityAmountDataByTPUHID/${tpid}/${uhid}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getSecurityAmountDataByTPUHID/${tpid}/${uhid}`
       );
       console.log(res.data);
       setSaAmt(res.data);
@@ -61,7 +61,7 @@ const PatintDuePaymentPrint = () => {
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getPatientBillsAndSecurityAmountByBranch/${user.branch}/${bid}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getPatientBillsAndSecurityAmountByBranch/${user.branch}/${bid}`
       );
       setBillAmount(data);
     } catch (error) {
@@ -133,7 +133,7 @@ const PatintDuePaymentPrint = () => {
     try {
       console.log(remainingSecurityAmount);
       const response = await axios.put(
-        `http://localhost:8888/api/v1/accountant/updateRemainingSecurityAmount/${tpid}/${uhid}`,
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/updateRemainingSecurityAmount/${tpid}/${uhid}`,
         {
           remaining_amount: remainingSecurityAmount,
         }
@@ -149,7 +149,7 @@ const PatintDuePaymentPrint = () => {
   const makePayment = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8888/api/v1/accountant/makeBillPayment/${user.branch}/${bid}`,
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/makeBillPayment/${user.branch}/${bid}`,
         {
           paid_amount: updatedPaidAmt,
           payment_status: "paid",
@@ -164,6 +164,7 @@ const PatintDuePaymentPrint = () => {
       );
       if (response.data.success) {
         cogoToast.success("payment successful");
+        completeTreatment();
         getBillDetails();
         console.log(response.data);
         updateRemainingSecurity();
@@ -172,7 +173,7 @@ const PatintDuePaymentPrint = () => {
           transaction_Id: "",
           note: "",
         });
-        navigate("/PatientsDue");
+        navigate(`/patient-bill/${bid}/${tpid}`);
       } else {
         cogoToast.success("Failed to paid bill");
       }
@@ -194,6 +195,19 @@ const PatintDuePaymentPrint = () => {
   };
 
   console.log(saAmt[0]?.remaining_amount);
+
+  const completeTreatment = async () => {
+    try {
+      const res = await axios.put(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatmentStatus/${user.branch}/${tpid}`
+      );
+      console.log(res);
+      cogoToast.success("Treatment Completed");
+    } catch (error) {
+      console.log(error.response.data.message);
+      cogoToast.error(error.response.data.message);
+    }
+  };
 
   return (
     <>
@@ -414,21 +428,42 @@ const PatintDuePaymentPrint = () => {
               </div>
               <div>
                 <div className="container d-flex justify-content-end mb-3">
-                  <button
-                    type="button"
-                    class="btn btn-primary hide-during-print"
-                    data-bs-toggle="modal"
-                    data-bs-target="#exampleModal"
-                  >
-                    Pay Now
-                  </button>
+                  {dueAmt <= 0 ? (
+                    <>
+                      <button
+                        type="button"
+                        class="btn btn-primary hide-during-print"
+                        disabled
+                      >
+                        Pay Now
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-warning ms-2"
+                        onClick={completeTreatment}
+                      >
+                        Mark Treatment Complete
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        class="btn btn-primary hide-during-print"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                      >
+                        Pay Now
+                      </button>
+                    </>
+                  )}
 
-                  <button
+                  {/* <button
                     class="btn btn btn-success dum text-capitalize mx-2 hide-during-print"
                     onClick={handlePrint}
                   >
                     Print
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

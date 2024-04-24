@@ -45,7 +45,7 @@ const VoucherCreater = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/v1/accountant/voucherCreate",
+        "https://dentalguruaccountant.doaguru.com/api/v1/accountant/voucherCreate",
         vdata
       );
       cogoToast.success("voucher created successfully");
@@ -84,7 +84,7 @@ const VoucherCreater = () => {
                     </div>
                   </div>
 
-                  <div className="col-12 col-md-4 me-5 mt-5">
+                  {/* <div className="col-12 col-md-4 me-5 mt-5">
                     <form className="d-flex ms-auto my-sm" role="search">
                       <input
                         className="form-control me-2"
@@ -100,7 +100,7 @@ const VoucherCreater = () => {
                         Search
                       </button>
                     </form>
-                  </div>
+                  </div> */}
                 </div>
                 <form onSubmit={addVoucher}>
                   <div className="container-fluid mt-5">

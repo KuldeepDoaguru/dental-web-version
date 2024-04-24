@@ -25,7 +25,7 @@ const Cards = () => {
   const getOpdData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getOPDDetailsByBranch/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getOPDDetailsByBranch/${user.branch}`
       );
       setOpdData(data);
     } catch (error) {
@@ -78,7 +78,7 @@ const Cards = () => {
   const getTreatmentData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getTreatmentDetailsByBranch/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getTreatmentDetailsByBranch/${user.branch}`
       );
       setTreatData(data);
     } catch (error) {
@@ -114,7 +114,7 @@ const Cards = () => {
   const getVoucherAmount = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getVoucherListByBranch/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getVoucherListByBranch/${user.branch}`
       );
       // console.log(data);
       setVoucherAmt(data);
@@ -150,7 +150,7 @@ const Cards = () => {
   const getPatientBill = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getPatientBillsByBranch/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getPatientBillsByBranch/${user.branch}`
       );
       setPatientBill(data);
     } catch (error) {

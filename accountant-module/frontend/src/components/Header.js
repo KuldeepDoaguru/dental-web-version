@@ -2,10 +2,24 @@ import React from "react";
 import styled from "styled-components";
 import { AiFillBell } from "react-icons/ai";
 import { FaUserAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BsFileEarmarkPerson } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { clearUser } from "../redux/slices/UserSlicer";
 
 const Header = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    const isConfirmed = window.confirm("Are you sure you want to Logout?");
+    if (!isConfirmed) {
+      return;
+    }
+    navigate("/");
+    dispatch(clearUser());
+  };
   return (
     <Wrapper>
       <div>
@@ -43,7 +57,7 @@ const Header = () => {
               id="navbarSupportedContent"
             >
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li className="nav-item mx-2" id="bell">
+                {/* <li className="nav-item mx-2" id="bell">
                   <button
                     type="button"
                     class="btn"
@@ -54,7 +68,7 @@ const Header = () => {
                   >
                     <BsFileEarmarkPerson className="icon" />
                   </button>
-                </li>
+                </li> */}
                 <li className="nav-item dropdown" id="userid">
                   <a
                     className="nav-link dropdown-toggle"
@@ -74,17 +88,17 @@ const Header = () => {
                     <li>
                       <hr className="dropdown-divider" />
                     </li>
-                    <li>
-                      <a className="dropdown-item" href="/">
-                        Logout
-                      </a>
+                    <li onClick={handleLogout}>
+                      {/* <a className="dropdown-item" href="/"> */}
+                      Logout
+                      {/* </a> */}
                     </li>
                   </ul>
                 </li>
 
-                <li className="nav-item" id="bell">
+                {/* <li className="nav-item" id="bell">
                   <AiFillBell className="icon" />
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>

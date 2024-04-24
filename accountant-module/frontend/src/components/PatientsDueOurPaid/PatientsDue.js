@@ -18,7 +18,7 @@ const PatientsDue = () => {
   const getPatBills = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getPatientBillsByBranch/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getPatientBillsByBranch/${user.branch}`
       );
       setPatBill(data);
     } catch (error) {

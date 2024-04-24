@@ -109,7 +109,7 @@ const AccountantProfile = () => {
   const getEmployeeData = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getEmployeeDetails/${branch}/${user.id}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getEmployeeDetails/${branch}/${user.id}`
       );
       console.log(data);
       setEmpData(data);
@@ -811,6 +811,12 @@ const Container = styled.div`
   }
 
   p {
+    @media screen and (min-width: 1024px) and (max-width: 1280px) {
+      font-size: 12px;
+    }
+    @media screen and (min-width: 1281px) and (max-width: 1492px) {
+      font-size: 13px;
+    }
   }
 
   .select-style {

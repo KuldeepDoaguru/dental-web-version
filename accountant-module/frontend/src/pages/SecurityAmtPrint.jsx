@@ -48,7 +48,7 @@ const SecurityAmtPrint = () => {
   const getSecurityRec = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getSecurityAmountDataBySID/${sid}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getSecurityAmountDataBySID/${sid}`
       );
       setRecData(data);
       console.log(data);

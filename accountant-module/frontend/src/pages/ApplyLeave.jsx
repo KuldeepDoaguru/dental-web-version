@@ -32,7 +32,7 @@ function ApplyLeave() {
   const getLeaves = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/v1/accountant/get-leaves/${branch}/${employeeId}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/get-leaves/${branch}/${employeeId}`
       );
       setLeaveData(response?.data?.data);
     } catch (error) {
@@ -109,7 +109,7 @@ function ApplyLeave() {
       };
       try {
         const response = await axios.post(
-          "http://localhost:8888/api/v1/accountant/apply-leave",
+          "https://dentalguruaccountant.doaguru.com/api/v1/accountant/apply-leave",
           updatedFormData
         );
         if (response.data.success) {

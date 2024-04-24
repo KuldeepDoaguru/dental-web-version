@@ -22,7 +22,7 @@ const OpdIncome = () => {
   const getOpdAmt = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getAppointmentData/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getAppointmentData/${user.branch}`
       );
       setOpdAmount(data);
     } catch (error) {

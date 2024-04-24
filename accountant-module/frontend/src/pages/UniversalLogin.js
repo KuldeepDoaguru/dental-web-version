@@ -46,7 +46,7 @@ const UniversalLogin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/v1/accountant/accountantLoginUser",
+        "https://dentalguruaccountant.doaguru.com/api/v1/accountant/accountantLoginUser",
         {
           email,
           password,
@@ -190,7 +190,7 @@ const UniversalLogin = () => {
                               </button>
                             </Link> */}
                           </div>
-                          <div className="col-sm-12 col-md-10 text-center ms-4">
+                          {/* <div className="col-sm-12 col-md-10 text-center ms-4">
                             <p>
                               Don't have an account?
                               <Link to="/receptionist_registration">
@@ -198,7 +198,7 @@ const UniversalLogin = () => {
                                 Register here
                               </Link>
                             </p>
-                          </div>
+                          </div> */}
                         </form>
                       </div>
                     </div>

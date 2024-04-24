@@ -22,7 +22,7 @@ const SecAmountReport = () => {
   const getSecurityAmountList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getSecurityAmountDataByBranch/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getSecurityAmountDataByBranch/${user.branch}`
       );
       setSecurityList(data);
     } catch (error) {

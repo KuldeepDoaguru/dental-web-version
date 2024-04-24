@@ -40,7 +40,7 @@ const MonthIncome = () => {
     const getAppointList = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8888/api/v1/accountant/getBillsByBranch/${user.branch}`
+          `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getBillsByBranch/${user.branch}`
         );
         setAppointmentList(response.data);
       } catch (error) {

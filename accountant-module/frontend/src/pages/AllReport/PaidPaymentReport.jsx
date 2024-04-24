@@ -19,7 +19,7 @@ const PaidPaymentReport = () => {
   const getBillPaidList = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/paidBillLIst/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/paidBillLIst/${user.branch}`
       );
       setPaidList(data);
     } catch (error) {

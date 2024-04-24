@@ -17,7 +17,7 @@ const PasswordReset = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/v1/accountant/sendOtp",
+        "https://dentalguruaccountant.doaguru.com/api/v1/accountant/sendOtp",
         {
           email,
         }
@@ -35,7 +35,7 @@ const PasswordReset = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8888/api/v1/accountant/verifyOtp",
+        "https://dentalguruaccountant.doaguru.com/api/v1/accountant/verifyOtp",
         {
           email,
           otp,
@@ -55,7 +55,7 @@ const PasswordReset = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        "http://localhost:8888/api/v1/accountant/resetPassword",
+        "https://dentalguruaccountant.doaguru.com/api/v1/accountant/resetPassword",
         {
           email,
           password: newPassword,

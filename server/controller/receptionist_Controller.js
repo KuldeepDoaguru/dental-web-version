@@ -1270,7 +1270,8 @@ const MarkAttendanceLogin = (req, res) => {
       employee_name,
       employee_designation,
       date,
-      loginTime
+      loginTime,
+      availability
     } = req.body;
 
     const todayDate = new Date().toISOString().slice(0, 10); // Get today's date in YYYY-MM-DD format
@@ -1313,8 +1314,9 @@ const MarkAttendanceLogin = (req, res) => {
           branch,
           employee_designation,
           date,
-          allday_shift_login_time
-        ) VALUES (?, ?, ?, ?, ?, ?)
+          allday_shift_login_time,
+          availability
+        ) VALUES (?, ?, ?, ?, ?, ?,?)
       `;
 
       const addParams = [
@@ -1323,7 +1325,8 @@ const MarkAttendanceLogin = (req, res) => {
         branch_name,
         employee_designation,
         date,
-        loginTime
+        loginTime,
+        availability
       ];
 
       db.query(addQuery, addParams, (err, result) => {
@@ -1359,7 +1362,8 @@ const MarkAttendanceLogout = (req, res) => {
       employee_name,
       employee_designation,
       date,
-      logoutTime
+      logoutTime,
+      availability
     } = req.body;
 
     // Check if the employee ID for today's date and logout time already exists
@@ -1390,10 +1394,10 @@ const MarkAttendanceLogout = (req, res) => {
       // If validation passes, proceed to update the attendance record
       const updateQuery = `
         UPDATE employee_attendance 
-        SET allday_shift_logout_time = ?
+        SET allday_shift_logout_time = ? , availability = ?
         WHERE employee_ID = ? AND date = ?`;
 
-      const updateParams = [logoutTime, employee_ID, date];
+      const updateParams = [logoutTime,availability, employee_ID, date];
 
       db.query(updateQuery, updateParams, (err, result) => {
         if (err) {
@@ -1775,7 +1779,7 @@ const getDoctorDataByBranchWithLeave = (req, res) => {
 const getSecurityAmountDataByBranch = (req, res) => {
   try {
     const branch = req.params.branch;
-    const selectQuery = "SELECT * FROM security_amount WHERE branch_name = ?";
+    const selectQuery = "SELECT * FROM security_amount WHERE branch_name = ? ORDER BY sa_id DESC";
     db.query(selectQuery, branch, (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });
@@ -1892,7 +1896,7 @@ const getSecurityAmountDataBySID = (req, res) => {
 const getPatientBillsByBranch = (req, res) => {
   try {
     const branch = req.params.branch;
-    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ?";
+    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ? ORDER BY bill_id DESC";
     db.query(selectQuery, branch, (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });
@@ -2426,7 +2430,7 @@ const makeBillPayment = (req, res) => {
 const paidBillLIst = (req, res) => {
   try {
     const branch = req.params.branch;
-    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ?";
+    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ? ORDER BY bill_id DESC";
     db.query(selectQuery, branch, (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });

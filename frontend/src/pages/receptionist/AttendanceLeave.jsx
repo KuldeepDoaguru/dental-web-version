@@ -347,6 +347,7 @@ const formatDate = (dateString) => {
                                   <th>Leave Date</th>
                                   <th>Leave Reason</th>
                                   <th>Leave Status</th>
+                                  <th>Created At</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -362,12 +363,13 @@ const formatDate = (dateString) => {
                                     return(
                                         <tr
                                         className="table-row"
-                                        key={item.id}
+                                        key={item?.id}
                                       >
                                         <td>{index+1}</td>
                                         <td>{formattedLeaveDates}</td>
-                                        <td>{item.leave_reason}</td>
-                                        <td>{item.leave_status}</td>
+                                        <td>{item?.leave_reason}</td>
+                                        <td>{item?.leave_status}</td>
+                                        <td>{item?.created_at ? moment(item?.created_at.split("T")[0]).format('DD/MM/YYYY') : ""} </td>
                                        
                                       </tr>
                                     )

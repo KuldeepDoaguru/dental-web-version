@@ -37,6 +37,7 @@ const MarkAttendance = () => {
   console.log(todayAttendance)
     const handleLogin = async () => {
         const loginTime = moment().format("HH:mm:ss"); // Format current time for login
+        const availability = "yes" ;
       try {
        const response =  await axios.post("https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/markAttendanceLogin", {
           branch_name,
@@ -45,6 +46,7 @@ const MarkAttendance = () => {
           employee_designation,
           date,
           loginTime,
+          availability
         });
         if(response.data.success){
             cogoToast.success("Login time recorded successfully")
@@ -66,13 +68,15 @@ const MarkAttendance = () => {
            return;
          }
         const logoutTime = moment().format("HH:mm:ss"); // Format current time for logout
+        const availability = "no" ;
       try {
        const response =  await axios.put("https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/markAttendanceLogout", { branch_name,
         employee_ID,
         employee_name,
         employee_designation,
         date,
-        logoutTime});
+        logoutTime,
+        availability});
 
         if(response.data.success){
             cogoToast.success("Logout time recorded successfully")

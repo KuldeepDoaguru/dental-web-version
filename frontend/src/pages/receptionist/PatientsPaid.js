@@ -373,6 +373,10 @@ overflow: hidden;
    
    margin: auto;
   }
+  @media screen and (min-width: 1500px) and (max-width: 2000px) {
+    width: 98%;
+  
+}
 }
 #hd{
   padding-top: 60px; /* Height of header */
@@ -404,8 +408,12 @@ overflow-y: auto;
   margin-left: -2rem;
   
 }
-@media screen and (min-width: 1500px) and (max-width: 2000px) {
+@media screen and (min-width: 1500px) and (max-width: 1700px) {
   margin-left: -1.9rem;
+  
+}
+@media screen and (min-width: 1700px) and (max-width: 2000px) {
+  margin-left: -1rem;
   
 }
 }
@@ -418,6 +426,10 @@ overflow-y: auto;
     width: auto;
    margin: auto;
   }
+  @media screen and (min-width: 1500px) and (max-width: 2000px) {
+     width: 98%;
+  
+}
 }
 th{
   background-color: teal;

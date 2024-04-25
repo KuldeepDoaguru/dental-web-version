@@ -12,9 +12,9 @@ import cogoToast from 'cogo-toast';
 import { Link, useNavigate } from "react-router-dom";
 
 function SecurityAmount() {
-  
-  const {refreshTable,currentUser} = useSelector((state) => state.user);
-  const  branch = currentUser.branch_name
+
+  const { refreshTable, currentUser } = useSelector((state) => state.user);
+  const branch = currentUser.branch_name
   const [patients, setPatients] = useState([]);
 
 
@@ -56,7 +56,7 @@ function SecurityAmount() {
     payment_status: "Refunded",
   });
 
-  
+
 
 
   const handlePaySecChange = (e) => {
@@ -67,7 +67,7 @@ function SecurityAmount() {
     });
   };
 
-  
+
 
   const handleInput = async (event) => {
     const { name, value } = event.target;
@@ -76,7 +76,7 @@ function SecurityAmount() {
         const { data } = await axios.get(
           `http://localhost:8888/api/v1/accountant/getAppointmentDetailsViaID/${value}`
         );
-       
+
         if (data) {
           setAddSecurityAmount((prevData) => ({
             ...prevData,
@@ -179,7 +179,7 @@ function SecurityAmount() {
     transaction_Id: "",
     notes: "",
     received_by: currentUser.employee_name,
-    
+
 
   });
   console.log(data)
@@ -210,9 +210,9 @@ function SecurityAmount() {
 
   const paySecurityCash = async (e) => {
     e.preventDefault();
-  const updatedData = {
-          ...data,
-          remaining_amount : filterForSecAmountDef[0]?.amount
+    const updatedData = {
+      ...data,
+      remaining_amount: filterForSecAmountDef[0]?.amount
     }
 
     console.log(updatedData);
@@ -222,6 +222,13 @@ function SecurityAmount() {
         updatedData
       );
       cogoToast.success("Amount Paid Successfully");
+      setData({
+        ...data,
+        payment_Mode: "",
+        transaction_Id: "",
+        notes: ""
+
+      })
       getSecurityAmountList();
       closeUpdatePopup();
     } catch (error) {
@@ -229,9 +236,9 @@ function SecurityAmount() {
       cogoToast.error(error?.response?.data?.message);
     }
   };
-  
-//   const [showEditPatientPopup, setShowEditPatientPopup] = useState(false);
-//   const [selectedPatient, setSelectedPatient] = useState("");
+
+  //   const [showEditPatientPopup, setShowEditPatientPopup] = useState(false);
+  //   const [selectedPatient, setSelectedPatient] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -239,126 +246,126 @@ function SecurityAmount() {
   const [searchTerm, setSearchTerm] = useState("");
 
 
-//   const [showEditSecAmount, setShowEditSecAmount] = useState(false);
-//   const [outStanding, setOutStanding] = useState([]);
-//   const [selected, setSelected] = useState();
-//   const date = new Date();
-//   const [refAmount, setRefAmount] = useState("");
+  //   const [showEditSecAmount, setShowEditSecAmount] = useState(false);
+  //   const [outStanding, setOutStanding] = useState([]);
+  //   const [selected, setSelected] = useState();
+  //   const date = new Date();
+  //   const [refAmount, setRefAmount] = useState("");
 
-//   const filterForSecAmountDef = patients.filter((item) => {
-//     return item.sa_id === selected;
-//   });
-
-  
-
-  
-
-//   const MakeRefund = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const response = await axios.put(
-//         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updateRefundAmount/${selected}`,
-//         {
-//           refund_date: date,
-//           refund_by: currentUser.employee_name,
-//           payment_status: "Refunded",
-//           refund_amount: refAmount,
-//         }
-//       );
-//       cogoToast.success("Amount Refunded Successfully");
-//       getPatient();
-//       closeUpdatePopup();
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   const openSecAmountSubPopup = (id) => {
-//     setShowEditSecAmount(true);
-//     getTotaloutstanding(id);
-//     setSelected(id);
-//   };
-
-//   const closeUpdatePopup = () => {
-//     setShowEditSecAmount(false);
-    
-//   };
+  //   const filterForSecAmountDef = patients.filter((item) => {
+  //     return item.sa_id === selected;
+  //   });
 
 
 
-//   const getTotaloutstanding = async (id) => {
-//     console.log(id);
-//     try {
-//       const { data } = await axios.get(
-//         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getSecurityAmountDataBySID/${id}`
-//       );
-//       console.log(data);
-//       setOutStanding(data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   const filterForOut = outStanding?.filter((item) => {
-//     return item.payment_status !== "success";
-//   });
-
-//   const totalPrice = () => {
-//     try {
-//       let total = 0;
-//       filterForOut.forEach((item) => {
-//         total = total + parseFloat(item.total_amount);
-//       });
-//       console.log(total);
-//       return total;
-//     } catch (error) {
-//       console.log(error);
-//       return 0;
-//     }
-//   };
- 
-//   const totalValue = totalPrice();
 
 
+  //   const MakeRefund = async (e) => {
+  //     e.preventDefault();
+  //     try {
+  //       const response = await axios.put(
+  //         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updateRefundAmount/${selected}`,
+  //         {
+  //           refund_date: date,
+  //           refund_by: currentUser.employee_name,
+  //           payment_status: "Refunded",
+  //           refund_amount: refAmount,
+  //         }
+  //       );
+  //       cogoToast.success("Amount Refunded Successfully");
+  //       getPatient();
+  //       closeUpdatePopup();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-//   const makeRefData = () => {
-//     if (outStanding.length === 0) {
-//       return filterForSecAmountDef[0]?.amount;
-//     } else {
-//       return outStanding[0]?.amount - totalValue;
-//     }
-//   };
-//   console.log(totalValue)
-//   const amtRefund = makeRefData();
-//   console.log(amtRefund);
-//   useEffect(() => {
-//     setRefAmount(amtRefund);
-//   }, [amtRefund]);
+  //   const openSecAmountSubPopup = (id) => {
+  //     setShowEditSecAmount(true);
+  //     getTotaloutstanding(id);
+  //     setSelected(id);
+  //   };
 
-//   const getPatient = async () =>{
-//     try{
-//       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/patient-securityAmt/${branch}`);
-//       console.log(response);
-//       setPatients(response?.data?.data)
-//      }
-//      catch(error){
-//         console.log(error)
-//      }
-    
-//   }
+  //   const closeUpdatePopup = () => {
+  //     setShowEditSecAmount(false);
 
-//   console.log(patients)
+  //   };
 
-//   useEffect(()=>{
-//     getPatient();
-    
-    
-//  },[refreshTable]);
 
-//  const handleEditPatient = (Patient)=>{
-//   setSelectedPatient(Patient);
-//   setShowEditPatientPopup(true);
-// }
+
+  //   const getTotaloutstanding = async (id) => {
+  //     console.log(id);
+  //     try {
+  //       const { data } = await axios.get(
+  //         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getSecurityAmountDataBySID/${id}`
+  //       );
+  //       console.log(data);
+  //       setOutStanding(data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+
+  //   const filterForOut = outStanding?.filter((item) => {
+  //     return item.payment_status !== "success";
+  //   });
+
+  //   const totalPrice = () => {
+  //     try {
+  //       let total = 0;
+  //       filterForOut.forEach((item) => {
+  //         total = total + parseFloat(item.total_amount);
+  //       });
+  //       console.log(total);
+  //       return total;
+  //     } catch (error) {
+  //       console.log(error);
+  //       return 0;
+  //     }
+  //   };
+
+  //   const totalValue = totalPrice();
+
+
+
+  //   const makeRefData = () => {
+  //     if (outStanding.length === 0) {
+  //       return filterForSecAmountDef[0]?.amount;
+  //     } else {
+  //       return outStanding[0]?.amount - totalValue;
+  //     }
+  //   };
+  //   console.log(totalValue)
+  //   const amtRefund = makeRefData();
+  //   console.log(amtRefund);
+  //   useEffect(() => {
+  //     setRefAmount(amtRefund);
+  //   }, [amtRefund]);
+
+  //   const getPatient = async () =>{
+  //     try{
+  //       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/patient-securityAmt/${branch}`);
+  //       console.log(response);
+  //       setPatients(response?.data?.data)
+  //      }
+  //      catch(error){
+  //         console.log(error)
+  //      }
+
+  //   }
+
+  //   console.log(patients)
+
+  //   useEffect(()=>{
+  //     getPatient();
+
+
+  //  },[refreshTable]);
+
+  //  const handleEditPatient = (Patient)=>{
+  //   setSelectedPatient(Patient);
+  //   setShowEditPatientPopup(true);
+  // }
 
 
 
@@ -379,116 +386,116 @@ function SecurityAmount() {
 
 
 
-const handleRowsPerPageChange = (event) => {
-  setRowsPerPage(Number(event.target.value));
-  setCurrentPage(1);
-};
+  const handleRowsPerPageChange = (event) => {
+    setRowsPerPage(Number(event.target.value));
+    setCurrentPage(1);
+  };
 
-// Pagination functions
-const indexOfLastRow = currentPage * rowsPerPage;
-const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : securityList.slice(indexOfFirstRow, indexOfLastRow);
+  // Pagination functions
+  const indexOfLastRow = currentPage * rowsPerPage;
+  const indexOfFirstRow = indexOfLastRow - rowsPerPage;
+  const currentRows = searchTerm ? filteredData.slice(indexOfFirstRow, indexOfLastRow) : securityList.slice(indexOfFirstRow, indexOfLastRow);
 
 
-const totalPages = Math.ceil(securityList.length / rowsPerPage);
+  const totalPages = Math.ceil(securityList.length / rowsPerPage);
 
-const paginate = (pageNumber) => {
-  if (pageNumber > 0 && pageNumber <= totalPages) {
-    setCurrentPage(pageNumber);
-  }
-};
+  const paginate = (pageNumber) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
 
-const pageNumbers = [];
-for (let i = 1; i <= Math.ceil(securityList.length / rowsPerPage); i++) {
-  pageNumbers.push(i);
-}
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(securityList.length / rowsPerPage); i++) {
+    pageNumbers.push(i);
+  }
 
-const renderPageNumbers = pageNumbers.map((number, index) => {
-  // Display the first two page numbers
-  if (index < 2) {
-    return (
-      <Button
-        key={number}
-        onClick={() => paginate(number)}
-        className={number === currentPage ? "active" : ""}
-      >
-        {number}
-      </Button>
-    );
-  }
-  // Display an ellipsis for the first middle section
-  else if (index === 2 && currentPage > 3) {
-    return (
-      <Button key={number} disabled>
-        ...
-      </Button>
-    );
-  }
-  // Display the current page and the two adjacent pages
-  else if (
-    (index >= currentPage - 1 && index <= currentPage + 1) ||
-    (index === 2 && currentPage <= 3)
-  ) {
-    return (
-      <Button
-        key={number}
-        onClick={() => paginate(number)}
-        className={number === currentPage ? "active" : ""}
-      >
-        {number}
-      </Button>
-    );
-  }
-  // Display an ellipsis for the last middle section
-  else if (index === pageNumbers.length - 3 && currentPage < pageNumbers.length - 2) {
-    return (
-      <Button key={number} disabled>
-        ...
-      </Button>
-    );
-  }
-  // Display the last two page numbers
-  else if (index >= pageNumbers.length - 2) {
-    return (
-      <Button
-        key={number}
-        onClick={() => paginate(number)}
-        className={number === currentPage ? "active" : ""}
-      >
-        {number}
-      </Button>
-    );
-  }
-  return null;
-});
+  const renderPageNumbers = pageNumbers.map((number, index) => {
+    // Display the first two page numbers
+    if (index < 2) {
+      return (
+        <Button
+          key={number}
+          onClick={() => paginate(number)}
+          className={number === currentPage ? "active" : ""}
+        >
+          {number}
+        </Button>
+      );
+    }
+    // Display an ellipsis for the first middle section
+    else if (index === 2 && currentPage > 3) {
+      return (
+        <Button key={number} disabled>
+          ...
+        </Button>
+      );
+    }
+    // Display the current page and the two adjacent pages
+    else if (
+      (index >= currentPage - 1 && index <= currentPage + 1) ||
+      (index === 2 && currentPage <= 3)
+    ) {
+      return (
+        <Button
+          key={number}
+          onClick={() => paginate(number)}
+          className={number === currentPage ? "active" : ""}
+        >
+          {number}
+        </Button>
+      );
+    }
+    // Display an ellipsis for the last middle section
+    else if (index === pageNumbers.length - 3 && currentPage < pageNumbers.length - 2) {
+      return (
+        <Button key={number} disabled>
+          ...
+        </Button>
+      );
+    }
+    // Display the last two page numbers
+    else if (index >= pageNumbers.length - 2) {
+      return (
+        <Button
+          key={number}
+          onClick={() => paginate(number)}
+          className={number === currentPage ? "active" : ""}
+        >
+          {number}
+        </Button>
+      );
+    }
+    return null;
+  });
 
 
   return (
     <Wrapper>
-       <div className='header'>
-      <Header/>
+      <div className='header'>
+        <Header />
       </div>
-      
-        <div className="row flex-nowrap ">
-    <div className="col-lg-1 col-1" id='hd'>
-   <Sider/>
-    </div>
-    <div className="col-lg-11 mt-2" id='set'>
-    <div className='text-center'>
-      <h3>Security Amount</h3>
-    </div>
-      <div className="row" >
-   <div className="col-lg-12" id='head'>
-   <nav class="shadow rounded navbar navbar-light bg-light">
-            <h6 className='mx-3 my-0'>Search By Patient</h6>
-  <div class="container-fluid" id='cont'>
-    <form class="navbar1 " >
-      <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name Or Moblie" aria-label="Search" onChange={handleSearch}
-        value={searchTerm}/>
-      {/* <button class="btn btn-outline-success" type="submit">Search</button> */}
-    </form>
-    <div>
-    <Form.Group
+
+      <div className="row flex-nowrap ">
+        <div className="col-lg-1 col-1" id='hd'>
+          <Sider />
+        </div>
+        <div className="col-lg-11 mt-2" id='set'>
+          <div className='text-center'>
+            <h3>Security Amount</h3>
+          </div>
+          <div className="row" >
+            <div className="col-lg-12" id='head'>
+              <nav class="shadow rounded navbar navbar-light bg-light">
+                <h6 className='mx-3 my-0'>Search By Patient</h6>
+                <div class="container-fluid" id='cont'>
+                  <form class="navbar1 " >
+                    <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name Or Moblie" aria-label="Search" onChange={handleSearch}
+                      value={searchTerm} />
+                    {/* <button class="btn btn-outline-success" type="submit">Search</button> */}
+                  </form>
+                  <div>
+                    <Form.Group
                       controlId="rowsPerPageSelect"
                       style={{ display: "flex" }}
                     >
@@ -502,17 +509,17 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                         style={{ width: "auto" }}
                         onChange={handleRowsPerPageChange}
                       >
-                        
+
                         <option value={10}>10</option>
                         <option value={25}>25</option>
                         <option value={50}>50</option>
                         {/* Add more options as needed */}
                       </Form.Control>
                     </Form.Group>
-    </div>
-    <div><h5>Total Patients - {securityList.length}</h5></div>
-    
-{/* <div class="dropdown" id='drop'>
+                  </div>
+                  <div><h5>Total Patients - {securityList.length}</h5></div>
+
+                  {/* <div class="dropdown" id='drop'>
   
   <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
   Filter Patient by Bill Status
@@ -524,125 +531,124 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
     <li><a class="dropdown-item" href="#">All</a></li>
   </ul>
 </div> */}
-  </div>
-</nav>  
-   </div>
+                </div>
+              </nav>
+            </div>
 
-   <div className="col-lg-12">
-   <div className="widget-area-2 proclinic-box-shadow  mt-5" id='tableres'>
-                    
-                    
-                    <div className="table-responsive">
-                      <table className="table table-bordered table-striped">
-                        <thead>
-                          <tr>
-                          <th>Date</th>
-                            <th>Appointment ID</th>
-                            <th>UHID</th>
-                            <th>Patient Name</th>
-                            <th>Patient Number</th>
-                            <th>Assigned Doctor</th>
-                            <th>Deposit Security Amount</th>
-                            <th>Remaning Security Amount</th>
-                            <th>Payment Mode</th>
-                            <th>Transaction Id</th>
-                            <th>Payment Date</th>
-                            <th>Refund Date</th>
-                            <th>Payment Status</th>
-                            <th>Refund Amount</th>
-                            <th>Action</th>
-                            <th>Print</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                        {currentRows.map((item) => (
-                              <>
-                                <tr className="table-row">
-                                  <td>{item.date.split("T")[0]}</td>
-                                  <td>{item.appointment_id}</td>
-                                  <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
-                                  <td>{item.patient_name}</td>
-                                  <td>{item.patient_number}</td>
-                                  <td>{item.assigned_doctor}</td>
-                                  <td>{item.amount}</td>
-                                  <td>{item.remaining_amount}</td>
-                                  <td>{item.payment_Mode}</td>
-                                  <td>{item.transaction_Id}</td>
-                                  <td>{item.payment_date ? moment(item?.payment_date).format('DD/MM/YYYY') : ""}</td>
-                             <td>{item?.refund_date ? moment(item?.refund_date, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY') : ""}</td>
-                                  <td>
-                                    <div className="d-flex">
-                                      <h6>{item.payment_status}</h6>
-                                      
-                                    </div>
-                                  </td>
-                                  <td>{item.refund_amount}</td>
-                                  <td>
-                                    {/* {item?.remaining_amount === 0 && ( */}
-                                    {
-                                      item.payment_status === "pending" ? 
-                                      <>
-                                      <button
-                                            className="mx-2 btn btn-info"
-                                            onClick={() =>
-                                              openSecurityAmtPay(item.sa_id)
-                                            }
-                                          >
-                                            Pay now
-                                          </button>
-                                      </>
+            <div className="col-lg-12">
+              <div className="widget-area-2 proclinic-box-shadow  mt-5" id='tableres'>
 
-                                      :
-                                      <>
-                                       <button
-                                      className={`mx-2 btn btn-warning ${
-                                        item.remaining_amount === 0
+
+                <div className="table-responsive">
+                  <table className="table table-bordered table-striped">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Appointment ID</th>
+                        <th>UHID</th>
+                        <th>Patient Name</th>
+                        <th>Patient Number</th>
+                        <th>Assigned Doctor</th>
+                        <th>Deposit Security Amount</th>
+                        <th>Remaning Security Amount</th>
+                        <th>Payment Mode</th>
+                        <th>Transaction Id</th>
+                        <th>Payment Date</th>
+                        <th>Refund Date</th>
+                        <th>Payment Status</th>
+                        <th>Refund Amount</th>
+                        <th>Action</th>
+                        <th>Print</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {currentRows.map((item) => (
+                        <>
+                          <tr className="table-row">
+                            <td>{item.date.split("T")[0]}</td>
+                            <td>{item.appointment_id}</td>
+                            <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
+                            <td>{item.patient_name}</td>
+                            <td>{item.patient_number}</td>
+                            <td>{item.assigned_doctor}</td>
+                            <td>{item.amount}</td>
+                            <td>{item.remaining_amount}</td>
+                            <td>{item.payment_Mode}</td>
+                            <td>{item.transaction_Id}</td>
+                            <td>{item.payment_date ? moment(item?.payment_date).format('DD/MM/YYYY') : ""}</td>
+                            <td>{item?.refund_date ? moment(item?.refund_date, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY') : ""}</td>
+                            <td>
+                              <div className="d-flex">
+                                <h6>{item.payment_status}</h6>
+
+                              </div>
+                            </td>
+                            <td>{item.refund_amount}</td>
+                            <td>
+                              {/* {item?.remaining_amount === 0 && ( */}
+                              {
+                                item.payment_status === "pending" ?
+                                  <>
+                                    <button
+                                      className="mx-2 btn btn-info"
+                                      onClick={() =>
+                                        openSecurityAmtPay(item.sa_id)
+                                      }
+                                    >
+                                      Pay now
+                                    </button>
+                                  </>
+
+                                  :
+                                  <>
+                                    <button
+                                      className={`mx-2 btn btn-warning ${item.remaining_amount === 0
                                           ? "disabled"
                                           : ""
-                                      } `}
+                                        } `}
                                       onClick={() =>
                                         openSecAmountSubPopup(item.sa_id)
                                       }
                                     >
                                       Make Refund
                                     </button>
-                                      </>
+                                  </>
 
-                                    }
-                                   
-                                    {/* )} */}
-                                  </td>
-                                  <td>
-                                    <Link
-                                      to={`/print_security_amount/${item.sa_id}`}
-                                    >
-                                      {item.payment_status !== "Pending" &&  <button className="btn btn-success">
-                                        Print
-                                      </button>}
-                                     
-                                    </Link>
-                                  </td>
-                                </tr>
-                              </>
-                            ))}
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="container mt-3 mb-3">
+                              }
+
+                              {/* )} */}
+                            </td>
+                            <td>
+                              <Link
+                                to={`/print_security_amount/${item.sa_id}`}
+                              >
+                                {item.payment_status !== "Pending" && <button className="btn btn-success">
+                                  Print
+                                </button>}
+
+                              </Link>
+                            </td>
+                          </tr>
+                        </>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="container mt-3 mb-3">
                   <div className="row">
                     <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">  <h4
-                          style={{
-                            color: "black",
-                            marginLeft: "5px",
-                            marginRight: "5px",
-                            fontSize: "1.1rem"
-                          }}
-                          
-                        >
-                         {/* Showing Page {currentPage} of {totalPages} from {data?.length} entries */}
-                       {searchTerm ?<> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {securityList?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {securityList?.length} entries</> }  
+                      style={{
+                        color: "black",
+                        marginLeft: "5px",
+                        marginRight: "5px",
+                        fontSize: "1.1rem"
+                      }}
 
-                        </h4></div>
+                    >
+                      {/* Showing Page {currentPage} of {totalPages} from {data?.length} entries */}
+                      {searchTerm ? <> Showing Page {currentPage} of {totalPages} from {filteredData?.length} entries (filtered from {securityList?.length} total entries) </> : <>Showing Page {currentPage} of {totalPages} from {securityList?.length} entries</>}
+
+                    </h4></div>
                     <div className="col-lg-3 col-md-3 col-sm-3 col-12">
                       <div className="d-flex justify-content-evenly">
                         <Button
@@ -653,7 +659,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                           Previous
                         </Button>
                         {renderPageNumbers}
-                      
+
                         <Button
                           onClick={() => paginate(currentPage + 1)}
                           disabled={indexOfLastRow >= securityList.length}
@@ -665,52 +671,52 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                     </div>
                   </div>
                 </div>
-                  </div>
-   </div>
-   
- 
+              </div>
+            </div>
 
 
-  </div>
-   </div>
-   </div>
 
 
-   {/* pop-up for refund amount */}
- {/* pop-up for refund amount */}
- <div
-            className={`popup-container${showEditSecAmount ? " active" : ""}`}
-          >
-            <div className="popup">
-              <h4 className="text-center">Refund Amount</h4>
-              <hr />
-              <form className="d-flex flex-column" onSubmit={MakeRefund}>
-                <div className="container">
-                  <div>
-                    <div class="mb-3">
-                      <label for="exampleFormControlInput1" class="form-label">
-                        Security Amount Submitted -{" "}
-                        {outStanding.length === 0
-                          ? filterForSecAmountDef[0]?.amount
-                          : outStanding[0]?.amount}
-                      </label>
-                    </div>
-                    <div class="mb-3">
-                      <label for="exampleFormControlInput1" class="form-label">
-                        {/* Total Outstanding - {totalValue} */}
-                        Remaning Secuirty Amount -{" "}
-                        {filterForSecAmountDef[0]?.remaining_amount}
-                      </label>
-                    </div>
-                    <div class="mb-3">
-                      <label for="exampleFormControlInput1" class="form-label">
-                        Refund Amount :
-                        {/* {outStanding.length === 0
+          </div>
+        </div>
+      </div>
+
+
+      {/* pop-up for refund amount */}
+      {/* pop-up for refund amount */}
+      <div
+        className={`popup-container${showEditSecAmount ? " active" : ""}`}
+      >
+        <div className="popup">
+          <h4 className="text-center">Refund Amount</h4>
+          <hr />
+          <form className="d-flex flex-column" onSubmit={MakeRefund}>
+            <div className="container">
+              <div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    Security Amount Submitted -{" "}
+                    {outStanding.length === 0
+                      ? filterForSecAmountDef[0]?.amount
+                      : outStanding[0]?.amount}
+                  </label>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    {/* Total Outstanding - {totalValue} */}
+                    Remaning Secuirty Amount -{" "}
+                    {filterForSecAmountDef[0]?.remaining_amount}
+                  </label>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label">
+                    Refund Amount :
+                    {/* {outStanding.length === 0
                           ? filterForSecAmountDef[0]?.amount
                           : outStanding[0]?.amount - totalValue} */}
-                        {filterForSecAmountDef[0]?.remaining_amount}
-                      </label>
-                      {/* <input
+                    {filterForSecAmountDef[0]?.remaining_amount}
+                  </label>
+                  {/* <input
                         type="text"
                         class="form-control"
                         id="exampleFormControlInput1"
@@ -723,108 +729,108 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                         }
                         onChange={handleInputChange}
                       /> */}
-                    </div>
-                  </div>
                 </div>
-
-                <div className="d-flex justify-content-center">
-                  <button type="submit" className="btn btn-success mt-2">
-                    Refund
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger mt-2 mx-2"
-                    onClick={closeUpdatePopup}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
+              </div>
             </div>
-          </div>
+
+            <div className="d-flex justify-content-center">
+              <button type="submit" className="btn btn-success mt-2">
+                Refund
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger mt-2 mx-2"
+                onClick={closeUpdatePopup}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
 
 
 
       {/* pop-up for Pay security amount */}
       <div
-            className={`popup-container${showPaySecAmount ? " active" : ""}`}
-          >
-            <div className="popup">
-              <h4 className="text-center">Pay Security Amount</h4>
-              <hr />
-              <form className="d-flex flex-column" onSubmit={paySecurityCash}>
-                <div className="container">
-                  <div>
-                    <div class="mb-3">
-                      <label className="form-label" htmlFor="">
-                        Payment Mode
-                      </label>
-                      <select
-                        className="form-select"
-                        id="payment_Mode"
-                        name="payment_Mode"
-                        value={data.payment_Mode}
-                        required
-                        onChange={handlePaySecChange}
-                      >
-                        <option value="">Select</option>
-                        <option value="cash">Cash</option>
-                        <option value="online">Online</option>
-                      </select>
-                    </div>
-
-                    {data.payment_Mode === "online" && (
-                      <div class="mb-3">
-                        <label className="form-label" for="form6Example1">
-                          Transaction Id
-                        </label>
-                        <input
-                          type="text"
-                          id="form6Example1"
-                          className="form-control"
-                          name="transaction_Id"
-                          onChange={handlePaySecChange}
-                          value={data.transaction_Id}
-                          required
-                        />
-                      </div>
-                    )}
-
-                    <div class="mb-3">
-                      <label className="form-label" for="form6Example1">
-                        Notes
-                      </label>
-                      <input
-                        type="text"
-                        id="form6Example1"
-                        className="form-control"
-                        name="notes"
-                        onChange={handlePaySecChange}
-                        value={data.notes}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="d-flex justify-content-center">
-                  <button type="submit" className="btn btn-success mt-2">
-                    Pay
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger mt-2 mx-2"
-                    onClick={closeUpdatePopup}
+        className={`popup-container${showPaySecAmount ? " active" : ""}`}
+      >
+        <div className="popup">
+          <h4 className="text-center">Pay Security Amount</h4>
+          <hr />
+          <form className="d-flex flex-column" onSubmit={paySecurityCash}>
+            <div className="container">
+              <div>
+                <div class="mb-3">
+                  <label className="form-label" htmlFor="">
+                    Payment Mode
+                  </label>
+                  <select
+                    className="form-select"
+                    id="payment_Mode"
+                    name="payment_Mode"
+                    value={data.payment_Mode}
+                    required
+                    onChange={handlePaySecChange}
                   >
-                    Cancel
-                  </button>
+                    <option value="">Select</option>
+                    <option value="cash">Cash</option>
+                    <option value="online">Online</option>
+                  </select>
                 </div>
-              </form>
-            </div>
-          </div>
 
-          {/* pop-up for Pay security amount */}
-          {/* ************************************************************************************* */}
- 
+                {data.payment_Mode === "online" && (
+                  <div class="mb-3">
+                    <label className="form-label" for="form6Example1">
+                      Transaction Id
+                    </label>
+                    <input
+                      type="text"
+                      id="form6Example1"
+                      className="form-control"
+                      name="transaction_Id"
+                      onChange={handlePaySecChange}
+                      value={data.transaction_Id}
+                      required
+                    />
+                  </div>
+                )}
+
+                <div class="mb-3">
+                  <label className="form-label" for="form6Example1">
+                    Notes
+                  </label>
+                  <input
+                    type="text"
+                    id="form6Example1"
+                    className="form-control"
+                    name="notes"
+                    onChange={handlePaySecChange}
+                    value={data.notes}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="d-flex justify-content-center">
+              <button type="submit" className="btn btn-success mt-2">
+                Pay
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger mt-2 mx-2"
+                onClick={closeUpdatePopup}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      {/* pop-up for Pay security amount */}
+      {/* ************************************************************************************* */}
+
     </Wrapper>
   )
 }
@@ -862,6 +868,10 @@ overflow: hidden;
    
    margin: auto;
   }
+  @media screen and (min-width: 1500px) and (max-width: 2000px) {
+    width: 98%;
+  
+}
 }
 #hd{
   padding-top: 60px; /* Height of header */
@@ -893,8 +903,12 @@ overflow-y: auto;
   margin-left: -2rem;
   
 }
-@media screen and (min-width: 1500px) and (max-width: 2000px) {
+@media screen and (min-width: 1500px) and (max-width: 1700px) {
   margin-left: -1.9rem;
+  
+}
+@media screen and (min-width: 1700px) and (max-width: 2000px) {
+  margin-left: -1rem;
   
 }
 }
@@ -907,6 +921,11 @@ overflow-y: auto;
     width: auto;
    margin: auto;
   }
+  @media screen and (min-width: 1500px) and (max-width: 2000px) {
+     width: 98%;
+  
+}
+  
 }
 th{
   background-color: teal;

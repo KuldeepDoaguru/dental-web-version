@@ -122,7 +122,7 @@ overflow: hidden;
     
   }
   @media screen and (min-width: 1800px) and (max-width: 2500px) {
-   margin-left: 0.5rem;
+   margin-left: -1rem;
     
   }
 }

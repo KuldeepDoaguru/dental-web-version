@@ -253,6 +253,7 @@ console.log(appointmentsData)
                         <th>Transaction Id</th>
                         <th>Payment Status</th>
                         <th>Created At</th>
+                        <th>Print</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -282,6 +283,16 @@ console.log(appointmentsData)
                           <td>{data.payment_Status}</td>
                           <td>
                             {moment(data?.created_at).format("DD/MM/YYYY")}
+                          </td>
+                          <td>
+                          <Link
+                                to={`/print_Opd_Reciept/${data.appoint_id}`}
+                              >
+                                {data.payment_Status == "paid" && <button className="btn btn-success">
+                                  Print
+                                </button>}
+
+                              </Link>
                           </td>
                         </tr>
                       ))}
@@ -380,6 +391,10 @@ overflow: hidden;
    
    margin: auto;
   }
+  @media screen and (min-width: 1500px) and (max-width: 2000px) {
+     width: 98%;
+  
+}
 }
   #set{
 
@@ -399,8 +414,12 @@ overflow-y: auto;
   margin-left: -2rem;
   
 }
-@media screen and (min-width: 1500px) and (max-width: 2000px) {
+@media screen and (min-width: 1500px) and (max-width: 1700px) {
   margin-left: -1.9rem;
+  
+}
+@media screen and (min-width: 1700px) and (max-width: 2000px) {
+  margin-left: -1rem;
   
 }
 }
@@ -426,6 +445,10 @@ overflow-y: auto;
    margin: auto;
    
   }
+  @media screen and (min-width: 1500px) and (max-width: 2000px) {
+     width: 98%;
+  
+}
 }
   th{
     background-color: teal;

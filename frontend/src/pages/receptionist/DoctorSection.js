@@ -402,6 +402,20 @@ overflow: hidden;
  
 
 }
+#tableres{
+  @media screen and (max-width: 768px) {
+    width: 21rem;
+   
+  }
+  @media screen and (min-width: 768px) and (max-width: 1020px) {
+    width: auto;
+   margin: auto;
+  }
+  @media screen and (min-width: 1500px) and (max-width: 2000px) {
+     width: 98%;
+  
+}}
+
 #head{
   
   @media screen and (max-width: 768px) {
@@ -413,6 +427,10 @@ overflow: hidden;
    
    margin: auto;
   }
+  @media screen and (min-width: 1500px) and (max-width: 2000px) {
+     width: 98%;
+  
+}
 }
 
 #set{
@@ -434,11 +452,17 @@ margin-left: 1.5rem;
   margin-left: -2rem;
   
 }
-@media screen and (min-width: 1500px) and (max-width: 2000px) {
+@media screen and (min-width: 1500px) and (max-width: 1700px) {
   margin-left: -1.9rem;
   
 }
+@media screen and (min-width: 1700px) and (max-width: 2000px) {
+  margin-left: -1rem;
+  
 }
+}
+
+
 th{
     background-color: teal;
     color: white;

@@ -1,7 +1,7 @@
 
 
 
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation,useNavigate  } from "react-router-dom";
 import styled from "styled-components";
 // import { MdOutlineInventory } from "react-icons/md";
@@ -18,6 +18,12 @@ const Sider = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showAmountDropdown, setShowAmountDropdown] = useState(false);
+  console.log(showAmountDropdown);
+  const toggleAmountDropdown = () => {
+    setShowAmountDropdown(!showAmountDropdown);
+    
+  };
   const logout = () =>{
         // Display a confirmation popup
         const isConfirmed = window.confirm('Are you sure you want to Logout?');
@@ -39,178 +45,89 @@ const Sider = () => {
     <Wrapper>
       <div className="px-sm-2 px-0" id="sidebar">
         <div className="d-flex flex-column align-items-center  px-3 pt-4">
-          <ul
-            className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center "
-            id="menu"
-          >
-         
-
+          <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center " id="menu">
             <li>
-              <Link
-                to="/receptionist-dashboard"
-                className={`link-div ${getSidebarClass("/receptionist-dashboard")}`}
-              >
+              <Link to="/receptionist-dashboard" className={`link-div ${getSidebarClass("/receptionist-dashboard")}`}>
                 <div>
                   <i className="fs-4 bi bi-house-door-fill"></i>
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline" id="navleft1">
-                    Dashboard
-                  </h3>
-                </div>
-              </Link>
-            </li>
-          
-            <hr />
-            <li>
-              <Link
-                to="/all_patient"
-                className={`link-div ${getSidebarClass("/all_patient")}`}
-              >
-                <div>
-                <i className="bi bi-people-fill h1"></i>
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline " id="navleft1">
-                  Patients
-                  </h3>
+                  <h3 className=" d-none d-sm-inline" id="navleft1">Dashboard</h3>
                 </div>
               </Link>
             </li>
             <hr />
             <li>
-              <Link
-                to="/inquiry"
-                className={`link-div ${getSidebarClass("/inquiry")}`}
-              >
+              <Link to="/all_patient" className={`link-div ${getSidebarClass("/all_patient")}`}>
                 <div>
-                <i className="fs-4 bi bi-table"></i>
+                  <i className="bi bi-people-fill h1"></i>
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline " id="navleft1">
-                  Inquiry
-                  </h3>
+                  <h3 className=" d-none d-sm-inline " id="navleft1">Patients</h3>
                 </div>
               </Link>
             </li>
             <hr />
             <li>
-              <Link
-                to="/doctor_section"
-                className={`link-div ${getSidebarClass("/doctor_section")}`}
-              >
+              <div onClick={toggleAmountDropdown} className="link-div">
                 <div>
-                <i className="fs-4 bi bi-person-fill"></i>
+                  <i className="fs-4 bi bi-currency-rupee"></i>
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline" id="navleft1">
-                  Doctor
-                  </h3>
+                  <h3 className="text-center" id="navleft1">Amount Section</h3>
                 </div>
-              </Link>
+              </div>
+              {showAmountDropdown  && (
+                <ul className="drop">
+                  <li>
+                    <Link to="/security_amount" className={`link-div ${getSidebarClass("/security_amount")}`}>Security Amount</Link>
+                  </li>
+                  <hr />
+                  <li>
+                    <Link to="/due_amount" className={`link-div ${getSidebarClass("/due_amount")}`}>Due Amount</Link>
+                  </li>
+                  <hr />
+                  <li>
+                    <Link to="/paid_amount" className={`link-div ${getSidebarClass("/paid_amount")}`}>Paid Amount</Link>
+                  </li>
+                </ul>
+              )}
             </li>
-          
             <hr />
-
+           
             <li>
-              <Link
-                to="/security_amount"
-                className={`link-div ${getSidebarClass("/security_amount")}`}
-              >
+              <Link to="/doctor_section" className={`link-div ${getSidebarClass("/doctor_section")}`}>
                 <div>
-                <i class="fs-4 bi bi-currency-rupee"></i>
+                  <i className="fs-4 bi bi-person-fill"></i>
                 </div>
                 <div>
-                  <h3 className="text-center " id="navleft1">
-                  Security Amount
-                  </h3>
+                  <h3 className=" d-none d-sm-inline" id="navleft1">Doctor</h3>
                 </div>
               </Link>
             </li>
-            <hr/>
-            <li>
-              <Link
-                to="/due_amount"
-                className={`link-div ${getSidebarClass("/due_amount")}`}
-              >
-                <div>
-                <i class="fs-4 bi bi-currency-rupee"></i>
-                </div>
-                <div>
-                  <h3 className="text-center " id="navleft1">
-                  Due Amount
-                  </h3>
-                </div>
-              </Link>
-            </li>
-            <hr/>
-            <li>
-              <Link
-                to="/paid_amount"
-                className={`link-div ${getSidebarClass("/paid_amount")}`}
-              >
-                <div>
-                <i class="fs-4 bi bi-currency-rupee"></i>
-                </div>
-                <div>
-                  <h3 className="text-center " id="navleft1">
-                  Paid Amount
-                  </h3>
-                </div>
-              </Link>
-            </li>
-          
             <hr />
-            {/* <li>
-              <Link
-                to="/lab"
-                className={`link-div ${getSidebarClass("/lab")}`}
-              >
+          
+            <li>
+              <Link to="/inquiry" className={`link-div ${getSidebarClass("/inquiry")}`}>
                 <div>
-                <i className="fs-4 bi bi-file-medical"></i>
+                  <i className="fs-4 bi bi-table"></i>
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
-                  Lab
-                  </h3>
+                  <h3 className=" d-none d-sm-inline " id="navleft1">Inquiry</h3>
                 </div>
               </Link>
             </li>
-          
-            <hr /> */}
-            {/* <li>
-              <Link
-                to="/video"
-                className={`link-div ${getSidebarClass("/video")}`}
-              >
-                <div>
-                <i className="fs-4 bi bi-camera-video"></i>
-                </div>
-                <div>
-                  <h3 className=" d-none d-sm-inline fs-6" id="navleft1">
-                  Videos
-                  </h3>
-                </div>
-              </Link>
-            </li>
-          
-            <hr /> */}
             
-          
+            <hr />
             <li>
-              <Link>
               <div className="link-div">
                 <div>
                   <i className="fs-4 bi bi-power" onClick={logout}></i>
                 </div>
                 <div className="text-light" onClick={logout} id="navleft1">
                   Logout
-                  {/* <button className="btn btn-danger d-none d-sm-inline">
-                    Logout
-                  </button> */}
                 </div>
               </div>
-              </Link>
             </li>
             <hr />
           </ul>
@@ -222,6 +139,34 @@ const Sider = () => {
 
 export default Sider;
 const Wrapper = styled.div`
+
+/* .dropdown-menu {
+  display: none; 
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 1;
+} */
+.drop{
+  padding: 10px;
+}
+
+.drop li {
+  list-style: none;
+  font-size: 13px;
+  text-align: center;
+}
+
+.drop li a {
+  text-decoration: none;
+  color: white;
+}
+
+.drop li a:hover {
+  /* background-color: #8ae6ff; */
+  color: #8ae6ff;
+} 
   #navleft1 {
     font-size: 13px;
     margin-left: 0rem;
@@ -275,6 +220,7 @@ const Wrapper = styled.div`
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
   }
   a {
     text-decoration: none;

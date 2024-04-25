@@ -358,6 +358,10 @@ overflow: hidden;
    margin: auto;
    width: 100%;
   }
+  @media screen and (min-width: 1500px) and (max-width: 2000px) {
+     width: 98%;
+  
+}
 }
 
 #set{
@@ -378,8 +382,12 @@ margin-left: 1.5rem;
   margin-left: -2rem;
   
 }
-@media screen and (min-width: 1500px) and (max-width: 2000px) {
+@media screen and (min-width: 1500px) and (max-width: 1700px) {
   margin-left: -1.9rem;
+  
+}
+@media screen and (min-width: 1700px) and (max-width: 2000px) {
+  margin-left: -1rem;
   
 }
 }
@@ -407,6 +415,10 @@ margin-left: 1.5rem;
    margin: auto;
    
   }
+  @media screen and (min-width: 1500px) and (max-width: 2000px) {
+    width: 98%;
+  
+}
 }
 th{
   background-color: teal;

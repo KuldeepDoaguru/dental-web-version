@@ -251,10 +251,15 @@ overflow-y: auto;
   margin-left: -2rem;
   
 }
-@media screen and (min-width: 1500px) and (max-width: 2000px) {
+@media screen and (min-width: 1500px) and (max-width: 1800px) {
   margin-left: -1.9rem;
   
 }
+
+  @media screen and (min-width: 1800px) and (max-width: 2500px) {
+   margin-left: 0rem;
+    
+  }
 }
 #tableres{
   
@@ -267,6 +272,7 @@ overflow-y: auto;
    margin: auto;
    
   }
+ 
 }
 th{
     background-color: teal;

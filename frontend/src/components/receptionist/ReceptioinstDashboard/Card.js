@@ -160,7 +160,7 @@ function Card() {
         <div className="col-lg-11 col-md-11">
           <div className="card shadow" id="card1">
             <div className="card-body">
-              <h6 className="card-title" style={{ color: "black " }}>
+              <h6 className="card-title appointment" style={{ color: "black " }}>
                 Today's Appointment
               </h6>
               <p className="card-text">
@@ -314,9 +314,15 @@ const Wrapper = styled.div`
     @media screen and (min-width: 768px) and (max-width: 1020px) {
       width: 41rem;
     } */
-    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+    @media screen and (min-width: 1020px) and (max-width: 1550px) {
        font-size: small;
    
+  }
+  .appointment{
+    @media screen and (min-width: 1450px) and (max-width: 1550px) {
+       white-space: nowrap;
+   
+  }
   }
 
   .card-title{

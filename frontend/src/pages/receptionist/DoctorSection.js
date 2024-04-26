@@ -414,7 +414,12 @@ overflow: hidden;
   @media screen and (min-width: 1500px) and (max-width: 2000px) {
      width: 98%;
   
-}}
+}
+@media screen and (min-width: 2000px) and (max-width: 2500px) {
+     width: 98%;
+  
+}
+}
 
 #head{
   
@@ -428,6 +433,10 @@ overflow: hidden;
    margin: auto;
   }
   @media screen and (min-width: 1500px) and (max-width: 2000px) {
+     width: 98%;
+  
+}
+@media screen and (min-width: 2000px) and (max-width: 2500px) {
      width: 98%;
   
 }
@@ -460,6 +469,11 @@ margin-left: 1.5rem;
   margin-left: -1rem;
   
 }
+
+  @media screen and (min-width: 2000px) and (max-width: 2500px) {
+   margin-left: 0rem;
+    
+  }
 }
 
 

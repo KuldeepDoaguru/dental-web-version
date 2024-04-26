@@ -591,6 +591,11 @@ overflow-y: auto;
   margin-left: -1rem;
   
 }
+
+  @media screen and (min-width: 2000px) and (max-width: 2500px) {
+   margin-left: 0rem;
+    
+  }
 }
 #head{
   
@@ -603,6 +608,10 @@ overflow-y: auto;
    
    margin: auto;
   }
+  @media screen and (min-width: 2000px) and (max-width: 2500px) {
+     width: 98%;
+  
+}
 }
 #hd{
   padding-top: 60px; /* Height of header */
@@ -627,6 +636,10 @@ overflow-y: auto;
    margin: auto;
    
   }
+  @media screen and (min-width: 2000px) and (max-width: 2500px) {
+     width: 98%;
+  
+}
 }
 .inquiry-form{
    padding: 20px;

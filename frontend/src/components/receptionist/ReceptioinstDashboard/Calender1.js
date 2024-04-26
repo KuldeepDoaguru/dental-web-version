@@ -415,6 +415,10 @@ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.1);
     @media screen and (min-width: 768px) and (max-width: 1020px)  {
       margin: auto;
     }
+    @media screen and (min-width: 2000px) and (max-width: 2500px)  {
+      margin-left: 20px;
+      width: 90%;
+    }
 
 .cal{
   @media screen and (max-width: 768px) {

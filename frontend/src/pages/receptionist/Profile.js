@@ -159,5 +159,10 @@ overflow-y: auto;
   margin-left: -1.9rem;
   
 }
+
+  @media screen and (min-width: 2000px) and (max-width: 2500px) {
+   margin-left: 0rem;
+    
+  }
 }
 `;

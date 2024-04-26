@@ -72,6 +72,7 @@ const {
   getSuperAdminNotify,
   markRead,
   addSuperAdminNotify,
+  getTreatSuggest,
 } = require("../controllers/notifyController");
 // const multer = require("multer");
 
@@ -198,5 +199,6 @@ router.delete("/deleteTreatment/:tid", deleteTreatment);
 router.get("/getSuperAdminNotify/:branch", getSuperAdminNotify);
 router.put("/markRead/:snid", markRead);
 router.post("/addSuperAdminNotify", addSuperAdminNotify);
+router.get("/getTreatSuggest/:branch", getTreatSuggest);
 
 module.exports = router;

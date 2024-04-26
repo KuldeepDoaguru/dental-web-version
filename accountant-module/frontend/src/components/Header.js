@@ -69,7 +69,7 @@ const Header = () => {
                     <BsFileEarmarkPerson className="icon" />
                   </button>
                 </li> */}
-                <li className="nav-item dropdown" id="userid">
+                <li className="nav-item dropdown mx-4" id="userid">
                   <a
                     className="nav-link dropdown-toggle"
                     href="/"
@@ -88,10 +88,16 @@ const Header = () => {
                     <li>
                       <hr className="dropdown-divider" />
                     </li>
+                    <li>
+                      <Link className="dropdown-item" to="/view-clinic-details">
+                        View Clinic Details
+                      </Link>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
                     <li onClick={handleLogout}>
-                      {/* <a className="dropdown-item" href="/"> */}
-                      Logout
-                      {/* </a> */}
+                      <a className="dropdown-item">Logout</a>
                     </li>
                   </ul>
                 </li>

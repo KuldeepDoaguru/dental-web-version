@@ -35,6 +35,7 @@ const MarkAttendance = () => {
   console.log(todayAttendance);
   const handleLogin = async () => {
     const loginTime = moment().format("HH:mm:ss"); // Format current time for login
+    const availability = "yes";
     try {
       const response = await axios.post(
         "https://dentalguruaccountant.doaguru.com/api/v1/accountant/markAttendanceLogin",
@@ -45,6 +46,7 @@ const MarkAttendance = () => {
           employee_designation,
           date,
           loginTime,
+          availability,
         }
       );
       if (response.data.success) {
@@ -69,6 +71,7 @@ const MarkAttendance = () => {
       return;
     }
     const logoutTime = moment().format("HH:mm:ss"); // Format current time for logout
+    const availability = "no";
     try {
       const response = await axios.put(
         "https://dentalguruaccountant.doaguru.com/api/v1/accountant/markAttendanceLogout",
@@ -79,6 +82,7 @@ const MarkAttendance = () => {
           employee_designation,
           date,
           logoutTime,
+          availability,
         }
       );
 

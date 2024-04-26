@@ -76,6 +76,7 @@ import PasswordReset from "./pages/PasswordReset";
 import SecurityAmtPrint from "./pages/SecurityAmtPrint";
 import PatientBillsByTpid from "./pages/BillPage/PatientBillsByTpid";
 import { useSelector } from "react-redux";
+import BranchInfo from "./pages/BranchInfo";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -578,6 +579,13 @@ function App() {
             )
           }
         />
+        <Route
+          path="/view-clinic-details"
+          element={
+            user.employee_name === null ? <UniversalLogin /> : <BranchInfo />
+          }
+        />
+        {/* <Route path="/view-clinic-details" element={<BranchInfo />} /> */}
         <Route path="*" element={<ErrorPage />} />
         {/*Acountend  routes end  */}
       </Routes>

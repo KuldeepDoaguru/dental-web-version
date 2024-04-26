@@ -125,7 +125,7 @@ const SecAmountReport = () => {
                         </nav>
                       </div>
                       <div className="container">
-                        <div class="table-responsive mt-4">
+                        <div class="mt-4">
                           <div className="d-flex justify-content-between mb-2">
                             <form>
                               <div className="d-flex justify-content-between">
@@ -189,12 +189,12 @@ const SecAmountReport = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {securityList.map((item) => (
+                                  {securityList?.map((item) => (
                                     <>
                                       <tr className="table-row">
                                         <td>{item.sa_id}</td>
                                         <td>{item.tp_id}</td>
-                                        <td>{item.date.split("T")[0]}</td>
+                                        <td>{item.date?.split("T")[0]}</td>
                                         <td>{item.appointment_id}</td>
                                         <td>{item.uhid}</td>
                                         <td>{item.patient_name}</td>
@@ -207,7 +207,7 @@ const SecAmountReport = () => {
                                         <td>{item.payment_status}</td>
                                         <td>{item.refund_amount}</td>
                                         <td>
-                                          {item.refund_date.split("T")[0]}
+                                          {item.refund_date?.split("T")[0]}
                                         </td>
                                         <td>{item.received_by}</td>
                                         <td>{item.refund_by}</td>
@@ -239,6 +239,10 @@ const Container = styled.div`
     background-color: #22a6b3;
     font-weight: bold;
     color: white;
+  }
+  .table-responsive {
+    height: 30rem;
+    overflow: auto;
   }
   th {
     background-color: #201658;

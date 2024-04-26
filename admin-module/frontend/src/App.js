@@ -39,6 +39,7 @@ import AdminPatientLIst from "./pages/admin/AdminPatientLIst";
 import AdminPatientProfile from "./pages/admin/AdminPatientProfile";
 import AdminEmployeeProfile from "./pages/admin/AdminEmployeeProfile";
 import AdminNotification from "./pages/admin/AdminNotification";
+import AttendanceLeave from "./pages/admin/AttendanceLeave";
 
 const App = () => {
   const storedUserData = localStorage.getItem("userData");
@@ -130,6 +131,7 @@ const App = () => {
         <Route path="/password-reset" element={<PasswordReset />} />
         <Route path="/patient-list" element={<AdminPatientLIst />} />
         <Route path="/patient-profile/:pid" element={<AdminPatientProfile />} />
+        <Route path="/attendance-dashboard" element={<AttendanceLeave />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </BrowserRouter>

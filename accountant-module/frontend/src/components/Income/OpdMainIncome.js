@@ -15,7 +15,7 @@ const OpdMainIncome = () => {
                 <Sider />
               </div>
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10">
-                <OpdIncome /> 
+                <OpdIncome />
               </div>
             </div>
           </div>

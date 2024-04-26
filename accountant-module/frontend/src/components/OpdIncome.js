@@ -9,6 +9,7 @@ import { GiTakeMyMoney } from "react-icons/gi";
 import BranchDetails from "./BranchDetails";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import moment from "moment";
 
 const OpdIncome = () => {
   const user = useSelector((state) => state.user);
@@ -18,6 +19,8 @@ const OpdIncome = () => {
   console.log("User State:", user);
   const [opdAmount, setOpdAmount] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const getOpdAmt = async () => {
     try {
@@ -190,6 +193,18 @@ const OpdIncome = () => {
     }
   };
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = selectedData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const nextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
   return (
     <Container>
       <BranchDetails />
@@ -345,7 +360,7 @@ const OpdIncome = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {selectedData
+                      {currentItems
                         ?.filter((val) => {
                           const name = val.patient_name.toLowerCase();
                           const lowerKeyword = keyword.toLowerCase();
@@ -366,7 +381,14 @@ const OpdIncome = () => {
                           <>
                             <tr className="table-row">
                               <td>{item.appoint_id}</td>
-                              <td>{item.appointment_dateTime}</td>
+                              <td>
+                                {item?.appointment_dateTime
+                                  ? moment(
+                                      item?.appointment_dateTime,
+                                      "YYYY-MM-DDTHH:mm"
+                                    ).format("DD/MM/YYYY hh:mm A")
+                                  : ""}
+                              </td>
                               <td>{item.uhid}</td>
                               <td>{item.patient_name}</td>
                               <td>{item.mobileno}</td>
@@ -392,6 +414,22 @@ const OpdIncome = () => {
                         ))}
                     </tbody>
                   </table>
+                </div>
+                <div className="d-flex justify-content-center mt-3">
+                  <button
+                    className="btn btn-primary mx-2"
+                    onClick={prevPage}
+                    disabled={currentPage === 1}
+                  >
+                    Previous Page
+                  </button>
+                  <button
+                    className="btn btn-primary mx-2"
+                    onClick={nextPage}
+                    disabled={indexOfLastItem >= selectedData.length}
+                  >
+                    Next Page
+                  </button>
                 </div>
               </div>
             </div>
@@ -440,7 +478,6 @@ const Container = styled.div`
   }
 
   .table-responsive {
-    height: 30rem;
     overflow: auto;
   }
 
@@ -449,6 +486,10 @@ const Container = styled.div`
     color: #fff;
     font-weight: bold;
     position: sticky;
+    white-space: nowrap;
+  }
+  td {
+    white-space: nowrap;
   }
 
   .sticky {

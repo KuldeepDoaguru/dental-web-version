@@ -106,7 +106,7 @@ const PaidPaymentReport = () => {
                   </div>
                 </div>
                 <div className="container">
-                  <div class="table-responsive mt-4">
+                  <div class="mt-4">
                     <div className="d-flex justify-content-between mb-2">
                       <form>
                         <div className="d-flex justify-content-between">
@@ -171,7 +171,7 @@ const PaidPaymentReport = () => {
                               <>
                                 <tr className="table-row">
                                   <td>{item.bill_id}</td>
-                                  <td>{item.bill_date.split("T")[0]}</td>
+                                  <td>{item.bill_date?.split("T")[0]}</td>
                                   <td>{item.uhid}</td>
                                   <td>{item.tp_id}</td>
                                   <td>{item.branch_name}</td>
@@ -213,6 +213,10 @@ const Container = styled.div`
     background-color: #22a6b3;
     font-weight: bold;
     color: white;
+  }
+  .table-responsive {
+    height: 30rem;
+    overflow: auto;
   }
   th {
     background-color: #201658;

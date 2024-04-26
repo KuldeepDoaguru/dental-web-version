@@ -642,7 +642,7 @@ const appointmentData = (req, res) => {
 const getAvailableEmp = (req, res) => {
   try {
     const branch = req.params.branch;
-    const getQuery = "SELECT * FROM employee_attendance WHERE branch";
+    const getQuery = "SELECT * FROM employee_attendance WHERE branch = ?";
     db.query(getQuery, branch, (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });

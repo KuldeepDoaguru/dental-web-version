@@ -26,6 +26,8 @@ const SecurityAmount = () => {
   const [showPaySecAmount, setShowPaySecAmount] = useState(false);
   const [outStanding, setOutStanding] = useState([]);
   const [selected, setSelected] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(7);
   // const [refAmount, setRefAmount] = useState();
   const [addSecurityAmount, setAddSecurityAmount] = useState({
     branch_name: user.branch,
@@ -39,6 +41,18 @@ const SecurityAmount = () => {
     payment_status: "",
     received_by: user.name,
   });
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = securityList.slice(indexOfFirstItem, indexOfLastItem);
+
+  const nextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
 
   const date = new Date();
   console.log(date);
@@ -172,43 +186,6 @@ const SecurityAmount = () => {
 
   console.log(filterForSecAmountDef);
 
-  // const getTotaloutstanding = async (id) => {
-  //   console.log(id);
-  //   try {
-  //     const { data } = await axios.get(
-  //       `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getSecurityAmountDataBySID/${id}`
-  //     );
-  //     console.log(data);
-  //     setOutStanding(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // console.log(outStanding);
-  // const filterForOut = outStanding?.filter((item) => {
-  //   return item.payment_status !== "success";
-  // });
-
-  // console.log(filterForOut);
-
-  // const totalPrice = () => {
-  //   try {
-  //     let total = 0;
-  //     filterForOut.forEach((item) => {
-  //       total = total + parseFloat(item.total_amount);
-  //     });
-  //     console.log(total);
-  //     return total;
-  //   } catch (error) {
-  //     console.log(error);
-  //     return 0;
-  //   }
-  // };
-
-  // const totalValue = totalPrice();
-  // console.log(totalValue);
-
   const MakeRefund = async (e) => {
     e.preventDefault();
     try {
@@ -229,20 +206,6 @@ const SecurityAmount = () => {
       console.log(error);
     }
   };
-
-  // const makeRefData = () => {
-  //   if (outStanding.length === 0) {
-  //     return filterForSecAmountDef[0]?.amount;
-  //   } else {
-  //     return outStanding[0]?.amount - totalValue;
-  //   }
-  // };
-
-  // const amtRefund = makeRefData();
-  // console.log(amtRefund);
-  // useEffect(() => {
-  //   setRefAmount(amtRefund);
-  // }, [amtRefund]);
 
   const paySecurityCash = async (e) => {
     e.preventDefault();
@@ -275,170 +238,7 @@ const SecurityAmount = () => {
                 <div className="container">
                   <h2 className="text-center mt-5">Security Amount Details</h2>
                   <hr />
-                  {/* <form action="" className="" onSubmit={insertSecurityAmount}>
-                    <div className="container-fluid">
-                      <div className="row">
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Date
-                            </label>
-                            <input
-                              type="date"
-                              class="p-1 w-100 rounded"
-                              placeholder="appointment ID"
-                              name="date"
-                              required
-                              value={addSecurityAmount.date}
-                              onChange={handleInput}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Appointment ID
-                            </label>
-                            <input
-                              type="text"
-                              class="p-1 w-100 rounded"
-                              placeholder="appointment ID"
-                              name="appointment_id"
-                              value={addSecurityAmount.appointment_id}
-                              onChange={handleInput}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label rounded"
-                            >
-                              UHID
-                            </label>
-                            <input
-                              type="text"
-                              class="p-1 w-100 rounded"
-                              placeholder="UHID"
-                              name="uhid"
-                              value={addSecurityAmount.uhid}
-                              onChange={handleInput}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Patient Name
-                            </label>
-                            <input
-                              type="text"
-                              class="p-1 w-100 rounded"
-                              placeholder="Patient Name"
-                              name="patient_name"
-                              value={addSecurityAmount.patient_name}
-                              onChange={handleInput}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Patient Mobile
-                            </label>
-                            <input
-                              type="text"
-                              class="p-1 w-100 rounded"
-                              placeholder="Patient Number"
-                              name="patient_number"
-                              value={addSecurityAmount.patient_number}
-                              onChange={handleInput}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Assigned Doctor
-                            </label>
-                            <input
-                              type="text"
-                              class="p-1 w-100 rounded"
-                              placeholder="Patient Name"
-                              name="assigned_doctor"
-                              value={addSecurityAmount.assigned_doctor}
-                              onChange={handleInput}
-                            />
-                          </div>
-                        </div>
 
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Security Amount
-                            </label>
-                            <input
-                              type="number"
-                              class="p-1 w-100 rounded"
-                              placeholder="Security Amount"
-                              name="amount"
-                              value={addSecurityAmount.amount}
-                              onChange={handleInput}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <div class="input-group mb-3">
-                            <label
-                              for="exampleFormControlInput1"
-                              class="form-label"
-                            >
-                              Payment Status
-                            </label>
-
-                            <select
-                              name="payment_status"
-                              onChange={handleInput}
-                              id=""
-                              class="p-1 w-100 rounded"
-                            >
-                              <option value="">select-status</option>
-                              <option value="pending">Pending</option>
-                              <option value="success">Success</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-                          <button
-                            className="btn btn-info btnbox fw-bold shadow p-1 w-100 rounded"
-                            type="submit"
-                          >
-                            Submit
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                  <hr /> */}
                   <div className="container-fluid">
                     <div>
                       <label>search by patient name :</label>
@@ -475,7 +275,7 @@ const SecurityAmount = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {securityList
+                          {currentItems
                             ?.filter((val) => {
                               if (keyword === "") {
                                 return true;
@@ -578,6 +378,22 @@ const SecurityAmount = () => {
                             ))}
                         </tbody>
                       </table>
+                    </div>
+                    <div className="d-flex justify-content-center mt-3">
+                      <button
+                        className="btn btn-primary mx-2"
+                        onClick={prevPage}
+                        disabled={currentPage === 1}
+                      >
+                        Previous Page
+                      </button>
+                      <button
+                        className="btn btn-primary mx-2"
+                        onClick={nextPage}
+                        disabled={indexOfLastItem >= securityList.length}
+                      >
+                        Next Page
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -826,9 +642,9 @@ const Container = styled.div`
       color: white;
       white-space: nowrap;
     }
-    td {
-      white-space: nowrap;
-    }
+  }
+  td {
+    white-space: nowrap;
   }
 
   button {
@@ -866,3 +682,219 @@ const Container = styled.div`
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 `;
+
+// const getTotaloutstanding = async (id) => {
+//   console.log(id);
+//   try {
+//     const { data } = await axios.get(
+//       `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getSecurityAmountDataBySID/${id}`
+//     );
+//     console.log(data);
+//     setOutStanding(data);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// console.log(outStanding);
+// const filterForOut = outStanding?.filter((item) => {
+//   return item.payment_status !== "success";
+// });
+
+// console.log(filterForOut);
+
+// const totalPrice = () => {
+//   try {
+//     let total = 0;
+//     filterForOut.forEach((item) => {
+//       total = total + parseFloat(item.total_amount);
+//     });
+//     console.log(total);
+//     return total;
+//   } catch (error) {
+//     console.log(error);
+//     return 0;
+//   }
+// };
+
+// const totalValue = totalPrice();
+// console.log(totalValue);
+
+// const makeRefData = () => {
+//   if (outStanding.length === 0) {
+//     return filterForSecAmountDef[0]?.amount;
+//   } else {
+//     return outStanding[0]?.amount - totalValue;
+//   }
+// };
+
+// const amtRefund = makeRefData();
+// console.log(amtRefund);
+// useEffect(() => {
+//   setRefAmount(amtRefund);
+// }, [amtRefund]);
+
+//  {/* <form action="" className="" onSubmit={insertSecurityAmount}>
+//                     <div className="container-fluid">
+//                       <div className="row">
+//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+//                           <div class="input-group mb-3">
+//                             <label
+//                               for="exampleFormControlInput1"
+//                               class="form-label"
+//                             >
+//                               Date
+//                             </label>
+//                             <input
+//                               type="date"
+//                               class="p-1 w-100 rounded"
+//                               placeholder="appointment ID"
+//                               name="date"
+//                               required
+//                               value={addSecurityAmount.date}
+//                               onChange={handleInput}
+//                             />
+//                           </div>
+//                         </div>
+//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+//                           <div class="input-group mb-3">
+//                             <label
+//                               for="exampleFormControlInput1"
+//                               class="form-label"
+//                             >
+//                               Appointment ID
+//                             </label>
+//                             <input
+//                               type="text"
+//                               class="p-1 w-100 rounded"
+//                               placeholder="appointment ID"
+//                               name="appointment_id"
+//                               value={addSecurityAmount.appointment_id}
+//                               onChange={handleInput}
+//                             />
+//                           </div>
+//                         </div>
+//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+//                           <div class="input-group mb-3">
+//                             <label
+//                               for="exampleFormControlInput1"
+//                               class="form-label rounded"
+//                             >
+//                               UHID
+//                             </label>
+//                             <input
+//                               type="text"
+//                               class="p-1 w-100 rounded"
+//                               placeholder="UHID"
+//                               name="uhid"
+//                               value={addSecurityAmount.uhid}
+//                               onChange={handleInput}
+//                             />
+//                           </div>
+//                         </div>
+//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+//                           <div class="input-group mb-3">
+//                             <label
+//                               for="exampleFormControlInput1"
+//                               class="form-label"
+//                             >
+//                               Patient Name
+//                             </label>
+//                             <input
+//                               type="text"
+//                               class="p-1 w-100 rounded"
+//                               placeholder="Patient Name"
+//                               name="patient_name"
+//                               value={addSecurityAmount.patient_name}
+//                               onChange={handleInput}
+//                             />
+//                           </div>
+//                         </div>
+//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+//                           <div class="input-group mb-3">
+//                             <label
+//                               for="exampleFormControlInput1"
+//                               class="form-label"
+//                             >
+//                               Patient Mobile
+//                             </label>
+//                             <input
+//                               type="text"
+//                               class="p-1 w-100 rounded"
+//                               placeholder="Patient Number"
+//                               name="patient_number"
+//                               value={addSecurityAmount.patient_number}
+//                               onChange={handleInput}
+//                             />
+//                           </div>
+//                         </div>
+//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+//                           <div class="input-group mb-3">
+//                             <label
+//                               for="exampleFormControlInput1"
+//                               class="form-label"
+//                             >
+//                               Assigned Doctor
+//                             </label>
+//                             <input
+//                               type="text"
+//                               class="p-1 w-100 rounded"
+//                               placeholder="Patient Name"
+//                               name="assigned_doctor"
+//                               value={addSecurityAmount.assigned_doctor}
+//                               onChange={handleInput}
+//                             />
+//                           </div>
+//                         </div>
+
+//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+//                           <div class="input-group mb-3">
+//                             <label
+//                               for="exampleFormControlInput1"
+//                               class="form-label"
+//                             >
+//                               Security Amount
+//                             </label>
+//                             <input
+//                               type="number"
+//                               class="p-1 w-100 rounded"
+//                               placeholder="Security Amount"
+//                               name="amount"
+//                               value={addSecurityAmount.amount}
+//                               onChange={handleInput}
+//                             />
+//                           </div>
+//                         </div>
+//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+//                           <div class="input-group mb-3">
+//                             <label
+//                               for="exampleFormControlInput1"
+//                               class="form-label"
+//                             >
+//                               Payment Status
+//                             </label>
+
+//                             <select
+//                               name="payment_status"
+//                               onChange={handleInput}
+//                               id=""
+//                               class="p-1 w-100 rounded"
+//                             >
+//                               <option value="">select-status</option>
+//                               <option value="pending">Pending</option>
+//                               <option value="success">Success</option>
+//                             </select>
+//                           </div>
+//                         </div>
+//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
+//                           <button
+//                             className="btn btn-info btnbox fw-bold shadow p-1 w-100 rounded"
+//                             type="submit"
+//                           >
+//                             Submit
+//                           </button>
+//                         </div>
+//                       </div>
+//                     </div>
+//                   </form>
+//                   <hr /> */}

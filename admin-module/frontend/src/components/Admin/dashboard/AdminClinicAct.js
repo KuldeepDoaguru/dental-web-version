@@ -9,30 +9,31 @@ import axios from "axios";
 const AdminClinicAct = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  // console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  // console.log(`User Name: ${branch.name}`);
   const [showCalender, setShowCalender] = useState(false);
   const [appointmentList, setAppointmentList] = useState([]);
   const [patDetails, setPatDetails] = useState([]);
   const [currentDate, setCurrentDate] = useState("");
   const [timeDifference, setTimeDifference] = useState(null);
   const [todayDate, setTodayDate] = useState("");
+  const [treatValue, setTreatValue] = useState([]);
 
   const handleCalender = () => {
     setShowCalender(!showCalender);
   };
 
   const getAppointList = async () => {
-    console.log(branch.name);
+    // console.log(branch.name);
     try {
       const response = await axios.get(
         `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${branch.name}`
       );
       setAppointmentList(response.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -46,12 +47,14 @@ const AdminClinicAct = () => {
       const { data } = await axios.get(
         `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientDetailsByBranch/${branch.name}`
       );
-      console.log(data);
+      // console.log(data);
       setPatDetails(data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
+
+  console.log(patDetails);
 
   const getTime = new Date();
   const hours = ("0" + (getTime.getHours() - 5)).slice(-2);
@@ -65,53 +68,68 @@ const AdminClinicAct = () => {
 
   const formattedTime = `${hours}`;
 
-  console.log(formattedTime);
+  // console.log(formattedTime);
 
   const getLife = appointmentList?.map((item) => {
     // Log the values involved in the subtraction
-    console.log("Formatted Time:", typeof formattedTime);
-    console.log(
-      "Appointment Time:",
-      item?.appointment_dateTime?.split("T")[1]?.split(":")[0]
-    );
+    // console.log("Formatted Time:", typeof formattedTime);
+    // console.log(
+    //   "Appointment Time:",
+    //   item?.appointment_dateTime?.split("T")[1]?.split(":")[0]
+    // );
 
     const difference =
       formattedTime - item?.appointment_dateTime?.split("T")[1]?.split(":")[0];
-    console.log("Difference:", difference); // Log the difference
+    // console.log("Difference:", difference); // Log the difference
     return difference.toString();
   });
 
-  console.log(getLife);
-  console.log(
-    appointmentList[0]?.appointment_dateTime.split("T")[1]?.split(":")[0]
-  );
+  // console.log(getLife);
+  // console.log(
+  //   appointmentList[0]?.appointment_dateTime.split("T")[1]?.split(":")[0]
+  // );
 
   //patient details
   const getPatientDet = patDetails?.map((item) => {
     // Log the values involved in the subtraction
-    console.log("Formatted Time:", typeof formattedTime);
-    console.log(
-      "Appointment Time:",
-      item?.regdatetime?.split("T")[1]?.split(":")[0]
-    );
+    // console.log("Formatted Time:", typeof formattedTime);
+    // console.log(
+    //   "Appointment Time:",
+    //   item?.regdatetime?.split("T")[1]?.split(":")[0]
+    // );
 
     const difference =
       formattedTime - item?.regdatetime?.split("T")[1]?.split(":")[0];
-    console.log("Difference:", difference); // Log the difference
+    // console.log("Difference:", difference); // Log the difference
     return difference.toString();
   });
 
-  console.log(patDetails);
-  console.log(
-    appointmentList[0]?.appointment_dateTime.split("T")[1]?.split(":")[0]
-  );
+  // console.log(patDetails);
+  // console.log(
+  //   appointmentList[0]?.appointment_dateTime.split("T")[1]?.split(":")[0]
+  // );
+
+  const getTreatmentValues = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getTreatSuggest/${branch.name}`
+      );
+      console.log(data);
+      setTreatValue(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(treatValue);
 
   useEffect(() => {
     getAppointList();
     getPatdetailsByBranch();
+    getTreatmentValues();
   }, [branch.name]);
 
-  console.log(currentDate);
+  // console.log(currentDate);
 
   //filter for day wise Appointment
   const filterAppointment = appointmentList?.filter((item) => {
@@ -129,14 +147,10 @@ const AdminClinicAct = () => {
   //filter for day wise Treatment
   const filterTreatment = appointmentList?.filter((item) => {
     if (currentDate) {
-      return (
-        item.appointment_dateTime?.split("T")[0] === currentDate &&
-        item.treatment_status === "Treated"
-      );
+      return item.appointment_dateTime?.split("T")[0] === currentDate;
     } else {
       return (
-        item.appointment_dateTime?.split("T")[0] === todayDate?.split("T")[0] &&
-        item.treatment_status === "Treated"
+        item.appointment_dateTime?.split("T")[0] === todayDate?.split("T")[0]
       );
     }
   });
@@ -144,30 +158,35 @@ const AdminClinicAct = () => {
   console.log(filterTreatment);
 
   //filter for day wise billing
-  const filterBilling = appointmentList?.filter((item) => {
+  const filterBilling = treatValue?.filter((item) => {
     if (currentDate) {
       return (
-        item.appointment_dateTime?.split("T")[0] === currentDate &&
-        item.payment_status === "success"
+        item.bill_date?.split("T")[0] === currentDate &&
+        item.payment_status === "paid"
       );
     }
     return (
-      item.appointment_dateTime?.split("T")[0] === todayDate?.split("T")[0] &&
-      item.payment_status === "success"
+      item.bill_date?.split("T")[0] === todayDate?.split("T")[0] &&
+      item.payment_status === "paid"
     );
   });
 
-  console.log(filterBilling);
+  // console.log(filterBilling);
+
+  console.log(
+    filterAppointment[5]?.appointment_dateTime.split("T")[1]?.split(":")[0],
+    formattedTime
+  );
 
   //filter for day wise patient registeration
   const filterPatient = patDetails?.filter((item) => {
     if (currentDate) {
-      return item.regdatetime?.split("T")[0] === currentDate;
+      return item.created_at?.split("T")[0] === currentDate;
     }
-    return item.regdatetime?.split("T")[0] === todayDate?.split("T")[0];
+    return item.created_at?.split("T")[0] === todayDate?.split("T")[0];
   });
 
-  console.log(filterPatient);
+  // console.log(filterPatient);
 
   const tdate = new Date();
 
@@ -179,7 +198,7 @@ const AdminClinicAct = () => {
   // Format as 'YYYY-MM-DD'
   const formattedDate = `${year}-${month}-${date}`;
 
-  console.log(formattedDate);
+  // console.log(formattedDate);
   return (
     <>
       <Container>
@@ -212,20 +231,6 @@ const AdminClinicAct = () => {
         </div>
         <div className="container-fluid mt-2">
           <ul class="nav nav-pills mb-3 ms-3" id="pills-tab" role="tablist">
-            {/* <li class="nav-item" role="presentation">
-              <button
-                class="nav-link active"
-                id="pills-python-tab"
-                data-bs-toggle="pill"
-                data-bs-target="#pills-python"
-                type="button"
-                role="tab"
-                aria-controls="pills-python"
-                aria-selected="true"
-              >
-                All
-              </button>
-            </li> */}
             <li class="nav-item" role="presentation">
               <button
                 class="nav-link active"
@@ -291,7 +296,7 @@ const AdminClinicAct = () => {
             id="pills-tabContent"
           >
             <div
-              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade"
+              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade show active"
               id="pills-java"
               role="tabpanel"
               aria-labelledby="pills-java-tab"
@@ -305,7 +310,8 @@ const AdminClinicAct = () => {
                           <h4>
                             <FaDotCircle className="mx-1" /> Appointment of{" "}
                             {item.patient_name} has been scheduled by{" "}
-                            {item.appointed_by} at {item.branch_name} Branch
+                            {item.appointment_created_by} at {item.branch_name}{" "}
+                            Branch
                           </h4>
                         </div>
                         <div>
@@ -313,10 +319,15 @@ const AdminClinicAct = () => {
                           formattedDate ? (
                             <>
                               <p className="fw-bold">
-                                {formattedTime -
-                                  item.appointment_dateTime
-                                    .split("T")[1]
-                                    ?.split(":")[0]}{" "}
+                                {formattedTime >=
+                                item.appointment_dateTime
+                                  .split("T")[1]
+                                  ?.split(":")[0]
+                                  ? formattedTime -
+                                    item.appointment_dateTime
+                                      .split("T")[1]
+                                      ?.split(":")[0]
+                                  : "--:--"}{" "}
                                 Hours ago
                               </p>
                             </>
@@ -349,8 +360,8 @@ const AdminClinicAct = () => {
                           <h4>
                             <FaDotCircle className="mx-1" />{" "}
                             {item.treatment_provided} Treatment provided to{" "}
-                            patient
-                            {item.patient_name} by Dr. {item.assigned_doctor}
+                            patient {item.patient_name} by Dr.{" "}
+                            {item.assigned_doctor_name}
                           </h4>
                         </div>
                         <div>
@@ -358,10 +369,15 @@ const AdminClinicAct = () => {
                           formattedDate ? (
                             <>
                               <p className="fw-bold">
-                                {formattedTime -
-                                  item.appointment_dateTime
-                                    .split("T")[1]
-                                    ?.split(":")[0]}{" "}
+                                {formattedTime >=
+                                item.appointment_dateTime
+                                  .split("T")[1]
+                                  ?.split(":")[0]
+                                  ? formattedTime -
+                                    item.appointment_dateTime
+                                      .split("T")[1]
+                                      ?.split(":")[0]
+                                  : "--:--"}{" "}
                                 Hours ago
                               </p>
                             </>
@@ -393,19 +409,20 @@ const AdminClinicAct = () => {
                         <div>
                           <h4>
                             <FaDotCircle className="mx-1" /> Patient{" "}
-                            {item.patient_name} has paid {item.bill_amount}/-
-                            for the Treatment.
+                            {item.patient_name} has paid{" "}
+                            {item.paid_amount + item.pay_by_sec_amt}/- for the
+                            Treatment.
                           </h4>
                         </div>
                         <div>
-                          {item.appointment_dateTime.split("T")[0] ===
-                          formattedDate ? (
+                          {item.bill_date.split("T")[0] === formattedDate ? (
                             <>
                               <p className="fw-bold">
-                                {formattedTime -
-                                  item.appointment_dateTime
-                                    .split("T")[1]
-                                    ?.split(":")[0]}{" "}
+                                {formattedTime >=
+                                item.bill_date.split("T")[1]?.split(":")[0]
+                                  ? formattedTime -
+                                    item.bill_date.split("T")[1]?.split(":")[0]
+                                  : "--:--"}{" "}
                                 Hours ago
                               </p>
                             </>
@@ -437,24 +454,27 @@ const AdminClinicAct = () => {
                         <div>
                           <h4>
                             <FaDotCircle className="mx-1" /> Patient{" "}
-                            {item.firstname} {item.lastname} has been registered
-                            at {item.branch_name} Branch.
+                            {item.patient_name} has been registered at{" "}
+                            {item.branch_name} Branch.
                           </h4>
                         </div>
                         <div>
-                          {item.regdatetime.split("T")[0] === formattedDate ? (
+                          {item.created_at?.split("T")[0] === formattedDate ? (
                             <>
                               <p className="fw-bold">
-                                {formattedTime -
-                                  item.regdatetime
-                                    .split("T")[1]
-                                    ?.split(":")[0]}{" "}
+                                {formattedTime >=
+                                item.created_at?.split("T")[1]?.split(":")[0]
+                                  ? formattedTime -
+                                    item.created_at
+                                      ?.split("T")[1]
+                                      ?.split(":")[0]
+                                  : "--:--"}{" "}
                                 Hours ago
                               </p>
                             </>
                           ) : (
                             <>
-                              <p>{item.regdatetime.split("T")[0]}</p>
+                              <p>{item.created_at?.split("T")[0]}</p>
                             </>
                           )}
                         </div>

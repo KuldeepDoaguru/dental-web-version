@@ -100,7 +100,7 @@ const TreatIncomeDownload = () => {
                   </div>
                 </div>
                 <div className="container">
-                  <div class="table-responsive mt-4">
+                  <div class="mt-4">
                     <div className="d-flex justify-content-between mb-2">
                       <form>
                         <div className="d-flex justify-content-between">
@@ -134,10 +134,7 @@ const TreatIncomeDownload = () => {
                         </div>
                       </form>
                     </div>
-                    <div
-                      className="container-fluid mt-1 rounded"
-                      style={{ overflowX: "auto" }}
-                    >
+                    <div className="container-fluid mt-1 rounded">
                       <div class="table-responsive rounded">
                         <table class="table table-bordered rounded shadow">
                           <thead className="table-head">
@@ -158,7 +155,7 @@ const TreatIncomeDownload = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {treatAmount.map((item) => (
+                            {treatAmount?.map((item) => (
                               <>
                                 <tr className="table-row">
                                   <td>{item.appoint_id}</td>
@@ -175,7 +172,7 @@ const TreatIncomeDownload = () => {
                                   <td>{item.dental_treatment}</td>
                                   <td>{item.net_amount}</td>
                                   {/* <td>{item.payment_Mode}</td> */}
-                                  <td>{item.date.split("T")[0]}</td>
+                                  <td>{item.date?.split("T")[0]}</td>
                                   <td>{item.sitting_payment_status}</td>
                                 </tr>
                               </>
@@ -204,7 +201,7 @@ const Container = styled.div`
     color: white;
   }
   .table-responsive {
-    max-height: 30rem;
+    height: 30rem;
     overflow: auto;
   }
 

@@ -103,7 +103,9 @@ const AdminDashboard = () => {
                     <TreatmentTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                    <h3 className="text-center">Patient visits this month</h3>
+                    <h3 className="text-center">
+                      Patient visits this month(OPD)
+                    </h3>
                     <PatientVisTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">

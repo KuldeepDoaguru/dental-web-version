@@ -36,6 +36,7 @@ const UniversalLogin = () => {
     }
   };
 
+  console.log(branchList);
   const branchData = {
     name:
       selectedBranch ||

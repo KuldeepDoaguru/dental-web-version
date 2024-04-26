@@ -199,6 +199,10 @@ const Container = styled.div`
     color: #fff;
     font-weight: bold;
     position: sticky;
+    white-space: nowrap;
+  }
+  td {
+    white-space: nowrap;
   }
 
   .sticky {

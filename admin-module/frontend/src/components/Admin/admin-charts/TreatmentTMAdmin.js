@@ -18,6 +18,7 @@ const TreatmentTMAdmin = () => {
       chart: {
         width: 380,
         type: "pie",
+        height: 1000,
       },
       labels: [],
       responsive: [
@@ -40,7 +41,7 @@ const TreatmentTMAdmin = () => {
     console.log(branch.name);
     try {
       const response = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${branch.name}`
       );
       setAppointmentList(response.data);
     } catch (error) {
@@ -52,12 +53,16 @@ const TreatmentTMAdmin = () => {
     getAppointList();
   }, [branch.name]);
 
-  // console.log(appointmentList);
   useEffect(() => {
     const getDate = new Date();
     const year = getDate.getFullYear();
     const month = String(getDate.getMonth() + 1).padStart(2, "0");
     const formattedDate = `${year}-${month}`;
+
+    console.log(
+      appointmentList[1]?.appointment_dateTime?.split("T")[0]?.slice(0, 7)
+    );
+    console.log(formattedDate);
 
     // const formatByBranch = appointmentList?.filter(
     //   (item) => item.branch_name === branch.name // Additional filter by some other property
@@ -68,16 +73,20 @@ const TreatmentTMAdmin = () => {
       item.appointment_dateTime?.split("T")[0]?.includes(formattedDate)
     );
 
+    console.log(filterForMonthlyAppointments);
+
     if (filterForMonthlyAppointments.length > 0) {
       const treatments = filterForMonthlyAppointments.map(
         (item) => item.treatment_provided
       );
       const series = treatments.reduce((acc, val) => acc.concat(val), []);
       const uniqueTreatments = [...new Set(series)];
-
+      console.log(uniqueTreatments);
       const treatmentCounts = uniqueTreatments.map(
         (treatment) => series.filter((t) => t === treatment).length
       );
+
+      console.log(treatmentCounts);
 
       setChartData({
         series: treatmentCounts,
@@ -104,22 +113,24 @@ const TreatmentTMAdmin = () => {
       });
     }
   }, [appointmentList, branch.name]); // Added branch as a dependency
-
+  console.log(chartData.options);
+  console.log(chartData.series);
   return (
     <Container>
       <div className="d-flex justify-content-center align-items-center pt-5">
         <div id="chart">
-          {appointmentList.length !== 0 ? (
+          {appointmentList.length > 0 ? (
             <>
               <ReactApexChart
                 options={chartData.options}
                 series={chartData.series}
                 type="pie"
-                width={380}
+                width={480}
               />
             </>
           ) : (
             <>
+              {/* <p>No Data</p> */}
               <ReactApexChart
                 options={{
                   // Define options for the blank chart

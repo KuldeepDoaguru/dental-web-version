@@ -25,7 +25,7 @@ const TreatmentBills = () => {
   const getTreatmentBill = async () => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8888/api/v1/accountant/getTreatmentTotal/${bid}/${uhid}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getTreatmentTotal/${bid}/${uhid}`
       );
       console.log(data.results);
       setOpdAmount(data.results);

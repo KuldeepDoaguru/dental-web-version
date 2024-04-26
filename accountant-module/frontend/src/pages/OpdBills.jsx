@@ -238,7 +238,7 @@ const PrintOpdBill = () => {
   const getBill = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8888/api/v1/accountant/get-appointment-by-id/${branch}/${bid}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/get-appointment-by-id/${branch}/${bid}`
       );
       console.log(response?.data?.data);
       setData(response?.data?.data);
@@ -260,6 +260,8 @@ const PrintOpdBill = () => {
   const goBack = () => {
     window.history.go(-1);
   };
+
+  console.log(data);
 
   return (
     <Container>

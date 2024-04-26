@@ -13,6 +13,8 @@ const VoucherList = () => {
   );
   console.log("User State:", user);
   const [vlist, setVlist] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const getVoucherList = async () => {
     try {
@@ -30,6 +32,19 @@ const VoucherList = () => {
   }, []);
 
   console.log(vlist);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = vlist.slice(indexOfFirstItem, indexOfLastItem);
+
+  const nextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
   return (
     <>
       <Container>
@@ -60,7 +75,7 @@ const VoucherList = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {vlist?.map((item) => (
+                            {currentItems?.map((item) => (
                               <>
                                 <tr className="table-row">
                                   <td className="table-sno">
@@ -77,7 +92,7 @@ const VoucherList = () => {
                                   </td>
 
                                   <td className="table-small">
-                                    {item.voucher_date.split("T")[0]}
+                                    {item.voucher_date?.split("T")[0]}
                                   </td>
                                   <td className="table-small">
                                     {item.created_by}
@@ -102,6 +117,22 @@ const VoucherList = () => {
                           </tbody>
                         </table>
                       </div>
+                    </div>
+                    <div className="d-flex justify-content-center mt-3">
+                      <button
+                        className="btn btn-primary mx-2"
+                        onClick={prevPage}
+                        disabled={currentPage === 1}
+                      >
+                        Previous Page
+                      </button>
+                      <button
+                        className="btn btn-primary mx-2"
+                        onClick={nextPage}
+                        disabled={indexOfLastItem >= vlist.length}
+                      >
+                        Next Page
+                      </button>
                     </div>
                   </div>
                 </div>

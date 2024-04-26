@@ -10,11 +10,12 @@ const AdminCards = () => {
   console.log(`User Name: ${branch.name}`);
   const [appointmentList, setAppointmentList] = useState([]);
   const [availableEmp, setAvailableEmp] = useState([]);
+  const [treatValue, setTreatValue] = useState([]);
 
   const getAppointList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${branch.name}`
       );
       console.log(data);
       setAppointmentList(data);
@@ -26,7 +27,7 @@ const AdminCards = () => {
   const getEmployeeAvailable = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAvailableEmp/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAvailableEmp/${branch.name}`
       );
       // console.log(data);
       setAvailableEmp(data);
@@ -35,10 +36,7 @@ const AdminCards = () => {
     }
   };
 
-  useEffect(() => {
-    getAppointList();
-    getEmployeeAvailable();
-  }, []);
+  console.log(availableEmp);
 
   console.log(appointmentList);
   //filter for patient treated today card
@@ -59,9 +57,7 @@ const AdminCards = () => {
 
   //filter for patient treated today
   const filterForPatTreatToday = appointmentList?.filter(
-    (item) =>
-      item.treatment_status === "Treated" &&
-      item.appointment_dateTime.split("T")[0] === formattedDate
+    (item) => item.appointment_dateTime.split("T")[0] === formattedDate
   );
 
   console.log(filterForPatTreatToday);
@@ -70,17 +66,17 @@ const AdminCards = () => {
   console.log(appointmentList[0]?.appointment_dateTime?.split("T")[0]);
   const filterForEarningToday = appointmentList?.filter(
     (item) =>
-      item.payment_status === "success" &&
+      item.payment_Status === "paid" &&
       item.appointment_dateTime?.split("T")[0] === formattedDate
   );
 
-  // console.log(filterForEarningToday);
+  console.log(filterForEarningToday);
 
   const totalPrice = () => {
     try {
       let total = 0;
       filterForEarningToday.forEach((item) => {
-        total = total + parseFloat(item.bill_amount);
+        total = total + parseFloat(item.opd_amount);
       });
       console.log(total);
       return total;
@@ -92,8 +88,49 @@ const AdminCards = () => {
 
   const totalValue = totalPrice();
 
+  const getTreatmentValues = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getTreatSuggest/${branch.name}`
+      );
+      console.log(data);
+      setTreatValue(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(treatValue);
+  const filterForEarningTreatToday = treatValue?.filter(
+    (item) =>
+      item.payment_status === "paid" &&
+      item.bill_date?.split("T")[0] === formattedDate
+  );
+
+  console.log(filterForEarningTreatToday);
+
+  const totalBillPrice = () => {
+    try {
+      let total = 0;
+      filterForEarningTreatToday.forEach((item) => {
+        total =
+          total +
+          parseFloat(item.paid_amount) +
+          parseFloat(item.pay_by_sec_amt);
+      });
+      console.log(total);
+      return total;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
+  };
+
+  const totalBillValue = totalBillPrice();
+  console.log(totalBillValue);
+
   //filter for available doctor
-  console.log(availableEmp[0]?.date.split("T")[0]);
+  console.log(availableEmp);
   const filterForEmpAVToday = availableEmp?.filter(
     (item) =>
       item.availability === "yes" &&
@@ -104,32 +141,22 @@ const AdminCards = () => {
   console.log(filterForEmpAVToday);
 
   //filter for present employee today
-  console.log(availableEmp[0]?.date.split("T")[0]);
+  console.log(availableEmp);
   const filterForEmpPresentToday = availableEmp?.filter(
     (item) =>
       item.availability === "yes" && item.date.split("T")[0] === formattedDate
   );
 
   console.log(filterForEmpPresentToday);
-
+  useEffect(() => {
+    getAppointList();
+    getEmployeeAvailable();
+    getTreatmentValues();
+  }, []);
   return (
     <>
       <Container>
         <div className="row d-flex justify-content-around">
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-3 my-3 p-0">
-            <div className="card">
-              <div className="card-body d-flex justify-content-center flex-column">
-                <div>
-                  <i className="bi bi-people-fill icon"></i>
-                </div>
-                <div className="cardtext">
-                  <h5 className="card-title">Patient Today</h5>
-                  <p className="card-text">{filterForPatTreatToday.length}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-3 my-3 p-0 mx-2">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column">
@@ -151,8 +178,21 @@ const AdminCards = () => {
                   <i className="bi bi-people-fill icon"></i>
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title">Earnings Today</h5>
-                  <p className="card-text">{totalValue}</p>
+                  <h5 className="card-title">Earn OPD Today</h5>
+                  <p className="card-text">₹{totalValue}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-3 my-3 p-0">
+            <div className="card">
+              <div className="card-body d-flex justify-content-center flex-column">
+                <div>
+                  <i className="bi bi-people-fill icon"></i>
+                </div>
+                <div className="cardtext">
+                  <h5 className="card-title">Earn Treatment Today</h5>
+                  <p className="card-text">₹{totalBillValue}</p>
                 </div>
               </div>
             </div>

@@ -522,6 +522,22 @@ const addSuperAdminNotify = (req, res) => {
   }
 };
 
+const getTreatSuggest = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(500).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   getNotifyList,
   addNotifyCommunication,
@@ -539,4 +555,5 @@ module.exports = {
   getSuperAdminNotify,
   markRead,
   addSuperAdminNotify,
+  getTreatSuggest,
 };

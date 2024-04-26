@@ -142,6 +142,7 @@ const AttendanceLeave = () => {
     const options = { year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString("en-GB", options);
   };
+
   return (
     <>
       <Container>
@@ -253,6 +254,7 @@ const AttendanceLeave = () => {
                                     <th>Leave Date</th>
                                     <th>Leave Reason</th>
                                     <th>Leave Status</th>
+                                    <th>Created at</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -273,6 +275,13 @@ const AttendanceLeave = () => {
                                         <td>{formattedLeaveDates}</td>
                                         <td>{item.leave_reason}</td>
                                         <td>{item.leave_status}</td>
+                                        <td>
+                                          {item.created_at?.split("T")[0]
+                                            ? moment(
+                                                item.created_at?.split("T")[0]
+                                              ).format("DD/MM/YYYY")
+                                            : ""}
+                                        </td>
                                       </tr>
                                     );
                                   })}

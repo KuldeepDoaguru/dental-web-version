@@ -6,6 +6,7 @@ import { FaCodeBranch } from "react-icons/fa";
 import { TbReportSearch } from "react-icons/tb";
 import { IoIosPeople } from "react-icons/io";
 import { AiFillBell } from "react-icons/ai";
+import { BsFileEarmarkPerson } from "react-icons/bs";
 
 const SiderAdmin = () => {
   const location = useLocation();
@@ -162,7 +163,28 @@ const SiderAdmin = () => {
                 </Link>
               </li>
               <hr />
-
+              <li>
+                <Link
+                  to="/attendance-dashboard"
+                  className={`link-div ${getSidebarClass(
+                    "/attendance-dashboard"
+                  )}`}
+                >
+                  <div>
+                    {/* <i className="fs-4 bi bi-house-door-fill"></i> */}
+                    <BsFileEarmarkPerson className="fs-2 text-dark" />
+                  </div>
+                  <div>
+                    <h3
+                      className="d-none d-sm-inline fs-6 icon-text"
+                      id="navleft1"
+                    >
+                      Attendance
+                    </h3>
+                  </div>
+                </Link>
+              </li>
+              <hr />
               <li>
                 <Link
                   to="/admin-reports-dashboard"

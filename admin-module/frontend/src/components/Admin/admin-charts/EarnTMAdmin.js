@@ -58,7 +58,7 @@ const EarnTMAdmin = () => {
   const formattedDate = `${year}-${month}`;
 
   const filterForPayStatus = appointmentList?.filter((item) => {
-    return item.payment_status === "success";
+    return item.payment_status === "paid";
   });
 
   // console.log(filterForPayStatus);
@@ -77,7 +77,9 @@ const EarnTMAdmin = () => {
   filterForPayStatus.forEach((item) => {
     const date = item.payment_date_time.split("T")[0];
     totalAmountPerDay[date] =
-      (totalAmountPerDay[date] || 0) + parseFloat(item.net_amount);
+      (totalAmountPerDay[date] || 0) +
+      parseFloat(item.paid_amount) +
+      parseFloat(item.pay_by_sec_amt);
   });
 
   console.log(totalAmountPerDay);

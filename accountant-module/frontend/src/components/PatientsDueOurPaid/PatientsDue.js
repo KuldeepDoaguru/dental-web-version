@@ -14,6 +14,8 @@ const PatientsDue = () => {
   );
   console.log("User State:", user);
   const [patBill, setPatBill] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const getPatBills = async () => {
     try {
@@ -38,6 +40,21 @@ const PatientsDue = () => {
   }, []);
 
   console.log(patBill);
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filterForUnPaidBills.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const nextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
 
   return (
     <>
@@ -81,7 +98,7 @@ const PatientsDue = () => {
                               </thead>
 
                               <tbody>
-                                {filterForUnPaidBills?.map((item) => (
+                                {currentItems?.map((item) => (
                                   <>
                                     <tr className="table-row">
                                       <td className="table-sno">
@@ -133,6 +150,24 @@ const PatientsDue = () => {
                               </tbody>
                             </table>
                           </div>
+                          <div className="d-flex justify-content-center mt-3">
+                            <button
+                              className="btn btn-primary mx-2"
+                              onClick={prevPage}
+                              disabled={currentPage === 1}
+                            >
+                              Previous Page
+                            </button>
+                            <button
+                              className="btn btn-primary mx-2"
+                              onClick={nextPage}
+                              disabled={
+                                indexOfLastItem >= filterForUnPaidBills.length
+                              }
+                            >
+                              Next Page
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -150,7 +185,6 @@ const PatientsDue = () => {
 export default PatientsDue;
 const Container = styled.div`
   .table-responsive {
-    height: 30rem;
     overflow: auto;
   }
 
@@ -159,6 +193,10 @@ const Container = styled.div`
     color: #fff;
     font-weight: bold;
     position: sticky;
+    white-space: nowrap;
+  }
+  td {
+    white-space: nowrap;
   }
 
   .sticky {

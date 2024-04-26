@@ -93,7 +93,8 @@ const SecurityAmtPrint = () => {
                       {": "}
                       {recData[0]?.uhid}
                     </td>
-
+                  </tr>
+                  <tr>
                     <th scope="col" className="text-start">
                       Branch Name
                     </th>
@@ -101,8 +102,7 @@ const SecurityAmtPrint = () => {
                       {": "}
                       {recData[0]?.branch_name}
                     </td>
-                  </tr>
-                  <tr>
+
                     <th scope="col" className="text-start">
                       Name
                     </th>
@@ -110,6 +110,8 @@ const SecurityAmtPrint = () => {
                       {": "}
                       {recData[0]?.patient_name}
                     </td>
+                  </tr>
+                  <tr>
                     <th scope="col" className="text-start pe-5">
                       Mobile No
                     </th>
@@ -125,7 +127,6 @@ const SecurityAmtPrint = () => {
                       {recData[0]?.date.split("T")[0]}
                     </td>
                   </tr>
-                  <tr></tr>
                   <tr>
                     <th scope="col" className="text-start">
                       Doctor Name
@@ -142,6 +143,8 @@ const SecurityAmtPrint = () => {
                       {": "}
                       {recData[0]?.payment_date.split(" ")[0]}
                     </td>
+                  </tr>
+                  <tr>
                     <th scope="col" className="text-start">
                       Payment Mode
                     </th>
@@ -149,8 +152,7 @@ const SecurityAmtPrint = () => {
                       {": "}
                       {recData[0]?.payment_Mode}
                     </td>
-                  </tr>
-                  <tr>
+
                     {recData[0]?.payment_Mode === "online" && (
                       <>
                         <th scope="col" className="text-start">
@@ -162,6 +164,8 @@ const SecurityAmtPrint = () => {
                         </td>{" "}
                       </>
                     )}
+                  </tr>
+                  <tr>
                     <th scope="col" className="text-start">
                       Payment Status
                     </th>
@@ -170,7 +174,6 @@ const SecurityAmtPrint = () => {
                       {recData[0]?.payment_status}
                     </td>
                   </tr>
-                  <tr></tr>
                 </tbody>
               </table>
             </div>

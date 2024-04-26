@@ -91,7 +91,7 @@ const VoucherReport = () => {
                   </div>
                 </div>
                 <div className="container">
-                  <div class="table-responsive mt-4">
+                  <div class="mt-4">
                     <div className="d-flex justify-content-between mb-2">
                       <form>
                         <div className="d-flex justify-content-between">
@@ -187,8 +187,15 @@ const Container = styled.div`
     font-weight: bold;
     color: white;
   }
+  .table-responsive {
+    height: 30rem;
+    overflow: auto;
+  }
   th {
     background-color: #201658;
     color: white;
+  }
+  td {
+    white-space: nowrap;
   }
 `;

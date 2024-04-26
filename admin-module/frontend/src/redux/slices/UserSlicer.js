@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
   name: "user",
   initialState: { name: "", id: null },
+  refreshTable: false,
   reducers: {
     setUser: (state, action) => {
       state.name = action.payload.name;
@@ -13,10 +14,13 @@ const userSlice = createSlice({
       state.name = "";
       state.id = null;
     },
+    toggleTableRefresh: (state) => {
+      state.refreshTable = !state.refreshTable;
+    },
   },
 });
 
 // console.log(setUser);
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, toggleTableRefresh } = userSlice.actions;
 export default userSlice.reducer;

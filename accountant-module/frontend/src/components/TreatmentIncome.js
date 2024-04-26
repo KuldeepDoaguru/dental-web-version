@@ -19,6 +19,8 @@ const TreatmentIncome = () => {
   console.log("User State:", user);
   const [treatAmount, setTreatAmount] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const getTreatmentAmt = async () => {
     try {
@@ -26,6 +28,7 @@ const TreatmentIncome = () => {
         `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getTreatmentTotal/${user.branch}`
       );
       setTreatAmount(data.results);
+      console.log(data.results);
     } catch (error) {
       console.log(error);
     }
@@ -206,6 +209,18 @@ const TreatmentIncome = () => {
     setData();
   }, [treatAmount]);
 
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = selectedData.slice(indexOfFirstItem, indexOfLastItem);
+
+  const nextPage = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+
+  const prevPage = () => {
+    setCurrentPage((prevPage) => prevPage - 1);
+  };
+
   return (
     <>
       <Container>
@@ -363,7 +378,7 @@ const TreatmentIncome = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {selectedData
+                        {currentItems
                           ?.filter((val) => {
                             const name = val.patient_name.toLowerCase();
                             const lowerKeyword = keyword.toLowerCase();
@@ -428,6 +443,22 @@ const TreatmentIncome = () => {
                           ))}
                       </tbody>
                     </table>
+                  </div>
+                  <div className="d-flex justify-content-center mt-3">
+                    <button
+                      className="btn btn-primary mx-2"
+                      onClick={prevPage}
+                      disabled={currentPage === 1}
+                    >
+                      Previous Page
+                    </button>
+                    <button
+                      className="btn btn-primary mx-2"
+                      onClick={nextPage}
+                      disabled={indexOfLastItem >= selectedData.length}
+                    >
+                      Next Page
+                    </button>
                   </div>
                 </div>
               </div>

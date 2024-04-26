@@ -46,7 +46,7 @@ const PatientVisTMAdmin = () => {
   const formattedDate = `${year}-${month}`;
 
   const filterByTreated = appointmentList?.filter(
-    (item) => item.treatment_status !== "Appoint"
+    (item) => item.treatment_provided === "OPD"
   );
 
   // Group appointments by date and count appointments for each day

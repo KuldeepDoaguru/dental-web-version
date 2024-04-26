@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-// import numToWords from "num-to-words";
+import numToWords from "num-to-words";
 // import numWords from "num-words";
 
 const PatientBillsByTpid = () => {
@@ -399,7 +399,7 @@ const PatientBillsByTpid = () => {
                   <h4>Total Amount In Words :</h4>
                 </div>
                 <div className="text-word">
-                  {/* <p className="m-0">{numWords(totalBillvalueWithoutGst)}</p> */}
+                  <p className="m-0">{numToWords(totalBillvalueWithoutGst)} {"Rupees"}</p>
                 </div>
               </div>
               <div className="">
@@ -476,7 +476,7 @@ const PatientBillsByTpid = () => {
         </div>
         {/* print button */}
         <div className="container-fluid">
-          <div className="d-flex justify-content-center align-items-center">
+          <div className="d-flex justify-content-center align-items-center my-2">
             <button className="btn btn-info no-print" onClick={handleButton}>
               Print
             </button>
@@ -571,6 +571,8 @@ const Wrapper = styled.div`
   }
   .text-word {
     height: auto;
+    text-transform: uppercase;
+    padding: 2px;
   }
 
   .text-terms {

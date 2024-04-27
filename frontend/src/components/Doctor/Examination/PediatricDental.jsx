@@ -202,7 +202,7 @@ import SaveData from "./SaveExaminationData/SaveData";
 const PediatricDentalTest = ({ tpid }) => {
   console.log(tpid);
   const { id, dcat } = useParams();
-  console.log(id, dcat);
+  console.log(id);
   const [selectedTeeth, setSelectedTeeth] = useState([]);
   const [teethShow, setTeethShow] = useState();
   // const [inputItemList, setInputItemList] = useState([]);
@@ -777,7 +777,7 @@ const PediatricDentalTest = ({ tpid }) => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
 
       const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
@@ -1312,7 +1312,7 @@ const PediatricDentalTest = ({ tpid }) => {
                     </div>
                     <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
                       <div data-mdb-input-init class="form-outline">
-                        <label className="lable">Any Advice</label>
+                        <label className="lable">Advice</label>
                         <input
                           type="text"
                           id="form8Example4"
@@ -1334,7 +1334,7 @@ const PediatricDentalTest = ({ tpid }) => {
                           onChange={handleSelecteditem}
                           value={inputItem.onExamination}
                           class="form-control"
-                          placeholder="ON Examination"
+                          placeholder="Examination"
                         />
                       </div>
                     </div>

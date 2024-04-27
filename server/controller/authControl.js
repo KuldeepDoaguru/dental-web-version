@@ -346,9 +346,10 @@ const addTreatPackageDetails = (req, res) => {
       doctor_id,
       doctor_name,
       diagnosis_category,
+      package_status,
     } = req.body;
     const insertQuery =
-      "INSERT INTO treatment_package (uhid, branch_name, appointment_id, examination_id, doctor_id, doctor_name, diagnosis_category) VALUES (?,?,?,?,?,?,?)";
+      "INSERT INTO treatment_package (uhid, branch_name, appointment_id, examination_id, doctor_id, doctor_name, diagnosis_category, package_status) VALUES (?,?,?,?,?,?,?,?)";
     const insertParams = [
       uhid,
       branch_name,
@@ -357,6 +358,7 @@ const addTreatPackageDetails = (req, res) => {
       doctor_id,
       doctor_name,
       diagnosis_category,
+      package_status,
     ];
     db.query(insertQuery, insertParams, (err, result) => {
       if (err) {
@@ -370,6 +372,7 @@ const addTreatPackageDetails = (req, res) => {
           doctor_id,
           doctor_name,
           diagnosis_category,
+          package_status,
           insertId: result.insertId,
         };
         res.status(200).json({ success: true, result: insertedData });

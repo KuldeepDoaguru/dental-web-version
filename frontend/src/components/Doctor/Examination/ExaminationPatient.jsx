@@ -1729,7 +1729,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                     </div>
                     <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
                       <div data-mdb-input-init class="form-outline">
-                        <label className="lable">Any Advice</label>
+                        <label className="lable">Advice</label>
                         <input
                           type="text"
                           id="form8Example4"
@@ -1743,7 +1743,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                     </div>
                     <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
                       <div data-mdb-input-init class="form-outline">
-                        <label className="lable">ON Examination</label>
+                        <label className="lable">Examination</label>
                         <input
                           type="text"
                           id="form8Example5"
@@ -1751,7 +1751,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                           onChange={handleSelecteditem}
                           value={inputItem.onExamination}
                           class="form-control"
-                          placeholder="ON Examination"
+                          placeholder="Examination"
                         />
                       </div>
                     </div>

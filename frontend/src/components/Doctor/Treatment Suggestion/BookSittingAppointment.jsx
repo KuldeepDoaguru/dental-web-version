@@ -58,7 +58,7 @@ const BookSittingAppointment = ({
     appointment_created_by: employee_name,
     appointment_created_by_ID: employee_ID,
     notes: "",
-    appointment_status: "ongoing",
+    appointment_status: "Appoint",
   });
 
   console.log(data);

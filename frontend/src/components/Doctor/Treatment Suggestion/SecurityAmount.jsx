@@ -173,7 +173,8 @@ const SecurityAmount = () => {
         treatment: formData.treatment,
         assigned_doctor: formData.assigned_doctor,
         amount: formData.amount,
-        remaining_amount: formData.amount,
+        remaining_amount:
+          formData.payment_status === "success" ? formData.amount : 0,
         payment_status: formData.payment_status,
         payment_Mode: formData.payment_Mode,
         transaction_Id: formData.transaction_Id,
@@ -241,7 +242,7 @@ const SecurityAmount = () => {
   // };
 
   const handleChangePage = () => {
-    navigate(`/TreatmentDashBoard/${tpid}`);
+    navigate(`/TreatmentDashBoard/${tpid}/${id}`);
   };
 
   const openSecurityAmountEdit = (item) => {

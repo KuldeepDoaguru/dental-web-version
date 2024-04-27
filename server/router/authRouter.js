@@ -40,6 +40,8 @@ const {
   updateSecurityAmount,
   getExaminedataById,
   getExaminedataByIdandexamine,
+  updateSecurityAmountForRemainingAmount,
+  updateAppointmentStatusAfterTreat,
 } = require("../controller/authAppointTable.js");
 const {
   getBranch,
@@ -156,7 +158,10 @@ router.get(
 );
 
 // just for testing treatment suggest sitting logic
-router.get("/appointtreatSitting", getAppointmentsWithPatientDetailsTreatSugg);
+router.get(
+  "/getAppointmentsWithPatientDetailsTreatSugg/:doctor_id",
+  getAppointmentsWithPatientDetailsTreatSugg
+);
 // Appointment Routes END here......
 
 // Branch Routes START here......
@@ -343,4 +348,13 @@ router.get("/getPrescriptionViaUhid/:branch/:uhid", getPrescriptionViaUhid);
 router.put("/updateTreatmentStatus/:branch/:tpid", updateTreatmentStatus);
 // router.get('/getAllAppointmentByPatientId/:branch/:patientId',getAllAppointmentByPatientuhiId)
 router.get("/getTreatPackageViaTpidUhid/:branch", getTreatPackageViaTpidUhid);
+router.put(
+  "/updateSecurityAmountForRemainingAmount/:said",
+  updateSecurityAmountForRemainingAmount
+);
+
+router.put(
+  "/updateAppointmentStatusAfterTreat/:appoint_id",
+  updateAppointmentStatusAfterTreat
+);
 module.exports = { authRoutes: router };

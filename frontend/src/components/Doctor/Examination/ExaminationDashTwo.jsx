@@ -24,6 +24,7 @@ const ExaminationDashTwo = () => {
     doctor_id: user.currentUser.employee_ID,
     doctor_name: user.currentUser.employee_name,
     diagnosis_category: dcat,
+    package_status: "ongoing",
   });
 
   console.log(treatData);
@@ -46,6 +47,7 @@ const ExaminationDashTwo = () => {
   };
 
   const addPackageTreat = async (updatedTreatData) => {
+    console.log(updatedTreatData);
     try {
       const { data } = await axios.post(
         "https://dentalgurudoctor.doaguru.com/api/doctor/addTreatPackageDetails",
@@ -88,6 +90,7 @@ const ExaminationDashTwo = () => {
       addPackageTreat(updatedTreatData);
     }
   }, [dcat]);
+
   return (
     <>
       <Wrapper>

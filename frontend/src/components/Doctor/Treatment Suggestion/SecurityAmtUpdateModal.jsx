@@ -15,6 +15,7 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
   console.log(branch);
   const [formData, setFormData] = useState({
     amount: "",
+    remaining_amount: "",
     payment_status: "",
     payment_Mode: "",
     transaction_Id: "",
@@ -30,7 +31,8 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
     if (name === "payment_status" && value === "success") {
       updatedFormData = {
         ...updatedFormData,
-        payment_date: new Date().toISOString().slice(0, 10), // Set the current date in YYYY-MM-DD format
+        payment_date: new Date().toISOString().slice(0, 10),
+        remaining_amount: formData.amount,
       };
     }
 
@@ -41,7 +43,7 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/updateSecurityAmount/${selectedData.sa_id}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateSecurityAmountForRemainingAmount/${selectedData.sa_id}`,
         formData
       );
       cogoToast.success("security amount detail updated");

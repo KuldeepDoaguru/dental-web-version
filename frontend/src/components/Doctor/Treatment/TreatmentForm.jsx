@@ -202,7 +202,7 @@ const TreatmentForm = () => {
         getPatientDetail();
         getTreatmentList();
         navigate(
-          `/TPrescriptionDash/${tsid}/${tp_id}/${treatments[0]?.current_sitting}/${treatment}`
+          `/TPrescriptionDash/${tsid}/${appoint_id}/${tp_id}/${treatments[0]?.current_sitting}/${treatment}`
         );
         // navigate(`/TreatmentDashBoard/${appoint_id}/${tp_id}`);
       } else {
@@ -570,11 +570,12 @@ const TreatmentForm = () => {
                       <label htmlFor="" class="form-label fw-bold">
                         Remaining Security Amount :{" "}
                         <strong style={{ color: "red" }}>
-                          {remaining_amount}
+                          {securityAmt[0]?.remaining_amount}
                         </strong>
                       </label>
                       <div>
-                        {remaining_amount > 0 && formData.disc_amt ? (
+                        {securityAmt[0]?.remaining_amount > 0 &&
+                        formData.disc_amt ? (
                           !showDirect ? (
                             <button
                               type="button"
@@ -641,12 +642,12 @@ const TreatmentForm = () => {
                           <>
                             {" "}
                             <option value="">-select-</option>
-                            <option value="Recieved">Yes</option>
+                            <option value="Received">Yes</option>
                             <option value="Pending">No</option>
                           </>
                         ) : (
                           <>
-                            <option value="Recieved">Recieved</option>
+                            <option value="Received">Received</option>
                           </>
                         )}
                       </select>

@@ -21,6 +21,7 @@ const AppointTable = () => {
   const { refreshTable } = useSelector((state) => state.user);
   const user = useSelector((state) => state.user);
   const doctor = user.currentUser.employee_name;
+  const doctorId = user.currentUser.employee_ID;
   const branch = user.currentUser.branch_name;
   console.log(branch);
   // const [selectedActions, setSelectedActions] = useState({});
@@ -30,33 +31,28 @@ const AppointTable = () => {
     currentDate.setDate(currentDate.getDate() + increment);
     setSelectedDate(currentDate.toISOString().split("T")[0]);
   };
+  console.log(selectedDate);
+  const fetchAppointments = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsTreatSugg/${doctorId}`
+      );
+      setAppointments(data);
+    } catch (error) {
+      console.error("Error fetching appointments:", error.message);
+    }
+  };
+
+  console.log(appointments);
+
+  const filteredData = appointments?.filter((item) => {
+    return item.appointment_dateTime.split("T")[0] === selectedDate;
+  });
+  // setAppointments(appointments);
+  console.log(filteredData);
 
   useEffect(() => {
-    console.log("AppointTable is refreshing...");
-    const fetchAppointments = async () => {
-      try {
-        const res = await axios.get(
-          `https://dentalgurudoctor.doaguru.com/api/doctor/appointtreatSitting?date=${selectedDate}`
-        );
-        setAppointments(res.data.result);
-        const filteredData = res.data.result.filter(
-          (item) =>
-            item.appointment_dateTime.includes(selectedDate) &&
-            item.patient_name
-              .toLowerCase()
-              .includes(searchInput.toLowerCase()) &&
-            item.assigned_doctor_name.toLowerCase() === doctor.toLowerCase()
-        );
-        // setAppointments(appointments);
-        setFilterTableData(filteredData);
-        console.log(res.data.result);
-      } catch (error) {
-        console.error("Error fetching appointments:", error.message);
-      }
-    };
-
     fetchAppointments();
-
     // Refresh every 5 seconds
     const interval = setInterval(() => {
       dispatch(toggleTableRefresh());
@@ -68,6 +64,7 @@ const AppointTable = () => {
     };
   }, [selectedDate, searchInput, dispatch, doctor, refreshTable]);
 
+  console.log(appointments);
   const handleChange = (event) => {
     const searchTerm = event.target.value.toLowerCase();
     setSearchInput(searchTerm);
@@ -130,6 +127,12 @@ const AppointTable = () => {
     }
   };
 
+  // const filterForPendingTp = treatData?.filter((item) => {
+  //   return item.tp_id === tp_id && item.package_status !== null;
+  // });
+
+  // console.log(filterForPendingTp);
+
   console.log(treatData);
 
   useEffect(() => {
@@ -175,10 +178,10 @@ const AppointTable = () => {
         timelineForStartTreat(uhid);
         // alert(appointment_status);
         const filterForPendingTp = treatData?.filter((item) => {
-          return (item.tp_id = tpid);
+          return item.tp_id === tpid && item.package_status === "ongoing";
         });
-        if (filterForPendingTp?.package_status !== "completed") {
-          navigate(`/TreatmentDashBoard/${tpid}`);
+        if (filterForPendingTp.length > 0) {
+          navigate(`/TreatmentDashBoard/${tpid}/${appointId}`);
         } else {
           navigate(`/examination-Dashboard/${appointId}/${uhid}`);
         }
@@ -263,7 +266,7 @@ const AppointTable = () => {
                 </tr>
               </thead>
               <tbody>
-                {filterTableData.map((item, index) => (
+                {filteredData.map((item, index) => (
                   <tr key={index}>
                     <td>{item.appoint_id}</td>
                     <td>
@@ -331,7 +334,7 @@ const AppointTable = () => {
                                     Cancel Treatment
                                   </button>
                                 </li>
-                                <li>
+                                {/* <li>
                                   <button
                                     className="dropdown-item mx-0"
                                     onClick={() =>
@@ -344,7 +347,7 @@ const AppointTable = () => {
                                   >
                                     Hold
                                   </button>
-                                </li>
+                                </li> */}
                               </>
                             )}
                         </ul>

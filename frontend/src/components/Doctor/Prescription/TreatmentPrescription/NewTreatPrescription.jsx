@@ -9,8 +9,8 @@ import { FaLocationArrow } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 
 const NewTreatPrescription = () => {
-  const { tsid, id, tpid, sitting, treatment } = useParams();
-  console.log(id);
+  const { tsid, id, appoint_id, tpid, sitting, treatment } = useParams();
+  console.log(appoint_id);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -297,6 +297,22 @@ const NewTreatPrescription = () => {
     }
   };
 
+  //appointment status update api
+  const updateAppointStatus = async () => {
+    try {
+      const res = await axios.put(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateAppointmentStatusAfterTreat/${appoint_id}`,
+        {
+          status: "Complete",
+        }
+      );
+      console.log(res);
+      alert("appointment status updated");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleNavigate = async () => {
     try {
       // Make the API call to fetch bill data
@@ -305,10 +321,12 @@ const NewTreatPrescription = () => {
       );
       console.log("Bill data fetched successfully");
       timelineForBill();
-
+      updateAppointStatus();
       // Check if bill data was fetched successfully
       if (billResponse.data.success) {
-        navigate(`/ViewTreatPrescription/${tpid}/${sitting}/${treatment}`);
+        navigate(
+          `/ViewTreatPrescription/${tpid}/${appoint_id}/${sitting}/${treatment}`
+        );
       } else {
         console.error("Error fetching bill data:", billResponse.data.message);
       }
@@ -532,62 +550,72 @@ const NewTreatPrescription = () => {
                 <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Dosage</label>
-                    <input
-                      type="text"
-                      id="dosage"
-                      placeholder="dosage"
-                      className="form-control"
-                      name="dosage"
-                      value={prescriptionData.dosage}
-                      onChange={handleChange}
-                    />
+                    {prescriptionData.medicine_name !== "" && (
+                      <input
+                        type="text"
+                        id="dosage"
+                        placeholder="dosage"
+                        className="form-control"
+                        name="dosage"
+                        value={prescriptionData.dosage}
+                        onChange={handleChange}
+                      />
+                    )}
                   </div>
                 </div>
                 <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Frequency</label>
-                    <select
-                      id="frequency"
-                      className="form-control"
-                      name="frequency"
-                      value={prescriptionData?.frequency}
-                      onChange={handleChange}
-                    >
-                      <option value="">Choose frequency</option>
-                      <option value="1-1-1(TDS)">1-1-1(TDS)</option>
-                      <option value="1-1-0(BD)">1-1-0(BD)</option>
-                      <option value="0-1-1(BD)">0-1-1(BD)</option>
-                      <option value="1-0-1(BD)">1-0-1(BD)</option>
-                      <option value="0-0-1(HS)">0-0-1(HS)</option>
-                      <option value="0-1-0(OD)">0-1-0(OD)</option>
-                      <option value="1-0-0(BM)">1-0-0(BM)</option>
-                      <option value="SOS">SOS</option>
-                    </select>
+                    {prescriptionData.medicine_name !== "" && (
+                      <>
+                        <select
+                          id="frequency"
+                          className="form-control"
+                          name="frequency"
+                          value={prescriptionData?.frequency}
+                          onChange={handleChange}
+                        >
+                          <option value="">Choose frequency</option>
+                          <option value="1-1-1(TDS)">1-1-1(TDS)</option>
+                          <option value="1-1-0(BD)">1-1-0(BD)</option>
+                          <option value="0-1-1(BD)">0-1-1(BD)</option>
+                          <option value="1-0-1(BD)">1-0-1(BD)</option>
+                          <option value="0-0-1(HS)">0-0-1(HS)</option>
+                          <option value="0-1-0(OD)">0-1-0(OD)</option>
+                          <option value="1-0-0(BM)">1-0-0(BM)</option>
+                          <option value="SOS">SOS</option>
+                        </select>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Duration</label>
-                    <select
-                      id="duration"
-                      className="form-control"
-                      name="duration"
-                      value={prescriptionData.duration}
-                      onChange={handleChange}
-                    >
-                      <option value="">Choose duration</option>
-                      <option value="1 day">1 day</option>
-                      <option value="2 days">2 days</option>
-                      <option value="3 days">3 days</option>
-                      <option value="4 days">4 days</option>
-                      <option value="5 days">5 days</option>
-                      <option value="6 days">6 days</option>
-                      <option value="1 week">1 week</option>
-                      <option value="2 weeks">2 weeks</option>
-                      <option value="3 weeks">3 weeks</option>
-                      <option value="1 Month">1 Month</option>
-                      <option value="3 Months">3 Months</option>
-                    </select>
+                    {prescriptionData.medicine_name !== "" && (
+                      <>
+                        <select
+                          id="duration"
+                          className="form-control"
+                          name="duration"
+                          value={prescriptionData.duration}
+                          onChange={handleChange}
+                        >
+                          <option value="">Choose duration</option>
+                          <option value="1 day">1 day</option>
+                          <option value="2 days">2 days</option>
+                          <option value="3 days">3 days</option>
+                          <option value="4 days">4 days</option>
+                          <option value="5 days">5 days</option>
+                          <option value="6 days">6 days</option>
+                          <option value="1 week">1 week</option>
+                          <option value="2 weeks">2 weeks</option>
+                          <option value="3 weeks">3 weeks</option>
+                          <option value="1 Month">1 Month</option>
+                          <option value="3 Months">3 Months</option>
+                        </select>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="col-xxl-4 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">

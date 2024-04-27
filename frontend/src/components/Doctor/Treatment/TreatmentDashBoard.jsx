@@ -6,9 +6,8 @@ import { useParams } from "react-router-dom";
 import NewTreatment from "./NewTreatment";
 
 const TreatmentDashBoard = () => {
-  const { id } = useParams();
-  const { tpid } = useParams();
-  console.log(id);
+  const { tpid, appoint_id } = useParams();
+  console.log(appoint_id);
   return (
     <>
       <Wrapper>

@@ -9,11 +9,11 @@ import { GiFastBackwardButton } from "react-icons/gi";
 import SittingProcessModal from "../Examination/SaveExaminationData/SittingProcessModal";
 
 const NewTreatment = () => {
-  const { id } = useParams();
-  const { tpid } = useParams();
+  const { tpid, appoint_id } = useParams();
+  console.log(appoint_id);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedData, setSelectedData] = useState();
-  console.log(id, tpid);
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const { refreshTable, currentUser } = useSelector((state) => state.user);
@@ -93,7 +93,7 @@ const NewTreatment = () => {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByID/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByID/${appoint_id}`
       );
       setVdata(data);
     } catch (error) {

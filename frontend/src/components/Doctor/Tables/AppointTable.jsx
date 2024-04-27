@@ -146,7 +146,7 @@ const AppointTable = () => {
     appointment_status,
     tpid
   ) => {
-    console.log(appointment_status, tpid);
+    console.log(appointment_status, tpid, uhid);
     try {
       let requestBody = {
         action,
@@ -206,7 +206,7 @@ const AppointTable = () => {
           <div className="d-flex justify-content-between mb-3 widget-header appointMain">
             <h5 className="widget-title m-0 pt-2" id="title">
               Current Appointment
-              <h5 className="d-inline">Total - {filterTableData.length}</h5>
+              <h5 className="d-inline">Total - {filteredData.length}</h5>
             </h5>
 
             <div className="pt-1">
@@ -239,102 +239,104 @@ const AppointTable = () => {
               id="form12"
             />
           </div>
-          <div className="table-responsive ">
-            <table
-              className="table table-bordered table-striped border"
-              style={{ overflowX: "scroll" }}
-            >
-              <thead>
-                <tr>
-                  <th>A.Id</th>
-                  <th>P.Id</th>
-                  <th>Patient Name</th>
-                  <th>Mobile</th>
-                  <th>Timing</th>
-                  <th>Treatment</th>
-                  <th>Blood Group</th>
-                  <th>DOB</th>
-                  <th>Age</th>
-                  <th>Weight</th>
-                  <th>Allergy</th>
-                  <th>Disease</th>
-                  <th>Patient Type</th>
-                  <th>Note</th>
-                  <th>Sitting</th>
-                  <th>Status</th>
-                  <th>Type of Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredData.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.appoint_id}</td>
-                    <td>
-                      <Link to={`/Patient-profile/${item.uhid}`}>
-                        {item.uhid}
-                      </Link>
-                    </td>
-                    <td>{item.patient_name}</td>
-                    <td>{item.mobileno}</td>
-                    <td>{item.appointment_dateTime}</td>
-                    <td>{item.treatment_provided}</td>
-                    <td>{item.bloodgroup}</td>
-                    <td>{item.dob}</td>
-                    <td>{item.age}</td>
-                    <td>{item.weight}</td>
-                    <td>{item.allergy}</td>
-                    <td>{item.disease}</td>
-                    <td>{item.patient_type}</td>
-                    <td>{item.notes}</td>
-                    <td>{item.sitting_result}</td>
-                    <td>{item.appointment_status}</td>
-                    <td>
-                      <div className="dropdown">
-                        <button
-                          className="btn btn-secondary dropdown-toggle"
-                          type="button"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          Action
-                        </button>
-                        {/* Option 1 */}
-                        <ul className="dropdown-menu">
-                          {item.appointment_status !== "Complete" &&
-                            item.appointment_status !== "Check Out" &&
-                            item.appointment_status !== "Appoint" && (
-                              <>
-                                <li>
-                                  <button
-                                    className="dropdown-item mx-0"
-                                    onClick={() =>
-                                      handleAction(
-                                        "in treatment",
-                                        item.appoint_id,
-                                        item.uhid,
-                                        item.appointment_status,
-                                        item.tp_id
-                                      )
-                                    }
-                                  >
-                                    Start Treatment
-                                  </button>
-                                </li>
-                                <li>
-                                  <button
-                                    className="dropdown-item mx-0"
-                                    onClick={() =>
-                                      handleAction(
-                                        "Cancel",
-                                        item.appoint_id,
-                                        item.uhid
-                                      )
-                                    }
-                                  >
-                                    Cancel Treatment
-                                  </button>
-                                </li>
-                                {/* <li>
+          {filteredData.length > 0 ? (
+            <>
+              <div className="table-responsive ">
+                <table
+                  className="table table-bordered table-striped border"
+                  style={{ overflowX: "scroll" }}
+                >
+                  <thead>
+                    <tr>
+                      <th>Appointment ID</th>
+                      <th>UHID</th>
+                      <th>Patient Name</th>
+                      <th>Mobile</th>
+                      <th>Timing</th>
+                      <th>Treatment</th>
+                      <th>Blood Group</th>
+                      <th>DOB</th>
+                      <th>Age</th>
+                      <th>Weight</th>
+                      <th>Allergy</th>
+                      <th>Disease</th>
+                      <th>Patient Type</th>
+                      <th>Note</th>
+                      <th>Sitting</th>
+                      <th>Status</th>
+                      <th>Type of Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredData.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.appoint_id}</td>
+                        <td>
+                          <Link to={`/Patient-profile/${item.patient_uhid}`}>
+                            {item.patient_uhid}
+                          </Link>
+                        </td>
+                        <td>{item.patient_name}</td>
+                        <td>{item.mobileno}</td>
+                        <td>{item.appointment_dateTime?.split("T")[1]}</td>
+                        <td>{item.treatment_provided}</td>
+                        <td>{item.bloodgroup}</td>
+                        <td>{item.dob}</td>
+                        <td>{item.age}</td>
+                        <td>{item.weight}</td>
+                        <td>{item.allergy}</td>
+                        <td>{item.disease}</td>
+                        <td>{item.patient_type}</td>
+                        <td>{item.notes}</td>
+                        <td>{item.current_sitting + 1}</td>
+                        <td>{item.appointment_status}</td>
+                        <td>
+                          <div className="dropdown">
+                            <button
+                              className="btn btn-secondary dropdown-toggle"
+                              type="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              Action
+                            </button>
+                            {/* Option 1 */}
+                            <ul className="dropdown-menu">
+                              {item.appointment_status !== "Complete" &&
+                                item.appointment_status !== "Check Out" &&
+                                item.appointment_status !== "Appoint" && (
+                                  <>
+                                    <li>
+                                      <button
+                                        className="dropdown-item mx-0"
+                                        onClick={() =>
+                                          handleAction(
+                                            "in treatment",
+                                            item.appoint_id,
+                                            item.patient_uhid,
+                                            item.appointment_status,
+                                            item.tp_id
+                                          )
+                                        }
+                                      >
+                                        Start Treatment
+                                      </button>
+                                    </li>
+                                    <li>
+                                      <button
+                                        className="dropdown-item mx-0"
+                                        onClick={() =>
+                                          handleAction(
+                                            "Cancel",
+                                            item.appoint_id,
+                                            item.uhid
+                                          )
+                                        }
+                                      >
+                                        Cancel Treatment
+                                      </button>
+                                    </li>
+                                    {/* <li>
                                   <button
                                     className="dropdown-item mx-0"
                                     onClick={() =>
@@ -348,16 +350,23 @@ const AppointTable = () => {
                                     Hold
                                   </button>
                                 </li> */}
-                              </>
-                            )}
-                        </ul>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                                  </>
+                                )}
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            <>
+              <hr />
+              <p>No Appointments Today</p>
+            </>
+          )}
         </div>
       </div>
     </Wrapper>

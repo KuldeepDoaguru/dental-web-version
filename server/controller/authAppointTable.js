@@ -280,9 +280,9 @@ const getAppointmentsWithPatientDetailsTreatSugg = (req, res) => {
   const sql = `
   SELECT a.*, pd.*, tp.*, ts.ts_id, ts.tp_id, ts.branch_name, ts.desease, ts.treatment_name, ts.totalCost, ts.treatment_status, ts.consider_sitting, ts.total_sitting, ts.current_sitting
   FROM appointments AS a
-  JOIN patient_details AS pd ON a.patient_uhid = pd.uhid 
-  JOIN treatment_package AS tp ON a.tp_id = tp.tp_id
-  JOIN treat_suggest AS ts ON tp.tp_id = ts.tp_id 
+  LEFT JOIN patient_details AS pd ON a.patient_uhid = pd.uhid 
+  LEFT JOIN treatment_package AS tp ON a.tp_id = tp.tp_id
+  LEFT JOIN treat_suggest AS ts ON tp.tp_id = ts.tp_id 
   WHERE a.assigned_doctor_id = ?
 `;
 

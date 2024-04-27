@@ -137,6 +137,7 @@ const DoctorLogin = () => {
                                 type="email"
                                 name="email"
                                 id="email"
+                                required
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="form-control"
@@ -158,6 +159,7 @@ const DoctorLogin = () => {
                                 name="password"
                                 type="password"
                                 id="password"
+                                required
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="form-control"

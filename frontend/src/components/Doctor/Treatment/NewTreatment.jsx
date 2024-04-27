@@ -248,6 +248,7 @@ const NewTreatment = () => {
             onClose={() => setShowEditPopup(false)}
             selectedData={selectedData}
             uhid={getPatientData[0]?.uhid}
+            appoint_id={appoint_id}
           />
         )}
         <div>

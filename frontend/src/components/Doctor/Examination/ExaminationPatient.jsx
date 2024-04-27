@@ -991,7 +991,7 @@ const ExaminationPatientTest = ({ tpid }) => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
 
       const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;

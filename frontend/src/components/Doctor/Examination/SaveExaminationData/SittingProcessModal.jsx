@@ -9,7 +9,7 @@ import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
 
-const SittingProcessModal = ({ onClose, selectedData, uhid }) => {
+const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -68,7 +68,7 @@ const SittingProcessModal = ({ onClose, selectedData, uhid }) => {
       setTreat(data.result.consider_sitting);
       timelineForSitting();
       navigate(
-        `/treatmentDashTwo/${selectedData.ts_id}/${selectedData.appoint_id}/${selectedData.tp_id}/${selectedData.treatment_name}`
+        `/treatmentDashTwo/${selectedData.ts_id}/${appoint_id}/${selectedData.tp_id}/${selectedData.treatment_name}`
       );
     } catch (error) {
       console.log(error);

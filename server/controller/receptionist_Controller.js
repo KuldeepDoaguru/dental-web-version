@@ -427,7 +427,7 @@ const updatePatientDetails = (req, res) => {
 const getPatients = (req, res) => {
   const branch = req.params.branch;
   try {
-    const sql = "SELECT * FROM patient_details WHERE branch_name = ?";
+    const sql = "SELECT * FROM patient_details WHERE branch_name = ? ORDER BY created_at DESC";
 
     db.query(sql, [branch], (err, results) => {
       if (err) {
@@ -2103,7 +2103,7 @@ const getPatientTimeline = (req, res) => {
   const branch = req.params.branch;
   try {
     const sql =
-      "SELECT * FROM patient_timeline WHERE uhid = ? AND branch_name = ?";
+      "SELECT * FROM patient_timeline WHERE uhid = ? AND branch_name = ? ORDER BY event_id DESC";
 
     db.query(sql, [patientId, branch], (err, results) => {
       if (err) {

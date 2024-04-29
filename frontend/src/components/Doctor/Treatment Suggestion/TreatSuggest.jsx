@@ -124,7 +124,7 @@ const TreatSuggest = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
       setGetPatientData(res.data.result);
       console.log(res.data.result);
@@ -170,6 +170,8 @@ const TreatSuggest = () => {
     return treatment?.treatment_cost;
   };
 
+  console.log(getPatientData);
+
   useEffect(() => {
     const calculatedValue = calculateTotalCost();
     setValue(calculatedValue);
@@ -178,7 +180,7 @@ const TreatSuggest = () => {
   const forms = {
     appoint_id: id,
     branch: branch,
-    p_uhid: formData.p_uhid,
+    p_uhid: getPatientData[0]?.uhid,
     tp_id: tpid,
     desease: formData.desease,
     treatment_procedure: formData.treatment_procedure,

@@ -924,17 +924,40 @@ const ExaminationPatientTest = ({ tpid }) => {
     }
   };
 
+  const getPatientDetail = async () => {
+    try {
+      const res = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+      );
+
+      const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
+      setInputItem((prevInputItem) => ({
+        ...prevInputItem,
+        patient_uhid: uhid,
+      }));
+
+      setGetPatientData(res.data.result);
+      console.log(res.data.result[0].uhid);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPatientDetail();
+  }, []);
+
   const formData = {
     appointment_id: id,
     tpid: tpid,
     branch: branch,
-    patient_uhid: inputItem.patient_uhid,
+    patient_uhid: getPatientData[0]?.uhid,
     selectedTeeth: inputItem.selectTeeth.join(", "),
     disease: inputItem.desease,
     chiefComplain: inputItem.chiefComplain,
     advice: inputItem.advice,
     onExamination: inputItem.onExamination,
-    diagnosis_category: inputItem.diagnosis_category,
+    diagnosis_category: dcat,
   };
 
   console.log(formData);
@@ -987,29 +1010,6 @@ const ExaminationPatientTest = ({ tpid }) => {
       navigate(`/ExaminationDashBoardPediatric/${id}`);
     }
   };
-
-  const getPatientDetail = async () => {
-    try {
-      const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
-      );
-
-      const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
-      setInputItem((prevInputItem) => ({
-        ...prevInputItem,
-        patient_uhid: uhid,
-      }));
-
-      setGetPatientData(res.data.result);
-      console.log(res.data.result[0].uhid);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getPatientDetail();
-  }, []);
 
   const handleSaveContinue = () => {
     // navigate(`/TreatmentDashBoard/${id}`);
@@ -1684,6 +1684,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                           className="form-control input1"
                           placeholder="Selected Teeth Number"
                           readOnly
+                          required
                           //   value={selectedTeeth.join(", ")}
                           value={inputItem.selectTeeth.join(", ")}
                           // onChange={handleSelecteditem}
@@ -1704,6 +1705,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                           }
                           id="form8Example2"
                           placeholder="Dental Condition"
+                          required
                           className="form-control input1"
                         />
                       </div>
@@ -1721,6 +1723,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                           name="chiefComplain"
                           onChange={handleSelecteditem}
                           value={inputItem.chiefComplain}
+                          required
                           id="form8Example3"
                           class="form-control"
                           placeholder="Cheif Complaints"
@@ -1734,6 +1737,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                           type="text"
                           id="form8Example4"
                           name="advice"
+                          required
                           onChange={handleSelecteditem}
                           value={inputItem.advice}
                           class="form-control"
@@ -1749,6 +1753,7 @@ const ExaminationPatientTest = ({ tpid }) => {
                           id="form8Example5"
                           name="onExamination"
                           onChange={handleSelecteditem}
+                          required
                           value={inputItem.onExamination}
                           class="form-control"
                           placeholder="Examination"

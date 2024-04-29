@@ -20,6 +20,7 @@ const NewTreatPrescription = () => {
   const [getExaminData, setGetExaminData] = useState([]);
   const [getTreatData, setGetTreatData] = useState([]);
   const [treatments, setTreatments] = useState([]);
+  const [otherMed, setOtherMed] = useState("");
   const [prescriptionData, setPrescriptionData] = useState({
     branch_name: branch,
     patient_uhid: "",
@@ -352,6 +353,8 @@ const NewTreatPrescription = () => {
     grandTotal(id);
   }, []);
 
+  console.log(otherMed);
+
   return (
     <>
       <Wrapper>
@@ -531,14 +534,16 @@ const NewTreatPrescription = () => {
                 <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div className="form-outline">
                     <label>Medicine Name</label>
+
                     <select
-                      className="form-select w-100"
+                      className={`form-select w-100`}
                       name="medicine_name"
                       aria-label="Default select example"
                       onChange={handleChange}
                       value={prescriptionData.medicine_name}
                     >
                       <option value="">-select medicine-</option>
+                      <option value="other">-other medicine-</option>
                       {medicineOptions.map((item, index) => (
                         <option key={index} value={item}>
                           {item}
@@ -547,6 +552,23 @@ const NewTreatPrescription = () => {
                     </select>
                   </div>
                 </div>
+
+                {prescriptionData.medicine_name === "other" && (
+                  <>
+                    <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
+                      <label>Other Medicine</label>
+                      <input
+                        type="text"
+                        placeholder="other medicine"
+                        className="form-control"
+                        name="otherMed"
+                        value={otherMed}
+                        onChange={(e) => setOtherMed(e.target.value)}
+                      />
+                    </div>
+                  </>
+                )}
+
                 <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Dosage</label>
@@ -563,6 +585,7 @@ const NewTreatPrescription = () => {
                     )}
                   </div>
                 </div>
+
                 <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Frequency</label>

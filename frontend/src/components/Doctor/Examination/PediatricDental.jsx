@@ -706,11 +706,36 @@ const PediatricDentalTest = ({ tpid }) => {
     }
   };
 
+  // console.log(tpid);
+  const getPatientDetail = async () => {
+    try {
+      const res = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+      );
+
+      const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
+      setInputItem((prevInputItem) => ({
+        ...prevInputItem,
+        patient_uhid: uhid,
+      }));
+      console.log(res.data.result);
+      setGetPatientData(res.data.result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPatientDetail();
+  }, []);
+
+  console.log(getPatientData[0]?.uhid);
+
   const formData = {
     appointment_id: id,
     tpid: tpid,
     branch: branch,
-    patient_uhid: inputItem.patient_uhid,
+    patient_uhid: getPatientData[0]?.uhid,
     selectedTeeth: inputItem.selectTeeth.join(", "),
     disease: inputItem.desease,
     chiefComplain: inputItem.chiefComplain,
@@ -773,28 +798,6 @@ const PediatricDentalTest = ({ tpid }) => {
       navigate(`/ExaminationDashBoardPatient/${id}`);
     }
   };
-
-  const getPatientDetail = async () => {
-    try {
-      const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
-      );
-
-      const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
-      setInputItem((prevInputItem) => ({
-        ...prevInputItem,
-        patient_uhid: uhid,
-      }));
-
-      setGetPatientData(res.data.result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getPatientDetail();
-  }, []);
 
   const handleSaveContinue = () => {
     // navigate(`/TreatmentDashBoard/${id}`);
@@ -1319,6 +1322,7 @@ const PediatricDentalTest = ({ tpid }) => {
                           name="advice"
                           onChange={handleSelecteditem}
                           value={inputItem.advice}
+                          required
                           class="form-control"
                           placeholder="Advice"
                         />
@@ -1332,6 +1336,7 @@ const PediatricDentalTest = ({ tpid }) => {
                           id="form8Example5"
                           name="onExamination"
                           onChange={handleSelecteditem}
+                          required
                           value={inputItem.onExamination}
                           class="form-control"
                           placeholder="Examination"

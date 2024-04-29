@@ -7,6 +7,7 @@ import { FaArrowCircleRight } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTableRefresh } from "../../../redux/user/userSlice";
 import cogoToast from "cogo-toast";
+import moment from "moment";
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -278,7 +279,9 @@ const AppointTable = () => {
                         </td>
                         <td>{item.patient_name}</td>
                         <td>{item.mobileno}</td>
-                        <td>{item.appointment_dateTime?.split("T")[1]}</td>
+                        <td>
+                          {moment(item?.appointment_dateTime).format("h:mm A")}
+                        </td>
                         <td>{item.treatment_provided}</td>
                         <td>{item.bloodgroup}</td>
                         <td>{item.dob}</td>
@@ -454,5 +457,13 @@ const Wrapper = styled.div`
     box-shadow: 1px -1px 11px 2px rgba(128, 128, 128, 0.78);
     -webkit-box-shadow: 1px -1px 11px 2px rgba(128, 128, 128, 0.78);
     -moz-box-shadow: 1px -1px 11px 2px rgba(128, 128, 128, 0.78);
+  }
+
+  th {
+    color: white;
+    white-space: nowrap;
+  }
+  td {
+    white-space: nowrap;
   }
 `;

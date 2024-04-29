@@ -28,13 +28,48 @@ const PaidPaymentReport = () => {
   };
 
   console.log(paidList);
-  const filterForPaidBills = paidList?.filter((item) => {
-    return item.payment_status === "paid";
-  });
 
-  console.log(filterForPaidBills);
+  const [filterForPaidBills, setFilterForPaidBills] = useState([]);
+  const [viewPatBill, setViewPatBill] = useState([]);
 
-  const handleDownload = () => {
+  const filterdata = () => {
+    const filterBills = paidList?.filter((item) => {
+      return item.payment_status === "paid";
+    });
+    setFilterForPaidBills(filterBills);
+    setViewPatBill(filterBills);
+  };
+
+  useEffect(() => {
+    filterdata();
+  }, [paidList]);
+
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setFromDate("");
+    setToDate("");
+    setViewPatBill(filterForPaidBills);
+  };
+
+  const handleView = (e) => {
+    e.preventDefault();
+    if (!fromDate || !toDate) {
+      alert("Please select Date");
+      return;
+    }
+    const filteredData = filterForPaidBills.filter((item) => {
+      const date = moment(item.bill_date).format("YYYY-MM-DD");
+      return moment(date).isBetween(fromDate, toDate, null, "[]");
+    });
+    setViewPatBill(filteredData);
+  };
+
+  const handleDownload = (e) => {
+    e.preventDefault();
+    if (!fromDate || !toDate) {
+      alert("Please select Date");
+      return;
+    }
     const filteredData = filterForPaidBills.filter((item) => {
       const date = moment(item.bill_date).format("YYYY-MM-DD");
       return moment(date).isBetween(fromDate, toDate, null, "[]");
@@ -81,7 +116,7 @@ const PaidPaymentReport = () => {
               <div className="col-lg-1 col-1 p-0">
                 <Sider />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-11 ps-0 set">
                 <div className="container-fluid mt-3">
                   <div className="">
                     <BranchDetails />
@@ -98,7 +133,7 @@ const PaidPaymentReport = () => {
                       <div className="col-12">
                         <nav class="navbar navbar-expand-lg bg-body-tertiary">
                           <div class="container d-flex justify-content-center">
-                            <h2 className="">Treatment Income Reports</h2>
+                            <h2 className="">Bill Payment Reports</h2>
                           </div>
                         </nav>
                       </div>
@@ -132,10 +167,22 @@ const PaidPaymentReport = () => {
                             />
                           </div>
                           <button
+                            className="btn btn-info mx-2"
+                            onClick={(e) => handleView(e)}
+                          >
+                            View Report
+                          </button>
+                          <button
                             className="btn btn-warning mx-2"
-                            onClick={handleDownload}
+                            onClick={(e) => handleDownload(e)}
                           >
                             Download Report
+                          </button>
+                          <button
+                            className="btn btn-primary mx-2"
+                            onClick={(e) => handleRefresh(e)}
+                          >
+                            Refresh
                           </button>
                         </div>
                       </form>
@@ -167,7 +214,7 @@ const PaidPaymentReport = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {filterForPaidBills?.map((item) => (
+                            {viewPatBill?.map((item) => (
                               <>
                                 <tr className="table-row">
                                   <td>{item.bill_id}</td>
@@ -225,5 +272,15 @@ const Container = styled.div`
   }
   td {
     white-space: nowrap;
+  }
+  .set {
+    @media screen and (max-width: 1050px) {
+      width: 85%;
+      margin-left: 3rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 900px) {
+      width: 85%;
+      margin-left: 3rem;
+    }
   }
 `;

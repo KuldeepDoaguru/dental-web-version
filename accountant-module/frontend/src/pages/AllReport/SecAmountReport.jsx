@@ -18,6 +18,7 @@ const SecAmountReport = () => {
   const [securityList, setSecurityList] = useState([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [ViewSecurityList, setViewSecurityList] = useState([]);
 
   const getSecurityAmountList = async () => {
     try {
@@ -25,6 +26,7 @@ const SecAmountReport = () => {
         `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getSecurityAmountDataByBranch/${user.branch}`
       );
       setSecurityList(data);
+      setViewSecurityList(data);
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +60,33 @@ const SecAmountReport = () => {
   //   XLSX.utils.book_append_sheet(wb, worksheet, "Report");
   //   XLSX.writeFile(wb, "secuirtyamount.xlsx");
   // };
-  const handleDownload = () => {
+
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setFromDate("");
+    setToDate("");
+    setViewSecurityList(securityList);
+  };
+
+  const handleView = (e) => {
+    e.preventDefault();
+    if (!fromDate || !toDate) {
+      alert("Please select Date");
+      return;
+    }
+    const filteredData = securityList.filter((item) => {
+      const date = moment(item.date).format("YYYY-MM-DD");
+      return moment(date).isBetween(fromDate, toDate, null, "[]");
+    });
+    setViewSecurityList(filteredData);
+  };
+
+  const handleDownload = (e) => {
+    e.preventDefault();
+    if (!fromDate || !toDate) {
+      alert("Please select Date");
+      return;
+    }
     const filteredData = securityList.filter((item) => {
       const date = moment(item.date).format("YYYY-MM-DD");
       return moment(date).isBetween(fromDate, toDate, null, "[]");
@@ -67,7 +95,7 @@ const SecAmountReport = () => {
     const formattedData = filteredData.map((item) => ({
       "Security Amount ID": item.sa_id,
       TPID: item.tp_id,
-      Date: item.date.split("T")[0],
+      Date: item.date?.split("T")[0],
       "Appointment ID": item.appointment_id,
       UHID: item.uhid,
       "Patient Name": item.patient_name,
@@ -79,7 +107,7 @@ const SecAmountReport = () => {
       "Transaction Id": item.transaction_Id,
       "Payment Status": item.payment_status,
       "Refund Amount": item.refund_amount,
-      "Refund Date": item.refund_date.split("T")[0],
+      "Refund Date": item.refund_date?.split("T")[0],
       "Received By": item.received_by,
       "Refund By": item.refund_by,
     }));
@@ -103,7 +131,7 @@ const SecAmountReport = () => {
               <div className="col-lg-1 col-1 p-0">
                 <Sider />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-11 ps-0 set">
                 <div className="container-fluid mt-3">
                   <div className="">
                     <BranchDetails />
@@ -153,10 +181,23 @@ const SecAmountReport = () => {
                                   />
                                 </div>
                                 <button
+                                  className="btn btn-info mx-2"
+                                  onClick={(e) => handleView(e)}
+                                >
+                                  View Report
+                                </button>
+
+                                <button
                                   className="btn btn-warning mx-2"
-                                  onClick={handleDownload}
+                                  onClick={(e) => handleDownload(e)}
                                 >
                                   Download Report
+                                </button>
+                                <button
+                                  className="btn btn-primary mx-2"
+                                  onClick={(e) => handleRefresh(e)}
+                                >
+                                  Refresh
                                 </button>
                               </div>
                             </form>
@@ -189,7 +230,7 @@ const SecAmountReport = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {securityList?.map((item) => (
+                                  {ViewSecurityList?.map((item) => (
                                     <>
                                       <tr className="table-row">
                                         <td>{item.sa_id}</td>
@@ -251,5 +292,15 @@ const Container = styled.div`
   }
   td {
     white-space: nowrap;
+  }
+  .set {
+    @media screen and (max-width: 1050px) {
+      width: 85%;
+      margin-left: 3rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 900px) {
+      width: 85%;
+      margin-left: 3rem;
+    }
   }
 `;

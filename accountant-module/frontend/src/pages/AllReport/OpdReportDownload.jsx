@@ -32,8 +32,49 @@ const OpdReportDownload = () => {
     getOpdAmt();
   }, []);
 
-  const handleDownload = () => {
-    const filteredData = opdAmount.filter((item) => {
+  const [filterOpdBills, setFilterForOpdBills] = useState([]);
+  const [viewPatBill, setViewPatBill] = useState([]);
+
+  const filterdata = () => {
+    const filterBills = opdAmount?.filter((item) => {
+      return item.treatment_provided === "OPD";
+    });
+    setFilterForOpdBills(filterBills);
+    setViewPatBill(filterBills);
+  };
+
+  console.log(viewPatBill);
+  useEffect(() => {
+    filterdata();
+  }, [opdAmount]);
+
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setFromDate("");
+    setToDate("");
+    setViewPatBill(filterOpdBills);
+  };
+
+  const handleView = (e) => {
+    e.preventDefault();
+    if (!fromDate || !toDate) {
+      alert("Please select Date");
+      return;
+    }
+    const filteredData = filterOpdBills.filter((item) => {
+      const date = moment(item.appointment_dateTime).format("YYYY-MM-DD");
+      return moment(date).isBetween(fromDate, toDate, null, "[]");
+    });
+    setViewPatBill(filteredData);
+  };
+
+  const handleDownload = (e) => {
+    e.preventDefault();
+    if (!fromDate || !toDate) {
+      alert("Please select Date");
+      return;
+    }
+    const filteredData = filterOpdBills.filter((item) => {
       const date = moment(item.appointment_dateTime).format("YYYY-MM-DD");
       return moment(date).isBetween(fromDate, toDate, null, "[]");
     });
@@ -70,10 +111,10 @@ const OpdReportDownload = () => {
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-nowrap ">
-              <div className="col-lg-1 col-1 p-0">
+              <div className="col-lg-1  col-1 p-0">
                 <Sider />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-11 ps-0 set">
                 <div className="container-fluid mt-3">
                   <div className="">
                     <BranchDetails />
@@ -124,10 +165,22 @@ const OpdReportDownload = () => {
                             />
                           </div>
                           <button
+                            className="btn btn-info mx-2"
+                            onClick={(e) => handleView(e)}
+                          >
+                            View Report
+                          </button>
+                          <button
                             className="btn btn-warning mx-2"
-                            onClick={handleDownload}
+                            onClick={(e) => handleDownload(e)}
                           >
                             Download Report
+                          </button>
+                          <button
+                            className="btn btn-primary mx-2"
+                            onClick={(e) => handleRefresh(e)}
+                          >
+                            Refresh
                           </button>
                         </div>
                       </form>
@@ -150,11 +203,18 @@ const OpdReportDownload = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {opdAmount?.map((item) => (
+                          {viewPatBill?.map((item) => (
                             <>
                               <tr className="table-row">
                                 <td>{item.appoint_id}</td>
-                                <td>{item.appointment_dateTime}</td>
+                                <td>
+                                  {item.appointment_dateTime
+                                    ? moment(
+                                        item?.appointment_dateTime,
+                                        "YYYY-MM-DDTHH:mm"
+                                      ).format("DD/MM/YYYY hh:mm A")
+                                    : ""}
+                                </td>
                                 <td>{item.uhid}</td>
                                 <td>{item.patient_name}</td>
                                 <td>{item.mobileno}</td>
@@ -182,6 +242,7 @@ const OpdReportDownload = () => {
 
 export default OpdReportDownload;
 const Container = styled.div`
+  overflow-x: hidden;
   .select-style {
     border: none;
     background-color: #22a6b3;
@@ -210,5 +271,15 @@ const Container = styled.div`
     top: 0;
     color: white;
     z-index: 1;
+  }
+  .set {
+    @media screen and (max-width: 1050px) {
+      width: 85%;
+      margin-left: 3rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 900px) {
+      width: 85%;
+      margin-left: 3rem;
+    }
   }
 `;

@@ -407,7 +407,7 @@ const TotalIncome = () => {
                 </div>
 
                 <div className="row d-flex justify-content-around mt-5">
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-sm-8 col-8 col-md-4 my-3 p-0">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-sm-8 col-8 col-md-3 my-3 p-0">
                     <div className="card">
                       <div className="card-body d-flex justify-content-center flex-column mb-3">
                         <div className="text-light fs-1">
@@ -423,7 +423,7 @@ const TotalIncome = () => {
                     </div>
                   </div>
 
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-sm-8 col-8 col-md-4 my-3 p-0">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-sm-8 col-8 col-md-3 my-3 p-0">
                     <div className="card">
                       <div className="card-body d-flex justify-content-center flex-column mb-3">
                         <div className="text-light fs-1">
@@ -441,7 +441,7 @@ const TotalIncome = () => {
                     </div>
                   </div>
 
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-sm-8 col-8 col-md-4 my-3 p-0">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-sm-8 col-8 col-md-3 my-3 p-0">
                     <div className="card">
                       <div className="card-body d-flex justify-content-center flex-column mb-3">
                         <div className="text-light fs-1">

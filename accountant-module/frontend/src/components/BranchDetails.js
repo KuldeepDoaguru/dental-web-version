@@ -12,7 +12,7 @@ const BranchDetails = () => {
   return (
     <>
       <Container>
-        <div className="row d-flex justify-content-between">
+        <div className="row d-flex justify-content-between ms-2">
           <div className="col-12 col-md-4 mt-4">
             <div>
               <h5>Branch : {user.branch}</h5>

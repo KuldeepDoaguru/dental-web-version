@@ -97,7 +97,7 @@ const AccountReportDash = () => {
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-light align-items-center">
-                                      Paid Payment Report
+                                      Bill Payment Report
                                     </h4>
                                   </div>
                                 </div>

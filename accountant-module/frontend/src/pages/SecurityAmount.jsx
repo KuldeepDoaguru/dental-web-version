@@ -215,6 +215,11 @@ const SecurityAmount = () => {
         data
       );
       cogoToast.success("Amount Paid Successfully");
+      setData({
+        payment_Mode: "",
+        transaction_Id: "",
+        notes: "",
+      });
       getSecurityAmountList();
       closeUpdatePopup();
     } catch (error) {
@@ -323,7 +328,7 @@ const SecurityAmount = () => {
                                   <td>{item.refund_amount}</td>
                                   <td>
                                     {/* {item?.remaining_amount === 0 && ( */}
-                                    {item.payment_status === "Pending" ? (
+                                    {item.payment_status === "pending" ? (
                                       <>
                                         <button
                                           className="mx-2 btn btn-info"

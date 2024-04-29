@@ -27,13 +27,50 @@ const DuePaymentReport = () => {
     }
   };
   console.log(patBill);
-  const filterForUnPaidBills = patBill?.filter((item) => {
-    return item.payment_status !== "paid";
-  });
+  const [filterForUnPaidBills, setFilterForUnPaidBills] = useState([]);
+  const [viewPatBill, setViewPatBill] = useState([]);
+
+  const filterdata = () => {
+    const filterBills = patBill?.filter((item) => {
+      return item.payment_status !== "paid";
+    });
+    setFilterForUnPaidBills(filterBills);
+    setViewPatBill(filterBills);
+  };
 
   console.log(filterForUnPaidBills);
 
-  const handleDownload = () => {
+  console.log(viewPatBill);
+  useEffect(() => {
+    filterdata();
+  }, [patBill]);
+
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setFromDate("");
+    setToDate("");
+    setViewPatBill(filterForUnPaidBills);
+  };
+
+  const handleView = (e) => {
+    e.preventDefault();
+    if (!fromDate || !toDate) {
+      alert("Please select Date");
+      return;
+    }
+    const filteredData = filterForUnPaidBills.filter((item) => {
+      const date = moment(item.bill_date).format("YYYY-MM-DD");
+      return moment(date).isBetween(fromDate, toDate, null, "[]");
+    });
+    setViewPatBill(filteredData);
+  };
+
+  const handleDownload = (e) => {
+    e.preventDefault();
+    if (!fromDate || !toDate) {
+      alert("Please select Date");
+      return;
+    }
     const filteredData = filterForUnPaidBills.filter((item) => {
       const date = moment(item.bill_date).format("YYYY-MM-DD");
       return moment(date).isBetween(fromDate, toDate, null, "[]");
@@ -80,7 +117,7 @@ const DuePaymentReport = () => {
               <div className="col-lg-1 col-1 p-0">
                 <Sider />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-11 ps-0 set">
                 <div className="container-fluid mt-3">
                   <div className="">
                     <BranchDetails />
@@ -130,11 +167,24 @@ const DuePaymentReport = () => {
                               onChange={(e) => setToDate(e.target.value)}
                             />
                           </div>
+
+                          <button
+                            className="btn btn-info mx-2"
+                            onClick={(e) => handleView(e)}
+                          >
+                            View Report
+                          </button>
                           <button
                             className="btn btn-warning mx-2"
-                            onClick={handleDownload}
+                            onClick={(e) => handleDownload(e)}
                           >
                             Download Report
+                          </button>
+                          <button
+                            className="btn btn-primary mx-2"
+                            onClick={(e) => handleRefresh(e)}
+                          >
+                            Refresh
                           </button>
                         </div>
                       </form>
@@ -166,7 +216,7 @@ const DuePaymentReport = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {filterForUnPaidBills?.map((item) => (
+                            {viewPatBill?.map((item) => (
                               <>
                                 <tr className="table-row">
                                   <td>{item.bill_id}</td>
@@ -224,6 +274,16 @@ const Container = styled.div`
   }
   td {
     white-space: nowrap;
+  }
+  .set {
+    @media screen and (max-width: 1050px) {
+      width: 85%;
+      margin-left: 3rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 900px) {
+      width: 85%;
+      margin-left: 3rem;
+    }
   }
 `;
 

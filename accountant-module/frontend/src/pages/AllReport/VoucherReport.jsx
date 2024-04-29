@@ -15,6 +15,7 @@ const VoucherReport = () => {
   const [vlist, setVlist] = useState([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [viewVlist, setViewVlist] = useState([]);
 
   const getVoucherList = async () => {
     try {
@@ -22,6 +23,7 @@ const VoucherReport = () => {
         `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getVoucherListByBranch/${user.branch}`
       );
       setVlist(data);
+      setViewVlist(data);
     } catch (error) {
       console.log(error);
     }
@@ -31,7 +33,32 @@ const VoucherReport = () => {
     getVoucherList();
   }, []);
 
-  const handleDownload = () => {
+  const handleRefresh = (e) => {
+    e.preventDefault();
+    setFromDate("");
+    setToDate("");
+    setViewVlist(vlist);
+  };
+
+  const handleView = (e) => {
+    e.preventDefault();
+    if (!fromDate || !toDate) {
+      alert("Please select Date");
+      return;
+    }
+    const filteredData = vlist.filter((item) => {
+      const date = moment(item.voucher_date).format("YYYY-MM-DD");
+      return moment(date).isBetween(fromDate, toDate, null, "[]");
+    });
+    setViewVlist(filteredData);
+  };
+
+  const handleDownload = (e) => {
+    e.preventDefault();
+    if (!fromDate || !toDate) {
+      alert("Please select Date");
+      return;
+    }
     const filteredData = vlist.filter((item) => {
       const date = moment(item.voucher_date).format("YYYY-MM-DD");
       return moment(date).isBetween(fromDate, toDate, null, "[]");
@@ -66,7 +93,7 @@ const VoucherReport = () => {
               <div className="col-lg-1 col-1 p-0">
                 <Sider />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-11 ps-0 set">
                 <div className="container-fluid mt-3">
                   <div className="">
                     <BranchDetails />
@@ -117,10 +144,23 @@ const VoucherReport = () => {
                             />
                           </div>
                           <button
+                            className="btn btn-info mx-2"
+                            onClick={(e) => handleView(e)}
+                          >
+                            View Report
+                          </button>
+
+                          <button
                             className="btn btn-warning mx-2"
-                            onClick={handleDownload}
+                            onClick={(e) => handleDownload(e)}
                           >
                             Download Report
+                          </button>
+                          <button
+                            className="btn btn-primary mx-2"
+                            onClick={(e) => handleRefresh(e)}
+                          >
+                            Refresh
                           </button>
                         </div>
                       </form>
@@ -139,12 +179,10 @@ const VoucherReport = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {vlist?.map((item) => (
+                            {viewVlist?.map((item, index) => (
                               <>
                                 <tr className="table-row">
-                                  <td className="table-sno">
-                                    {item.voucher_id}
-                                  </td>
+                                  <td className="table-sno">{index + 1}</td>
                                   <td className="table-small">
                                     {item.for_name}
                                   </td>
@@ -197,5 +235,15 @@ const Container = styled.div`
   }
   td {
     white-space: nowrap;
+  }
+  .set {
+    @media screen and (max-width: 1050px) {
+      width: 85%;
+      margin-left: 3rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 900px) {
+      width: 85%;
+      margin-left: 3rem;
+    }
   }
 `;

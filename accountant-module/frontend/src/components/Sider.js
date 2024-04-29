@@ -32,7 +32,9 @@ const Sider = () => {
                   <i className="fs-3 bi bi-house-door-fill"></i>
                 </div>
                 <div d-flex justify-content-center>
-                  <h3 class=" d-none d-sm-inline fs-6 text-light">Dashboard</h3>
+                  <h3 className="d-none d-sm-inline text-light dash-text">
+                    Dashboard
+                  </h3>
                 </div>
               </Link>
             </li>
@@ -65,7 +67,7 @@ const Sider = () => {
                 <div className="link-div">
                   <MdOutlineSecurity className="fs-3 text-white" />
                 </div>
-                <h3 class="d-none d-sm-inline fs-6 text-light">
+                <h3 class="d-none d-sm-inline text-light dash-text">
                   Security Amount
                 </h3>
               </Link>
@@ -100,7 +102,7 @@ const Sider = () => {
                 <div className="link-div">
                   <FaHandHoldingDollar className="fs-1 bi bi-house-door-fill" />
                 </div>
-                <h3 className="text-center fs-6 text-light">
+                <h3 className="text-center text-light dash-text">
                   Earning <IoMdArrowDropdown />
                 </h3>
               </a>
@@ -114,7 +116,7 @@ const Sider = () => {
                     to="/OpdMainIncome"
                     className={`nav-link  ${getSidebarClass("/OpdMainIncome")}`}
                   >
-                    <span className="text-center text-light fs-6">
+                    <span className="text-center text-light dash-text">
                       OPD Income
                     </span>
                   </Link>
@@ -128,7 +130,7 @@ const Sider = () => {
                       "/treatment-income"
                     )}`}
                   >
-                    <span className="text-center text-light fs-6">
+                    <span className="text-center text-light dash-text">
                       Treatment Income
                     </span>
                   </Link>
@@ -158,7 +160,7 @@ const Sider = () => {
                     to="/PatientsDue"
                     className={`nav-link  ${getSidebarClass("/PatientsDue")}`}
                   >
-                    <span className="d-none d-sm-inline text-light fs-6">
+                    <span className="d-none d-sm-inline text-light dash-text">
                       Due Payment
                     </span>
                   </Link>
@@ -170,7 +172,7 @@ const Sider = () => {
                     to="/PatientsPaid"
                     className={`nav-link  ${getSidebarClass("/PatientsPaid")}`}
                   >
-                    <span className="d-none d-sm-inline text-light fs-6">
+                    <span className="d-none d-sm-inline text-light dash-text">
                       Paid Payment
                     </span>
                   </Link>
@@ -190,7 +192,7 @@ const Sider = () => {
                 <div className="link-div">
                   <LiaFileInvoiceDollarSolid className="fs-1 bi bi-house-door-fill" />
                 </div>
-                <h3 class="d-none d-sm-inline fs-6 text-light">
+                <h3 class="d-none d-sm-inline text-light dash-text">
                   Expense <IoMdArrowDropdown />
                 </h3>
               </Link>
@@ -220,7 +222,7 @@ const Sider = () => {
                     class={`nav-link  ${getSidebarClass("/VoucherCreater")}`}
                   >
                     <span
-                      class="d-none d-sm-inline text-light fs-6"
+                      class="d-none d-sm-inline text-light dash-text"
                       target="_blank"
                     >
                       Voucher Create
@@ -235,7 +237,7 @@ const Sider = () => {
                     class={`nav-link  ${getSidebarClass("/VoucherList")}`}
                   >
                     <span
-                      class="d-none d-sm-inline text-light fs-6"
+                      class="d-none d-sm-inline text-light dash-text"
                       target="_blank"
                     >
                       Voucher List
@@ -272,7 +274,9 @@ const Sider = () => {
                 <div className="link-div">
                   <FaCommentsDollar className="fs-1 bi bi-house-door-fill" />
                 </div>
-                <h3 class="d-none d-sm-inline fs-6 text-light">Total Income</h3>
+                <h3 class="d-none d-sm-inline text-light dash-text">
+                  Total Income
+                </h3>
               </Link>
             </li>
             <hr />
@@ -290,7 +294,7 @@ const Sider = () => {
                       <BsFileEarmarkPerson className="fs-2 text-white" />
                     </div>
                     <div>
-                      <h3 className=" d-none d-sm-inline fs-6 text-light">
+                      <h3 className=" d-none d-sm-inline text-light dash-text">
                         Attendance
                       </h3>
                     </div>
@@ -312,7 +316,7 @@ const Sider = () => {
                       <TbReport className="fs-2 text-white" />
                     </div>
                     <div>
-                      <h3 className=" d-none d-sm-inline fs-6 text-light">
+                      <h3 className=" d-none d-sm-inline text-light dash-text">
                         Reports
                       </h3>
                     </div>
@@ -337,11 +341,29 @@ const Wrapper = styled.div`
 
     @media screen and (max-width: 768px) {
       width: 3rem;
-      height: 212rem;
+      height: 151rem;
     }
     @media screen and (min-width: 768px) and (max-width: 1020px) {
-      width: 5rem;
+      width: 7rem;
       height: 151rem;
+    }
+    @media screen and (min-width: 1021px) and (max-width: 1279px) {
+      width: 6rem;
+      height: 151rem;
+    }
+  }
+  .dash-text {
+    @media screen and (min-width: 768px) and (max-width: 1020px) {
+      font-size: small;
+    }
+    @media screen and (min-width: 1021px) and (max-width: 1280px) {
+      font-size: smaller;
+    }
+    @media screen and (min-width: 1281px) and (max-width: 1900px) {
+      font-size: small;
+    }
+    @media screen and (min-width: 1900px) and (max-width: 2200px) {
+      font-size: large;
     }
   }
   .bi {
@@ -368,10 +390,16 @@ const Wrapper = styled.div`
     align-content: center;
     justify-content: center;
     align-items: center;
+    @media screen and (max-width: 820px) {
+      font-size: smaller;
+    }
   }
 
   .nav-link {
     text-align: center;
+    @media screen and (max-width: 820px) {
+      width: auto !important;
+    }
   }
 
   hr {
@@ -380,7 +408,7 @@ const Wrapper = styled.div`
 
   .active-nav {
     background-color: #201658;
-    padding: 1rem;
+    padding: 0.5;
     box-shadow: 0px 0px 16px #7865e0;
   }
 `;

@@ -43,6 +43,7 @@ const MonthIncome = () => {
           `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getBillsByBranch/${user.branch}`
         );
         setAppointmentList(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -58,7 +59,7 @@ const MonthIncome = () => {
   const formattedDate = `${year}-${month}`;
 
   const filterForPayStatus = appointmentList?.filter((item) => {
-    return item.payment_status === "success";
+    return item.payment_status === "paid";
   });
 
   // console.log(filterForPayStatus);
@@ -77,10 +78,11 @@ const MonthIncome = () => {
   filterForPayStatus.forEach((item) => {
     const date = item.payment_date_time.split("T")[0];
     totalAmountPerDay[date] =
-      (totalAmountPerDay[date] || 0) + parseFloat(item.net_amount);
+      (totalAmountPerDay[date] || 0) + parseFloat(item.total_amount);
+    console.log(item.total_amount);
   });
 
-  console.log(totalAmountPerDay);
+  console.log(filterForPayStatus);
 
   // Create an array containing data for all days of the month
   const data = Array.from({ length: lastDay }, (_, index) => {
@@ -93,7 +95,7 @@ const MonthIncome = () => {
     };
   });
 
-  // console.log(data);
+  console.log(data);
 
   return (
     <>

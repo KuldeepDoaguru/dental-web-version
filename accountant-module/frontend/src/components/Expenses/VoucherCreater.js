@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import cogoToast from "cogo-toast";
+import BranchDetails from "../BranchDetails";
 
 const VoucherCreater = () => {
   const user = useSelector((state) => state.user);
@@ -71,45 +72,19 @@ const VoucherCreater = () => {
               </div>
 
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10">
-                <div className="row d-flex justify-content-between">
-                  <div className="col-12 col-md-4 mt-4">
-                    <div>
-                      <h5>Branch : Madan Mahal</h5>
-                    </div>
-                    <div className="mt-2">
-                      <h3> Welcome to Dental Guru! </h3>
-                    </div>
-                    <div className="mt-3">
-                      <h6>Accountant Dashboard</h6>
-                    </div>
+                <div className="container-fluid mt-3">
+                  <div className="">
+                    <BranchDetails />
                   </div>
-
-                  {/* <div className="col-12 col-md-4 me-5 mt-5">
-                    <form className="d-flex ms-auto my-sm" role="search">
-                      <input
-                        className="form-control me-2"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                      />
-                      <button
-                        className="btn btn-primary"
-                        style={{ backgroundColor: "#201658" }}
-                        type="submit"
-                      >
-                        Search
-                      </button>
-                    </form>
-                  </div> */}
                 </div>
                 <form onSubmit={addVoucher}>
                   <div className="container-fluid mt-5">
-                    <div className="row d-flex justify-content-center ms-5">
-                      <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-5 col-sm-5 ">
-                        <h1 className="mb-3 ms-2">Voucher Create</h1>
+                    <div className="row d-flex justify-content-center ms-lg-5">
+                      <div className="col-xxl-5 col-xl-6 col-lg-6 col-md-12 col-sm-12 ">
+                        <h1 className="mb-5  text-center">Voucher Create</h1>
 
-                        <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 mt-4">
-                          <div class="d-flex justify-content-center fs-5 mb-4 ms-5">
+                        <div class="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 mt-4">
+                          <div class="d-flex justify-content-center fs-5 mb-4 ms-lg-5">
                             <div className="col-xxl-8 col-xl-8 col-lg-8 text-start fw-medium ms-5">
                               Paid to :
                             </div>
@@ -126,7 +101,7 @@ const VoucherCreater = () => {
                             </div>
                           </div>
 
-                          <div class="d-flex justify-content-center fs-5 mb-4 ms-5">
+                          <div class="d-flex justify-content-center fs-5 mb-4 ms-lg-5">
                             <div className="col-xxl-8 col-xl-8 col-lg-8 text-start fw-medium ms-5">
                               Paid for :
                             </div>
@@ -142,8 +117,8 @@ const VoucherCreater = () => {
                               />
                             </div>
                           </div>
-                          <div class="d-flex justify-content-center fs-5 mb-4 ms-5">
-                            <div className="col-xxl-8 col-xl-8 col-lg-8 text-start fw-medium ms-5">
+                          <div class="d-flex justify-content-center fs-5 mb-4 ms-lg-5">
+                            <div className="col-xxl-8 col-xl-8 col-lg-8  text-start fw-medium ms-5">
                               Amount :
                             </div>
                             <div class="col-xxl-12 col-xl-12 col-lg-12">
@@ -159,11 +134,11 @@ const VoucherCreater = () => {
                             </div>
                           </div>
 
-                          <div className="d-flex justify-content-end mt-4">
+                          <div className="d-flex justify-content-sm-center  justify-content-lg-end mt-4">
                             <td className="table-small">
                               <button
                                 type="submit"
-                                className="btn fw-medium fs-5 text-white"
+                                className="btn fw-medium fs-5 text-white "
                                 style={{ backgroundColor: "#201658" }}
                               >
                                 Submit

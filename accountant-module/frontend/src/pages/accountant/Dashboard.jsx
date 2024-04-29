@@ -81,10 +81,12 @@ const Accountant_Dashboard = () => {
       <div className="main">
         <div className="container-fluid">
           <div className="row flex-nowrap ">
-            <div className="col-lg-1  p-0">
+            {/* <div className="col-lg-1  p-0"> */}
+            <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 p-0">
               <Sider />
             </div>
-            <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11">
+            {/* <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11"> */}
+            <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10">
               <BranchDetails />
               <div className="mt-4">
                 <Cards />
@@ -92,11 +94,11 @@ const Accountant_Dashboard = () => {
 
               <div className="container-fuild px-2">
                 <div className="row g-4 mt-3 ">
-                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Monthly Earning</h3>
                     <MonthIncome />
                   </div>
-                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Monthly Expenses</h3>
                     <ExpenseChart />
                   </div>

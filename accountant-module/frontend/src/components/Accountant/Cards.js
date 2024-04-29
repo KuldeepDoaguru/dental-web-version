@@ -240,22 +240,20 @@ const Cards = () => {
           </div>
 
           <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
-            <Link to="/AddPatientBill" className="noUnderline">
-              <div className="card">
-                <div className="card-body d-flex justify-content-center flex-column">
-                  <div>
-                    <TbReportSearch className="bi bi-people-fill icon" />
-                  </div>
+            <div className="card">
+              <div className="card-body d-flex justify-content-center flex-column">
+                <div>
+                  <TbReportSearch className="bi bi-people-fill icon" />
+                </div>
 
-                  <div className="cardtext">
-                    <h5 className="card-title text-light">Total Bills</h5>
-                    <p className="card-text text-light fw-semibold">
-                      {filterForPatientBillToday.length}
-                    </p>
-                  </div>
+                <div className="cardtext">
+                  <h5 className="card-title text-light">Total Bills</h5>
+                  <p className="card-text text-light fw-semibold">
+                    {filterForPatientBillToday.length}
+                  </p>
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </Container>

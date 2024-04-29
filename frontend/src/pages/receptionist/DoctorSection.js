@@ -22,7 +22,9 @@ function DoctorSection() {
   const [doctors,setDoctors] = useState([]);
   
   const [doctorWithLeave,setDoctorWithLeave] = useState([]);
-
+  const todayDate = moment().format('YYYY-MM-DD');
+  console.log(todayDate)
+  
  
   const getDoctorsWithLeave = async ()=>{
     try{
@@ -302,16 +304,45 @@ const formatDate = (dateString) => {
     View Leave
   </button> 
   <ul className="dropdown-menu">
-    {doctorWithLeave
+    {/* {doctorWithLeave
       .filter((doctor) => doctor.employee_ID === data.employee_ID)
       .map((doctor) => 
-        doctor.leave_dates.split(",").filter((leaveDate) => new Date(leaveDate) >= new Date()).map((leaveDate, index) => (
+        doctor.leave_dates.split(",").filter((leaveDate) => new Date(leaveDate) >= new Date(todayDate)).map((leaveDate, index) => (
+          leaveDate ?
           <li key={index}>
              {formatDate(leaveDate)}
           </li>
+          :
+        
+          <li key={index}>
+             No leave
+          </li>
+        
         ))
       )
-    }
+    } */}
+    {doctorWithLeave
+  .filter((doctor) => doctor.employee_ID === data.employee_ID)
+  .map((doctor) => 
+    doctor.leave_dates.split(",").map((leaveDate, index) => (
+      leaveDate ? (
+        new Date(leaveDate) >= new Date(todayDate) ? (
+          <li key={index}>
+            {formatDate(leaveDate)}
+          </li>
+        ) : (
+          <li key={index}>
+             No leave
+          </li>
+        )
+      ) : (
+        <li key={index}>
+          No leave
+        </li>
+      )
+    ))
+  )
+}
     {doctorWithLeave.filter((doctor) => doctor.employee_ID === data.employee_ID).length === 0 && (
       <li>No leave</li>
     )}

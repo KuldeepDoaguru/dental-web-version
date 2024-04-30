@@ -32,11 +32,8 @@ import routesConfig from "./RoutesConfig";
 const AdminDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const searchData = routesConfig;
   const [keyword, setkeyword] = useState("");
 
@@ -55,7 +52,7 @@ const AdminDashboard = () => {
                 <div className="col-xl-6 col-lg-6 col-12 col-md-6 mt-4">
                   <h3> Welcome to DentalGuru! </h3>
                   <p className="fs-4 fw-bold">
-                    Admin Dashboard - {branch.name} Branch
+                    Admin Dashboard - {user.branch_name} Branch
                   </p>
                 </div>
                 <div className="col-xl-6 col-lg-6 col-12 col-md-6 my-3">

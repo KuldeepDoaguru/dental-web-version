@@ -6,17 +6,14 @@ import styled from "styled-components";
 
 const AdminComplaintsSec = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [complaints, setComplaints] = useState([]);
 
   const getEmpComByBranch = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeComplainByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeComplainByBranch/${user.branch_name}`
       );
       console.log(data);
       setComplaints(data);
@@ -27,7 +24,7 @@ const AdminComplaintsSec = () => {
 
   useEffect(() => {
     getEmpComByBranch();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   console.log(complaints);
 

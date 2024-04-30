@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 const AdminCards = () => {
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [appointmentList, setAppointmentList] = useState([]);
   const [availableEmp, setAvailableEmp] = useState([]);
   const [treatValue, setTreatValue] = useState([]);
@@ -15,7 +15,7 @@ const AdminCards = () => {
   const getAppointList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${user.branch_name}`
       );
       console.log(data);
       setAppointmentList(data);
@@ -27,7 +27,7 @@ const AdminCards = () => {
   const getEmployeeAvailable = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAvailableEmp/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAvailableEmp/${user.branch_name}`
       );
       // console.log(data);
       setAvailableEmp(data);
@@ -91,7 +91,7 @@ const AdminCards = () => {
   const getTreatmentValues = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/getTreatSuggest/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getTreatSuggest/${user.branch_name}`
       );
       console.log(data);
       setTreatValue(data);

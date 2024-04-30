@@ -3,18 +3,19 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { setBranch } from "../redux/slices/BranchSlicer";
+// import { setBranch } from "../redux/slices/BranchSlicer";
 import { setUser } from "../redux/slices/UserSlicer";
 import cogoToast from "cogo-toast";
 
 const UniversalLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  // console.log("User State:", user);
+  // const branch = useSelector((state) => state.branch);
+  // console.log(`User Name: ${branch.name}`);
   const [branchList, setBranchList] = useState(null);
   const [selectedBranch, setSelectedBranch] = useState();
   const [email, setEmail] = useState("");
@@ -37,32 +38,36 @@ const UniversalLogin = () => {
   };
 
   console.log(branchList);
-  const branchData = {
-    name:
-      selectedBranch ||
-      (branchList?.length > 0 ? branchList[0].branch_name : ""),
-  };
-  localStorage.setItem("branchName", JSON.stringify(branchData));
-  dispatch(setBranch(branchData));
+  // const branchData = {
+  //   name:
+  //     selectedBranch ||
+  //     (branchList?.length > 0 ? branchList[0].branch_name : ""),
+  // };
+  // localStorage.setItem("branchName", JSON.stringify(branchData));
+  // dispatch(setBranch(branchData));
 
   const adminLogin = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://dentalguruadmin.doaguru.com//api/v1/admin/adminLoginUser",
+        "http://localhost:8888/api/v1/admin/adminLoginUser",
         {
           email,
           password,
           branch_name: selectedBranch,
         }
       );
-      console.log(response.data.user.employee_ID);
-      const userData = {
-        name: response.data.user.email,
-        id: response.data.user.employee_ID,
-      };
-      localStorage.setItem("userData", JSON.stringify(userData));
-      dispatch(setUser(userData));
+      // console.log(response.data.user.employee_ID);
+      // const userData = {
+      //   name: response.data.user.email,
+      //   id: response.data.user.employee_ID,
+      //   branch: response.data.user.branch,
+      //   employee_name: response.data.user.employee_name,
+      //   employee_mobile: response.data.user.employee_mobile,
+      //   employee_designation: response.data.user.employee_designation,
+      // };
+      // localStorage.setItem("userData", JSON.stringify(userData));
+      dispatch(setUser(response.data.user));
       cogoToast.success("Login Successful");
       navigate("/admin-dashboard");
     } catch (error) {

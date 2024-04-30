@@ -15,16 +15,13 @@ const AdminManageStaff = () => {
   const [showEditEmployee, setShowEditEmployee] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [doctorList, setDoctorList] = useState([]);
   const [keyword, setkeyword] = useState("");
   const [empProfilePicture, setEmpProfilePicture] = useState(null);
   const [inEmpData, setInEmpData] = useState({
-    branch: branch.name,
+    branch: user.branch_name,
     empName: "",
     empMobile: "",
     empGender: "",
@@ -95,7 +92,7 @@ const AdminManageStaff = () => {
   const getDocDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeDataByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeDataByBranch/${user.branch_name}`
       );
       console.log(data);
       setDoctorList(data);
@@ -108,7 +105,7 @@ const AdminManageStaff = () => {
     getDocDetailsList();
   }, []);
 
-  console.log(doctorList);
+  console.log(doctorList[8]?.employee_picture);
 
   const openAddEmployeePopup = (index, item) => {
     // setSelectedItem(item);
@@ -174,6 +171,10 @@ const AdminManageStaff = () => {
                 </div>
                 <div className="container-fluid mt-3">
                   <h2 className="text-center">Manage Employee</h2>
+                  <img
+                    src="https://dentalgurusuperadmin.doaguru.com/empProfilePicture/17104102635691709210206279kd.jpg"
+                    alt="profile"
+                  />
                   <div className="d-flex justify-content-between">
                     <div>
                       <label>Employee Name :</label>
@@ -201,16 +202,16 @@ const AdminManageStaff = () => {
                     <table class="table table-bordered">
                       <thead className="table-head">
                         <tr>
-                          <th className="thead">Emp ID</th>
-                          <th className="thead">Name</th>
-                          <th className="thead">Mobile</th>
-                          <th className="thead">Email</th>
-                          <th className="thead">Designation</th>
-                          <th className="thead">Role</th>
-                          <th className="thead">Salary</th>
-                          <th className="thead">Address</th>
-                          <th>Profile Picture</th>
-                          <th className="" style={{ minWidth: "10rem" }}>
+                          <th className="thead sticky">Emp ID</th>
+                          <th className="thead sticky">Name</th>
+                          <th className="thead sticky">Mobile</th>
+                          <th className="thead sticky">Email</th>
+                          <th className="thead sticky">Designation</th>
+                          <th className="thead sticky">Role</th>
+                          <th className="thead sticky">Salary</th>
+                          <th className="thead sticky">Address</th>
+                          <th className="sticky">Profile Picture</th>
+                          <th className="sticky" style={{ minWidth: "10rem" }}>
                             Actions
                           </th>
                         </tr>
@@ -223,7 +224,7 @@ const AdminManageStaff = () => {
                             } else if (
                               val.employee_name
                                 .toLowerCase()
-                                .includes(keyword.toLowerCase()) 
+                                .includes(keyword.toLowerCase())
                             ) {
                               return val;
                             }
@@ -246,11 +247,20 @@ const AdminManageStaff = () => {
                                 <td className="thead">{item.address}</td>
                                 <td>
                                   <div className="smallImg">
-                                    <img
-                                      src={item.employee_picture}
-                                      alt="profile"
-                                    />
+                                    <p>
+                                      <a
+                                        href={item.employee_picture}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                      >
+                                        View Employee Picture
+                                      </a>
+                                    </p>
                                   </div>
+                                  <img
+                                    src="https://dentalgurusuperadmin.doaguru.com/empProfilePicture/17104102635691709210206279kd.jpg"
+                                    alt="profile"
+                                  />
                                 </td>
                                 <td className="" style={{ minWidth: "13rem" }}>
                                   <Link
@@ -744,6 +754,7 @@ const Container = styled.div`
     left: 0;
     width: 100%;
     overflow: scroll;
+    z-index: 99999;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     align-items: center;
@@ -768,9 +779,11 @@ const Container = styled.div`
     background-color: #1abc9c;
     color: white;
     text-align: center;
+    white-space: nowrap;
   }
   td {
     text-align: center;
+    white-space: nowrap;
   }
   .select-style {
     border: none;
@@ -797,5 +810,18 @@ const Container = styled.div`
       height: 6rem;
       width: auto;
     }
+  }
+
+  .table-responsive {
+    height: 30rem;
+    overflow: auto;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    background-color: #1abc9c;
+    color: white;
+    z-index: 1;
   }
 `;

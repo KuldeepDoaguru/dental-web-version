@@ -1,18 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+  currentUser: null,
+  // refreshTable: false, // Add a new state for managing table refresh
+};
+
 const userSlice = createSlice({
   name: "user",
-  initialState: { name: "", id: null },
-  refreshTable: false,
+  initialState,
   reducers: {
     setUser: (state, action) => {
-      state.name = action.payload.name;
-      state.id = action.payload.id;
-      console.log("User State after setUser:", state);
+      state.currentUser = action.payload;
     },
     clearUser: (state) => {
-      state.name = "";
-      state.id = null;
+      state.currentUser = null;
     },
     toggleTableRefresh: (state) => {
       state.refreshTable = !state.refreshTable;
@@ -20,7 +21,5 @@ const userSlice = createSlice({
   },
 });
 
-// console.log(setUser);
-
-export const { setUser, clearUser, toggleTableRefresh } = userSlice.actions;
+export const { setUser, clearUser } = userSlice.actions;
 export default userSlice.reducer;

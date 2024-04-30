@@ -6,11 +6,8 @@ import axios from "axios";
 
 const TreatmentTMAdmin = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  // console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  // console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [appointmentList, setAppointmentList] = useState([]);
   const [chartData, setChartData] = useState({
     series: [],
@@ -38,10 +35,10 @@ const TreatmentTMAdmin = () => {
   });
 
   const getAppointList = async () => {
-    console.log(branch.name);
+    console.log(user.branch_name);
     try {
       const response = await axios.get(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${user.branch_name}`
       );
       setAppointmentList(response.data);
     } catch (error) {
@@ -51,7 +48,7 @@ const TreatmentTMAdmin = () => {
 
   useEffect(() => {
     getAppointList();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   useEffect(() => {
     const getDate = new Date();
@@ -65,7 +62,7 @@ const TreatmentTMAdmin = () => {
     console.log(formattedDate);
 
     // const formatByBranch = appointmentList?.filter(
-    //   (item) => item.branch_name === branch.name // Additional filter by some other property
+    //   (item) => item.branch_name === user.branch_name // Additional filter by some other property
     // );
 
     // console.log(formatByBranch);
@@ -112,7 +109,7 @@ const TreatmentTMAdmin = () => {
         },
       });
     }
-  }, [appointmentList, branch.name]); // Added branch as a dependency
+  }, [appointmentList, user.branch_name]); // Added branch as a dependency
   console.log(chartData.options);
   console.log(chartData.series);
   return (

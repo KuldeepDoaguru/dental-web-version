@@ -14,11 +14,8 @@ import Navbar from "./patientDetails/Navbar";
 const AdminPatientProfile = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [patientData, setPatientData] = useState([]);
   const [ongoingTreat, setOngoingTreat] = useState([]);
 
@@ -37,7 +34,7 @@ const AdminPatientProfile = () => {
   const getOngoingTreat = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientBillByBranchAndId/${pid}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getPatientBillByBranchAndId/${user.branch_name}/${pid}`
       );
       console.log(data);
       setOngoingTreat(data);
@@ -51,10 +48,12 @@ const AdminPatientProfile = () => {
     getOngoingTreat();
   }, []);
 
+  console.log(ongoingTreat);
+
   console.log(patientData[0]?.patient_name);
 
   const filterForOngoingTreat = ongoingTreat?.filter((item) => {
-    return item.treatment_status === "Ongoing";
+    return item.treatment_status === "ongoing";
   });
 
   console.log(filterForOngoingTreat);
@@ -296,14 +295,13 @@ const AdminPatientProfile = () => {
               </div>
               <div>
                 <div className="p-2 bg-light rounded">
-                  <h6 className="fw-bold mt-2">Ongoing Treatment</h6>
-                </div>
-                <div className="container">
-                  <ul className=" list-unstyled">
+                  <h4 className="fw-bold mt-2">Ongoing Treatment</h4>
+                  <hr />
+                  <ul className="">
                     {filterForOngoingTreat?.map((item) => (
                       <>
                         <li>
-                          <p className="fw-bold">{item.treatment}</p>
+                          <p className="">{item.treatment_name}</p>
                         </li>
                       </>
                     ))}

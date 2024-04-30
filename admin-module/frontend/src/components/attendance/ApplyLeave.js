@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
 import axios from "axios";
 import moment from "moment";
-import { toggleTableRefresh } from "../../redux/slices/UserSlicer";
+// import { toggleTableRefresh } from "../../redux/slices/UserSlicer";
 
 const ApplyLeave = () => {
   const { refreshTable } = useSelector((state) => state.user);
@@ -108,7 +108,7 @@ const ApplyLeave = () => {
             leave_reason: "",
           }));
           getLeaves();
-          dispatch(toggleTableRefresh());
+          // dispatch(toggleTableRefresh());
           handleClose();
         } else {
           cogoToast.error(response?.data?.message);

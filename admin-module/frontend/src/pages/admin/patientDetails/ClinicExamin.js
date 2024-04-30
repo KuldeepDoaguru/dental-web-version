@@ -6,25 +6,32 @@ import styled from "styled-components";
 
 const ClinicExamin = () => {
   const dispatch = useDispatch();
+  // const { pid } = useParams();
   const { pid } = useParams();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const branch = user.currentUser.branch_name;
+  console.log(branch);
+
   const [exmData, setExmData] = useState([]);
 
   const getExamineDetails = async () => {
     try {
-      const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/examinDetailsByPatId/${pid}`
+      // const { data } = await axios.get(
+      //   `http://localhost:7777/api/v1/super-admin/examinDetailsByPatId/${pid}`
+      // );
+      const respsData = await axios.get(
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getExaminationViaUhid/${branch}/${pid}`
       );
-      setExmData(data);
+      setExmData(respsData.data);
+      console.log(respsData.data);
     } catch (error) {
       console.log(error);
     }
   };
 
+  console.log(exmData);
   useEffect(() => {
     getExamineDetails();
   }, []);
@@ -40,25 +47,28 @@ const ClinicExamin = () => {
               <thead>
                 <tr>
                   <th>Date</th>
-                  <th>Branch</th>
-                  <th>Issue</th>
-                  <th>Diagnosis</th>
-                  <th>Investigation</th>
+                  <th>Diagnosis Category</th>
+                  <th>Disease</th>
+                  <th>Chief Complaint</th>
                   <th>Tooth</th>
-                  <th>Doctor</th>
+                  <th>On Examination</th>
+                  <th>Advice</th>
                 </tr>
               </thead>
               <tbody>
                 {exmData?.map((item) => (
                   <>
                     <tr>
-                      <td>{item.examin_date?.split("T")[0]}</td>
-                      <td>{item.branch_name}</td>
-                      <td>{item.examin_issue}</td>
-                      <td>{item.diagnosis}</td>
-                      <td>{item.examin_investigation}</td>
-                      <td>{item.tooth}</td>
-                      <td>{item.doctor_name}</td>
+                      {/* <td>{item.examin_date?.split("T")[0]}</td> */}
+                      <td>{item.date?.split("T")[0]}</td>
+                      <td>{item.diagnosis_category}</td>
+                      <td>{item.disease}</td>
+
+                      <td>{item.chief_complain}</td>
+                      <td>{item.selected_teeth}</td>
+
+                      <td>{item.on_examination}</td>
+                      <td>{item.advice}</td>
                     </tr>
                   </>
                 ))}

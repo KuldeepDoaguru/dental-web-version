@@ -8,11 +8,8 @@ import axios from "axios";
 
 const AdminClinicAct = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  // console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  // console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [showCalender, setShowCalender] = useState(false);
   const [appointmentList, setAppointmentList] = useState([]);
   const [patDetails, setPatDetails] = useState([]);
@@ -26,16 +23,18 @@ const AdminClinicAct = () => {
   };
 
   const getAppointList = async () => {
-    // console.log(branch.name);
+    // console.log(user.branch_name);
     try {
       const response = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${user.branch_name}`
       );
       setAppointmentList(response.data);
     } catch (error) {
       // console.log(error);
     }
   };
+
+  console.log(appointmentList[0]?.appointment_dateTime?.split("T")[0]);
 
   useEffect(() => {
     const date = new Date();
@@ -45,7 +44,7 @@ const AdminClinicAct = () => {
   const getPatdetailsByBranch = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientDetailsByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientDetailsByBranch/${user.branch_name}`
       );
       // console.log(data);
       setPatDetails(data);
@@ -112,7 +111,7 @@ const AdminClinicAct = () => {
   const getTreatmentValues = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/getTreatSuggest/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getTreatSuggest/${user.branch_name}`
       );
       console.log(data);
       setTreatValue(data);
@@ -127,7 +126,7 @@ const AdminClinicAct = () => {
     getAppointList();
     getPatdetailsByBranch();
     getTreatmentValues();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   // console.log(currentDate);
 
@@ -173,10 +172,10 @@ const AdminClinicAct = () => {
 
   // console.log(filterBilling);
 
-  console.log(
-    filterAppointment[5]?.appointment_dateTime.split("T")[1]?.split(":")[0],
-    formattedTime
-  );
+  // console.log(
+  //   filterAppointment[5]?.appointment_dateTime.split("T")[1]?.split(":")[0],
+  //   formattedTime
+  // );
 
   //filter for day wise patient registeration
   const filterPatient = patDetails?.filter((item) => {

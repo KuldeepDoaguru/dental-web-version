@@ -11,11 +11,8 @@ import SiderAdmin from "./SiderAdmin";
 
 const AdminPatientLIst = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [patList, setPatList] = useState([]);
   const [keyword, setkeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,7 +21,7 @@ const AdminPatientLIst = () => {
   const getPatByBranch = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientDetailsByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientDetailsByBranch/${user.branch_name}`
       );
       console.log(data);
       setPatList(data);
@@ -133,9 +130,9 @@ const AdminPatientLIst = () => {
                                       </button>
                                     </Link>
 
-                                    <button className="btn btn-danger mx-1">
+                                    {/* <button className="btn btn-danger mx-1">
                                       Delete
-                                    </button>
+                                    </button> */}
                                   </div>
                                 </td>
                               </tr>

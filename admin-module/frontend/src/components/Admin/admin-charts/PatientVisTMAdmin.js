@@ -15,11 +15,8 @@ import styled from "styled-components";
 
 const PatientVisTMAdmin = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [appointmentList, setAppointmentList] = useState([]);
 
   console.log(appointmentList);
@@ -28,7 +25,7 @@ const PatientVisTMAdmin = () => {
     const getAppointList = async () => {
       try {
         const response = await axios.get(
-          `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${branch.name}`
+          `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${user.branch_name}`
         );
         setAppointmentList(response.data);
       } catch (error) {
@@ -37,7 +34,7 @@ const PatientVisTMAdmin = () => {
     };
 
     getAppointList();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   const getDate = new Date();
   const year = getDate.getFullYear();

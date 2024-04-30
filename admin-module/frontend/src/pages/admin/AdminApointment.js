@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import BranchSelector from "../../components/BranchSelector";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -11,18 +11,16 @@ import SiderAdmin from "./SiderAdmin";
 import HeaderAdmin from "./HeaderAdmin";
 
 const AdminApointment = () => {
+  const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [appointmentList, setAppointmentList] = useState([]);
   const [timeLIneData, setTimeLineData] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [updateData, setUpdateData] = useState({
-    branch: branch.name,
+    branch: user.branch_name,
     patientName: "",
     patContact: "",
     assignedDoc: "",
@@ -55,7 +53,7 @@ const AdminApointment = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${user.branch_name}`
       );
       console.log(response);
       setAppointmentList(response.data);
@@ -66,7 +64,7 @@ const AdminApointment = () => {
 
   useEffect(() => {
     getAppointList();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   console.log(appointmentList);
   console.log(updateData);
@@ -80,7 +78,7 @@ const AdminApointment = () => {
         {
           type: "appointment",
           description: "apointment scheduled",
-          branch: branch.name,
+          branch: user.branch_name,
           patientId: id,
         }
       );
@@ -169,7 +167,9 @@ const AdminApointment = () => {
       buttons.push(
         <li key={i}>
           <button
-            className="btn btn-secondary"
+            className={`btn ${
+              currentPage === i ? "btn-info" : "btn-secondary"
+            }`}
             onClick={() => handlePageChange(i)}
           >
             {i}
@@ -207,7 +207,9 @@ const AdminApointment = () => {
                             <tr>
                               <th className="table-sno">Appointment ID</th>
                               <th>Patient UHID</th>
-
+                              <th className="table-small">
+                                Treatment Package ID
+                              </th>
                               <th className="table-small">Patient Name</th>
                               <th className="table-small">Contact Number</th>
                               <th className="table-small">Assigned Doctor</th>
@@ -233,8 +235,14 @@ const AdminApointment = () => {
                                     {item.appoint_id}
                                   </td>
                                   <td className="table-small">
-                                    {item.patient_uhid}
+                                    <Link
+                                      to={`/patient-profile/${item.patient_uhid}`}
+                                      style={{ textDecoration: "none" }}
+                                    >
+                                      {item.patient_uhid}
+                                    </Link>
                                   </td>
+                                  <td>{item.tp_id}</td>
                                   <td>{item.patient_name}</td>
                                   <td className="table-small">
                                     {item.mobileno}
@@ -327,7 +335,9 @@ const AdminApointment = () => {
                       placeholder="branch name"
                       className="rounded p-1"
                     >
-                      <option value={branch.name}>{branch.name}</option>
+                      <option value={user.branch_name}>
+                        {user.branch_name}
+                      </option>
                     </select>
                   </div>
                   <div className="input-group mb-3 mx-2">

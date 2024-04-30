@@ -11,21 +11,18 @@ import axios from "axios";
 const HeaderAdmin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  // console.log(user);
   const [notifyList, setNotifyList] = useState([]);
 
   const getNotifyDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getSuperAdminNotify/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getSuperAdminNotify/${user.branch_name}`
       );
       setNotifyList(data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -36,7 +33,7 @@ const HeaderAdmin = () => {
       );
       getNotifyDetails();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -45,7 +42,7 @@ const HeaderAdmin = () => {
       localStorage.removeItem("userData");
       navigate("/");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -58,12 +55,12 @@ const HeaderAdmin = () => {
     };
   }, []);
 
-  console.log(notifyList);
+  // console.log(notifyList);
 
   const filterForRead = notifyList?.filter((item) => {
     return item.status === "unread";
   });
-  console.log(filterForRead);
+  // console.log(filterForRead);
 
   return (
     <Wrapper>
@@ -135,7 +132,7 @@ const HeaderAdmin = () => {
                   </ul>
                 </li>
 
-                <li className="nav-item dropdown" id="bell">
+                {/* <li className="nav-item dropdown" id="bell">
                   <a
                     className="nav-link"
                     href="/"
@@ -184,7 +181,7 @@ const HeaderAdmin = () => {
                       );
                     })}
                   </ul>
-                </li>
+                </li> */}
               </ul>
             </div>
           </div>

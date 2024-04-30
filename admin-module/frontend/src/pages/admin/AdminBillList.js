@@ -12,15 +12,13 @@ import axios from "axios";
 import cogoToast from "cogo-toast";
 import SiderAdmin from "./SiderAdmin";
 import HeaderAdmin from "./HeaderAdmin";
+import { Link } from "react-router-dom";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 const AdminBillList = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [listBills, setListBills] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState();
@@ -31,7 +29,7 @@ const AdminBillList = () => {
   const [upData, setUpData] = useState({
     bill_date: "",
     uhid: "",
-    branch_name: branch.name,
+    branch_name: user.branch_name,
     patient_name: "",
     patient_mobile: "",
     patient_email: "",
@@ -43,6 +41,8 @@ const AdminBillList = () => {
     payment_status: "",
     payment_date_time: "",
   });
+
+  console.log(listBills);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -61,7 +61,7 @@ const AdminBillList = () => {
   const getBillDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getBillsByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getBillsByBranch/${user.branch_name}`
       );
       console.log(data);
       setListBills(data);
@@ -112,7 +112,7 @@ const AdminBillList = () => {
 
   useEffect(() => {
     getBillDetailsList();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   useEffect(() => {
     getBillDetailsByBid();
@@ -168,7 +168,9 @@ const AdminBillList = () => {
       buttons.push(
         <li key={i}>
           <button
-            className="btn btn-secondary"
+            className={`btn ${
+              currentPage === i ? "btn-info" : "btn-secondary"
+            }`}
             onClick={() => handlePageChange(i)}
           >
             {i}
@@ -196,7 +198,7 @@ const AdminBillList = () => {
                 </div>
                 <div className="container-fluid mt-3">
                   <h3 className="text-center">Bill List</h3>
-                  <div className="container-fluid mt-3">
+                  <div className="container-fluid mt-3 table-div">
                     <div class="table-responsive rounded">
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
@@ -204,19 +206,19 @@ const AdminBillList = () => {
                             <th className="table-sno">Bill ID</th>
                             <th>Bill Date</th>
                             <th className="table-small">Patient UHID</th>
+                            <th className="table-small">
+                              Treatment Package ID
+                            </th>
                             <th className="table-small">Patient Name</th>
                             <th className="table-small">Patient Mobile</th>
                             <th className="table-small">Patient Email</th>
-                            <th className="table-small">Treatment</th>
-                            <th className="table-small">Treatment Status</th>
-                            <th className="table-small">Drugs with Quantity</th>
                             <th className="table-small">Total Amount</th>
                             <th>Paid Amount</th>
                             <th>Payment Status</th>
                             <th>Payment Date & Time</th>
                             <th>Pending Amount</th>
                             {/* <th>Edit Details</th> */}
-                            <th className="table-small">Delete</th>
+                            {/* <th className="table-small">Delete</th> */}
                           </tr>
                         </thead>
                         <tbody>
@@ -227,15 +229,21 @@ const AdminBillList = () => {
                                 <td className="table-small">
                                   {item.bill_date?.split("T")[0]}
                                 </td>
-                                <td className="table-small">{item.uhid}</td>
+                                <td className="table-small">
+                                  {" "}
+                                  <Link
+                                    to={`/patient-profile/${item.uhid}`}
+                                    style={{ textDecoration: "none" }}
+                                  >
+                                    {item.uhid}
+                                  </Link>
+                                </td>
+                                <td className="table-small">{item.tp_id}</td>
                                 <td className="table-small">
                                   {item.patient_name}
                                 </td>
                                 <td>{item.patient_mobile}</td>
                                 <td>{item.patient_email}</td>
-                                <td>{item.treatment}</td>
-                                <td>{item.treatment_status}</td>
-                                <td>{item.drugs_quantity}</td>
                                 <td className="table-small">
                                   {item.total_amount}
                                 </td>
@@ -243,7 +251,12 @@ const AdminBillList = () => {
                                   {item.paid_amount}
                                 </td>
                                 <td>{item.payment_status}</td>
-                                <td>{item.payment_date_time}</td>
+                                <td>
+                                  {item.payment_date_time?.split("T")[0]}{" "}
+                                  {item.payment_date_time
+                                    ?.split("T")[1]
+                                    .slice(0, 5)}
+                                </td>
                                 <td>{item.pending_amount}</td>
                                 {/* <td className="table-small">
                                   <button
@@ -255,14 +268,14 @@ const AdminBillList = () => {
                                     Edit
                                   </button>
                                 </td> */}
-                                <td className="table-small">
+                                {/* <td className="table-small">
                                   <button
                                     className="btn btn-danger"
                                     onClick={() => deleteBillData(item.bill_id)}
                                   >
                                     Delete
                                   </button>
-                                </td>
+                                </td> */}
                               </tr>
                             </>
                           ))}
@@ -562,6 +575,11 @@ const Container = styled.div`
   th {
     background-color: #1abc9c;
     color: white;
+    white-space: nowrap;
+  }
+
+  td {
+    white-space: nowrap;
   }
 
   .select-style {

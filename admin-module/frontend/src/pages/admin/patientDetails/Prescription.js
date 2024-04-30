@@ -7,23 +7,31 @@ import axios from "axios";
 const Prescription = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
+  // const { uhid } = useParams();
+  // console.log(uhid);
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const branch = user.currentUser.branch_name;
+
   const [presData, setPresData] = useState([]);
 
   const getPresDetails = async () => {
     try {
+      // const { data } = await axios.get(
+      //   `http://localhost:7777/api/v1/super-admin/getPrescriptionDetailsById/${pid}`
+      // );
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPrescriptionDetailsById/${pid}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getPrescriptionViaUhid/${branch}/${pid}`
       );
+      console.log(data);
       setPresData(data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  console.log(presData);
 
   useEffect(() => {
     getPresDetails();
@@ -41,7 +49,7 @@ const Prescription = () => {
               <thead>
                 <tr>
                   <th>Date</th>
-                  <th>Doctor Name</th>
+                  <th>Treatment</th>
                   <th>Medicine Name</th>
                   <th>Dosage</th>
                   <th>Frequency</th>
@@ -53,8 +61,8 @@ const Prescription = () => {
                 {presData?.map((item) => (
                   <>
                     <tr>
-                      <td>{item.prescription_date?.split("T")[0]}</td>
-                      <td>{item.doctor_name}</td>
+                      <td>{item.date?.split("T")[0]}</td>
+                      <td>{item.treatment}</td>
                       <td>{item.medicine_name}</td>
                       <td>{item.dosage}</td>
                       <td>{item.frequency}</td>

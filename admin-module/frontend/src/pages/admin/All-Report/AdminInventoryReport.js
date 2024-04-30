@@ -15,11 +15,8 @@ import SiderAdmin from "../SiderAdmin";
 const AdminInventoryReport = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const location = useLocation();
   const [appointmentList, setAppointmentList] = useState([]);
   const [fromDate, setFromDate] = useState("");
@@ -27,14 +24,16 @@ const AdminInventoryReport = () => {
 
   const getPurchaseList = async () => {
     try {
-      const response = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPurInventoryByBranch/${branch.name}`
+      const { data } = await axios.get(
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getPurInventoryByBranch/${user.branch_name}`
       );
-      setAppointmentList(response.data);
+      setAppointmentList(data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  console.log(appointmentList);
 
   const todayDate = new Date();
 
@@ -59,7 +58,7 @@ const AdminInventoryReport = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/downloadExpenseReportByTime/${branch.name}`,
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/downloadExpenseReportByTime/${user.branch_name}`,
         { fromDate: fromDate, toDate: toDate }
       );
       console.log(data);
@@ -84,7 +83,7 @@ const AdminInventoryReport = () => {
 
   useEffect(() => {
     getPurchaseList();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   const goBack = () => {
     window.history.go(-1);

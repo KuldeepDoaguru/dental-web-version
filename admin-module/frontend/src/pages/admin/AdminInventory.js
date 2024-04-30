@@ -13,11 +13,8 @@ import SiderAdmin from "./SiderAdmin";
 
 const AdminInventory = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [invList, setInvList] = useState([]);
   const [keyword, setkeyword] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -30,7 +27,7 @@ const AdminInventory = () => {
   const getPurchaseList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPurInventoryByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPurInventoryByBranch/${user.branch_name}`
       );
       console.log(data);
       setInvList(data);
@@ -39,9 +36,11 @@ const AdminInventory = () => {
     }
   };
 
+  console.log(invList);
+
   useEffect(() => {
     getPurchaseList();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   const sortByItemNameAZ = (a, b) => {
     if (a.item_name < b.item_name) return -1;
@@ -69,7 +68,7 @@ const AdminInventory = () => {
   const deletePurInvDetails = async (id) => {
     try {
       const response = await axios.delete(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/deletePurInvoice/${branch.name}/${id}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/deletePurInvoice/${user.branch_name}/${id}`
       );
       console.log(response);
       cogoToast.success("Successfully Deleted the Data");
@@ -231,180 +230,201 @@ const AdminInventory = () => {
                     style={{ overflowX: "auto" }}
                   >
                     <div class="table-responsive rounded">
-                      <table class="table table-bordered rounded shadow">
-                        <thead className="table-head">
-                          <tr>
-                            <th className="thead">Purchase ID</th>
-                            <th className="thead">Item Code</th>
-                            <th className="thead">HSN Code</th>
-                            <th className="thead">Item Name</th>
-                            <th className="thead">Item Type</th>
-                            <th className="thead">MRP</th>
-                            <th className="thead">Purchase Quantity</th>
-                            <th className="thead">Discount</th>
-                            <th className="thead">Total Amount</th>
-                            <th className="thead">Purchase Date</th>
+                      {filterForMonth.length > 0 ? (
+                        <>
+                          {" "}
+                          <table class="table table-bordered rounded shadow">
+                            <thead className="table-head">
+                              <tr>
+                                <th className="thead">Purchase ID</th>
+                                <th className="thead">Item Code</th>
+                                <th className="thead">HSN Code</th>
+                                <th className="thead">Item Name</th>
+                                <th className="thead">Item Type</th>
+                                <th className="thead">MRP</th>
+                                <th className="thead">Purchase Quantity</th>
+                                <th className="thead">Discount</th>
+                                <th className="thead">Total Amount</th>
+                                <th className="thead">Purchase Date</th>
 
-                            <th className="thead">Available Stock</th>
-                            <th className="thead">Low Stock Threshhold</th>
-                            <th className="thead">Distributor Name</th>
-                            <th className="thead">Distributor Number</th>
-                            {/* <th
+                                <th className="thead">Available Stock</th>
+                                <th className="thead">Low Stock Threshhold</th>
+                                <th className="thead">Distributor Name</th>
+                                <th className="thead">Distributor Number</th>
+                                {/* <th
                               
                               
                             >
                               Edit
                             </th> */}
-                            <th className="table-small text-center">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {filterForMonth
-                            ?.filter((val) => {
-                              if (keyword === "") {
-                                return true;
-                              } else if (
-                                val.item_name.toLowerCase().includes(keyword) ||
-                                val.item_name.toLowerCase().includes(keyword)
-                              ) {
-                                return val;
-                              }
-                            })
-                            .filter((val) => {
-                              if (selectedCategory === "all") {
-                                return true;
-                              } else if (
-                                val.item_category.toLowerCase() ===
-                                selectedCategory
-                              ) {
-                                return val;
-                              }
-                            })
-                            .sort((a, b) => {
-                              // Apply sorting based on selected option
-                              switch (selectedSortOption) {
-                                case "AtoZ":
-                                  return sortByItemNameAZ(a, b);
-                                case "ZtoA":
-                                  return sortByItemNameZA(a, b);
-                                case "LowToHigh":
-                                  return sortByTotalAmountLowToHigh(a, b);
-                                case "HighToLow":
-                                  return sortByTotalAmountHighToLow(a, b);
-                                case "RecentlyAdded":
-                                  return b.pur_id - a.pur_id;
-                                default:
-                                  return 0;
-                              }
-                            })
-                            .map((item) => (
-                              <>
-                                <tr className="table-row">
-                                  <td className="thead">{item.pur_id}</td>
-                                  <td className="thead">{item.item_code}</td>
-                                  <td className="thead">{item.HSN_code}</td>
-                                  <td className="thead">{item.item_name}</td>
-                                  <td className="thead">
-                                    {item.item_category}
-                                  </td>
-                                  <td className="thead">{item.item_mrp}</td>
-                                  <td className="thead">{item.pur_quantity}</td>
-                                  <td className="thead">{item.discount}</td>
-                                  <td className="thead">{item.total_amount}</td>
-                                  <td className="thead">
-                                    {item.purchase_date?.split("T")[0]}
-                                  </td>
-                                  <td className="thead">
-                                    {item.available_stock}
-                                  </td>
-                                  <td className="thead">
-                                    {item.low_stock_threshhold}
-                                  </td>
-                                  <td className="thead">
-                                    {item.distributor_name}
-                                  </td>
-                                  <td className="thead">
-                                    {item.distributor_number}
-                                  </td>
-                                  <td className="thead">
-                                    <div className="d-flex">
-                                      <button
-                                        className="btn btn-success mx-1"
-                                        onClick={() =>
-                                          downloadInvoice(
-                                            item.bill_receipt_doc?.split(
-                                              "/reciept_doc/"
-                                            )[1]
-                                          )
-                                        }
-                                      >
-                                        Download/Print Reciept
-                                      </button>
+                                <th className="table-small text-center">
+                                  Action
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {filterForMonth
+                                ?.filter((val) => {
+                                  if (keyword === "") {
+                                    return true;
+                                  } else if (
+                                    val.item_name
+                                      .toLowerCase()
+                                      .includes(keyword) ||
+                                    val.item_name
+                                      .toLowerCase()
+                                      .includes(keyword)
+                                  ) {
+                                    return val;
+                                  }
+                                })
+                                .filter((val) => {
+                                  if (selectedCategory === "all") {
+                                    return true;
+                                  } else if (
+                                    val.item_category.toLowerCase() ===
+                                    selectedCategory
+                                  ) {
+                                    return val;
+                                  }
+                                })
+                                .sort((a, b) => {
+                                  // Apply sorting based on selected option
+                                  switch (selectedSortOption) {
+                                    case "AtoZ":
+                                      return sortByItemNameAZ(a, b);
+                                    case "ZtoA":
+                                      return sortByItemNameZA(a, b);
+                                    case "LowToHigh":
+                                      return sortByTotalAmountLowToHigh(a, b);
+                                    case "HighToLow":
+                                      return sortByTotalAmountHighToLow(a, b);
+                                    case "RecentlyAdded":
+                                      return b.pur_id - a.pur_id;
+                                    default:
+                                      return 0;
+                                  }
+                                })
+                                .map((item) => (
+                                  <>
+                                    <tr className="table-row">
+                                      <td className="thead">{item.pur_id}</td>
+                                      <td className="thead">
+                                        {item.item_code}
+                                      </td>
+                                      <td className="thead">{item.HSN_code}</td>
+                                      <td className="thead">
+                                        {item.item_name}
+                                      </td>
+                                      <td className="thead">
+                                        {item.item_category}
+                                      </td>
+                                      <td className="thead">{item.item_mrp}</td>
+                                      <td className="thead">
+                                        {item.pur_quantity}
+                                      </td>
+                                      <td className="thead">{item.discount}</td>
+                                      <td className="thead">
+                                        {item.total_amount}
+                                      </td>
+                                      <td className="thead">
+                                        {item.purchase_date?.split("T")[0]}
+                                      </td>
+                                      <td className="thead">
+                                        {item.available_stock}
+                                      </td>
+                                      <td className="thead">
+                                        {item.low_stock_threshhold}
+                                      </td>
+                                      <td className="thead">
+                                        {item.distributor_name}
+                                      </td>
+                                      <td className="thead">
+                                        {item.distributor_number}
+                                      </td>
+                                      <td className="thead">
+                                        <div className="d-flex">
+                                          <button
+                                            className="btn btn-success mx-1"
+                                            onClick={() =>
+                                              downloadInvoice(
+                                                item.bill_receipt_doc?.split(
+                                                  "/reciept_doc/"
+                                                )[1]
+                                              )
+                                            }
+                                          >
+                                            Download/Print Reciept
+                                          </button>
 
-                                      <Link
-                                        to={`/admin-edit-invetory/${item.pur_id}`}
-                                      >
-                                        <button className="btn btn-warning">
-                                          Edit Items
-                                        </button>
-                                      </Link>
+                                          <Link
+                                            to={`/admin-edit-invetory/${item.pur_id}`}
+                                          >
+                                            <button className="btn btn-warning">
+                                              Edit Items
+                                            </button>
+                                          </Link>
 
-                                      <button
-                                        type="button"
-                                        class="btn btn-danger mx-2"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal"
-                                      >
-                                        Delete Items
-                                      </button>
-                                    </div>
-                                  </td>
-                                </tr>
-                                <div
-                                  class="modal fade rounded"
-                                  id="exampleModal"
-                                  tabindex="-1"
-                                  aria-labelledby="exampleModalLabel"
-                                  aria-hidden="true"
-                                >
-                                  <div class="modal-dialog rounded">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                        <h1
-                                          class="modal-title fs-5"
-                                          id="exampleModalLabel"
-                                        >
-                                          Are you sure you want to delete this
-                                          data
-                                        </h1>
+                                          {/* <button
+                                            type="button"
+                                            class="btn btn-danger mx-2"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#exampleModal"
+                                          >
+                                            Delete Items
+                                          </button> */}
+                                        </div>
+                                      </td>
+                                    </tr>
+                                    {/* <div
+                                      class="modal fade rounded"
+                                      id="exampleModal"
+                                      tabindex="-1"
+                                      aria-labelledby="exampleModalLabel"
+                                      aria-hidden="true"
+                                    >
+                                      <div class="modal-dialog rounded">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h1
+                                              class="modal-title fs-5"
+                                              id="exampleModalLabel"
+                                            >
+                                              Are you sure you want to delete
+                                              this data
+                                            </h1>
+                                          </div>
+
+                                          <div class="modal-footer d-flex justify-content-center">
+                                            <button
+                                              type="button"
+                                              class="btn btn-danger"
+                                              data-bs-dismiss="modal"
+                                              onClick={() =>
+                                                deletePurInvDetails(item.pur_id)
+                                              }
+                                            >
+                                              Yes
+                                            </button>
+                                            <button
+                                              type="button"
+                                              class="btn btn-secondary"
+                                              data-bs-dismiss="modal"
+                                            >
+                                              Close
+                                            </button>
+                                          </div>
+                                        </div>
                                       </div>
-
-                                      <div class="modal-footer d-flex justify-content-center">
-                                        <button
-                                          type="button"
-                                          class="btn btn-danger"
-                                          data-bs-dismiss="modal"
-                                          onClick={() =>
-                                            deletePurInvDetails(item.pur_id)
-                                          }
-                                        >
-                                          Yes
-                                        </button>
-                                        <button
-                                          type="button"
-                                          class="btn btn-secondary"
-                                          data-bs-dismiss="modal"
-                                        >
-                                          Close
-                                        </button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </>
-                            ))}
-                        </tbody>
-                      </table>
+                                    </div> */}
+                                  </>
+                                ))}
+                            </tbody>
+                          </table>
+                        </>
+                      ) : (
+                        <p>No Purchase this month</p>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -284,18 +284,27 @@ const getPatientDataByBranchAndId = (req, res) => {
 };
 
 const getPatientBillByBranchAndId = (req, res) => {
+  const branch = req.params.branch;
+  const uhid = req.params.uhid;
   try {
-    const pid = req.params.pid;
-    const selectQuery = "SELECT * FROM patient_bills WHERE uhid = ?";
-    db.query(selectQuery, pid, (err, result) => {
+    const sql =
+      "SELECT * FROM treat_suggest WHERE branch_name = ? AND p_uhid = ? ORDER BY tp_id DESC";
+
+    db.query(sql, [branch, uhid], (err, results) => {
       if (err) {
-        res.status(400).json({ success: false, message: err.message });
+        console.error("Error fetching Treatment from MySql:", err);
+        res.status(500).json({ error: "Error fetching Treatment" });
+      } else {
+        res.status(200).send(results);
       }
-      res.status(200).send(result);
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    console.error("Error fetching Treatment from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Treatment",
+      error: error.message,
+    });
   }
 };
 
@@ -317,9 +326,11 @@ const getPrescriptionDetailsById = (req, res) => {
 
 const getAppointmentByBranchAndId = (req, res) => {
   try {
+    const branch = req.params.branch;
     const pid = req.params.pid;
-    const selectQuery = "SELECT * FROM appointments WHERE uhid = ?";
-    db.query(selectQuery, [pid], (err, result) => {
+    const selectQuery =
+      "SELECT * FROM appointments WHERE branch_name = ? AND patient_uhid = ?";
+    db.query(selectQuery, [branch, pid], (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });
       }

@@ -74,7 +74,7 @@ const Navbar = () => {
             Billing
           </button>
         </li>
-        <li className="nav-item" role="presentation">
+        {/* <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab3"
@@ -87,7 +87,7 @@ const Navbar = () => {
           >
             Payment
           </button>
-        </li>
+        </li> */}
         <li className="nav-item" role="presentation">
           <button
             className="nav-link"
@@ -116,7 +116,7 @@ const Navbar = () => {
             Prescription
           </button>
         </li>
-        <li className="nav-item" role="presentation">
+        {/* <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab1"
@@ -129,8 +129,8 @@ const Navbar = () => {
           >
             Lab
           </button>
-        </li>
-        <li className="nav-item" role="presentation">
+        </li> */}
+        {/* <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab1"
@@ -171,7 +171,7 @@ const Navbar = () => {
           >
             Email
           </button>
-        </li>
+        </li> */}
         <li className="nav-item" role="presentation">
           <button
             className="nav-link"
@@ -292,7 +292,7 @@ const Navbar = () => {
               </li>
             </ul>
           </div>
-          <div
+          {/* <div
             className="tab-pane fade"
             id="profile-tab-pane7"
             role="tabpanel"
@@ -304,8 +304,8 @@ const Navbar = () => {
                 <Files />
               </li>
             </ul>
-          </div>
-          <div
+          </div> */}
+          {/* <div
             className="tab-pane fade"
             id="profile-tab-pane8"
             role="tabpanel"
@@ -317,8 +317,8 @@ const Navbar = () => {
                 <Sms />
               </li>
             </ul>
-          </div>
-          <div
+          </div> */}
+          {/* <div
             className="tab-pane fade"
             id="profile-tab-pane9"
             role="tabpanel"
@@ -330,7 +330,7 @@ const Navbar = () => {
                 <Email />
               </li>
             </ul>
-          </div>
+          </div> */}
           <div
             className="tab-pane fade"
             id="profile-tab-pane10"

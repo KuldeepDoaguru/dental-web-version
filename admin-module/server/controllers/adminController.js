@@ -448,11 +448,11 @@ const adminLoginUser = async (req, res) => {
           user: {
             employee_ID: user.employee_ID,
             email: user.employee_email,
-            // branch_name: user.branch_name,
-            // employee_name: user.employee_name,
-            // employee_mobile: user.employee_mobile,
-            // employee_designation: user.employee_designation,
-            // employee_picture: user.employee_picture,
+            branch_name: user.branch_name,
+            employee_name: user.employee_name,
+            employee_mobile: user.employee_mobile,
+            employee_designation: user.employee_designation,
+            employee_picture: user.employee_picture,
             token: token,
           },
         });

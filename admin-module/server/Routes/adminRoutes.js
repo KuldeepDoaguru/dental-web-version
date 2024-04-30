@@ -73,6 +73,10 @@ const {
   markRead,
   addSuperAdminNotify,
   getTreatSuggest,
+  getTreatmentViaUhid,
+  getPatientBillUHID,
+  getExaminationViaUhid,
+  getPrescriptionViaUhid,
 } = require("../controllers/notifyController");
 // const multer = require("multer");
 
@@ -144,9 +148,15 @@ router.put(
   updatePurInvoice
 );
 router.get("/getPatientDataByBranchAndId/:pid", getPatientDataByBranchAndId);
-router.get("/getPatientBillByBranchAndId/:pid", getPatientBillByBranchAndId);
+router.get(
+  "/getPatientBillByBranchAndId/:branch/:pid",
+  getPatientBillByBranchAndId
+);
 router.get("/getPrescriptionDetailsById/:pid", getPrescriptionDetailsById);
-router.get("/getAppointmentByBranchAndId/:pid", getAppointmentByBranchAndId);
+router.get(
+  "/getAppointmentByBranchAndId/:branch/:pid",
+  getAppointmentByBranchAndId
+);
 router.get("/examinDetailsByPatId/:pid", examinDetailsByPatId);
 router.get("/getPaymentDetailsByPatId/:pid", getPaymentDetailsByPatId);
 router.get("/getPatientTimeline/:pid", getPatientTimeline);
@@ -200,5 +210,9 @@ router.get("/getSuperAdminNotify/:branch", getSuperAdminNotify);
 router.put("/markRead/:snid", markRead);
 router.post("/addSuperAdminNotify", addSuperAdminNotify);
 router.get("/getTreatSuggest/:branch", getTreatSuggest);
+router.get("/getTreatmentViaUhid/:branch/:uhid", getTreatmentViaUhid);
+router.get("/get-patientBill-data/:patientUHID", getPatientBillUHID);
+router.get("/getExaminationViaUhid/:branch/:uhid", getExaminationViaUhid);
+router.get("/getPrescriptionViaUhid/:branch/:uhid", getPrescriptionViaUhid);
 
 module.exports = router;

@@ -22,7 +22,7 @@ const AdminAppointmentReport = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getAppointmentData/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${branch.name}`
       );
       console.log(response);
       setAppointmentList(response.data);

@@ -21,7 +21,7 @@ const AdminPatientLIst = () => {
   const getPatByBranch = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPatientDetailsByBranch/${user.branch_name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getPatientDetailsByBranch/${user.branch_name}`
       );
       console.log(data);
       setPatList(data);

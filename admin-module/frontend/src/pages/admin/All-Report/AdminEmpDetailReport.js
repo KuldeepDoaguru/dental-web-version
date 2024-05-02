@@ -15,18 +15,15 @@ const AdminEmpDetailReport = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [doctorList, setDoctorList] = useState([]);
   const [designation, setDesignation] = useState("");
 
   const getDocDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeDataByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeDataByBranch/${user.branch_name}`
       );
       console.log(data);
       setDoctorList(data);
@@ -46,7 +43,7 @@ const AdminEmpDetailReport = () => {
   const downloadEmployeeData = async () => {
     try {
       const { data } = await axios.post(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/downloadStaffReport/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/downloadStaffReport/${user.branch_name}`
       );
       console.log(data);
       // setSelectedEarn(data);

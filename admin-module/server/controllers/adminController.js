@@ -56,7 +56,7 @@ const EnrollEmployee = async (req, res) => {
     const empProfilePicture = req.file;
     console.log(empProfilePicture, "pro");
 
-    const imageUrl = `http://localhost:${PORT}/empProfilePicture/${empProfilePicture?.filename}`;
+    const imageUrl = `${PORT}/empProfilePicture/${empProfilePicture?.filename}`;
 
     console.log("profilePicture: 770", imageUrl);
 
@@ -219,6 +219,11 @@ const editEmployeeDetails = (req, res) => {
       password,
       empRole,
       availability,
+      employee_education,
+      speciality,
+      language,
+      experience,
+      type_of,
     } = req.body;
 
     const empProfilePicture = req.file;
@@ -335,6 +340,30 @@ const editEmployeeDetails = (req, res) => {
         if (empProfilePicture) {
           updateFields.push("employee_picture = ?");
           updateValues.push(imageUrl);
+        }
+        if (employee_education) {
+          updateFields.push("employee_education = ?");
+          updateValues.push(employee_education);
+        }
+
+        if (speciality) {
+          updateFields.push("speciality = ?");
+          updateValues.push(speciality);
+        }
+
+        if (language) {
+          updateFields.push("language = ?");
+          updateValues.push(language);
+        }
+
+        if (experience) {
+          updateFields.push("experience = ?");
+          updateValues.push(experience);
+        }
+
+        if (type_of) {
+          updateFields.push("type_of = ?");
+          updateValues.push(type_of);
         }
 
         const updateQuery = `UPDATE employee_register SET ${updateFields.join(

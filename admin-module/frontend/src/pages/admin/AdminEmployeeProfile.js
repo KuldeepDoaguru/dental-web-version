@@ -9,21 +9,21 @@ import axios from "axios";
 import cogoToast from "cogo-toast";
 import HeaderAdmin from "./HeaderAdmin";
 import SiderAdmin from "./SiderAdmin";
+import DoctorProfile from "../../components/doctorProfile/DoctorProfile";
 
 const AdminEmployeeProfile = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
+  const branch = user.branch_name;
   const { eid } = useParams();
+  console.log(eid);
   const location = useLocation();
   const [empData, setEmpData] = useState([]);
   const [showEditEmployee, setShowEditEmployee] = useState(false);
   const [empProfilePicture, setEmpProfilePicture] = useState(null);
   const [inEmpData, setInEmpData] = useState({
-    branch: branch.name,
+    branch: user.branch_name,
     empName: "",
     empMobile: "",
     empGender: "",
@@ -32,16 +32,17 @@ const AdminEmployeeProfile = () => {
     empSalary: "",
     empAddress: "",
     status: "",
-    morningShiftStartTime: "",
-    morningShiftEndTime: "",
-    eveningShiftStartTime: "",
-    eveningShiftEndTime: "",
     allDayShiftStartTime: "",
     allDayShiftEndTime: "",
     working_days: "",
     password: "",
     empRole: [],
     availability: "",
+    employee_education: "",
+    speciality: "",
+    language: "",
+    experience: "",
+    type_of: "",
   });
 
   const handleEmpProfilePicture = (e) => {
@@ -109,7 +110,7 @@ const AdminEmployeeProfile = () => {
   const getEmployeeData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeDetails/${branch.name}/${eid}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeDetails/${branch}/${eid}`
       );
       console.log(data);
       setEmpData(data);
@@ -120,7 +121,7 @@ const AdminEmployeeProfile = () => {
 
   useState(() => {
     getEmployeeData();
-  }, [branch.name]);
+  }, [branch]);
 
   console.log(empData);
 
@@ -136,7 +137,7 @@ const AdminEmployeeProfile = () => {
       console.log(inEmpData, empProfilePicture);
 
       const response = await axios.put(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/editEmployeeDetails/${branch.name}/${eid}`,
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/editEmployeeDetails/${branch}/${eid}`,
         formData,
         {
           headers: {
@@ -152,6 +153,8 @@ const AdminEmployeeProfile = () => {
       console.log(error);
     }
   };
+
+  console.log(empData);
   return (
     <>
       <Container>
@@ -181,7 +184,11 @@ const AdminEmployeeProfile = () => {
                         <div className="d-flex justify-content-between">
                           <div>
                             {" "}
-                            <h3>Employee Profile</h3>
+                            <h3>
+                              {empData[0]?.employee_designation === "doctor"
+                                ? "Doctor Profile"
+                                : "Employee Profile"}
+                            </h3>
                           </div>
                           <div>
                             <button
@@ -197,173 +204,203 @@ const AdminEmployeeProfile = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="row">
-                    <div className="col-lg-4">
-                      <img
-                        src={empData[0]?.employee_picture}
-                        alt="doctor-profile"
-                        className="img-fluid rounded"
-                      />
-                    </div>
-                    <div className="col-lg-8">
-                      <div className="row g-3">
+                  {empData[0]?.employee_designation === "doctor" ? (
+                    <>{<DoctorProfile eid={eid} />}</>
+                  ) : (
+                    <>
+                      <div className="row">
                         <div className="col-lg-4">
-                          <label className="text-info">Employee ID</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">{empData[0]?.employee_ID}</p>
-                          </div>
+                          <img
+                            src={empData[0]?.employee_picture}
+                            alt="doctor-profile"
+                            className="img-fluid rounded"
+                          />
                         </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">Employee Name</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">{empData[0]?.employee_name}</p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">Email</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">{empData[0]?.employee_email}</p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">Gender</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">{empData[0]?.gender}</p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">Mobile Number</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">{empData[0]?.employee_mobile}</p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">Address</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">{empData[0]?.address}</p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">Designation</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">
-                              {empData[0]?.employee_designation}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">Salary</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">{empData[0]?.salary}</p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">Status</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">{empData[0]?.employee_status}</p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">Availability</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">{empData[0]?.availability}</p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">
-                            Morning Shift Start Time
-                          </label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">
-                              {empData[0]?.morning_shift_start_time
-                                ? empData[0]?.morning_shift_start_time
-                                : " - "}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">
-                            Morning Shift End Time
-                          </label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">
-                              {empData[0]?.morning_shift_end_time
-                                ? empData[0]?.morning_shift_end_time
-                                : " - "}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">
-                            Evening Shift Start Time
-                          </label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">
-                              {empData[0]?.evening_shift_start_time
-                                ? empData[0]?.evening_shift_start_time
-                                : " - "}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">
-                            Evening Shift End Time
-                          </label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">
-                              {empData[0]?.evening_shift_end_time
-                                ? empData[0]?.evening_shift_end_time
-                                : " - "}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">
-                            All Day Shift Start Time
-                          </label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">
-                              {
-                                empData[0]?.allday_shift_start_time?.split(
-                                  "."
-                                )[0]
-                              }
-                            </p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">
-                            All Day Shift End Time
-                          </label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">
-                              {empData[0]?.allday_shift_end_time?.split(".")[0]}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">Working Days</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">
-                              {empData[0]?.working_days
-                                ? empData[0]?.working_days
-                                : " - "}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="col-lg-4">
-                          <label className="text-info">Employee Role</label>
-                          <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">
-                              {empData[0]?.employee_role
-                                ? empData[0]?.employee_role
-                                : " - "}
-                            </p>
+                        <div className="col-lg-8">
+                          <div className="row g-3">
+                            <div className="col-lg-4">
+                              <label className="text-info">Employee ID</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{empData[0]?.employee_ID}</p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">Employee Name</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {empData[0]?.employee_name}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">Email</label>
+                              <div
+                                className="shadow-none p-1 bg-light rounded"
+                                style={{ wordWrap: "break-word" }}
+                              >
+                                <p className="m-0">
+                                  {empData[0]?.employee_email}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="col-lg-4">
+                              <label className="text-info">Gender</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{empData[0]?.gender}</p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">Mobile Number</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {empData[0]?.employee_mobile}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">Address</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{empData[0]?.address}</p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">Designation</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {empData[0]?.employee_designation}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">Salary</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{empData[0]?.salary}</p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">Status</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {empData[0]?.employee_status}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">Availability</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {empData[0]?.availability}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">Type Of</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{empData[0]?.type_of}</p>
+                              </div>
+                            </div>
+                            {/* <div className="col-lg-4">
+                              <label className="text-info">
+                                Morning Shift Start Time
+                              </label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {empData[0]?.morning_shift_start_time
+                                    ? empData[0]?.morning_shift_start_time
+                                    : " - "}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">
+                                Morning Shift End Time
+                              </label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {empData[0]?.morning_shift_end_time
+                                    ? empData[0]?.morning_shift_end_time
+                                    : " - "}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">
+                                Evening Shift Start Time
+                              </label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {empData[0]?.evening_shift_start_time
+                                    ? empData[0]?.evening_shift_start_time
+                                    : " - "}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">
+                                Evening Shift End Time
+                              </label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {empData[0]?.evening_shift_end_time
+                                    ? empData[0]?.evening_shift_end_time
+                                    : " - "}
+                                </p>
+                              </div>
+                            </div> */}
+                            <div className="col-lg-4">
+                              <label className="text-info">
+                                All Day Shift Start Time
+                              </label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {
+                                    empData[0]?.allday_shift_start_time?.split(
+                                      "."
+                                    )[0]
+                                  }
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">
+                                All Day Shift End Time
+                              </label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {
+                                    empData[0]?.allday_shift_end_time?.split(
+                                      "."
+                                    )[0]
+                                  }
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">Working Days</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {empData[0]?.working_days
+                                    ? empData[0]?.working_days
+                                    : " - "}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="col-lg-4">
+                              <label className="text-info">Employee Role</label>
+                              <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">
+                                  {empData[0]?.employee_role
+                                    ? empData[0]?.employee_role
+                                    : " - "}
+                                </p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -375,7 +412,11 @@ const AdminEmployeeProfile = () => {
         {/* pop-up for adding lab */}
         <div className={`popup-container${showEditEmployee ? " active" : ""}`}>
           <div className="popup">
-            <h4 className="text-center">Edit Employee Details</h4>
+            <h4 className="text-center">
+              {empData[0]?.employee_designation === "doctor"
+                ? "Edit Doctor Details"
+                : "Edit Employee Details"}
+            </h4>
             <hr />
             <form className="d-flex flex-column" onSubmit={editEmployeeData}>
               <div className="container">
@@ -525,7 +566,7 @@ const AdminEmployeeProfile = () => {
                       </select>
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  {/* <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                     <div class="mb-3">
                       <label for="exampleFormControlInput1" class="form-label">
                         Morning Shift Start Time
@@ -584,7 +625,7 @@ const AdminEmployeeProfile = () => {
                         onChange={handleInputChange}
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                     <div class="mb-3">
                       <label for="exampleFormControlInput1" class="form-label">
@@ -646,6 +687,107 @@ const AdminEmployeeProfile = () => {
                         value={inEmpData.password}
                         onChange={handleInputChange}
                       />
+                    </div>
+                  </div>
+                  {/* doctor only */}
+
+                  {empData[0]?.employee_designation === "doctor" && (
+                    <>
+                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                        <div className="mb-3">
+                          <label
+                            for="exampleFormControlInput1"
+                            class="form-label"
+                          >
+                            Doctor Education
+                          </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            placeholder={empData[0]?.employee_education}
+                            name="employee_education"
+                            value={inEmpData.employee_education}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                        <div className="mb-3">
+                          <label
+                            for="exampleFormControlInput1"
+                            class="form-label"
+                          >
+                            Speciality
+                          </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            placeholder={empData[0]?.speciality}
+                            name="speciality"
+                            value={inEmpData.speciality}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                        <div className="mb-3">
+                          <label
+                            for="exampleFormControlInput1"
+                            class="form-label"
+                          >
+                            language
+                          </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            placeholder={empData[0]?.language}
+                            name="language"
+                            value={inEmpData.language}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                        <div className="mb-3">
+                          <label
+                            for="exampleFormControlInput1"
+                            class="form-label"
+                          >
+                            experience
+                          </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            placeholder={empData[0]?.experience}
+                            name="experience"
+                            value={inEmpData.experience}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    <div className="mb-3">
+                      <label for="exampleFormControlInput1" class="form-label">
+                        type_of
+                      </label>
+
+                      <select
+                        id=""
+                        name="type_of"
+                        value={inEmpData.type_of}
+                        class="form-control"
+                        onChange={handleInputChange}
+                      >
+                        <option value="full time">Full Time</option>
+                        <option value="half time">Part Time</option>
+                      </select>
                     </div>
                   </div>
                 </div>

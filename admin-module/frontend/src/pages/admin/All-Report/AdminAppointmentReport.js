@@ -12,8 +12,8 @@ import SiderAdmin from "../SiderAdmin";
 import HeaderAdmin from "../HeaderAdmin";
 
 const AdminAppointmentReport = () => {
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [appointmentList, setAppointmentList] = useState([]);
   const location = useLocation();
   const [fromDate, setFromDate] = useState("");
@@ -22,7 +22,7 @@ const AdminAppointmentReport = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${user.branch_name}`
       );
       console.log(response);
       setAppointmentList(response.data);
@@ -33,7 +33,7 @@ const AdminAppointmentReport = () => {
 
   useEffect(() => {
     getAppointList();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   const todayDate = new Date();
 
@@ -60,11 +60,12 @@ const AdminAppointmentReport = () => {
     window.history.go(-1);
   };
 
+  console.log("from date:", fromDate, "to date:", toDate);
   const downloadAppointmentData = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/downloadAppointReportByTime/${branch.name}`,
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/downloadAppointReportByTime/${user.branch_name}`,
         { fromDate: fromDate, toDate: toDate }
       );
       console.log(data);
@@ -86,6 +87,8 @@ const AdminAppointmentReport = () => {
       console.log(error);
     }
   };
+
+  console.log(filterAppointDataByMonth);
 
   return (
     <>
@@ -235,23 +238,38 @@ const AdminAppointmentReport = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {filterAppointDataByMonth?.map((item) => (
-                                    <>
-                                      <tr className="table-row">
-                                        <td className="table-sno">
-                                          {item.appoint_id}
-                                        </td>
-                                        <td className="table-small">
-                                          {item.uhid}
-                                        </td>
-                                        <td>{item.patient_name}</td>
-                                        <td className="table-small">
-                                          {item.mobileno}
-                                        </td>
-                                        <td className="table-small">
-                                          {item.assigned_doctor_name}
-                                        </td>
-                                        {/* <td className="table-small">
+                                  {filterAppointDataByMonth
+                                    ?.filter((item) => {
+                                      const billDate =
+                                        item.appointment_dateTime?.split(
+                                          "T"
+                                        )[0]; // Extracting the date part
+                                      if (fromDate && toDate) {
+                                        return (
+                                          billDate >= fromDate &&
+                                          billDate <= toDate
+                                        );
+                                      } else {
+                                        return true; // If no date range is selected, show all items
+                                      }
+                                    })
+                                    .map((item) => (
+                                      <>
+                                        <tr className="table-row">
+                                          <td className="table-sno">
+                                            {item.appoint_id}
+                                          </td>
+                                          <td className="table-small">
+                                            {item.uhid}
+                                          </td>
+                                          <td>{item.patient_name}</td>
+                                          <td className="table-small">
+                                            {item.mobileno}
+                                          </td>
+                                          <td className="table-small">
+                                            {item.assigned_doctor_name}
+                                          </td>
+                                          {/* <td className="table-small">
                                     {item.treatment_provided}
                                   </td>
                                   <td className="table-small">
@@ -264,29 +282,29 @@ const AdminAppointmentReport = () => {
                                     {item.payment_date_time?.split("T")[0]}{" "}
                                     {item.payment_date_time?.split("T")[1]}
                                   </td> */}
-                                        <td className="table-small">
-                                          {item.appointment_created_by}
-                                        </td>
-                                        <td className="table-small">
-                                          {item.updated_by
-                                            ? item.updated_by
-                                            : "-"}
-                                        </td>
-                                        <td className="table-small">
-                                          {
-                                            item.appointment_dateTime?.split(
-                                              "T"
-                                            )[0]
-                                          }{" "}
-                                          {
-                                            item.appointment_dateTime?.split(
-                                              "T"
-                                            )[1]
-                                          }
-                                        </td>
-                                        <td>{item.appointment_status}</td>
-                                        <td>{item.cancel_reason}</td>
-                                        {/* <td className="table-small">
+                                          <td className="table-small">
+                                            {item.appointment_created_by}
+                                          </td>
+                                          <td className="table-small">
+                                            {item.updated_by
+                                              ? item.updated_by
+                                              : "-"}
+                                          </td>
+                                          <td className="table-small">
+                                            {
+                                              item.appointment_dateTime?.split(
+                                                "T"
+                                              )[0]
+                                            }{" "}
+                                            {
+                                              item.appointment_dateTime?.split(
+                                                "T"
+                                              )[1]
+                                            }
+                                          </td>
+                                          <td>{item.appointment_status}</td>
+                                          <td>{item.cancel_reason}</td>
+                                          {/* <td className="table-small">
                                           <button
                                             className="btn btn-warning"
                                             onClick={() =>
@@ -296,7 +314,7 @@ const AdminAppointmentReport = () => {
                                             Edit
                                           </button>
                                         </td> */}
-                                        {/* <td className="table-small">
+                                          {/* <td className="table-small">
                                           <button
                                             className="btn btn-danger"
                                             onClick={() =>
@@ -306,9 +324,9 @@ const AdminAppointmentReport = () => {
                                             Delete
                                           </button>
                                         </td> */}
-                                      </tr>
-                                    </>
-                                  ))}
+                                        </tr>
+                                      </>
+                                    ))}
                                 </tbody>
                               </table>
                             </div>

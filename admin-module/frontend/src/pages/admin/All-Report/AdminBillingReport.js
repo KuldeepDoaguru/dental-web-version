@@ -14,11 +14,8 @@ import SiderAdmin from "../SiderAdmin";
 const AdminBillingReport = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [listBills, setListBills] = useState([]);
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
@@ -26,7 +23,7 @@ const AdminBillingReport = () => {
   const getBillDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getBillsByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getBillsByBranch/${user.branch_name}`
       );
       console.log(data);
       setListBills(data);
@@ -63,7 +60,7 @@ const AdminBillingReport = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/downloadBillingReportByTime/${branch.name}`,
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/downloadBillingReportByTime/${user.branch_name}`,
         { fromDate: fromDate, toDate: toDate }
       );
       console.log(data);
@@ -88,7 +85,7 @@ const AdminBillingReport = () => {
 
   useEffect(() => {
     getBillDetailsList();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   return (
     <>
@@ -209,13 +206,13 @@ const AdminBillingReport = () => {
                                     <th className="table-small">
                                       Patient Email
                                     </th>
-                                    <th className="table-small">Treatment</th>
+                                    {/* <th className="table-small">Treatment</th>
                                     <th className="table-small">
                                       Treatment Status
                                     </th>
                                     <th className="table-small">
                                       Drugs with Quantity
-                                    </th>
+                                    </th> */}
                                     <th className="table-small">
                                       Total Amount
                                     </th>
@@ -227,42 +224,59 @@ const AdminBillingReport = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {filterBillDataByMonth?.map((item) => (
-                                    <>
-                                      <tr className="table-row">
-                                        <td className="table-sno">
-                                          {item.bill_id}
-                                        </td>
-                                        <td className="table-small">
-                                          {item.bill_date?.split("T")[0]}
-                                        </td>
-                                        <td className="table-small">
-                                          {item.uhid}
-                                        </td>
-                                        <td className="table-small">
-                                          {item.patient_name}
-                                        </td>
-                                        <td>{item.patient_mobile}</td>
-                                        <td>{item.patient_email}</td>
-                                        <td>{item.treatment}</td>
+                                  {filterBillDataByMonth
+                                    ?.filter((item) => {
+                                      const billDate =
+                                        item.bill_date?.split("T")[0]; // Extracting the date part
+                                      if (fromDate && toDate) {
+                                        return (
+                                          billDate >= fromDate &&
+                                          billDate <= toDate
+                                        );
+                                      } else {
+                                        return true; // If no date range is selected, show all items
+                                      }
+                                    })
+                                    .map((item) => (
+                                      <>
+                                        <tr className="table-row">
+                                          <td className="table-sno">
+                                            {item.bill_id}
+                                          </td>
+                                          <td className="table-small">
+                                            {item.bill_date?.split("T")[0]}
+                                          </td>
+                                          <td className="table-small">
+                                            {item.uhid}
+                                          </td>
+                                          <td className="table-small">
+                                            {item.patient_name}
+                                          </td>
+                                          <td>{item.patient_mobile}</td>
+                                          <td>{item.patient_email}</td>
+                                          {/* <td>{item.treatment}</td>
                                         <td>{item.treatment_status}</td>
-                                        <td>{item.drugs_quantity}</td>
-                                        <td className="table-small">
-                                          {item.total_amount}
-                                        </td>
-                                        <td className="table-small">
-                                          {item.paid_amount}
-                                        </td>
-                                        <td>{item.payment_status}</td>
-                                        <td>
-                                          {item.payment_date_time.split("T")[0]}{" "}
-                                          -{" "}
-                                          {item.payment_date_time
-                                            .split("T")[1]
-                                            .split(".")[0]
-                                            .slice(0, 5)}
-                                        </td>
-                                        {/* <td className="table-small">
+                                        <td>{item.drugs_quantity}</td> */}
+                                          <td className="table-small">
+                                            {item.total_amount}
+                                          </td>
+                                          <td className="table-small">
+                                            {item.paid_amount}
+                                          </td>
+                                          <td>{item.payment_status}</td>
+                                          <td>
+                                            {
+                                              item.payment_date_time.split(
+                                                "T"
+                                              )[0]
+                                            }{" "}
+                                            -{" "}
+                                            {item.payment_date_time
+                                              .split("T")[1]
+                                              .split(".")[0]
+                                              .slice(0, 5)}
+                                          </td>
+                                          {/* <td className="table-small">
                                           <button
                                             className="btn btn-warning fw-bold"
                                             onClick={() =>
@@ -282,9 +296,9 @@ const AdminBillingReport = () => {
                                             Delete
                                           </button>
                                         </td> */}
-                                      </tr>
-                                    </>
-                                  ))}
+                                        </tr>
+                                      </>
+                                    ))}
                                 </tbody>
                               </table>
                             </div>

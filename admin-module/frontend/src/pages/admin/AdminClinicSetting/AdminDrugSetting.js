@@ -17,11 +17,8 @@ const AdminDrugSetting = () => {
   const [showEditDrugs, setShowEditDrugs] = useState(false);
   const [keyword, setkeyword] = useState("");
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const location = useLocation();
   const [getDrugList, setGetDrugList] = useState([]);
   const [selected, setSelected] = useState();
@@ -31,7 +28,7 @@ const AdminDrugSetting = () => {
     drug_name: "",
     drug_strength: "",
     instruction: "",
-    branch_name: branch.name,
+    branch_name: user.branch_name,
   });
   const [upaAddDrugs, setUpAddDrugs] = useState({
     HSN_code: "",
@@ -77,7 +74,7 @@ const AdminDrugSetting = () => {
   const getDrugsData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getDrugs/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getDrugs/${user.branch_name}`
       );
       setGetDrugList(data);
     } catch (error) {
@@ -131,7 +128,7 @@ const AdminDrugSetting = () => {
 
   useEffect(() => {
     getDrugsData();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   const goBack = () => {
     window.history.go(-1);

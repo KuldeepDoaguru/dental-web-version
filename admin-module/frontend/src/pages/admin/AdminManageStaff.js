@@ -171,10 +171,10 @@ const AdminManageStaff = () => {
                 </div>
                 <div className="container-fluid mt-3">
                   <h2 className="text-center">Manage Employee</h2>
-                  <img
+                  {/* <img
                     src="https://dentalgurusuperadmin.doaguru.com/empProfilePicture/17104102635691709210206279kd.jpg"
                     alt="profile"
-                  />
+                  /> */}
                   <div className="d-flex justify-content-between">
                     <div>
                       <label>Employee Name :</label>
@@ -246,21 +246,12 @@ const AdminManageStaff = () => {
                                 <td className="thead">{item.salary}</td>
                                 <td className="thead">{item.address}</td>
                                 <td>
-                                  <div className="smallImg">
-                                    <p>
-                                      <a
-                                        href={item.employee_picture}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                      >
-                                        View Employee Picture
-                                      </a>
-                                    </p>
+                                  <div className="emp-Img">
+                                    <img
+                                      src={item.employee_picture}
+                                      alt="profile"
+                                    />
                                   </div>
-                                  <img
-                                    src="https://dentalgurusuperadmin.doaguru.com/empProfilePicture/17104102635691709210206279kd.jpg"
-                                    alt="profile"
-                                  />
                                 </td>
                                 <td className="" style={{ minWidth: "13rem" }}>
                                   <Link
@@ -467,7 +458,7 @@ const AdminManageStaff = () => {
                         </select>
                       </div>
                     </div>
-                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    {/* <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                       <div class="mb-3">
                         <label
                           for="exampleFormControlInput1"
@@ -542,7 +533,7 @@ const AdminManageStaff = () => {
                           onChange={handleInputChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                       <div class="mb-3">
                         <label
@@ -618,6 +609,110 @@ const AdminManageStaff = () => {
                           value={inEmpData.password}
                           onChange={handleInputChange}
                         />
+                      </div>
+                    </div>
+
+                    {inEmpData.empDesignation === "doctor" && (
+                      <>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div className="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Doctor Education
+                            </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="employee_education"
+                              name="employee_education"
+                              value={inEmpData.employee_education}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div className="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Speciality
+                            </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="speciality"
+                              name="speciality"
+                              value={inEmpData.speciality}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div className="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              language
+                            </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="language"
+                              name="language"
+                              value={inEmpData.language}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div className="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              experience
+                            </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="experience"
+                              name="experience"
+                              value={inEmpData.experience}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                      <div className="mb-3">
+                        <label
+                          for="exampleFormControlInput1"
+                          class="form-label"
+                        >
+                          type_of
+                        </label>
+
+                        <select
+                          id=""
+                          name="type_of"
+                          value={inEmpData.type_of}
+                          class="form-control"
+                          onChange={handleInputChange}
+                        >
+                          <option value="full time">Full Time</option>
+                          <option value="half time">Part Time</option>
+                        </select>
                       </div>
                     </div>
                   </div>
@@ -823,5 +918,12 @@ const Container = styled.div`
     background-color: #1abc9c;
     color: white;
     z-index: 1;
+  }
+
+  .emp-Img {
+    img {
+      height: 5rem;
+      width: 5rem;
+    }
   }
 `;

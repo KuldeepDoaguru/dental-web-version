@@ -14,11 +14,8 @@ import SiderAdmin from "../SiderAdmin";
 
 const AdminCalenderSetting = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const location = useLocation();
   const [showAddBlockDays, setShowAddBlockDays] = useState(false);
   const [showEditBlockDays, setShowEditBlockDays] = useState(false);
@@ -31,7 +28,7 @@ const AdminCalenderSetting = () => {
     appoint_slot_duration: "",
   });
   const [holidays, setHolidays] = useState({
-    branch_name: branch.name,
+    branch_name: user.branch_name,
     holiday_name: "",
     holiday_date: "",
     holiday_start_time: "",
@@ -107,7 +104,7 @@ const AdminCalenderSetting = () => {
   const getBranchDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getBranchDetailsByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getBranchDetailsByBranch/${user.branch_name}`
       );
       setBrData(data);
     } catch (error) {
@@ -119,7 +116,7 @@ const AdminCalenderSetting = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/updateBranchCalenderSetting/${branch.name}`,
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/updateBranchCalenderSetting/${user.branch_name}`,
         upData
       );
       console.log(response);
@@ -140,7 +137,7 @@ const AdminCalenderSetting = () => {
   const getHolidayList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getHolidays/${branch.name}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getHolidays/${user.branch_name}`
       );
       setHolidayList(data);
     } catch (error) {
@@ -197,7 +194,7 @@ const AdminCalenderSetting = () => {
 
   useEffect(() => {
     getHolidayList();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   return (
     <>

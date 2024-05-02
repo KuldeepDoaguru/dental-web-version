@@ -19,11 +19,9 @@ import SiderAdmin from "./SiderAdmin";
 const FinancialReportCard = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
+
   const location = useLocation();
   const [earnBill, setEarnBill] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
@@ -34,7 +32,7 @@ const FinancialReportCard = () => {
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getBillsByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getBillsByBranch/${user.branch_name}`
       );
       setEarnBill(data);
     } catch (error) {
@@ -45,7 +43,7 @@ const FinancialReportCard = () => {
   const getPurchaseList = async () => {
     try {
       const response = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getPurInventoryByBranch/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getPurInventoryByBranch/${user.branch_name}`
       );
       setAppointmentList(response.data);
     } catch (error) {
@@ -60,7 +58,7 @@ const FinancialReportCard = () => {
   useEffect(() => {
     getBillDetails();
     getPurchaseList();
-  }, [branch.name]);
+  }, [user.branch_name]);
 
   const todayDate = new Date();
 
@@ -76,7 +74,7 @@ const FinancialReportCard = () => {
 
   const filterForPaidBills = earnBill?.filter((item) => {
     return (
-      item.payment_status === "success" &&
+      item.payment_status === "paid" &&
       item.payment_date_time.split("T")[0].slice(0, 7) ===
         formattedDate.slice(0, 7)
     );
@@ -95,7 +93,7 @@ const FinancialReportCard = () => {
     try {
       let total = 0;
       filterForPaidBills.forEach((item) => {
-        total = total + parseFloat(item.net_amount);
+        total = total + parseFloat(item.paid_amount);
       });
       console.log(total);
       return total;
@@ -132,7 +130,7 @@ const FinancialReportCard = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/downloadEarnReportByTime/${branch.name}`,
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/downloadEarnReportByTime/${user.branch_name}`,
         { fromDate: fromDate, toDate: toDate }
       );
       console.log(data);
@@ -159,7 +157,7 @@ const FinancialReportCard = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/downloadExpenseReportByTime/${branch.name}`,
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/downloadExpenseReportByTime/${user.branch_name}`,
         { fromDate: fromDate, toDate: toDate }
       );
       console.log(data);
@@ -305,7 +303,8 @@ const FinancialReportCard = () => {
                               <th>Payment Date</th>
                               <th>Amount</th>
                               <th>Patient Name</th>
-                              <th>Treatment</th>
+                              <th>Receiver's Name</th>
+                              <th>Receiver's ID</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -316,9 +315,10 @@ const FinancialReportCard = () => {
                                   <td>
                                     {item.payment_date_time.split("T")[0]}
                                   </td>
-                                  <td>{item.net_amount}</td>
+                                  <td>{item.paid_amount}</td>
                                   <td>{item.patient_name}</td>
-                                  <td>{item.treatment}</td>
+                                  <td>{item.receiver_name}</td>
+                                  <td>{item.receiver_emp_id}</td>
                                 </tr>
                               </>
                             ))}

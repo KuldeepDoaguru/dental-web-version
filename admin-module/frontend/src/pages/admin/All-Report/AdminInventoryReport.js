@@ -221,52 +221,67 @@ const AdminInventoryReport = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {filterForExpenses?.map((item) => (
-                                    <>
-                                      <tr className="table-row">
-                                        <td className="thead">{item.pur_id}</td>
-                                        <td className="thead">
-                                          {item.item_code}
-                                        </td>
-                                        <td className="thead">
-                                          {item.HSN_code}
-                                        </td>
-                                        <td className="thead">
-                                          {item.item_name}
-                                        </td>
-                                        <td className="thead">
-                                          {item.item_category}
-                                        </td>
-                                        <td className="thead">
-                                          {item.item_mrp}
-                                        </td>
-                                        <td className="thead">
-                                          {item.pur_quantity}
-                                        </td>
-                                        <td className="thead">
-                                          {item.discount}
-                                        </td>
-                                        <td className="thead">
-                                          {item.total_amount}
-                                        </td>
-                                        <td className="thead">
-                                          {item.purchase_date?.split("T")[0]}
-                                        </td>
-                                        <td className="thead">
-                                          {item.available_stock}
-                                        </td>
-                                        <td className="thead">
-                                          {item.low_stock_threshhold}
-                                        </td>
-                                        <td className="thead">
-                                          {item.distributor_name}
-                                        </td>
-                                        <td className="thead">
-                                          {item.distributor_number}
-                                        </td>
-                                      </tr>
-                                    </>
-                                  ))}
+                                  {filterForExpenses
+                                    ?.filter((item) => {
+                                      const billDate =
+                                        item.purchase_date.split("T")[0]; // Extracting the date part
+                                      if (fromDate && toDate) {
+                                        return (
+                                          billDate >= fromDate &&
+                                          billDate <= toDate
+                                        );
+                                      } else {
+                                        return true; // If no date range is selected, show all items
+                                      }
+                                    })
+                                    .map((item) => (
+                                      <>
+                                        <tr className="table-row">
+                                          <td className="thead">
+                                            {item.pur_id}
+                                          </td>
+                                          <td className="thead">
+                                            {item.item_code}
+                                          </td>
+                                          <td className="thead">
+                                            {item.HSN_code}
+                                          </td>
+                                          <td className="thead">
+                                            {item.item_name}
+                                          </td>
+                                          <td className="thead">
+                                            {item.item_category}
+                                          </td>
+                                          <td className="thead">
+                                            {item.item_mrp}
+                                          </td>
+                                          <td className="thead">
+                                            {item.pur_quantity}
+                                          </td>
+                                          <td className="thead">
+                                            {item.discount}
+                                          </td>
+                                          <td className="thead">
+                                            {item.total_amount}
+                                          </td>
+                                          <td className="thead">
+                                            {item.purchase_date?.split("T")[0]}
+                                          </td>
+                                          <td className="thead">
+                                            {item.available_stock}
+                                          </td>
+                                          <td className="thead">
+                                            {item.low_stock_threshhold}
+                                          </td>
+                                          <td className="thead">
+                                            {item.distributor_name}
+                                          </td>
+                                          <td className="thead">
+                                            {item.distributor_number}
+                                          </td>
+                                        </tr>
+                                      </>
+                                    ))}
                                 </tbody>
                               </table>
                             </div>

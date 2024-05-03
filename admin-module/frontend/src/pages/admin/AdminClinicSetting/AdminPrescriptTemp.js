@@ -17,11 +17,9 @@ const AdminPrescriptTemp = () => {
   const [showEditPreTemp, setShowEditPreTemp] = useState(false);
   const [keyword, setkeyword] = useState("");
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
+  const branch = user.branch_name;
   const location = useLocation();
   const [getPresList, setGetPresList] = useState([]);
   const [selected, setSelected] = useState();

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { IoEye, IoEyeOffOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 // import { setBranch } from "../redux/slices/BranchSlicer";
@@ -12,6 +13,7 @@ const UniversalLogin = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.currentUser);
   console.log(user);
+
   // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   // console.log("User State:", user);
   // const branch = useSelector((state) => state.branch);
@@ -20,6 +22,7 @@ const UniversalLogin = () => {
   const [selectedBranch, setSelectedBranch] = useState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
 
   // const HandleChange = (event) => {
   //   setBranchList(event.target.value);
@@ -142,21 +145,29 @@ const UniversalLogin = () => {
                           <div className="d-flex flex-row align-items-center mb-4">
                             <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
                             <div className="form-outline flex-fill mb-0">
-                              <label
-                                className="form-label"
-                                for="form3Example4c"
-                              >
+                              <label className="form-label" htmlFor="password">
                                 Password
                               </label>
-                              <input
-                                name="password"
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="form-control"
-                                placeholder="password"
-                              />
+                              <div className="input-container">
+                                <input
+                                  name="password"
+                                  type={show ? "text" : "password"}
+                                  id="password"
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                  className="form-control relative"
+                                  placeholder="password"
+                                />
+                                <div className="eye-icon">
+                                  {show ? (
+                                    <IoEye onClick={() => setShow(false)} />
+                                  ) : (
+                                    <IoEyeOffOutline
+                                      onClick={() => setShow(true)}
+                                    />
+                                  )}
+                                </div>
+                              </div>
                             </div>
                           </div>
 
@@ -220,5 +231,16 @@ const Container = styled.div`
     background-color: #22a6b3;
     font-weight: bold;
     color: white;
+  }
+  .input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .eye-icon {
+    position: absolute;
+    right: 10px; /* Adjust the value to your preference */
+    cursor: pointer;
   }
 `;

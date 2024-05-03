@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoSettings } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { clearUser } from "../../redux/slices/UserSlicer";
 
 const HeaderAdmin = () => {
   const navigate = useNavigate();
@@ -37,14 +38,14 @@ const HeaderAdmin = () => {
     }
   };
 
-  const logoutHandler = () => {
-    try {
-      localStorage.removeItem("userData");
-      navigate("/");
-    } catch (error) {
-      // console.log(error);
-    }
-  };
+  // const logoutHandler = () => {
+  //   try {
+  //     localStorage.removeItem("userData");
+  //     navigate("/");
+  //   } catch (error) {
+  //     // console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     getNotifyDetails();
@@ -54,6 +55,15 @@ const HeaderAdmin = () => {
       clearInterval(intervalId);
     };
   }, []);
+
+  const handleLogout = () => {
+    const isConfirmed = window.confirm("Are you sure you want to Logout?");
+    if (!isConfirmed) {
+      return;
+    }
+    navigate("/");
+    dispatch(clearUser());
+  };
 
   // console.log(notifyList);
 
@@ -125,7 +135,7 @@ const HeaderAdmin = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <li>
-                      <button className="dropdown-item" onClick={logoutHandler}>
+                      <button className="dropdown-item" onClick={handleLogout}>
                         Logout
                       </button>
                     </li>

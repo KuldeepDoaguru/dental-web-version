@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { MdOutlineInventory, MdOutlineSick } from "react-icons/md";
 import { FaCodeBranch } from "react-icons/fa";
@@ -7,12 +7,25 @@ import { TbReportSearch } from "react-icons/tb";
 import { IoIosPeople } from "react-icons/io";
 import { AiFillBell } from "react-icons/ai";
 import { BsFileEarmarkPerson } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { clearUser } from "../../redux/slices/UserSlicer";
 
 const SiderAdmin = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const getSidebarClass = (path) => {
     return location.pathname === path ? "active-nav" : "";
+  };
+
+  const handleLogout = () => {
+    const isConfirmed = window.confirm("Are you sure you want to Logout?");
+    if (!isConfirmed) {
+      return;
+    }
+    navigate("/");
+    dispatch(clearUser());
   };
   return (
     <>

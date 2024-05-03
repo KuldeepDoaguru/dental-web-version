@@ -626,36 +626,47 @@ const AdminEmployeeProfile = () => {
                       />
                     </div>
                   </div> */}
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                    <div class="mb-3">
-                      <label for="exampleFormControlInput1" class="form-label">
-                        All Day Shift Start Time
-                      </label>
-                      <input
-                        type="time"
-                        class="form-control"
-                        id="exampleFormControlInput1"
-                        name="allDayShiftStartTime"
-                        value={inEmpData.allDayShiftStartTime}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                    <div class="mb-3">
-                      <label for="exampleFormControlInput1" class="form-label">
-                        All Day Shift End Time
-                      </label>
-                      <input
-                        type="time"
-                        class="form-control"
-                        id="exampleFormControlInput1"
-                        name="allDayShiftEndTime"
-                        value={inEmpData.allDayShiftEndTime}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
+
+                  {empData[0]?.employee_designation !== "doctor" && (
+                    <>
+                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                        <div class="mb-3">
+                          <label
+                            for="exampleFormControlInput1"
+                            class="form-label"
+                          >
+                            All Day Shift Start Time
+                          </label>
+                          <input
+                            type="time"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            name="allDayShiftStartTime"
+                            value={inEmpData.allDayShiftStartTime}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                        <div class="mb-3">
+                          <label
+                            for="exampleFormControlInput1"
+                            class="form-label"
+                          >
+                            All Day Shift End Time
+                          </label>
+                          <input
+                            type="time"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            name="allDayShiftEndTime"
+                            value={inEmpData.allDayShiftEndTime}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
 
                   <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                     <div className="mb-3">
@@ -693,6 +704,78 @@ const AdminEmployeeProfile = () => {
 
                   {empData[0]?.employee_designation === "doctor" && (
                     <>
+                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                        <div class="mb-3">
+                          <label
+                            for="exampleFormControlInput1"
+                            class="form-label"
+                          >
+                            Morning Shift Start Time
+                          </label>
+                          <input
+                            type="time"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            name="morningShiftStartTime"
+                            value={inEmpData.morningShiftStartTime}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                        <div class="mb-3">
+                          <label
+                            for="exampleFormControlInput1"
+                            class="form-label"
+                          >
+                            Morning Shift End Time
+                          </label>
+                          <input
+                            type="time"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            name="morningShiftEndTime"
+                            value={inEmpData.morningShiftEndTime}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                        <div class="mb-3">
+                          <label
+                            for="exampleFormControlInput1"
+                            class="form-label"
+                          >
+                            Evening Shift Start Time
+                          </label>
+                          <input
+                            type="time"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            name="eveningShiftStartTime"
+                            value={inEmpData.eveningShiftStartTime}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                        <div class="mb-3">
+                          <label
+                            for="exampleFormControlInput1"
+                            class="form-label"
+                          >
+                            Evening Shift End Time
+                          </label>
+                          <input
+                            type="time"
+                            class="form-control"
+                            id="exampleFormControlInput1"
+                            name="eveningShiftEndTime"
+                            value={inEmpData.eveningShiftEndTime}
+                            onChange={handleInputChange}
+                          />
+                        </div>
+                      </div>
                       <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                         <div className="mb-3">
                           <label

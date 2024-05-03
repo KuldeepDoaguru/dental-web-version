@@ -12,18 +12,16 @@ import SiderAdmin from "../../pages/admin/SiderAdmin";
 
 const AdminProfile = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
+  const branch = user.branch_name;
   const { eid } = useParams();
   const location = useLocation();
   const [empData, setEmpData] = useState([]);
   const [showEditEmployee, setShowEditEmployee] = useState(false);
   const [empProfilePicture, setEmpProfilePicture] = useState(null);
   const [inEmpData, setInEmpData] = useState({
-    branch: branch.name,
+    branch: branch,
     empName: "",
     empMobile: "",
     empGender: "",
@@ -109,7 +107,7 @@ const AdminProfile = () => {
   const getEmployeeData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeDetails/${branch.name}/${user.id}`
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/getEmployeeDetails/${branch}/${user.employee_ID}`
       );
       console.log(data);
       setEmpData(data);
@@ -120,7 +118,7 @@ const AdminProfile = () => {
 
   useState(() => {
     getEmployeeData();
-  }, [branch.name]);
+  }, [branch]);
 
   console.log(empData);
 
@@ -136,7 +134,7 @@ const AdminProfile = () => {
       console.log(inEmpData, empProfilePicture);
 
       const response = await axios.put(
-        `https://dentalguruadmin.doaguru.com//api/v1/admin/editEmployeeDetails/${branch.name}/${user.id}`,
+        `https://dentalguruadmin.doaguru.com//api/v1/admin/editEmployeeDetails/${branch}/${user.employee_ID}`,
         formData,
         {
           headers: {
@@ -222,7 +220,12 @@ const AdminProfile = () => {
                         <div className="col-lg-4">
                           <label className="text-info">Email</label>
                           <div className="shadow-none p-1 bg-light rounded">
-                            <p className="m-0">{empData[0]?.employee_email}</p>
+                            <p
+                              className="m-0"
+                              style={{ wordWrap: "break-word" }}
+                            >
+                              {empData[0]?.employee_email}
+                            </p>
                           </div>
                         </div>
                         <div className="col-lg-4">
@@ -269,7 +272,7 @@ const AdminProfile = () => {
                             <p className="m-0">{empData[0]?.availability}</p>
                           </div>
                         </div>
-                        <div className="col-lg-4">
+                        {/* <div className="col-lg-4">
                           <label className="text-info">
                             Morning Shift Start Time
                           </label>
@@ -316,7 +319,7 @@ const AdminProfile = () => {
                                 : " - "}
                             </p>
                           </div>
-                        </div>
+                        </div> */}
                         <div className="col-lg-4">
                           <label className="text-info">
                             All Day Shift Start Time
@@ -525,7 +528,7 @@ const AdminProfile = () => {
                       </select>
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  {/* <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                     <div class="mb-3">
                       <label for="exampleFormControlInput1" class="form-label">
                         Morning Shift Start Time
@@ -584,7 +587,7 @@ const AdminProfile = () => {
                         onChange={handleInputChange}
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                     <div class="mb-3">
                       <label for="exampleFormControlInput1" class="form-label">

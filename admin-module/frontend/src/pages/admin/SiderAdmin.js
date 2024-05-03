@@ -19,14 +19,7 @@ const SiderAdmin = () => {
     return location.pathname === path ? "active-nav" : "";
   };
 
-  const handleLogout = () => {
-    const isConfirmed = window.confirm("Are you sure you want to Logout?");
-    if (!isConfirmed) {
-      return;
-    }
-    navigate("/");
-    dispatch(clearUser());
-  };
+ 
   return (
     <>
       <Container>

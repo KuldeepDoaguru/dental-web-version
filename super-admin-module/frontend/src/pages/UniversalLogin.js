@@ -1,20 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import cogoToast from "cogo-toast";
 import { setUser } from "../redux/slices/UserSlicer";
+import { IoEye, IoEyeOffOutline } from "react-icons/io5";
 
 const UniversalLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
   const [verification, setVerification] = useState(false);
   const [localhost, setLocalhost] = useState([]);
+  const user = useSelector((state) => state);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
 
   const sendOtp = async () => {
     try {
@@ -67,6 +74,8 @@ const UniversalLogin = () => {
     }
   };
 
+  console.log(localhost.user);
+
   const closeUpdatePopup = () => {
     setPopupVisible(false);
   };
@@ -87,10 +96,7 @@ const UniversalLogin = () => {
         );
         console.log(response);
         console.log(localhost);
-        const userData = {
-          name: localhost.user.email,
-          id: localhost.user.id,
-        };
+        const userData = localhost.user;
         localStorage.setItem("userData", JSON.stringify(userData));
         dispatch(setUser(userData));
         navigate("/superadmin-dashboard");
@@ -167,7 +173,9 @@ const UniversalLogin = () => {
                             <option value="accountant">Accountant</option>
                           </select> */}
                   </div>
-                  <p className="text-center h4 fw-bold mb-5 mx-1 mt-4">Login</p>
+                  <p className="text-center h4 fw-bold mb-5 mx-1 mt-4">
+                    Super Admin Login
+                  </p>
 
                   <form className="mx-1" onSubmit={adminLogin}>
                     <div className="d-flex flex-row align-items-center mb-4">
@@ -195,16 +203,24 @@ const UniversalLogin = () => {
                         <label className="form-label" for="form3Example4c">
                           Password
                         </label>
-                        <input
-                          name="password"
-                          type="password"
-                          id="password"
-                          required
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="form-control"
-                          placeholder="password"
-                        />
+                        <div className="input-container">
+                          <input
+                            name="password"
+                            type={show ? "text" : "password"}
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className="form-control relative"
+                            placeholder="password"
+                          />
+                          <div className="eye-icon">
+                            {show ? (
+                              <IoEye onClick={() => setShow(false)} />
+                            ) : (
+                              <IoEyeOffOutline onClick={() => setShow(true)} />
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -290,5 +306,17 @@ const Container = styled.div`
   .img-fr {
     height: 100%;
     width: auto;
+  }
+
+  .input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .eye-icon {
+    position: absolute;
+    right: 10px; /* Adjust the value to your preference */
+    cursor: pointer;
   }
 `;

@@ -430,10 +430,12 @@ const superAdminLoginUser = async (req, res) => {
           success: "true",
           message: "Login successful",
           user: {
-            id: user.super_email,
-            email: user.email,
+            employee_ID: user.sa_id,
+            email: user.super_email,
+            employee_name: user.super_name,
+            employee_mobile: user.super_mobile,
+            token: token,
           },
-          token,
         });
       }
     );

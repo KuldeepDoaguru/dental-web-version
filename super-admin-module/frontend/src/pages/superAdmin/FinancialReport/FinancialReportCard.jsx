@@ -74,7 +74,7 @@ const FinancialReportCard = () => {
 
   const filterForPaidBills = earnBill?.filter((item) => {
     return (
-      item.payment_status === "success" &&
+      item.payment_status === "paid" &&
       item.payment_date_time.split("T")[0].slice(0, 7) ===
         formattedDate.slice(0, 7)
     );
@@ -93,7 +93,7 @@ const FinancialReportCard = () => {
     try {
       let total = 0;
       filterForPaidBills.forEach((item) => {
-        total = total + parseFloat(item.net_amount);
+        total = total + parseFloat(item.paid_amount);
       });
       console.log(total);
       return total;
@@ -303,23 +303,35 @@ const FinancialReportCard = () => {
                               <th>Payment Date</th>
                               <th>Amount</th>
                               <th>Patient Name</th>
-                              <th>Treatment</th>
+                              <th>Treatment Package ID</th>
                             </tr>
                           </thead>
                           <tbody>
-                            {filterForPaidBills?.map((item) => (
-                              <>
-                                <tr>
-                                  <td>{item.bill_id}</td>
-                                  <td>
-                                    {item.payment_date_time.split("T")[0]}
-                                  </td>
-                                  <td>{item.net_amount}</td>
-                                  <td>{item.patient_name}</td>
-                                  <td>{item.treatment}</td>
-                                </tr>
-                              </>
-                            ))}
+                            {filterForPaidBills
+                              ?.filter((item) => {
+                                const billDate =
+                                  item.payment_date_time?.split("T")[0]; // Extracting the date part
+                                if (fromDate && toDate) {
+                                  return (
+                                    billDate >= fromDate && billDate <= toDate
+                                  );
+                                } else {
+                                  return true; // If no date range is selected, show all items
+                                }
+                              })
+                              .map((item) => (
+                                <>
+                                  <tr>
+                                    <td>{item.bill_id}</td>
+                                    <td>
+                                      {item.payment_date_time.split("T")[0]}
+                                    </td>
+                                    <td>{item.paid_amount}</td>
+                                    <td>{item.patient_name}</td>
+                                    <td>{item.tp_id}</td>
+                                  </tr>
+                                </>
+                              ))}
                           </tbody>
                         </table>
                       </div>
@@ -373,18 +385,30 @@ const FinancialReportCard = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {filterForExpenses.map((item) => (
-                              <>
-                                <tr>
-                                  <td>{item.pur_id}</td>
-                                  <td>{item.item_name}</td>
-                                  <td>{item.item_mrp}</td>
-                                  <td>{item.pur_quantity}</td>
-                                  <td>{item.total_amount}</td>
-                                  <td>{item.purchase_date.split("T")[0]}</td>
-                                </tr>
-                              </>
-                            ))}
+                            {filterForExpenses
+                              ?.filter((item) => {
+                                const billDate =
+                                  item.purchase_date?.split("T")[0]; // Extracting the date part
+                                if (fromDate && toDate) {
+                                  return (
+                                    billDate >= fromDate && billDate <= toDate
+                                  );
+                                } else {
+                                  return true; // If no date range is selected, show all items
+                                }
+                              })
+                              .map((item) => (
+                                <>
+                                  <tr>
+                                    <td>{item.pur_id}</td>
+                                    <td>{item.item_name}</td>
+                                    <td>{item.item_mrp}</td>
+                                    <td>{item.pur_quantity}</td>
+                                    <td>{item.total_amount}</td>
+                                    <td>{item.purchase_date.split("T")[0]}</td>
+                                  </tr>
+                                </>
+                              ))}
                           </tbody>
                         </table>
                       </div>

@@ -225,35 +225,48 @@ const BillingReport = () => {
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  {filterBillDataByMonth?.map((item) => (
-                                    <>
-                                      <tr className="table-row">
-                                        <td className="table-sno">
-                                          {item.bill_id}
-                                        </td>
-                                        <td className="table-small">
-                                          {item.bill_date?.split("T")[0]}
-                                        </td>
-                                        <td className="table-small">
-                                          {item.uhid}
-                                        </td>
-                                        <td className="table-small">
-                                          {item.patient_name}
-                                        </td>
-                                        <td>{item.patient_mobile}</td>
-                                        <td>{item.patient_email}</td>
-                                        <td>{item.treatment}</td>
-                                        <td>{item.treatment_status}</td>
-                                        <td>{item.drugs_quantity}</td>
-                                        <td className="table-small">
-                                          {item.total_amount}
-                                        </td>
-                                        <td className="table-small">
-                                          {item.paid_amount}
-                                        </td>
-                                        <td>{item.payment_status}</td>
-                                        <td>{item.payment_date_time}</td>
-                                        {/* <td className="table-small">
+                                  {filterBillDataByMonth
+                                    ?.filter((item) => {
+                                      const billDate =
+                                        item.bill_date?.split("T")[0]; // Extracting the date part
+                                      if (fromDate && toDate) {
+                                        return (
+                                          billDate >= fromDate &&
+                                          billDate <= toDate
+                                        );
+                                      } else {
+                                        return true; // If no date range is selected, show all items
+                                      }
+                                    })
+                                    .map((item) => (
+                                      <>
+                                        <tr className="table-row">
+                                          <td className="table-sno">
+                                            {item.bill_id}
+                                          </td>
+                                          <td className="table-small">
+                                            {item.bill_date?.split("T")[0]}
+                                          </td>
+                                          <td className="table-small">
+                                            {item.uhid}
+                                          </td>
+                                          <td className="table-small">
+                                            {item.patient_name}
+                                          </td>
+                                          <td>{item.patient_mobile}</td>
+                                          <td>{item.patient_email}</td>
+                                          <td>{item.treatment}</td>
+                                          <td>{item.treatment_status}</td>
+                                          <td>{item.drugs_quantity}</td>
+                                          <td className="table-small">
+                                            {item.total_amount}
+                                          </td>
+                                          <td className="table-small">
+                                            {item.paid_amount}
+                                          </td>
+                                          <td>{item.payment_status}</td>
+                                          <td>{item.payment_date_time}</td>
+                                          {/* <td className="table-small">
                                           <button
                                             className="btn btn-warning fw-bold"
                                             onClick={() =>
@@ -273,9 +286,9 @@ const BillingReport = () => {
                                             Delete
                                           </button>
                                         </td> */}
-                                      </tr>
-                                    </>
-                                  ))}
+                                        </tr>
+                                      </>
+                                    ))}
                                 </tbody>
                               </table>
                             </div>

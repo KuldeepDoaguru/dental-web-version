@@ -143,7 +143,7 @@ const AdminApointment = () => {
   // console.log(filterAppointDataByMonth);
 
   const totalPages = Math.ceil(appointmentList.length / itemsPerPage);
-
+  console.log(totalPages);
   const filterAppointDataByMonth = () => {
     // Filter and paginate appointment data based on currentPage and itemsPerPage
     const startIndex = (currentPage - 1) * itemsPerPage;

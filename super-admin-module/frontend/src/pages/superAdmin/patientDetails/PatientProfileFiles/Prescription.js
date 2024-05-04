@@ -17,7 +17,7 @@ const Prescription = () => {
   const getPresDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescriptionDetailsById/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescriptionViaUhid/${branch.name}/${pid}`
       );
       setPresData(data);
     } catch (error) {
@@ -41,7 +41,7 @@ const Prescription = () => {
               <thead>
                 <tr>
                   <th>Date</th>
-                  <th>Doctor Name</th>
+                  <th>Treatment</th>
                   <th>Medicine Name</th>
                   <th>Dosage</th>
                   <th>Frequency</th>
@@ -53,8 +53,8 @@ const Prescription = () => {
                 {presData?.map((item) => (
                   <>
                     <tr>
-                      <td>{item.prescription_date?.split("T")[0]}</td>
-                      <td>{item.doctor_name}</td>
+                      <td>{item.date?.split("T")[0]}</td>
+                      <td>{item.treatment}</td>
                       <td>{item.medicine_name}</td>
                       <td>{item.dosage}</td>
                       <td>{item.frequency}</td>
@@ -82,7 +82,7 @@ const Wrapper = styled.div`
   }
 
   .cont-box {
-    width: 68rem;
+    width: 100%;
     @media screen and (max-width: 900px) {
       width: 100% !important;
     }

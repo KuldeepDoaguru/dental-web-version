@@ -79,17 +79,17 @@ const PatientDetailsLIst = () => {
                     <table class="table table-bordered">
                       <thead className="table-head">
                         <tr>
-                          <th className="thead">Patient UHID</th>
-                          <th className="thead">Name</th>
-                          <th className="thead">Mobile</th>
-                          <th className="thead">Gender</th>
-                          <th className="thead">Email</th>
-                          <th className="thead">Date of Birth</th>
-                          <th className="thead">Marital Status</th>
-                          <th className="thead">Patient Type</th>
-                          <th className="thead">Address</th>
-                          <th className="thead">Adhaar Number</th>
-                          <th className="" style={{ minWidth: "10rem" }}>
+                          <th className="thead sticky">Patient UHID</th>
+                          <th className="thead sticky">Name</th>
+                          <th className="thead sticky">Mobile</th>
+                          <th className="thead sticky">Gender</th>
+                          <th className="thead sticky">Email</th>
+                          <th className="thead sticky">Date of Birth</th>
+                          <th className="thead sticky">Marital Status</th>
+                          <th className="thead sticky">Patient Type</th>
+                          <th className="thead sticky">Address</th>
+                          <th className="thead sticky">Adhaar Number</th>
+                          <th className="sticky" style={{ minWidth: "10rem" }}>
                             Actions
                           </th>
                         </tr>
@@ -110,7 +110,14 @@ const PatientDetailsLIst = () => {
                           .map((item) => (
                             <>
                               <tr className="table-row">
-                                <td className="thead">{item.uhid}</td>
+                                <td className="thead">
+                                  <Link
+                                    to={`/patient-profile/${item.uhid}`}
+                                    style={{ textDecoration: "none" }}
+                                  >
+                                    {item.uhid}
+                                  </Link>
+                                </td>
                                 <td className="thead">{item.patient_name}</td>
                                 <td className="thead">{item.mobileno}</td>
                                 <td className="thead">{item.gender}</td>
@@ -127,10 +134,6 @@ const PatientDetailsLIst = () => {
                                         View Details
                                       </button>
                                     </Link>
-
-                                    <button className="btn btn-danger mx-1">
-                                      Delete
-                                    </button>
                                   </div>
                                 </td>
                               </tr>
@@ -162,5 +165,24 @@ const Container = styled.div`
 
   .thead {
     min-width: 8rem;
+  }
+
+  .table-responsive {
+    height: 30rem;
+    overflow: auto;
+  }
+
+  th {
+    background-color: #004aad;
+    color: white;
+    position: sticky;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    background-color: #004aad;
+    color: white;
+    z-index: 1;
   }
 `;

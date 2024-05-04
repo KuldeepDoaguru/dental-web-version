@@ -11,6 +11,7 @@ import BranchSelector from "../../../components/BranchSelector";
 const PatientProfile = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
+  console.log(pid);
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
@@ -34,7 +35,7 @@ const PatientProfile = () => {
   const getOngoingTreat = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientBillByBranchAndId/${branch.name}/${pid}`
       );
       console.log(data);
       setOngoingTreat(data);
@@ -42,6 +43,8 @@ const PatientProfile = () => {
       console.log(error);
     }
   };
+
+  console.log(ongoingTreat);
 
   useEffect(() => {
     patientProfileData();
@@ -51,7 +54,7 @@ const PatientProfile = () => {
   console.log(patientData[0]?.patient_name);
 
   const filterForOngoingTreat = ongoingTreat?.filter((item) => {
-    return item.treatment_status === "Ongoing";
+    return item.treatment_status === "ongoing";
   });
 
   console.log(filterForOngoingTreat);
@@ -268,13 +271,11 @@ const PatientProfile = () => {
               <div>
                 <div className="p-2 bg-light rounded">
                   <h6 className="fw-bold mt-2">Ongoing Treatment</h6>
-                </div>
-                <div className="container">
-                  <ul className=" list-unstyled">
+                  <ul className="">
                     {filterForOngoingTreat?.map((item) => (
                       <>
                         <li>
-                          <p className="fw-bold">{item.treatment}</p>
+                          <p className="">{item.treatment_name}</p>
                         </li>
                       </>
                     ))}

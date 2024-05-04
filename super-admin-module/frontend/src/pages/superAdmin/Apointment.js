@@ -87,36 +87,23 @@ const Apointment = () => {
     }
   };
 
-  const updateAppData = async (e, id) => {
-    e.preventDefault();
-    try {
-      const response = await axios.put(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateAppointData/${id}`,
-        updateData
-      );
-      console.log(response);
-      setTimeLineData(response);
-      closeUpdatePopup();
-      timelineData(updateData);
-      cogoToast.success("Appointment Details Updated Successfully");
-      getAppointList();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deleteAppointment = async (id) => {
-    try {
-      const response = await axios.delete(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteAppointData/${id}`
-      );
-      console.log(response);
-      cogoToast.success("Appointment Deleted Successfully");
-      getAppointList();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const updateAppData = async (e, id) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.put(
+  //       `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateAppointData/${id}`,
+  //       updateData
+  //     );
+  //     console.log(response);
+  //     setTimeLineData(response);
+  //     closeUpdatePopup();
+  //     timelineData(updateData);
+  //     cogoToast.success("Appointment Details Updated Successfully");
+  //     getAppointList();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   console.log(timeLIneData);
 
@@ -142,19 +129,20 @@ const Apointment = () => {
   // console.log(filterAppointDataByMonth);
 
   const totalPages = Math.ceil(appointmentList.length / itemsPerPage);
+  console.log(totalPages);
+  console.log(
+    appointmentList[0]?.appointment_dateTime?.split("T")[0].slice(0, 7)
+  );
+  console.log(formattedDate.slice(0, 7));
 
   const filterAppointDataByMonth = () => {
     // Filter and paginate appointment data based on currentPage and itemsPerPage
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return appointmentList
-      .filter(
-        (item) =>
-          item.appointment_dateTime.split("T")[0].slice(0, 7) ===
-          formattedDate.slice(0, 7)
-      )
-      .slice(startIndex, endIndex);
+    return appointmentList?.slice(startIndex, endIndex);
   };
+
+  console.log(filterAppointDataByMonth);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -166,7 +154,9 @@ const Apointment = () => {
       buttons.push(
         <li key={i}>
           <button
-            className="btn btn-secondary"
+            className={`btn ${
+              currentPage === i ? "btn-info" : "btn-secondary"
+            }`}
             onClick={() => handlePageChange(i)}
           >
             {i}
@@ -176,8 +166,6 @@ const Apointment = () => {
     }
     return buttons;
   };
-
-  console.log(filterAppointDataByMonth);
 
   return (
     <>
@@ -204,7 +192,7 @@ const Apointment = () => {
                             <tr>
                               <th className="table-sno">Appointment ID</th>
                               <th>Patient UHID</th>
-
+                              <th>Treatment Package ID</th>
                               <th className="table-small">Patient Name</th>
                               <th className="table-small">Contact Number</th>
                               <th className="table-small">Assigned Doctor</th>
@@ -219,7 +207,7 @@ const Apointment = () => {
                               </th>
                               <th>Cancel Reason</th>
                               {/* <th className="table-small">Edit</th> */}
-                              <th className="table-small">Delete</th>
+                              {/* <th className="table-small">Delete</th> */}
                             </tr>
                           </thead>
                           <tbody>
@@ -230,8 +218,14 @@ const Apointment = () => {
                                     {item.appoint_id}
                                   </td>
                                   <td className="table-small">
-                                    {item.patient_uhid}
+                                    <Link
+                                      to={`/patient-profile/${item.patient_uhid}`}
+                                      style={{ textDecoration: "none" }}
+                                    >
+                                      {item.patient_uhid}
+                                    </Link>
                                   </td>
+                                  <td className="table-small">{item.tp_id}</td>
                                   <td>{item.patient_name}</td>
                                   <td className="table-small">
                                     {item.mobileno}
@@ -262,7 +256,7 @@ const Apointment = () => {
                                       update
                                     </button>
                                   </td> */}
-                                  <td className="table-small">
+                                  {/* <td className="table-small">
                                     <button
                                       className="btn btn-danger"
                                       onClick={() =>
@@ -271,7 +265,7 @@ const Apointment = () => {
                                     >
                                       Delete
                                     </button>
-                                  </td>
+                                  </td> */}
                                 </tr>
                               </>
                             ))}
@@ -314,7 +308,7 @@ const Apointment = () => {
               <h2>Update Apointment Details</h2>
               <form
                 className="d-flex flex-column"
-                onSubmit={(e) => updateAppData(e, selectedItem)}
+                // onSubmit={(e) => updateAppData(e, selectedItem)}
               >
                 <div className="d-flex">
                   <div className="d-flex flex-column input-group mb-3">

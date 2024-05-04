@@ -74,7 +74,7 @@ const Navbar = () => {
             Billing
           </button>
         </li>
-        <li className="nav-item" role="presentation">
+        {/* <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab3"
@@ -87,7 +87,7 @@ const Navbar = () => {
           >
             Payment
           </button>
-        </li>
+        </li> */}
         <li className="nav-item" role="presentation">
           <button
             className="nav-link"
@@ -116,7 +116,7 @@ const Navbar = () => {
             Prescription
           </button>
         </li>
-        <li className="nav-item" role="presentation">
+        {/* <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab1"
@@ -129,8 +129,8 @@ const Navbar = () => {
           >
             Lab
           </button>
-        </li>
-        <li className="nav-item" role="presentation">
+        </li> */}
+        {/* <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab1"
@@ -143,8 +143,8 @@ const Navbar = () => {
           >
             Files
           </button>
-        </li>
-        <li className="nav-item" role="presentation">
+        </li> */}
+        {/* <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab1"
@@ -157,8 +157,8 @@ const Navbar = () => {
           >
             Sms
           </button>
-        </li>
-        <li className="nav-item" role="presentation">
+        </li> */}
+        {/* <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab1"
@@ -171,7 +171,7 @@ const Navbar = () => {
           >
             Email
           </button>
-        </li>
+        </li> */}
         <li className="nav-item" role="presentation">
           <button
             className="nav-link"

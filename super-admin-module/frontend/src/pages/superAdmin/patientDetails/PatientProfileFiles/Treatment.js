@@ -18,7 +18,7 @@ const Treatment = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentByBranchAndId/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getTreatmentViaUhid/${branch.name}/${pid}`
       );
       console.log(data);
       setPatAppointDetails(data);
@@ -42,24 +42,26 @@ const Treatment = () => {
               <table className="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Date</th>
+                    <th>TPID</th>
+                    <th>Disease</th>
                     <th>Treatment</th>
-                    <th>Consultant</th>
-                    <th>Cost</th>
+                    <th>Total Sitting</th>
+                    <th>Current Sitting</th>
+                    <th>Current Sitting Status</th>
                     <th>Treatment Status</th>
-                    <th>Payment Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {patAppointDetails?.map((item) => (
                     <>
                       <tr>
-                        <td>{item.appointment_dateTime?.split("T")[0]}</td>
-                        <td>{item.treatment_provided}</td>
-                        <td>{item.assigned_doctor}</td>
-                        <td>{item.bill_amount}</td>
+                        <td>{item.tp_id}</td>
+                        <td>{item.desease}</td>
+                        <td>{item.treatment_name}</td>
+                        <td>{item.total_sitting}</td>
+                        <td>{item.current_sitting}</td>
+                        <td>{item.current_sitting_status}</td>
                         <td>{item.treatment_status}</td>
-                        <td>{item.payment_status}</td>
                       </tr>
                     </>
                   ))}
@@ -113,7 +115,7 @@ const Wrapper = styled.div`
   }
 
   .cont-box {
-    width: 68rem;
+    width: 100%;
     @media screen and (max-width: 768px) {
       width: 100%;
     }

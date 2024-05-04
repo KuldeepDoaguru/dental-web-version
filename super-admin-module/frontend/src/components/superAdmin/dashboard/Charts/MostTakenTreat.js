@@ -6,11 +6,8 @@ import axios from "axios";
 
 const MostTakenTreat = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  // console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
-  // console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user);
   const [appointmentList, setAppointmentList] = useState([]);
   const [chartData, setChartData] = useState({
     series: [],
@@ -18,6 +15,7 @@ const MostTakenTreat = () => {
       chart: {
         width: 380,
         type: "pie",
+        height: 1000,
       },
       labels: [],
       responsive: [
@@ -37,7 +35,7 @@ const MostTakenTreat = () => {
   });
 
   const getAppointList = async () => {
-    console.log(branch.name);
+    // console.log(user.branch_name);
     try {
       const response = await axios.get(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`
@@ -52,15 +50,19 @@ const MostTakenTreat = () => {
     getAppointList();
   }, [branch.name]);
 
-  // console.log(appointmentList);
   useEffect(() => {
     const getDate = new Date();
     const year = getDate.getFullYear();
     const month = String(getDate.getMonth() + 1).padStart(2, "0");
     const formattedDate = `${year}-${month}`;
 
+    console.log(
+      appointmentList[1]?.appointment_dateTime?.split("T")[0]?.slice(0, 7)
+    );
+    console.log(formattedDate);
+
     // const formatByBranch = appointmentList?.filter(
-    //   (item) => item.branch_name === branch.name // Additional filter by some other property
+    //   (item) => item.branch_name === user.branch_name // Additional filter by some other property
     // );
 
     // console.log(formatByBranch);
@@ -68,16 +70,20 @@ const MostTakenTreat = () => {
       item.appointment_dateTime?.split("T")[0]?.includes(formattedDate)
     );
 
+    console.log(filterForMonthlyAppointments);
+
     if (filterForMonthlyAppointments.length > 0) {
       const treatments = filterForMonthlyAppointments.map(
         (item) => item.treatment_provided
       );
       const series = treatments.reduce((acc, val) => acc.concat(val), []);
       const uniqueTreatments = [...new Set(series)];
-
+      console.log(uniqueTreatments);
       const treatmentCounts = uniqueTreatments.map(
         (treatment) => series.filter((t) => t === treatment).length
       );
+
+      console.log(treatmentCounts);
 
       setChartData({
         series: treatmentCounts,
@@ -103,23 +109,25 @@ const MostTakenTreat = () => {
         },
       });
     }
-  }, [appointmentList, branch.name]); // Added branch as a dependency
-
+  }, [appointmentList, user.branch_name]); // Added branch as a dependency
+  console.log(chartData.options);
+  console.log(chartData.series);
   return (
     <Container>
       <div className="d-flex justify-content-center align-items-center pt-5">
         <div id="chart">
-          {appointmentList.length !== 0 ? (
+          {appointmentList.length > 0 ? (
             <>
               <ReactApexChart
                 options={chartData.options}
                 series={chartData.series}
                 type="pie"
-                width={380}
+                width={480}
               />
             </>
           ) : (
             <>
+              {/* <p>No Data</p> */}
               <ReactApexChart
                 options={{
                   // Define options for the blank chart

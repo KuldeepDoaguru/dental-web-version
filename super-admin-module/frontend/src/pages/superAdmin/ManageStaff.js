@@ -199,16 +199,16 @@ const ManageStaff = () => {
                     <table class="table table-bordered">
                       <thead className="table-head">
                         <tr>
-                          <th className="thead">Emp ID</th>
-                          <th className="thead">Name</th>
-                          <th className="thead">Mobile</th>
-                          <th className="thead">Email</th>
-                          <th className="thead">Designation</th>
-                          <th className="thead">Role</th>
-                          <th className="thead">Salary</th>
-                          <th className="thead">Address</th>
-                          <th>Profile Picture</th>
-                          <th className="" style={{ minWidth: "10rem" }}>
+                          <th className="thead sticky">Emp ID</th>
+                          <th className="thead sticky">Name</th>
+                          <th className="thead sticky">Mobile</th>
+                          <th className="thead sticky">Email</th>
+                          <th className="thead sticky">Designation</th>
+                          <th className="thead sticky">Role</th>
+                          <th className="thead sticky">Salary</th>
+                          <th className="thead sticky">Address</th>
+                          <th className="sticky">Profile Picture</th>
+                          <th className="sticky" style={{ minWidth: "10rem" }}>
                             Actions
                           </th>
                         </tr>
@@ -455,7 +455,7 @@ const ManageStaff = () => {
                         </select>
                       </div>
                     </div>
-                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                    {/* <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                       <div class="mb-3">
                         <label
                           for="exampleFormControlInput1"
@@ -530,45 +530,49 @@ const ManageStaff = () => {
                           onChange={handleInputChange}
                         />
                       </div>
-                    </div>
-                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                      <div class="mb-3">
-                        <label
-                          for="exampleFormControlInput1"
-                          class="form-label"
-                        >
-                          All Day Shift Start Time
-                        </label>
-                        <input
-                          type="time"
-                          class="form-control"
-                          id="exampleFormControlInput1"
-                          placeholder="Employee Mobile"
-                          name="allDayShiftStartTime"
-                          value={inEmpData.allDayShiftStartTime}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
-                      <div class="mb-3">
-                        <label
-                          for="exampleFormControlInput1"
-                          class="form-label"
-                        >
-                          All Day Shift End Time
-                        </label>
-                        <input
-                          type="time"
-                          class="form-control"
-                          id="exampleFormControlInput1"
-                          placeholder="Employee Mobile"
-                          name="allDayShiftEndTime"
-                          value={inEmpData.allDayShiftEndTime}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                    </div>
+                    </div> */}
+                    {inEmpData.empDesignation !== "doctor" && (
+                      <>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div class="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              All Day Shift Start Time
+                            </label>
+                            <input
+                              type="time"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="Employee Mobile"
+                              name="allDayShiftStartTime"
+                              value={inEmpData.allDayShiftStartTime}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div class="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              All Day Shift End Time
+                            </label>
+                            <input
+                              type="time"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="Employee Mobile"
+                              name="allDayShiftEndTime"
+                              value={inEmpData.allDayShiftEndTime}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
 
                     <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                       <div className="mb-3">
@@ -608,11 +612,191 @@ const ManageStaff = () => {
                         />
                       </div>
                     </div>
+
+                    {inEmpData.empDesignation === "doctor" && (
+                      <>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div class="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Morning Shift Start Time
+                            </label>
+                            <input
+                              type="time"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="Employee Mobile"
+                              name="morningShiftStartTime"
+                              value={inEmpData.morningShiftStartTime}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div class="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Morning Shift End Time
+                            </label>
+                            <input
+                              type="time"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="Employee Mobile"
+                              name="morningShiftEndTime"
+                              value={inEmpData.morningShiftEndTime}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div class="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Evening Shift Start Time
+                            </label>
+                            <input
+                              type="time"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="Employee Mobile"
+                              name="eveningShiftStartTime"
+                              value={inEmpData.eveningShiftStartTime}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div class="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Evening Shift End Time
+                            </label>
+                            <input
+                              type="time"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="Employee Mobile"
+                              name="eveningShiftEndTime"
+                              value={inEmpData.eveningShiftEndTime}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div className="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Doctor Education
+                            </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="employee_education"
+                              name="employee_education"
+                              value={inEmpData.employee_education}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div className="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              Speciality
+                            </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="speciality"
+                              name="speciality"
+                              value={inEmpData.speciality}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div className="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              language
+                            </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="language"
+                              name="language"
+                              value={inEmpData.language}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                        <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                          <div className="mb-3">
+                            <label
+                              for="exampleFormControlInput1"
+                              class="form-label"
+                            >
+                              experience
+                            </label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="exampleFormControlInput1"
+                              placeholder="experience"
+                              name="experience"
+                              value={inEmpData.experience}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                      <div className="mb-3">
+                        <label
+                          for="exampleFormControlInput1"
+                          class="form-label"
+                        >
+                          type_of
+                        </label>
+
+                        <select
+                          id=""
+                          name="type_of"
+                          value={inEmpData.type_of}
+                          class="form-control"
+                          onChange={handleInputChange}
+                        >
+                          <option value="full time">Full Time</option>
+                          <option value="half time">Part Time</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div className="d-flex justify-content-between">
-                  <div class="mb-3">
+                  <div class="">
                     <label for="exampleFormControlInput1" class="form-label">
                       Employee Role
                     </label>
@@ -710,12 +894,12 @@ const ManageStaff = () => {
                 </div>
 
                 <div className="d-flex justify-content-center">
-                  <button type="submit" className="btn btn-success mt-2">
+                  <button type="submit" className="btn btn-success">
                     Save
                   </button>
                   <button
                     type="button"
-                    className="btn btn-danger mt-2 mx-2"
+                    className="btn btn-danger mx-2"
                     onClick={closeUpdatePopup}
                   >
                     Cancel
@@ -742,6 +926,7 @@ const Container = styled.div`
     left: 0;
     width: 100%;
     overflow: scroll;
+    z-index: 99999;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     align-items: center;
@@ -756,6 +941,7 @@ const Container = styled.div`
   .popup {
     background-color: white;
     padding: 20px;
+    margin-top: 1rem;
     border-radius: 8px;
     height: auto;
     width: auto;
@@ -795,5 +981,24 @@ const Container = styled.div`
       height: 6rem;
       width: auto;
     }
+  }
+
+  .table-responsive {
+    height: 30rem;
+    overflow: auto;
+  }
+
+  th {
+    background-color: #004aad;
+    color: white;
+    position: sticky;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    background-color: #004aad;
+    color: white;
+    z-index: 1;
   }
 `;

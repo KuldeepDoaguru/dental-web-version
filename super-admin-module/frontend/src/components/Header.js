@@ -12,10 +12,10 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  // console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  // console.log(`User Name: ${branch.name}`);
   const [notifyList, setNotifyList] = useState([]);
 
   const getNotifyDetails = async () => {
@@ -25,7 +25,7 @@ const Header = () => {
       );
       setNotifyList(data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -36,7 +36,7 @@ const Header = () => {
       );
       getNotifyDetails();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -45,7 +45,7 @@ const Header = () => {
       localStorage.removeItem("userData");
       navigate("/");
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -58,12 +58,12 @@ const Header = () => {
     };
   }, []);
 
-  console.log(notifyList);
+  // console.log(notifyList);
 
   const filterForRead = notifyList?.filter((item) => {
     return item.status === "unread";
   });
-  console.log(filterForRead);
+  // console.log(filterForRead);
 
   return (
     <Wrapper>

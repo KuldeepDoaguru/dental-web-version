@@ -9,30 +9,31 @@ import axios from "axios";
 const ClinicActivity = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  // console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  // console.log(`User Name: ${branch.name}`);
   const [showCalender, setShowCalender] = useState(false);
   const [appointmentList, setAppointmentList] = useState([]);
   const [patDetails, setPatDetails] = useState([]);
   const [currentDate, setCurrentDate] = useState("");
   const [timeDifference, setTimeDifference] = useState(null);
   const [todayDate, setTodayDate] = useState("");
+  const [treatValue, setTreatValue] = useState([]);
 
   const handleCalender = () => {
     setShowCalender(!showCalender);
   };
 
   const getAppointList = async () => {
-    console.log(branch.name);
+    // console.log(branch.name);
     try {
       const response = await axios.get(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`
       );
       setAppointmentList(response.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -46,10 +47,10 @@ const ClinicActivity = () => {
       const { data } = await axios.get(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientDetailsByBranch/${branch.name}`
       );
-      console.log(data);
+      // console.log(data);
       setPatDetails(data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -65,35 +66,35 @@ const ClinicActivity = () => {
 
   const formattedTime = `${hours}`;
 
-  console.log(formattedTime);
+  // console.log(formattedTime);
 
   const getLife = appointmentList?.map((item) => {
     // Log the values involved in the subtraction
-    console.log("Formatted Time:", typeof formattedTime);
-    console.log(
-      "Appointment Time:",
-      item?.appointment_dateTime?.split("T")[1]?.split(":")[0]
-    );
+    // console.log("Formatted Time:", typeof formattedTime);
+    // console.log(
+    //   "Appointment Time:",
+    //   item?.appointment_dateTime?.split("T")[1]?.split(":")[0]
+    // );
 
     const difference =
       formattedTime - item?.appointment_dateTime?.split("T")[1]?.split(":")[0];
-    console.log("Difference:", difference); // Log the difference
+    // console.log("Difference:", difference); // Log the difference
     return difference.toString();
   });
 
-  console.log(getLife);
-  console.log(
-    appointmentList[0]?.appointment_dateTime.split("T")[1]?.split(":")[0]
-  );
+  // console.log(getLife);
+  // console.log(
+  //   appointmentList[0]?.appointment_dateTime.split("T")[1]?.split(":")[0]
+  // );
 
   //patient details
   const getPatientDet = patDetails?.map((item) => {
     // Log the values involved in the subtraction
-    console.log("Formatted Time:", typeof formattedTime);
-    console.log(
-      "Appointment Time:",
-      item?.regdatetime?.split("T")[1]?.split(":")[0]
-    );
+    // console.log("Formatted Time:", typeof formattedTime);
+    // console.log(
+    //   "Appointment Time:",
+    //   item?.regdatetime?.split("T")[1]?.split(":")[0]
+    // );
 
     const difference =
       formattedTime - item?.regdatetime?.split("T")[1]?.split(":")[0];
@@ -101,17 +102,32 @@ const ClinicActivity = () => {
     return difference.toString();
   });
 
-  console.log(patDetails);
-  console.log(
-    appointmentList[0]?.appointment_dateTime.split("T")[1]?.split(":")[0]
-  );
+  // console.log(patDetails);
+  // console.log(
+  //   appointmentList[0]?.appointment_dateTime.split("T")[1]?.split(":")[0]
+  // );
+
+  const getTreatmentValues = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getTreatSuggest/${branch.name}`
+      );
+      console.log(data);
+      setTreatValue(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(treatValue);
 
   useEffect(() => {
     getAppointList();
     getPatdetailsByBranch();
+    getTreatmentValues();
   }, [branch.name]);
 
-  console.log(currentDate);
+  // console.log(currentDate);
 
   //filter for day wise Appointment
   const filterAppointment = appointmentList?.filter((item) => {
@@ -124,19 +140,15 @@ const ClinicActivity = () => {
     }
   });
 
-  console.log(filterAppointment);
+  // console.log(filterAppointment);
 
   //filter for day wise Treatment
   const filterTreatment = appointmentList?.filter((item) => {
     if (currentDate) {
-      return (
-        item.appointment_dateTime?.split("T")[0] === currentDate &&
-        item.treatment_status === "Treated"
-      );
+      return item.appointment_dateTime?.split("T")[0] === currentDate;
     } else {
       return (
-        item.appointment_dateTime?.split("T")[0] === todayDate?.split("T")[0] &&
-        item.treatment_status === "Treated"
+        item.appointment_dateTime?.split("T")[0] === todayDate?.split("T")[0]
       );
     }
   });
@@ -144,27 +156,29 @@ const ClinicActivity = () => {
   console.log(filterTreatment);
 
   //filter for day wise billing
-  const filterBilling = appointmentList?.filter((item) => {
+  const filterBilling = treatValue?.filter((item) => {
     if (currentDate) {
       return (
-        item.appointment_dateTime?.split("T")[0] === currentDate &&
-        item.payment_status === "success"
+        item.bill_date?.split("T")[0] === currentDate &&
+        item.payment_status === "paid"
       );
     }
     return (
-      item.appointment_dateTime?.split("T")[0] === todayDate?.split("T")[0] &&
-      item.payment_status === "success"
+      item.bill_date?.split("T")[0] === todayDate?.split("T")[0] &&
+      item.payment_status === "paid"
     );
   });
 
   console.log(filterBilling);
-
+  console.log(patDetails[0]?.created_at?.split("T")[0]);
+  console.log(currentDate);
+  console.log(todayDate?.split("T")[0]);
   //filter for day wise patient registeration
   const filterPatient = patDetails?.filter((item) => {
     if (currentDate) {
-      return item.regdatetime?.split("T")[0] === currentDate;
+      return item.created_at?.split("T")[0] === currentDate;
     }
-    return item.regdatetime?.split("T")[0] === todayDate?.split("T")[0];
+    return item.created_at?.split("T")[0] === todayDate?.split("T")[0];
   });
 
   console.log(filterPatient);
@@ -179,7 +193,7 @@ const ClinicActivity = () => {
   // Format as 'YYYY-MM-DD'
   const formattedDate = `${year}-${month}-${date}`;
 
-  console.log(formattedDate);
+  // console.log(formattedDate);
   return (
     <>
       <Container>
@@ -393,12 +407,12 @@ const ClinicActivity = () => {
                         <div>
                           <h4>
                             <FaDotCircle className="mx-1" /> Patient{" "}
-                            {item.patient_name} has paid {item.bill_amount}/-
+                            {item.patient_name} has paid {item.paid_amount}/-
                             for the Treatment.
                           </h4>
                         </div>
                         <div>
-                          {item.appointment_dateTime.split("T")[0] ===
+                          {item.appointment_dateTime?.split("T")[0] ===
                           formattedDate ? (
                             <>
                               <p className="fw-bold">
@@ -411,7 +425,7 @@ const ClinicActivity = () => {
                             </>
                           ) : (
                             <>
-                              <p>{item.appointment_dateTime.split("T")[0]}</p>
+                              <p>{item.appointment_dateTime?.split("T")[0]}</p>
                             </>
                           )}
                         </div>
@@ -437,24 +451,24 @@ const ClinicActivity = () => {
                         <div>
                           <h4>
                             <FaDotCircle className="mx-1" /> Patient{" "}
-                            {item.firstname} {item.lastname} has been registered
-                            at {item.branch_name} Branch.
+                            {item.patient_name} has been registered at{" "}
+                            {item.branch_name} Branch.
                           </h4>
                         </div>
                         <div>
-                          {item.regdatetime.split("T")[0] === formattedDate ? (
+                          {item?.created_at?.split("T")[0] === formattedDate ? (
                             <>
                               <p className="fw-bold">
                                 {formattedTime -
-                                  item.regdatetime
-                                    .split("T")[1]
+                                  item.created_at
+                                    ?.split("T")[1]
                                     ?.split(":")[0]}{" "}
                                 Hours ago
                               </p>
                             </>
                           ) : (
                             <>
-                              <p>{item.regdatetime.split("T")[0]}</p>
+                              <p>{item.created_at?.split("T")[0]}</p>
                             </>
                           )}
                         </div>

@@ -18,7 +18,7 @@ const Bill = () => {
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientBillByBranchAndId/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/get-patientBill-data/${pid}`
       );
       console.log(data);
       setBillData(data);
@@ -45,31 +45,29 @@ const Bill = () => {
               <table className="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Bill Id</th>
-                    <th>Treatment</th>
-                    <th>Consultant</th>
-                    <th>Cost(INR)</th>
-                    <th>Discount(INR)</th>
-                    <th>Tax%</th>
-                    <th>Net Amount</th>
-                    <th>Paid</th>
-                    <th>Pending</th>
-                    <th>Billing Status</th>
+                    <th>Bill Date</th>
+                    <th>Bill ID</th>
+                    <th>Doctor</th>
+                    <th>Total Amount(INR)</th>
+                    <th>Direct Paid Amount(INR)</th>
+                    <th>Pay By Security Amount</th>
+                    <th>Payment Mode</th>
+                    <th>Payment Date</th>
+                    <th>Payment Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {billData?.map((item) => (
                     <>
                       <tr>
+                        <td>{item?.bill_date?.split("T")[0]}</td>
                         <td>{item.bill_id}</td>
-                        <td>{item.treatment}</td>
-                        <td>{item.assigned_doctor}</td>
+                        <td>{item.assigned_doctor_name}</td>
                         <td>{item.total_amount}</td>
-                        <td>{item.discount}</td>
-                        <td>{item.tax_percent}%</td>
-                        <td>{item.net_amount}</td>
                         <td>{item.paid_amount}</td>
-                        <td>{item.pending_amount}</td>
+                        <td>{item.pay_by_sec_amt}</td>
+                        <td>{item.payment_mode}</td>
+                        <td>{item.payment_date_time?.split("T")[0]}</td>
                         <td>{item.payment_status}</td>
                       </tr>
                     </>
@@ -126,7 +124,7 @@ const Wrapper = styled.div`
   }
 
   .cont-box {
-    width: 68rem;
+    width: 100%;
     @media screen and (max-width: 900px) {
       width: 100%;
     }

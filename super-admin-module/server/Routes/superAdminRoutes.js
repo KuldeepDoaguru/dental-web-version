@@ -83,6 +83,13 @@ const {
   updateComplaints,
   downloadEmployeeComplaintReport,
 } = require("../controllers/attendanceController");
+const {
+  getTreatSuggest,
+  getTreatmentViaUhid,
+  getExaminationViaUhid,
+  getPrescriptionViaUhid,
+  getPatientBillUHID,
+} = require("../controllers/superTreatController");
 // const multer = require("multer");
 
 const router = express.Router();
@@ -162,7 +169,10 @@ router.put(
 
 router.get("/getPatientDataByBranchAndId/:pid", getPatientDataByBranchAndId);
 
-router.get("/getPatientBillByBranchAndId/:pid", getPatientBillByBranchAndId);
+router.get(
+  "/getPatientBillByBranchAndId/:branch/:pid",
+  getPatientBillByBranchAndId
+);
 router.get("/getAppointmentByBranchAndId/:pid", getAppointmentByBranchAndId);
 
 router.get("/examinDetailsByPatId/:pid", examinDetailsByPatId);
@@ -228,5 +238,13 @@ router.post(
   "/downloadEmployeeComplaintReport/:branch",
   downloadEmployeeComplaintReport
 );
+
+//**************************************************************************************************** */
+//Treatment routes
+router.get("/getTreatSuggest/:branch", getTreatSuggest);
+router.get("/getTreatmentViaUhid/:branch/:uhid", getTreatmentViaUhid);
+router.get("/getExaminationViaUhid/:branch/:uhid", getExaminationViaUhid);
+router.get("/getPrescriptionViaUhid/:branch/:uhid", getPrescriptionViaUhid);
+router.get("/get-patientBill-data/:patientUHID", getPatientBillUHID);
 
 module.exports = router;

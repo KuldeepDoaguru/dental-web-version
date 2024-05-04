@@ -17,7 +17,7 @@ const ClinicExamin = () => {
   const getExamineDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/examinDetailsByPatId/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getExaminationViaUhid/${branch.name}/${pid}`
       );
       setExmData(data);
     } catch (error) {
@@ -40,25 +40,27 @@ const ClinicExamin = () => {
               <thead>
                 <tr>
                   <th>Date</th>
-                  <th>Branch</th>
-                  <th>Issue</th>
-                  <th>Diagnosis</th>
-                  <th>Investigation</th>
+                  <th>Diagnosis Category</th>
+                  <th>Disease</th>
+                  <th>Chief Complaint</th>
                   <th>Tooth</th>
-                  <th>Doctor</th>
+                  <th>On Examination</th>
+                  <th>Advice</th>
                 </tr>
               </thead>
               <tbody>
                 {exmData?.map((item) => (
                   <>
                     <tr>
-                      <td>{item.examin_date?.split("T")[0]}</td>
-                      <td>{item.branch_name}</td>
-                      <td>{item.examin_issue}</td>
-                      <td>{item.diagnosis}</td>
-                      <td>{item.examin_investigation}</td>
-                      <td>{item.tooth}</td>
-                      <td>{item.doctor_name}</td>
+                      <td>{item.date?.split("T")[0]}</td>
+                      <td>{item.diagnosis_category}</td>
+                      <td>{item.disease}</td>
+
+                      <td>{item.chief_complain}</td>
+                      <td>{item.selected_teeth}</td>
+
+                      <td>{item.on_examination}</td>
+                      <td>{item.advice}</td>
                     </tr>
                   </>
                 ))}
@@ -81,7 +83,7 @@ const Wrapper = styled.div`
   }
 
   .cont-box {
-    width: 68rem;
+    width: 100%;
     @media screen and (max-width: 900px) {
       width: 100%;
     }

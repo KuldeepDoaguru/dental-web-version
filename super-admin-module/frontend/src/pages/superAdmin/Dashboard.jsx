@@ -53,13 +53,13 @@ const Dashboard = () => {
                       value={keyword}
                       onChange={(e) => setkeyword(e.target.value.toLowerCase())}
                     />
-                    <button
+                    {/* <button
                       className="btn btn-primary"
                       style={{ backgroundColor: "#004aad" }}
                       type="submit"
                     >
                       Search
-                    </button>
+                    </button> */}
                     <div>
                       {/* {suggestions.map((suggestion, index) => (
                         <div key={index}>{suggestion}</div>
@@ -93,7 +93,9 @@ const Dashboard = () => {
                     <MostTakenTreat />
                   </div>
                   <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                    <h3 className="text-center">Patient visits this month</h3>
+                    <h3 className="text-center">
+                      Patient visits this month(OPD)
+                    </h3>
                     <PatientStatisticChart />
                   </div>
                   <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">

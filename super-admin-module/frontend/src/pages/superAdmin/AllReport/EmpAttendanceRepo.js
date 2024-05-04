@@ -40,7 +40,7 @@ const EmpAttendanceRepo = () => {
       month: "long",
     }).format(currentDate);
 
-    const formattedDate = currentDate.toISOString().split("T")[0];
+    const formattedDate = currentDate.toISOString()?.split("T")[0];
     setFormattedDate(formattedDate);
 
     if (fromDate && toDate) {
@@ -72,16 +72,16 @@ const EmpAttendanceRepo = () => {
   const filter = daysInMonth.map((day) => {
     return attendRepo.find(
       (item) =>
-        item.date.split("T")[0] === `${formattedDate.slice(0, 7)}-${day}`
+        item.date?.split("T")[0] === `${formattedDate.slice(0, 7)}-${day}`
     );
   });
 
   console.log(filter[5]?.login);
-  console.log(attendRepo[0]?.date.split("T")[0] >= fromDate);
+  console.log(attendRepo[0]?.date?.split("T")[0] >= fromDate);
   console.log(toDate);
   const fitlerByDuration = attendRepo?.filter((item) => {
     return (
-      item.date.split("T")[0] >= fromDate && item.date.split("T")[0] <= toDate
+      item.date?.split("T")[0] >= fromDate && item.date?.split("T")[0] <= toDate
     );
   });
 
@@ -132,6 +132,10 @@ const EmpAttendanceRepo = () => {
       console.log(error);
     }
   };
+
+  console.log(attendRepo);
+  console.log(daysInMonth[0]);
+  console.log(fromDate?.slice(-2));
 
   const goBack = () => {
     window.history.go(-1);
@@ -213,13 +217,25 @@ const EmpAttendanceRepo = () => {
                                   <th>Employee Name</th>
                                   <th>Dessignation</th>
 
-                                  {daysInMonth.map((day) => (
-                                    <>
-                                      <th key={day}>
-                                        {day} {monthName}
-                                      </th>
-                                    </>
-                                  ))}
+                                  {daysInMonth
+                                    ?.filter((item) => {
+                                      const billDate = item;
+                                      if (fromDate && toDate) {
+                                        return (
+                                          billDate >= fromDate?.slice(-2) &&
+                                          billDate <= toDate?.slice(-2)
+                                        );
+                                      } else {
+                                        return true;
+                                      }
+                                    })
+                                    .map((day) => (
+                                      <>
+                                        <th key={day}>
+                                          {day} {monthName}
+                                        </th>
+                                      </>
+                                    ))}
                                 </tr>
                               </thead>
                               <tbody>
@@ -231,44 +247,57 @@ const EmpAttendanceRepo = () => {
                                     <td>{attendItem.employee_ID}</td>
                                     <td>{attendItem.emp_name}</td>
                                     <td>{attendItem.employee_designation}</td>
-                                    {daysInMonth.map((day) => {
-                                      const attendanceForDay = attendRepo.find(
-                                        (repoItem) =>
-                                          repoItem.date.split("T")[0] ===
-                                            `${formattedDate.slice(
-                                              0,
-                                              7
-                                            )}-${day}` &&
-                                          repoItem.employee_ID ===
-                                            attendItem.employee_ID
-                                      );
+                                    {daysInMonth
+                                      ?.filter((item) => {
+                                        const billDate = item;
+                                        if (fromDate && toDate) {
+                                          return (
+                                            billDate >= fromDate?.slice(-2) &&
+                                            billDate <= toDate?.slice(-2)
+                                          );
+                                        } else {
+                                          return true;
+                                        }
+                                      })
+                                      .map((day) => {
+                                        const attendanceForDay =
+                                          attendRepo.find(
+                                            (repoItem) =>
+                                              repoItem.date?.split("T")[0] ===
+                                                `${formattedDate.slice(
+                                                  0,
+                                                  7
+                                                )}-${day}` &&
+                                              repoItem.employee_ID ===
+                                                attendItem.employee_ID
+                                          );
 
-                                      return (
-                                        <td key={day}>
-                                          {attendanceForDay ? (
-                                            <span
-                                              className={
-                                                attendanceForDay.status ===
-                                                "approved"
-                                                  ? "attend-approve"
-                                                  : "attend-reject"
-                                              }
-                                            >
-                                              Login - $
-                                              {attendanceForDay.login
-                                                .split(".")[0]
-                                                .slice(0, 5)}{" "}
-                                              & Logout - $
-                                              {attendanceForDay.logout
-                                                .split(".")[0]
-                                                .slice(0, 5)}
-                                            </span>
-                                          ) : (
-                                            "-"
-                                          )}
-                                        </td>
-                                      );
-                                    })}
+                                        return (
+                                          <td key={day}>
+                                            {attendanceForDay ? (
+                                              <span
+                                                className={
+                                                  attendanceForDay.status ===
+                                                  "approved"
+                                                    ? "attend-approve"
+                                                    : "attend-reject"
+                                                }
+                                              >
+                                                Login -
+                                                {attendanceForDay.allday_shift_login_time
+                                                  ?.split(".")[0]
+                                                  .slice(0, 5)}{" "}
+                                                & Logout -
+                                                {attendanceForDay.allday_shift_logout_time
+                                                  ?.split(".")[0]
+                                                  .slice(0, 5)}
+                                              </span>
+                                            ) : (
+                                              "-"
+                                            )}
+                                          </td>
+                                        );
+                                      })}
                                   </tr>
                                 ))}
                               </tbody>
@@ -296,10 +325,12 @@ const Container = styled.div`
       background-color: #004aad;
       color: white;
       min-width: 7rem;
+      white-space: nowrap;
     }
     td {
       font-weight: bold;
       min-width: 7rem;
+      white-space: nowrap;
     }
   }
   .table::-webkit-scrollbar {

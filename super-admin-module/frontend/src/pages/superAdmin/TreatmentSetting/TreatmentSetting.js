@@ -242,14 +242,14 @@ const TreatmentSetting = () => {
                                     >
                                       Edit
                                     </button>
-                                    <button
+                                    {/* <button
                                       type="button"
                                       class="btn btn-danger mx-2"
                                       data-bs-toggle="modal"
                                       data-bs-target="#exampleModal"
                                     >
                                       Delete
-                                    </button>
+                                    </button> */}
                                   </td>
                                 </tr>
                                 <div

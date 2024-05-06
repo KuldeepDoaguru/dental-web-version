@@ -759,7 +759,7 @@ const addTreatment = (req, res) => {
 
 const getTreatmentList = (req, res) => {
   try {
-    const getQuery = "SELECT * FROM treatment_list";
+    const getQuery = "SELECT * FROM	treatment_list_copy";
     db.query(getQuery, (err, result) => {
       if (err) {
         res.status(400).send(err.message);

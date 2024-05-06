@@ -9,6 +9,7 @@ import { AiFillBell } from "react-icons/ai";
 import { BsFileEarmarkPerson } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { clearUser } from "../../redux/slices/UserSlicer";
+import { FcLeave } from "react-icons/fc";
 
 const SiderAdmin = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,6 @@ const SiderAdmin = () => {
     return location.pathname === path ? "active-nav" : "";
   };
 
- 
   return (
     <>
       <Container>
@@ -186,6 +186,28 @@ const SiderAdmin = () => {
                       id="navleft1"
                     >
                       Attendance
+                    </h3>
+                  </div>
+                </Link>
+              </li>
+              <hr />
+
+              <li>
+                <Link
+                  to="/leave-management"
+                  className={`link-div ${getSidebarClass("/leave-management")}`}
+                >
+                  <div>
+                    {/* <i className="fs-4 bi bi-camera-video"></i> */}
+                    <FcLeave className="fs-4 bi bi-camera-video" />
+                    {/* <IoIosPeople  /> */}
+                  </div>
+                  <div>
+                    <h3
+                      className=" d-none d-sm-inline fs-6 icon-view"
+                      id="navleft"
+                    >
+                      Leave Details
                     </h3>
                   </div>
                 </Link>

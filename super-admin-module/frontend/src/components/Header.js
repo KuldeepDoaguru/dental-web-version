@@ -7,13 +7,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoSettings } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { clearUser } from "../redux/slices/UserSlicer";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state);
-  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  // console.log("User State:", user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
   // console.log(`User Name: ${branch.name}`);
   const [notifyList, setNotifyList] = useState([]);
@@ -40,12 +41,20 @@ const Header = () => {
     }
   };
 
+  // const logoutHandler = () => {
+  //   try {
+  //     localStorage.removeItem("userData");
+  //     navigate("/");
+  //   } catch (error) {
+  //     // console.log(error);
+  //   }
+  // };
+
   const logoutHandler = () => {
-    try {
-      localStorage.removeItem("userData");
+    const isConfirmed = window.confirm("Are you sure you want to Logout?");
+    if (isConfirmed) {
+      dispatch(clearUser());
       navigate("/");
-    } catch (error) {
-      // console.log(error);
     }
   };
 
@@ -58,12 +67,12 @@ const Header = () => {
     };
   }, []);
 
-  // console.log(notifyList);
+  console.log(notifyList);
 
   const filterForRead = notifyList?.filter((item) => {
-    return item.status === "unread";
+    return item.status !== "read";
   });
-  // console.log(filterForRead);
+  console.log(filterForRead);
 
   return (
     <Wrapper>

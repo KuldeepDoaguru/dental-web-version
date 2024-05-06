@@ -45,10 +45,10 @@ const SuperAdmNotify = () => {
 
   console.log(notifyList);
 
-  const filterForRead = notifyList?.filter((item) => {
-    return item.status === "unread";
-  });
-  console.log(filterForRead);
+  // const filterForRead = notifyList?.filter((item) => {
+  //   return item.status !== "read";
+  // });
+  // console.log(filterForRead);
   return (
     <>
       <Container>
@@ -73,9 +73,9 @@ const SuperAdmNotify = () => {
                 <div className="container-fluid mt-3">
                   <h3 className="text-center">Notification List</h3>
                   <hr />
-                  <div className="container mt-3">
+                  <div className="container mt-3 box-not">
                     <ul className="">
-                      {filterForRead?.slice(-10).map((item) => {
+                      {notifyList?.map((item) => {
                         return (
                           <>
                             <li key={item.id}>
@@ -100,20 +100,28 @@ const SuperAdmNotify = () => {
                                       .slice(0, 5)}
                                   </p>
                                 </div>
-                                <div className="mx-2">
-                                  <button
-                                    className="btn btn-info"
-                                    onClick={() =>
-                                      updateMarkRead(item.event_id)
-                                    }
-                                  >
-                                    Mark as Read
-                                  </button>
-                                  <Link
-                                    to="/super-admin-notification"
-                                    className="mx-2"
-                                  ></Link>
-                                </div>
+                                {item.status !== "read" ? (
+                                  <>
+                                    <div className="mx-2">
+                                      <button
+                                        className="btn btn-info"
+                                        onClick={() =>
+                                          updateMarkRead(item.event_id)
+                                        }
+                                      >
+                                        Mark as Read
+                                      </button>
+                                      <Link
+                                        to="/super-admin-notification"
+                                        className="mx-2"
+                                      ></Link>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <p>checked</p>
+                                  </>
+                                )}
                               </div>
                             </li>
                             <hr />
@@ -170,5 +178,10 @@ const Container = styled.div`
     p {
       margin-bottom: 0px;
     }
+  }
+
+  .box-not {
+    height: 30rem;
+    overflow: auto;
   }
 `;

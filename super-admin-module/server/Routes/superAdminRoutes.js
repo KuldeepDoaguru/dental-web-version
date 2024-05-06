@@ -89,6 +89,8 @@ const {
   getExaminationViaUhid,
   getPrescriptionViaUhid,
   getPatientBillUHID,
+  getLeaveList,
+  approveLeave,
 } = require("../controllers/superTreatController");
 // const multer = require("multer");
 
@@ -246,5 +248,7 @@ router.get("/getTreatmentViaUhid/:branch/:uhid", getTreatmentViaUhid);
 router.get("/getExaminationViaUhid/:branch/:uhid", getExaminationViaUhid);
 router.get("/getPrescriptionViaUhid/:branch/:uhid", getPrescriptionViaUhid);
 router.get("/get-patientBill-data/:patientUHID", getPatientBillUHID);
+router.get("/getLeaveList", getLeaveList);
+router.put("/approveLeave/:lid", approveLeave);
 
 module.exports = router;

@@ -43,9 +43,15 @@ const AdminEmpAttendReport = () => {
     setFormattedDate(formattedDate);
 
     if (fromDate && toDate) {
+      const fromDateMidnight = new Date(fromDate);
+      fromDateMidnight.setHours(0, 0, 0, 0);
+
+      const toDateMidnight = new Date(toDate);
+      toDateMidnight.setHours(0, 0, 0, 0);
+
       const filteredDaysArray = daysArray.filter((day) => {
         const date = new Date(year, month, parseInt(day, 10));
-        return date >= new Date(fromDate) && date <= new Date(toDate);
+        return date >= fromDateMidnight && date <= toDateMidnight;
       });
       setDaysInMonth(filteredDaysArray);
     } else {

@@ -78,16 +78,17 @@ import PatientDetailsLIst from "./pages/superAdmin/patientDetails/PatientDetails
 import PatientProfile from "./pages/superAdmin/patientDetails/PatientProfile";
 import EmpComplaintsReport from "./pages/superAdmin/AllReport/EmpComplaintsReport";
 import PasswordReset from "./pages/PasswordReset";
+import StaffLeave from "./pages/superAdmin/StaffLeave";
 
 const App = () => {
-  const storedUserData = localStorage.getItem("userData");
+  // const storedUserData = localStorage.getItem("userData");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-
-  if (storedUserData) {
-    const userData = JSON.parse(storedUserData);
-    dispatch(setUser(userData));
-  }
+  console.log(user.id === null);
+  // if (storedUserData) {
+  //   const userData = JSON.parse(storedUserData);
+  //   dispatch(setUser(userData));
+  // }
 
   const selectedBranch = localStorage.getItem("branchName");
   const branch = useSelector((state) => state.name);
@@ -106,53 +107,177 @@ const App = () => {
         {/* super admin routes start  */}
 
         <Route path="/receptionist_login" element={<Login />} />
-        <Route path="/receptionist_registration" element={<Registration />} />
-        <Route path="/superadmin-dashboard" element={<Dashboard />} />
-        <Route path="/super-admin-appointment" element={<Apointment />} />
-        <Route path="/superadmin-branch" element={<Branches />} />
-        <Route path="/superadmin-add-branch" element={<AddBranch />} />
-        <Route path="/bill_section" element={<AllBills />} />
-        <Route path="/inventory" element={<Inventory />} />
-        <Route path="/add-invetory" element={<AddInventory />} />
-        <Route path="/edit-invetory/:pid" element={<EditInventory />} />
-        <Route path="/doctor_section" element={<DoctorList />} />
-        <Route path="/register-doctor" element={<AddDoctor />} />
-        <Route path="/super-admin-profile" element={<SuperAdProfile />} />
-        <Route path="/employee-profile/:eid" element={<EmployeeProfile />} />
-        <Route path="/clinic-setting" element={<ClinicSetting />} />
-        <Route path="/lab-setting" element={<LabSetting />} />
-        <Route path="/drug-setting" element={<DrugSetting />} />
-        <Route path="/calender-setting" element={<CalenderSetting />} />
-        <Route path="/treatment-setting" element={<TreatmentSetting />} />
+        <Route
+          path="/receptionist_registration"
+          element={user.id === null ? <UniversalLogin /> : <Registration />}
+        />
+        <Route
+          path="/superadmin-dashboard"
+          element={user.id === null ? <UniversalLogin /> : <Dashboard />}
+        />
+        <Route
+          path="/super-admin-appointment"
+          element={user.id === null ? <UniversalLogin /> : <Apointment />}
+        />
+        <Route
+          path="/superadmin-branch"
+          element={user.id === null ? <UniversalLogin /> : <Branches />}
+        />
+        <Route
+          path="/superadmin-add-branch"
+          element={user.id === null ? <UniversalLogin /> : <AddBranch />}
+        />
+        <Route
+          path="/bill_section"
+          element={user.id === null ? <UniversalLogin /> : <AllBills />}
+        />
+        <Route
+          path="/inventory"
+          element={user.id === null ? <UniversalLogin /> : <Inventory />}
+        />
+        <Route
+          path="/add-invetory"
+          element={user.id === null ? <UniversalLogin /> : <AddInventory />}
+        />
+        <Route
+          path="/edit-invetory/:pid"
+          element={user.id === null ? <UniversalLogin /> : <EditInventory />}
+        />
+        <Route
+          path="/doctor_section"
+          element={user.id === null ? <UniversalLogin /> : <DoctorList />}
+        />
+        <Route
+          path="/register-doctor"
+          element={user.id === null ? <UniversalLogin /> : <AddDoctor />}
+        />
+        <Route
+          path="/super-admin-profile"
+          element={user.id === null ? <UniversalLogin /> : <SuperAdProfile />}
+        />
+        <Route
+          path="/employee-profile/:eid"
+          element={user.id === null ? <UniversalLogin /> : <EmployeeProfile />}
+        />
+        <Route
+          path="/clinic-setting"
+          element={user.id === null ? <UniversalLogin /> : <ClinicSetting />}
+        />
+        <Route
+          path="/lab-setting"
+          element={user.id === null ? <UniversalLogin /> : <LabSetting />}
+        />
+        <Route
+          path="/drug-setting"
+          element={user.id === null ? <UniversalLogin /> : <DrugSetting />}
+        />
+        <Route
+          path="/calender-setting"
+          element={user.id === null ? <UniversalLogin /> : <CalenderSetting />}
+        />
+        <Route
+          path="/treatment-setting"
+          element={user.id === null ? <UniversalLogin /> : <TreatmentSetting />}
+        />
         <Route
           path="/communication-setting"
-          element={<CommunicationSetting />}
+          element={
+            user.id === null ? <UniversalLogin /> : <CommunicationSetting />
+          }
         />
         <Route
           path="/prescription-templates"
-          element={<PrescriptionTemplate />}
+          element={
+            user.id === null ? <UniversalLogin /> : <PrescriptionTemplate />
+          }
         />
-        <Route path="/reports-dashboard" element={<ReportDash />} />
-        <Route path="/finance-reports" element={<FinancialReportCard />} />
-        <Route path="/appointment-report" element={<AppointmentReport />} />
-        <Route path="/Billing-report" element={<BillingReport />} />
-        <Route path="/inventory-report" element={<InventoryReport />} />
+        <Route
+          path="/reports-dashboard"
+          element={user.id === null ? <UniversalLogin /> : <ReportDash />}
+        />
+        <Route
+          path="/finance-reports"
+          element={
+            user.id === null ? <UniversalLogin /> : <FinancialReportCard />
+          }
+        />
+        <Route
+          path="/appointment-report"
+          element={
+            user.id === null ? <UniversalLogin /> : <AppointmentReport />
+          }
+        />
+        <Route
+          path="/Billing-report"
+          element={user.id === null ? <UniversalLogin /> : <BillingReport />}
+        />
+        <Route
+          path="/inventory-report"
+          element={user.id === null ? <UniversalLogin /> : <InventoryReport />}
+        />
         <Route
           path="/employee-attendance-report"
-          element={<EmpAttendanceRepo />}
+          element={
+            user.id === null ? <UniversalLogin /> : <EmpAttendanceRepo />
+          }
         />
-        <Route path="/employee-details-report" element={<EmpDetailsRepo />} />
-        <Route path="/lab-details-report" element={<LabDetailsReport />} />
-        <Route path="/lab-test-report" element={<LabTestReport />} />
-        <Route path="/lab-task-report" element={<LabTaskReport />} />
-        <Route path="/manage-staff" element={<ManageStaff />} />
-        <Route path="/super-admin-notification" element={<SuperAdmNotify />} />
-        <Route path="/complaint-page/:cid" element={<ComplaintPage />} />
-        <Route path="/patient-list" element={<PatientDetailsLIst />} />
-        <Route path="/patient-profile/:pid" element={<PatientProfile />} />
-        <Route path="/emp-complaints-list" element={<EmpComplaintsReport />} />
-        <Route path="/password-reset" element={<PasswordReset />} />
-        <Route path="*" element={<ErrorPage />} />
+        <Route
+          path="/employee-details-report"
+          element={user.id === null ? <UniversalLogin /> : <EmpDetailsRepo />}
+        />
+        <Route
+          path="/lab-details-report"
+          element={user.id === null ? <UniversalLogin /> : <LabDetailsReport />}
+        />
+        <Route
+          path="/lab-test-report"
+          element={user.id === null ? <UniversalLogin /> : <LabTestReport />}
+        />
+        <Route
+          path="/lab-task-report"
+          element={user.id === null ? <UniversalLogin /> : <LabTaskReport />}
+        />
+        <Route
+          path="/manage-staff"
+          element={user.id === null ? <UniversalLogin /> : <ManageStaff />}
+        />
+        <Route
+          path="/super-admin-notification"
+          element={user.id === null ? <UniversalLogin /> : <SuperAdmNotify />}
+        />
+        <Route
+          path="/complaint-page/:cid"
+          element={user.id === null ? <UniversalLogin /> : <ComplaintPage />}
+        />
+        <Route
+          path="/patient-list"
+          element={
+            user.id === null ? <UniversalLogin /> : <PatientDetailsLIst />
+          }
+        />
+        <Route
+          path="/patient-profile/:pid"
+          element={user.id === null ? <UniversalLogin /> : <PatientProfile />}
+        />
+        <Route
+          path="/emp-complaints-list"
+          element={
+            user.id === null ? <UniversalLogin /> : <EmpComplaintsReport />
+          }
+        />
+        <Route
+          path="/password-reset"
+          element={user.id === null ? <UniversalLogin /> : <PasswordReset />}
+        />
+
+        <Route
+          path="/leave-management"
+          element={user.id === null ? <UniversalLogin /> : <StaffLeave />}
+        />
+        <Route
+          path="*"
+          element={user.id === null ? <UniversalLogin /> : <ErrorPage />}
+        />
 
         {/* super admin routes end  */}
         {/* ************************************************************************************ */}

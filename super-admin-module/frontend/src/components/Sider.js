@@ -6,6 +6,7 @@ import { FaCodeBranch } from "react-icons/fa";
 import { TbReportSearch } from "react-icons/tb";
 import { IoIosPeople } from "react-icons/io";
 import { AiFillBell } from "react-icons/ai";
+import { FcLeave } from "react-icons/fc";
 
 const Sider = () => {
   const location = useLocation();
@@ -171,6 +172,27 @@ const Sider = () => {
                     id="navleft"
                   >
                     Manage Staff
+                  </h3>
+                </div>
+              </Link>
+            </li>
+            <hr />
+            <li>
+              <Link
+                to="/leave-management"
+                className={`link-div ${getSidebarClass("/leave-management")}`}
+              >
+                <div>
+                  {/* <i className="fs-4 bi bi-camera-video"></i> */}
+                  <FcLeave className="fs-4 bi bi-camera-video" />
+                  {/* <IoIosPeople  /> */}
+                </div>
+                <div>
+                  <h3
+                    className=" d-none d-sm-inline fs-6 icon-view"
+                    id="navleft"
+                  >
+                    Leave Details
                   </h3>
                 </div>
               </Link>

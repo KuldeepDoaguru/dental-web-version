@@ -121,10 +121,49 @@ const getPatientBillUHID = (req, res) => {
   });
 };
 
+const getLeaveList = (req, res) => {
+  try {
+    const selectQuery = "SELECT * FROM employee_leave";
+    db.query(selectQuery, (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      } else {
+        return res.status(200).send(result);
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
+const approveLeave = (req, res) => {
+  try {
+    const lid = req.params.lid;
+    const status = req.body.status;
+    const updateQuery =
+      "UPDATE employee_leave SET leave_status = ? WHERE id = ?";
+    db.query(updateQuery, [status, lid], (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      } else {
+        return res
+          .status(200)
+          .json({ success: true, message: "leave approved successfully" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
 module.exports = {
   getTreatSuggest,
   getTreatmentViaUhid,
   getExaminationViaUhid,
   getPrescriptionViaUhid,
   getPatientBillUHID,
+  getLeaveList,
+  approveLeave,
 };

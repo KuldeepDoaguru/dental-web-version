@@ -40,6 +40,7 @@ import AdminPatientProfile from "./pages/admin/AdminPatientProfile";
 import AdminEmployeeProfile from "./pages/admin/AdminEmployeeProfile";
 import AdminNotification from "./pages/admin/AdminNotification";
 import AttendanceLeave from "./pages/admin/AttendanceLeave";
+import StaffLeave from "./pages/admin/StaffLeave";
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -338,6 +339,12 @@ const App = () => {
           path="/attendance-dashboard"
           element={
             user.currentUser === null ? <UniversalLogin /> : <AttendanceLeave />
+          }
+        />
+        <Route
+          path="/leave-management"
+          element={
+            user.currentUser === null ? <UniversalLogin /> : <StaffLeave />
           }
         />
         <Route

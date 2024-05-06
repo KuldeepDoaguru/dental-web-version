@@ -8,6 +8,7 @@ const userSlice = createSlice({
       state.currentUser = action.payload;
     },
     clearUser: (state) => {
+      alert("clear user called");
       state.currentUser = null;
     },
     toggleTableRefresh: (state) => {

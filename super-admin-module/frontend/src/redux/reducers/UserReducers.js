@@ -3,7 +3,13 @@ import { createReducer } from "@reduxjs/toolkit";
 import { setUser, clearUser, toggleTableRefresh } from "../slices/UserSlicer";
 
 // Initial state for the user
-const initialState = { name: "", id: null, refreshTable: false };
+const initialState = {
+  name: "",
+  id: null,
+  email: "",
+  employee_mobile: "",
+  refreshTable: false,
+};
 
 // Create a reducer using createReducer from Redux Toolkit
 export const userReducer = createReducer(initialState, (builder) => {
@@ -18,10 +24,10 @@ export const userReducer = createReducer(initialState, (builder) => {
       console.log("User action after setUser:", action.payload);
     })
     .addCase(clearUser, (state) => {
-      state.name = null;
-      state.id = null;
-      state.email = null;
-      state.employee_mobile = null;
+      state.name = initialState.name;
+      state.id = initialState.id;
+      state.email = initialState.email;
+      state.employee_mobile = initialState.employee_mobile;
     })
     .addCase(toggleTableRefresh, (state) => {
       state.refreshTable = !state.refreshTable;

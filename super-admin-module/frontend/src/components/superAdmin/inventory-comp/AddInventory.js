@@ -22,7 +22,7 @@ const AddInventory = () => {
   const [reciept_doc, setReciept_doc] = useState(null);
   const [recData, setRecData] = useState({
     item_name: "",
-    item_category: "",
+    item_category: "drugs",
     item_mrp: "",
     item_code: "",
     HSN_code: "",
@@ -150,7 +150,7 @@ const AddInventory = () => {
                               Item Code
                             </label>
                             <input
-                              type="text"
+                              type="number"
                               class="p-1 w-100 rounded"
                               name="item_code"
                               placeholder="Item Code"
@@ -186,7 +186,7 @@ const AddInventory = () => {
                               HSN Code
                             </label>
                             <input
-                              type="text"
+                              type="number"
                               class="p-1 w-100 rounded"
                               placeholder="HSN Code"
                               name="HSN_code"
@@ -220,12 +220,13 @@ const AddInventory = () => {
                               id="drug"
                               value="Drug"
                               onChange={handleInputChange}
+                              checked
                             />
                             <label class="form-check-label" for="drug">
                               Drug
                             </label>
                           </div>
-                          <div class="form-check">
+                          {/* <div class="form-check">
                             <input
                               class="form-check-input"
                               type="radio"
@@ -237,8 +238,8 @@ const AddInventory = () => {
                             <label class="form-check-label" for="Supplies">
                               Supplies
                             </label>
-                          </div>
-                          <div class="form-check mx-2">
+                          </div> */}
+                          {/* <div class="form-check mx-2">
                             <input
                               class="form-check-input"
                               type="radio"
@@ -250,7 +251,7 @@ const AddInventory = () => {
                             <label class="form-check-label" for="Equipment">
                               Equipment
                             </label>
-                          </div>
+                          </div> */}
                         </div>
 
                         <div className="d-flex justify-content-center mt-2">
@@ -262,7 +263,7 @@ const AddInventory = () => {
                               MRP
                             </label>
                             <input
-                              type="text"
+                              type="number"
                               class="p-1 w-100 rounded"
                               placeholder="Item MRP"
                               name="item_mrp"

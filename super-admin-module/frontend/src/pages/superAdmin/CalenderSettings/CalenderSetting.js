@@ -374,10 +374,10 @@ const CalenderSetting = () => {
                                   {item.holiday_date.split("T")[0]}
                                 </td>
                                 <td className="table-small">
-                                  {item.holiday_start_time}
+                                  {item.holiday_start_time?.split(".")[0]}
                                 </td>
                                 <td className="table-small">
-                                  {item.holiday_end_time}
+                                  {item.holiday_end_time?.split(".")[0]}
                                 </td>
                                 <td className="table-small">{item.notes}</td>
 

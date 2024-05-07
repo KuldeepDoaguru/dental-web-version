@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../../components/Header";
 import Sider from "../../../components/Sider";
@@ -8,13 +8,59 @@ import Lab from "../../../components/Lab/Lab";
 import LabTest from "../../../components/Lab/LabTest";
 import LabTasks from "../../../components/Lab/LabTasks";
 import BranchSelector from "../../../components/BranchSelector";
+import axios from "axios";
+import cogoToast from "cogo-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTableRefresh } from "../../../redux/slices/UserSlicer";
 
 const LabSetting = () => {
+  const dispatch = useDispatch();
   const initialTab = localStorage.getItem("selectedTab") || "tab1";
   const [selectedTab, setSelectedTab] = useState(initialTab);
   const [showAddLab, setShowAddLab] = useState(false);
+  const [labList, setLabList] = useState([]);
+  const branch = useSelector((state) => state.branch);
+  console.log(`User Name: ${branch.name}`);
   const [showAddLabTest, setShowAddLabTest] = useState(false);
   const [showAddLabTask, setShowAddLabTask] = useState(false);
+  const [addLabField, setAddLabField] = useState({
+    branch: branch.name,
+    name: "",
+    type: "",
+    contact: "",
+    email: "",
+    address: "",
+    status: "",
+  });
+
+  const [addLabTestField, setAddLabTestField] = useState({
+    test_name: "",
+    test_code: "",
+    waiting_days: "",
+    default_lab: "",
+    test_date: "",
+    test_cost: "",
+  });
+
+  const handleAddLabChange = (event) => {
+    const { name, value } = event.target;
+    setAddLabField((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  console.log(addLabField);
+
+  const handleAddLabTestChange = (event) => {
+    const { name, value } = event.target;
+    setAddLabTestField((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  console.log(addLabTestField);
 
   const openAddLabPopup = (index, item) => {
     // setSelectedItem(item);
@@ -39,6 +85,54 @@ const LabSetting = () => {
     setShowAddLabTest(false);
     setShowAddLabTask(false);
   };
+
+  const insertLabClinic = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addLab",
+        addLabField
+      );
+      cogoToast.success("Lab Added Successfully");
+      dispatch(toggleTableRefresh());
+      closeUpdatePopup();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const insertLabTestClinic = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addLabTest",
+        addLabTestField
+      );
+      cogoToast.success("Lab Test Added Successfully");
+      dispatch(toggleTableRefresh());
+      closeUpdatePopup();
+    } catch (error) {
+      console.log(error);
+      cogoToast.error("Test Code Already Exist");
+    }
+  };
+
+  const getListLabDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`
+      );
+      setLabList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getListLabDetails();
+  }, []);
+
+  console.log(labList);
   return (
     <>
       <Container>
@@ -59,7 +153,7 @@ const LabSetting = () => {
                   <h2 className="text-center">Lab Settings</h2>
                   <div className="mid-box">
                     <div className="row mt-5 background">
-                      <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
+                      <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
                         {/* <input
                           type="text"
                           placeholder="search here"
@@ -89,14 +183,14 @@ const LabSetting = () => {
                           </button>
                         </div>
                       </div>
-                      <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
+                      {/* <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
                         <button
                           className="btn btn-info lab-actbtn"
                           onClick={() => openAddLabTaskPopup()}
                         >
                           Add Lab Task
                         </button>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   {/* nav-items-start */}
@@ -117,11 +211,11 @@ const LabSetting = () => {
                             Lab Test
                           </Nav.Link>
                         </Nav.Item>
-                        <Nav.Item>
+                        {/* <Nav.Item>
                           <Nav.Link eventKey="tab3" className="navlink">
                             Test Tasks
                           </Nav.Link>
-                        </Nav.Item>
+                        </Nav.Item> */}
                       </div>
                       <div>
                         <p className="fw-bold">Total Lab - 09</p>
@@ -144,10 +238,7 @@ const LabSetting = () => {
           <div className={`popup-container${showAddLab ? " active" : ""}`}>
             <div className="popup">
               <h4 className="text-center">Add Labs</h4>
-              <form
-                className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
-              >
+              <form className="d-flex flex-column" onSubmit={insertLabClinic}>
                 <div className="d-flex flex-column">
                   <div className="d-flex">
                     <div className="d-flex flex-column">
@@ -156,20 +247,24 @@ const LabSetting = () => {
                         type="text"
                         placeholder="Lab Name"
                         className="rounded p-2"
-                        // value={noticeData.linkURL}
-                        // onChange={(e) =>
-                        //   setNoticeData({
-                        //     ...noticeData,
-                        //     linkURL: e.target.value,
-                        //   })
-                        // }
+                        name="name"
+                        required
+                        value={addLabField.name}
+                        onChange={handleAddLabChange}
                       />
                     </div>
                     <div className="d-flex flex-column mx-2 w-100">
                       <label htmlFor="">Type</label>
-                      <select name="" id="" className="typeset w-100">
-                        <option value="">Internal</option>
-                        <option value="">External</option>
+                      <select
+                        className="typeset w-100"
+                        name="type"
+                        required
+                        value={addLabField.type}
+                        onChange={handleAddLabChange}
+                      >
+                        <option value="">-select-</option>
+                        <option value="internal">Internal</option>
+                        <option value="external">External</option>
                       </select>
                     </div>
                   </div>
@@ -179,15 +274,13 @@ const LabSetting = () => {
                       <label htmlFor="">Number</label>
                       <input
                         type="text"
+                        maxLength={10}
                         placeholder="contact number"
                         className="rounded p-2"
-                        // value={noticeData.linkURL}
-                        // onChange={(e) =>
-                        //   setNoticeData({
-                        //     ...noticeData,
-                        //     linkURL: e.target.value,
-                        //   })
-                        // }
+                        name="contact"
+                        required
+                        value={addLabField.contact}
+                        onChange={handleAddLabChange}
                       />
                     </div>
                     <div className="d-flex flex-column mx-2">
@@ -196,20 +289,39 @@ const LabSetting = () => {
                         type="email"
                         placeholder="add email"
                         className="rounded p-2"
-                        // value={noticeData.linkURL}
-                        // onChange={(e) =>
-                        //   setNoticeData({
-                        //     ...noticeData,
-                        //     linkURL: e.target.value,
-                        //   })
-                        // }
+                        name="email"
+                        required
+                        value={addLabField.email}
+                        onChange={handleAddLabChange}
                       />
                     </div>
                   </div>
                   <br />
                   <div className="d-flex flex-column">
                     <label htmlFor="">Address</label>
-                    <textarea name="" id="" cols="30" rows="3"></textarea>
+                    <textarea
+                      name="address"
+                      id=""
+                      cols="30"
+                      rows="3"
+                      value={addLabField.address}
+                      onChange={handleAddLabChange}
+                    ></textarea>
+                  </div>
+                  <br />
+                  <div className="d-flex flex-column w-100">
+                    <label htmlFor="">Status</label>
+                    <select
+                      className="typeset w-100"
+                      name="status"
+                      required
+                      value={addLabField.status}
+                      onChange={handleAddLabChange}
+                    >
+                      <option value="">-select-</option>
+                      <option value="pending">Pending</option>
+                      <option value="approved">Approve</option>
+                    </select>
                   </div>
                 </div>
 
@@ -237,82 +349,113 @@ const LabSetting = () => {
           {/* pop-up for adding lab */}
           <div className={`popup-container${showAddLabTest ? " active" : ""}`}>
             <div className="popup">
-              <h4 className="text-center">Add Labs Test</h4>
+              <h4 className="text-center">Add Lab Test</h4>
               <form
                 className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
+                onSubmit={insertLabTestClinic}
               >
-                <input
-                  type="text"
-                  placeholder="Lab Test Name"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
-                <br />
-                <input
-                  type="text"
-                  placeholder="Lab Test Code"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
-                <br />
-                <input
-                  type="text"
-                  placeholder="waiting days"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
-                <br />
-                <input
-                  type="text"
-                  placeholder="Default Labs"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
-                <br />
-                <input
-                  type="text"
-                  placeholder="Lab Test Cost"
-                  className="rounded p-2"
-                  // value={noticeData.linkURL}
-                  // onChange={(e) =>
-                  //   setNoticeData({
-                  //     ...noticeData,
-                  //     linkURL: e.target.value,
-                  //   })
-                  // }
-                />
-                <div className="d-flex justify-content-evenly">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                      <div className="d-flex flex-column w-100">
+                        <label htmlFor="">Test Name</label>
+                        <input
+                          type="text"
+                          placeholder="Lab Test Name"
+                          className="rounded p-2"
+                          name="test_name"
+                          required
+                          value={addLabTestField.test_name}
+                          onChange={handleAddLabTestChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                      <div className="d-flex flex-column w-100">
+                        <label htmlFor="">Test Code</label>
+                        <input
+                          type="text"
+                          placeholder="Lab Test Code"
+                          className="rounded p-2"
+                          name="test_code"
+                          required
+                          value={addLabTestField.test_code}
+                          onChange={handleAddLabTestChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                      <div className="d-flex flex-column w-100">
+                        <label htmlFor="">Waiting for Report Days</label>
+                        <input
+                          type="text"
+                          placeholder="waiting days"
+                          className="rounded p-2"
+                          name="waiting_days"
+                          required
+                          value={addLabTestField.waiting_days}
+                          onChange={handleAddLabTestChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                      <div className="d-flex flex-column w-100">
+                        <label htmlFor="">Lab Name</label>
+                        <select
+                          className="rounded p-2"
+                          name="default_lab"
+                          required
+                          value={addLabTestField.default_lab}
+                          onChange={handleAddLabTestChange}
+                        >
+                          <option value="">-select-</option>
+                          {labList?.map((item) => (
+                            <>
+                              <option value={item.lab_name}>
+                                {item.lab_name}
+                              </option>
+                            </>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                      <div className="d-flex flex-column w-100">
+                        <label htmlFor="">Test Date</label>
+                        <input
+                          type="date"
+                          placeholder="Lab Test Date"
+                          className="rounded p-2"
+                          name="test_date"
+                          required
+                          value={addLabTestField.test_date}
+                          onChange={handleAddLabTestChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                      <div className="d-flex flex-column w-100">
+                        <label htmlFor="">Test Cost</label>
+                        <input
+                          type="text"
+                          placeholder="Lab Test Cost"
+                          className="rounded p-2"
+                          name="test_cost"
+                          required
+                          value={addLabTestField.test_cost}
+                          onChange={handleAddLabTestChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="d-flex justify-content-center">
                   <button type="submit" className="btn btn-success mt-2">
                     Save
                   </button>
                   <button
                     type="button"
-                    className="btn btn-danger mt-2"
+                    className="btn btn-danger mt-2 ms-2"
                     onClick={closeUpdatePopup}
                   >
                     Cancel

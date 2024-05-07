@@ -91,6 +91,13 @@ const {
   getPatientBillUHID,
   getLeaveList,
   approveLeave,
+  getLabList,
+  updateLabDetails,
+  labDelete,
+  addLabTest,
+  getLabTest,
+  updateLabTestDetails,
+  labTestDelete,
 } = require("../controllers/superTreatController");
 // const multer = require("multer");
 
@@ -250,5 +257,12 @@ router.get("/getPrescriptionViaUhid/:branch/:uhid", getPrescriptionViaUhid);
 router.get("/get-patientBill-data/:patientUHID", getPatientBillUHID);
 router.get("/getLeaveList", getLeaveList);
 router.put("/approveLeave/:lid", approveLeave);
+router.get("/getLabList", getLabList);
+router.put("/updateLabDetails/:lid", updateLabDetails);
+router.delete("/labDelete/:lid", labDelete);
+router.post("/addLabTest", addLabTest);
+router.get("/getLabTest", getLabTest);
+router.put("/updateLabTestDetails/:ltid", updateLabTestDetails);
+router.delete("/labTestDelete/:ltid", labTestDelete);
 
 module.exports = router;

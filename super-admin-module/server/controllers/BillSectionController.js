@@ -515,7 +515,7 @@ const getPatientBillByBranchAndId = (req, res) => {
 const getAppointmentByBranchAndId = (req, res) => {
   try {
     const pid = req.params.pid;
-    const selectQuery = "SELECT * FROM appointments WHERE uhid = ?";
+    const selectQuery = "SELECT * FROM appointments WHERE uhid = ? ";
     db.query(selectQuery, [pid], (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });

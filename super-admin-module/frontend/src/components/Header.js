@@ -13,8 +13,8 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
+  // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  // console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
   // console.log(`User Name: ${branch.name}`);
   const [notifyList, setNotifyList] = useState([]);
@@ -67,12 +67,12 @@ const Header = () => {
     };
   }, []);
 
-  console.log(notifyList);
+  // console.log(notifyList);
 
   const filterForRead = notifyList?.filter((item) => {
     return item.status !== "read";
   });
-  console.log(filterForRead);
+  // console.log(filterForRead);
 
   return (
     <Wrapper>

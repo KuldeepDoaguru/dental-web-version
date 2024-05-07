@@ -77,6 +77,11 @@ const {
   getPatientBillUHID,
   getExaminationViaUhid,
   getPrescriptionViaUhid,
+  addLab,
+  getLabList,
+  updateLabDetails,
+  labDelete,
+  addLabTest, getLabTest, updateLabTestDetails, labTestDelete
 } = require("../controllers/notifyController");
 // const multer = require("multer");
 
@@ -214,5 +219,13 @@ router.get("/getTreatmentViaUhid/:branch/:uhid", getTreatmentViaUhid);
 router.get("/get-patientBill-data/:patientUHID", getPatientBillUHID);
 router.get("/getExaminationViaUhid/:branch/:uhid", getExaminationViaUhid);
 router.get("/getPrescriptionViaUhid/:branch/:uhid", getPrescriptionViaUhid);
+router.post("/addLab", addLab);
+router.get("/getLabList/:branch", getLabList);
+router.put("/updateLabDetails/:lid", updateLabDetails);
+router.delete("/labDelete/:lid", labDelete);
+router.post("/addLabTest", addLabTest);
+router.get("/getLabTest", getLabTest);
+router.put("/updateLabTestDetails/:ltid", updateLabTestDetails);
+router.delete("/labTestDelete/:ltid", labTestDelete);
 
 module.exports = router;

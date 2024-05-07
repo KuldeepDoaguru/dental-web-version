@@ -1,20 +1,115 @@
-import React, { useState } from "react";
+import axios from "axios";
+import cogoToast from "cogo-toast";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const AdminLab = () => {
+  const user = useSelector((state) => state.user.currentUser);
+  console.log(user);
   const [showPopup, setShowPopup] = useState(false);
+  const [branchList, setBranchList] = useState([]);
+  const { refreshTable } = useSelector((state) => state.user);
+  const [selectedItem, setSelectedItem] = useState();
+  const [labList, setLabList] = useState([]);
+  const [upLabField, setUpLabField] = useState({
+    branch: "",
+    name: "",
+    type: "",
+    contact: "",
+    email: "",
+    address: "",
+    status: "",
+  });
 
-  const openUpdatePopup = (index, item) => {
-    // setSelectedItem(item);
+  const handleAddLabChange = (event) => {
+    const { name, value } = event.target;
+    setUpLabField((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  console.log(upLabField);
+
+  const openUpdatePopup = (item) => {
+    setSelectedItem(item);
     console.log("open pop up");
     setShowPopup(true);
   };
+
+  console.log(selectedItem);
 
   const closeUpdatePopup = () => {
     setShowPopup(false);
   };
 
   console.log(showPopup);
+
+  const getListLabDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getLabList/${user.branch_name}`
+      );
+      setLabList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getListLabDetails();
+  }, [refreshTable]);
+
+  console.log(labList);
+
+  const updateLabData = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put(
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/updateLabDetails/${selectedItem}`,
+        upLabField
+      );
+      cogoToast.success("Lab details updated successfully");
+      getListLabDetails();
+      closeUpdatePopup();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteLabData = async (id) => {
+    try {
+      const isConfirmed = window.confirm("Are you sure you want to delete?");
+      if (isConfirmed) {
+        const response = await axios.delete(
+          `https://dentalguruadmin.doaguru.com/api/v1/admin/labDelete/${id}`
+        );
+        cogoToast.success("lab deleted successfully");
+        getListLabDetails();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getBranchList = async () => {
+    try {
+      const { data } = await axios.get(
+        "https://dentalguruadmin.doaguru.com//api/v1/admin/getBranch"
+      );
+      console.log(data);
+      setBranchList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getBranchList();
+  }, []);
+
+  console.log(branchList);
   return (
     <>
       <Container>
@@ -31,86 +126,33 @@ const AdminLab = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className="table-row">
-                <td>Inhouse Dental Lab Works</td>
-                <td>Internal</td>
-                <td>+91-999965651</td>
-                <td>maheshkuldeep@gmail.com</td>
-                <td>Jabalpur</td>
-                <td>
-                  <button
-                    className="btn btn-warning"
-                    onClick={() => openUpdatePopup()}
-                  >
-                    Edit
-                  </button>
-                  <button className="btn btn-danger mx-1">Delete</button>
-                </td>
-              </tr>
-              <tr className="table-row">
-                <td>Inhouse Dental Lab Works</td>
-                <td>Internal</td>
-                <td>+91-999965651</td>
-                <td>maheshkuldeep@gmail.com</td>
-                <td>Jabalpur</td>
-                <td>
-                  <button
-                    className="btn btn-warning"
-                    onClick={() => openUpdatePopup()}
-                  >
-                    Edit
-                  </button>
-                  <button className="btn btn-danger mx-1">Delete</button>
-                </td>
-              </tr>
-              <tr className="table-row">
-                <td>Inhouse Dental Lab Works</td>
-                <td>Internal</td>
-                <td>+91-999965651</td>
-                <td>maheshkuldeep@gmail.com</td>
-                <td>Jabalpur</td>
-                <td>
-                  <button
-                    className="btn btn-warning"
-                    onClick={() => openUpdatePopup()}
-                  >
-                    Edit
-                  </button>
-                  <button className="btn btn-danger mx-1">Delete</button>
-                </td>
-              </tr>
-              <tr className="table-row">
-                <td>Inhouse Dental Lab Works</td>
-                <td>Internal</td>
-                <td>+91-999965651</td>
-                <td>maheshkuldeep@gmail.com</td>
-                <td>Jabalpur</td>
-                <td>
-                  <button
-                    className="btn btn-warning"
-                    onClick={() => openUpdatePopup()}
-                  >
-                    Edit
-                  </button>
-                  <button className="btn btn-danger mx-1">Delete</button>
-                </td>
-              </tr>
-              <tr className="table-row">
-                <td>Inhouse Dental Lab Works</td>
-                <td>Internal</td>
-                <td>+91-999965651</td>
-                <td>maheshkuldeep@gmail.com</td>
-                <td>Jabalpur</td>
-                <td>
-                  <button
-                    className="btn btn-warning"
-                    onClick={() => openUpdatePopup()}
-                  >
-                    Edit
-                  </button>
-                  <button className="btn btn-danger mx-1">Delete</button>
-                </td>
-              </tr>
+              {labList?.map((item) => (
+                <>
+                  <tr className="table-row">
+                    <td>{item.branch_name}</td>
+                    <td>{item.lab_name}</td>
+                    <td>{item.lab_type}</td>
+                    <td>{item.lab_contact}</td>
+                    <td>{item.lab_email}</td>
+                    <td>{item.address}</td>
+                    <td>{item.status}</td>
+                    <td>
+                      <button
+                        className="btn btn-warning"
+                        onClick={() => openUpdatePopup(item.lab_id)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-danger mx-1"
+                        onClick={() => deleteLabData(item.lab_id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                </>
+              ))}
             </tbody>
           </table>
 
@@ -118,32 +160,58 @@ const AdminLab = () => {
           <div className={`popup-container${showPopup ? " active" : ""}`}>
             <div className="popup">
               <h2>Update Lab Details</h2>
-              <form
-                className="d-flex flex-column"
-                // onSubmit={handleNoticeSubmit}
-              >
+              <form className="d-flex flex-column" onSubmit={updateLabData}>
                 <div className="d-flex flex-column">
-                  <div className="d-flex">
+                  <div className="d-flex flex-column">
+                    <label htmlFor="">Select Branch</label>
+                    <select
+                      className="rounded p-2"
+                      name="branch"
+                      value={upLabField.branch}
+                      onChange={handleAddLabChange}
+                    >
+                      <option value="">-select-</option>
+                      {branchList?.map((item) => (
+                        <>
+                          <option value={item.branch_name}>
+                            {item.branch_name}
+                          </option>
+                        </>
+                      ))}
+                    </select>
+
+                    {/* <input
+                      type="text"
+                      placeholder="Lab Name"
+                      className="rounded p-2"
+                      name="name"
+                      value={upLabField.name}
+                      onChange={handleAddLabChange}
+                    /> */}
+                  </div>
+                  <div className="d-flex mt-2">
                     <div className="d-flex flex-column">
                       <label htmlFor="">Lab Name</label>
                       <input
                         type="text"
                         placeholder="Lab Name"
                         className="rounded p-2"
-                        // value={noticeData.linkURL}
-                        // onChange={(e) =>
-                        //   setNoticeData({
-                        //     ...noticeData,
-                        //     linkURL: e.target.value,
-                        //   })
-                        // }
+                        name="name"
+                        value={upLabField.name}
+                        onChange={handleAddLabChange}
                       />
                     </div>
                     <div className="d-flex flex-column mx-2 w-100">
                       <label htmlFor="">Type</label>
-                      <select name="" id="" className="typeset w-100">
-                        <option value="">Internal</option>
-                        <option value="">External</option>
+                      <select
+                        className="typeset w-100"
+                        name="type"
+                        value={upLabField.type}
+                        onChange={handleAddLabChange}
+                      >
+                        <option value="">-select-</option>
+                        <option value="internal">Internal</option>
+                        <option value="external">External</option>
                       </select>
                     </div>
                   </div>
@@ -155,13 +223,9 @@ const AdminLab = () => {
                         type="text"
                         placeholder="contact number"
                         className="rounded p-2"
-                        // value={noticeData.linkURL}
-                        // onChange={(e) =>
-                        //   setNoticeData({
-                        //     ...noticeData,
-                        //     linkURL: e.target.value,
-                        //   })
-                        // }
+                        name="contact"
+                        value={upLabField.contact}
+                        onChange={handleAddLabChange}
                       />
                     </div>
                     <div className="d-flex flex-column mx-2">
@@ -170,20 +234,37 @@ const AdminLab = () => {
                         type="email"
                         placeholder="add email"
                         className="rounded p-2"
-                        // value={noticeData.linkURL}
-                        // onChange={(e) =>
-                        //   setNoticeData({
-                        //     ...noticeData,
-                        //     linkURL: e.target.value,
-                        //   })
-                        // }
+                        name="email"
+                        value={upLabField.email}
+                        onChange={handleAddLabChange}
                       />
                     </div>
                   </div>
                   <br />
                   <div className="d-flex flex-column">
                     <label htmlFor="">Address</label>
-                    <textarea name="" id="" cols="30" rows="3"></textarea>
+                    <textarea
+                      name="address"
+                      id=""
+                      cols="30"
+                      rows="3"
+                      value={upLabField.address}
+                      onChange={handleAddLabChange}
+                    ></textarea>
+                  </div>
+                  <br />
+                  <div className="d-flex flex-column w-100">
+                    <label htmlFor="">Status</label>
+                    <select
+                      className="typeset w-100"
+                      name="status"
+                      value={upLabField.status}
+                      onChange={handleAddLabChange}
+                    >
+                      <option value="">-select-</option>
+                      <option value="pending">Pending</option>
+                      <option value="approved">Approve</option>
+                    </select>
                   </div>
                 </div>
 

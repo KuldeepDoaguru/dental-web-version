@@ -22,6 +22,8 @@ const {
   getFilteredTreat,
   getDentalDataByTpid,
   getTreatPackageViaTpidUhid,
+  insertLab,
+  getLabDetails,
 } = require("../controller/authControl.js");
 const {
   getAppointmentsWithPatientDetails,
@@ -357,4 +359,8 @@ router.put(
   "/updateAppointmentStatusAfterTreat/:appoint_id",
   updateAppointmentStatusAfterTreat
 );
+
+router.post("/insertLab", insertLab);
+router.get("/lab-details", getLabDetails);
+
 module.exports = { authRoutes: router };

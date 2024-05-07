@@ -14,12 +14,15 @@ const NewTreatPrescription = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  console.log(user);
   const branch = user.currentUser.branch_name;
+  const employeeName = user.currentUser.employee_name;
   console.log(branch);
   const [getPatientData, setGetPatientData] = useState([]);
   const [getExaminData, setGetExaminData] = useState([]);
   const [getTreatData, setGetTreatData] = useState([]);
   const [treatments, setTreatments] = useState([]);
+  const [getLabData, setGetLabData] = useState([]);
   const [otherMed, setOtherMed] = useState("");
   const [prescriptionData, setPrescriptionData] = useState({
     branch_name: branch,
@@ -62,10 +65,12 @@ const NewTreatPrescription = () => {
         `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
       );
       setGetPatientData(data.result);
+      console.log(data.result);
     } catch (error) {
       console.log(error);
     }
   };
+  console.log(getPatientData);
 
   useEffect(() => {
     getPatientDetail();
@@ -86,9 +91,24 @@ const NewTreatPrescription = () => {
     }
   };
 
+  const getLabAllData = async () => {
+    try {
+      const res = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-details/${tpid}`
+      );
+      setGetLabData(res.data.lab_details);
+      console.log(res.data.lab_details);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getExaminDetail();
+    getLabAllData();
   }, []);
+
+  console.log(getLabData);
 
   console.log(getExaminData);
   // Get Patient Examintion Details END
@@ -140,7 +160,10 @@ const NewTreatPrescription = () => {
     patient_uhid: getPatientData[0]?.uhid,
     desease: treatments[0]?.disease,
     treatment: treatment,
-    medicine_name: prescriptionData.medicine_name,
+    medicine_name:
+      prescriptionData.medicine_name === "other"
+        ? otherMed
+        : prescriptionData.medicine_name,
     dosage: prescriptionData.dosage,
     frequency: prescriptionData.frequency,
     duration: prescriptionData.duration,
@@ -449,6 +472,33 @@ const NewTreatPrescription = () => {
           </div>
         </div>
 
+        <div className="container">
+          <legend className="">Patient Lab Test</legend>
+          <div className="table-responsive rounded">
+            <table
+              className="table table-bordered table-striped border"
+              style={{ overflowX: "scroll" }}
+            >
+              <thead>
+                <tr>
+                  <th>Test Name</th>
+                  <th>Test</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getLabData?.map((item) => (
+                  <>
+                    <tr>
+                      <td>{item.lab_name}</td>
+                      <td>{item.test}</td>
+                    </tr>
+                  </>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
         {/* Patient Treatment Details */}
         <div className="container">
           <legend className="">Patient Treatment Details</legend>
@@ -710,6 +760,7 @@ const NewTreatPrescription = () => {
             </table>
           </div>
         </div>
+
         <div className="text-center mb-3">
           <button
             className="btn btn-info fs-5 text-light"

@@ -44,7 +44,7 @@ const AppointTable = () => {
     }
   };
 
-  console.log(appointments);
+  // console.log(appointments);
 
   const filteredData = appointments?.filter((item) => {
     return item.appointment_dateTime.split("T")[0] === selectedDate;

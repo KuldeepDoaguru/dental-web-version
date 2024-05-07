@@ -593,6 +593,72 @@ const getTreatPackageViaTpidUhid = (req, res) => {
   }
 };
 
+const insertLab = (req, res) => {
+  try {
+    const {
+      tpid,
+      patient_uhid,
+      patient_name,
+      age,
+      gender,
+      branch_name,
+      assigned_doctor_name,
+      lab_name,
+      test,
+    } = req.body;
+
+    // Insert data into the MySQL table
+    const sql = `INSERT INTO patient_lab_details (tpid, patient_uhid, patient_name, age, gender, branch_name, assigned_doctor_name, lab_name, test) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const values = [
+      tpid,
+      patient_uhid,
+      patient_name,
+      age,
+      gender,
+      branch_name,
+      assigned_doctor_name,
+      lab_name,
+      test,
+    ];
+
+    db.query(sql, values, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      } else {
+        res.status(201).json({
+          success: true,
+          message: "Data inserted successfully",
+          result,
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error inserting data:", error);
+    res.status(500).json({ error: "Failed to insert data into database" });
+  }
+};
+
+const getLabDetails = (req, res) => {
+  try {
+    // Fetch data from the MySQL table
+    const sql = `SELECT * FROM patient_lab_details`;
+
+    db.query(sql, (err, results) => {
+      if (err) {
+        res.status(500).json({ success: false, message: err.message });
+      } else {
+        res.status(200).json({ success: true, lab_details: results });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching lab details:", error);
+    res
+      .status(500)
+      .json({ error: "Failed to fetch lab details from database" });
+  }
+};
+
 module.exports = {
   dentalPediatric,
   updateDentalPediatric,
@@ -613,4 +679,6 @@ module.exports = {
   updateTreatSittingStatus,
   getDentalDataByTpid,
   getTreatPackageViaTpidUhid,
+  insertLab,
+  getLabDetails,
 };

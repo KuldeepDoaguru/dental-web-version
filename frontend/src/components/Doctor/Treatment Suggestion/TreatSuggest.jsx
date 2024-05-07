@@ -13,6 +13,7 @@ const TreatSuggest = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
+  const employeeName = user.currentUser.employee_name;
   console.log(branch);
   const { id, tpid } = useParams();
   console.log(id, tpid);
@@ -224,6 +225,73 @@ const TreatSuggest = () => {
   const handleCollect = () => {
     navigate(`/SecurityAmount/${id}/${tpid}`);
   };
+
+  const [labData, setLabData] = useState({
+    tpid: tpid,
+    patient_uhid: "",
+    patient_name: "",
+    age: "",
+    gender: "",
+    branch_name: branch,
+    assigned_doctor_name: employeeName,
+    lab_name: "",
+    test: "",
+  });
+
+  console.log(labData);
+
+  const handleLabChange = (e) => {
+    const { name, value } = e.target;
+    setLabData({ ...labData, [name]: value });
+  };
+
+  const formsData = {
+    tpid: tpid,
+    patient_uhid: getPatientData[0]?.uhid,
+    patient_name: getPatientData[0]?.patient_name,
+    age: getPatientData[0]?.age,
+    gender: getPatientData[0]?.gender,
+    branch_name: branch,
+    assigned_doctor_name: employeeName,
+    lab_name: labData.lab_name,
+    test: labData.test,
+  };
+
+  console.log(formsData);
+
+  const handleLabSubmit = async (e) => {
+    e.preventDefault();
+    // const formsData = {
+    //   ...labData,
+    // };
+
+    try {
+      const response = await axios.post(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/insertLab`,
+        formsData
+      );
+      setLabData({
+        ...labData,
+        lab_name: "",
+        test: "",
+      });
+      alert("Successfully added!");
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error inserting data:", error);
+      // Handle error, maybe show an error message to the user
+    }
+  };
+
+  const bloodTests = ["M C V", "M C H", "M C H C"];
+  const xRayTests = [
+    "Periapical X-rays",
+    "Panoramic X-rays",
+    "Occlusal X-rays",
+    "Cone Beam Computed Tomography (CBCT)",
+    "Bitewing X-rays",
+  ];
+  const oralTests = ["Allergy Test", "Saliva Test", "Sensitivity"];
 
   return (
     <>
@@ -484,6 +552,81 @@ const TreatSuggest = () => {
         </div>
         <div className="container p-0">
           <SuggestedtreatmentList tpid={tpid} getPatientData={getPatientData} />
+        </div>
+
+        <div className="container">
+          <div className="row shadow-sm p-3 mb-5 bg-body rounded">
+            <div className="text-start">
+              <h3>Suggested Lab Test</h3>
+            </div>
+            <div>
+              <form onSubmit={handleLabSubmit}>
+                <div className="container">
+                  <div className="row">
+                    <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-12 col-12">
+                      <div className="text-start">
+                        <label className="label">Test Name</label>
+                        <select
+                          name="lab_name"
+                          onChange={handleLabChange}
+                          value={labData.lab_name}
+                          className="form-select text-start"
+                        >
+                          <option value="">---Select Test Name ---</option>
+                          <option value="blood">Blood</option>
+                          <option value="x-ray">X-Ray</option>
+                          <option value="oral">Oral</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-12 col-12">
+                      <div className="text-start">
+                        <label className="label">Test</label>
+                        <div className="d-flex justify-content-center align-item-center">
+                          <select
+                            name="test"
+                            onChange={handleLabChange}
+                            value={labData.test}
+                            className="form-select text-start"
+                          >
+                            <option value="">---Select Test---</option>
+                            {labData.lab_name === "blood" &&
+                              bloodTests.map((test) => (
+                                <option key={test} value={test}>
+                                  {test}
+                                </option>
+                              ))}
+                            {labData.lab_name === "x-ray" &&
+                              xRayTests.map((test) => (
+                                <option key={test} value={test}>
+                                  {test}
+                                </option>
+                              ))}
+                            {labData.lab_name === "oral" &&
+                              oralTests.map((test) => (
+                                <option key={test} value={test}>
+                                  {test}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+                      <div className="h-100 d-flex justify-content-center align-items-center">
+                        <button
+                          type="submit"
+                          className="btn btn-info text-light mt-5"
+                        >
+                          Submit Test
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
 
         <div className="container">

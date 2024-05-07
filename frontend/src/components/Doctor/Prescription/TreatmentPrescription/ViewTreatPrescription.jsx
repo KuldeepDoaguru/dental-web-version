@@ -19,6 +19,7 @@ const ViewTreatPrescription = () => {
   const [getTreatMedicine, setGetTreatMedicine] = useState([]);
   const [getTreatSug, setGetTreatSug] = useState([]);
   const [getBranch, setGetBranch] = useState([]);
+  const [getLabData, setGetLabData] = useState([]);
 
   const getBranchDetails = async () => {
     try {
@@ -44,9 +45,22 @@ const ViewTreatPrescription = () => {
     }
   };
 
+  const getLabAllData = async () => {
+    try {
+      const res = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-details/${tpid}`
+      );
+      setGetLabData(res.data.lab_details);
+      console.log(res.data.lab_details);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getPatientDetail();
     getBranchDetails();
+    getLabAllData();
   }, []);
   // Get Patient Details END
 
@@ -233,6 +247,27 @@ const ViewTreatPrescription = () => {
                           <td>{item.chief_complain}</td>
                           <td>{item.on_examination}</td>
                           <td>{item.advice}</td>
+                        </tr>
+                      </React.Fragment>
+                    </tbody>
+                  ))}
+                </table>
+              </div>
+              <div className="diagnosis">
+                <p className="text-start fs-4 fw-bold">Lab Test</p>
+                <table className="table table-bordered border">
+                  <thead>
+                    <tr>
+                      <th>Test Name</th>
+                      <th>Test</th>
+                    </tr>
+                  </thead>
+                  {getLabData?.map((item, index) => (
+                    <tbody>
+                      <React.Fragment>
+                        <tr>
+                          <td>{item.lab_name}</td>
+                          <td>{item.test}</td>
                         </tr>
                       </React.Fragment>
                     </tbody>

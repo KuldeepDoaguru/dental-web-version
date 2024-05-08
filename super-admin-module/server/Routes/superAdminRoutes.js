@@ -98,6 +98,7 @@ const {
   getLabTest,
   updateLabTestDetails,
   labTestDelete,
+  getPatientLabTest,
 } = require("../controllers/superTreatController");
 // const multer = require("multer");
 
@@ -264,5 +265,6 @@ router.post("/addLabTest", addLabTest);
 router.get("/getLabTest", getLabTest);
 router.put("/updateLabTestDetails/:ltid", updateLabTestDetails);
 router.delete("/labTestDelete/:ltid", labTestDelete);
+router.get("/getPatientLabTest", getPatientLabTest);
 
 module.exports = router;

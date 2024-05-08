@@ -115,7 +115,7 @@ const LabTest = () => {
                 <th>Lab Test Code</th>
                 <th>Total Waiting Days for Report</th>
                 <th>Default Lab</th>
-                <th>Date</th>
+
                 <th>Cost</th>
                 <th>Actions</th>
               </tr>
@@ -128,7 +128,7 @@ const LabTest = () => {
                     <td>{item.test_code}</td>
                     <td>{item.waiting_days}</td>
                     <td>{item.default_lab}</td>
-                    <td>{item.test_date?.split("T")[0]}</td>
+
                     <td>{item.test_cost}</td>
                     <td>
                       <button

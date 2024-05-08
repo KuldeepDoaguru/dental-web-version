@@ -218,7 +218,7 @@ const LabSetting = () => {
                         </Nav.Item> */}
                       </div>
                       <div>
-                        <p className="fw-bold">Total Lab - 09</p>
+                        {/* <p className="fw-bold">Total Lab - 09</p> */}
                       </div>
                     </Nav>
                     <div className="flex-grow-1 p-3 mainback">
@@ -419,7 +419,7 @@ const LabSetting = () => {
                         </select>
                       </div>
                     </div>
-                    <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                    {/* <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                       <div className="d-flex flex-column w-100">
                         <label htmlFor="">Test Date</label>
                         <input
@@ -432,7 +432,7 @@ const LabSetting = () => {
                           onChange={handleAddLabTestChange}
                         />
                       </div>
-                    </div>
+                    </div> */}
                     <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                       <div className="d-flex flex-column w-100">
                         <label htmlFor="">Test Cost</label>

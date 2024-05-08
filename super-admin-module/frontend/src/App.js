@@ -79,6 +79,12 @@ import PatientProfile from "./pages/superAdmin/patientDetails/PatientProfile";
 import EmpComplaintsReport from "./pages/superAdmin/AllReport/EmpComplaintsReport";
 import PasswordReset from "./pages/PasswordReset";
 import StaffLeave from "./pages/superAdmin/StaffLeave";
+import LabPatientReport from "./pages/superAdmin/AllReport/LabPatientReport";
+import OralTest from "./pages/superAdmin/AllReport/LabReport/OralTest";
+import BloodTest from "./pages/superAdmin/AllReport/LabReport/BloodTest";
+import RadiologyTest from "./pages/superAdmin/AllReport/LabReport/RadiologyTest";
+import PendingTest from "./pages/superAdmin/AllReport/LabReport/PendingTest";
+import Compleated from "./pages/superAdmin/AllReport/LabReport/Compleated";
 
 const App = () => {
   // const storedUserData = localStorage.getItem("userData");
@@ -274,6 +280,36 @@ const App = () => {
           path="/leave-management"
           element={user.id === null ? <UniversalLogin /> : <StaffLeave />}
         />
+        <Route
+          path="/lab-patient-report"
+          element={user.id === null ? <UniversalLogin /> : <LabPatientReport />}
+        />
+
+        <Route
+          path="/OralTest"
+          element={user.id === null ? <UniversalLogin /> : <OralTest />}
+        />
+
+        <Route
+          path="/BloodTest"
+          element={user.id === null ? <UniversalLogin /> : <BloodTest />}
+        />
+
+        <Route
+          path="/RadiologyTest"
+          element={user.id === null ? <UniversalLogin /> : <RadiologyTest />}
+        />
+
+        <Route
+          path="/PendingTest"
+          element={user.id === null ? <UniversalLogin /> : <PendingTest />}
+        />
+
+        <Route
+          path="/Compleated"
+          element={user.id === null ? <UniversalLogin /> : <Compleated />}
+        />
+
         <Route
           path="*"
           element={user.id === null ? <UniversalLogin /> : <ErrorPage />}

@@ -41,6 +41,12 @@ import AdminEmployeeProfile from "./pages/admin/AdminEmployeeProfile";
 import AdminNotification from "./pages/admin/AdminNotification";
 import AttendanceLeave from "./pages/admin/AttendanceLeave";
 import StaffLeave from "./pages/admin/StaffLeave";
+import LabPatientReport from "./components/LabReports/LabPatientReport";
+import OralTest from "./components/LabReports/OralTest";
+import BloodTest from "./components/LabReports/BloodTest";
+import RadiologyTest from "./components/LabReports/RadiologyTest";
+import PendingTest from "./components/LabReports/PendingTest";
+import Compleated from "./components/LabReports/Compleated";
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -345,6 +351,46 @@ const App = () => {
           path="/leave-management"
           element={
             user.currentUser === null ? <UniversalLogin /> : <StaffLeave />
+          }
+        />
+        <Route
+          path="/lab-patient-report"
+          element={
+            user.currentUser === null ? (
+              <UniversalLogin />
+            ) : (
+              <LabPatientReport />
+            )
+          }
+        />
+        <Route
+          path="/OralTest"
+          element={
+            user.currentUser === null ? <UniversalLogin /> : <OralTest />
+          }
+        />
+        <Route
+          path="/BloodTest"
+          element={
+            user.currentUser === null ? <UniversalLogin /> : <BloodTest />
+          }
+        />
+        <Route
+          path="/RadiologyTest"
+          element={
+            user.currentUser === null ? <UniversalLogin /> : <RadiologyTest />
+          }
+        />
+        <Route
+          path="/PendingTest"
+          element={
+            user.currentUser === null ? <UniversalLogin /> : <PendingTest />
+          }
+        />
+        <Route
+          path="/Compleated"
+          element={
+            user.currentUser === null ? <UniversalLogin /> : <Compleated />
           }
         />
         <Route

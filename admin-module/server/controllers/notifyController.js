@@ -787,7 +787,9 @@ const addLabTest = (req, res) => {
     const selectQuery = "SELECT * FROM lab_tests WHERE 	test_code = ?";
     db.query(selectQuery, test_code, (err, result) => {
       if (err) {
-        return res.status(400).json({ success: false, message: "test code already exist" });
+        return res
+          .status(400)
+          .json({ success: false, message: "test code already exist" });
       }
       if (result && result.length <= 0) {
         const insertQuery =
@@ -929,6 +931,40 @@ const labTestDelete = (req, res) => {
   }
 };
 
+const getPatientLabTest = (req, res) => {
+  try {
+    const selectQuery =
+      "SELECT * FROM patient_lab_details LEFT JOIN patient_details ON patient_details.uhid = patient_lab_details.patient_uhid";
+    db.query(selectQuery, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+        return;
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const getPatientLabTestCompleted = (req, res) => {
+  try {
+    const selectQuery = `
+      SELECT * FROM patient_lab_test_details JOIN patient_lab_details ON patient_lab_details.testid = patient_lab_test_details.testid LEFT JOIN patient_details ON patient_details.uhid = patient_lab_details.patient_uhid
+    `;
+
+    db.query(selectQuery, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+        return;
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getNotifyList,
   addNotifyCommunication,
@@ -959,4 +995,6 @@ module.exports = {
   getLabTest,
   updateLabTestDetails,
   labTestDelete,
+  getPatientLabTest,
+  getPatientLabTestCompleted,
 };

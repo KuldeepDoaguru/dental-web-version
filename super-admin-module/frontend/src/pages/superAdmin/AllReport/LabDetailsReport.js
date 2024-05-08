@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -6,21 +6,38 @@ import Sider from "../../../components/Sider";
 import Header from "../../../components/Header";
 import BranchSelector from "../../../components/BranchSelector";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 
 const LabDetailsReport = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [labList, setLabList] = useState([]);
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
   console.log(`User Name: ${branch.name}`);
 
-  
-
   const goBack = () => {
     window.history.go(-1);
   };
+
+  const getListLabDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`
+      );
+      setLabList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(labList);
+
+  useEffect(() => {
+    getListLabDetails();
+  }, []);
   return (
     <>
       <Container>
@@ -70,41 +87,17 @@ const LabDetailsReport = () => {
                               </tr>
                             </thead>
                             <tbody>
-                              <tr className="table-row">
-                                <td>Inhouse Dental Lab Works</td>
-                                <td>Internal</td>
-                                <td>+91-999965651</td>
-                                <td>maheshkuldeep@gmail.com</td>
-                                <td>Madan Mahal</td>
-                              </tr>
-                              <tr className="table-row">
-                                <td>Inhouse Dental Lab Works</td>
-                                <td>Internal</td>
-                                <td>+91-999965651</td>
-                                <td>maheshkuldeep@gmail.com</td>
-                                <td>Madan Mahal</td>
-                              </tr>
-                              <tr className="table-row">
-                                <td>Inhouse Dental Lab Works</td>
-                                <td>Internal</td>
-                                <td>+91-999965651</td>
-                                <td>maheshkuldeep@gmail.com</td>
-                                <td>Madan Mahal</td>
-                              </tr>
-                              <tr className="table-row">
-                                <td>Inhouse Dental Lab Works</td>
-                                <td>Internal</td>
-                                <td>+91-999965651</td>
-                                <td>maheshkuldeep@gmail.com</td>
-                                <td>Madan Mahal</td>
-                              </tr>
-                              <tr className="table-row">
-                                <td>Inhouse Dental Lab Works</td>
-                                <td>Internal</td>
-                                <td>+91-999965651</td>
-                                <td>maheshkuldeep@gmail.com</td>
-                                <td>Madan Mahal</td>
-                              </tr>
+                              {labList?.map((item) => (
+                                <>
+                                  <tr className="table-row">
+                                    <td>Inhouse Dental Lab Works</td>
+                                    <td>Internal</td>
+                                    <td>+91-999965651</td>
+                                    <td>maheshkuldeep@gmail.com</td>
+                                    <td>Madan Mahal</td>
+                                  </tr>
+                                </>
+                              ))}
                             </tbody>
                           </table>
                         </div>

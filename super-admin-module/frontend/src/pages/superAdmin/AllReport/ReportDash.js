@@ -120,8 +120,8 @@ const ReportDash = () => {
                                   </div>
                                 </div>
                               </Link>
-                            </div>
-                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                            </div> */}
+                            {/* <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/lab-test-report">
                                 <div className="card">
                                   <div class="card-body">
@@ -131,8 +131,19 @@ const ReportDash = () => {
                                   </div>
                                 </div>
                               </Link>
-                            </div>
+                            </div> */}
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                              <Link to="/lab-patient-report">
+                                <div className="card">
+                                  <div class="card-body">
+                                    <h4 className=" d-flex justify-content-center text-light align-items-center">
+                                      Lab Report
+                                    </h4>
+                                  </div>
+                                </div>
+                              </Link>
+                            </div>
+                            {/* <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/lab-task-report">
                                 <div className="card">
                                   <div class="card-body">

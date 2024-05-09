@@ -17,7 +17,10 @@ const TreatSuggest = () => {
   console.log(branch);
   const { id, tpid } = useParams();
   console.log(id, tpid);
+  const [labList, setLabList] = useState([]);
+  const [labTestList, setLabTestList] = useState([]);
   const [treatments, setTreatments] = useState([]);
+  const [getLabData, setGetLabData] = useState([]);
   const [getPatientData, setGetPatientData] = useState([]);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [procedureTreat, setProcedureTreat] = useState([]);
@@ -72,7 +75,12 @@ const TreatSuggest = () => {
   };
   useEffect(() => {
     getData();
+    getLabList();
+    getLabTestList();
   }, []);
+
+  console.log(labList);
+  console.log(labTestList);
 
   const diseases = new Set(
     data.flatMap((entry) =>
@@ -140,8 +148,21 @@ const TreatSuggest = () => {
     }
   };
 
+  const getLabAllData = async () => {
+    try {
+      const res = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-details/${tpid}`
+      );
+      setGetLabData(res.data.lab_details);
+      console.log(res.data.lab_details);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getPatientDetail();
+    getLabAllData();
   }, []);
 
   const timelineForTreatSuggest = async () => {
@@ -230,8 +251,6 @@ const TreatSuggest = () => {
     tpid: tpid,
     patient_uhid: "",
     patient_name: "",
-    age: "",
-    gender: "",
     branch_name: branch,
     assigned_doctor_name: employeeName,
     lab_name: "",
@@ -249,8 +268,6 @@ const TreatSuggest = () => {
     tpid: tpid,
     patient_uhid: getPatientData[0]?.uhid,
     patient_name: getPatientData[0]?.patient_name,
-    age: getPatientData[0]?.age,
-    gender: getPatientData[0]?.gender,
     branch_name: branch,
     assigned_doctor_name: employeeName,
     lab_name: labData.lab_name,
@@ -261,9 +278,6 @@ const TreatSuggest = () => {
 
   const handleLabSubmit = async (e) => {
     e.preventDefault();
-    // const formsData = {
-    //   ...labData,
-    // };
 
     try {
       const response = await axios.post(
@@ -283,6 +297,28 @@ const TreatSuggest = () => {
     }
   };
 
+  const getLabList = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getLab`
+      );
+      setLabList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getLabTestList = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getLabTest`
+      );
+      setLabTestList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const bloodTests = ["M C V", "M C H", "M C H C"];
   const xRayTests = [
     "Periapical X-rays",
@@ -292,7 +328,11 @@ const TreatSuggest = () => {
     "Bitewing X-rays",
   ];
   const oralTests = ["Allergy Test", "Saliva Test", "Sensitivity"];
-
+  console.log(labTestList);
+  const filter = labTestList?.filter((item) => {
+    return item.test_name === labData.lab_name;
+  });
+  console.log(filter);
   return (
     <>
       <Wrapper>
@@ -573,9 +613,13 @@ const TreatSuggest = () => {
                           className="form-select text-start"
                         >
                           <option value="">---Select Test Name ---</option>
-                          <option value="blood">Blood</option>
-                          <option value="x-ray">X-Ray</option>
-                          <option value="oral">Oral</option>
+                          {labList?.map((item) => (
+                            <>
+                              <option value={item.lab_name}>
+                                {item.lab_name}
+                              </option>
+                            </>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -589,23 +633,13 @@ const TreatSuggest = () => {
                             value={labData.test}
                             className="form-select text-start"
                           >
-                            <option value="">---Select Test---</option>
-                            {labData.lab_name === "blood" &&
-                              bloodTests.map((test) => (
-                                <option key={test} value={test}>
-                                  {test}
-                                </option>
-                              ))}
-                            {labData.lab_name === "x-ray" &&
-                              xRayTests.map((test) => (
-                                <option key={test} value={test}>
-                                  {test}
-                                </option>
-                              ))}
-                            {labData.lab_name === "oral" &&
-                              oralTests.map((test) => (
-                                <option key={test} value={test}>
-                                  {test}
+                            {labTestList
+                              ?.filter(
+                                (item) => item.default_lab === labData.lab_name
+                              )
+                              .map((test, index) => (
+                                <option key={index} value={test.test_name}>
+                                  {test.test_name}
                                 </option>
                               ))}
                           </select>
@@ -626,6 +660,32 @@ const TreatSuggest = () => {
                 </div>
               </form>
             </div>
+          </div>
+        </div>
+        <div className="container">
+          <legend className="">Patient Lab Test</legend>
+          <div className="table-responsive rounded">
+            <table
+              className="table table-bordered table-striped border"
+              style={{ overflowX: "scroll" }}
+            >
+              <thead>
+                <tr>
+                  <th>Test Name</th>
+                  <th>Test</th>
+                </tr>
+              </thead>
+              <tbody>
+                {getLabData?.map((item) => (
+                  <>
+                    <tr>
+                      <td>{item.lab_name}</td>
+                      <td>{item.test}</td>
+                    </tr>
+                  </>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 

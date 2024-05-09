@@ -44,7 +44,7 @@ const HeadBar = () => {
               id="navbarSupportedContent"
             >
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li className="nav-item dropdown" id="userid">
+                <li className="nav-item dropdown mx-3" id="userid">
                   <a
                     className="nav-link dropdown-toggle"
                     href="/"

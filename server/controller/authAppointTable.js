@@ -275,15 +275,48 @@ const getAllSecurityAmounts = (req, res) => {
   });
 };
 
+// const getAppointmentsWithPatientDetailsTreatSugg = (req, res) => {
+//   const doctor_id = req.params.doctor_id;
+//   const sql = `
+//   SELECT a.*, pd.*, tp.*, ts.ts_id, ts.tp_id, ts.branch_name, ts.desease, ts.treatment_name, ts.totalCost, ts.treatment_status, ts.consider_sitting, ts.total_sitting, ts.current_sitting
+//   FROM appointments AS a
+//   LEFT JOIN patient_details AS pd ON a.patient_uhid = pd.uhid
+//   LEFT JOIN treatment_package AS tp ON a.tp_id = tp.tp_id
+//   LEFT JOIN treat_suggest AS ts ON tp.tp_id = ts.tp_id
+//   WHERE a.assigned_doctor_id = ?
+// `;
+
+//   db.query(sql, doctor_id, (err, result) => {
+//     if (err) {
+//       console.error("Error executing query:", err.stack);
+//       return res.status(500).json({ error: "Internal server error" });
+//     } else {
+//       // console.log('Query executed successfully');
+//       return res.status(200).send(result);
+//     }
+//   });
+// };
+
 const getAppointmentsWithPatientDetailsTreatSugg = (req, res) => {
   const doctor_id = req.params.doctor_id;
   const sql = `
-  SELECT a.*, pd.*, tp.*, ts.ts_id, ts.tp_id, ts.branch_name, ts.desease, ts.treatment_name, ts.totalCost, ts.treatment_status, ts.consider_sitting, ts.total_sitting, ts.current_sitting
+  SELECT a.appoint_id, 
+         pd.*, 
+         tp.*, 
+         GROUP_CONCAT(ts.treatment_name SEPARATOR ', ') AS treatment_names,
+         ts.branch_name, 
+         ts.desease, 
+         ts.totalCost, 
+         ts.treatment_status, 
+         ts.consider_sitting, 
+         ts.total_sitting, 
+         ts.current_sitting
   FROM appointments AS a
   LEFT JOIN patient_details AS pd ON a.patient_uhid = pd.uhid 
   LEFT JOIN treatment_package AS tp ON a.tp_id = tp.tp_id
   LEFT JOIN treat_suggest AS ts ON tp.tp_id = ts.tp_id 
   WHERE a.assigned_doctor_id = ?
+  GROUP BY a.appoint_id;
 `;
 
   db.query(sql, doctor_id, (err, result) => {
@@ -695,6 +728,34 @@ const updateAppointmentStatusAfterTreat = (req, res) => {
   }
 };
 
+const getLab = (req, res) => {
+  try {
+    const selectQuery = "SELECT * FROM lab_details";
+    db.query(selectQuery, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
+const getLabTest = (req, res) => {
+  try {
+    const selectQuery = "SELECT * FROM lab_tests";
+    db.query(selectQuery, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
 module.exports = {
   getAppointmentsWithPatientDetails,
   getAppointmentsWithPatientDetailsById,
@@ -714,4 +775,6 @@ module.exports = {
   getExaminedataByIdandexamine,
   updateSecurityAmountForRemainingAmount,
   updateAppointmentStatusAfterTreat,
+  getLab,
+  getLabTest,
 };

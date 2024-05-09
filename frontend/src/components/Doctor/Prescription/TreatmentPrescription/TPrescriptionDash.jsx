@@ -6,8 +6,8 @@ import HeadBar from "../../HeadBar";
 import NewTreatPrescription from "./NewTreatPrescription";
 
 const TPrescriptionDash = () => {
-  const { id, tpid, appoint_id, sitting } = useParams();
-  console.log(id, appoint_id);
+  const { tsid, tpid, appoint_id, sitting } = useParams();
+  console.log(tsid, appoint_id);
   const navigate = useNavigate();
   return (
     <>

@@ -44,6 +44,8 @@ const {
   getExaminedataByIdandexamine,
   updateSecurityAmountForRemainingAmount,
   updateAppointmentStatusAfterTreat,
+  getLabTest,
+  getLab,
 } = require("../controller/authAppointTable.js");
 const {
   getBranch,
@@ -362,5 +364,7 @@ router.put(
 
 router.post("/insertLab", insertLab);
 router.get("/lab-details", getLabDetails);
+router.get("/getLabTest", getLabTest);
+router.get("/getLab", getLab);
 
 module.exports = { authRoutes: router };

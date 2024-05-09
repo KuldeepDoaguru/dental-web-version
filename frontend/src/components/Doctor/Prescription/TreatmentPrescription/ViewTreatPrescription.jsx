@@ -6,8 +6,8 @@ import { useSelector } from "react-redux";
 import { setUser } from "../../../../redux/user/userSlice";
 
 const ViewTreatPrescription = () => {
-  const { id, tpid, sitting, treatment } = useParams();
-  console.log(id);
+  const { appoint_id, tpid, sitting, treatment } = useParams();
+  console.log(appoint_id);
   const navigate = useNavigate();
   const [getPatientData, setGetPatientData] = useState([]);
   const user = useSelector((state) => state.user);
@@ -105,7 +105,7 @@ const ViewTreatPrescription = () => {
   const getTreatPrescriptionByAppointId = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${id}/${tpid}/${treatment}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${appoint_id}/${tpid}/${treatment}`
       );
       setGetTreatMedicine(res.data);
       console.log(res.data);
@@ -123,7 +123,7 @@ const ViewTreatPrescription = () => {
   const getTreatmentSuggestAppointId = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentData/${appoint_id}/${tpid}/${branch}/${sitting}`
       );
       setGetTreatSug(res.data.data);
       console.log(res.data.data);
@@ -143,6 +143,11 @@ const ViewTreatPrescription = () => {
     } catch (error) {
       console.log("Error updating sitting count", error);
     }
+  };
+
+  const handleTreatNavigattion = () => {
+    alert(appoint_id);
+    navigate(`/TreatmentDashBoard/${tpid}/${appoint_id}`);
   };
 
   return (
@@ -353,7 +358,13 @@ const ViewTreatPrescription = () => {
                   className="btn btn-info no-print mx-3 mb-3 mt-2"
                   onClick={() => navigate("/doctor-dashboard")}
                 >
-                  Dashboard
+                  Appointment Dashboard
+                </button>
+                <button
+                  className="btn btn-info no-print mx-3 mb-3 mt-2"
+                  onClick={handleTreatNavigattion}
+                >
+                  Treatment Dashboard
                 </button>
               </div>
             </div>

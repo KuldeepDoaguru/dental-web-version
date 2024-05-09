@@ -192,14 +192,14 @@ const AttendanceLeave = () => {
                             <div className="mt-5 text-center">
                               <h4>Attendance details</h4>
                             </div>
-                            <div className="table-container">
+                            <div className="table-container all-attent">
                               <table className="table table-bordered">
                                 <thead className="table-head">
                                   <tr>
-                                    <th>Sr. no.</th>
-                                    <th>Date</th>
-                                    <th>Login Time</th>
-                                    <th>Logout Time</th>
+                                    <th className="sticky">Sr. no.</th>
+                                    <th className="sticky">Date</th>
+                                    <th className="sticky">Login Time</th>
+                                    <th className="sticky">Logout Time</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -246,14 +246,14 @@ const AttendanceLeave = () => {
                             <div className="mt-5 text-center">
                               <h4>Leave details</h4>
                             </div>
-                            <div className="table-container">
+                            <div className="table-container all-appoint">
                               <table className="table table-bordered">
                                 <thead className="table-head">
                                   <tr>
-                                    <th>Sr. no.</th>
-                                    <th>Leave Date</th>
-                                    <th>Leave Reason</th>
-                                    <th>Leave Status</th>
+                                    <th className="sticky">Sr. no.</th>
+                                    <th className="sticky">Leave Date</th>
+                                    <th className="sticky">Leave Reason</th>
+                                    <th className="sticky">Leave Status</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -336,7 +336,7 @@ const AttendanceLeave = () => {
                             </div>
                           </div>
                           <div class="table-responsive">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered"> 
                               <thead className="table-head">
                                 <tr>
                                   <th>EMP ID</th>
@@ -446,5 +446,20 @@ const Container = styled.div`
 
   .attend-approve {
     color: green;
+  }
+  .all-attent {
+    height: 20rem;
+    overflow: auto;
+  }
+
+  .all-appoint {
+    height: 30rem;
+    overflow: auto;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1;
   }
 `;

@@ -1,5 +1,15 @@
 const express = require("express");
 const db = require("../connect.js");
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: process.env.EMAILSENDER,
+    pass: process.env.EMAILPASSWORD,
+  },
+});
 
 const getAppointmentsWithPatientDetails = (req, res) => {
   const sql = `
@@ -433,7 +443,13 @@ const getAppointmentsViaDocId = (req, res) => {
 const bookSittingAppointment = (req, res) => {
   try {
     const {
+      clinicName,
+      clinicContact,
+      clinicAddress,
+      clinicEmail,
+      patient_Email,
       patient_uhid,
+      patient_Name,
       branch,
       tp_id,
       assigned_doctor_name,
@@ -444,6 +460,7 @@ const bookSittingAppointment = (req, res) => {
       appointment_created_by_ID,
       notes,
       appointment_status,
+      doctor_email,
     } = req.body;
 
     const created_at = new Date();
@@ -480,6 +497,54 @@ const bookSittingAppointment = (req, res) => {
             .json({ success: false, message: "Internal server error" });
         } else {
           console.log("Appointment booked successfully");
+
+          if (patient_Email) {
+            // Formulate email subject
+            const emailSubject = `Appointment Confirmation - ${clinicName}`;
+
+            const appointmentDateTime = new Date(appointment_dateTime);
+            const appointmentTime = appointmentDateTime.toLocaleTimeString(
+              "en-US",
+              { hour: "numeric", minute: "2-digit", hour12: true }
+            );
+
+            // Formulate email text
+            const emailText = `Dear ${patient_Name},\n\n 
+            Your appointment at ${clinicName} has been booked successfully.\n\n 
+            Appointment Details:\n 
+            Doctor Name: ${assigned_doctor_name.toUpperCase()}\n 
+            Appointment Date and Time: ${appointmentDateTime.toDateString()} ${appointmentTime} \n 
+            Treatment Provided: ${treatment_provided}\n 
+  
+            Clinic Details:\n 
+            Name: ${clinicName}\n 
+            Contact: ${clinicContact}\n 
+            Address: ${clinicAddress}\n 
+            Email: ${clinicEmail}\n\n 
+  
+            Thank you for choosing ${clinicName}.\n\n 
+            Best regards,\n 
+            ${clinicName}`;
+
+            const mailOptions = {
+              from: process.env.EMAILSENDER,
+              to: patient_Email,
+              cc: doctor_email,
+              subject: emailSubject,
+              text: emailText,
+            };
+
+            transporter.sendMail(mailOptions, (emailErr, info) => {
+              if (emailErr) {
+                console.error("Error sending email:", emailErr);
+                // Handle email sending error
+              } else {
+                console.log("Email sent:", info.response);
+                // Handle email sent successfully
+              }
+            });
+          }
+
           return res.status(200).json({
             data: appointmentResult,
             treatment: treatment_provided,

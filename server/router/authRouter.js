@@ -24,6 +24,7 @@ const {
   getTreatPackageViaTpidUhid,
   insertLab,
   getLabDetails,
+  getPatientLabTestByPatientId,
 } = require("../controller/authControl.js");
 const {
   getAppointmentsWithPatientDetails,
@@ -366,5 +367,6 @@ router.post("/insertLab", insertLab);
 router.get("/lab-details", getLabDetails);
 router.get("/getLabTest", getLabTest);
 router.get("/getLab", getLab);
+router.get("/getPatientLabTestByPatientId/:pid", getPatientLabTestByPatientId);
 
 module.exports = { authRoutes: router };

@@ -119,7 +119,7 @@ const Navbar = () => {
             Prescription
           </button>
         </li>
-        {/* <li className="nav-item" role="presentation">
+        <li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab1"
@@ -133,7 +133,7 @@ const Navbar = () => {
             Lab
           </button>
         </li>
-        <li className="nav-item" role="presentation">
+        {/*<li className="nav-item" role="presentation">
           <button
             className="nav-link"
             id="profile-tab1"

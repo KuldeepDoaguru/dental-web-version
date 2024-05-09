@@ -25,7 +25,7 @@ const BookSittingAppointment = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const { branch_name, employee_ID, employee_name } = user.currentUser;
+  const { branch_name, employee_ID, employee_name, email } = user.currentUser;
   // Function to format date in YYYY-MM-DD format
   const formatDate = (date) => {
     const year = date.getFullYear();
@@ -34,6 +34,7 @@ const BookSittingAppointment = ({
     return `${year}-${month}-${day}`;
   };
   const doctorDetailsStore = user.currentUser;
+  console.log(doctorDetailsStore);
   const [show, setShow] = useState(false);
   const [treatments, setTreatment] = useState([]);
   const [branchHolidays, setBranchHolidays] = useState([]);
@@ -45,10 +46,16 @@ const BookSittingAppointment = ({
   const [docAppoint, setDocAppoint] = useState([]);
   const [doctors, setDoctors] = useState([]);
   // const [doctorDetailsStore, setdoctorDetailsStore] = useState();
-  console.log(getPatientData[0]?.uhid);
+  console.log(getPatientData);
 
   const [data, setData] = useState({
+    clinicName: "",
+    clinicContact: "",
+    clinicAddress: "",
+    clinicEmail: "",
     patient_uhid: getPatientData[0]?.uhid,
+    patient_Name: getPatientData[0]?.patient_name,
+    patient_Email: getPatientData[0]?.emailid,
     branch: branch_name,
     tp_id: tp_id,
     assigned_doctor_name: employee_name,
@@ -59,9 +66,23 @@ const BookSittingAppointment = ({
     appointment_created_by_ID: employee_ID,
     notes: "",
     appointment_status: "Appoint",
+    doctor_email: email,
   });
 
   console.log(data);
+
+  useEffect(() => {
+    if (branchDetail.length > 0) {
+      setData({
+        ...data,
+        clinicName: branchDetail[0]?.hospital_name,
+        clinicContact: branchDetail[0]?.branch_contact,
+        clinicAddress: branchDetail[0]?.branch_address,
+        clinicEmail: branchDetail[0]?.branch_email,
+      });
+    }
+  }, [branchDetail]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({
@@ -81,6 +102,7 @@ const BookSittingAppointment = ({
       console.log(error);
     }
   };
+  console.log(branchDetail);
   const getBranchHolidays = async () => {
     try {
       const { data } = await axios.get(

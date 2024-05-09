@@ -550,6 +550,10 @@ function AddPatient() {
       // Slot is available, proceed with booking
       const newPatient = {
         branch_name: branch,
+        clinicName : branchDetail[0]?.hospital_name.toUpperCase(),
+        clinicContact : branchDetail[0]?.branch_contact,
+        clinicAddress : branchDetail[0]?.branch_address,
+        clinicEmail : branchDetail[0]?.branch_email,
         patient_Name: data.patient_Name,
         mobile: data.mobile,
         email: data.email,
@@ -568,6 +572,7 @@ function AddPatient() {
         patientType: data.patientType,
         doctorId: selectedDoctor.employee_ID,
         doctor_name: selectedDoctor.employee_name,
+        doctor_email : selectedDoctor.employee_email,
         appDateTime: data.appDateTime,
         treatment: selectedTreatment,
         opd_amount: selectedTreatment === "OPD" ? opdAmount : "0",

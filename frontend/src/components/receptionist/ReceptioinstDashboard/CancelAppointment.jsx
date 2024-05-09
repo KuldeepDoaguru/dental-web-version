@@ -284,7 +284,16 @@ const handleCancelAppointment = async (e)=>{
 
     e.preventDefault();
     const newAppointment = {
-
+      clinicName : branchDetail[0]?.hospital_name.toUpperCase(),
+      clinicContact : branchDetail[0]?.branch_contact,
+      clinicAddress : branchDetail[0]?.branch_address,
+      clinicEmail : branchDetail[0]?.branch_email,
+      patient_name : appointmentInfo.patient_name,
+      patient_Email : appointmentInfo.emailid,
+      doctor_email : selectedDoctor.employee_email,
+      appDateTime:appointmentInfo.appointment_dateTime,
+    doctor_name:appointmentInfo.assigned_doctor_name,
+    treatment:appointmentInfo.treatment_provided,
         appoint_id : appointmentInfo.appoint_id,
     notes:data.notes,
     status : "Cancel",

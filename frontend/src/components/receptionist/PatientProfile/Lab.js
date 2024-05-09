@@ -1,70 +1,77 @@
-import React from 'react'
-import styled from 'styled-components'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import styled from "styled-components";
 
-function Lab() {
+const Lab = () => {
+  const { pid } = useParams();
+  
+  const [testData, setTestData] = useState([]);
+
+  const getLabTest = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientLabTestByPatientId/${pid}`
+      );
+      setTestData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(testData);
+  useEffect(() => {
+    getLabTest();
+  }, []);
   return (
     <Wrapper>
-        <div className="table">
-       <div
-        className="widget-area-2 proclinic-box-shadow mx-3 mt-5"
-        id="tableres"
-      >
-        <div className="table-responsive">
-          <table className="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Lab Test</th>
-                <th>Lab Details</th>
-                <th>Status</th>
-                <th>Reports</th>
-               <th>Bill Status</th>
-               <th>Added by</th>
-               <th>Action</th>
-               
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>25-09-23</td>
-                <td><p>DLC(Differntial Lucocytes Count)</p>
-                <p>Automated</p>
-                <p>HL 001</p>
-                <p>Hemoglobin</p>
-                <p>HL 002</p>
-                </td>
-                <td>Sample External Lab</td>
-                <td>Advised</td>
-                <td>Add Reports</td>
-                <td>Add Bill</td>
-                <td>Dr.Arun Varma</td>
-
-                <td>Edit/Delete/View/Print/Email</td>
-
-                
-
-              </tr>
-          
-              
-             
-
-           
-            </tbody>
-          </table>
+      <div className="table">
+        <div
+          className="widget-area-2 proclinic-box-shadow mx-3 mt-5"
+          id="tableres"
+        >
+          <div className="table-responsive">
+            <table className="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Test ID</th>
+                  <th>Treatment Package ID</th>
+                  <th>Doctor</th>
+                  <th>Lab Name</th>
+                  <th>Test Name</th>
+                  <th>Test Date</th>
+                  <th>Test Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {testData?.map((item) => (
+                  <>
+                    <tr>
+                      <td>{item.testid}</td>
+                      <td>{item.tpid}</td>
+                      <td>{item.assigned_doctor_name}</td>
+                      <td>{item.lab_name}</td>
+                      <td>{item.test}</td>
+                      <td>{item.created_date?.split("T")[0]}</td>
+                      <td>{item.test_status}</td>
+                    </tr>
+                  </>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div></div>
+      </div>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Lab
+export default Lab;
 const Wrapper = styled.div`
-.table{
+  .table {
     @media screen and (max-width: 768px) {
       width: 20rem;
       margin-left: -0.2rem;
-  
     }
   }
-
-`
+`;

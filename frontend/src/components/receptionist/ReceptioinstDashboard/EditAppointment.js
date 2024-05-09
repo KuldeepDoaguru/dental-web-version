@@ -372,13 +372,24 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
     //   return
     //  }
   
+   
+   
+   
+   
+   
     if (isSlotAvailable) {
       // Slot is available, proceed with booking
       const newAppointment = {
-
+        clinicName : branchDetail[0]?.hospital_name.toUpperCase(),
+        clinicContact : branchDetail[0]?.branch_contact,
+        clinicAddress : branchDetail[0]?.branch_address,
+        clinicEmail : branchDetail[0]?.branch_email,
+        patient_name : appointmentInfo.patient_name,
+        patient_Email : appointmentInfo.emailid,
         appoint_id : appointmentInfo.appoint_id,
         appDateTime:data.appointment_dateTime,
         doctor_name:selectedDoctor.employee_name,
+        doctor_email : selectedDoctor.employee_email,
         doctorId : selectedDoctor.employee_ID,
         treatment:selectedTreatment,
         notes:data.notes,

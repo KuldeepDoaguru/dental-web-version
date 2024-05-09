@@ -626,10 +626,17 @@ const isDoctorAvailable = (selectedDateTime) => {
     // Slot is available, proceed with booking
     const newAppointment = {
       branch_name : branch,
+      clinicName : branchDetail[0]?.hospital_name.toUpperCase(),
+        clinicContact : branchDetail[0]?.branch_contact,
+        clinicAddress : branchDetail[0]?.branch_address,
+        clinicEmail : branchDetail[0]?.branch_email,
+        patient_Email : selectedPatient.emailid,
+        patient_Name : selectedPatient.patient_name,
       tp_id : patientTreatmentDetails[0]?.tp_id,
       patient_uhid : selectedPatient.uhid,
       doctorId: selectedDoctor.employee_ID,
       doctor_name: selectedDoctor.employee_name,
+      doctor_email : selectedDoctor.employee_email,
       appDateTime: bookData.appDateTime,
       treatment: selectedTreatment,
       notes: bookData.notes,

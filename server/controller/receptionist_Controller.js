@@ -128,10 +128,23 @@ const nodemailer = require("nodemailer");
 //          }
 // }
 
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: process.env.EMAILSENDER,
+    pass: process.env.EMAILPASSWORD,
+  },
+});
+
 const addPatient = (req, res) => {
   try {
     const {
       branch_name,
+      clinicName,
+        clinicContact,
+        clinicAddress,
+        clinicEmail,
+        doctor_email,
       patient_Name,
       mobile,
       email,
@@ -308,6 +321,56 @@ const addPatient = (req, res) => {
                           });
                       } else {
                         console.log("Appointment booked successfully");
+                       
+                        // Send email if patient's email is available
+                    if (email) {
+
+                      // Formulate email subject
+  const emailSubject = `Appointment Confirmation - ${clinicName}`;
+  
+  const appointmentDateTime = new Date(appDateTime);
+const appointmentTime = appointmentDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+  // Formulate email text
+  const emailText = `Dear ${patient_Name.toUpperCase()},\n\n` +
+                    `Your appointment at ${clinicName} has been booked successfully.\n\n` +
+                    `Appointment Details:\n` +
+                    `Doctor Name: ${doctor_name.toUpperCase()}\n` +
+                    `Appointment Date and Time: ${appointmentDateTime.toDateString()} ${appointmentTime} \n` +
+                    `Treatment Provided: ${treatment}\n` +
+                    `OPD Amount: ${opd_amount}\n` +
+                    `Payment Mode: ${payment_Mode}\n\n` +
+
+                    `Clinic Details:\n` +
+                    `Name: ${clinicName}\n` +
+                    `Contact: ${clinicContact}\n` +
+                    `Address: ${clinicAddress}\n` +
+                    `Email: ${clinicEmail}\n\n` +
+
+                    `Thank you for choosing ${clinicName}.\n\n` +
+                    `Best regards,\n` +
+                    `${clinicName} Team`;
+
+
+                      const mailOptions = {
+                        from: process.env.EMAILSENDER,
+                        to: email,
+                        cc: doctor_email, 
+                        subject: emailSubject,
+                        text: emailText
+                      };
+
+                      transporter.sendMail(mailOptions, (emailErr, info) => {
+                        if (emailErr) {
+                          console.error('Error sending email:', emailErr);
+                          // Handle email sending error
+                        } else {
+                          console.log('Email sent:', info.response);
+                          // Handle email sent successfully
+                        }
+                      });
+                    }
+
                         return res.status(200).json({
                           success: true,
                           message: "Patient and appointment added successfully",
@@ -535,11 +598,18 @@ const bookAppointment = (req, res) => {
   try {
     const {
       branch_name,
+      clinicName,
+        clinicContact,
+        clinicAddress,
+        clinicEmail,
+        patient_Email,
       patient_uhid,
+      patient_Name,
       tp_id,
       status,
       doctorId,
       doctor_name,
+      doctor_email,
       appDateTime,
       treatment,
       opd_amount,
@@ -552,7 +622,7 @@ const bookAppointment = (req, res) => {
     } = req.body;
 
     const created_at = new Date();
-
+   
     const bookAppointmentQuery = `
       INSERT INTO appointments (
           patient_uhid,	tp_id, branch_name, assigned_doctor_name, assigned_doctor_id, appointment_dateTime, treatment_provided, appointment_status,opd_amount, payment_Mode, transaction_Id, payment_Status,  notes, appointment_created_by, appointment_created_by_emp_id, created_at
@@ -589,6 +659,56 @@ const bookAppointment = (req, res) => {
             .json({ success: false, message: "Internal server error" });
         } else {
           console.log("Appointment booked successfully");
+
+          if (patient_Email) {
+
+            // Formulate email subject
+const emailSubject = `Appointment Confirmation - ${clinicName}`;
+
+const appointmentDateTime = new Date(appDateTime);
+const appointmentTime = appointmentDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+// Formulate email text
+const emailText = `Dear ${patient_Name.toUpperCase()},\n\n` +
+          `Your appointment at ${clinicName} has been booked successfully.\n\n` +
+          `Appointment Details:\n` +
+          `Doctor Name: ${doctor_name.toUpperCase()}\n` +
+          `Appointment Date and Time: ${appointmentDateTime.toDateString()} ${appointmentTime} \n` +
+          `Treatment Provided: ${treatment}\n` +
+          `OPD Amount: ${opd_amount}\n` +
+          `Payment Mode: ${payment_Mode}\n\n` +
+
+          `Clinic Details:\n` +
+          `Name: ${clinicName}\n` +
+          `Contact: ${clinicContact}\n` +
+          `Address: ${clinicAddress}\n` +
+          `Email: ${clinicEmail}\n\n` +
+
+          `Thank you for choosing ${clinicName}.\n\n` +
+          `Best regards,\n` +
+          `${clinicName} Team`;
+
+
+            const mailOptions = {
+              from: process.env.EMAILSENDER,
+              to: patient_Email,
+              cc: doctor_email, 
+              subject: emailSubject,
+              text: emailText
+            };
+
+            transporter.sendMail(mailOptions, (emailErr, info) => {
+              if (emailErr) {
+                console.error('Error sending email:', emailErr);
+                // Handle email sending error
+              } else {
+                console.log('Email sent:', info.response);
+                // Handle email sent successfully
+              }
+            });
+          }
+
+
           return res.status(200).json({
             data: appointmentResult,
             treatment: treatment,
@@ -611,9 +731,16 @@ const bookAppointment = (req, res) => {
 const updateAppointment = (req, res) => {
   try {
     const {
+      clinicName ,
+        clinicContact ,
+        clinicAddress,
+        clinicEmail ,
+        patient_name,
+        patient_Email,
       appoint_id,
       doctorId,
       doctor_name,
+      doctor_email,
       appDateTime,
       treatment,
       notes,
@@ -622,7 +749,7 @@ const updateAppointment = (req, res) => {
     } = req.body;
 
     const updated_at = new Date();
-
+   console.log(doctor_email)
     const updateAppointmentQuery = `
           UPDATE appointments
           SET 
@@ -664,6 +791,54 @@ const updateAppointment = (req, res) => {
             .json({ success: false, message: "Internal server error" });
         } else {
           console.log("Appointment updated successfully");
+
+          if (patient_Email) {
+
+            // Formulate email subject
+const emailSubject = `Appointment Confirmation - ${clinicName}`;
+
+const appointmentDateTime = new Date(appDateTime);
+const appointmentTime = appointmentDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+// Formulate email text
+const emailText = `Dear ${patient_name.toUpperCase()},\n\n` +
+          `Your appointment at ${clinicName} has been edited successfully.\n\n` +
+          `Appointment Details:\n` +
+          `Doctor Name: ${doctor_name.toUpperCase()}\n` +
+          `Appointment Date and Time: ${appointmentDateTime.toDateString()} ${appointmentTime} \n` +
+          `Treatment Provided: ${treatment}\n\n` +
+        
+
+          `Clinic Details:\n` +
+          `Name: ${clinicName}\n` +
+          `Contact: ${clinicContact}\n` +
+          `Address: ${clinicAddress}\n` +
+          `Email: ${clinicEmail}\n\n` +
+
+          `Thank you for choosing ${clinicName}.\n\n` +
+          `Best regards,\n` +
+          `${clinicName} Team`;
+
+
+            const mailOptions = {
+              from: process.env.EMAILSENDER,
+              to: patient_Email,
+              cc: doctor_email, 
+              subject: emailSubject,
+              text: emailText
+            };
+
+            transporter.sendMail(mailOptions, (emailErr, info) => {
+              if (emailErr) {
+                console.error('Error sending email:', emailErr);
+                // Handle email sending error
+              } else {
+                console.log('Email sent:', info.response);
+                // Handle email sent successfully
+              }
+            });
+          }
+
           return res.status(200).json({
             success: true,
             message: "Appointment updated successfully",
@@ -791,6 +966,16 @@ const updateAppointmentStatusCancel = (req, res) => {
 const updateAppointmentStatusCancelOpd = (req, res) => {
   try {
     const {
+      clinicName ,
+    clinicContact ,
+    clinicAddress ,
+    clinicEmail ,
+    patient_name ,
+    patient_Email ,
+    doctor_email,
+    appDateTime,
+    doctor_name,
+    treatment,
       appoint_id,
       status,
       payment_Status,
@@ -802,7 +987,7 @@ const updateAppointmentStatusCancelOpd = (req, res) => {
     } = req.body;
 
     const updated_at = new Date();
-   
+    console.log(doctor_email)
     const updateAppointmentQuery = `
           UPDATE appointments
           SET payment_Status = ?, notes = ?, appointment_status = ?, updated_at = ?,appointment_updated_by = ?,cancel_reason = ?, appointment_updated_by_emp_id = ?
@@ -831,6 +1016,53 @@ const updateAppointmentStatusCancelOpd = (req, res) => {
             .json({ success: false, message: "Internal server error" });
         } else {
           console.log("Appointment cancel successfully");
+
+          if (patient_Email) {
+
+            // Formulate email subject
+const emailSubject = `Appointment Cancel Confirmation - ${clinicName}`;
+
+const appointmentDateTime = new Date(appDateTime);
+const appointmentTime = appointmentDateTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+
+// Formulate email text
+const emailText = `Dear ${patient_name.toUpperCase()},\n\n` +
+          `Your appointment at ${clinicName} has been cancel successfully.\n\n` +
+          `Appointment Details:\n` +
+          `Doctor Name: ${doctor_name.toUpperCase()}\n` +
+          `Appointment Date and Time: ${appointmentDateTime.toDateString()} ${appointmentTime} \n` +
+          `Treatment Provided: ${treatment}\n\n` +
+        
+
+          `Clinic Details:\n` +
+          `Name: ${clinicName}\n` +
+          `Contact: ${clinicContact}\n` +
+          `Address: ${clinicAddress}\n` +
+          `Email: ${clinicEmail}\n\n` +
+
+         
+          `Best regards,\n` +
+          `${clinicName} Team`;
+
+
+            const mailOptions = {
+              from: process.env.EMAILSENDER,
+              to: patient_Email,
+              cc: doctor_email, 
+              subject: emailSubject,
+              text: emailText
+            };
+
+            transporter.sendMail(mailOptions, (emailErr, info) => {
+              if (emailErr) {
+                console.error('Error sending email:', emailErr);
+                // Handle email sending error
+              } else {
+                console.log('Email sent:', info.response);
+                // Handle email sent successfully
+              }
+            });
+          }
           return res.status(200).json({
             success: true,
             message: "Appointment cancel successfully",
@@ -871,6 +1103,7 @@ const getAppointments = (req, res) => {
             p.uhid,
             p.patient_name,
             p.mobileno,
+            p.emailid,
             p.dob,
             p.age,
             p.weight,
@@ -2861,6 +3094,23 @@ const updateTreatmentStatus = (req, res) => {
   }
 };
 
+const getPatientLabTestByPatientId = (req, res) => {
+  const pid = req.params.pid;
+  try {
+    const selectQuery =
+      "SELECT * FROM patient_lab_details LEFT JOIN patient_details ON patient_details.uhid = patient_lab_details.patient_uhid WHERE patient_lab_details.patient_uhid = ?";
+    db.query(selectQuery, pid, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+        return;
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   addPatient,
   getDisease,
@@ -2921,7 +3171,8 @@ module.exports = {
   sendOtp,
   verifyOtp,
   resetPassword,
-  updateTreatmentStatus
+  updateTreatmentStatus,
+  getPatientLabTestByPatientId
 
 
   

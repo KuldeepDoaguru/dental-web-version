@@ -112,7 +112,11 @@ const AdminPatientLIst = () => {
                           .map((item) => (
                             <>
                               <tr className="table-row">
-                                <td className="thead">{item.uhid}</td>
+                                <td className="thead">
+                                  <Link to={`/patient-profile/${item.uhid}`}>
+                                    {item.uhid}
+                                  </Link>
+                                </td>
                                 <td className="thead">{item.patient_name}</td>
                                 <td className="thead">{item.mobileno}</td>
                                 <td className="thead">{item.gender}</td>
@@ -178,5 +182,9 @@ const Container = styled.div`
 
   .thead {
     min-width: 8rem;
+  }
+
+  a {
+    text-decoration: none;
   }
 `;

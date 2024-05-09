@@ -87,6 +87,7 @@ const {
   labTestDelete,
   getPatientLabTest,
   getPatientLabTestCompleted,
+  getPatientLabTestByPatientId,
 } = require("../controllers/notifyController");
 // const multer = require("multer");
 
@@ -234,5 +235,6 @@ router.put("/updateLabTestDetails/:ltid", updateLabTestDetails);
 router.delete("/labTestDelete/:ltid", labTestDelete);
 router.get("/getPatientLabTest", getPatientLabTest);
 router.get("/getPatientLabTestCompleted", getPatientLabTestCompleted);
+router.get("/getPatientLabTestByPatientId/:pid", getPatientLabTestByPatientId);
 
 module.exports = router;

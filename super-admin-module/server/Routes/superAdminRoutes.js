@@ -99,6 +99,8 @@ const {
   updateLabTestDetails,
   labTestDelete,
   getPatientLabTest,
+  getPatientLabTestCompleted,
+  getPatientLabTestByPatientId,
 } = require("../controllers/superTreatController");
 // const multer = require("multer");
 
@@ -191,7 +193,26 @@ router.get("/getPrescriptionDetailsById/:pid", getPrescriptionDetailsById);
 router.post("/insertTimelineEvent", insertTimelineEvent);
 router.get("/getPatientTimeline/:pid", getPatientTimeline);
 router.post("/addLab", addLab);
-router.put("/updateBranchDetails/:bid", updateBranchDetails);
+
+const storagebranchHeadFootImg = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "branchHeadFootImg/");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now();
+    cb(null, uniqueSuffix + file.originalname);
+  },
+});
+
+const uploadbranchImg = multer({ storage: storagebranchHeadFootImg });
+router.put(
+  "/updateBranchDetails/:bid",
+  uploadbranchImg.fields([
+    { name: "head_img", maxCount: 1 },
+    { name: "foot_img", maxCount: 1 },
+  ]),
+  updateBranchDetails
+);
 router.put("/updateBillDetailsByBillId/:bid", updateBillDetailsByBillId);
 router.get("/getBillBYBillId/:bid", getBillBYBillId);
 router.get("/downloadBillRecById/:file", downloadBillRecById);
@@ -266,5 +287,7 @@ router.get("/getLabTest", getLabTest);
 router.put("/updateLabTestDetails/:ltid", updateLabTestDetails);
 router.delete("/labTestDelete/:ltid", labTestDelete);
 router.get("/getPatientLabTest", getPatientLabTest);
+router.get("/getPatientLabTestCompleted", getPatientLabTestCompleted);
+router.get("/getPatientLabTestByPatientId/:pid", getPatientLabTestByPatientId);
 
 module.exports = router;

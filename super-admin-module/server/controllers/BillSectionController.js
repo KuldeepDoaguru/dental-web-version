@@ -654,6 +654,13 @@ const updateBranchDetails = (req, res) => {
       close_time,
       appoint_slot_duration,
     } = req.body;
+
+    const head_img = req.files["head_img"]
+      ? `https://dentalgurusuperadmin.doaguru.com/branchHeadFootImg/${req.files["head_img"][0].filename}`
+      : null;
+    const foot_img = req.files["foot_img"]
+      ? `https://dentalgurusuperadmin.doaguru.com/branchHeadFootImg/${req.files["foot_img"][0].filename}`
+      : null;
     const selectQuery = "SELECT * FROM branches WHERE branch_id = ?";
     db.query(selectQuery, bid, (err, result) => {
       if (err) {
@@ -691,6 +698,16 @@ const updateBranchDetails = (req, res) => {
         if (appoint_slot_duration) {
           updateFields.push("appoint_slot_duration = ?");
           updateValues.push(appoint_slot_duration);
+        }
+
+        if (head_img) {
+          updateFields.push("head_img = ?");
+          updateValues.push(head_img);
+        }
+
+        if (foot_img) {
+          updateFields.push("foot_img = ?");
+          updateValues.push(foot_img);
         }
 
         const updateQuery = `UPDATE branches SET ${updateFields.join(

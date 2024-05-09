@@ -140,7 +140,7 @@ const MonthIncome = () => {
 export default MonthIncome;
 const Container = styled.div`
   #main {
-    background-color: #1abc9c;
+    background-color: #201658;
     width: 100%;
     border-radius: 5px;
     padding: 2rem;

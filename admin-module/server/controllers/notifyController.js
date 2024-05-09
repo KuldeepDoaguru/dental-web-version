@@ -965,6 +965,23 @@ const getPatientLabTestCompleted = (req, res) => {
   }
 };
 
+const getPatientLabTestByPatientId = (req, res) => {
+  const pid = req.params.pid;
+  try {
+    const selectQuery =
+      "SELECT * FROM patient_lab_details LEFT JOIN patient_details ON patient_details.uhid = patient_lab_details.patient_uhid WHERE patient_lab_details.patient_uhid = ?";
+    db.query(selectQuery, pid, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+        return;
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getNotifyList,
   addNotifyCommunication,
@@ -997,4 +1014,5 @@ module.exports = {
   labTestDelete,
   getPatientLabTest,
   getPatientLabTestCompleted,
+  getPatientLabTestByPatientId,
 };

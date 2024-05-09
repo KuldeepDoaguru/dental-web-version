@@ -52,6 +52,8 @@ const {
 } = require("../controllers/accountantController");
 const {
   getEmployeeListByBranchByID,
+  getPatientLabTest,
+  getPatientLabTestByPatientId,
 } = require("../controllers/employeeController");
 
 const router = express.Router();
@@ -144,5 +146,9 @@ router.get(
   "/getAppointmentsWithPatientDetailsById/:tpid",
   getAppointmentsWithPatientDetailsById
 );
+
+// ***********************************************
+router.get("/getPatientLabTest", getPatientLabTest);
+router.get("/getPatientLabTestByPatientId/:pid", getPatientLabTestByPatientId);
 
 module.exports = router;

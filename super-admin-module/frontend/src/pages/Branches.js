@@ -10,6 +10,8 @@ import cogoToast from "cogo-toast";
 const Branches = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedItem, setSelectedItem] = useState({ notice: "" });
+  const [branchHeadImg, setBranchHeadImg] = useState(null);
+  const [branchFootImg, setBranchFootImg] = useState(null);
   const [popupVisible, setPopupVisible] = useState(false);
   const [branchList, setBranchList] = useState([]);
   const [upData, setUpData] = useState({
@@ -36,10 +38,25 @@ const Branches = () => {
   const updateBranchDetails = async (e, id) => {
     console.log(id);
     e.preventDefault();
+
     try {
+      const formData = new FormData();
+      for (const key in upData) {
+        formData.append(key, upData[key]);
+      }
+
+      formData.append("head_img", branchHeadImg.file);
+      formData.append("foot_img", branchFootImg.file);
+      console.log(upData, branchHeadImg, branchFootImg);
+
       const response = await axios.put(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateBranchDetails/${id}`,
-        upData
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       console.log(response);
       getBranchList();
@@ -71,6 +88,42 @@ const Branches = () => {
   }, []);
 
   console.log(branchList);
+
+  const handleBranchHeadPicture = (e) => {
+    const selectedFile = e.target.files[0];
+    console.log(selectedFile);
+    if (selectedFile) {
+      // Read the selected file as data URL
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+      reader.onloadend = () => {
+        setBranchHeadImg({
+          file: selectedFile,
+          imageUrl: reader.result,
+        });
+      };
+    }
+  };
+
+  console.log(branchHeadImg);
+
+  const handleBranchFootPicture = (e) => {
+    const selectedFile = e.target.files[0];
+    console.log(selectedFile);
+    if (selectedFile) {
+      // Read the selected file as data URL
+      const reader = new FileReader();
+      reader.readAsDataURL(selectedFile);
+      reader.onloadend = () => {
+        setBranchFootImg({
+          file: selectedFile,
+          imageUrl: reader.result,
+        });
+      };
+    }
+  };
+
+  console.log(branchFootImg);
 
   return (
     <>
@@ -138,7 +191,63 @@ const Branches = () => {
                               onChange={handleChange}
                             />
                           </div>
-
+                          <div className="d-flex">
+                            <div>
+                              <label
+                                for="exampleFormControlInput1"
+                                class="form-label"
+                              >
+                                Upload Header Picture
+                              </label>
+                              <input
+                                type="file"
+                                class="p-1 w-100 rounded"
+                                placeholder="available stock"
+                                accept=".pdf, .jpg, .jpeg, .png"
+                                required
+                                name="branchHeadImg"
+                                onChange={handleBranchHeadPicture}
+                              />
+                            </div>
+                            <div className="mx-2">
+                              {branchHeadImg && (
+                                <img
+                                  src={branchHeadImg.imageUrl}
+                                  alt="profile"
+                                  className="imgData"
+                                />
+                              )}
+                            </div>
+                          </div>
+                          <hr />
+                          <div className="d-flex">
+                            <div>
+                              <label
+                                for="exampleFormControlInput1"
+                                class="form-label"
+                              >
+                                Upload Footer Picture
+                              </label>
+                              <input
+                                type="file"
+                                class="p-1 w-100 rounded"
+                                placeholder="available stock"
+                                accept=".pdf, .jpg, .jpeg, .png"
+                                required
+                                name="branchFootImg"
+                                onChange={handleBranchFootPicture}
+                              />
+                            </div>
+                            <div className="mx-2">
+                              {branchFootImg && (
+                                <img
+                                  src={branchFootImg.imageUrl}
+                                  alt="profile"
+                                  className="imgData"
+                                />
+                              )}
+                            </div>
+                          </div>
                           <div className="d-flex justify-content-evenly">
                             <button
                               type="submit"
@@ -194,6 +303,18 @@ const Branches = () => {
                                 className="table-small"
                                 style={{ width: "10%" }}
                               >
+                                Header Image
+                              </th>
+                              <th
+                                className="table-small"
+                                style={{ width: "10%" }}
+                              >
+                                Footer Image
+                              </th>
+                              <th
+                                className="table-small"
+                                style={{ width: "10%" }}
+                              >
                                 Edit
                               </th>
                               {/* <th
@@ -230,6 +351,22 @@ const Branches = () => {
                                   style={{ width: "10%" }}
                                 >
                                   {item.branch_contact}
+                                </td>
+                                <td
+                                  className="table-small"
+                                  style={{ width: "10%" }}
+                                >
+                                  <div className="smallImg">
+                                    <img src={item.head_img} alt="header" />
+                                  </div>
+                                </td>
+                                <td
+                                  className="table-small"
+                                  style={{ width: "10%" }}
+                                >
+                                  <div className="smallImg">
+                                    <img src={item.foot_img} alt="header" />
+                                  </div>
                                 </td>
                                 <td
                                   className="table-small"
@@ -305,5 +442,17 @@ const Container = styled.div`
   th {
     background-color: #004aad;
     color: white;
+  }
+
+  .imgData {
+    height: 10rem;
+    width: auto;
+  }
+
+  .smallImg {
+    img {
+      height: 6rem;
+      width: auto;
+    }
   }
 `;

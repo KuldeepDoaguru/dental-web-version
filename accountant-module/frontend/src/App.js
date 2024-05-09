@@ -77,6 +77,12 @@ import SecurityAmtPrint from "./pages/SecurityAmtPrint";
 import PatientBillsByTpid from "./pages/BillPage/PatientBillsByTpid";
 import { useSelector } from "react-redux";
 import BranchInfo from "./pages/BranchInfo";
+import LabPatientReport from "./components/LabReports/LabPatientReport";
+import OralTest from "./components/LabReports/OralTest";
+import BloodTest from "./components/LabReports/BloodTest";
+import RadiologyTest from "./components/LabReports/RadiologyTest";
+import PendingTest from "./components/LabReports/PendingTest";
+import Compleated from "./components/LabReports/Compleated";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -579,6 +585,49 @@ function App() {
             )
           }
         />
+
+        <Route
+          path="/lab-patient-report"
+          element={
+            user.employee_name === null ? (
+              <UniversalLogin />
+            ) : (
+              <LabPatientReport />
+            )
+          }
+        />
+
+        <Route
+          path="/OralTest"
+          element={
+            user.employee_name === null ? <UniversalLogin /> : <OralTest />
+          }
+        />
+        <Route
+          path="/BloodTest"
+          element={
+            user.employee_name === null ? <UniversalLogin /> : <BloodTest />
+          }
+        />
+        <Route
+          path="/RadiologyTest"
+          element={
+            user.employee_name === null ? <UniversalLogin /> : <RadiologyTest />
+          }
+        />
+        <Route
+          path="/PendingTest"
+          element={
+            user.employee_name === null ? <UniversalLogin /> : <PendingTest />
+          }
+        />
+        <Route
+          path="/Compleated"
+          element={
+            user.employee_name === null ? <UniversalLogin /> : <Compleated />
+          }
+        />
+
         <Route
           path="/view-clinic-details"
           element={

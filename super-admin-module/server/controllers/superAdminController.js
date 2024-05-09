@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const { db } = require("../dbConnect/connect");
+const logger = require("./logger");
 
 dotenv.config();
 
@@ -57,6 +58,7 @@ const EnrollEmployee = async (req, res) => {
       empAddress,
     ];
     if (requiredFields.some((field) => !field)) {
+      logger.registrationLogger.log("error", "All fields are required");
       return res.status(400).json({ error: "All fields are required" });
     }
 
@@ -92,6 +94,7 @@ const EnrollEmployee = async (req, res) => {
           } else {
             // Check if there are any rows in the result
             if (result.length > 0) {
+              logger.registrationLogger.log("error", "User already exists.");
               return res.status(400).json({
                 error: "User already exists.",
               });
@@ -136,6 +139,10 @@ const EnrollEmployee = async (req, res) => {
                     res.status(500).json({ error: "Internal server error" });
                   } else {
                     console.log("User registered successfully");
+                    logger.registrationLogger.log(
+                      "info",
+                      "Registrations successfully registered"
+                    );
                     return res.status(200).json({
                       success: true,
                       message: "Employee registered successfully",
@@ -150,6 +157,7 @@ const EnrollEmployee = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    // logger.registrationLogger.log("error", "registration failed");
     res.status(500).json({
       success: false,
       message: "Error in registration",
@@ -267,6 +275,7 @@ const EditEmployeeDetails = async (req, res) => {
 
         db.query(updateQuery, [...updateValues, empId], (err, result) => {
           if (err) {
+            logger.registrationLogger.log("error", "Failed to update details");
             return res.status(500).json({
               success: false,
               message: "Failed to update details",

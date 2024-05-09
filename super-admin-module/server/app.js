@@ -6,6 +6,7 @@ const { join, dirname } = require("path");
 const { fileURLToPath } = require("url");
 const bodyParser = require("body-parser");
 const superAdminRoutes = require("./Routes/superAdminRoutes");
+const { zipLogs } = require("./scheduler");
 
 dotenv.config();
 // rest object
@@ -36,6 +37,7 @@ app.get("/", (req, res) => {
 // PORT
 const PORT = process.env.PORT || 8888;
 
+// zipLogs();
 // run listen
 app.listen(PORT, () => {
   console.log(`Server Running on port ${PORT}`.bgCyan.white);

@@ -368,5 +368,6 @@ router.get("/lab-details", getLabDetails);
 router.get("/getLabTest", getLabTest);
 router.get("/getLab", getLab);
 router.get("/getPatientLabTestByPatientId/:pid", getPatientLabTestByPatientId);
+router.get("/branches/:branch_name", getBranchDetails);
 
 module.exports = { authRoutes: router };

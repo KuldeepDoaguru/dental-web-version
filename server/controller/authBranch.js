@@ -785,6 +785,37 @@ const updateTreatmentStatus = (req, res) => {
   }
 };
 
+const getBranchDetails = (req, res) => {
+  try {
+    const branchName = req.params.branch_name;
+
+    const querysql = "SELECT * FROM branches WHERE branch_name = ?";
+
+    db.query(querysql, [branchName], (err, results) => {
+      if (err) {
+        console.error("Error fetching Branches from MySql:", err);
+        res.status(500).json({ error: "Error fetching Branches" });
+      } else {
+        if (results.length === 0) {
+          res
+            .status(404)
+            .json({ message: "No branches found with the given name" });
+          console.log("No branches found with the given name");
+        } else {
+          res.status(200).json(results);
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Branches from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Branches",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getBranch,
   LoginDoctor,
@@ -804,4 +835,5 @@ module.exports = {
   getExaminationViaUhid,
   getPrescriptionViaUhid,
   updateTreatmentStatus,
+  getBranchDetails,
 };

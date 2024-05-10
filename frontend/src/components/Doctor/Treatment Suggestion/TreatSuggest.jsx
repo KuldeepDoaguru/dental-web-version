@@ -17,6 +17,7 @@ const TreatSuggest = () => {
   console.log(branch);
   const { id, tpid } = useParams();
   console.log(id, tpid);
+  const { refreshTable } = useSelector((state) => state.user);
   const [labList, setLabList] = useState([]);
   const [labTestList, setLabTestList] = useState([]);
   const [treatments, setTreatments] = useState([]);
@@ -163,7 +164,7 @@ const TreatSuggest = () => {
   useEffect(() => {
     getPatientDetail();
     getLabAllData();
-  }, []);
+  }, [refreshTable]);
 
   const timelineForTreatSuggest = async () => {
     try {
@@ -289,6 +290,7 @@ const TreatSuggest = () => {
         lab_name: "",
         test: "",
       });
+      dispatch(toggleTableRefresh());
       alert("Successfully added!");
       console.log(response.data);
     } catch (error) {

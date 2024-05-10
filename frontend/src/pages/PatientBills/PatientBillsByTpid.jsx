@@ -160,7 +160,7 @@ const PatientBillsByTpid = () => {
     <>
       <Wrapper>
         {/* branch details */}
-        <div className="container-fluid">
+        {/* <div className="container-fluid">
           <div className="row">
             <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
               <div className="clinic-logo">
@@ -225,8 +225,25 @@ const PatientBillsByTpid = () => {
             </div>
           </div>
           <hr />
+        </div> */}
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+              <div className="clinic-logo">
+                <img
+                  src={getBranch[0]?.head_img}
+                  alt="header"
+                  className="img-fluid"
+                />
+              </div>
+            </div>
+          </div>
+          <hr />
         </div>
         {/* patient details */}
+        <div className="text-center">
+          <h3>Invoice</h3>
+        </div>
         <div className="container-fluid">
           <div className="heading-title">
             <h4>Patient Details :</h4>

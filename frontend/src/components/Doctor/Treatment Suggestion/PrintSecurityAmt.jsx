@@ -34,7 +34,7 @@ const PrintSecurityAmt = () => {
     console.log(user.id);
     try {
       const viewDoc = await axios.get(
-        ` https://cghsbilling.com/api/v1/auth/displayHospitalDoc/${user.id}`
+        ` https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${branch}`
       );
 
       console.log(viewDoc.data);
@@ -43,6 +43,8 @@ const PrintSecurityAmt = () => {
       console.log(error);
     }
   };
+
+  console.log(hospitalDoc);
 
   useEffect(() => {
     const getSecurityAmtID = async () => {
@@ -84,7 +86,7 @@ const PrintSecurityAmt = () => {
     <Container>
       <div ref={pdfRef}>
         <div className="headimage">
-          <img src={hospitalDoc?.header_img} alt="header" srcset="" />
+          <img src={hospitalDoc[0]?.head_img} alt="header" />
         </div>
         <div className="container-fluid m-0 p-0">
           <div className="row">
@@ -276,7 +278,7 @@ const PrintSecurityAmt = () => {
         </div>
 
         <div className="footimage">
-          <img src={hospitalDoc?.footer_img} alt="header" srcset="" />
+          <img src={hospitalDoc[0]?.foot_img} alt="header" srcset="" />
         </div>
       </div>
       <div className="d-flex justify-content-center my-3 gap-2">
@@ -290,9 +292,9 @@ const PrintSecurityAmt = () => {
         <button
           type="button"
           className="btn btn-primary btn-lg"
-          onClick={() => navigate("/doctor-dashboard")}
+          onClick={() => window.history.back()}
         >
-          Go to Dashboard
+          Go to Back
         </button>
         {/* <button
     type='button'
@@ -324,6 +326,7 @@ const Container = styled.div`
       width: 100%;
     }
   }
+
   .footimage {
     @media print {
       position: fixed;

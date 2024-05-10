@@ -33,6 +33,8 @@ const ViewTreatPrescription = () => {
     }
   };
 
+  console.log(getBranch);
+
   // Get Patient Details START
   const getPatientDetail = async () => {
     try {
@@ -155,41 +157,45 @@ const ViewTreatPrescription = () => {
       <Wrapper>
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+            <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div className="clinic-logo">
                 <img
-                  src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1708075638/dental%20guru/Login-page_1_cwadmt.png"
-                  alt=""
+                  src={getBranch[0]?.head_img}
+                  alt="header"
                   className="img-fluid"
                 />
               </div>
             </div>
+          </div>
+          <hr />
+        </div>
+        <div className="container-fluid">
+          <div className="row">
             <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
               <div className="header-left">
-                <h3 className="text-end">
+                <h3 className="text-start">
                   Dr. {user.currentUser.employee_name}
                 </h3>
                 <h6
-                  className="fw-bold text-capitalize text-end"
+                  className="fw-bold text-capitalize text-start"
                   style={{ color: "#00b894" }}
                 >
                   {user.currentUser.doctor_expertise}
                 </h6>
 
-                <h6 className="fw-bold text-capitalize text-end">
+                <h6 className="fw-bold text-capitalize text-start">
                   {user.currentUser.doctor_education_details}
                 </h6>
 
-                <h6 className="fw-bold text-capitalize text-end">
+                <h6 className="fw-bold text-capitalize text-start">
                   {getBranch[0]?.hospital_name}
                 </h6>
-                <h6 className="fw-bold text-capitalize text-end">
+                <h6 className="fw-bold text-capitalize text-start">
                   {user.currentUser.employee_mobile}
                 </h6>
               </div>
             </div>
           </div>
-          <hr />
         </div>
         <div className="container-fluid dummy-cont h-100">
           <div className="row">

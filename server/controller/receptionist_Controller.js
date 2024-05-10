@@ -2397,7 +2397,7 @@ const LoginReceptionist = (req, res) => {
         }
 
         const user = result[0];
-
+          console.log(user.id)
         const match = bcrypt.compareSync(password, user.employee_password);
         if (!match) {
           return res.status(401).json({
@@ -2426,8 +2426,8 @@ const LoginReceptionist = (req, res) => {
               "Your Email is not approved, Please contact team for furthur assistance",
           });
         }
-
-        const token = JWT.sign({ id: user.id }, process.env.JWT_SECRET, {
+          
+        const token = JWT.sign({ id: user.employee_ID }, process.env.JWT_SECRET, {
           expiresIn: "7d",
         });
 

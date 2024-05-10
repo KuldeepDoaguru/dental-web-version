@@ -3,9 +3,10 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const receptionist_Routes = require("./routes/receptionist_Routes");
 dotenv.config();
+const cron = require('node-cron');
 // rest object
 const app = express();
-
+const {sendEmails} = require("./cron/sendAppointmentEmails");
 // middlewares
 app.use(cors());
 app.use(express.json());
@@ -20,7 +21,17 @@ const PORT = process.env.PORT || 4000;
 
 app.use('/api/v1/receptionist',receptionist_Routes);
 
+// Schedule the cron job to send appointment emails
+cron.schedule('0 8 * * * ', () => {
+  console.log('Sending emails for appointments scheduled for today...');
+  sendEmails();
+},{
+  scheduled: true,
+  timezone: "Asia/Kolkata"
+});
+
 // run listen
 app.listen(PORT, () => {
   console.log(`Server Running on port ${PORT}`);
 });
+

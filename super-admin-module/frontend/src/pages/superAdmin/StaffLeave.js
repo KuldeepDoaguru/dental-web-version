@@ -20,7 +20,13 @@ const StaffLeave = () => {
   const getLeaveList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLeaveList`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLeaveList`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setLeaveData(data);
     } catch (error) {
@@ -40,6 +46,12 @@ const StaffLeave = () => {
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/approveLeave/${id}`,
         {
           status: "Approved",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
         }
       );
       cogoToast.success("Leave Approved");
@@ -56,6 +68,12 @@ const StaffLeave = () => {
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/approveLeave/${id}`,
         {
           status: "Rejected",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
         }
       );
       cogoToast.warning("Leave Rejected");

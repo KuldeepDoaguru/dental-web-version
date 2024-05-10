@@ -10,6 +10,9 @@ import axios from "axios";
 import { utils, writeFile } from "xlsx";
 
 const AppointmentReport = () => {
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
   console.log(`User Name: ${branch.name}`);
   const [appointmentList, setAppointmentList] = useState([]);
@@ -20,7 +23,13 @@ const AppointmentReport = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(response);
       setAppointmentList(response.data);
@@ -63,7 +72,13 @@ const AppointmentReport = () => {
     try {
       const { data } = await axios.post(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadAppointReportByTime/${branch.name}`,
-        { fromDate: fromDate, toDate: toDate }
+        { fromDate: fromDate, toDate: toDate },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       // setSelectedEarn(data);

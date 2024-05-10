@@ -75,7 +75,13 @@ const EditInventory = () => {
   const getInvListDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPurchaseInvByPurId/${branch.name}/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPurchaseInvByPurId/${branch.name}/${pid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setPurInvDetails(data);
@@ -108,6 +114,7 @@ const EditInventory = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
           },
         }
       );

@@ -110,7 +110,13 @@ const EmployeeProfile = () => {
   const getEmployeeData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getEmployeeDetails/${branch.name}/${eid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getEmployeeDetails/${branch.name}/${eid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setEmpData(data);
@@ -144,6 +150,7 @@ const EmployeeProfile = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
           },
         }
       );

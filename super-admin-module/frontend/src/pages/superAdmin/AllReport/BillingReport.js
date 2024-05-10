@@ -24,7 +24,13 @@ const BillingReport = () => {
   const getBillDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getBillsByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getBillsByBranch/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setListBills(data);
@@ -62,7 +68,13 @@ const BillingReport = () => {
     try {
       const { data } = await axios.post(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadBillingReportByTime/${branch.name}`,
-        { fromDate: fromDate, toDate: toDate }
+        { fromDate: fromDate, toDate: toDate },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       // setSelectedEarn(data);

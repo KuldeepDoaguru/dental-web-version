@@ -8,6 +8,7 @@ const initialState = {
   id: null,
   email: "",
   employee_mobile: "",
+  token: "",
   refreshTable: false,
 };
 
@@ -20,6 +21,7 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.id = action.payload.employee_ID;
       state.email = action.payload.email;
       state.employee_mobile = action.payload.employee_mobile;
+      state.token = action.payload.token;
       console.log("User State after setUser:", state);
       console.log("User action after setUser:", action.payload);
     })
@@ -28,6 +30,7 @@ export const userReducer = createReducer(initialState, (builder) => {
       state.id = initialState.id;
       state.email = initialState.email;
       state.employee_mobile = initialState.employee_mobile;
+      state.token = initialState.token;
     })
     .addCase(toggleTableRefresh, (state) => {
       state.refreshTable = !state.refreshTable;

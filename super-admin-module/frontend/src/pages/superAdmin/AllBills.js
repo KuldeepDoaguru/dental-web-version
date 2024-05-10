@@ -60,7 +60,13 @@ const AllBills = () => {
   const getBillDetailsList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getTreatSuggest/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getTreatSuggest/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setListBills(data);
@@ -74,7 +80,13 @@ const AllBills = () => {
   const deleteBillData = async (id) => {
     try {
       const response = await axios.delete(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteBills/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteBills/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(response);
       cogoToast.success("Appointment Deleted Successfully");
@@ -87,7 +99,13 @@ const AllBills = () => {
   const getBillDetailsByBid = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getBillBYBillId/${selectedItem}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getBillBYBillId/${selectedItem}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setPlacehold(data);
     } catch (error) {
@@ -100,7 +118,13 @@ const AllBills = () => {
     try {
       const response = await axios.put(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateBillDetailsByBillId/${selectedItem}`,
-        upData
+        upData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(response);
       getBillDetailsList();
@@ -144,9 +168,6 @@ const AllBills = () => {
   // });
 
   // console.log(filterBillDataByMonth);
-
-  const totalPages = Math.ceil(listBills.length / itemsPerPage);
-
   const filterBillDataByMonth = () => {
     // Filter and paginate appointment data based on currentPage and itemsPerPage
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -160,6 +181,9 @@ const AllBills = () => {
   };
 
   console.log(filterBillDataByMonth());
+  const filterBillMonth = filterBillDataByMonth();
+
+  const totalPages = Math.ceil(filterBillMonth.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);

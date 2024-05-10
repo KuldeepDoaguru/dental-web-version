@@ -25,7 +25,13 @@ const LabDetailsReport = () => {
   const getListLabDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setLabList(data);
     } catch (error) {

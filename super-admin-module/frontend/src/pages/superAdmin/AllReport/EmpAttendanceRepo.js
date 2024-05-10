@@ -97,7 +97,13 @@ const EmpAttendanceRepo = () => {
   const getAttendDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAttendanceDetails/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAttendanceDetails/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
 
       setAttendRepo(data);
@@ -117,7 +123,13 @@ const EmpAttendanceRepo = () => {
     try {
       const { data } = await axios.post(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadAttendanceReportByTime/${branch.name}`,
-        { fromDate: fromDate, toDate: toDate }
+        { fromDate: fromDate, toDate: toDate },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       // setSelectedEarn(data);

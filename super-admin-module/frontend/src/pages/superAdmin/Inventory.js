@@ -28,7 +28,13 @@ const Inventory = () => {
   const getPurchaseList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPurInventoryByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPurInventoryByBranch/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setInvList(data);
@@ -67,7 +73,13 @@ const Inventory = () => {
   const deletePurInvDetails = async (id) => {
     try {
       const response = await axios.delete(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deletePurInvoice/${branch.name}/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deletePurInvoice/${branch.name}/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(response);
       cogoToast.success("Successfully Deleted the Data");
@@ -84,6 +96,12 @@ const Inventory = () => {
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadBillRecById/${file}`,
         {
           responseType: "blob",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
         }
       );
 

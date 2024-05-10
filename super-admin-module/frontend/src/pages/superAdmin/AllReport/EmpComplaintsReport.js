@@ -26,7 +26,13 @@ const EmpComplaintsReport = () => {
   const getComplainViaBranch = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getEmployeeComplainByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getEmployeeComplainByBranch/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setComplaintList(data);
     } catch (error) {
@@ -67,7 +73,13 @@ const EmpComplaintsReport = () => {
     try {
       const { data } = await axios.post(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadEmployeeComplaintReport/${branch.name}`,
-        { fromDate: fromDate, toDate: toDate }
+        { fromDate: fromDate, toDate: toDate },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       // setSelectedEarn(data);

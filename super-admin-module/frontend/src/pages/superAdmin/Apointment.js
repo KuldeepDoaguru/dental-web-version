@@ -52,7 +52,13 @@ const Apointment = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(response);
       setAppointmentList(response.data);
@@ -79,6 +85,12 @@ const Apointment = () => {
           description: "apointment scheduled",
           branch: branch.name,
           patientId: "DH0001",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
         }
       );
       console.log(response);
@@ -86,24 +98,6 @@ const Apointment = () => {
       console.log(error);
     }
   };
-
-  // const updateAppData = async (e, id) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.put(
-  //       `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateAppointData/${id}`,
-  //       updateData
-  //     );
-  //     console.log(response);
-  //     setTimeLineData(response);
-  //     closeUpdatePopup();
-  //     timelineData(updateData);
-  //     cogoToast.success("Appointment Details Updated Successfully");
-  //     getAppointList();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
   console.log(timeLIneData);
 
@@ -119,16 +113,15 @@ const Apointment = () => {
 
   console.log(formattedDate.slice(0, 7));
 
-  // const filterAppointDataByMonth = appointmentList?.filter((item) => {
-  //   return (
-  //     item.appointment_dateTime.split("T")[0].slice(0, 7) ===
-  //     formattedDate.slice(0, 7)
-  //   );
-  // });
+  console.log(appointmentList[1]?.appointment_dateTime?.slice(0, 7));
 
-  // console.log(filterAppointDataByMonth);
+  const filterforOneMonth = appointmentList?.filter((item) => {
+    return item.appointment_dateTime?.slice(0, 7) === formattedDate.slice(0, 7);
+  });
 
-  const totalPages = Math.ceil(appointmentList.length / itemsPerPage);
+  console.log(filterforOneMonth);
+
+  const totalPages = Math.ceil(filterforOneMonth.length / itemsPerPage);
   console.log(totalPages);
   console.log(
     appointmentList[0]?.appointment_dateTime?.split("T")[0].slice(0, 7)
@@ -139,7 +132,7 @@ const Apointment = () => {
     // Filter and paginate appointment data based on currentPage and itemsPerPage
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
-    return appointmentList?.slice(startIndex, endIndex);
+    return filterforOneMonth?.slice(startIndex, endIndex);
   };
 
   console.log(filterAppointDataByMonth);

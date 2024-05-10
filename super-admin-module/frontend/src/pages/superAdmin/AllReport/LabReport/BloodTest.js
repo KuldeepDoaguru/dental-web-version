@@ -7,17 +7,27 @@ import moment from "moment";
 import { Button } from "react-bootstrap";
 import Header from "../../../../components/Header";
 import Sider from "../../../../components/Sider";
+import { useSelector } from "react-redux";
 
 const BloodTest = () => {
   const [patientDetails, setPatientDetails] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [dateFilter, setDateFilter] = useState("");
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
 
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
         const response = await axios.get(
-          `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientLabTest`
+          `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientLabTest`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
         );
         setPatientDetails(response.data);
       } catch (error) {

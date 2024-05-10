@@ -19,6 +19,9 @@ const LabSetting = () => {
   const [selectedTab, setSelectedTab] = useState(initialTab);
   const [showAddLab, setShowAddLab] = useState(false);
   const [labList, setLabList] = useState([]);
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
   console.log(`User Name: ${branch.name}`);
   const [showAddLabTest, setShowAddLabTest] = useState(false);
@@ -91,7 +94,13 @@ const LabSetting = () => {
     try {
       const response = await axios.post(
         "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addLab",
-        addLabField
+        addLabField,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       cogoToast.success("Lab Added Successfully");
       dispatch(toggleTableRefresh());
@@ -106,7 +115,13 @@ const LabSetting = () => {
     try {
       const response = await axios.post(
         "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addLabTest",
-        addLabTestField
+        addLabTestField,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       cogoToast.success("Lab Test Added Successfully");
       dispatch(toggleTableRefresh());
@@ -120,7 +135,13 @@ const LabSetting = () => {
   const getListLabDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setLabList(data);
     } catch (error) {

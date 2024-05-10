@@ -64,7 +64,13 @@ const AppointmentNotify = () => {
   const getNotifyList = async () => {
     try {
       const { data } = await axios.get(
-        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getNotifyList"
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getNotifyList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
 
       setGetNotify(data);
@@ -78,7 +84,13 @@ const AppointmentNotify = () => {
     try {
       const response = await axios.post(
         "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addNotifyCommunication",
-        notiDetails
+        notiDetails,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       closeUpdatePopup();
       getNotifyList();
@@ -93,7 +105,13 @@ const AppointmentNotify = () => {
     try {
       const response = await axios.put(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateNotifyTagsDetails/${selected}`,
-        upNotiDetails
+        upNotiDetails,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       closeUpdatePopup();
       getNotifyList();
@@ -106,7 +124,13 @@ const AppointmentNotify = () => {
   const deleteNotifyTags = async (id) => {
     try {
       const response = await axios.delete(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteNotifyTags/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteNotifyTags/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       getNotifyList();
       cogoToast.success("data deleted successfully");

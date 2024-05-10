@@ -105,7 +105,13 @@ const CalenderSetting = () => {
   const getBranchDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getBranchDetailsByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getBranchDetailsByBranch/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setBrData(data);
     } catch (error) {
@@ -118,7 +124,13 @@ const CalenderSetting = () => {
     try {
       const response = await axios.put(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateBranchCalenderSetting/${branch.name}`,
-        upData
+        upData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(response);
       getBranchDetails();
@@ -138,7 +150,13 @@ const CalenderSetting = () => {
   const getHolidayList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getHolidays/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getHolidays/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setHolidayList(data);
     } catch (error) {
@@ -151,7 +169,13 @@ const CalenderSetting = () => {
     try {
       const response = await axios.post(
         "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addBlockDays",
-        holidays
+        holidays,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       // console.log(response);
       cogoToast.success("Holiday Added Successfully");
@@ -169,7 +193,13 @@ const CalenderSetting = () => {
     try {
       const response = await axios.put(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateHolidays/${selected}`,
-        upHolidays
+        upHolidays,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       cogoToast.success("Holiday Added Successfully");
       closeUpdatePopup();
@@ -184,7 +214,13 @@ const CalenderSetting = () => {
   const deleteHoliday = async (id) => {
     try {
       const response = await axios.delete(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteHolidays/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteHolidays/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       cogoToast.success("Holiday Deleted Successfully");
       getHolidayList();

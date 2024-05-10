@@ -84,7 +84,13 @@ const PrescriptionTemplate = () => {
   const getPrescriptionDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescription/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescription/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setGetPresList(data);
     } catch (error) {
@@ -97,7 +103,13 @@ const PrescriptionTemplate = () => {
     try {
       const response = await axios.post(
         "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addPrescription",
-        addPres
+        addPres,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       closeUpdatePopup();
       getPrescriptionDetails();
@@ -110,7 +122,13 @@ const PrescriptionTemplate = () => {
   const getPresDetailsById = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescriptionById/${selected}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescriptionById/${selected}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setPressById(data);
     } catch (error) {
@@ -123,7 +141,13 @@ const PrescriptionTemplate = () => {
     try {
       const response = await axios.put(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updatePrescriptionDetails/${selected}`,
-        upPres
+        upPres,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       closeUpdatePopup();
       getPrescriptionDetails();
@@ -137,7 +161,13 @@ const PrescriptionTemplate = () => {
     alert("hello");
     try {
       const response = await axios.delete(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deletePrescription/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deletePrescription/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       getPrescriptionDetails();
       cogoToast.success("prescription deleted successfully");

@@ -8,9 +8,13 @@ import BranchSelector from "../../../components/BranchSelector";
 import axios from "axios";
 import cogoToast from "cogo-toast";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { useSelector } from "react-redux";
 
 const TreatmentSetting = () => {
   const location = useLocation();
+  const user = useSelector((state) => state.user);
+  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  console.log("User State:", user);
   const [showAddTreatments, setShowAddTreatments] = useState(false);
   const [showEditTreatments, setShowEditTreatments] = useState(false);
   const [keyword, setkeyword] = useState("");
@@ -58,7 +62,13 @@ const TreatmentSetting = () => {
     try {
       const response = await axios.post(
         "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addTreatment",
-        treatData
+        treatData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(response);
       cogoToast.success("Treatment Addded Successfully");
@@ -75,7 +85,13 @@ const TreatmentSetting = () => {
   const getTreatmentList = async () => {
     try {
       const { data } = await axios.get(
-        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getTreatmentList"
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getTreatmentList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setTreatList(data);
@@ -89,7 +105,13 @@ const TreatmentSetting = () => {
     try {
       const response = await axios.put(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateTreatmentDetails/${id}`,
-        treatData
+        treatData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
 
       console.log(response);
@@ -104,7 +126,13 @@ const TreatmentSetting = () => {
   const deleteTreatment = async (id) => {
     try {
       const response = await axios.delete(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteTreatment/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteTreatment/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       getTreatmentList();
       cogoToast.success("Treatment deleted successfully");

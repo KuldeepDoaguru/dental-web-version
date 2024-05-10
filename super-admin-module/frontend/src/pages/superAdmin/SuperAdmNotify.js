@@ -20,7 +20,13 @@ const SuperAdmNotify = () => {
   const getNotifyDetails = async () => {
     try {
       const { data } = await axios.get(
-        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getSuperAdminNotify"
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getSuperAdminNotify",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setNotifyList(data);
     } catch (error) {
@@ -31,7 +37,13 @@ const SuperAdmNotify = () => {
   const updateMarkRead = async (id) => {
     try {
       const response = await axios.put(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/markRead/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/markRead/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       getNotifyDetails();
     } catch (error) {

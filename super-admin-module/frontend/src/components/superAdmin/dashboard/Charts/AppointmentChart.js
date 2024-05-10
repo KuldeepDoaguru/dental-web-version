@@ -40,7 +40,13 @@ const AppointmentChart = () => {
     const getAppointList = async () => {
       try {
         const response = await axios.get(
-          `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientDetailsByBranch/${branch.name}`
+          `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientDetailsByBranch/${branch.name}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
         );
         setAppointmentList(response.data);
       } catch (error) {

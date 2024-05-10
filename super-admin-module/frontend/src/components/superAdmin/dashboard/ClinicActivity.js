@@ -29,7 +29,13 @@ const ClinicActivity = () => {
     // console.log(branch.name);
     try {
       const response = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setAppointmentList(response.data);
     } catch (error) {
@@ -45,7 +51,13 @@ const ClinicActivity = () => {
   const getPatdetailsByBranch = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientDetailsByBranch/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientDetailsByBranch/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       // console.log(data);
       setPatDetails(data);
@@ -110,7 +122,13 @@ const ClinicActivity = () => {
   const getTreatmentValues = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/getTreatSuggest/${branch.name}`
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getTreatSuggest/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setTreatValue(data);

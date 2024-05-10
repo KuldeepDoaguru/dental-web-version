@@ -8,6 +8,7 @@ const MostTakenTreat = () => {
   const dispatch = useDispatch();
   const branch = useSelector((state) => state.branch);
   const user = useSelector((state) => state.user);
+  console.log(user.token);
   const [appointmentList, setAppointmentList] = useState([]);
   const [chartData, setChartData] = useState({
     series: [],
@@ -38,7 +39,13 @@ const MostTakenTreat = () => {
     // console.log(user.branch_name);
     try {
       const response = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentData/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setAppointmentList(response.data);
     } catch (error) {

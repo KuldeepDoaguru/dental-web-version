@@ -74,7 +74,13 @@ const DrugSetting = () => {
   const getDrugsData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getDrugs/${branch.name}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getDrugs/${branch.name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setGetDrugList(data);
     } catch (error) {
@@ -87,7 +93,13 @@ const DrugSetting = () => {
     try {
       const response = await axios.post(
         "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addDrugs",
-        addDrugs
+        addDrugs,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(response);
       closeUpdatePopup();
@@ -103,7 +115,13 @@ const DrugSetting = () => {
     try {
       const response = await axios.put(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateDrugDetails/${selected}`,
-        upaAddDrugs
+        upaAddDrugs,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       closeUpdatePopup();
       console.log(response);
@@ -117,7 +135,13 @@ const DrugSetting = () => {
   const deleteDrug = async (id) => {
     try {
       const response = await axios.delete(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteDrug/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteDrug/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       getDrugsData();
       cogoToast.success("drugs details deleted successfully");

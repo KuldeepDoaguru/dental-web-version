@@ -23,7 +23,13 @@ const PatientProfile = () => {
   const patientProfileData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientDataByBranchAndId/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientDataByBranchAndId/${pid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setPatientData(data);
@@ -35,7 +41,13 @@ const PatientProfile = () => {
   const getOngoingTreat = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientBillByBranchAndId/${branch.name}/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientBillByBranchAndId/${branch.name}/${pid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setOngoingTreat(data);

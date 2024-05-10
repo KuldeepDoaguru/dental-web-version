@@ -13,6 +13,7 @@ function DoctorSection() {
 
   const {refreshTable,currentUser} = useSelector((state) => state.user);
   const  branch = currentUser.branch_name;
+  const token = currentUser?.token;
   const [branchDetail,setBranchDetail] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -28,7 +29,13 @@ function DoctorSection() {
  
   const getDoctorsWithLeave = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setDoctorWithLeave(response?.data?.data)
     }
     catch(error){
@@ -38,7 +45,13 @@ function DoctorSection() {
 
   const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setDoctors(response?.data?.data)
     }
     catch(error){

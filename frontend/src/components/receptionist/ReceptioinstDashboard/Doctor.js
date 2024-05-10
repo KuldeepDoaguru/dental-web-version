@@ -13,6 +13,7 @@ function Doctor() {
 
   const dispatch = useDispatch();
   const {refreshTable,currentUser} = useSelector((state) => state.user);
+  const token = currentUser?.token;
   const  branch = currentUser.branch_name
   const [patients, setPatients] = useState([]);
   const [doctors,setDoctors] = useState([]);
@@ -69,7 +70,13 @@ function Doctor() {
 
   const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setDoctors(response?.data?.data)
     }
     catch(error){
@@ -79,7 +86,13 @@ function Doctor() {
 
   const getPatient = async () =>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       console.log(response);
       setPatients(response?.data?.data)
      }
@@ -92,7 +105,13 @@ function Doctor() {
   
   const getAppointments = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setAppointmentsData(response?.data?.data)
     }
     catch(error){
@@ -103,7 +122,13 @@ function Doctor() {
   const [doctorWithLeave,setDoctorWithLeave] = useState([]);
   const getDoctorsWithLeave = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setDoctorWithLeave(response?.data?.data)
     }
     catch(error){
@@ -123,7 +148,13 @@ function Doctor() {
   }
   const getBranchHolidays = async ()=>{
     try{
-       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}` ,
+       {
+         headers: {
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
+       }
+       })
        console.log(response)
        setBranchHolidays(response.data.data)
     }

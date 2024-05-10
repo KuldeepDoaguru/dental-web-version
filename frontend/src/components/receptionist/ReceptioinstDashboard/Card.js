@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
@@ -7,7 +7,7 @@ import moment from "moment";
 
 
 function Card() {
-
+  const navigate = useNavigate();
   const [patients, setPatients] = useState([]);
   const [newpatients, setNewPatients] = useState([]);
   const {refreshTable,currentUser} = useSelector((state) => state.user);
@@ -16,6 +16,7 @@ function Card() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Initialize with today's date
   const [opdAmount,setOpdAmount] = useState(0);
   const [appointmentData,setAppointmentsData] = useState([]);
+  const token = currentUser?.token;
 
   const [missedAppointments,setMissedAppointments] = useState(0);
   const [checkInAppointments,setCheckInAppointments] = useState(0);
@@ -26,7 +27,13 @@ function Card() {
 
   const getAppointments = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
 
       
       const filteredPatients = response?.data?.data.filter(patient => patient.appointment_dateTime.includes(selectedDate));
@@ -40,19 +47,35 @@ function Card() {
   const getAppointmentsForOpd = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}` ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       
       const filteredPatients = response?.data?.data.filter(patient => patient.payment_Status === "paid" && patient.created_at.includes(selectedDate));
       setOpdData(filteredPatients);
     } catch (error) {
       console.log(error);
+      if(error.response.status == 401){
+        alert("Your token is expired please login again")
+        navigate('/receptionist_login');
+      }
     }
   };
 
   const getNewPatient = async () =>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       console.log(response);
       const todayDate = moment().format('YYYY-MM-DD'); // Get today's date
       const filteredPatients = response?.data?.data.filter(patient => moment(patient.created_at).format('YYYY-MM-DD') === todayDate);
@@ -66,7 +89,13 @@ function Card() {
   
   const getPatient = async () =>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       console.log(response);
       setPatients(response?.data?.data)
      }

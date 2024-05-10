@@ -11,7 +11,8 @@ import moment from 'moment'
 function NewPatient() {
   
   const {refreshTable,currentUser} = useSelector((state) => state.user);
-  const  branch = currentUser.branch_name
+  const  branch = currentUser.branch_name;
+  const token = currentUser?.token;
   const [patients, setPatients] = useState([]);
   const [showEditPatientPopup, setShowEditPatientPopup] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState("");
@@ -23,7 +24,13 @@ function NewPatient() {
 
   const getPatient = async () =>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       console.log(response);
       const todayDate = moment().format('YYYY-MM-DD'); // Get today's date
       const filteredPatients = response?.data?.data.filter(patient => moment(patient.created_at).format('YYYY-MM-DD') === todayDate);

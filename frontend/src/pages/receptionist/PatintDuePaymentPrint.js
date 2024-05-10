@@ -13,6 +13,7 @@ function PatintDuePaymentPrint() {
     const navigate = useNavigate();
     const { bid, tpid, uhid } = useParams();
     const {refreshTable,currentUser} = useSelector((state) => state.user);
+    const token = currentUser?.token;
   const  branch = currentUser.branch_name
     const [branchData, setBranchData] = useState([]);
     const [billAmount, setBillAmount] = useState([]);
@@ -50,7 +51,13 @@ function PatintDuePaymentPrint() {
     const secuirtyAmtBytpuhid = async () => {
       try {
         const res = await axios.get(
-          `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getSecurityAmountDataByTPUHID/${tpid}/${uhid}`
+          `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getSecurityAmountDataByTPUHID/${tpid}/${uhid}`   ,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }
+          }
         );
         console.log(res.data);
         setSaAmt(res.data);
@@ -62,7 +69,13 @@ function PatintDuePaymentPrint() {
     const getBillDetails = async () => {
       try {
         const { data } = await axios.get(
-          `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientBillsAndSecurityAmountByBranch/${branch}/${bid}`
+          `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientBillsAndSecurityAmountByBranch/${branch}/${bid}`   ,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }
+          }
         );
         setBillAmount(data);
       } catch (error) {
@@ -138,6 +151,13 @@ function PatintDuePaymentPrint() {
           {
             remaining_amount: remainingSecurityAmount,
           }
+          ,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }
+          }
         );
         cogoToast.success("update remaining Successfully amt");
         console.log(remainingSecurityAmount);
@@ -161,6 +181,13 @@ function PatintDuePaymentPrint() {
             receiver_name: currentUser.employee_name,
             receiver_emp_id: currentUser.employee_ID,
             pay_by_sec_amt: updatedPay_by_sec_amt,
+          }
+          ,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }
           }
         );
         if (response.data.success) {
@@ -202,6 +229,13 @@ function PatintDuePaymentPrint() {
       try {
         const res = await axios.put(
           `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updateTreatmentStatus/${branch}/${tpid}`
+          ,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }
+          }
         );
         console.log(res);
         cogoToast.success("Treatment Completed");

@@ -14,6 +14,7 @@ import cogoToast from 'cogo-toast';
 function MakePayment({ onClose, patientInfo}) {
   const dispatch = useDispatch();
   const {currentUser,refreshTable} = useSelector((state) => state.user);
+  const token = currentUser?.token;
   const branch = currentUser.branch_name
   const [show, setShow] = useState(false);
   
@@ -30,6 +31,13 @@ function MakePayment({ onClose, patientInfo}) {
           branch: branch,
           patientId: id,
         }
+        ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
       );
       console.log(response);
     } catch (error) {

@@ -75,6 +75,7 @@ const ClinicExamin = () => {
   const user = useSelector((state) => state.user);
 
   const  branch = user.currentUser.branch_name;
+  const token = user.currentUser?.token;
   
   const [examinations, setExaminations] = useState([]);
 
@@ -82,6 +83,13 @@ const ClinicExamin = () => {
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setExaminations(data?.data);
     } catch (error) {

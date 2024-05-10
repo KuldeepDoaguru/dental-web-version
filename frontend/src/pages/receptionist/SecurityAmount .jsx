@@ -16,6 +16,7 @@ function SecurityAmount() {
   const { refreshTable, currentUser } = useSelector((state) => state.user);
   const branch = currentUser.branch_name
   const [patients, setPatients] = useState([]);
+  const token = currentUser?.token;
 
 
   const dispatch = useDispatch();
@@ -125,6 +126,13 @@ function SecurityAmount() {
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getSecurityAmountDataByBranch/${branch}`
+        ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
       );
       setSecurityList(data);
     } catch (error) {
@@ -196,6 +204,13 @@ function SecurityAmount() {
           refund_amount: filterForSecAmountDef[0]?.remaining_amount,
           remaining_amount: 0,
         }
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       cogoToast.success("Amount Refunded Successfully");
       getSecurityAmountList();
@@ -219,7 +234,13 @@ function SecurityAmount() {
     try {
       const response = await axios.put(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updatePatientSecurityAmt/${selected}`,
-        updatedData
+        updatedData   ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       cogoToast.success("Amount Paid Successfully");
       setData({

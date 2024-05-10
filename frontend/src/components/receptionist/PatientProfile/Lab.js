@@ -2,16 +2,29 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
 
 const Lab = () => {
   const { pid } = useParams();
+  const user = useSelector((state) => state.user);
+
+  const  branch = user.currentUser.branch_name;
+  const token = user.currentUser?.token;
   
+
   const [testData, setTestData] = useState([]);
 
   const getLabTest = async () => {
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientLabTestByPatientId/${pid}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setTestData(data);
     } catch (error) {

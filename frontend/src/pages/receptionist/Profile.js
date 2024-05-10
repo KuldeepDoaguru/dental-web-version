@@ -32,7 +32,7 @@ const Profile = () => {
             </div>
             <div className="row">
                 <div className="col-lg-4">
-                    <img src="https://cirrusindia.co.in/wp-content/uploads/2016/10/dummy-profile-pic-male1.jpg" alt="profile" className="img-fluid rounded"/>
+                    <img src={currentUser?.employee_picture} alt="profile" className="img-fluid rounded"/>
                 </div>
                 <div className="col-lg-8">
                     <div className="row mb-3">

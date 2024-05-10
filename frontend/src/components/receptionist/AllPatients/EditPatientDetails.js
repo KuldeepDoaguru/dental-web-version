@@ -15,6 +15,7 @@ function EditPatientDetails({ onClose, patientInfo, allPatientData }) {
   const dispatch = useDispatch();
   const {currentUser,refreshTable} = useSelector((state) => state.user);
   const branch = currentUser.branch_name
+  const token = currentUser?.token;
   const [show, setShow] = useState(false);
   const [selectedDisease, setSelectedDisease] = useState([]);
   const [inputDisease, setInputDisease] = useState('');
@@ -31,6 +32,13 @@ function EditPatientDetails({ onClose, patientInfo, allPatientData }) {
           branch: branch,
           patientId: id,
         }
+        ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
       );
       console.log(response);
     } catch (error) {
@@ -154,7 +162,13 @@ useEffect(()=>{
   };
    
   try{
-    const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-patient-details', updatedData);
+    const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-patient-details', updatedData ,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+    });
     console.log(response);
     if(response.data.success){
       cogoToast.success(response?.data?.message);

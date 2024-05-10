@@ -24,6 +24,7 @@ function Calender1() {
   const [selectedAppointment, setSelectedAppointment] = useState("");
   const {refreshTable,currentUser} = useSelector((state) => state.user);
   const  branch = currentUser.branch_name;
+  const token = currentUser?.token;
   const [branchDetail,setBranchDetail] = useState([]);
   const [doctors,setDoctors] = useState([]);
   const [appointmentsData,setAppointmentsData] = useState([]);
@@ -60,7 +61,13 @@ const getBranchDetail = async ()=>{
 
 const getDoctors = async ()=>{
   try{
-    const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
+    const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}` ,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+    });
     setDoctors(response?.data?.data)
   }
   catch(error){
@@ -69,7 +76,13 @@ const getDoctors = async ()=>{
 }
 const getAppointments = async ()=>{
   try{
-    const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`);
+    const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}` ,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+    });
     setAppointmentsData(response?.data?.data)
   }
   catch(error){

@@ -11,6 +11,7 @@ const Overview = () => {
   const user = useSelector((state) => state.user);
 
   const  branch = user.currentUser.branch_name;
+  const token = user.currentUser?.token;
 
   const [patAppointDetails, setPatAppointDetails] = useState([]);
   
@@ -31,6 +32,13 @@ const getTreatmentsDetails = async () => {
   try {
     const { data } = await axios.get(
       `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTreatmentViaUhid/${branch}/${pid}`
+      ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
     );
     setTreatments(data?.data);
   } catch (error) {
@@ -41,6 +49,13 @@ const getPrescriptionDetails = async () => {
   try {
     const { data } = await axios.get(
       `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPrescriptionViaUhid/${branch}/${pid}`
+      ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
     );
     setPrescriptions(data?.data);
   } catch (error) {
@@ -51,6 +66,13 @@ const getBillDetails = async () => {
   try {
     const { data } = await axios.get(
       `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getBillsViaUhid/${branch}/${pid}`
+      ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
     );
     setBills(data?.data);
   } catch (error) {
@@ -61,6 +83,13 @@ const getExaminationDetails = async () => {
   try {
     const { data } = await axios.get(
       `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`
+      ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
     );
     setExaminations(data?.data);
   } catch (error) {
@@ -74,6 +103,13 @@ const getExaminationDetails = async () => {
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAllAppointmentByPatientId/${branch}/${pid}`
+        ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
       );
       console.log(data);
       setPatAppointDetails(data?.data);

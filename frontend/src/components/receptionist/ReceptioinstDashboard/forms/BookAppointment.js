@@ -15,6 +15,7 @@ function BookAppointment() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const {refreshTable,currentUser} = useSelector((state) => state.user);
+  const token = currentUser?.token;
   const  branch = currentUser.branch_name
   const [searchQuery, setSearchQuery] = useState("");
   const [searchDoctor, setSearchDoctor] = useState("");
@@ -93,7 +94,13 @@ const handleOpdAmountChange = (e) => {
   }
   const getBranchHolidays = async ()=>{
     try{
-       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}` ,
+       {
+         headers: {
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
+       }
+       })
        console.log(response)
        setBranchHolidays(response.data.data)
     }
@@ -104,7 +111,13 @@ const handleOpdAmountChange = (e) => {
 
   const getPatientTreatmentDetails = async (uhid)=>{
     try {
-       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientDeatilsByUhid/${branch}/${uhid}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientDeatilsByUhid/${branch}/${uhid}` ,
+       {
+         headers: {
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
+       }
+       })
       
        setPatientTreatmentDetails(response.data.data)
        
@@ -183,7 +196,13 @@ console.log(treatments)
 
   const getPatient = async () =>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       console.log(response);
       setPatients(response?.data?.data)
      }
@@ -196,7 +215,13 @@ console.log(treatments)
   
   const getAppointments = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setAppointmentsData(response?.data?.data)
     }
     catch(error){
@@ -222,7 +247,13 @@ console.log(treatments)
 
   const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setDoctors(response?.data?.data)
     }
     catch(error){
@@ -254,7 +285,13 @@ console.log(branchDetail)
  const [doctorWithLeave,setDoctorWithLeave] = useState([]);
   const getDoctorsWithLeave = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setDoctorWithLeave(response?.data?.data)
     }
     catch(error){
@@ -477,6 +514,13 @@ const timelineData = async (id) => {
         branch: branch,
         patientId: id,
       }
+      ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
     );
     console.log(response);
   } catch (error) {
@@ -662,7 +706,13 @@ const isDoctorAvailable = (selectedDateTime) => {
     }
 
     try{
-      const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/book-appointment',newAppointment);
+      const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/book-appointment',newAppointment ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       
       if(response.data.success){
         cogoToast.success(response?.data?.message);

@@ -14,8 +14,8 @@ import { Link, useNavigate } from "react-router-dom";
 function PatientsDue() {
   
   const {refreshTable,currentUser} = useSelector((state) => state.user);
-  const  branch = currentUser.branch_name
-  
+  const  branch = currentUser.branch_name;
+  const token = currentUser?.token;
 
   
   const [patBill, setPatBill] = useState([]);
@@ -24,6 +24,13 @@ function PatientsDue() {
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientBillsByBranch/${branch}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setPatBill(data);
     } catch (error) {

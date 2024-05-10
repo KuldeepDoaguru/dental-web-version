@@ -12,6 +12,7 @@ const BranchInfo = () => {
 
     const {refreshTable,currentUser} = useSelector((state) => state.user);
     const  branch = currentUser?.branch_name;
+    const token = currentUser?.token;
     const getBranchDetail = async ()=>{
         try{
            const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-detail/${branch}`)
@@ -25,7 +26,13 @@ const BranchInfo = () => {
     
       const getBranchHolidays = async ()=>{
         try{
-           const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}`)
+           const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}` ,
+           {
+             headers: {
+               'Content-Type': 'application/json',
+               'Authorization': `Bearer ${token}`
+           }
+           })
            console.log(response)
            setBranchHolidays(response.data.data)
         }

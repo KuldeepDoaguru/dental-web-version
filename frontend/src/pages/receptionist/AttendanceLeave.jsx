@@ -22,6 +22,8 @@ const AttendanceLeave = () => {
     const navigate = useNavigate();
     const {refreshTable,currentUser} = useSelector((state) => state.user);
     const  branch = currentUser.branch_name;
+    const token = currentUser?.token;
+
     const employeeName = currentUser.employee_name;
     const employeeId = currentUser.employee_ID;
   const [attendRepo, setAttendRepo] = useState([]);
@@ -40,7 +42,15 @@ const AttendanceLeave = () => {
   const getAttendance = async () => {
      
     try{
-        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAttendancebyempId/${branch}/${employeeId}`);
+        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAttendancebyempId/${branch}/${employeeId}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
+        );
         setAttendance(response?.data?.data)
       }
       catch(error){
@@ -55,7 +65,13 @@ const AttendanceLeave = () => {
   const getLeaves = async () => {
      
     try{
-        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-leaves/${branch}/${employeeId}`);
+        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-leaves/${branch}/${employeeId}` ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        });
         setLeaveData(response?.data?.data)
       }
       catch(error){

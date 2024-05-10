@@ -15,7 +15,8 @@ function AddPatient() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const { refreshTable } = useSelector((state) => state.user);
-  const branch = user.currentUser.branch_name;
+  const branch = user?.currentUser?.branch_name;
+  const token = user?.currentUser?.token;
 
   const [searchDoctor, setSearchDoctor] = useState("");
   const [showDoctorList, setShowDoctorList] = useState(false);
@@ -66,7 +67,13 @@ function AddPatient() {
   const getBranchHolidays = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}` ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       console.log(response);
       setBranchHolidays(response.data.data);
@@ -153,7 +160,13 @@ function AddPatient() {
   const getPatient = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}` ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       console.log(response);
       setPatients(response?.data?.data);
@@ -165,7 +178,13 @@ function AddPatient() {
   const getAppointments = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}` ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setAppointmentsData(response?.data?.data);
     } catch (error) {
@@ -176,7 +195,13 @@ function AddPatient() {
   const getDoctors = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}` ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setDoctors(response?.data?.data);
     } catch (error) {
@@ -214,7 +239,13 @@ function AddPatient() {
   const getDoctorsWithLeave = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}` ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setDoctorWithLeave(response?.data?.data);
     } catch (error) {
@@ -398,6 +429,13 @@ function AddPatient() {
           branch: branch,
           patientId: id,
         }
+        ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
       );
       console.log(response);
     } catch (error) {
@@ -597,8 +635,14 @@ function AddPatient() {
 
       try {
         const response = await axios.post(
-          "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/add-patient",
-          newPatient
+          "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/add-patient", 
+          newPatient , 
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }
+          }
         );
         console.log(response);
         if (response?.data?.success) {

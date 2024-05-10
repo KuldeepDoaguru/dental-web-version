@@ -18,6 +18,7 @@ function Inquiry() {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const  branch = user.currentUser.branch_name;
+  const token = user.currentUser?.token;
   const [inquiries,setInquiries] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,7 +33,13 @@ function Inquiry() {
 
   const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setDoctors(response?.data?.data)
     }
     catch(error){
@@ -41,7 +48,13 @@ function Inquiry() {
   }
   const getInquiries = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-inquiries/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-inquiries/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setInquiries(response?.data?.data)
     }
     catch(error){
@@ -205,7 +218,13 @@ const handleSubmit =async (e)=>{
   }
 
     try {
-      const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/add-inquiry', newData);
+      const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/add-inquiry', newData ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       console.log(response);
       if (response.data.success) {
        cogoToast.success(response?.data?.message);
@@ -250,7 +269,13 @@ const handleDelete = async (id)=>{
   }
  
   try {
-    const response = await axios.delete(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/delete-inquiry/${id}`);
+    const response = await axios.delete(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/delete-inquiry/${id}` ,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+    });
     console.log(response);
     if (response.data.success) {
         dispatch(toggleTableRefresh());

@@ -186,6 +186,7 @@ const Bill = () => {
   const user = useSelector((state) => state.user);
 
   const  branch = user.currentUser.branch_name;
+  const token = user.currentUser?.token;
  
   const [bills, setBills] = useState([]);
 
@@ -193,6 +194,13 @@ const Bill = () => {
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getBillsViaUhid/${branch}/${pid}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setBills(data?.data);
     } catch (error) {

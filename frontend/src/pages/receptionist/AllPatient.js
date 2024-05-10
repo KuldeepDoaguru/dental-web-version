@@ -11,7 +11,8 @@ import moment from 'moment'
 function AllPatient() {
   
   const {refreshTable,currentUser} = useSelector((state) => state.user);
-  const  branch = currentUser.branch_name
+  const  branch = currentUser.branch_name;
+  const token = currentUser?.token;
   const [patients, setPatients] = useState([]);
   
   const [showEditPatientPopup, setShowEditPatientPopup] = useState(false);
@@ -24,7 +25,13 @@ function AllPatient() {
 
   const getPatient = async () =>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       console.log(response);
       setPatients(response?.data?.data)
      }

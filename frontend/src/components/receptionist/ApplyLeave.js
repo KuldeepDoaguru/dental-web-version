@@ -14,6 +14,7 @@ import { toggleTableRefresh } from '../../redux/user/userSlice';
 
 function ApplyLeave() {
     const {refreshTable,currentUser} = useSelector((state) => state.user);
+    const token = currentUser?.token;
     const dispatch = useDispatch();
   const  branch = currentUser.branch_name;
   const employeeName = currentUser.employee_name;
@@ -34,7 +35,13 @@ function ApplyLeave() {
   const getLeaves = async () => {
      
     try{
-        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-leaves/${branch}/${employeeId}`);
+        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-leaves/${branch}/${employeeId}` ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        });
         setLeaveData(response?.data?.data)
       }
       catch(error){
@@ -114,7 +121,13 @@ function ApplyLeave() {
     
         }
         try {
-            const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/apply-leave', updatedFormData);
+            const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/apply-leave', updatedFormData ,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+            });
             if(response.data.success){
                 cogoToast.success(response?.data?.message);
                 setSelectedDates([]);

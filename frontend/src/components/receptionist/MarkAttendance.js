@@ -11,6 +11,8 @@ const MarkAttendance = () => {
     const {refreshTable,currentUser} = useSelector((state) => state.user);
     const dispatch = useDispatch();
   const  branch_name = currentUser.branch_name;
+  const token = currentUser?.token;
+
   const employee_name = currentUser.employee_name;
   const employee_ID = currentUser.employee_ID;
   const employee_designation = currentUser.employee_designation;
@@ -23,7 +25,15 @@ const MarkAttendance = () => {
   const getTodayAttendance = async () => {
      
     try{
-        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTodayAttendance/${branch_name}/${employee_ID}/${date}`);
+        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTodayAttendance/${branch_name}/${employee_ID}/${date}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
+        );
         setTodayAttendance(response?.data?.data)
       }
       catch(error){
@@ -47,7 +57,14 @@ const MarkAttendance = () => {
           date,
           loginTime,
           availability
-        });
+        }
+        ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
         if(response.data.success){
             cogoToast.success("Login time recorded successfully")
             getTodayAttendance();
@@ -76,7 +93,14 @@ const MarkAttendance = () => {
         employee_designation,
         date,
         logoutTime,
-        availability});
+        availability}
+        ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
 
         if(response.data.success){
             cogoToast.success("Logout time recorded successfully")

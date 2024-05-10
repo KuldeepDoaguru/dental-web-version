@@ -13,6 +13,7 @@ import moment from "moment";
 function OpdCollection() {
   const { refreshTable, currentUser } = useSelector((state) => state.user);
   const branch = currentUser.branch_name;
+  const token = currentUser?.token;
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Initialize with today's date
   const [appointmentsData, setAppointmentData] = useState([]);
 
@@ -34,7 +35,13 @@ function OpdCollection() {
   const getAppointments = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}` ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
      
       const filteredPatients = response?.data?.data?.filter(patient =>  patient?.created_at?.includes(selectedDate) && patient.treatment_provided === "OPD");

@@ -11,7 +11,8 @@ const PatientBillsByTpid = () => {
   const navigate = useNavigate();
   const [getPatientData, setGetPatientData] = useState([]);
   const {refreshTable,currentUser} = useSelector((state) => state.user);
-  const  branch = currentUser.branch_name
+  const  branch = currentUser.branch_name;
+  const token = currentUser?.token;
 
   console.log(tpid);
   console.log(branch);
@@ -40,6 +41,13 @@ const PatientBillsByTpid = () => {
     try {
       const res = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAppointmentsWithPatientDetailsById/${tpid}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setGetPatientData(res.data.result);
     } catch (error) {
@@ -59,6 +67,13 @@ const PatientBillsByTpid = () => {
     try {
       const res = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getDentalDataByTpid/${tpid}/${branch}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setGetExaminData(res.data.result);
       console.log(res.data);
@@ -77,6 +92,13 @@ const PatientBillsByTpid = () => {
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTreatmentDetailsViaTpid/${tpid}/${branch}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setGetTreatData(data.result);
       console.log(data);
@@ -96,6 +118,13 @@ const PatientBillsByTpid = () => {
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTreatPrescriptionByTpid/${tpid}/${branch}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setGetTreatMedicine(data);
       console.log(data);
@@ -114,6 +143,13 @@ const PatientBillsByTpid = () => {
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTreatSuggestViaTpid/${tpid}/${branch}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setGetTreatSug(data.data);
       console.log(data.data);
@@ -144,6 +180,13 @@ const PatientBillsByTpid = () => {
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/billDetailsViaTpid/${tpid}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setBillDetails(data);
       console.log(data);
@@ -164,16 +207,16 @@ const PatientBillsByTpid = () => {
         {/* branch details */}
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
+            <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div className="clinic-logo">
                 <img
-                  src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1708075638/dental%20guru/Login-page_1_cwadmt.png"
+                  src={getBranch[0]?.head_img}
                   alt=""
                   className="img-fluid"
                 />
               </div>
             </div>
-            <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
+            {/* <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-8 col-sm-8 col-8">
               <div className="header-left">
                 <h3 className="text-center">Invoice</h3>
                 <hr />
@@ -224,12 +267,13 @@ const PatientBillsByTpid = () => {
                   </span>
                 </h6>
               </div>
-            </div>
+            </div> */}
           </div>
           <hr />
         </div>
         {/* patient details */}
         <div className="container-fluid">
+        <h3 className="text-center">Invoice</h3>
           <div className="heading-title">
             <h4>Patient Details :</h4>
           </div>

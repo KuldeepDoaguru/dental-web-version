@@ -12,7 +12,7 @@ import { toggleTableRefresh } from '../../../redux/user/userSlice';
 function EditInquiry({ onClose, inquiryInfo }) {
   const dispatch = useDispatch();
   const {currentUser} = useSelector((state) => state.user);
-
+  const token = currentUser?.token;
   const [show, setShow] = useState(false);
  
   const [selectedDoctor, setSelectedDoctor] = useState({
@@ -40,7 +40,13 @@ function EditInquiry({ onClose, inquiryInfo }) {
 
  const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setDoctors(response?.data?.data)
     }
     catch(error){
@@ -95,7 +101,13 @@ console.log(data)
           }
 
           try {
-            const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-inquiry', updatedInquiry);
+            const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-inquiry', updatedInquiry ,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+            });
             console.log(response);
             if (response.data.success) {
                 dispatch(toggleTableRefresh());

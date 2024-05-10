@@ -69,13 +69,20 @@ const Timeline = () => {
   const {currentUser} = useSelector((state) => state.user);
 
   const  branch = currentUser.branch_name;
+  const token = currentUser?.token;
   
   const [patTimeline, setPatTimeline] = useState([]);
 
   const getTimelineDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientTimeline/${branch}/${pid}`
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientTimeline/${branch}/${pid}` ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       console.log(data);
       setPatTimeline(data?.data);

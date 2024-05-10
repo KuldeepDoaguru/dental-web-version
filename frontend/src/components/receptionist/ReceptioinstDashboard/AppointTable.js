@@ -20,6 +20,7 @@ const AppointTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { refreshTable, currentUser } = useSelector((state) => state.user);
+  const token = currentUser?.token;
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState("");
@@ -46,6 +47,13 @@ const AppointTable = () => {
           branch: branch,
           patientId: id,
         }
+        ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
       );
       console.log(response);
     } catch (error) {
@@ -64,6 +72,13 @@ const AppointTable = () => {
           branch: branch,
           patientId: id,
         }
+        ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
       );
       console.log(response);
     } catch (error) {
@@ -97,7 +112,13 @@ const AppointTable = () => {
 
   const getAppointments = async () => {
     try {
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setAppointmentData(response?.data?.data)
     }
     catch (error) {
@@ -134,7 +155,13 @@ const AppointTable = () => {
   const handleStatusChange = async (appointmentId, patient_uhid, newStatus) => {
     try {
       // Send a PUT request to your backend endpoint to update the status
-      await axios.put(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-appointment-status`, { status: newStatus, appointmentId: appointmentId, appointment_updated_by: currentUser.employee_name, appointment_updated_by_emp_id: currentUser.employee_ID });
+      await axios.put(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-appointment-status`, { status: newStatus, appointmentId: appointmentId, appointment_updated_by: currentUser.employee_name, appointment_updated_by_emp_id: currentUser.employee_ID } ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       // Optionally, you can re-fetch appointments after successful update
       getAppointments();
       dispatch(toggleTableRefresh());
@@ -168,6 +195,12 @@ const AppointTable = () => {
       await axios.put(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-appointment-status-cancel`, {
         status: newStatus,
         cancelReason: reason, appointmentId: appointmentId, appointment_updated_by: currentUser.employee_name, appointment_updated_by_emp_id: currentUser.employee_ID
+      } ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
       });
       // Optionally, you can re-fetch appointments after successful update
       getAppointments();

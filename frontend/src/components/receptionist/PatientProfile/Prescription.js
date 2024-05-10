@@ -72,6 +72,7 @@ const Prescription = () => {
   const user = useSelector((state) => state.user);
 
   const  branch = user.currentUser.branch_name;
+  const token = user.currentUser?.token;
  
   const [prescriptions, setPrescriptions] = useState([]);
 
@@ -79,6 +80,13 @@ const Prescription = () => {
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPrescriptionViaUhid/${branch}/${pid}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       setPrescriptions(data?.data);
     } catch (error) {

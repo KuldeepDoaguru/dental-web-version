@@ -15,7 +15,8 @@ import cogoToast from 'cogo-toast';
 function Refund({ onClose, patientInfo}) {
   const dispatch = useDispatch();
   const {currentUser,refreshTable} = useSelector((state) => state.user);
-  const branch = currentUser.branch_name
+  const branch = currentUser.branch_name;
+  const token = currentUser?.token;
   const [show, setShow] = useState(false);
 
   const timelineData = async (id) => {
@@ -29,6 +30,13 @@ function Refund({ onClose, patientInfo}) {
           branch: branch,
           patientId: id,
         }
+        ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
       );
       console.log(response);
     } catch (error) {

@@ -13,7 +13,7 @@ import cogoToast from 'cogo-toast';
 function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   const dispatch = useDispatch();
   const {currentUser} = useSelector((state) => state.user);
-
+  const token = currentUser?.token;
   const [show, setShow] = useState(false);
   const [searchDoctor, setSearchDoctor] = useState(appointmentInfo.assigned_doctor_name);
   const [showDoctorList,setShowDoctorList] = useState(false);
@@ -42,7 +42,13 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
 
   const getBranchHolidays = async ()=>{
     try{
-       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}`)
+       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}` ,
+       {
+         headers: {
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`
+       }
+       })
        console.log(response)
        setBranchHolidays(response.data.data)
     }
@@ -153,7 +159,13 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
  }
  const getDoctors = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setDoctors(response?.data?.data)
     }
     catch(error){
@@ -268,6 +280,13 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
           branch: branch,
           patientId: id,
         }
+        ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      }
       );
       console.log(response);
     } catch (error) {
@@ -410,7 +429,13 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
       }
   
       try{
-        const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-appointment',newAppointment);
+        const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-appointment',newAppointment ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        });
         console.log(response);
         if(response.data.success){
           cogoToast.success(response?.data?.message);
@@ -450,7 +475,13 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   const [doctorWithLeave,setDoctorWithLeave] = useState([]);
   const getDoctorsWithLeave = async ()=>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors-with-leave/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       setDoctorWithLeave(response?.data?.data)
     }
     catch(error){

@@ -144,7 +144,8 @@ const PatientProfile = () => {
   const { pid } = useParams();
   const user = useSelector((state) => state.user);
 
-  const  branch = user.currentUser.branch_name;
+  const  branch = user?.currentUser?.branch_name;
+  const token = user?.currentUser?.token;
  
   const [patientData, setPatientData] = useState([]);
   const [ongoingTreat, setOngoingTreat] = useState([]);
@@ -163,7 +164,13 @@ const PatientProfile = () => {
 
   const getPatient = async () =>{
     try{
-      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patient-by-id/${branch}/${pid}`);
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patient-by-id/${branch}/${pid}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
       console.log(response);
       setPatientData(response?.data?.data)
      }
@@ -177,6 +184,13 @@ console.log(branch)
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTreatmentViaUhid/${branch}/${pid}`
+        ,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        }
       );
       console.log(data);
       setOngoingTreat(data.data);

@@ -92,7 +92,13 @@ function Refund({ onClose, patientInfo}) {
 
    
   try{
-    const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updatePatientSecurityAmt', data);
+    const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updatePatientSecurityAmt', data  ,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }
+    });
     console.log(response);
     if(response.data.success){
       cogoToast.success(response?.data?.message);

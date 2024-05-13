@@ -657,7 +657,7 @@ const getExaminedataByIdandexamine = (req, res) => {
     const tsid = req.params.tsid;
 
     const selectQuery =
-      "SELECT * FROM dental_examination JOIN treat_suggest ON dental_examination.tp_id = treat_suggest.tp_id && dental_examination.disease = treat_suggest.desease WHERE treat_suggest.ts_id = ? AND treat_suggest.tp_id = ?";
+      "SELECT * FROM dental_examination JOIN treat_suggest ON dental_examination.tp_id = treat_suggest.tp_id WHERE treat_suggest.ts_id = ? AND treat_suggest.tp_id = ?";
     db.query(selectQuery, [tsid, tpid], (err, result) => {
       if (err) {
         return res

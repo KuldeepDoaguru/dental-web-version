@@ -298,7 +298,11 @@ const AppointTable = () => {
                               "h:mm A"
                             )}
                           </td>
-                          <td>{item.treatment_names}</td>
+                          <td>
+                            {item.treatment_names !== null
+                              ? item.treatment_names
+                              : item.treatment_provided}
+                          </td>
                           <td>{item.bloodgroup}</td>
                           <td>{item.dob}</td>
                           <td>{item.age}</td>
@@ -447,7 +451,11 @@ const AppointTable = () => {
         {item.treatment_names?.split(", ")[0]} <br />
     }
 }} */}
-                                <small>{item.treatment_names}</small>
+                                <small>
+                                  {item.treatment_names !== null
+                                    ? item.treatment_names
+                                    : item.treatment_provided}
+                                </small>
                               </td>
                               <td>{item.bloodgroup}</td>
                               <td>{item.dob}</td>

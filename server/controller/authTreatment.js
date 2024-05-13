@@ -35,6 +35,8 @@ const insertTreatmentData = (req, res) => {
     disc_amt,
     total_amt,
     net_amount,
+    paid_amount,
+    pending_amount,
     dir_rec_amt,
     sec_rec_amt,
     dir_rec_doctor_id,
@@ -45,7 +47,7 @@ const insertTreatmentData = (req, res) => {
   try {
     // Insert treatment details into the database
     db.query(
-      "INSERT INTO dental_treatment (exam_id, tp_id, branch_name, appointment_id, sitting_number, patient_uhid, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, net_amount, dir_rec_amt, sec_rec_amt, dir_rec_doctor_id,sitting_payment_status, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?)",
+      "INSERT INTO dental_treatment (exam_id, tp_id, branch_name, appointment_id, sitting_number, patient_uhid, dental_treatment, no_teeth, qty, cost_amt, disc_amt, total_amt, net_amount, paid_amount, pending_amount, dir_rec_amt, sec_rec_amt, dir_rec_doctor_id,sitting_payment_status, note) VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?, ?)",
       [
         examId,
         tpid,
@@ -60,6 +62,8 @@ const insertTreatmentData = (req, res) => {
         disc_amt,
         total_amt,
         net_amount,
+        paid_amount,
+        pending_amount,
         dir_rec_amt,
         sec_rec_amt,
         dir_rec_doctor_id,

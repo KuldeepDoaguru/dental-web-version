@@ -27,6 +27,7 @@ const TreatmentForm = () => {
   const [bookingStats, setBookingStats] = useState();
   const [showDirect, setShowDirect] = useState(false);
   const [securityAmt, setSecurityAmt] = useState([]);
+  const [paidAmount, setPaidAmount] = useState();
 
   const [formData, setFormData] = useState({
     patient_uhid: "",
@@ -38,6 +39,8 @@ const TreatmentForm = () => {
     disc_amt: "",
     total_amt: "",
     net_amt: "",
+    paid_amount: "",
+    pending_amount: "",
     sitting_payment_status: "",
     note: "",
   });
@@ -56,6 +59,7 @@ const TreatmentForm = () => {
     }
   };
 
+  console.log(treatments);
   // Send Treatment Data to the Server....
   console.log([treatments[0]?.selected_teeth]);
   const totalTeeth = treatments[0]?.selected_teeth;
@@ -64,29 +68,39 @@ const TreatmentForm = () => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-      desease: treatments[0]?.desease || "",
-      no_teeth: treatments[0]?.selected_teeth || "",
-      qty: treatments[0]?.selected_teeth
-        ? treatments[0]?.selected_teeth.split(", ").length
-        : "",
-      cost_amt: treatments[0]?.totalCost || "",
-      total_amt: treatments[0]?.totalCost
-        ? treatments[0]?.totalCost *
-          treatments[0]?.selected_teeth.split(", ").length
-        : "",
-      net_amt:
-        treatments[0]?.totalCost && treatments[0]?.selected_teeth
-          ? calculateNetAmount(
-              treatments[0].totalCost,
-              treatments[0].selected_teeth,
-              prevData.disc_amt
-            )
-          : 0,
-    }));
+    if (name === "paid_amount") {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    } else {
+      const netValue =
+        treatments[0]?.totalCost * dataArray?.length -
+        (treatments[0]?.totalCost * dataArray?.length * parseFloat(value)) /
+          100;
+
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+        desease: treatments[0]?.desease || "",
+        no_teeth: treatments[0]?.selected_teeth || "",
+        qty: treatments[0]?.selected_teeth
+          ? treatments[0]?.selected_teeth.split(", ").length
+          : "",
+        cost_amt: treatments[0]?.totalCost || "",
+        total_amt: treatments[0]?.totalCost
+          ? treatments[0]?.totalCost *
+            (treatments[0]?.selected_teeth.split(", ").length || 1)
+          : "",
+        net_amt: netValue,
+        paid_amount: treatments[0]?.totalCost ? netValue : value,
+      }));
+    }
   };
+
+  console.log(formData);
+
+  // Assuming calculateNetAmount function exists
 
   const calculateNetAmount = (totalCost, selectedTeeth, discount) => {
     const dataArray = selectedTeeth.split(", ").map(Number);
@@ -95,6 +109,12 @@ const TreatmentForm = () => {
   };
 
   console.log(formData);
+
+  const netAmount =
+    treatments[0]?.totalCost * dataArray?.length -
+    (treatments[0]?.totalCost * dataArray?.length * formData.disc_amt) / 100;
+
+  console.log(netAmount);
 
   const timelineForTreatForm = async () => {
     try {
@@ -115,11 +135,7 @@ const TreatmentForm = () => {
       console.log(error);
     }
   };
-  const netAmount =
-    treatments[0]?.totalCost * dataArray?.length -
-    (treatments[0]?.totalCost * dataArray?.length * formData.disc_amt) / 100;
 
-  console.log(netAmount);
   const partialPay = netAmount - securityAmt[0]?.remaining_amount;
   const directRecAmount = () => {
     if (
@@ -152,13 +168,17 @@ const TreatmentForm = () => {
     disc_amt: formData.disc_amt,
     total_amt: treatments[0]?.totalCost * dataArray?.length,
     net_amount: netAmount,
-    dir_rec_amt: !showDirect
-      ? netAmount
-      : netAmount - securityAmt[0]?.remaining_amount,
+    paid_amount: formData.paid_amount,
+    pending_amount:
+      netAmount >= formData.paid_amount ? netAmount - formData.paid_amount : 0,
+    dir_rec_amt:
+      showDirect && paidAmount > 0
+        ? netAmount - paidAmount
+        : formData.paid_amount,
     sec_rec_amt:
-      securityAmt[0]?.remaining_amount > netAmount
-        ? netAmount
-        : securityAmt[0]?.remaining_amount,
+      securityAmt[0]?.remaining_amount > formData.paid_amount && showDirect
+        ? formData.paid_amount
+        : 0,
     dir_rec_doctor_id: user.currentUser.employee_ID,
     sitting_payment_status: formData.sitting_payment_status,
     note: formData.note,
@@ -281,10 +301,10 @@ const TreatmentForm = () => {
   console.log(securityAmt[0]?.remaining_amount);
   const securityRemAmt = () => {
     if (securityAmt[0]?.payment_status === "success") {
-      if (securityAmt[0]?.remaining_amount < netAmount) {
+      if (securityAmt[0]?.remaining_amount < formData.paid_amount) {
         return 0;
       } else {
-        return securityAmt[0]?.remaining_amount - netAmount;
+        return securityAmt[0]?.remaining_amount - formData.paid_amount;
       }
     } else {
       return 0;
@@ -299,7 +319,7 @@ const TreatmentForm = () => {
         `https://dentalgurudoctor.doaguru.com/api/doctor/updateRecSecAmountAfterPayment/${tp_id}`,
         {
           sec_rec_amt:
-            securityAmt[0]?.remaining_amount > netAmount
+            securityAmt[0]?.remaining_amount >= netAmount
               ? netAmount
               : securityAmt[0]?.remaining_amount,
           sitting_payment_status:
@@ -309,11 +329,18 @@ const TreatmentForm = () => {
         }
       );
       console.log(res);
+      setPaidAmount(
+        securityAmt[0]?.remaining_amount >= netAmount
+          ? netAmount
+          : securityAmt[0]?.remaining_amount
+      );
       cogoToast.success("Amount Paid via Security Amount");
     } catch (error) {
       console.log(error);
     }
   };
+
+  console.log(paidAmount);
 
   const timelineForMakePayViaSecurity = async () => {
     try {
@@ -341,6 +368,8 @@ const TreatmentForm = () => {
         { remaining_amount: remaining_amount }
       );
       console.log(res);
+
+      updateAmountAfterPayViaSecAmount();
       timelineForMakePayViaSecurity();
       setShowDirect(true);
       // updateAmountAfterPayViaSecAmount();
@@ -508,7 +537,7 @@ const TreatmentForm = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         Discount Amount %
@@ -524,15 +553,22 @@ const TreatmentForm = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+                    <label htmlFor="" class="form-label fw-bold">
+                      Net Amount
+                    </label>
+                    <p className="text-danger fw-bold">{netAmount}</p>
+                  </div>
+
+                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
-                        Net Amount
+                        Paid Amount
                       </label>
-                      <input
+                      {/* <input
                         type="text"
                         required
-                        // name="total_amt"
+                        name="net_amt"
                         className="shadow-none p-1 bg-light rounded border-0 w-75"
                         value={
                           treatments[0]?.totalCost &&
@@ -545,8 +581,17 @@ const TreatmentForm = () => {
                                 100
                             : ""
                         }
-                        placeholder="Total Amount"
-                        // onChange={handleChange}
+                        placeholder="Net Amount"
+                        onChange={handleChange}
+                      /> */}
+                      <input
+                        type="text"
+                        required
+                        name="paid_amount"
+                        className="shadow-none p-1 bg-light rounded border-0 w-75"
+                        value={formData.paid_amount}
+                        placeholder="Paid Amount"
+                        onChange={handleChange}
                       />
                     </div>
                   </div>

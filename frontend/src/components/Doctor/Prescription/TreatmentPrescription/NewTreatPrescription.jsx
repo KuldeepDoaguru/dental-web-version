@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const NewTreatPrescription = () => {
   const { tsid, id, appoint_id, tpid, sitting, treatment } = useParams();
-  console.log(appoint_id);
+  console.log(appoint_id, id, tpid, treatment);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -175,7 +175,7 @@ const NewTreatPrescription = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/insertTreatPrescription/${id}/${tpid}/${sitting}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/insertTreatPrescription/${appoint_id}/${tpid}/${sitting}`,
         medicineInput
       );
       console.log(response.data);
@@ -231,7 +231,7 @@ const NewTreatPrescription = () => {
   const getTreatPrescriptionByAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${id}/${tpid}/${treatment}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${appoint_id}/${tpid}/${treatment}`
       );
       setGetTreatMedicine(data);
       console.log(data);

@@ -116,11 +116,13 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { setUser } from '../redux/user/userSlice';
 import cogoToast from "cogo-toast";
+import { IoEye, IoEyeOffOutline } from "react-icons/io5";
 
 
 const UniversalLogin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -328,7 +330,8 @@ console.log(selectedBranch)
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="form-control"
-                                placeholder="email"
+                                placeholder="Email"
+                                required
                               />
                             </div>
                           </div>
@@ -342,15 +345,27 @@ console.log(selectedBranch)
                               >
                                 Password
                               </label>
+                              <div className="input-container">
                               <input
                                 name="password"
-                                type="password"
+                                type={show ? "text" : "password"}
                                 id="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="form-control"
-                                placeholder="password"
+                                placeholder="Password"
+                                required
                               />
+                              <div className="eye-icon">
+                                  {show ? (
+                                    <IoEye onClick={() => setShow(false)} />
+                                  ) : (
+                                    <IoEyeOffOutline
+                                      onClick={() => setShow(true)}
+                                    />
+                                  )}
+                                </div>
+                                </div>
                             </div>
                           </div>
 
@@ -434,5 +449,15 @@ const Container = styled.div`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  .input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .eye-icon {
+    position: absolute;
+    right: 10px; /* Adjust the value to your preference */
+    cursor: pointer;
   }
 `;

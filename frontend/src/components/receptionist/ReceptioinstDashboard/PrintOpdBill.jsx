@@ -337,6 +337,14 @@ const PrintOpdBill = () => {
         <button
           type="button"
           className="btn btn-primary btn-lg"
+          onClick={() => window.history.go(-1)}
+         
+        >
+          Back
+        </button>
+        <button
+          type="button"
+          className="btn btn-primary btn-lg"
           onClick={() => navigate("/receptionist-dashboard")}
         >
           Go to Dashboard

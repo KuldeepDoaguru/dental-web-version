@@ -520,9 +520,12 @@ const PatientBillsByTpid = () => {
         </div>
         {/* print button */}
         <div className="container-fluid">
-          <div className="d-flex justify-content-center align-items-center my-2">
+          <div className="d-flex justify-content-center align-items-center my-2 gap-2">
             <button className="btn btn-info no-print" onClick={handleButton}>
               Print
+            </button>
+            <button className="btn btn-primary no-print" onClick={() => window.history.go(-1)}>
+              Back
             </button>
           </div>
         </div>

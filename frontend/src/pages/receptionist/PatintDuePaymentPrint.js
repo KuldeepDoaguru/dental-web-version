@@ -18,7 +18,7 @@ function PatintDuePaymentPrint() {
     const [branchData, setBranchData] = useState([]);
     const [billAmount, setBillAmount] = useState([]);
     const [saAmt, setSaAmt] = useState([]);
-  
+   console.log(token)
     const [data, setData] = useState({
       payment_mode: "",
       transaction_Id: "",
@@ -231,6 +231,9 @@ function PatintDuePaymentPrint() {
           `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updateTreatmentStatus/${branch}/${tpid}`
           ,
           {
+
+          },
+          {
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
@@ -257,7 +260,7 @@ function PatintDuePaymentPrint() {
     </div>
     <div className="col-lg-11 mt-2" id='set'>
     <IoArrowBackSharp
-                className="fs-1 mt-2 text-black"
+                className="fs-1 mt-2 text-black back-button"
                 onClick={goBack}
               />
               <div className="row mt-5" id="printableContent">
@@ -743,6 +746,9 @@ td{
   position: fixed;
   min-width: 100%;
   z-index: 100;
+}
+.back-button{
+  cursor: pointer;
 }
 
 `

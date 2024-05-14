@@ -426,7 +426,7 @@ const AppointTable = () => {
                     }</td>
 
                     <td><div className="dropdown">
-                      {!(patient.appointment_status == "in treatment" || patient.appointment_status == "Complete") ? <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      {!(patient.appointment_status == "in treatment" || patient.appointment_status == "Complete" || patient.appointment_status == "Cancel") ? <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Action
                       </button> : <button className="btn btn-secondary dropdown-toggle" type="button" disabled data-bs-toggle="dropdown" aria-expanded="false">
                         Action

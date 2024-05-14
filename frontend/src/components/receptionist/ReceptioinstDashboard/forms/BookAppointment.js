@@ -886,12 +886,12 @@ const isDoctorAvailable = (selectedDateTime) => {
             <div className="row mt-5">
               <div className="col-sm-6 col-md-12">
                 <div className="form-outline" id="form1">
-                  <label className="form-label" for="form6Example1">
+                  <label className="form-label" for="name1">
                     Patient name
                   </label>
                   <input
                     type="text"
-                    id="form6Example1"
+                    id="name1"
                     className="form-control"
                     value={selectedPatient ? selectedPatient.patient_name : ""}
                     onChange={()=>cogoToast.error("Please search patient form search bar and select")}
@@ -913,10 +913,11 @@ const isDoctorAvailable = (selectedDateTime) => {
                             required
                            
                           /> */}
-                  <label className="form-label" for="form6Example2">
+                  <label className="form-label" for="date1">
                     Appointment Date
                   </label>
                   <input
+                  id="date1"
                     type="date"
                     value={selectedDate}
                     className="form-control"
@@ -950,13 +951,13 @@ const isDoctorAvailable = (selectedDateTime) => {
 
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example1">
+                  <label className="form-label" for="doctor1">
                     Doctor
                   </label>
 
                   <input
                     type="search"
-                    id="form6Example1"
+                    id="doctor1"
                     className="form-control"
                     value={searchDoctor}
                     onChange={handleSearchDoctor}
@@ -990,7 +991,7 @@ const isDoctorAvailable = (selectedDateTime) => {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline" id="form1">
-                  <label className="form-label" for="form6Example2">
+                  <label className="form-label" for="treatment">
                     Add Treatment
                   </label>
                   <Select
@@ -1011,12 +1012,12 @@ const isDoctorAvailable = (selectedDateTime) => {
              <>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example1">
+                  <label className="form-label" for="opd_amount">
                     OPD Amount
                   </label>
                   <input
                     type="number"
-                    id="form6Example1"
+                    id="opd_amount"
                     className="form-control"
                     onChange={handleOpdAmountChange}
                     name="opd_amount"
@@ -1029,7 +1030,7 @@ const isDoctorAvailable = (selectedDateTime) => {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example1">Payment Mode</label>
+                  <label className="form-label" for="paymentMode">Payment Mode</label>
                   <select
                     className="form-select"
                     id="paymentMode"
@@ -1046,12 +1047,12 @@ const isDoctorAvailable = (selectedDateTime) => {
               </div>
             {bookData.payment_Mode === "online" &&   <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example1">
+                  <label className="form-label" for="transaction_Id">
                     Transaction Id
                   </label>
                   <input
                     type="text"
-                    id="form6Example1"
+                    id="transaction_Id"
                     className="form-control"
                     onChange={handleBookChange}
                     name="transaction_Id"
@@ -1062,7 +1063,7 @@ const isDoctorAvailable = (selectedDateTime) => {
               }
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example1">Payment Status</label>
+                  <label className="form-label" for="payment_Status">Payment Status</label>
                   <select
                     className="form-select"
                     id="payment_Status"
@@ -1082,12 +1083,12 @@ const isDoctorAvailable = (selectedDateTime) => {
 
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example1">
+                  <label className="form-label" for="notes1">
                     Notes
                   </label>
                   <input
                     type="text"
-                    id="form6Example1"
+                    id="notes1"
                     className="form-control"
                     onChange={handleBookChange}
                     name="notes"

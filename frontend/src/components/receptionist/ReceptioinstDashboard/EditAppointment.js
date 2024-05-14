@@ -553,8 +553,9 @@ useEffect(()=>{
           <div class="mb-3">
           <div className="form-outline">
                      
-                          <label className="form-label" for="form6Example2">Appointment Date</label>
+                          <label className="form-label" htmlFor="date1">Appointment Date</label>
       <input
+      id='date1'
         type="date"
         value={selectedDate}
         className="form-control"
@@ -569,7 +570,7 @@ useEffect(()=>{
           <div class="mb-3">
           <div className="form-outline">
                         
-                        <label  className="form-label" for="form6Example2">Appointment Time</label>
+                        <label  className="form-label" >Appointment Time</label>
       <Select
         options={timeSlots}
         required
@@ -580,7 +581,7 @@ useEffect(()=>{
                         </div>
           </div>
           <div class="mb-3">
-            <label for="message-text" class="col-form-label">Doctor:</label>
+            <label class="col-form-label">Doctor:</label>
             <input type="text" value={searchDoctor}
             
                     onChange={handleSearchDoctor}
@@ -604,7 +605,7 @@ useEffect(()=>{
                     </DoctorList>
           </div>
           <div class="mb-3">
-            <label for="message-text" class="col-form-label">Treatment:</label>
+            <label  class="col-form-label">Treatment:</label>
             {/* <Select
         id="treatment"
         name="treatment"
@@ -617,7 +618,7 @@ useEffect(()=>{
           </div>
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Notes:</label>
-            <input type="text" value={data.notes} class="form-control" name='notes' onChange={handleChange}  id="recipient-name"/>
+            <input type="text" value={data.notes} class="form-control" name='notes' onChange={handleChange}  id="message-text"/>
           </div>
           {/* <div class="mb-3">
             <label for="message-text" class="col-form-label">Status:</label>

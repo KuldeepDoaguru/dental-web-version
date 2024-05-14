@@ -757,12 +757,12 @@ function AddPatient() {
             <div className="row">
               <div className="col-sm-6">
                 <div className="form-outline" id="form1">
-                  <label className="form-label" for="form6Example1">
+                  <label className="form-label" for="name">
                     Patient name
                   </label>
                   <input
                     type="text"
-                    id="form6Example1"
+                    id="name"
                     className="form-control"
                     name="patient_Name"
                     onChange={handleChange}
@@ -772,7 +772,7 @@ function AddPatient() {
               </div>
               <div className="col-sm-6 ">
                 <div className="form-outline">
-                  <label className="form-label" htmlFor="">
+                  <label className="form-label" for="gender">
                     Gender
                   </label>
                   <select
@@ -791,10 +791,11 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example1">
+                  <label className="form-label" for="mobile">
                     Moblie
                   </label>
                   <input
+                  id="mobile"
                     required
                     type="text"
                     className="form-control"
@@ -809,12 +810,12 @@ function AddPatient() {
 
               <div className="col-sm-6">
                 <div className="form-outline" id="form1">
-                  <label className="form-label" for="form6Example2">
+                  <label className="form-label" for="email">
                     Email
                   </label>
                   <input
                     type="email"
-                    id="form6Example2"
+                    id="email"
                     className="form-control"
                     name="email"
                     onChange={handleChange}
@@ -823,12 +824,12 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example1">
+                  <label className="form-label" for="address">
                     Address
                   </label>
                   <input
                     type="text"
-                    id="form6Example1"
+                    id="address"
                     className="form-control"
                     name="address"
                     onChange={handleChange}
@@ -838,12 +839,12 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example1">
+                  <label className="form-label" for="aadhaar">
                     Aadhaar No.
                   </label>
                   <input
                     type="text"
-                    id="form6Example1"
+                    id="aadhaar"
                     className="form-control"
                     name="aadhaar_no"
                     onChange={handleChange}
@@ -854,7 +855,7 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" htmlFor="">
+                  <label className="form-label" for="contact_Person">
                     Contact Person
                   </label>
                   <select
@@ -878,7 +879,7 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" htmlFor="">
+                  <label className="form-label" htmlFor="blood_Group">
                     Blood Group
                   </label>
                   <select
@@ -901,7 +902,7 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example2">
+                  <label className="form-label" for="contact_Person_Name">
                     Cont. Per. Name
                   </label>
                   <input
@@ -916,12 +917,12 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example1">
+                  <label className="form-label" for="dob">
                     Date of Birth
                   </label>
                   <input
                     type="date"
-                    id="form6Example1"
+                    id="dob"
                     className="form-control"
                     name="dob"
                     onChange={(e) => {
@@ -932,13 +933,13 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example2">
+                  <label className="form-label" for="age">
                     Age
                   </label>
 
                   <input
                     type="text"
-                    id="form6Example2"
+                    id="age"
                     className="form-control"
                     name="age"
                     onChange={handleChange}
@@ -949,13 +950,13 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example2">
+                  <label className="form-label" for="weight">
                     Weight
                   </label>
 
                   <input
                     type="text"
-                    id="form6Example2"
+                    id="weight"
                     className="form-control"
                     name="weight"
                     onChange={handleChange}
@@ -965,13 +966,13 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example2">
+                  <label className="form-label" for="allergy">
                     Have any allergy
                   </label>
 
                   <input
                     type="text"
-                    id="form6Example2"
+                    id="allergy"
                     className="form-control"
                     name="allergy"
                     onChange={handleChange}
@@ -981,7 +982,7 @@ function AddPatient() {
 
               <div className="col-sm-12">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example2">
+                  <label className="form-label" for="disease">
                     Have any disease
                   </label>
                   <CreatableSelect
@@ -999,7 +1000,7 @@ function AddPatient() {
 
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example2">
+                  <label className="form-label" for="patientType">
                     Patient Type
                   </label>
 
@@ -1038,10 +1039,11 @@ function AddPatient() {
                             required
                            
                           /> */}
-                        <label className="form-label" for="form6Example2">
+                        <label className="form-label" for="date">
                           Appointment Date
                         </label>
                         <input
+                        id="date"
                           type="date"
                           value={selectedDate}
                           className="form-control"
@@ -1072,15 +1074,17 @@ function AddPatient() {
                         />
                       </div>
                     </div>
+                    
+                 
                     <div className="col-sm-6">
                       <div className="form-outline">
-                        <label className="form-label" for="form6Example1">
+                        <label className="form-label" for="doctor">
                           Doctor
                         </label>
 
                         <input
                           type="search"
-                          id="form6Example1"
+                          id="doctor"
                           name="doctor"
                           className="form-control"
                           value={searchDoctor}
@@ -1157,12 +1161,12 @@ function AddPatient() {
                       <>
                         <div className="col-sm-6">
                           <div className="form-outline">
-                            <label className="form-label" for="form6Example1">
+                            <label className="form-label" for="opd_amount">
                               OPD Amount
                             </label>
                             <input
                               type="number"
-                              id="form6Example1"
+                              id="opd_amount"
                               className="form-control"
                               onChange={handleOpdAmountChange}
                               name="opd_amount"
@@ -1173,7 +1177,7 @@ function AddPatient() {
                         </div>
                         <div className="col-sm-6">
                           <div className="form-outline">
-                            <label className="form-label" for="form6Example1">
+                            <label className="form-label" for="paymentMode">
                               Payment Mode
                             </label>
                             <select
@@ -1192,12 +1196,12 @@ function AddPatient() {
                         {data.payment_Mode === "online" && (
                           <div className="col-sm-6">
                             <div className="form-outline">
-                              <label className="form-label" for="form6Example1">
+                              <label className="form-label" for="transaction_Id">
                                 Transaction Id
                               </label>
                               <input
                                 type="text"
-                                id="form6Example1"
+                                id="transaction_Id"
                                 className="form-control"
                                 onChange={handleChange}
                                 name="transaction_Id"
@@ -1208,7 +1212,7 @@ function AddPatient() {
                         )}
                         <div className="col-sm-6">
                           <div className="form-outline">
-                            <label className="form-label" for="form6Example1">
+                            <label className="form-label" for="payment_Status">
                               Payment Status
                             </label>
                             <select
@@ -1229,12 +1233,12 @@ function AddPatient() {
 
                     <div className="col-sm-6">
                       <div className="form-outline">
-                        <label className="form-label" for="form6Example1">
+                        <label className="form-label" for="notes">
                           Notes
                         </label>
                         <input
                           type="text"
-                          id="form6Example1"
+                          id="notes"
                           className="form-control"
                           name="notes"
                           onChange={handleChange}

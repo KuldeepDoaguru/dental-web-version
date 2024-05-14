@@ -208,12 +208,12 @@ useEffect(()=>{
             <input type="text" class="form-control" readOnly value={data.patientId} id="recipient-name"/>
           </div>
           <div class="mb-3">
-          <label className="form-label" for="form6Example1">
+          <label className="form-label" for="name1">
                             Patient name
                           </label>
                           <input
                             type="text"
-                            id="form6Example1"
+                            id="name1"
                             className="form-control"
                             name="patient_Name"
                             onChange={handleChange}
@@ -222,10 +222,11 @@ useEffect(()=>{
                           />
           </div>
           <div class="mb-3">
-          <label className="form-label" for="form6Example1">
+          <label className="form-label" for="mobile">
                             Moblie
                           </label>
                           <input
+                           id='mobile'
                             required
                             type="text"
                             className="form-control"
@@ -239,12 +240,12 @@ useEffect(()=>{
                           />
           </div>
           <div class="mb-3">
-          <label className="form-label" for="form6Example2">
+          <label className="form-label" for="email">
                             Email
                           </label>
                           <input
                             type="email"
-                            id="form6Example2"
+                            id="email"
                             className="form-control"
                             name="email"
                             onChange={handleChange}
@@ -252,7 +253,7 @@ useEffect(()=>{
                           />
           </div>
           <div class="mb-3">
-          <label className="form-label" htmlFor="">Gender</label>
+          <label className="form-label" htmlFor="gender">Gender</label>
     <select className="form-select" value={data.gender} id="gender" name="gender"  required onChange={handleChange}>
       <option value="">Select Gender</option>
       <option value="Male">Male</option>
@@ -262,12 +263,12 @@ useEffect(()=>{
     </select>
           </div>
           <div class="mb-3">
-          <label className="form-label" for="form6Example1">
+          <label className="form-label" for="address">
                             Address
                           </label>
                           <input
                             type="text"
-                            id="form6Example1"
+                            id="address"
                             className="form-control"
                             name="address"
                             onChange={handleChange}
@@ -276,12 +277,12 @@ useEffect(()=>{
                           />
           </div>
           <div class="mb-3">
-          <label className="form-label" for="form6Example1">
+          <label className="form-label" for="aadhaar_no">
                            Aadhaar No.
                           </label>
                           <input
                             type="text"
-                            id="form6Example1"
+                            id="aadhaar_no"
                             className="form-control"
                             name="aadhaar_no"
                             onChange={handleChange}
@@ -292,7 +293,7 @@ useEffect(()=>{
                           />
           </div>
           <div class="mb-3">
-          <label className="form-label" htmlFor="">Contact Person</label>
+          <label className="form-label" htmlFor="contact_Person">Contact Person</label>
     <select className="form-select" id="contact_Person" name="contact_Person" value={data.contact_Person} required onChange={handleChange}>
       <option value="">Select</option>
       <option value="Self">Self</option>
@@ -307,7 +308,7 @@ useEffect(()=>{
     </select>
           </div>
           <div class="mb-3">
-          <label className="form-label" for="form6Example2">
+          <label className="form-label" for="contact_Person_Name">
                             Cont. Per. Name
                           </label>
                           <input
@@ -321,7 +322,7 @@ useEffect(()=>{
                           />
           </div>
           <div class="mb-3">
-          <label className="form-label" htmlFor="">Blood Group</label>
+          <label className="form-label" htmlFor="blood_Group">Blood Group</label>
     <select className="form-select" id="blood_Group" name="blood_Group" onChange={handleChange} value={data.blood_Group}>
       <option value="">Select</option>
       <option value="A+">A+</option>
@@ -338,14 +339,14 @@ useEffect(()=>{
           <div class="mb-3">
           <label
                             className="form-label"
-                            for="form6Example1"
+                            for="dob"
                             
                           >
                             Date of Birth
                           </label>
                           <input
                             type="date"
-                            id="form6Example1"
+                            id="dob"
                             className="form-control"
                             name="dob"
                             value={data.dob}
@@ -355,13 +356,13 @@ useEffect(()=>{
                           />
           </div>
           <div class="mb-3">
-          <label className="form-label" for="form6Example2">
+          <label className="form-label" for="age">
                             Age
                           </label>
 
                           <input
                             type="text"
-                            id="form6Example2"
+                            id="age"
                             className="form-control"
                             name="age"
                             onChange={handleChange}
@@ -370,13 +371,13 @@ useEffect(()=>{
                           />
           </div>
           <div class="mb-3">
-          <label className="form-label" for="form6Example2">
+          <label className="form-label" for="weight">
                             Weight
                           </label>
 
                           <input
                             type="text"
-                            id="form6Example2"
+                            id="weight"
                             className="form-control"
                             name="weight"
                             onChange={handleChange}
@@ -385,13 +386,13 @@ useEffect(()=>{
                           />
           </div>
           <div class="mb-3">
-          <label className="form-label" for="form6Example2">
+          <label className="form-label" for="allergy">
                          Have any allergy
                           </label>
 
                           <input
                             type="text"
-                            id="form6Example2"
+                            id="allergy"
                             className="form-control"
                             name="allergy"
                             onChange={handleChange}
@@ -415,7 +416,7 @@ useEffect(()=>{
       />
           </div>
           <div class="mb-3">
-          <label className="form-label" for="form6Example2">
+          <label className="form-label" for="patientType">
                          Patient Type
                           </label>
 

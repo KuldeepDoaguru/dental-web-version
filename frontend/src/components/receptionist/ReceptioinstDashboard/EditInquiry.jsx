@@ -155,18 +155,18 @@ console.log(data)
             <input type="text" name="patientName" value={data.patientName} onChange={handleChange} required class="form-control" id="recipient-name"/>
           </div>
           <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Mobile</label>
-    <input type="text" maxLength={10} minLength={10}  onChange={handleChange} value={data.mobile} required class="form-control" name="mobile" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+    <label for="mobile1" class="form-label">Mobile</label>
+    <input type="text" maxLength={10} minLength={10}  onChange={handleChange} value={data.mobile} required class="form-control" name="mobile" id="mobile1" aria-describedby="emailHelp"/>
   
   </div>
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email</label>
-    <input type="email" class="form-control" value={data.email} onChange={handleChange} name="email" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+    <label for="email1" class="form-label">Email</label>
+    <input type="email" class="form-control" value={data.email} onChange={handleChange} name="email" id="email1" aria-describedby="emailHelp"/>
   
   </div>
 
   <div class="mb-3">
-  <label className="form-label" htmlFor="">Gender</label>
+  <label className="form-label" htmlFor="gender">Gender</label>
     <select className="form-select" value={data.gender} id="gender" name="gender"  onChange={handleChange}  >
       <option value="">Select Gender</option>
       <option value="Male">Male</option>
@@ -178,13 +178,13 @@ console.log(data)
   </div>
 
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Age</label>
-    <input type="text" class="form-control" value={data.age} name="age" id="exampleInputEmail1"  onChange={handleChange} aria-describedby="emailHelp"/>
+    <label for="age" class="form-label">Age</label>
+    <input type="text" class="form-control" value={data.age} name="age" id="age"  onChange={handleChange} aria-describedby="emailHelp"/>
   
   </div>
 
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Inquiry for Doctor</label>
+    <label  class="form-label">Inquiry for Doctor</label>
     <Select
                 value={{ label: selectedDoctor.doctorName, value: selectedDoctor.doctorId }}
                 onChange={handleDoctorChange}
@@ -197,14 +197,14 @@ console.log(data)
   </div>
 
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Address</label>
-    <input type="text" class="form-control" value={data.address} onChange={handleChange} name="address" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+    <label for="address" class="form-label">Address</label>
+    <input type="text" class="form-control" value={data.address} onChange={handleChange} name="address" id="address" aria-describedby="emailHelp"/>
      
   </div>
 
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Notes</label>
-    <input type="text" class="form-control" value={data.notes} name="notes" required onChange={handleChange} id="exampleInputEmail1" aria-describedby="emailHelp"/>
+    <label for="notes" class="form-label">Notes</label>
+    <input type="text" class="form-control" value={data.notes} name="notes" required onChange={handleChange} id="notes" aria-describedby="emailHelp"/>
   
   </div>
        

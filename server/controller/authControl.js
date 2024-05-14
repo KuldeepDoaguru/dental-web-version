@@ -533,7 +533,7 @@ const updateTreatSittingStatus = (req, res) => {
   try {
     const tsid = req.params.tsid;
     const branch = req.params.branch;
-    const treatment_status = "complete";
+    const treatment_status = req.body;
 
     const sql = `UPDATE treat_suggest SET treatment_status = ? WHERE ts_id = ? AND branch_name = ?`;
 

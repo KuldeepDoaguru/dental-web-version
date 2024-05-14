@@ -36,6 +36,7 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
     }));
   };
 
+  console.log(formData);
   // Access the updated formData in the callback
 
   const timelineForSitting = async () => {

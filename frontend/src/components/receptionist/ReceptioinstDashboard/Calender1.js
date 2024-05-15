@@ -315,7 +315,7 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
     
   <div className="table-responsive" id="tab">
            
-          <table className="table table-bordered">
+          <table className="table ">
           
             <tbody>
 

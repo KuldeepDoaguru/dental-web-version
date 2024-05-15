@@ -29,7 +29,8 @@ const PasswordReset = () => {
       setShowReset(false);
     } catch (error) {
       console.log(error);
-      cogoToast.error(error?.response?.data || "Something went wrong");
+      cogoToast.error(error?.response?.data?.message
+        || "Something went wrong");
     }
   };
 

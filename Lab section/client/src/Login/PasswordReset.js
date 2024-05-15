@@ -38,10 +38,15 @@ const PasswordReset = () => {
       setShowVerify(true);
       setShowReset(false);
     } catch (error) {
-      console.log(error);
-      cogoToast.error(error?.response?.data || "Something went wrong");
+      if (error.response && error.response.data) {
+        cogoToast.error(error.response.data.message || "Something went wrong");
+      } else {
+        // If there's no response data, show a generic error message
+        cogoToast.error("Something went wrong");
+      }
     }
   };
+  
 
   const verifyOtpAdmin = async (e) => {
     e.preventDefault();

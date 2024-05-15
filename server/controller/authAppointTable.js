@@ -675,6 +675,33 @@ const getExaminedataByIdandexamine = (req, res) => {
   }
 };
 
+const getExaminedataByIdandexamineAfterSitOne = (req, res) => {
+  // res.send("test")
+  try {
+    const tpid = req.params.tpid;
+    const tsid = req.params.tsid;
+
+    // const selectQuery =
+    //   "SELECT * FROM dental_examination JOIN treat_suggest ON dental_examination.tp_id = treat_suggest.tp_id && dental_examination.disease = treat_suggest.desease WHERE treat_suggest.ts_id = ? AND treat_suggest.tp_id = ?";
+    const selectQuery = `
+SELECT * FROM treat_suggest
+JOIN dental_examination ON treat_suggest.tp_id = dental_examination.tp_id 
+JOIN dental_treatment ON treat_suggest.ts_id = dental_treatment.exam_id 
+WHERE treat_suggest.ts_id = ? AND treat_suggest.tp_id = ?`;
+    db.query(selectQuery, [tsid, tpid], (err, result) => {
+      if (err) {
+        return res
+          .status(400)
+          .json({ success: false, message: "Error in retrieving data" }); // Add 'return' to prevent further execution
+      }
+      res.status(200).json(result); // Fix to return result as JSON
+    });
+  } catch (error) {
+    console.error(error); // Change console.log to console.error for better error handling
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 const updateSecurityAmountForRemainingAmount = (req, res) => {
   try {
     const said = req.params.said;
@@ -824,6 +851,22 @@ const getLabTest = (req, res) => {
   }
 };
 
+const getOnlyExaminv = (req, res) => {
+  try {
+    const tpid = req.params.tpid;
+    const examId = req.params.examId;
+    const selectQuery = `SELECT * FROM dental_treatment WHERE tp_id = ? AND exam_id = ?`;
+    db.query(selectQuery, [tpid, examId], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: failed, message: "internal server error" });
+  }
+};
+
 module.exports = {
   getAppointmentsWithPatientDetails,
   getAppointmentsWithPatientDetailsById,
@@ -845,4 +888,6 @@ module.exports = {
   updateAppointmentStatusAfterTreat,
   getLab,
   getLabTest,
+  getExaminedataByIdandexamineAfterSitOne,
+  getOnlyExaminv,
 };

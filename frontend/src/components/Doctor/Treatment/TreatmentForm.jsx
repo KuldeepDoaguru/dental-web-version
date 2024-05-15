@@ -28,6 +28,7 @@ const TreatmentForm = () => {
   const [showDirect, setShowDirect] = useState(false);
   const [securityAmt, setSecurityAmt] = useState([]);
   const [paidAmount, setPaidAmount] = useState();
+  const [sitCheck, setSitCheck] = useState([]);
 
   const [formData, setFormData] = useState({
     patient_uhid: "",
@@ -45,14 +46,31 @@ const TreatmentForm = () => {
     note: "",
   });
 
-  //   console.log(formData);
+  console.log(formData);
   console.log(treatStats);
+
+  const getDentalTreatData = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getOnlyExaminv/${tp_id}/${tsid}`
+      );
+      setSitCheck(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(sitCheck);
 
   const getTreatmentList = async () => {
     try {
-      const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataByIdandexamine/${tsid}/${tp_id}`
-      );
+      let endpoint = `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataByIdandexamine/${tsid}/${tp_id}`;
+      if (sitCheck.length > 0) {
+        endpoint = `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataByIdandexamineAfterSitOne/${tsid}/${tp_id}`;
+      }
+
+      const { data } = await axios.get(endpoint);
+
       console.log(data);
       setTreatments(data);
     } catch (error) {
@@ -131,6 +149,12 @@ const TreatmentForm = () => {
   };
 
   const netAmount = netValueAmount();
+
+  const rawNetAmount =
+    treatments[0]?.totalCost * dataArray?.length -
+    (treatments[0]?.totalCost * dataArray?.length * formData.disc_amt) / 100;
+
+  console.log(rawNetAmount);
   console.log(netAmount);
   console.log(formData.paid_amount);
   const pendingValue = () => {
@@ -197,19 +221,37 @@ const TreatmentForm = () => {
   console.log(partPay);
 
   const paysecAmt = () => {
-    if (showDirect) {
-      if (lastTreatment?.pending_amount >= formData.paid_amount) {
-        return formData.paid_amount;
+    if (lastTreatment?.current_sitting <= 1) {
+      if (showDirect) {
+        if (rawNetAmount >= formData.paid_amount) {
+          return formData.paid_amount;
+        } else {
+          return rawNetAmount - formData.paid_amount;
+        }
       } else {
-        return lastTreatment?.pending_amount - formData.paid_amount;
+        if (formData.sitting_payment_status === "Received") {
+          return formData.paid_amount;
+        } else if (formData.paid_amount === "") {
+          return 0;
+        } else {
+          return 0;
+        }
       }
     } else {
-      if (formData.sitting_payment_status === "Pending") {
-        return 0;
-      } else if (formData.paid_amount === "") {
-        return 0;
+      if (showDirect) {
+        if (lastTreatment?.pending_amount >= formData.paid_amount) {
+          return formData.paid_amount;
+        } else {
+          return lastTreatment?.pending_amount - formData.paid_amount;
+        }
       } else {
-        return formData.paid_amount;
+        if (formData.sitting_payment_status === "Received") {
+          return formData.paid_amount;
+        } else if (formData.paid_amount === "") {
+          return 0;
+        } else {
+          return 0;
+        }
       }
     }
   };
@@ -218,25 +260,44 @@ const TreatmentForm = () => {
   console.log(payableAmountafterSecAmount);
 
   const secrecAmount = () => {
-    if (showDirect) {
-      if (securityAmt[0]?.remaining_amount <= lastTreatment?.pending_amount) {
-        return securityAmt[0]?.remaining_amount;
+    if (lastTreatment?.pending_amount === undefined) {
+      if (showDirect) {
+        if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
+          return securityAmt[0]?.remaining_amount;
+        } else {
+          return formData.paid_amount;
+        }
+      } else if ((formData.paid_amount !== "") & showDirect) {
+        if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
+          return securityAmt[0]?.remaining_amount;
+        } else {
+          return formData.paid_amount;
+        }
       } else {
-        return lastTreatment?.pending_amount;
-      }
-    } else if ((formData.paid_amount !== "") & showDirect) {
-      if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
-        return securityAmt[0]?.remaining_amount;
-      } else {
-        return formData.paid_amount;
+        return 0;
       }
     } else {
-      return 0;
+      if (showDirect) {
+        if (securityAmt[0]?.remaining_amount <= lastTreatment?.pending_amount) {
+          return securityAmt[0]?.remaining_amount;
+        } else {
+          return lastTreatment?.pending_amount;
+        }
+      } else if ((formData.paid_amount !== "") & showDirect) {
+        if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
+          return securityAmt[0]?.remaining_amount;
+        } else {
+          return formData.paid_amount;
+        }
+      } else {
+        return 0;
+      }
     }
   };
 
   const secRecValue = secrecAmount();
   console.log(secRecValue);
+  console.log(pendingAmountValue, secRecValue);
 
   const formDetails = {
     branch: branch,
@@ -248,21 +309,33 @@ const TreatmentForm = () => {
     qty: dataArray?.length,
     cost_amt: lastTreatment?.totalCost,
     disc_amt:
-      lastTreatment?.disc_amt <= 0
+      lastTreatment?.current_sitting <= 1
+        ? formData.disc_amt
+        : lastTreatment?.disc_amt <= 0
         ? formData.disc_amt
         : lastTreatment?.disc_amt,
     total_amt: lastTreatment?.totalCost * dataArray?.length,
-    net_amount: netAmount,
+    net_amount: lastTreatment?.current_sitting <= 1 ? rawNetAmount : netAmount,
     paid_amount: formData.paid_amount,
     pending_amount:
-      secRecValue > 0 ? pendingAmountValue - secRecValue : pendingAmountValue,
-    dir_rec_amt: payableAmountafterSecAmount,
+      lastTreatment?.current_sitting <= 1
+        ? rawNetAmount - formData.paid_amount
+        : secRecValue < pendingAmountValue
+        ? pendingAmountValue - secRecValue
+        : pendingAmountValue,
+    dir_rec_amt:
+      secRecValue <= payableAmountafterSecAmount
+        ? payableAmountafterSecAmount - secRecValue
+        : formData.sitting_payment_status === "Received"
+        ? payableAmountafterSecAmount
+        : 0,
     sec_rec_amt: secRecValue,
     dir_rec_doctor_id: user.currentUser.employee_ID,
     sitting_payment_status: formData.sitting_payment_status,
     note: formData.note,
   };
   console.log(formDetails);
+  console.log(pendingAmountValue);
 
   const treatmentStatsUpdate = async () => {
     try {
@@ -343,6 +416,7 @@ const TreatmentForm = () => {
   useEffect(() => {
     getPatientDetail();
     getTreatmentList();
+    getDentalTreatData();
   }, []);
 
   const handleSubmitCall = () => {
@@ -412,7 +486,11 @@ const TreatmentForm = () => {
                 : securityAmt[0]?.remaining_amount
               : lastTreatment?.pending_amount,
           sitting_payment_status:
-            netAmount > securityAmt[0]?.remaining_amount
+            lastTreatment?.pending_amount === undefined
+              ? rawNetAmount > securityAmt[0]?.remaining_amount
+                ? "pending"
+                : "Received"
+              : netAmount > securityAmt[0]?.remaining_amount
               ? "pending"
               : "Received",
         }
@@ -451,23 +529,28 @@ const TreatmentForm = () => {
   };
 
   const MakePaymentViaSecurityAmount = async () => {
-    try {
-      const res = await axios.put(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/updateSecurityAmountAfterPayment/${tp_id}`,
-        { remaining_amount: remaining_amount }
-      );
-      console.log(res);
+    if (formData.paid_amount === "") {
+      alert("please add paid amount");
+    } else {
+      try {
+        const res = await axios.put(
+          `https://dentalgurudoctor.doaguru.com/api/doctor/updateSecurityAmountAfterPayment/${tp_id}`,
+          { remaining_amount: remaining_amount }
+        );
+        console.log(res);
 
-      updateAmountAfterPayViaSecAmount();
-      timelineForMakePayViaSecurity();
-      setShowDirect(true);
-      // updateAmountAfterPayViaSecAmount();
-    } catch (error) {
-      console.log(error);
+        updateAmountAfterPayViaSecAmount();
+        timelineForMakePayViaSecurity();
+        setShowDirect(true);
+        // updateAmountAfterPayViaSecAmount();
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
   console.log(showDirect, partPay);
+  console.log(lastTreatment?.net_amount);
   return (
     <>
       <Wrapper>
@@ -631,31 +714,55 @@ const TreatmentForm = () => {
                       <label htmlFor="" class="form-label fw-bold">
                         Discount Amount %
                       </label>
-                      <input
-                        type="text"
-                        name="disc_amt"
-                        required
-                        className="shadow-none p-1 bg-light rounded border-0 w-75"
-                        value={
-                          lastTreatment?.disc_amt > 0
-                            ? lastTreatment?.disc_amt
-                            : formData.disc_amt
-                        }
-                        placeholder="Discount percentages"
-                        onChange={handleChange}
-                      />
+                      {lastTreatment?.current_sitting > 1 ? (
+                        <>
+                          <input
+                            type="text"
+                            name="disc_amt"
+                            required
+                            className="shadow-none p-1 bg-light rounded border-0 w-75"
+                            value={lastTreatment?.disc_amt}
+                            readOnly
+                            placeholder="Discount percentages"
+                            onChange={handleChange}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          {" "}
+                          <input
+                            type="text"
+                            name="disc_amt"
+                            required
+                            className="shadow-none p-1 bg-light rounded border-0 w-75"
+                            value={
+                              lastTreatment?.disc_amt > 0
+                                ? lastTreatment?.disc_amt
+                                : formData.disc_amt
+                            }
+                            placeholder="Discount percentages"
+                            onChange={handleChange}
+                          />
+                        </>
+                      )}
                     </div>
                   </div>
-                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
-                    <label htmlFor="" class="form-label fw-bold">
-                      Net Amount
-                    </label>
-                    <p className="text-danger fw-bold">
-                      {lastTreatment?.net_amount > 0
-                        ? lastTreatment?.net_amount
-                        : netAmount}
-                    </p>
-                  </div>
+                  {lastTreatment?.current_sitting <= 1 ? (
+                    ""
+                  ) : (
+                    <>
+                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+                        <label htmlFor="" class="form-label fw-bold">
+                          Net Amount
+                        </label>
+                        <p className="text-danger fw-bold">
+                          {lastTreatment?.net_amount > 0
+                            ? lastTreatment?.net_amount
+                            : netAmount}
+                        </p>
+                      </div>
+                    </>
+                  )}
 
                   <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
                     <div class="mb-3">
@@ -682,19 +789,35 @@ const TreatmentForm = () => {
                         placeholder="Net Amount"
                         onChange={handleChange}
                       /> */}
-                      <input
-                        type="text"
-                        required
-                        name="paid_amount"
-                        className="shadow-none p-1 bg-light rounded border-0 w-75"
-                        value={formData.paid_amount}
-                        placeholder="Paid Amount"
-                        onChange={handleChange}
-                      />
+                      {showDirect ? (
+                        <input
+                          type="text"
+                          required
+                          name="paid_amount"
+                          className="shadow-none p-1 bg-light rounded border-0 w-75"
+                          value={formData.paid_amount}
+                          readOnly
+                          placeholder="Paid Amount"
+                          onChange={handleChange}
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          required
+                          name="paid_amount"
+                          className="shadow-none p-1 bg-light rounded border-0 w-75"
+                          value={formData.paid_amount}
+                          placeholder="Paid Amount"
+                          onChange={handleChange}
+                        />
+                      )}
+
                       <br />
                       <small style={{ color: "red" }}>
                         Pending Amount :{" "}
-                        {lastTreatment?.pending_amount - secRecValue}
+                        {lastTreatment?.current_sitting <= 1
+                          ? rawNetAmount
+                          : lastTreatment?.pending_amount - secRecValue}
                       </small>
                     </div>
                   </div>
@@ -788,7 +911,7 @@ const TreatmentForm = () => {
                         onChange={handleChange}
                         value={formData.sitting_payment_status}
                       >
-                        {!showDirect || partPay > 0 ? (
+                        {!showDirect ? (
                           <>
                             {" "}
                             <option value="">-select-</option>
@@ -797,7 +920,20 @@ const TreatmentForm = () => {
                           </>
                         ) : (
                           <>
-                            <option value="Received">Received</option>
+                            {securityAmt[0]?.remaining_amount <=
+                            formData.paid_amount ? (
+                              <>
+                                {" "}
+                                <option value="">-select-</option>
+                                <option value="Received">Yes</option>
+                                <option value="Pending">No</option>
+                              </>
+                            ) : (
+                              <>
+                                <option value="">-select-</option>
+                                <option value="Recieved">Received</option>
+                              </>
+                            )}
                           </>
                         )}
                       </select>

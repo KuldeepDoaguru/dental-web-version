@@ -47,6 +47,8 @@ const {
   updateAppointmentStatusAfterTreat,
   getLabTest,
   getLab,
+  getExaminedataByIdandexamineAfterSitOne,
+  getOnlyExaminv,
 } = require("../controller/authAppointTable.js");
 const {
   getBranch,
@@ -291,6 +293,11 @@ router.get(
   getExaminedataByIdandexamine
 );
 
+router.get(
+  "/getExaminedataByIdandexamineAfterSitOne/:tsid/:tpid",
+  getExaminedataByIdandexamineAfterSitOne
+);
+
 router.get("/getProcedureList", getProcedureList);
 router.put(
   "/updateSecurityAmountAfterPayment/:tp_id",
@@ -368,6 +375,7 @@ router.get("/lab-details", getLabDetails);
 router.get("/getLabTest", getLabTest);
 router.get("/getLab", getLab);
 router.get("/getPatientLabTestByPatientId/:pid", getPatientLabTestByPatientId);
-router.get("/branches/:branch_name", getBranchDetails);
+// router.get("/branches/:branch_name", getBranchDetails);
+router.get("/getOnlyExaminv/:tpid/:examId", getOnlyExaminv);
 
 module.exports = { authRoutes: router };

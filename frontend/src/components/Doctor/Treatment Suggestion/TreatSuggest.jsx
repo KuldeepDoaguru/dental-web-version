@@ -635,14 +635,17 @@ const TreatSuggest = () => {
                             value={labData.test}
                             className="form-select text-start"
                           >
+                            <option value="">-select-</option>
                             {labTestList
                               ?.filter(
                                 (item) => item.default_lab === labData.lab_name
                               )
                               .map((test, index) => (
-                                <option key={index} value={test.test_name}>
-                                  {test.test_name}
-                                </option>
+                                <>
+                                  <option key={index} value={test.test_name}>
+                                    {test.test_name}
+                                  </option>
+                                </>
                               ))}
                           </select>
                         </div>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const Bill = () => {
@@ -54,6 +54,7 @@ const Bill = () => {
                     <th>Payment Mode</th>
                     <th>Payment Date</th>
                     <th>Payment Status</th>
+                    <th>View Bill</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -69,6 +70,13 @@ const Bill = () => {
                         <td>{item.payment_mode}</td>
                         <td>{item.payment_date_time?.split("T")[0]}</td>
                         <td>{item.payment_status}</td>
+                        <td>
+                          <Link to={`/ViewPatientTotalBill/${item.tp_id}`}>
+                            <button className="btn btn-warning">
+                              View Bill
+                            </button>
+                          </Link>
+                        </td>
                       </tr>
                     </>
                   ))}

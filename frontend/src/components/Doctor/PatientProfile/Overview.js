@@ -200,12 +200,11 @@ const Overview = () => {
   console.log(billData);
 
   const filterForPendingAmount = billData?.filter((item) => {
-    return item.payment_status !== "Paid";
+    return item.payment_status !== "paid";
   });
+  console.log(filterForPendingAmount);
   const total = filterForPendingAmount?.reduce((accumulator, item) => {
-    return (
-      accumulator + item.total_amount - (item.pay_by_sec_amt + item.paid_amount)
-    );
+    return accumulator + item.total_amount;
   }, 0);
 
   console.log(total);

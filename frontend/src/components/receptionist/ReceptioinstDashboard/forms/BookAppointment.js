@@ -962,6 +962,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                     value={searchDoctor}
                     onChange={handleSearchDoctor}
                     required
+                    placeholder="Search Doctor"
                   />
                   <DoctorList>
                     <div>
@@ -1057,6 +1058,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                     onChange={handleBookChange}
                     name="transaction_Id"
                     required
+                    placeholder="Enter transaction Id"
                   />
                 </div>
               </div>

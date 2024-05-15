@@ -152,16 +152,23 @@ console.log(data)
           </div>
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Patient Name:</label>
-            <input type="text" name="patientName" value={data.patientName} onChange={handleChange} required class="form-control" id="recipient-name"/>
+            <input type="text" name="patientName" value={data.patientName} onChange={handleChange} required class="form-control" id="recipient-name" pattern="[A-Za-z\s]*"
+        title="Text should contain only letters"
+        placeholder="Enter full name"
+                    />
           </div>
           <div class="mb-3">
     <label for="mobile1" class="form-label">Mobile</label>
-    <input type="text" maxLength={10} minLength={10}  onChange={handleChange} value={data.mobile} required class="form-control" name="mobile" id="mobile1" aria-describedby="emailHelp"/>
+    <input type="text"  onChange={handleChange} value={data.mobile} required class="form-control" name="mobile" id="mobile1" aria-describedby="emailHelp" pattern="[0-9]{10}"
+                    title="Mobile number should be 10 digits"
+                    maxLength={10}
+                    minLength={10}
+                    placeholder="Enter 10-digit mobile number"/>
   
   </div>
   <div class="mb-3">
     <label for="email1" class="form-label">Email</label>
-    <input type="email" class="form-control" value={data.email} onChange={handleChange} name="email" id="email1" aria-describedby="emailHelp"/>
+    <input type="email" class="form-control" value={data.email} onChange={handleChange} name="email" id="email1" aria-describedby="emailHelp" placeholder="Enter email"/>
   
   </div>
 
@@ -179,7 +186,9 @@ console.log(data)
 
   <div class="mb-3">
     <label for="age" class="form-label">Age</label>
-    <input type="text" class="form-control" value={data.age} name="age" id="age"  onChange={handleChange} aria-describedby="emailHelp"/>
+    <input type="text" class="form-control" value={data.age} name="age" id="age"  onChange={handleChange} aria-describedby="emailHelp" placeholder="Enter age in years"
+                    pattern="[0-9]*"
+                    title="Age should contain only numbers"/>
   
   </div>
 
@@ -198,13 +207,13 @@ console.log(data)
 
   <div class="mb-3">
     <label for="address" class="form-label">Address</label>
-    <input type="text" class="form-control" value={data.address} onChange={handleChange} name="address" id="address" aria-describedby="emailHelp"/>
+    <input type="text" class="form-control" value={data.address} onChange={handleChange} name="address" id="address" aria-describedby="emailHelp" placeholder="Enter address"/>
      
   </div>
 
   <div class="mb-3">
     <label for="notes" class="form-label">Notes</label>
-    <input type="text" class="form-control" value={data.notes} name="notes" required onChange={handleChange} id="notes" aria-describedby="emailHelp"/>
+    <input type="text" class="form-control" value={data.notes} name="notes" required onChange={handleChange} id="notes" aria-describedby="emailHelp" placeholder="Enter notes"/>
   
   </div>
        

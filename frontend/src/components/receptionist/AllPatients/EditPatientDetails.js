@@ -219,6 +219,10 @@ useEffect(()=>{
                             onChange={handleChange}
                             value={data.patient_Name}
                             required
+                            pattern="[A-Za-z\s]*"
+                            title="Text should contain only letters"
+                            placeholder="Enter full name"
+
                           />
           </div>
           <div class="mb-3">
@@ -232,7 +236,9 @@ useEffect(()=>{
                             className="form-control"
                             value={data.mobile}
                             name="mobile"
-                            placeholder=""
+                            placeholder="Enter 10-digit mobile number"
+                    pattern="[0-9]{10}"
+                    title="Mobile number should be 10 digits"
                             maxLength={10}
                             minLength={10}
                             onChange={handleChange}
@@ -248,6 +254,7 @@ useEffect(()=>{
                             id="email"
                             className="form-control"
                             name="email"
+                            placeholder="Enter email"
                             onChange={handleChange}
                             value={data.email}
                           />
@@ -274,6 +281,7 @@ useEffect(()=>{
                             onChange={handleChange}
                             required
                             value={data.address}
+                            placeholder="Enter address"
                           />
           </div>
           <div class="mb-3">
@@ -287,8 +295,11 @@ useEffect(()=>{
                             name="aadhaar_no"
                             onChange={handleChange}
                             value={data.aadhaar_no}
-                            maxLength={12}
-                            minLength={12}
+                            placeholder="Enter 12-digit aadhaar number"
+                    pattern="[0-9]{12}"
+                    title="Aadhaar number should be 12 digits"
+                    maxLength={12}
+                    minLength={12}
                           
                           />
           </div>
@@ -319,6 +330,9 @@ useEffect(()=>{
                             onChange={handleChange}
                             value={data.contact_Person_Name}
                             required
+                            pattern="[A-Za-z\s]*"
+                            title="Text should contain only letters"
+                            placeholder="Enter contact person name"
                           />
           </div>
           <div class="mb-3">
@@ -368,6 +382,9 @@ useEffect(()=>{
                             onChange={handleChange}
                             value={data.age ? data.age : ""}
                             required
+                            placeholder="Enter age in years"
+                            pattern="[0-9]*"
+                            title="Age should contain only numbers"
                           />
           </div>
           <div class="mb-3">
@@ -383,6 +400,9 @@ useEffect(()=>{
                             onChange={handleChange}
                             required
                             value={data.weight}
+                            placeholder="Enter weight in kg"
+                            pattern="[0-9]*"
+                            title="weight should contain only numbers"
                           />
           </div>
           <div class="mb-3">

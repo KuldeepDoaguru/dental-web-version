@@ -319,14 +319,20 @@ catch(error){
     <div className='col-5'>
     <div class="mb-3">
     <label for="patientName" class="form-label">Patient Name</label>
-    <input type="text" class="form-control" onChange={handleChange} value={formData.patientName} required name="patientName" id="patientName" aria-describedby="emailHelp"/>
+    <input type="text" class="form-control" onChange={handleChange} value={formData.patientName} required name="patientName" id="patientName" aria-describedby="emailHelp"    pattern="[A-Za-z\s]*"
+        title="Text should contain only letters"
+        placeholder="Enter full name"/>
   
   </div>
   </div>
   <div className='col-5'>
   <div class="mb-3">
     <label for="mobile" class="form-label">Mobile</label>
-    <input type="text" maxLength={10} minLength={10}  onChange={handleChange} value={formData.mobile} required class="form-control" name="mobile" id="mobile" aria-describedby="emailHelp"/>
+    <input type="text"  onChange={handleChange} value={formData.mobile} required class="form-control" name="mobile" id="mobile" aria-describedby="emailHelp"  placeholder="Enter 10-digit mobile number"
+                    pattern="[0-9]{10}"
+                    title="Mobile number should be 10 digits"
+                    maxLength={10}
+                    minLength={10}/>
   
   </div>
     </div>
@@ -335,7 +341,8 @@ catch(error){
     <div className='col-5'>
     <div class="mb-3">
     <label for="email" class="form-label">Email</label>
-    <input type="email" class="form-control" value={formData.email} onChange={handleChange} name="email" id="email" aria-describedby="emailHelp"/>
+    <input type="email" class="form-control" value={formData.email} onChange={handleChange} name="email" id="email" 
+    placeholder='Enter email' aria-describedby="emailHelp"/>
   
   </div>
   </div>
@@ -357,7 +364,9 @@ catch(error){
     <div className='col-5'>
     <div class="mb-3">
     <label for="age" class="form-label">Age</label>
-    <input type="text" class="form-control" value={formData.age} name="age" id="age"  onChange={handleChange} aria-describedby="emailHelp"/>
+    <input type="text" class="form-control" value={formData.age} name="age" id="age"  onChange={handleChange} aria-describedby="emailHelp" placeholder="Enter age in years"
+                    pattern="[0-9]*"
+                    title="Age should contain only numbers"/>
   
   </div>
   </div>
@@ -381,14 +390,14 @@ catch(error){
     <div className='col-5'>
     <div class="mb-3">
     <label for="address" class="form-label">Address</label>
-    <input type="text" class="form-control" value={formData.address} onChange={handleChange} name="address" id="address" aria-describedby="emailHelp"/>
+    <input type="text" class="form-control" value={formData.address} onChange={handleChange} name="address" id="address" aria-describedby="emailHelp" placeholder="Enter address"/>
      
   </div>
   </div>
   <div className='col-5'>
   <div class="mb-3">
     <label for="notes" class="form-label">Notes</label>
-    <input type="text" class="form-control" value={formData.notes} name="notes" required onChange={handleChange} id="notes" aria-describedby="emailHelp"/>
+    <input type="text" class="form-control" value={formData.notes} name="notes" required onChange={handleChange} id="notes" aria-describedby="emailHelp" placeholder="Enter notes"/>
   
   </div>
     </div>

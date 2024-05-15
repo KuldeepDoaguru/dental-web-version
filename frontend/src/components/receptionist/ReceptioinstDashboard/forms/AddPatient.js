@@ -766,6 +766,9 @@ function AddPatient() {
                     className="form-control"
                     name="patient_Name"
                     onChange={handleChange}
+                    pattern="[A-Za-z\s]*"
+        title="Text should contain only letters"
+        placeholder="Enter full name"
                     required
                   />
                 </div>
@@ -800,9 +803,13 @@ function AddPatient() {
                     type="text"
                     className="form-control"
                     name="mobile"
-                    placeholder=""
+                    placeholder="Enter 10-digit mobile number"
+                    pattern="[0-9]{10}"
+                    title="Mobile number should be 10 digits"
                     maxLength={10}
                     minLength={10}
+
+            
                     onChange={handleChange}
                   />
                 </div>
@@ -819,6 +826,7 @@ function AddPatient() {
                     className="form-control"
                     name="email"
                     onChange={handleChange}
+                    placeholder="Enter email"
                   />
                 </div>
               </div>
@@ -834,6 +842,7 @@ function AddPatient() {
                     name="address"
                     onChange={handleChange}
                     required
+                    placeholder="Enter address"
                   />
                 </div>
               </div>
@@ -848,6 +857,9 @@ function AddPatient() {
                     className="form-control"
                     name="aadhaar_no"
                     onChange={handleChange}
+                    placeholder="Enter 12-digit aadhaar number"
+                    pattern="[0-9]{12}"
+                    title="Aadhaar number should be 12 digits"
                     maxLength={12}
                     minLength={12}
                   />
@@ -912,6 +924,9 @@ function AddPatient() {
                     className="form-control"
                     onChange={handleChange}
                     required
+                    pattern="[A-Za-z\s]*"
+                    title="Text should contain only letters"
+                    placeholder="Enter contact person name"
                   />
                 </div>
               </div>
@@ -945,6 +960,9 @@ function AddPatient() {
                     onChange={handleChange}
                     value={data.age ? data.age : ""}
                     required
+                    placeholder="Enter age in years"
+                    pattern="[0-9]*"
+                    title="Age should contain only numbers"
                   />
                 </div>
               </div>
@@ -961,6 +979,9 @@ function AddPatient() {
                     name="weight"
                     onChange={handleChange}
                     required
+                    placeholder="Enter weight in kg"
+                    pattern="[0-9]*"
+                    title="weight should contain only numbers"
                   />
                 </div>
               </div>
@@ -976,6 +997,7 @@ function AddPatient() {
                     className="form-control"
                     name="allergy"
                     onChange={handleChange}
+                    placeholder="Enter allergy"
                   />
                 </div>
               </div>
@@ -1090,6 +1112,7 @@ function AddPatient() {
                           value={searchDoctor}
                           onChange={handleSearchDoctor}
                           required
+                          placeholder="Search Doctor"
                         />
                         <DoctorList>
                           <div>
@@ -1206,6 +1229,7 @@ function AddPatient() {
                                 onChange={handleChange}
                                 name="transaction_Id"
                                 required
+                                placeholder="Enter transaction Id"
                               />
                             </div>
                           </div>

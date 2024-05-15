@@ -23,6 +23,7 @@ function DoctorSection() {
   const [doctors,setDoctors] = useState([]);
   
   const [doctorWithLeave,setDoctorWithLeave] = useState([]);
+  const [doctorWithUpcommingLeave,setDoctorWithUpcommingLeave] = useState([]);
   const todayDate = moment().format('YYYY-MM-DD');
   console.log(todayDate)
   
@@ -80,7 +81,23 @@ function DoctorSection() {
      
   },[]);
 
+  const getDoctorWithUpcommingLeave = () =>{
+    const filterDoctors =  doctorWithLeave?.filter((doctor)=>{
+    return  new Date(doctor?.leave_dates) >= new Date(todayDate)
+    
+            
+    })
+    setDoctorWithUpcommingLeave(filterDoctors);
+   
+ 
+ }
+
+  useEffect(()=>{
+    getDoctorWithUpcommingLeave();
+  },[doctorWithLeave])
+
   console.log(doctorWithLeave)
+  console.log(doctorWithUpcommingLeave);
 
   // Function to convert 24-hour time to AM/PM format
 const convertToAMPM = (time) => {
@@ -288,7 +305,7 @@ const formatDate = (dateString) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {currentRows.map((data, index) => (
+                      {currentRows?.map((data, index) => (
                         <tr key={index}>
                           <td>{data.employee_ID}</td>
                           <td> {data.employee_name}</td>
@@ -334,29 +351,17 @@ const formatDate = (dateString) => {
         ))
       )
     } */}
-    {doctorWithLeave
-  .filter((doctor) => doctor.employee_ID === data.employee_ID)
-  .map((doctor) => 
-    doctor.leave_dates.split(",").map((leaveDate, index) => (
-      leaveDate ? (
-        new Date(leaveDate) >= new Date(todayDate) ? (
+    {doctorWithUpcommingLeave
+  ?.filter((doctor) => doctor?.employee_ID === data?.employee_ID)
+  ?.map((doctor) => 
+            <>
           <li key={index}>
-            {formatDate(leaveDate)}
+            {formatDate(doctor?.leave_dates)}
           </li>
-        ) : (
-          <li key={index}>
-             No leave
-          </li>
-        )
-      ) : (
-        <li key={index}>
-          No leave
-        </li>
-      )
-    ))
-  )
+          </>
+        ) 
 }
-    {doctorWithLeave.filter((doctor) => doctor.employee_ID === data.employee_ID).length === 0 && (
+    {doctorWithUpcommingLeave?.filter((doctor) => doctor?.employee_ID === data?.employee_ID)?.length === 0 && (
       <li>No leave</li>
     )}
   </ul>

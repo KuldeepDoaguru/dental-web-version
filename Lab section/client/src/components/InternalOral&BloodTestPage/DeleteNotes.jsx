@@ -1,15 +1,26 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom'
 
 function DeleteNotes() {
     const {id} = useParams();
     const [notes,setNotes] = useState([]);
+     
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
+
 
     useEffect(()=>{
         const fetchNotes = async () => {
             try {
-              const response = await axios.get(`https://dentalgurulab.doaguru.com/api/lab/getpatienttest-notes/${id}`);
+              const response = await axios.get(`https://dentalgurulab.doaguru.com/api/lab/getpatienttest-notes/${id}`,
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              }});
         
               if (response.status === 200) {
                 setNotes(response.data);
@@ -24,7 +35,12 @@ fetchNotes()
     const handleDeleteNote = async (noteId) => {
         const isConfirmed = window.confirm("Are you sure you want to delete this Notes?");
        if(isConfirmed){ try {
-          const response = await axios.delete(`https://dentalgurulab.doaguru.com/api/lab/delete-patienttest-notes/${noteId}`);
+          const response = await axios.delete(`https://dentalgurulab.doaguru.com/api/lab/delete-patienttest-notes/${noteId}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }});
     
           if (response.status === 200) {
             console.log('Note deleted successfully');

@@ -6,6 +6,7 @@ import Sider from "../MainComponents/Sider";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { IoArrowBackSharp } from "react-icons/io5";
+import { useSelector } from "react-redux";
 
 function FinalOral_Blood_Test() {
   const [patientbill_no, setPatientbill_no] = useState("");
@@ -23,6 +24,14 @@ function FinalOral_Blood_Test() {
   const [patientcollection_date, setPatientcollection_date] = useState("");
   const [patientauthenticate_date, setPatientauthenticate_date] = useState("");
   const [labName, setLabName] = useState("");
+  const [patienttid , setPatienttid] = useState('')
+   
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
+  const branch = currentUser.branch_name
+  const address = currentUser.address
+  
   const { id } = useParams();
   const [notes, setNotes] = useState([]);
   const navigate = useNavigate();
@@ -33,11 +42,17 @@ function FinalOral_Blood_Test() {
     window.scrollTo(0, 0);
   };
 
+
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
         const response = await axios.get(
-          `https://dentalgurulab.doaguru.com/api/lab/get-patient-details-by-id/${id}`
+          `https://dentalgurulab.doaguru.com/api/lab/get-patient-details-by-id/${id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }}
         );
         setPatientbill_no(response.data[0].testid);
         setPatientUHID(response.data[0].patient_uhid);
@@ -47,6 +62,7 @@ function FinalOral_Blood_Test() {
         setPatientbranch_name(response.data[0].branch_name);
         setPatientAssigned_Doctor_Name(response.data[0].assigned_doctor_name);
         setLabName(response.data[0].lab_name);
+        setPatienttid(response.data[0].tpid)
       } catch (error) {
         console.error("Error fetching patient details:", error);
       }
@@ -59,7 +75,12 @@ function FinalOral_Blood_Test() {
     const fetchPatientTestDetails = async () => {
       try {
         const response = await axios.get(
-          `https://dentalgurulab.doaguru.com/api/lab/get-patient-test-details-by-id/${id}`
+          `https://dentalgurulab.doaguru.com/api/lab/get-patient-test-details-by-id/${id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }}
         );
         setPatienttest(response.data[0].test);
         setPatientresult(response.data[0].result);
@@ -79,7 +100,12 @@ function FinalOral_Blood_Test() {
     const fetchNotes = async () => {
       try {
         const response = await axios.get(
-          `https://dentalgurulab.doaguru.com/api/lab/getpatienttest-notes/${id}`
+          `https://dentalgurulab.doaguru.com/api/lab/getpatienttest-notes/${id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }}
         );
 
         if (response.status === 200) {
@@ -101,7 +127,12 @@ function FinalOral_Blood_Test() {
     if (isConfirmed) {
       try {
         const response = await axios.delete(
-          `https://dentalgurulab.doaguru.com/api/lab/patent-details/${id}`
+          `https://dentalgurulab.doaguru.com/api/lab/patent-details/${id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }}
         );
 
         if (response.status === 200) {
@@ -142,9 +173,10 @@ function FinalOral_Blood_Test() {
           <Sider />
         </div>
         <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-12 col-sm-12 p-0" style={{marginTop:"5rem"}}>
-          <IoArrowBackSharp
+        <IoArrowBackSharp
             className="fs-1 text-black d-print-none"
             onClick={goBack}
+            style={{ cursor: "pointer" }}
           />
 
           <div className="mx-4">
@@ -152,14 +184,16 @@ function FinalOral_Blood_Test() {
               <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div className="row d-flex justify-content-between">
                   <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-6 mt-4">
-                    <div>
-                      <h5>Branch : Madan Mahal</h5>
-                    </div>
-                    <form className="d-flex fw-semibold">
-                      <p>Addresh </p>
-                      <p className="ms-1"> : </p>
-                      <p className="ms-2">128,Near Gwarighat Jabalpur M.p</p>
-                    </form>
+                  <div>
+                            <h5>Branch : {branch}</h5>
+                          </div>
+                          <form className="d-flex fw-semibold">
+                            <p>Address </p>
+                            <p className="ms-1"> : </p>
+                            <p className="ms-2">
+                             {address}
+                            </p>
+                          </form>
 
                     <form className="d-flex">
                       <h5>Email id : </h5>
@@ -220,37 +254,51 @@ function FinalOral_Blood_Test() {
                     </tbody>
 
                     <tbody>
-                      <tr className="table-row">
-                        <td className="table-small" style={{ width: "20%" }}>
-                          Age / Gender :
-                          <input
-                            type="Number"
-                            className="border border-0 ms-3"
-                            style={{ width: "40px" }}
-                            value={patientage}
-                          />{" "}
-                          /
-                          <input
-                            type="text"
-                            className="border border-0 w-25 ms-3"
-                            value={patientgender}
-                          />
-                        </td>
+                            <tr className="table-row">
+                              <td
+                                className="table-small"
+                                style={{ width: "20%" }}
+                              >
+                              Treatment Id :
+                                <input
+                                  type="Number"
+                                  className="border border-0 ms-3"
+                                  style={{ width: "40px" }}
+                                  value={patienttid}
+                    
+                                />{" "}
+                                
+                                
+                              </td>
 
-                        <td
-                          colSpan="2"
-                          className="table-small"
-                          style={{ width: "20%" }}
-                        >
-                          Patient Name :
-                          <input
-                            type="text"
-                            className="border border-0 ms-3 w-50"
-                            value={patientName}
-                          />
-                        </td>
-                      </tr>
-                    </tbody>
+                              <td
+                                colSpan="2"
+                                className="table-small"
+                                style={{ width: "20%" }}
+                              >
+                                Patient Name :
+                                <input
+                                  type="text"
+                                  className="border border-0 ms-3 w-50"
+                                  value={patientName}
+                                 
+                                />
+                              </td>
+
+                              
+                              {/* <td
+                                className="table-small"
+                                style={{ width: "10%" }}
+                              >
+                                Bill Date :
+                                <input
+                                  type="date"
+                                  className="border border-0 ms-2"
+
+                                />
+                              </td> */}
+                            </tr>
+                          </tbody>
                     <tbody>
                       <tr className="table-row">
                         <td className="table-small" style={{ width: "20%" }}>
@@ -306,7 +354,7 @@ function FinalOral_Blood_Test() {
                         <th className="p-3">Range</th>
                       </>
                     )}
-                    {labName === "blood" && (
+                    {labName === "pathology" && (
                       <>
                         <th className="p-3">Unit</th>{" "}
                         <th className="p-3">Range</th>
@@ -321,13 +369,13 @@ function FinalOral_Blood_Test() {
                       <td>{patienttest}</td>
                       <td>{patientresult}</td>
                       {labName === "oral" && <td>{patientunit}</td>}
-                      {labName === "blood" && <td>{patientunit}</td>}
+                      {labName === "pathology" && <td>{patientunit}</td>}
                       {labName === "oral" && (
                         <>
                           <td>40 - 59</td>
                         </>
                       )}
-                      {labName === "blood" && (
+                      {labName === "pathology" && (
                         <>
                           <td>40 - 59</td>
                         </>

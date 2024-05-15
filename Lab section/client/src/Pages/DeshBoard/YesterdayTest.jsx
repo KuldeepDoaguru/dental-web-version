@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 function YesterdayTest() {
   const navigate =   useNavigate();
   const [testData, setTestData] = useState([]);
+
   const goBack = () => {
     navigate('/');
       };
@@ -62,18 +63,23 @@ function YesterdayTest() {
 
               </div>
             <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-12 col-sm-12 p-0" style={{marginTop:"5rem"}}>
+              
             <IoArrowBackSharp
-                className="fs-1 text-black d-print-none"
-                onClick={goBack}
-              />
-<div className="container-fluid">
-<h2>Yesterday Test Data</h2>
+            className="fs-1 text-black d-print-none"
+            onClick={goBack}
+            style={{ cursor: "pointer" }}
+          /> 
+              
+              <div className="container-fluid">
+<h2 className='mx-2 mt-2'>Yesterday Test Data</h2>
+<div className="mx-2" style={{ maxHeight: "700px", overflow: "auto" }}>
 <table className="table table-bordered">
       <thead>
         <tr>
           <th>ID</th>
           <th>Paitent Test Id </th>
           <th>Patient UHID</th>
+          <th>Patient Name</th>
           <th>Test</th>
           <th>Date</th>
           <th>Action</th>
@@ -86,6 +92,7 @@ function YesterdayTest() {
             <td>{index + 1}</td>
             <td>{test.testid}</td>
             <td>{test.patient_uhid}</td>
+            <td>{test.patient_name}</td>
             <td>{test.test}</td>
             <td>{moment(test.created_date).format("DD/MM/YYYY")}</td>  
 
@@ -99,6 +106,7 @@ function YesterdayTest() {
         ))}
       </tbody>
     </table>
+    </div>
 </div>
 
   

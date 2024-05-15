@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/MainComponents/Header";
 import Sider from "../../components/MainComponents/Sider";
 import { IoArrowBackSharp } from "react-icons/io5";
 import  moment  from 'moment';
 import axios from "axios";
 import { Button } from 'react-bootstrap';
+import { useSelector } from "react-redux";
 const Compleated = () => {
   const [patientDetails, setPatientDetails] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
     const [dateFilter, setDateFilter] = useState('');
 
-
+ 
+    const currentUser = useSelector(state => state.auth.user);
+  
+    const token = currentUser?.token;
+  
     useEffect(() => {
       const fetchPatientDetails = async () => {
         try {
           const response = await axios.get(
             `https://dentalgurulab.doaguru.com/api/lab/get-patient-details`
-          );
-          setPatientDetails(response.data);
+            ,{
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+            });
+          setPatientDetails(response.data.result);
         } catch (error) {
           console.error("Error fetching patient details:", error);
         }
@@ -29,7 +39,7 @@ const Compleated = () => {
     }, []);
 
     const filteredPatients = patientDetails.filter(patient => {
-      const fullName = `${patient.patient_name} ${patient.assigned_doctor_name}`.toLowerCase();
+       const fullName = `${patient.patient_uhid}`.toLowerCase();
       const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
       return fullName.includes(searchQuery.toLowerCase()) && (!dateFilter || formattedDate === dateFilter);
     });
@@ -76,10 +86,11 @@ const Compleated = () => {
             </div>
             <div className="col-11" style={{marginTop:"5rem"}}>
               <div className="col-12 p-0">
-                <IoArrowBackSharp
-                  className="fs-1 text-black d-print-none"
-                  onClick={goBack}
-                />{" "}
+              <IoArrowBackSharp
+            className="fs-1 text-black d-print-none"
+            onClick={goBack}
+            style={{ cursor: "pointer" }}
+          />
               </div>
 
  <div className="container-fluid mt-4">
@@ -89,7 +100,7 @@ const Compleated = () => {
           <div className="col-lg-2">
           <input
             type="text"
-            placeholder="Search by name or doctor"
+            placeholder="Search by Patient UHID"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="form-control"
@@ -122,6 +133,7 @@ const Compleated = () => {
                 <th>Created Date</th>
                 <th>Patient Tests </th>
                 <th>Tests Status </th>
+                <th>Action </th>
               
               </tr>
             </thead>
@@ -145,27 +157,22 @@ const Compleated = () => {
         <td>{moment(patient.created_date).format("DD/MM/YYYY")}</td>
         <td>{patient.test}</td>
         {patient.test_status === "done" && (
-        <td>
-            <Button
-            className="btn-success"
-            variant="success"
-            style={{
-              '--bs-btn-padding-y': '.25rem',
-              '--bs-btn-padding-x': '.5rem',
-              '--bs-btn-font-size': '.75rem',
-              fontSize: '.75rem',
-              marginRight: '5px',
-            }}
-          >
+       <td className=" text-success fw-bold"> 
           {patient.test_status}
-          </Button>
+         
           </td>
        
         )}
       
        
     
-      
+         
+       
+      <td><div className=""> <Link to={`/final-oral-testing/${patient.testid}`}>
+                    <button className="btn btn-success m-1">View</button>
+                  </Link>
+               
+</div></td> 
        
        
     

@@ -8,14 +8,16 @@ import signature from "../../Pages/signature_maker_after_.webp";
 import Header from '../MainComponents/Header'
 import axios from 'axios'
 import cogoToast from "cogo-toast";
+import styled from 'styled-components'
+import { useSelector } from 'react-redux'
 
 function   Oral_Blood_Tests() {
   // const [patientDetails, setPatientDetails] = useState([]);
   const [patientbill_no , setPatientbill_no] = useState('')
   const [patientUHID , setPatientUHID] = useState('')
   const [patientName , setPatientName] = useState('')
-  const [patientage , setPatientage] = useState('')
-  const [patientgender , setPatientgender] = useState('')
+  const [patienttid , setPatienttid] = useState('')
+  
   const [patientbranch_name , setPatientbranch_name] = useState('')
   const [patientAssigned_Doctor_Name , setPatientAssigned_Doctor_Name] = useState('')
   const [patienttest , setPatienttest] = useState('')
@@ -33,7 +35,12 @@ function   Oral_Blood_Tests() {
   const location = useLocation();
  const navigate = useNavigate();
  
-
+ 
+ const currentUser = useSelector(state => state.auth.user);
+  
+ const token = currentUser?.token;
+ const branch = currentUser.branch_name
+ const address = currentUser.address
   const goBack = () => {
    navigate('/')
   };
@@ -44,27 +51,30 @@ function   Oral_Blood_Tests() {
 
   useEffect(() => {
     if (location.state && location.state.test) {
-      const { test } = location.state;
+      const { test, cost } = location.state;
       setPatienttest(test);
+      setPatientcost(cost); // Set the patient cost if available
     }
   }, [location.state]);
-  
-
 
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
         const response = await axios.get(
-          `https://dentalgurulab.doaguru.com/api/lab/get-patient-details-by-id/${id}`
+          `https://dentalgurulab.doaguru.com/api/lab/get-patient-details-by-id/${id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }}
         );
         setPatientbill_no(response.data[0].testid)
          setPatientUHID(response.data[0].patient_uhid)
          setPatientName(response.data[0].patient_name)
-         setPatientage(response.data[0].age)
-         setPatientgender(response.data[0].gender)
          setPatientbranch_name(response.data[0].branch_name)
          setPatientAssigned_Doctor_Name(response.data[0].assigned_doctor_name)
          setLabName(response.data[0].lab_name)
+         setPatienttid(response.data[0].tpid)
 
          console.log(labName);
 
@@ -94,33 +104,38 @@ const hundleSumbit = async () => {
 
   try {
     // Update the test status
-    const responsee = await axios.put(`https://dentalgurulab.doaguru.com/api/lab/update-test-status/${id}`);
+    const responsee = await axios.put(`https://dentalgurulab.doaguru.com/api/lab/update-test-status/${id}`,[],
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    }});
     if (responsee.status === 200) {
       console.log('Test status successfully updated');
     }
 
     // Submit the patient test details
-    const response = await axios.post(`https://dentalgurulab.doaguru.com/api/lab/paitent-test/${patientbill_no}`, {
-      patient_uhid: patientUHID,
-      patient_name: patientName,
-      test: patienttest,
-      result: patientresult,
-      unit: patientunit,
-      cost: patientcost,
-      collection_date: patientcollection_date,
-      authenticate_date: patientauthenticate_date,
-      payment: labtestpayment,
-      payment_status: labtestpaymentstatus,
-     
-      lab_type:labType
+    const response = await axios.put(
+      `https://dentalgurulab.doaguru.com/api/lab/update-patent-test-data/${patientbill_no}`,
+      {
+        test: patienttest , result:patientresult, unit:patientunit,cost:patientcost ,collection_date: patientcollection_date,authenticate_date:patientauthenticate_date,
+        lab_type:labType
+      
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }}
+    );
 
-    });
+    navigate(`/final-oral-testing/${patientbill_no}`);
 
     // Check if the submission was successful
     if (response.data.success === true) {
       // Display success message
       cogoToast.success(`${response.data.message}`);
-      navigate(`/final-oral-testing/${patientbill_no}`);
+    
 
       // Fetch the patient test data after submission
     } else {
@@ -135,7 +150,7 @@ const hundleSumbit = async () => {
 
 
   return (
-   <>
+   <Wrapper>
      <div className="">
      <div className="d-print-none">
           <Header />
@@ -153,22 +168,23 @@ const hundleSumbit = async () => {
             
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-12 col-sm-12 p-0" style={{marginTop:"5rem"}}>
               <IoArrowBackSharp
-                  className="fs-1 text-black d-print-none mx-3"
-                  onClick={goBack}
-                />
+            className="fs-1 text-black d-print-none"
+            onClick={goBack}
+            style={{ cursor: "pointer" }}
+          />
                 <div className="mx-4">
                   <div className="row">
                     <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                       <div className="row d-flex justify-content-between">
                         <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-6 mt-4">
-                          <div>
-                            <h5>Branch : Madan Mahal</h5>
+                        <div>
+                            <h5>Branch : {branch}</h5>
                           </div>
                           <form className="d-flex fw-semibold">
-                            <p>Addresh </p>
+                            <p>Address </p>
                             <p className="ms-1"> : </p>
                             <p className="ms-2">
-                              128,Near Gwarighat Jabalpur M.p
+                             {address}
                             </p>
                           </form>
 
@@ -280,21 +296,16 @@ const hundleSumbit = async () => {
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                Age / Gender :
+                              Treatment Id :
                                 <input
                                   type="Number"
                                   className="border border-0 ms-3"
                                   style={{ width: "40px" }}
-                                  value={patientage}
+                                  value={patienttid}
                     
                                 />{" "}
-                                /
-                                <input
-                                  type="text"
-                                  className="border border-0 w-25 ms-3"
-                                  value={patientgender}
-                                  
-                                />
+                                
+                                
                               </td>
 
                               <td
@@ -460,7 +471,7 @@ const hundleSumbit = async () => {
                          
                         </div>
                     ) }
-                        {labName === 'blood' && (
+                        {labName === 'pathology' && (
                         <div className="col-lg-4 form-group">
                           <label className="fw-bold fs-5">Unit</label>
                           <input
@@ -509,8 +520,12 @@ const hundleSumbit = async () => {
             </div>
           </div>
         </div>
-   </>
+   </Wrapper>
   )
 }
 
 export default Oral_Blood_Tests
+
+const Wrapper = styled.div`
+
+`

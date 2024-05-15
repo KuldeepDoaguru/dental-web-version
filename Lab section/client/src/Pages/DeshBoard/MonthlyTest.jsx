@@ -9,6 +9,8 @@ import  moment  from 'moment';
 function MonthlyTest() {
   const navigate =   useNavigate();
   const [testData, setTestData] = useState([]);
+
+
   const goBack = () => {
     navigate('/');
       };
@@ -50,6 +52,7 @@ function MonthlyTest() {
     }
   };
 
+ 
   return (
     <div>
     <div className="d-print-none">
@@ -61,18 +64,19 @@ function MonthlyTest() {
 
               </div>
             <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-12 col-sm-12 p-0" style={{marginTop:"5rem"}}>
-            <IoArrowBackSharp
-                className="fs-1 text-black d-print-none"
-                onClick={goBack}
-              />
-<div className="container-fluid">
+ <IoArrowBackSharp  className="fs-1 text-black d-print-none" onClick={goBack}   style={{cursor:"pointer"}}/>
+ 
+ <div className="container-fluid " >
 <h2>Monthly Test Data</h2>
+
+<div className="" style={{ maxHeight: "700px", overflow: "auto" }}>
     <table className="table table-bordered">
       <thead>
         <tr>
           <th>ID</th>
           <th>Paitent Test Id </th>
           <th>Patient UHID</th>
+          <th>Patient Name</th>
           <th>Test</th>
           <th>Date</th>
           <th>Action</th>
@@ -85,6 +89,7 @@ function MonthlyTest() {
             <td>{index + 1}</td>
             <td>{test.testid}</td>
             <td>{test.patient_uhid}</td>
+            <td>{test.patient_name}</td>
             <td>{test.test}</td>
             <td>{moment(test.created_date).format("DD/MM/YYYY")}</td>  
 
@@ -98,6 +103,7 @@ function MonthlyTest() {
         ))}
       </tbody>
     </table>
+    </div>
 </div>
 
   

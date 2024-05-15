@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import cogoToast from "cogo-toast";
 import { loginUser, setUser } from "../redux/user/userSlice";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { IoEye, IoEyeOffOutline } from "react-icons/io5";
+
 
 const LabAttendant = () => {
   const dispatch = useDispatch();
@@ -14,11 +17,24 @@ const LabAttendant = () => {
   const [localhost, setLocalhost] = useState([]);
   const [braches, setBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState("");
+  const [show, setShow] = useState(false);
+   
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
+
 
   const getBranches = async () => {
+
+    
     try {
       const response = await axios.get(
-        "https://dentalgurulab.doaguru.com/api/lab/get-branches"
+        "https://dentalgurulab.doaguru.com/api/lab/get-branches",
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response);
       setBranches(response.data.data);
@@ -46,7 +62,12 @@ const LabAttendant = () => {
           email,
           password,
           branch_name: selectedBranch,
-        }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
 
       console.log(response.data);
@@ -78,7 +99,7 @@ const LabAttendant = () => {
       }
     }
   };
-
+   
   return (
     <>
       <Container>
@@ -135,10 +156,10 @@ const LabAttendant = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="form-control"
                                 placeholder="email"
+                                required
                               />
                             </div>
                           </div>
-
                           <div className="d-flex flex-row align-items-center mb-4">
                             <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
                             <div className="form-outline flex-fill mb-0">
@@ -148,18 +169,29 @@ const LabAttendant = () => {
                               >
                                 Password
                               </label>
+                              <div className="input-container">
                               <input
                                 name="password"
-                                type="password"
+                                type={show ? "text" : "password"}
                                 id="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="form-control"
-                                placeholder="password"
+                                placeholder="Password"
+                                required
                               />
+                              <div className="eye-icon">
+                                  {show ? (
+                                    <IoEye onClick={() => setShow(false)} />
+                                  ) : (
+                                    <IoEyeOffOutline
+                                      onClick={() => setShow(true)}
+                                    />
+                                  )}
+                                </div>
+                                </div>
                             </div>
                           </div>
-
                           <div className="col-5 ms-3">
                             <p>
                               <Link to="/password-reset">
@@ -239,5 +271,16 @@ const Container = styled.div`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  .input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .eye-icon {
+    position: absolute;
+    right: 10px; /* Adjust the value to your preference */
+    cursor: pointer;
   }
 `;

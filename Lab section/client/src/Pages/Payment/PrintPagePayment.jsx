@@ -8,6 +8,7 @@ import axios from "axios";
 import moment from 'moment';
 import signature from "../../Pages/BloodTestExternal/signature_maker_after_.webp";
 import cogoToast  from 'cogo-toast';
+import { useSelector } from "react-redux";
 
 
 
@@ -18,9 +19,10 @@ const PrintPagePayment                                                          
     const [patientName , setPatientName] = useState('')                     
     const [patientcreateddate , setPatientcreateddate] = useState('')
     const [labName , setLabName] = useState('')
-
-
-
+    const [patientcost, setPatientcost] = useState(0);
+    const [patientAssigned_Doctor_Name, setPatientAssigned_Doctor_Name] =useState(""); 
+    const userName = useSelector(state => state.auth.user);
+    
   const goBack = () => {
     window.history.go(-1);
   };
@@ -30,6 +32,10 @@ const PrintPagePayment                                                          
   
   const location = useLocation();
  const navigate = useNavigate();
+ 
+ const currentUser = useSelector(state => state.auth.user);
+  
+ const token = currentUser?.token;
 
 
   useEffect(() => {
@@ -39,31 +45,46 @@ const PrintPagePayment                                                          
     }
   }, [location.state]);  
 
-
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
-        const response = await axios.get(
-          `https://dentalgurulab.doaguru.com/api/lab/get-patient-details-by-id/${id}`
-        );
-        setPatientbill_no(response.data[0].testid)
-         setPatientUHID(response.data[0].patient_uhid)
-         setPatientName(response.data[0].patient_name)
-         setPatientcreateddate(response.data[0].created_date)
-       
-         setLabName(response.data[0].lab_name)
-
-         console.log(labName);
-
-
-        
+        const response = await axios.get(`https://dentalgurulab.doaguru.com/api/lab/get-patient-details-by-id/${id}`,{
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        });
+        const data = response.data[0];
+        setPatientbill_no(data.testid);
+        setPatientUHID(data.patient_uhid);
+        setPatientName(data.patient_name);
+        setPatientcreateddate(data.created_date);
+        setLabName(data.lab_name);
+        setPatientAssigned_Doctor_Name(data.assigned_doctor_name);
       } catch (error) {
         console.error("Error fetching patient details:", error);
       }
     };
 
+    const fetchPatientTestCost = async () => {
+      try {
+        const response = await axios.post(`https://dentalgurulab.doaguru.com/api/lab/get-patient-test-cost`, {
+          test_name: patienttest
+        },{
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        });
+        setPatientcost(response.data.test_cost);
+      } catch (error) {
+        console.error("Error fetching patient test cost:", error);
+      }
+    };
+
     fetchPatientDetails();
-  }, []);
+    fetchPatientTestCost();
+  }, [id, patienttest]);
 
   const handlePayButtonClick = () => {
  
@@ -153,9 +174,9 @@ const PrintPagePayment                                                          
                     <div class=" rounded d-flex justify-content-end mt-5 me-lg-5 me-md-1">
                       <div class="card" style={{ width: "18rem" }}>
                         <div className="ms-4 mt-2">
-                          <h1> ₹1500.00</h1>
+                        <h1> ₹ {patientcost}</h1>
                           <h5 className="text-success ms-4">
-                            Patient Net Paid
+                            Patient Amount Paid
                           </h5>
                         </div>
                       </div>
@@ -192,7 +213,7 @@ const PrintPagePayment                                                          
                           <tr>
                             <th scope="row">{moment(patientcreateddate).format("DD/MM/YYYY")}</th>
                             <td>{patienttest}</td>
-                            <td>1500</td>
+                            <td>{patientcost}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -203,7 +224,7 @@ const PrintPagePayment                                                          
                 </div>
                 <div className="">
                   <div className="row  mt-5">
-                    <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-between">
                       <div className="col-lg-4 form-group">
                         <div className="text-center">
                           <img
@@ -213,9 +234,9 @@ const PrintPagePayment                                                          
                           />
                         </div>
                         <h4 className=" text-center fs-5 fw-bold">
-                          DAULAT SINGH CHOUHAN{" "}
+                        {userName.employee_name}
                         </h4>
-                        <h6 className=" text-center">TECHNICIAN</h6>
+                        <h6 className=" text-center">LAB ATTENDANT</h6>
                       </div>
 
                       <div className="col-lg-4 form-group">
@@ -227,9 +248,9 @@ const PrintPagePayment                                                          
                           />
                         </div>
                         <h4 className=" text-center fs-5 fw-bold">
-                          Dr RAMANURAJ SINGH{" "}
+                          {patientAssigned_Doctor_Name}
                         </h4>
-                        <h6 className=" text-center">Null</h6>
+                        <h6 className=" text-center">ASSIGNED BY DOCTOR</h6>
                       </div>
                     </div>
                   </div>

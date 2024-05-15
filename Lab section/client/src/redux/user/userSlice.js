@@ -30,6 +30,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     user : null,
+    refreshTable: false
 }
 const UserSlice = createSlice({
 
@@ -44,6 +45,7 @@ reducers: {
         state.user = null;
 
     }
+    
 }
 
 })

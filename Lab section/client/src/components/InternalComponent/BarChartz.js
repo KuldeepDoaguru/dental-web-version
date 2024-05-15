@@ -81,18 +81,28 @@ import {
 } from "recharts";
 import axios from "axios";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const MonthlyTestBarChart = () => {
   const [monthlyTestData, setMonthlyTestData] = useState([]);
+ 
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://dentalgurulab.doaguru.com/api/lab/get-patient-details"
+          "https://dentalgurulab.doaguru.com/api/lab/get-patient-details",
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }}
         );
         if (response.status === 200) {
-          const data = response.data;
+          const data = response.data.result;
           const monthlyData = processData(data);
           setMonthlyTestData(monthlyData);
         } else {

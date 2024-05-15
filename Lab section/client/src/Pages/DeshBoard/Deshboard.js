@@ -7,6 +7,7 @@ import TableData from "./TableData";
 import PieCharts from "../../components/InternalComponent/PieCharts";
 import BarChartz from "../../components/InternalComponent/BarChartz";
 import Calender from "../../components/InternalComponent/Calender";
+import { useSelector } from "react-redux";
 
 // import axios from "axios";
 
@@ -17,6 +18,10 @@ const Deshboard = () => {
 
   //   })
   // })
+  const currentUser = useSelector(state => state.auth.user);
+
+  const branch = currentUser.branch_name
+ const address = currentUser.address
   return (
     <>
       <Container>
@@ -30,15 +35,21 @@ const Deshboard = () => {
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11" style={{marginTop:"5rem"}}>
                 <div className="row d-flex justify-content-between">
                   <div className=" mt-4 mx-4">
-                    <div>
-                      <h5>Branch : Madan Mahal</h5>
-                    </div>
-                    <div className="mt-2">
+                  <div className="mt-2">
                       <h3> Welcome to Dental Guru! </h3>
                     </div>
-                    <div className="mt-3">
-                      <h6>LAB Dashboard</h6>
-                    </div>
+                  <div>
+                            <h5>Branch : {branch}</h5>
+                          </div>
+                         
+                          <form className="d-flex fw-semibold">
+                            <p>Address </p>
+                            
+                            <p className="ms-1"> : </p>
+                            <p className="ms-2">
+                             {address}
+                            </p>
+                          </form>
                   </div>
 
                   {/* <div className="col-12 col-md-4 me-2 mt-5">
@@ -88,9 +99,9 @@ const Deshboard = () => {
 
                 <div className="row">
                   <div className="col-lg-12">
-                    <Table className="mt-5">
+                    <div className="mt-5">
                       <TableData />
-                    </Table>
+                    </div>
                   </div>
                   <div className="col-lg-3">
                     {/* <Calender /> */}
@@ -110,15 +121,15 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const Table = styled.div`
-  cursor: pointer;
-  height: 80%;
-  overflow-y: auto;
+// const Table = styled.div`
+//   cursor: pointer;
+//   height: 80%;
+//   overflow-y: auto;
 
-  .margin{
-    margin-top:5rem;
+//   .margin{
+//     margin-top:5rem;
 
 
-  }
+//   }
  
-`;
+// `;

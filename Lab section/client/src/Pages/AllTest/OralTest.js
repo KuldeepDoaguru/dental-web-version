@@ -1,26 +1,37 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import Sider from "../../components/MainComponents/Sider";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "../../components/MainComponents/Header";
+import Sider from "../../components/MainComponents/Sider";
 import { IoArrowBackSharp } from "react-icons/io5";
-import axios from "axios";
 import  moment  from 'moment';
+import axios from "axios";
 import { Button } from 'react-bootstrap';
+import { useSelector } from "react-redux";
+const OralTest = () => {
 
-const RadiologyTest = () => {
   const [patientDetails, setPatientDetails] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
     const [dateFilter, setDateFilter] = useState('');
+     
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
 
 
-    useEffect (() => {
+
+    useEffect(() => {
       const fetchPatientDetails = async () => {
         try {
           const response = await axios.get(
             `https://dentalgurulab.doaguru.com/api/lab/get-patient-details`
-          );
-          setPatientDetails(response.data);
+            ,{
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+            });
+          setPatientDetails(response.data.result);
         } catch (error) {
           console.error("Error fetching patient details:", error);
         }
@@ -30,7 +41,7 @@ const RadiologyTest = () => {
     }, []);
 
     const filteredPatients = patientDetails.filter(patient => {
-      const fullName = `${patient.patient_name} ${patient.assigned_doctor_name}`.toLowerCase();
+       const fullName = `${patient.patient_uhid}`.toLowerCase();
       const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
       return fullName.includes(searchQuery.toLowerCase()) && (!dateFilter || formattedDate === dateFilter);
     });
@@ -70,27 +81,28 @@ const RadiologyTest = () => {
     <Wrapper>
       <Container>
         <Header />
-        <div className="container-fluid">
+        <div className="container-fluid" >
           <div className="row">
             <div className="col-1 p-0">
               <Sider />
             </div>
             <div className="col-11" style={{marginTop:"5rem"}}>
               <div className="col-12 p-0">
-                <IoArrowBackSharp
-                  className="fs-1 text-black d-print-none"
-                  onClick={goBack}
-                />{" "}
+              <IoArrowBackSharp
+            className="fs-1 text-black d-print-none"
+            onClick={goBack}
+            style={{ cursor: "pointer" }}
+          />
               </div>
 
- <div className="container-fluid mt-4">
-        <h2>List of Radiology Test</h2>
+ <div className="container-fluid mt-4" >
+        <h2>List of Oral Test</h2>
         <div className="mb-3">
         <div className="row">
           <div className="col-lg-2">
           <input
             type="text"
-            placeholder="Search by name or doctor"
+            placeholder="Search by Patient UHID"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="form-control"
@@ -121,9 +133,9 @@ const RadiologyTest = () => {
                 <th>Assigned Doctor Name</th>
                 <th>Lab Name</th>
                 <th>Created Date</th>
-                <th>Patient Tests </th>
+                <th>Patient Test </th>
                 <th>Tests Status </th>
-              
+            
               </tr>
             </thead>
        
@@ -132,7 +144,7 @@ const RadiologyTest = () => {
   {filteredPatients.map((patient, index) => (
     <>
 
-      {patient.lab_name === "radiology" && (
+      {patient.lab_name === "oral" && (
       <tr key={patient.testid}>
         <td>{index + 1}</td>
         <td>{patient.patient_uhid}</td>
@@ -145,48 +157,24 @@ const RadiologyTest = () => {
         <td>{patient.lab_name}</td>
         <td>{moment(patient.created_date).format("DD/MM/YYYY")}</td>
         <td>{patient.test}</td>
-        {patient.test_status === "done" && (
-        <td>
-            <Button
-            className="btn-success"
-            variant="success"
-            style={{
-              '--bs-btn-padding-y': '.25rem',
-              '--bs-btn-padding-x': '.5rem',
-              '--bs-btn-font-size': '.75rem',
-              fontSize: '.75rem',
-              marginRight: '5px',
-            }}
-          >
+        {patient.test_status === "pending" && (
+        <td className=" text-danger fw-bold"> 
           {patient.test_status}
-          </Button>
+        
           </td>
        
         )}
        
-        {patient.test_status === "pending" && (
-        <td>
-        <Button
-        className="btn-danger"
-        variant="danger"
-        style={{
-          '--bs-btn-padding-y': '.25rem',
-          '--bs-btn-padding-x': '.5rem',
-          '--bs-btn-font-size': '.75rem',
-          fontSize: '.75rem',
-          marginRight: '5px',
-        }}
-      >
+        {patient.test_status === "done" && (
+        <td className=" text-success fw-bold"> 
       {patient.test_status}
-      </Button>
+
       </td>
        
         )}
        
     
-      
-       
-       
+   
     
         
       </tr>
@@ -225,7 +213,7 @@ const RadiologyTest = () => {
   );
 };
 
-export default RadiologyTest;
+export default OralTest;
 
 const Container = styled.div`
   .custom-cursor-pointer {
@@ -236,8 +224,8 @@ const Container = styled.div`
   }
 `;
 const Wrapper  = styled.div`
-  th{
-  background-color: #213555;
-    color: white;
+th{
+background-color: #213555;
+  color: white;
 }
 `

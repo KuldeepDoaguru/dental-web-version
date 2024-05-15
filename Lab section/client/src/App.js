@@ -5,14 +5,14 @@ import CBCTest from "./Pages/BloodTestExternal/CBCTest";
 import OPGXRay from "./Pages/RadiologyExternal/OPGXRay";
 import History from "./Pages/History/History";
 import PAyment from "./Pages/Payment/Payment";
-import Report from "./Pages/Report/Report";
+
 import Logout from "./Pages/Logout/Logout";
 
-import BloodTest from "./Pages/Report/BloodTest";
-import Compleated from "./Pages/Report/Compleated";
-import OralTest from "./Pages/Report/OralTest";
-import PendingTest from "./Pages/Report/PendingTest";
-import RadiologyTest from "./Pages/Report/RadiologyTest";
+
+import Compleated from "./Pages/AllTest/Compleated";
+import OralTest from "./Pages/AllTest/OralTest";
+import PendingTest from "./Pages/AllTest/PendingTest";
+import RadiologyTest from "./Pages/AllTest/RadiologyTest";
 import Popup from "./components/InternalComponent/popup";
 import LabAttendant from "./Login/LabAttendant";
 import { useSelector } from "react-redux";
@@ -36,6 +36,11 @@ import PaymentTest from "./Pages/Payment/PaymentTest";
 import PasswordReset from "./Login/PasswordReset";
 import PaymentHistory from "./Pages/Payment/PaymentHistory";
 import PrintPagePayment from "./Pages/Payment/PrintPagePayment";
+import AttendanceLeave from "./Pages/AttendanceLeave";
+import BranchInfo from "./Pages/BranchInfo";
+import Profile from "./Pages/Profile";
+import BloodTest from "./Pages/AllTest/BloodTest";
+import AllTests from "./Pages/AllTest/AllTests";
 
 function App() {
 
@@ -50,6 +55,9 @@ function App() {
     
        
         <Route path="/dashboard" element={user ? <Deshboard />:<Navigate to="/" />} />
+        <Route path="/attendanceLeave" element={user ? <AttendanceLeave />:<Navigate to="/" />} />
+        <Route path="/branch-details" element={user ? <BranchInfo />:<Navigate to="/" />} />
+        <Route path="/lab-attendant-profile" element={user ? <Profile />:<Navigate to="/" />} />
          
        
 
@@ -60,9 +68,9 @@ function App() {
         <Route path="/PaymentHistory" element={user?<PaymentHistory />: <Navigate to = '/'/>} />
         <Route path="/Payment-test/:id" element={user ? <PaymentTest /> : <Navigate to='/'/>} />
         <Route path="/Payment-Print/:id" element={user ? <PrintPagePayment /> : <Navigate to='/'/>} />
-        <Route path="/Report" element={user?<Report /> :  <Navigate to='/'/>} />
+        <Route path="/AllTest" element={user?<AllTests/> :  <Navigate to='/'/>} />
         <Route path="/Logout" element={user? <Logout />: <Navigate to='/'/>} />
-        <Route path="/BloodTest" element={user ? <BloodTest /> : <Navigate to='/'/>} />
+        <Route path="/pathologyTest" element={user ? <BloodTest /> : <Navigate to='/'/>} />
         <Route path="/Compleated" element={user ?<Compleated />  : <Navigate to='/'/>} />
         <Route path="/OralTest" element={user ?<OralTest /> : <Navigate to='/'/>} />
         <Route path="/PendingTest" element={user ?<PendingTest /> : <Navigate to='/'/>} />

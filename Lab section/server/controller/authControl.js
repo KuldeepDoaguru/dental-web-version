@@ -94,7 +94,7 @@ const LoginDoctor = (req, res) => {
           });
         }
 
-        const token = JWT.sign({ id: user.id }, process.env.JWT_SECRET, {
+        const token = JWT.sign({ id: user.employee_ID}, process.env.JWT_SECRET, {
           expiresIn: "7d",
         });
 
@@ -130,25 +130,90 @@ const LoginDoctor = (req, res) => {
   }
 };
 
-const getPatientDetail = async (req, res) => {
-  try {
-    const sql = "SELECT * FROM  patient_lab_details ";
+// const getPatientDetail = async (req, res) => {
+//   try {
+//     const sql = "SELECT * FROM  patient_lab_details ";
 
-    const patientdetail = await new Promise((resolve, reject) => {
-      db.query(sql, (err, results) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(results);
-        }
+//     const patientdetail = await new Promise((resolve, reject) => {
+//       db.query(sql, (err, results) => {
+//         if (err) {
+//           reject(err);
+//         } else {
+//           resolve(results);
+//         }
+//       });
+//     });
+
+//     res.status(200).json(patientdetail);
+//   } catch (error) {
+//     console.error("Error processing request:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
+const getPatientLabWithPatientDetails = (req, res) => {
+  const sql = `
+        SELECT 
+            pt.testid,
+            pt.tpid,
+            pt.branch_name,
+            pt.assigned_doctor_name,
+            pt.lab_name,
+            pt.test,
+            pt.created_date,
+            pt.patient_uhid, 
+            pt.patient_name,
+            pt.test_status,
+            p.mobileno,
+            p.age,
+            p.dob,
+            p.gender,
+            p.emailid,
+            p.weight
+           
+        FROM 
+        patient_lab_details AS pt
+        JOIN 
+            patient_details AS p ON pt.patient_uhid = p.uhid
+             ORDER BY 
+        pt.testid DESC
+    `;
+
+  db.query(sql, (err, result) => {
+    if (err) {
+      console.error("Error executing query:", err.stack);
+      return res.status(500).json({ error: "Internal server error" });
+    } else {
+      // console.log('Query executed successfully');
+      return res.status(200).json({
+        message: "Get data from patient lab and patient_details",
+        result,
       });
-    });
+    }
+  });
+};
 
-    res.status(200).json(patientdetail);
-  } catch (error) {
-    console.error("Error processing request:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
+
+
+
+const getPatientLabWithLabTest = (req, res) => {
+  const { test_name } = req.body;
+
+  const sql = `SELECT test_cost FROM lab_tests WHERE test_name = ?`;
+
+  db.query(sql, [test_name], (err, result) => {
+    if (err) {
+      console.error("Error executing query:", err.stack);
+      return res.status(500).json({ error: "Internal server error" });
+    } else {
+      if (result.length === 0) {
+        return res.status(404).json({ error: "Test not found" });
+      } else {
+        const testCost = result[0].test_cost;
+        return res.status(200).json({ test_cost: testCost });
+      }
+    }
+  });
 };
 
 const patrientDetailbyid = (req, res) => {
@@ -218,6 +283,90 @@ const patienttestdata = async (req, res) => {
   );
 };
 
+const patientpayment= async (req, res) => {
+  const { testId } = req.params;
+  const {
+    patient_uhid,
+    patient_name,
+   
+    payment,
+    payment_status,
+    
+  } = req.body;
+
+  const sql = `INSERT INTO patient_lab_test_details (testid, patient_uhid, patient_name, payment,payment_status) VAlUES (?,?,?,?,?)`;
+  db.query(
+    sql,
+    [
+      testId,
+      patient_uhid,
+      patient_name,
+      
+      payment,
+      payment_status,
+      
+    ],
+    (err, results) => {
+      if (err) {
+        res.status(500).json({ error: "Error of Data" });
+      } else {
+        res.status(201).json({
+          success: true,
+          message: "patient test data uploaded successfully",
+        });
+      }
+    }
+  );
+};
+
+
+const updatepatienttestdetail = async (req, res) => {
+  try {
+    const { testId } = req.params;
+    const {
+      test,
+      result,
+      unit,
+      cost,
+      collection_date,
+      authenticate_date,
+      lab_type,
+    } = req.body;
+    const sql = `UPDATE  patient_lab_test_details SET test = ? , result = ? , unit = ? , cost = ?, collection_date = ? , authenticate_date = ?,lab_type = ? WHERE testid = ?`;
+
+    db.query(
+      sql,
+      [
+        test,
+        result,
+        unit,
+        cost,
+        collection_date,
+        authenticate_date,
+        lab_type,
+        testId,
+      ],
+      (error, result) => {
+        if (error) {
+          console.log("Table is not Found ", error);
+          res.status(500).json({ message: "Table is not Found " });
+        } else {
+          res
+            .status(200)
+            .json({ message: "Successfully Upadated Patient test detail" });
+        }
+      }
+    );
+  } catch (error) {
+    console.log("Internal Server Error");
+    res.status(500).json({ message: "Internal Server Error " });
+  }
+};
+
+
+
+
+
 const getPatientTestDetail = async (req, res) => {
   try {
     const sql = "SELECT * FROM  patient_lab_test_details ";
@@ -279,48 +428,48 @@ const updateteststatus = async (req, res) => {
   }
 };
 
-const updatepatienttestdetail = async (req, res) => {
-  try {
-    const { testId } = req.params;
-    const {
-      test,
-      result,
-      unit,
-      cost,
-      collection_date,
-      authenticate_date,
-      lab_type,
-    } = req.body;
-    const sql = `UPDATE  patient_lab_test_details SET test = ? , result = ? , unit = ? , cost = ?, collection_date = ? , authenticate_date = ?,lab_type = ? WHERE testid = ?`;
+// const updatepatienttestdetail = async (req, res) => {
+//   try {
+//     const { testId } = req.params;
+//     const {
+//       test,
+//       result,
+//       unit,
+//       cost,
+//       collection_date,
+//       authenticate_date,
+//       lab_type,
+//     } = req.body;
+//     const sql = `UPDATE  patient_lab_test_details SET test = ? , result = ? , unit = ? , cost = ?, collection_date = ? , authenticate_date = ?,lab_type = ? WHERE testid = ?`;
 
-    db.query(
-      sql,
-      [
-        test,
-        result,
-        unit,
-        cost,
-        collection_date,
-        authenticate_date,
-        lab_type,
-        testId,
-      ],
-      (error, result) => {
-        if (error) {
-          console.log("Table is not Found ", error);
-          res.status(500).json({ message: "Table is not Found " });
-        } else {
-          res
-            .status(200)
-            .json({ message: "Successfully Upadated Patient test detail" });
-        }
-      }
-    );
-  } catch (error) {
-    console.log("Internal Server Error");
-    res.status(500).json({ message: "Internal Server Error " });
-  }
-};
+//     db.query(
+//       sql,
+//       [
+//         test,
+//         result,
+//         unit,
+//         cost,
+//         collection_date,
+//         authenticate_date,
+//         lab_type,
+//         testId,
+//       ],
+//       (error, result) => {
+//         if (error) {
+//           console.log("Table is not Found ", error);
+//           res.status(500).json({ message: "Table is not Found " });
+//         } else {
+//           res
+//             .status(200)
+//             .json({ message: "Successfully Upadated Patient test detail" });
+//         }
+//       }
+//     );
+//   } catch (error) {
+//     console.log("Internal Server Error");
+//     res.status(500).json({ message: "Internal Server Error " });
+//   }
+// };
 
 const deletepatienttestdetail = (req, res) => {
   try {
@@ -586,10 +735,374 @@ const resetPassword = (req, res) => {
   }
 };
 
+const applyLeave = (req, res) => {
+  try {
+    const {
+      employee_ID, 
+    employee_name, 
+    branch_name ,
+    leave_dates ,
+    leave_reason ,
+    leave_status 
+      
+    } = req.body;
+
+    
+
+    const addLeaveQuery = `
+    INSERT INTO employee_leave(
+      employee_ID, 
+      employee_name, 
+      branch_name ,
+      leave_dates ,
+      leave_reason ,
+      leave_status 
+    ) VALUES (?, ?, ?, ?, ?, ?)
+`;
+
+    const addLeaveParams = [
+      employee_ID, 
+      employee_name, 
+      branch_name ,
+      leave_dates ,
+      leave_reason ,
+      leave_status 
+    ];
+
+    db.query(addLeaveQuery, addLeaveParams, (err, Result) => {
+      if (err) {
+        console.error("Error in apply leave:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Internal server error" });
+      } else {
+        console.log("Leave apply successfully");
+        return res.status(200).json({
+          success: true,
+          message: "Leave apply successfully",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error in apply leave:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in apply leave:",
+      error: error.message,
+    });
+  }
+};
+const getLeaves = (req, res) => {
+  const branch = req.params.branch;
+  const employee_Id = req.params.employee_Id;
+  try {
+    const sql = "SELECT * FROM employee_leave WHERE branch_name = ? AND employee_ID = ? ORDER BY id DESC";
+
+    db.query(sql, [branch,employee_Id], (err, results) => {
+      if (err) {
+        console.error("Error fetching leaves from MySql:", err);
+        res.status(500).json({ error: "Error fetching leaves" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "leaves fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching leaves from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched leaves",
+      error: error.message,
+    });
+  }
+};
+
+
+const MarkAttendanceLogin = (req, res) => {
+  try {
+    const {
+      branch_name,
+      employee_ID,
+      employee_name,
+      employee_designation,
+      date,
+      loginTime,
+      availability
+    } = req.body;
+
+    const todayDate = new Date().toISOString().slice(0, 10); // Get today's date in YYYY-MM-DD format
+
+    // if (date.slice(0, 10) !== todayDate) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "Attendance can only be marked for today's date."
+    //   });
+    // }
+
+    // Check if the employee ID for today's date and login time already exists
+    const checkQuery = `
+      SELECT * FROM employee_attendance 
+      WHERE employee_ID = ? AND date = ?`;
+
+    const checkParams = [employee_ID,date ];
+
+    db.query(checkQuery, checkParams, (err, result) => {
+      if (err) {
+        console.error("Error in checking attendance:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Internal server error"
+        });
+      }
+
+      if (result.length > 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Attendance for this employee on today's date and login time already exists."
+        });
+      }
+
+      // If validation passes, proceed to insert the attendance record
+      const addQuery = `
+        INSERT INTO employee_attendance(
+          employee_ID,
+          emp_name,
+          branch,
+          employee_designation,
+          date,
+          allday_shift_login_time,
+          availability
+        ) VALUES (?, ?, ?, ?, ?, ?,?)
+      `;
+
+      const addParams = [
+        employee_ID,
+        employee_name,
+        branch_name,
+        employee_designation,
+        date,
+        loginTime,
+        availability
+      ];
+
+      db.query(addQuery, addParams, (err, result) => {
+        if (err) {
+          console.error("Error in marking login", err);
+          return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+          });
+        } else {
+          console.log("login marked successfully");
+          return res.status(200).json({
+            success: true,
+            message: "login marked successfully"
+          });
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Error in marking login:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in marking login:",
+      error: error.message
+    });
+  }
+};
+const MarkAttendanceLogout = (req, res) => {
+  try {
+    const {
+      branch_name,
+      employee_ID,
+      employee_name,
+      employee_designation,
+      date,
+      logoutTime,
+      availability
+    } = req.body;
+
+    // Check if the employee ID for today's date and logout time already exists
+      
+
+    const checkQuery = `
+      SELECT * FROM employee_attendance 
+      WHERE employee_ID = ? AND date = ? AND branch = ? AND allday_shift_logout_time IS NOT NULL `;
+
+    const checkParams = [employee_ID, date,branch_name];
+     
+    db.query(checkQuery, checkParams, (err, result) => {
+      if (err) {
+        console.error("Error in checking attendance:", err);
+        return res.status(500).json({
+          success: false,
+          message: "Internal server error"
+        });
+      }
+
+      if (result.length > 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Attendance for this employee on today's date and logout time already exists."
+        });
+      }
+
+      // If validation passes, proceed to update the attendance record
+      const updateQuery = `
+        UPDATE employee_attendance 
+        SET allday_shift_logout_time = ? , availability = ?
+        WHERE employee_ID = ? AND date = ?`;
+
+      const updateParams = [logoutTime,availability, employee_ID, date];
+
+      db.query(updateQuery, updateParams, (err, result) => {
+        if (err) {
+          console.error("Error in marking logout", err);
+          return res.status(500).json({
+            success: false,
+            message: "Internal server error"
+          });
+        } else {
+          console.log("Logout marked successfully");
+          return res.status(200).json({
+            success: true,
+            message: "Logout marked successfully"
+          });
+        }
+      });
+    });
+  } catch (error) {
+    console.error("Error in marking logout:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error in marking logout:",
+      error: error.message
+    });
+  }
+};
+
+const getTodayAttendance = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const employee_ID = req.params.employee_ID;
+    const date = req.params.date;
+
+    const sql = "SELECT * FROM employee_attendance WHERE branch = ? AND employee_ID = ? AND date = ?";
+
+    db.query(sql, [branch,employee_ID,date], (err, results) => {
+      if (err) {
+        console.error("Error fetching attendance from MySql:", err);
+        res.status(500).json({ error: "Error fetching Branch  attendance" });
+      } else {
+        res
+          .status(200)
+          .json({
+            data: results,
+            message: " attendance fetched successfully",
+          });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching  attendance from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched  attendance",
+      error: error.message,
+    });
+  }
+};
+const getAttendancebyempId = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const employee_ID = req.params.employee_ID;
+    
+    const sql = "SELECT * FROM employee_attendance WHERE branch = ? AND employee_ID = ? ORDER BY attendance_id DESC";
+
+    db.query(sql, [branch,employee_ID], (err, results) => {
+      if (err) {
+        console.error("Error fetching attendance from MySql:", err);
+        res.status(500).json({ error: "Error fetching Branch  attendance" });
+      } else {
+        res
+          .status(200)
+          .json({
+            data: results,
+            message: " attendance fetched successfully",
+          });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching  attendance from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched  attendance",
+      error: error.message,
+    });
+  }
+};
+
+
+const getBranchDetail = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const sql = "SELECT * FROM branches WHERE branch_name = ?";
+
+    db.query(sql, [branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching Branches from MySql:", err);
+        res.status(500).json({ error: "Error fetching Branches" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Branches fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Branches from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Branches",
+      error: error.message,
+    });
+  }
+};
+
+const getBranchHoliday = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const sql = "SELECT * FROM holidays WHERE branch_name = ?";
+
+    db.query(sql, [branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching Branch Holidays from MySql:", err);
+        res.status(500).json({ error: "Error fetching Branch Holidays" });
+      } else {
+        res
+          .status(200)
+          .json({
+            data: results,
+            message: "Branch Holidays fetched successfully",
+          });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Branch Holidays from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Branch Holidays",
+      error: error.message,
+    });
+  }
+};
+
+
+
 module.exports = {
   getBranch,
   LoginDoctor,
-  getPatientDetail,
+  // getPatientDetail,
+  getPatientLabWithPatientDetails,
   patrientDetailbyid,
   patienttestdata,
   patienttestdatabyid,
@@ -605,4 +1118,14 @@ module.exports = {
   resetPassword,
   verifyOtp,
   sendOtp,
+  getPatientLabWithLabTest,
+  patientpayment,
+  applyLeave,
+  getLeaves,
+  MarkAttendanceLogin,
+  MarkAttendanceLogout,
+  getTodayAttendance,
+  getAttendancebyempId,
+  getBranchHoliday,
+  getBranchDetail
 };

@@ -7,20 +7,30 @@ import { IoArrowBackSharp } from "react-icons/io5";
 import  moment  from 'moment';
 import axios from "axios";
 import { Button } from 'react-bootstrap';
+import { useSelector } from "react-redux";
 
 const PendingTest = () => {
   const [patientDetails, setPatientDetails] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
     const [dateFilter, setDateFilter] = useState('');
-
+ 
+    const currentUser = useSelector(state => state.auth.user);
+  
+    const token = currentUser?.token;
+  
 
     useEffect(() => {
       const fetchPatientDetails = async () => {
         try {
           const response = await axios.get(
             `https://dentalgurulab.doaguru.com/api/lab/get-patient-details`
-          );
-          setPatientDetails(response.data);
+            ,{
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+            });
+          setPatientDetails(response.data.result);
         } catch (error) {
           console.error("Error fetching patient details:", error);
         }
@@ -30,7 +40,7 @@ const PendingTest = () => {
     }, []);
 
     const filteredPatients = patientDetails.filter(patient => {
-      const fullName = `${patient.patient_name} ${patient.assigned_doctor_name}`.toLowerCase();
+       const fullName = `${patient.patient_uhid}`.toLowerCase();
       const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
       return fullName.includes(searchQuery.toLowerCase()) && (!dateFilter || formattedDate === dateFilter);
     });
@@ -77,10 +87,11 @@ const PendingTest = () => {
             </div>
             <div className="col-11" style={{marginTop:"5rem"}}>
               <div className="col-12 p-0">
-                <IoArrowBackSharp
-                  className="fs-1 text-black d-print-none"
-                  onClick={goBack}
-                />{" "}
+              <IoArrowBackSharp
+            className="fs-1 text-black d-print-none"
+            onClick={goBack}
+            style={{ cursor: "pointer" }}
+          />
               </div>
 
  <div className="container-fluid mt-4">
@@ -90,7 +101,7 @@ const PendingTest = () => {
           <div className="col-lg-2">
           <input
             type="text"
-            placeholder="Search by name or doctor"
+            placeholder="Search by Patient UHID"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="form-control"
@@ -148,20 +159,9 @@ const PendingTest = () => {
       
        
         {patient.test_status === "pending" && (
-        <td>
-        <Button
-        className="btn-danger"
-        variant="danger"
-        style={{
-          '--bs-btn-padding-y': '.25rem',
-          '--bs-btn-padding-x': '.5rem',
-          '--bs-btn-font-size': '.75rem',
-          fontSize: '.75rem',
-          marginRight: '5px',
-        }}
-      >
+       <td className=" text-danger fw-bold"> 
       {patient.test_status}
-      </Button>
+     
       </td>
        
         )}

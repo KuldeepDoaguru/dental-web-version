@@ -1,6 +1,7 @@
 import axios from "axios";
 import cogoToast from "cogo-toast";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -12,6 +13,10 @@ const PasswordReset = () => {
   const [showOtp, setShowOtp] = useState(true);
   const [showVerify, setShowVerify] = useState(false);
   const [showReset, setShowReset] = useState(false);
+ 
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
 
   const sendOtp = async (e) => {
     e.preventDefault();
@@ -20,7 +25,12 @@ const PasswordReset = () => {
         "https://dentalgurulab.doaguru.com/api/lab/sendOtp",
         {
           email,
-        }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response);
       cogoToast.success("OTP sent to your email");
@@ -41,7 +51,12 @@ const PasswordReset = () => {
         {
           email,
           otp,
-        }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
       console.log(response);
       setShowOtp(false);
@@ -61,7 +76,12 @@ const PasswordReset = () => {
         {
           email,
           password: newPassword,
-        }
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }}
       );
 
       console.log(response);

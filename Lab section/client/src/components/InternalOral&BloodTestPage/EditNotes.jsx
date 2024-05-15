@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 function EditNotes() {
@@ -7,11 +8,21 @@ function EditNotes() {
     const [notes, setNotes] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate()
+   
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
+
   useEffect(() => {
     // Fetch notes from the backend API
     const fetchNotes = async () => {
       try {
-        const response = await axios.get(`https://dentalgurulab.doaguru.com/api/lab/getpatienttest-notes/${id}`);
+        const response = await axios.get(`https://dentalgurulab.doaguru.com/api/lab/getpatienttest-notes/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
         setNotes(response.data);
       } catch (error) {
         console.error('Error fetching notes:', error);
@@ -25,7 +36,12 @@ function EditNotes() {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`https://dentalgurulab.doaguru.com/api/lab/update-patienttest-notes`, { notes });
+      const response = await axios.put(`https://dentalgurulab.doaguru.com/api/lab/update-patienttest-notes`, { notes },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }});
 
       if (response.data.success) {
         console.log('Notes updated successfully');

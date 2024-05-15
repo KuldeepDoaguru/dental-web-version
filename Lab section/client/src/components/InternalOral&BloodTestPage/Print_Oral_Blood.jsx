@@ -9,6 +9,7 @@ import { IoArrowBackSharp } from 'react-icons/io5';
 // import signature from "../BloodTest/signature_maker_after_.webp";
 import signature from "../../Pages/BloodTestExternal/signature_maker_after_.webp";
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 function Print_Oral_Blood() {
   // const [patientDetails, setPatientDetails] = useState([]);
@@ -25,10 +26,19 @@ function Print_Oral_Blood() {
   const [patientcost, setPatientcost] = useState("");
   const [patientcollection_date , setPatientcollection_date] = useState('')
   const [patientauthenticate_date , setPatientauthenticate_date] = useState('')
+  const [patienttid , setPatienttid] = useState('')
+  
   const [notes, setNotes] = useState([]);
   const [labName, setLabName] = useState("");
  const navigate = useNavigate();
+ const userName = useSelector(state => state.auth.user);
  
+ const currentUser = useSelector(state => state.auth.user);
+  
+ const token = currentUser?.token;
+
+ const branch = currentUser.branch_name
+ const address = currentUser.address
 
   const goBack = () => {
     window.history.go(-1);
@@ -43,7 +53,12 @@ function Print_Oral_Blood() {
     const fetchPatientDetails = async () => {
       try {
         const response = await axios.get(
-          `https://dentalgurulab.doaguru.com/api/lab/get-patient-details-by-id/${id}`
+          `https://dentalgurulab.doaguru.com/api/lab/get-patient-details-by-id/${id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }}
         );
         setPatientbill_no(response.data[0].testid)
          setPatientUHID(response.data[0].patient_uhid)
@@ -53,7 +68,7 @@ function Print_Oral_Blood() {
          setPatientbranch_name(response.data[0].branch_name)
          setPatientAssigned_Doctor_Name(response.data[0].assigned_doctor_name)
          setLabName(response.data[0].lab_name);
-
+         setPatienttid(response.data[0].tpid)
 
         
       } catch (error) {
@@ -68,7 +83,12 @@ function Print_Oral_Blood() {
     const fetchPatientTestDetails = async () => {
       try {
         const response = await axios.get(
-          `https://dentalgurulab.doaguru.com/api/lab//get-patient-test-details-by-id/${id}`
+          `https://dentalgurulab.doaguru.com/api/lab//get-patient-test-details-by-id/${id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }}
         );
         setPatienttest(response.data[0].test)
          setPatientresult(response.data[0].result)
@@ -93,7 +113,12 @@ function Print_Oral_Blood() {
         
     const fetchNotes = async () => {
       try {
-        const response = await axios.get(`https://dentalgurulab.doaguru.com/api/lab/getpatienttest-notes/${id}`);
+        const response = await axios.get(`https://dentalgurulab.doaguru.com/api/lab/getpatienttest-notes/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
   
         if (response.status === 200) {
           setNotes(response.data);
@@ -130,9 +155,10 @@ const handleprint = () =>{
                 </div>
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-12 col-sm-12 p-0" style={{marginTop:"5rem"}}>
               <IoArrowBackSharp
-                  className="fs-1 text-black d-print-none mx-4"
-                  onClick={goBack}
-                />
+            className="fs-1 text-black d-print-none"
+            onClick={goBack}
+            style={{ cursor: "pointer" }}
+          />
 
                
                
@@ -142,13 +168,13 @@ const handleprint = () =>{
                       <div className="row d-flex justify-content-between">
                         <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-6 mt-4">
                           <div>
-                            <h5>Branch : Madan Mahal</h5>
+                            <h5>Branch : {branch}</h5>
                           </div>
                           <form className="d-flex fw-semibold">
-                            <p>Addresh </p>
+                            <p>Address </p>
                             <p className="ms-1"> : </p>
                             <p className="ms-2">
-                              128,Near Gwarighat Jabalpur M.p
+                             {address}
                             </p>
                           </form>
 
@@ -229,21 +255,16 @@ const handleprint = () =>{
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                Age / Gender :
+                              Treatment Id :
                                 <input
                                   type="Number"
                                   className="border border-0 ms-3"
                                   style={{ width: "40px" }}
-                                  value={patientage}
+                                  value={patienttid}
                     
                                 />{" "}
-                                /
-                                <input
-                                  type="text"
-                                  className="border border-0 w-25 ms-3"
-                                  value={patientgender}
-                                  
-                                />
+                                
+                                
                               </td>
 
                               <td
@@ -261,7 +282,17 @@ const handleprint = () =>{
                               </td>
 
                               
-                              
+                              {/* <td
+                                className="table-small"
+                                style={{ width: "10%" }}
+                              >
+                                Bill Date :
+                                <input
+                                  type="date"
+                                  className="border border-0 ms-2"
+
+                                />
+                              </td> */}
                             </tr>
                           </tbody>
                           <tbody>
@@ -339,7 +370,7 @@ const handleprint = () =>{
                         <th className="p-3">Range</th>
                       </>
                     )}
-                    {labName === "blood" && (
+                    {labName === "pathology" && (
                       <>
                         <th className="p-3">Unit</th>{" "}
                         <th className="p-3">Range</th>
@@ -355,13 +386,13 @@ const handleprint = () =>{
                                 <td>{patienttest}</td>
                                 <td>{patientresult}</td>
                                 {labName === "oral" && <td>{patientunit}</td>}
-                      {labName === "blood" && <td>{patientunit}</td>}
+                      {labName === "pathology" && <td>{patientunit}</td>}
                       {labName === "oral" && (
                         <>
                           <td>40 - 59</td>
                         </>
                       )}
-                      {labName === "blood" && (
+                      {labName === "pathology" && (
                         <>
                           <td>40 - 59</td>
                         </>
@@ -402,9 +433,9 @@ const handleprint = () =>{
                           />
                         </div>
                         <h4 className=" text-center fs-5 fw-bold">
-                          DAULAT SINGH CHOUHAN{" "}
+                        {userName.employee_name}
                         </h4>
-                        <h6 className=" text-center">TECHNICIAN</h6>
+                        <h6 className=" text-center">LAB ATTENDANT</h6>
                       </div>
 
                       <div className="col-lg-4 form-group">
@@ -416,9 +447,9 @@ const handleprint = () =>{
                           />
                         </div>
                         <h4 className=" text-center fs-5 fw-bold">
-                          Dr RAMANURAJ SINGH{" "}
+                          {patientAssigned_Doctor_Name}
                         </h4>
-                        <h6 className=" text-center">Null</h6>
+                        <h6 className=" text-center">ASSIGNED BY DOCTOR</h6>
                       </div>
                     </div>
                   </div>

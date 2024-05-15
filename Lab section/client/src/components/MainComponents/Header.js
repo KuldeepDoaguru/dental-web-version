@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <>
       <Container>
-        <div>
+        <div className="hd">
           <nav className="navbar navbar-expand-lg ">
             <div className="container-fluid">
               <Link to="/">
@@ -46,33 +46,27 @@ const Header = () => {
                 <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <UserLogin/>
                   <li className="nav-item dropdown" id="userid">
-                    {/* <a
+                    <a
                       className="nav-link dropdown-toggle"
                       href="/"
                       role="button"
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
-                    > */}
+                    >
                       <FaUserAlt className="icon mx-3" />
-                    {/* </a> */}
-                    {/* <ul className="dropdown-menu second-dropdown">
-                      <li>
-                        <Link
-                          className="dropdown-item"
-                          to="/super-admin-profile"
-                        >
-                          View Profile
-                        </Link>
-                      </li>
-                      <li>
-                        <hr className="dropdown-divider" />
-                      </li>
-                      <li>
-                        <a className="dropdown-item" href="/">
-                          Logout
-                        </a>
-                      </li>
-                    </ul> */}
+                    </a>
+                    <ul className="dropdown-menu second-dropdown" style={{marginLeft:"-8rem"}}>
+                    <li><Link to='/lab-attendant-profile' className="dropdown-item">View Profile</Link></li>
+    <li><Link to='/attendanceLeave' className="dropdown-item">View Attendance & Leave</Link></li>
+    <li><Link to='/branch-details' className="dropdown-item">View Clinic Details</Link></li>
+                    </ul>
+ 
+
+
+  
+
+
+
                   </li>
 
                   {/* <li className="nav-item" id="bell">
@@ -126,7 +120,9 @@ const Container = styled.div`
     background-color: #213555;
     box-shadow: 1px 1px 6px black;
     position: fixed;
-    width: 100%;
+    min-width: 100%;
+    z-index: 100;
+    /* width: 100%; */
     margin-bottom: 4rem;
   }
 

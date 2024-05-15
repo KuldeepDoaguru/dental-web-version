@@ -147,16 +147,26 @@ import { Pie } from 'react-chartjs-2';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js/auto';
+import { useSelector } from 'react-redux';
 
 const PieCharts = () => {
   const [data, setData] = useState(null);
+ 
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://dentalgurulab.doaguru.com/api/lab/get-patient-details');
+        const response = await axios.get('https://dentalgurulab.doaguru.com/api/lab/get-patient-details',
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }});
         // Filter the data to include only the lab names 'Oral', 'Blood', and 'Radiology'
-        const filteredData = response.data.filter(dataset => ['oral', 'blood', 'radiology'].includes(dataset.lab_name));
+        const filteredData = response.data.result.filter(dataset => ['oral', 'blood', 'radiology'].includes(dataset.lab_name));
         
         // Count occurrences of each unique lab name
         const labCounts = filteredData.reduce((counts, dataset) => {

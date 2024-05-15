@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
@@ -8,6 +9,11 @@ function CreateNotes() {
     const navigate = useNavigate();
     const [selectedNotes, setSelectedNotes] = useState([]);
     const [newNote, setNewNote] = useState("");
+     
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
+
 
     const handleAddNote = () => {
         if (newNote.trim() !== "") {
@@ -30,7 +36,12 @@ function CreateNotes() {
             const response = await axios.post("https://dentalgurulab.doaguru.com/api/lab/patienttest-notes", {
               noteTexts: [note],
               testId: id,
-            });
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }});
     
            
             console.log("Note stored successfully:", response.data);

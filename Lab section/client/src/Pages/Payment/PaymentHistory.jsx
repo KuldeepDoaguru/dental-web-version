@@ -7,6 +7,7 @@ import { IoArrowBackSharp } from 'react-icons/io5';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 function PaymentHistory() {
  
@@ -14,7 +15,11 @@ const [patientDetails, setPatientDetails] = useState([]);
 const [searchQuery, setSearchQuery] = useState('');
   const [dateFilter, setDateFilter] = useState('');
   const navigate = useNavigate()
- 
+  
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
+
  
  
   useEffect(() => {
@@ -22,7 +27,12 @@ const [searchQuery, setSearchQuery] = useState('');
       try {
         const response = await axios.get(
           `https://dentalgurulab.doaguru.com/api/lab/get-patient-test-details`
-        );
+          ,{
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }
+          });
         setPatientDetails(response.data);
       } catch (error) {
         console.error("Error fetching patient details:", error);
@@ -33,7 +43,7 @@ const [searchQuery, setSearchQuery] = useState('');
   }, []);
 
 const filteredPatients = patientDetails.filter(patient => {
-    const fullName = `${patient.patient_uhid} ${patient.patient_name}`.toLowerCase();
+    const fullName = `${patient.patient_name}`.toLowerCase();
     const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
     return fullName.includes(searchQuery.toLowerCase()) && (!dateFilter || formattedDate === dateFilter);
   });
@@ -89,7 +99,7 @@ console.log("Error " , error);
           <div className="col-lg-2">
           <input
             type="text"
-            placeholder="Search by UHID or  Name"
+            placeholder="Search by Patient Name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="form-control"
@@ -135,17 +145,7 @@ console.log("Error " , error);
         <td>{patient.patient_name}</td>
         <td>{patient.test}</td>
         <td>{patient.payment}</td>
-        <td><Button
-            className="btn-success"
-            variant="success"
-            style={{
-              '--bs-btn-padding-y': '.25rem',
-              '--bs-btn-padding-x': '.9rem',
-              '--bs-btn-font-size': '.75rem',
-              fontSize: '.75rem',
-              marginRight: '5px',
-            }}
-          >{patient.payment_status}</Button></td>
+        <td className=" text-success fw-bold "> {patient.payment_status}</td>
         <td>{moment(patient.created_date).format("DD/MM/YYYY")}</td>
         {/* <td>{patient.test}</td>
       

@@ -7,6 +7,7 @@ import { IoArrowBackSharp } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 function HistoryTest() {
  
@@ -14,15 +15,24 @@ const [patientDetails, setPatientDetails] = useState([]);
 const [searchQuery, setSearchQuery] = useState('');
   const [dateFilter, setDateFilter] = useState('');
  
- 
+  
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
+
  
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
         const response = await axios.get(
           `https://dentalgurulab.doaguru.com/api/lab/get-patient-details`
-        );
-        setPatientDetails(response.data);
+          ,{
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          }
+          });
+        setPatientDetails(response.data.result);
       } catch (error) {
         console.error("Error fetching patient details:", error);
       }
@@ -32,7 +42,7 @@ const [searchQuery, setSearchQuery] = useState('');
   }, []);
 
 const filteredPatients = patientDetails.filter(patient => {
-    const fullName = `${patient.patient_name} ${patient.assigned_doctor_name}`.toLowerCase();
+     const fullName = `${patient.patient_name}`.toLowerCase();
     const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
     return fullName.includes(searchQuery.toLowerCase()) && (!dateFilter || formattedDate === dateFilter);
   });
@@ -82,20 +92,17 @@ const filteredPatients = patientDetails.filter(patient => {
 
                 </div>
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11" style={{marginTop:"5rem"}}>
-              <IoArrowBackSharp
-                  className="fs-1 text-black d-print-none"
-                  onClick={goBack}
-                />
+              <IoArrowBackSharp  className="fs-1 text-black d-print-none" onClick={goBack}   style={{cursor:"pointer"}}/>
 
                
     <div className=" mt-4 mx-3">
-        <h2 style={{color:"#213555"}}>List of Patients test</h2>
+        <h2 style={{color:"#213555"}}>List of  Tests</h2>
         <div className="mb-3">
         <div className="row">
           <div className="col-lg-2">
           <input
             type="text"
-            placeholder="Search by name or doctor"
+            placeholder="Search by Patient Name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="form-control"
@@ -126,8 +133,8 @@ const filteredPatients = patientDetails.filter(patient => {
                 <th>Assigned Doctor Name</th>
                 <th>Lab Name</th>
                 <th>Created Date</th>
-                <th>Patient Tests </th>
-                <th>Tests Status </th>
+                <th>Tests Name </th>
+                <th>Status </th>
                 <th>Action </th>
               </tr>
             </thead>
@@ -150,18 +157,8 @@ const filteredPatients = patientDetails.filter(patient => {
         <td>{moment(patient.created_date).format("DD/MM/YYYY")}</td>
         <td>{patient.test}</td>
       
-        <td>  <Button
-            className="btn-success"
-            variant="success"
-            style={{
-              '--bs-btn-padding-y': '.25rem',
-              '--bs-btn-padding-x': '.9rem',
-              '--bs-btn-font-size': '.75rem',
-              fontSize: '.75rem',
-              marginRight: '5px',
-            }}
-          >{patient.test_status}
-          </Button>
+        <td className=" text-success fw-bold"> {patient.test_status}
+       
           </td>
         
        <td><div className=""> <Link to={`/final-oral-testing/${patient.testid}`}>

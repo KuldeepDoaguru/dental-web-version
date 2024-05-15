@@ -7,6 +7,7 @@ import { MdOutlineNextWeek } from "react-icons/md";
 import { GiMoneyStack } from "react-icons/gi";
 import { GiTakeMyMoney } from "react-icons/gi";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Card = () => {
   const [testCounts, setTestCounts] = useState({
@@ -17,10 +18,20 @@ const Card = () => {
     yearly: 0
   });
 
+  
+  const currentUser = useSelector(state => state.auth.user);
+  
+  const token = currentUser?.token;
+
   useEffect(() => {
     const getTestCounts = async () => {
       try {
-        const response = await axios.get("https://dentalgurulab.doaguru.com/api/lab/get-patient-test-details");
+        const response = await axios.get("https://dentalgurulab.doaguru.com/api/lab/get-patient-test-details" ,{
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        });
         if (response.status === 200) {
           const data = response.data;
           // Process the data and extract test counts
@@ -57,7 +68,7 @@ const Card = () => {
     <CardContainer>
       <div className="d-flex justify-content-around mt-5">
         <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
-          <Link to="/today-test" className="text-decoration-none">
+         
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column mb-3">
                 <div className="text-light fs-1">
@@ -69,10 +80,10 @@ const Card = () => {
                 </div>
               </div>
             </div>
-          </Link>
+         
         </div>
         <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
-          <Link to="/yesterday-test" className="text-decoration-none">
+         
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column mb-3">
                 <div className="text-light fs-1">
@@ -84,10 +95,10 @@ const Card = () => {
                 </div>
               </div>
             </div>
-          </Link>
+      
         </div>
         <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
-          <Link to="/weekly-test" className="text-decoration-none">
+         
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column mb-3">
                 <div className="text-light fs-1">
@@ -99,10 +110,10 @@ const Card = () => {
                 </div>
               </div>
             </div>
-          </Link>
+        
         </div>
         <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
-          <Link to="/monthly-test" className="text-decoration-none"> 
+         
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column mb-3">
                 <div className="text-light fs-1">
@@ -114,10 +125,10 @@ const Card = () => {
                 </div>
               </div>
             </div>
-          </Link>
+         
         </div>
         <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
-          <Link to="/yearly-test" className="text-decoration-none">
+        
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column mb-3">
                 <div className="text-light fs-1">
@@ -129,7 +140,7 @@ const Card = () => {
                 </div>
               </div>
             </div>
-          </Link>
+         
         </div>
         {/* Repeat similar code for other test categories */}
       </div>

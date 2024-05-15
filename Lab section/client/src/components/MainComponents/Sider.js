@@ -199,14 +199,14 @@ const Sider = () => {
 
             <li className="">
               <div>
-                <Link to="/Report" class="nav-link px-0 align-middle ">
+                <Link to="/AllTest" class="nav-link px-0 align-middle ">
                   <div className="link-div">
                     <div className="">
                       <TbReportAnalytics className="text-light fs-3" />
                     </div>
                     <div>
                       <h3 className=" d-none d-sm-inline fs-6 text-light">
-                        Report
+                        All Test
                       </h3>
                     </div>
                   </div>

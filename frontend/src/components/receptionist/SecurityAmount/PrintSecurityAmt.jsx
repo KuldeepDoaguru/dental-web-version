@@ -69,10 +69,10 @@ const PrintSecurityAmt = () => {
         <div className="headimage">
           <img src={getBranch[0]?.head_img} alt="header" srcset="" />
         </div>
-        <div className="container-fluid m-0 p-0">
+        <div className="container-fluid mt-2 p-0">
           <div className="row">
             <div className="col-12 ">
-              <h5 className="text-center heading">SECURITY AMOUNT RECIEPT</h5>
+              <h4 className="text-center heading">SECURITY AMOUNT RECIEPT</h4>
             </div>
           </div>
 
@@ -308,7 +308,7 @@ const Container = styled.div`
   .heading {
     border-bottom: 2px solid black;
     font-weight: 700;
-    font-size: large;
+    
   }
   .details-1 {
     border-bottom: 2px solid black;

@@ -4,7 +4,11 @@ import { AiFillBell } from "react-icons/ai";
 import { FaUserAlt } from "react-icons/fa";
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
+import { useDispatch ,useSelector} from "react-redux";
 function Header() {
+  const {currentUser} = useSelector((state) => state.user);
+  const userName = currentUser.employee_name;
+  const userId = currentUser.employee_ID;
   return (
     <Wrapper>
 
@@ -12,20 +16,24 @@ function Header() {
 
         <nav className="navbar navbar-expand-lg ">
           <div className="container-fluid">
-            <Link to='/'><img src={dental_logo} alt="Logo" width="75" height="50" style={{ marginLeft: "-1.3rem" }} /></Link>
+            <Link to='/receptionist-dashboard'><img src={dental_logo} alt="Logo" width="75" height="50" style={{ marginLeft: "-1.3rem" }} /></Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a className="nav-link active text-white mt-2  fs-5" aria-current="page" href="#">Dental Guru</a>
+                  <Link to='/receptionist-dashboard' className="nav-link active text-white mt-2  fs-5" aria-current="page" >Dental Guru</Link>
                 </li>
-
-
+                
+               
+               
               </ul>
+            
+              
               <ul className='d-lg-flex d-sm-column'>
-
+              <p className='  text-white   fs-6' style={{marginRight:"100px", marginTop: "1rem",marginBottom : "0"}}>Hello {userName} ({userId})</p>
+            
                 <li className="nav-item dropdown" id='userid'>
                   <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <FaUserAlt />
@@ -62,6 +70,7 @@ box-shadow: 1px 1px 6px black;
     margin-left: -5rem;
     list-style-type: none;
     margin-top: 1rem;
+    margin-right: 50px;
     @media screen and  (max-width: 1000px) {
         margin-left: 0rem;
         margin-top: 1rem;

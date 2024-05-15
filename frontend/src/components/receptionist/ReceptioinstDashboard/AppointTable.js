@@ -232,7 +232,7 @@ const AppointTable = () => {
     setCurrentPage(1); // Reset to the first page when searching
 
     const filteredResults = appointmentsData.filter((row) =>
-      (row.patient_name.toLowerCase().includes(searchTerm) || row.mobileno.includes(searchTerm) || row.uhid.toLowerCase().includes(searchTerm))
+      (row.patient_name.toLowerCase().includes(searchTerm) || row.mobileno.includes(searchTerm) || row.uhid.toLowerCase().includes(searchTerm) || row.appointment_status.toLowerCase().includes(searchTerm) )
       && row.appointment_dateTime.includes(selectedDate)
     );
 

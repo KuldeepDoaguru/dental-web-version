@@ -2903,90 +2903,163 @@ const getPrescriptionViaUhid = (req, res) => {
 
 // reset password
 
+// const sendOtp = (req, res) => {
+//   const { email } = req.body;
+
+//   // random otp
+//   function generateOTP(length) {
+//     const chars = "0123456789";
+//     let otp = "";
+
+//     for (let i = 0; i < length; i++) {
+//       const randomIndex = Math.floor(Math.random() * chars.length);
+//       otp += chars[randomIndex];
+//     }
+
+//     return otp;
+//   }
+
+//   const OTP = generateOTP(6);
+
+//   try {
+//     const transporter = nodemailer.createTransport({
+//       service: "Gmail",
+//       auth: {
+//         user: process.env.EMAILSENDER,
+//         pass: process.env.EMAILPASSWORD,
+//       },
+//     });
+
+//     const mailOptions = {
+//       from: process.env.EMAILSENDER,
+//       to: email,
+//       subject: "Password Reset OTP",
+//       text: `Your OTP for password reset is: ${OTP}`,
+//     };
+
+//     transporter.sendMail(mailOptions, (error, info) => {
+//       if (error) {
+//         console.error(error);
+//         return res
+//           .status(500)
+//           .json("An error occurred while sending the email.");
+//       } else {
+//         console.log("OTP sent:", info.response);
+
+//         const selectQuery = "SELECT * FROM otpcollections WHERE email = ?";
+//         db.query(selectQuery, email, (err, result) => {
+//           if (err) {
+//             res.status(400).json({ success: false, message: err.message });
+//           }
+//           if (result && result.length > 0) {
+//             const updateQuery =
+//               "UPDATE otpcollections SET code = ? WHERE email = ?";
+//             db.query(updateQuery, [OTP, email], (upErr, upResult) => {
+//               if (upErr) {
+//                 res
+//                   .status(400)
+//                   .json({ success: false, message: upErr.message });
+//               }
+//               res.status(200).send(upResult);
+//             });
+//           } else {
+//             // Assuming you have a 'db' object for database operations
+//             db.query(
+//               "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)",
+//               [email, OTP],
+//               (err, result) => {
+//                 if (err) {
+//                   console.error(err);
+//                   return res
+//                     .status(500)
+//                     .send({ message: "Failed to store OTP" });
+//                 }
+
+//                 res.status(200).json({ message: "OTP sent successfully" });
+//               }
+//             );
+//           }
+//         });
+//       }
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json("An error occurred.");
+//   }
+// };
+
+
 const sendOtp = (req, res) => {
   const { email } = req.body;
 
-  // random otp
-  function generateOTP(length) {
-    const chars = "0123456789";
-    let otp = "";
+  const selectQuery = 'SELECT * FROM employee_register WHERE employee_email = ? AND employee_role LIKE "%receptionist%"';
 
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * chars.length);
-      otp += chars[randomIndex];
-    }
 
-    return otp;
-  }
-
-  const OTP = generateOTP(6);
-
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: process.env.EMAILSENDER,
-        pass: process.env.EMAILPASSWORD,
-      },
-    });
-
-    const mailOptions = {
-      from: process.env.EMAILSENDER,
-      to: email,
-      subject: "Password Reset OTP",
-      text: `Your OTP for password reset is: ${OTP}`,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error(error);
-        return res
-          .status(500)
-          .json("An error occurred while sending the email.");
+  db.query(selectQuery, email, (err, result) => {
+    if (err) {
+      return res.status(400).json({ success: false, message: err.message });
+    } else {
+      if (!result || result.length === 0) {
+        return res.status(404).json({ success: false, message: "Email not found" });
       } else {
-        console.log("OTP sent:", info.response);
+      
+      const user = result[0];
+        
+       
+        
+       
+        // Random OTP generation
+        function generateOTP(length) {
+          const chars = "0123456789";
+          let otp = "";
 
-        const selectQuery = "SELECT * FROM otpcollections WHERE email = ?";
-        db.query(selectQuery, email, (err, result) => {
-          if (err) {
-            res.status(400).json({ success: false, message: err.message });
+          for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * chars.length);
+            otp += chars[randomIndex];
           }
-          if (result && result.length > 0) {
-            const updateQuery =
-              "UPDATE otpcollections SET code = ? WHERE email = ?";
-            db.query(updateQuery, [OTP, email], (upErr, upResult) => {
-              if (upErr) {
-                res
-                  .status(400)
-                  .json({ success: false, message: upErr.message });
-              }
-              res.status(200).send(upResult);
-            });
-          } else {
-            // Assuming you have a 'db' object for database operations
-            db.query(
-              "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)",
-              [email, OTP],
-              (err, result) => {
-                if (err) {
-                  console.error(err);
-                  return res
-                    .status(500)
-                    .send({ message: "Failed to store OTP" });
+
+          return otp;
+        }
+
+        const OTP = generateOTP(6);
+
+        try {
+         
+
+          const mailOptions = {
+            from: "info@doaguru.com",
+            to: email,
+            subject: "OTP for password reset",
+            text: `Your OTP to reset password is: ${OTP}`,
+          };
+
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.error(error);
+              return res.status(500).json({ success: false, message: "An error occurred while sending the email." });
+            } else {
+              console.log("OTP sent:", info.response);
+
+              const updateQuery = "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)";
+              db.query(updateQuery, [email, OTP], (upErr, upResult) => {
+                if (upErr) {
+                  return res.status(400).json({ success: false, message: upErr.message });
                 }
-
-                res.status(200).json({ message: "OTP sent successfully" });
-              }
-            );
-          }
-        });
+                return res.status(200).json({ message: "OTP sent successfully" });
+              });
+            }
+          });
+        } catch (error) {
+          console.log(error);
+          return res.status(500).json({ success: false, message: "An error occurred." });
+        }
+        
       }
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json("An error occurred.");
-  }
+    }
+  });
 };
+
+
 
 const verifyOtp = (req, res) => {
   try {

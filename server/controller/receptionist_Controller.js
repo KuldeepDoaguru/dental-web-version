@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
 dotenv.config();
 const nodemailer = require("nodemailer");
+const {logger} = require("./logger")
 
 // const addPatient = (req,res) =>{
 //          try{
@@ -189,6 +190,7 @@ const addPatient = (req, res) => {
 
     db.query(checkPatientQuery, [mobile, patient_Name], (err, result) => {
       if (err) {
+        logger.error("Error checking if user exists in MySQL:");
         console.error("Error checking if user exists in MySQL:", err);
         return res
           .status(500)
@@ -200,6 +202,7 @@ const addPatient = (req, res) => {
 
       // Check if patient already exists
       if (result.length > 0) {
+        logger.info("Patient already exists."); // Log success message
         return res
           .status(400)
           .json({ success: false, message: "Patient already exists." });
@@ -211,6 +214,7 @@ const addPatient = (req, res) => {
 
         db.query(highestPatientIDQuery, [pattern], (err, result) => {
           if (err) {
+            logger.error("Error getting highest empID:");
             console.error("Error getting highest empID:", err);
             res
               .status(500)
@@ -271,6 +275,7 @@ const addPatient = (req, res) => {
               insertPatientParams,
               (insertErr, insertResult) => {
                 if (insertErr) {
+                  logger.error("Error inserting patient:");
                   console.error("Error inserting patient:", insertErr);
                   return res
                     .status(500)
@@ -309,6 +314,7 @@ const addPatient = (req, res) => {
                     bookAppointmentParams,
                     (appointmentErr, appointmentResult) => {
                       if (appointmentErr) {
+                        logger.error("Error booking appointment:");
                         console.error(
                           "Error booking appointment:",
                           appointmentErr
@@ -362,15 +368,17 @@ const appointmentTime = appointmentDateTime.toLocaleTimeString('en-US', { hour: 
 
                       transporter.sendMail(mailOptions, (emailErr, info) => {
                         if (emailErr) {
+                          logger.error('Error sending email:');
                           console.error('Error sending email:', emailErr);
                           // Handle email sending error
                         } else {
+                          logger.info('Email sent:'); // Log success message
                           console.log('Email sent:', info.response);
                           // Handle email sent successfully
                         }
                       });
                     }
-
+                    logger.info("Patient and appointment added successfully"); // Log success message
                         return res.status(200).json({
                           success: true,
                           message: "Patient and appointment added successfully",
@@ -392,6 +400,7 @@ const appointmentTime = appointmentDateTime.toLocaleTimeString('en-US', { hour: 
       }
     });
   } catch (error) {
+    logger.error("Error in registration");
     console.error("Error in registration:", error);
     return res.status(500).json({
       success: false,
@@ -464,11 +473,13 @@ const updatePatientDetails = (req, res) => {
       updatePatientParams,
       (Err, appointmentResult) => {
         if (Err) {
+          logger.error("Error updating Patient:");
           console.error("Error updating Patient:", Err);
           return res
             .status(500)
             .json({ success: false, message: "Internal server error" });
         } else {
+          logger.info("Patient updated successfully"); // Log success message
           console.log("Patient updated successfully");
           return res.status(200).json({
             success: true,
@@ -478,6 +489,7 @@ const updatePatientDetails = (req, res) => {
       }
     );
   } catch (error) {
+    logger.error("Error in updating Patient:");
     console.error("Error in updating Patient:", error);
     return res.status(500).json({
       success: false,
@@ -494,15 +506,18 @@ const getPatients = (req, res) => {
 
     db.query(sql, [branch], (err, results) => {
       if (err) {
+        logger.error("Error fetching Patients from MySql:");
         console.error("Error fetching Patients from MySql:", err);
         res.status(500).json({ error: "Error fetching Patients" });
       } else {
+        logger.info("Patients fetched successfully");
         res
           .status(200)
           .json({ data: results, message: "Patients fetched successfully" });
       }
     });
   } catch (error) {
+    logger.error("Error in fetching Patients:");
     console.error("Error fetching Patients from MySql:", error);
     res.status(500).json({
       success: false,
@@ -521,12 +536,15 @@ const getPatientById = (req, res) => {
 
     db.query(sql, [patientId, branch], (err, results) => {
       if (err) {
+        logger.error("Error fetching Patients from MySql:");
         console.error("Error fetching patient from MySql:", err);
         res.status(500).json({ error: "Error fetching patient" });
       } else {
         if (results.length === 0) {
+          logger.info("Patient not found");
           res.status(404).json({ message: "Patient not found" });
         } else {
+          logger.info("Patient fetched successfully");
           res
             .status(200)
             .json({
@@ -538,6 +556,7 @@ const getPatientById = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error in fetching Patients:");
     console.error("Error fetching patient from MySql:", error);
     res.status(500).json({
       success: false,
@@ -553,9 +572,11 @@ const getDisease = (req, res) => {
 
     db.query(sql, (err, results) => {
       if (err) {
+        logger.error("Error fetching disease from MySql:");
         console.error("Error fetching disease from MySql:", err);
         res.status(500).json({ error: "Error fetching disease" });
       } else {
+        logger.info("Disease fetched successfully"); // Log success message
         res
           .status(200)
           .json({ data: results, message: "Disease fetched successfully" });
@@ -563,6 +584,7 @@ const getDisease = (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching disease from MySql:", error);
+    logger.error("Error fetching disease from MySql:", error);
     res.status(500).json({
       success: false,
       message: "Error in fetched disease",
@@ -576,15 +598,18 @@ const getTreatment = (req, res) => {
 
     db.query(sql, (err, results) => {
       if (err) {
+        logger.error("Error fetching treatment from MySql:");
         console.error("Error fetching treatments from MySql:", err);
         res.status(500).json({ error: "Error fetching treatments" });
       } else {
+        logger.info("treatments fetched successfully");
         res
           .status(200)
           .json({ data: results, message: "treatments fetched successfully" });
       }
     });
   } catch (error) {
+    logger.error("Error fetching treatments from MySql:");
     console.error("Error fetching treatments from MySql:", error);
     res.status(500).json({
       success: false,
@@ -653,11 +678,13 @@ const bookAppointment = (req, res) => {
       bookAppointmentParams,
       (appointmentErr, appointmentResult) => {
         if (appointmentErr) {
+          logger.error("Error booking appointment:");
           console.error("Error booking appointment:", appointmentErr);
           return res
             .status(500)
             .json({ success: false, message: "Internal server error" });
         } else {
+          logger.info("Appointment booked successfully");
           console.log("Appointment booked successfully");
 
           if (patient_Email) {
@@ -699,9 +726,11 @@ const emailText = `Dear ${patient_Name.toUpperCase()},\n\n` +
 
             transporter.sendMail(mailOptions, (emailErr, info) => {
               if (emailErr) {
+                logger.error('Error sending email:');
                 console.error('Error sending email:', emailErr);
                 // Handle email sending error
               } else {
+                logger.info('Email sent successfully');
                 console.log('Email sent:', info.response);
                 // Handle email sent successfully
               }
@@ -719,6 +748,7 @@ const emailText = `Dear ${patient_Name.toUpperCase()},\n\n` +
       }
     );
   } catch (error) {
+    logger.error("Error in book appointment:");
     console.error("Error in book appointment:", error);
     return res.status(500).json({
       success: false,
@@ -785,11 +815,13 @@ const updateAppointment = (req, res) => {
       updateAppointmentParams,
       (appointmentErr, appointmentResult) => {
         if (appointmentErr) {
+          logger.error("Error updating appointment:");
           console.error("Error updating appointment:", appointmentErr);
           return res
             .status(500)
             .json({ success: false, message: "Internal server error" });
         } else {
+          logger.info("Appointment updated successfully");
           console.log("Appointment updated successfully");
 
           if (patient_Email) {
@@ -830,9 +862,11 @@ const emailText = `Dear ${patient_name.toUpperCase()},\n\n` +
 
             transporter.sendMail(mailOptions, (emailErr, info) => {
               if (emailErr) {
+                logger.error("Error sending email:");
                 console.error('Error sending email:', emailErr);
                 // Handle email sending error
               } else {
+                logger.info("Email sent successfully");
                 console.log('Email sent:', info.response);
                 // Handle email sent successfully
               }
@@ -847,6 +881,7 @@ const emailText = `Dear ${patient_name.toUpperCase()},\n\n` +
       }
     );
   } catch (error) {
+    logger.error("Error in updating appointment:");
     console.error("Error in updating appointment:", error);
     return res.status(500).json({
       success: false,
@@ -886,11 +921,13 @@ const updateAppointmentStatus = (req, res) => {
       updateAppointmentParams,
       (appointmentErr, appointmentResult) => {
         if (appointmentErr) {
+          logger.error("Error in updating appointment status:");
           console.error("Error updating appointment:", appointmentErr);
           return res
             .status(500)
             .json({ success: false, message: "Internal server error" });
         } else {
+          logger.info("Appointment updated successfully");
           console.log("Appointment updated successfully");
           return res.status(200).json({
             success: true,
@@ -900,6 +937,7 @@ const updateAppointmentStatus = (req, res) => {
       }
     );
   } catch (error) {
+    logger.error("Error in updating appointment status:");
     console.error("Error updating appointment:", error);
     return res.status(500).json({
       success: false,
@@ -941,11 +979,13 @@ const updateAppointmentStatusCancel = (req, res) => {
       updateAppointmentParams,
       (appointmentErr, appointmentResult) => {
         if (appointmentErr) {
+          logger.error("Error updating appointment:");
           console.error("Error updating appointment:", appointmentErr);
           return res
             .status(500)
             .json({ success: false, message: "Internal server error" });
         } else {
+          logger.info("Appointment updated successfully");
           console.log("Appointment updated successfully");
           return res.status(200).json({
             success: true,
@@ -955,6 +995,7 @@ const updateAppointmentStatusCancel = (req, res) => {
       }
     );
   } catch (error) {
+    logger.error("Error updating appointment:");
     console.error("Error updating appointment:", error);
     return res.status(500).json({
       success: false,
@@ -1010,11 +1051,13 @@ const updateAppointmentStatusCancelOpd = (req, res) => {
       updateAppointmentParams,
       (appointmentErr, appointmentResult) => {
         if (appointmentErr) {
+          logger.error("Error cancel appointment:");
           console.error("Error cancel appointment:", appointmentErr);
           return res
             .status(500)
             .json({ success: false, message: "Internal server error" });
         } else {
+          logger.info("Appointment cancel successfully");
           console.log("Appointment cancel successfully");
 
           if (patient_Email) {
@@ -1055,9 +1098,12 @@ const emailText = `Dear ${patient_name.toUpperCase()},\n\n` +
 
             transporter.sendMail(mailOptions, (emailErr, info) => {
               if (emailErr) {
+                logger.error("Error sending email:");
+
                 console.error('Error sending email:', emailErr);
                 // Handle email sending error
               } else {
+                logger.info("Email sent successfully");
                 console.log('Email sent:', info.response);
                 // Handle email sent successfully
               }
@@ -1071,6 +1117,7 @@ const emailText = `Dear ${patient_name.toUpperCase()},\n\n` +
       }
     );
   } catch (error) {
+    logger.error("Error cancel appointment:");
     console.error("Error updating appointment:", error);
     return res.status(500).json({
       success: false,
@@ -1120,9 +1167,11 @@ const getAppointments = (req, res) => {
 
     db.query(sql, [branch], (err, results) => {
       if (err) {
+        logger.error("Error fetching appointments");
         console.error("Error fetching Patients from MySql:", err);
         res.status(500).json({ error: "Error fetching appointments" });
       } else {
+       
         res
           .status(200)
           .json({
@@ -1132,6 +1181,7 @@ const getAppointments = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error fetching appointments");
     console.error("Error fetching appointments from MySql:", error);
     res.status(500).json({
       success: false,
@@ -1185,12 +1235,15 @@ const getAppointmentById = (req, res) => {
 
     db.query(sql, [appointmentId, branch], (err, results) => {
       if (err) {
+        logger.error("Error fetching appointment from MySql:");
         console.error("Error fetching appointment from MySql:", err);
         res.status(500).json({ error: "Error fetching appointment" });
       } else {
         if (results.length === 0) {
+          logger.info("Appointment not found");
           res.status(404).json({ message: "Appointment not found" });
         } else {
+          logger.info("Appointment fetched successfully");
           res
             .status(200)
             .json({
@@ -1201,6 +1254,7 @@ const getAppointmentById = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error fetching appointment from MySql:");
     console.error("Error fetching appointment from MySql:", error);
     res.status(500).json({
       success: false,
@@ -1235,12 +1289,15 @@ const getPatientDeatilsByUhid = (req, res) => {
 
     db.query(sql, [uhid,uhid, branch], (err, results) => {
       if (err) {
+        logger.error("Error fetching Patient details");
         console.error("Error fetching appointment from MySql:", err);
         res.status(500).json({ error: "Error fetching Patient details" });
       } else {
         if (results.length === 0) {
+          logger.info("Patient details not found");
           res.status(404).json({ message: "Patient details not found" });
         } else {
+          logger.info("Patient details fetched successfully");
           res
             .status(200)
             .json({
@@ -1251,6 +1308,7 @@ const getPatientDeatilsByUhid = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error fetching Patient details from MySql:");
     console.error("Error fetching Patient details from MySql:", error);
     res.status(500).json({
       success: false,
@@ -1304,12 +1362,15 @@ const getAllAppointmentByPatientId = (req, res) => {
 
     db.query(sql, [patientId, branch], (err, results) => {
       if (err) {
+        logger.error("Error fetching appointment from MySql:");
         console.error("Error fetching appointment from MySql:", err);
         res.status(500).json({ error: "Error fetching appointment" });
       } else {
         if (results.length === 0) {
+          logger.info("Appointment not found");
           res.status(404).json({ message: "Appointment not found" });
         } else {
+         
           res
             .status(200)
             .json({
@@ -1320,6 +1381,7 @@ const getAllAppointmentByPatientId = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error fetching appointment from MySql:");
     console.error("Error fetching appointment from MySql:", error);
     res.status(500).json({
       success: false,
@@ -1336,6 +1398,7 @@ const getDoctorDataByBranch = (req, res) => {
       'SELECT * FROM employee_register WHERE branch_name = ? AND employee_role LIKE "%doctor%" AND employee_status = "Approved"';
     db.query(getQuery, [branch], (err, result) => {
       if (err) {
+        logger.error("Error fetching doctor data from MySql:");
         res
           .status(400)
           .send({ status: false, message: "error in fetching doctor" });
@@ -1352,6 +1415,7 @@ const getDoctorDataByBranch = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error fetching doctor data from MySql:");
     console.log(error);
     res.status(500).json({
       success: false,
@@ -1366,15 +1430,18 @@ const getBranch = (req, res) => {
 
     db.query(sql, (err, results) => {
       if (err) {
+        logger.error("Error fetching branch from MySql:");
         console.error("Error fetching Branches from MySql:", err);
         res.status(500).json({ error: "Error fetching Branches" });
       } else {
+       
         res
           .status(200)
           .json({ data: results, message: "Branches fetched successfully" });
       }
     });
   } catch (error) {
+    logger.error("Error fetching branch from MySql:");
     console.error("Error fetching Branches from MySql:", error);
     res.status(500).json({
       success: false,
@@ -1391,15 +1458,18 @@ const getBranchDetail = (req, res) => {
 
     db.query(sql, [branch], (err, results) => {
       if (err) {
+        logger.error("Error fetching branch details from MySql:");
         console.error("Error fetching Branches from MySql:", err);
         res.status(500).json({ error: "Error fetching Branches" });
       } else {
+       
         res
           .status(200)
           .json({ data: results, message: "Branches fetched successfully" });
       }
     });
   } catch (error) {
+    logger.error("Error fetching branch details from MySql:");
     console.error("Error fetching Branches from MySql:", error);
     res.status(500).json({
       success: false,
@@ -1416,9 +1486,11 @@ const getBranchHoliday = (req, res) => {
 
     db.query(sql, [branch], (err, results) => {
       if (err) {
+        logger.error("Error fetching Branch Holidays from MySql:");
         console.error("Error fetching Branch Holidays from MySql:", err);
         res.status(500).json({ error: "Error fetching Branch Holidays" });
       } else {
+        logger.info("Branch Holidays fetched successfully");
         res
           .status(200)
           .json({
@@ -1428,6 +1500,7 @@ const getBranchHoliday = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error fetching Branch Holidays from MySql:");
     console.error("Error fetching Branch Holidays from MySql:", error);
     res.status(500).json({
       success: false,
@@ -1473,11 +1546,13 @@ const applyLeave = (req, res) => {
 
     db.query(addLeaveQuery, addLeaveParams, (err, Result) => {
       if (err) {
+        logger.error("Error adding Leave from MySql:");
         console.error("Error in apply leave:", err);
         return res
           .status(500)
           .json({ success: false, message: "Internal server error" });
       } else {
+        logger.info("Leave apply successfully");
         console.log("Leave apply successfully");
         return res.status(200).json({
           success: true,
@@ -1486,6 +1561,7 @@ const applyLeave = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error adding Leave from MySql:");
     console.error("Error in apply leave:", error);
     return res.status(500).json({
       success: false,
@@ -1525,6 +1601,7 @@ const MarkAttendanceLogin = (req, res) => {
 
     db.query(checkQuery, checkParams, (err, result) => {
       if (err) {
+        logger.error("Error in checking attendance:");
         console.error("Error in checking attendance:", err);
         return res.status(500).json({
           success: false,
@@ -1533,6 +1610,7 @@ const MarkAttendanceLogin = (req, res) => {
       }
 
       if (result.length > 0) {
+        logger.info("Attendance for this employee on today's date and login time already exists.");
         return res.status(400).json({
           success: false,
           message: "Attendance for this employee on today's date and login time already exists."
@@ -1564,12 +1642,14 @@ const MarkAttendanceLogin = (req, res) => {
 
       db.query(addQuery, addParams, (err, result) => {
         if (err) {
+          logger.error("Error in adding attendance:");
           console.error("Error in marking login", err);
           return res.status(500).json({
             success: false,
             message: "Internal server error"
           });
         } else {
+          logger.info("Attendance marked successfully");
           console.log("login marked successfully");
           return res.status(200).json({
             success: true,
@@ -1579,6 +1659,7 @@ const MarkAttendanceLogin = (req, res) => {
       });
     });
   } catch (error) {
+    logger.error("Error in marking login:");
     console.error("Error in marking login:", error);
     return res.status(500).json({
       success: false,
@@ -1610,6 +1691,7 @@ const MarkAttendanceLogout = (req, res) => {
      
     db.query(checkQuery, checkParams, (err, result) => {
       if (err) {
+        logger.error("Error in checking attendance:");
         console.error("Error in checking attendance:", err);
         return res.status(500).json({
           success: false,
@@ -1618,6 +1700,7 @@ const MarkAttendanceLogout = (req, res) => {
       }
 
       if (result.length > 0) {
+        logger.info("Attendance for this employee on today's date and login time already exists.");
         return res.status(400).json({
           success: false,
           message: "Attendance for this employee on today's date and logout time already exists."
@@ -1634,12 +1717,14 @@ const MarkAttendanceLogout = (req, res) => {
 
       db.query(updateQuery, updateParams, (err, result) => {
         if (err) {
+          logger.error("Error in marking attendance logout");
           console.error("Error in marking logout", err);
           return res.status(500).json({
             success: false,
             message: "Internal server error"
           });
         } else {
+          logger.info("Attendance Logout marked successfully");
           console.log("Logout marked successfully");
           return res.status(200).json({
             success: true,
@@ -1649,6 +1734,7 @@ const MarkAttendanceLogout = (req, res) => {
       });
     });
   } catch (error) {
+    logger.error("Error in marking attendance logout");
     console.error("Error in marking logout:", error);
     return res.status(500).json({
       success: false,
@@ -1668,9 +1754,11 @@ const getTodayAttendance = (req, res) => {
 
     db.query(sql, [branch,employee_ID,date], (err, results) => {
       if (err) {
+        logger.error("Error fetching attendance from MySql:");
         console.error("Error fetching attendance from MySql:", err);
         res.status(500).json({ error: "Error fetching Branch  attendance" });
       } else {
+        logger.info( "attendance fetched successfully");
         res
           .status(200)
           .json({
@@ -1680,6 +1768,7 @@ const getTodayAttendance = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error fetching attendance from MySql:");
     console.error("Error fetching  attendance from MySql:", error);
     res.status(500).json({
       success: false,
@@ -1697,9 +1786,11 @@ const getAttendancebyempId = (req, res) => {
 
     db.query(sql, [branch,employee_ID], (err, results) => {
       if (err) {
+        logger.error("Error fetching attendance from MySql:");
         console.error("Error fetching attendance from MySql:", err);
         res.status(500).json({ error: "Error fetching Branch  attendance" });
       } else {
+        logger.info( "attendance fetched successfully");
         res
           .status(200)
           .json({
@@ -1709,6 +1800,7 @@ const getAttendancebyempId = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error fetching attendance from MySql:");
     console.error("Error fetching  attendance from MySql:", error);
     res.status(500).json({
       success: false,
@@ -1773,11 +1865,13 @@ const addInquiry = (req, res) => {
 
     db.query(addInquiryQuery, addInquiryParams, (err, Result) => {
       if (err) {
+        logger.error("Error booking Inquiry add:");
         console.error("Error booking Inquiry add:", err);
         return res
           .status(500)
           .json({ success: false, message: "Internal server error" });
       } else {
+        logger.info("Inquiry add successfully");
         console.log("Inquiry add successfully");
         return res.status(200).json({
           success: true,
@@ -1786,6 +1880,7 @@ const addInquiry = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error booking Inquiry add:");
     console.error("Error in Inquiry add:", error);
     return res.status(500).json({
       success: false,
@@ -1846,11 +1941,13 @@ const updateInquiry = (req, res) => {
 
     db.query(updateInquiryQuery, updateInquiryParams, (err, result) => {
       if (err) {
+        logger.error("Error updating inquiry:");
         console.error("Error updating inquiry:", err);
         return res
           .status(500)
           .json({ success: false, message: "Internal server error" });
       } else {
+        logger.info("Inquiry updated successfully");
         console.log("Inquiry updated successfully");
         return res.status(200).json({
           success: true,
@@ -1859,6 +1956,7 @@ const updateInquiry = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error updating inquiry:");
     console.error("Error in updating inquiry:", error);
     return res.status(500).json({
       success: false,
@@ -1879,11 +1977,13 @@ const deleteInquiry = (req, res) => {
 
     db.query(deleteInquiryQuery, [id], (err, result) => {
       if (err) {
+        logger.error("Error deleting inquiry:");
         console.error("Error deleting inquiry:", err);
         return res
           .status(500)
           .json({ success: false, message: "Internal server error" });
       } else {
+        logger.info("Inquiry deleted successfully");
         console.log("Inquiry deleted successfully");
         return res.status(200).json({
           success: true,
@@ -1892,6 +1992,7 @@ const deleteInquiry = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error deleting inquiry:");
     console.error("Error in deleting inquiry:", error);
     return res.status(500).json({
       success: false,
@@ -1908,15 +2009,18 @@ const getInquiries = (req, res) => {
 
     db.query(sql, [branch], (err, results) => {
       if (err) {
+        logger.error("Error getting inquiries:");
         console.error("Error fetching inquiries from MySql:", err);
         res.status(500).json({ error: "Error fetching inquiries" });
       } else {
+        
         res
           .status(200)
           .json({ data: results, message: "inquiries fetched successfully" });
       }
     });
   } catch (error) {
+    logger.error("Error getting inquiries:");
     console.error("Error fetching inquiries from MySql:", error);
     res.status(500).json({
       success: false,
@@ -1933,15 +2037,18 @@ const getLeaves = (req, res) => {
 
     db.query(sql, [branch,employee_Id], (err, results) => {
       if (err) {
+        logger.error("Error getting leaves:");
         console.error("Error fetching leaves from MySql:", err);
         res.status(500).json({ error: "Error fetching leaves" });
       } else {
+        logger.info("Leaves fetched successfully");
         res
           .status(200)
           .json({ data: results, message: "leaves fetched successfully" });
       }
     });
   } catch (error) {
+    logger.error("Error getting leaves:");
     console.error("Error fetching leaves from MySql:", error);
     res.status(500).json({
       success: false,
@@ -1968,6 +2075,7 @@ const getDoctorDataByBranchWithLeave = (req, res) => {
     `;
     db.query(sql, [branch], (err, result) => {
       if (err) {
+        logger.error("Error getting doctor data by branch with leave:");
         res
           .status(400)
           .send({ status: false, message: "error in fetching doctor" });
@@ -1984,6 +2092,7 @@ const getDoctorDataByBranchWithLeave = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error getting doctor data by branch with leave:");
     console.log(error);
     res.status(500).json({
       success: false,
@@ -2015,11 +2124,14 @@ const getSecurityAmountDataByBranch = (req, res) => {
     const selectQuery = "SELECT * FROM security_amount WHERE branch_name = ? ORDER BY sa_id DESC";
     db.query(selectQuery, branch, (err, result) => {
       if (err) {
+        logger.error("Error getting security amount data by branch");
         res.status(400).json({ success: false, message: err.message });
       }
+     
       res.status(200).send(result);
     });
   } catch (error) {
+    logger.error("Error getting security amount data by branch");
     console.log(error);
     response.status(500).json({ success: false, message: error.message });
   }
@@ -2049,6 +2161,7 @@ const updateRefundAmount = (req, res) => {
     const selectQuery = "SELECT * FROM security_amount WHERE sa_id = ?";
     db.query(selectQuery, sid, (err, result) => {
       if (err) {
+        logger.error("Error update refund amount ");
         return res.status(400).json({ success: false, message: err.message });
       }
       if (result && result.length > 0) {
@@ -2066,11 +2179,13 @@ const updateRefundAmount = (req, res) => {
           ],
           (err, result) => {
             if (err) {
+              logger.error("Error update refund amount ");
               return res.status(500).json({
                 success: false,
                 message: "Failed to update details",
               });
             } else {
+              logger.info("Amount Refund Successfully");
               return res.status(200).json({
                 success: true,
                 message: "Amount Refund Successfully",
@@ -2079,6 +2194,7 @@ const updateRefundAmount = (req, res) => {
           }
         );
       } else {
+        logger.error("Error update refund amount ");
         return res.status(404).json({
           success: false,
           message: "Data not found",
@@ -2086,6 +2202,7 @@ const updateRefundAmount = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error update refund amount ");
     console.log(error);
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -2099,11 +2216,13 @@ const getSinglePatientSecurityAmt = (req, res) => {
 
   db.query(sql,[branch,sid], (err, result) => {
       if (err) {
+        logger.error("Error get single patient security amount");
           console.error('Error executing query:', err.stack);
           return res.status(500).json({success:false, error: 'Internal server error' });
       } else if (result.length === 0) {
           return res.status(404).json({success:false, error: "Not Found Data" });
       } else {
+        logger.info("Successfully get single patient security amount");
           return res.status(200).json({success: true, message: 'Access data Successfully',data : result });
       }
   });
@@ -2116,11 +2235,14 @@ const getSecurityAmountDataBySID = (req, res) => {
       "SELECT * FROM security_amount JOIN patient_details ON security_amount.uhid = patient_details.uhid WHERE security_amount.sa_id = ?";
     db.query(selectQuery, sid, (err, result) => {
       if (err) {
+        logger.error("Error get security amount data by sid");
         res.status(400).json({ success: false, message: err.message });
       }
+      logger.info("getting security amount data successfully by sid");
       res.status(200).send(result);
     });
   } catch (error) {
+    logger.error("Error get security amount data by sid");
     console.log(error);
     response.status(500).json({ success: false, message: error.message });
   }
@@ -2132,11 +2254,14 @@ const getPatientBillsByBranch = (req, res) => {
     const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ? ORDER BY bill_id DESC";
     db.query(selectQuery, branch, (err, result) => {
       if (err) {
+        logger.error("Error get patient bills by branch");
         res.status(400).json({ success: false, message: err.message });
       }
+     
       res.status(200).send(result);
     });
   } catch (error) {
+    logger.error("Error get patient bills by branch");
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
@@ -2174,11 +2299,13 @@ const updatePatientSecurityAmt = (req, res) => {
       updatePatientParams,
       (Err, appointmentResult) => {
         if (Err) {
+          logger.error("Error update patient security amount");
           console.error("Error updating Patient:", Err);
           return res
             .status(500)
             .json({ success: false, message: "Internal server error" });
         } else {
+          logger.info("Successfully update patient security amount");
           console.log("Payment added successfully");
           return res.status(200).json({
             success: true,
@@ -2188,6 +2315,7 @@ const updatePatientSecurityAmt = (req, res) => {
       }
     );
   } catch (error) {
+    logger.error("Error update patient security amount");
     console.error("Error in adding Payment", error);
     return res.status(500).json({
       success: false,
@@ -2320,12 +2448,15 @@ const insertTimelineEvent = (req, res) => {
       [type, description, branch, patientId],
       (err, result) => {
         if (err) {
+          logger.error("Error adding timeline event");
           res.status(400).json({ success: false, message: err.message });
         }
+       
         res.status(200).json({ success: true, result: result });
       }
     );
   } catch (error) {
+    logger.error("Error adding timeline event");
     console.log(error);
     res.status(500).json({ success: false, message: err.message });
   }
@@ -2340,9 +2471,11 @@ const getPatientTimeline = (req, res) => {
 
     db.query(sql, [patientId, branch], (err, results) => {
       if (err) {
+        logger.error("Error getting patient timeline");
         console.error("Error fetching patient_timeline from MySql:", err);
         res.status(500).json({ error: "Error fetching patient_timeline" });
       } else {
+       
         res
           .status(200)
           .json({
@@ -2352,6 +2485,7 @@ const getPatientTimeline = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Error getting patient timeline");
     console.error("Error fetching patient_timeline from MySql:", error);
     res.status(500).json({
       success: false,
@@ -2365,6 +2499,7 @@ const LoginReceptionist = (req, res) => {
   try {
     const { email, password, branch_name } = req.body;
     if (!branch_name) {
+
       return res.status(404).json({
         success: false,
         message: "Please select branch",
@@ -2381,7 +2516,9 @@ const LoginReceptionist = (req, res) => {
       `SELECT * FROM employee_register WHERE employee_email = ?`,
       [email],
       (err, result) => {
+
         if (err) {
+          logger.error("Internal server error in login");
           console.log(err);
           return res.status(500).json({
             success: false,
@@ -2420,6 +2557,7 @@ const LoginReceptionist = (req, res) => {
         }
 
         if (user.employee_status !== "Approved") {
+          logger.info("Your Email is not approved, Please contact team for furthur assistance");
           return res.status(401).json({
             success: "false",
             message:
@@ -2430,7 +2568,7 @@ const LoginReceptionist = (req, res) => {
         const token = JWT.sign({ id: user.employee_ID }, process.env.JWT_SECRET, {
           expiresIn: "7d",
         });
-
+        logger.info("Login successful");
         res.status(200).json({
           success: "true",
           message: "Login successful",
@@ -2461,6 +2599,7 @@ const LoginReceptionist = (req, res) => {
       }
     );
   } catch (error) {
+    logger.error("Login failed");
     console.log(error);
     res
       .status(500)
@@ -2474,11 +2613,13 @@ const getBranchDetailsByBranch = (req, res) => {
     const getQuery = "SELECT * FROM branches WHERE branch_name = ?";
     db.query(getQuery, branch, (err, result) => {
       if (err) {
+        logger.error("Error getting branch details");
         res.status(400).json({ success: false, message: err.message });
       }
       res.status(200).json(result);
     });
   } catch (error) {
+    logger.error("Error getting branch details");
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
@@ -2492,11 +2633,14 @@ const getSecurityAmountDataByTPUHID = (req, res) => {
       "SELECT * FROM security_amount WHERE tp_id = ? AND uhid = ?";
     db.query(selectQuery, [tpid, uhid], (err, result) => {
       if (err) {
+        logger.error("Error getting security amount data");
         res.status(400).json({ success: false, message: err.message });
       }
+     
       res.status(200).send(result);
     });
   } catch (error) {
+    logger.error("Error getting security amount data");
     console.log(error);
     response.status(500).json({ success: false, message: error.message });
   }
@@ -2510,11 +2654,14 @@ const getPatientBillsAndSecurityAmountByBranch = (req, res) => {
       "SELECT * FROM patient_bills WHERE branch_name = ? AND bill_id = ?";
     db.query(selectQuery, [branch, bid], (err, result) => {
       if (err) {
+        logger.error("Error getting patient bills and security amount");
         res.status(400).json({ success: false, message: err.message });
       }
+      
       res.status(200).send(result);
     });
   } catch (error) {
+    logger.error("Error getting patient bills and security amount");
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
@@ -2534,6 +2681,7 @@ const updateRemainingSecurityAmount = (req, res) => {
       "SELECT * FROM security_amount WHERE tp_id = ? AND  uhid = ?";
     db.query(selectQuery, [tpid, uhid], (err, result) => {
       if (err) {
+        logger.error("Error update Remaining Security Amount");
         return res.status(400).json({ success: false, message: err.message });
       }
       if (result && result.length > 0) {
@@ -2541,11 +2689,13 @@ const updateRemainingSecurityAmount = (req, res) => {
 
         db.query(updateQuery, [remaining_amount, tpid, uhid], (err, result) => {
           if (err) {
+            logger.error("Error update Remaining Security Amount");
             return res.status(500).json({
               success: false,
               message: "Failed to update details",
             });
           } else {
+            logger.info("Successfully update Remaining Security Amount");
             return res.status(200).json({
               success: true,
               message: "remaining amount update Successfully",
@@ -2553,6 +2703,7 @@ const updateRemainingSecurityAmount = (req, res) => {
           }
         });
       } else {
+        logger.error("Error update Remaining Security Amount");
         return res.status(404).json({
           success: false,
           message: "Data not found",
@@ -2585,6 +2736,7 @@ const makeBillPayment = (req, res) => {
 
     db.query(selectQuery, [branch, bid], (err, result) => {
       if (err) {
+        logger.error("Error get patient bill details");
         return res.status(400).json({ success: false, message: err.message });
       }
       if (result && result.length > 0) {
@@ -2636,11 +2788,13 @@ const makeBillPayment = (req, res) => {
 
         db.query(updateQuery, [...updateValues, branch, bid], (err, result) => {
           if (err) {
+            logger.error("Failed to update patient bill details ");
             return res.status(500).json({
               success: false,
               message: "Failed to update details",
             });
           } else {
+            logger.info("Patient bill details updated successfully");
             return res.status(200).json({
               success: true,
               message: "Payment updated successfully",
@@ -2648,6 +2802,7 @@ const makeBillPayment = (req, res) => {
           }
         });
       } else {
+        logger.error("Failed to update patient bill details ");
         return res.status(404).json({
           success: false,
           message: "Branch/bill not found",
@@ -2655,6 +2810,7 @@ const makeBillPayment = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Failed to update patient bill details ");
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
@@ -2666,11 +2822,14 @@ const paidBillLIst = (req, res) => {
     const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ? ORDER BY bill_id DESC";
     db.query(selectQuery, branch, (err, result) => {
       if (err) {
+        logger.error("Failed to get paid bill list");
         res.status(400).json({ success: false, message: err.message });
       }
+      logger.info("Successfully getting paid patient bills");
       res.status(200).send(result);
     });
   } catch (error) {
+    logger.error("Failed to get paid bill list");
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
@@ -2684,11 +2843,14 @@ const billDetailsViaTpid = (req, res) => {
     const selectQuery = "SELECT * FROM patient_bills WHERE tp_id = ?";
     db.query(selectQuery, tpid, (err, result) => {
       if (err) {
+        logger.error("Failed to get patient bill details via tpid");
         res.status(400).json({ success: false, message: err.message });
       }
+      logger.info("Successfully getting patient bills  via tpid");
       res.status(200).send(result);
     });
   } catch (error) {
+    logger.error("Failed to get patient bill details via tpid");
     res.status(500).json({ success: false, message: "internal server error" });
   }
 };
@@ -2700,6 +2862,7 @@ const getTreatSuggestViaTpid = (req, res) => {
     const sql = `SELECT * FROM treat_suggest WHERE tp_id = ? AND branch_name = ?`;
     db.query(sql, [tpid, branch], (err, result) => {
       if (err) {
+        logger.error("Failed to get treatment suggestion via tpid");
         return res.status(400).json({
           success: false,
           message: "Failed to query database",
@@ -2719,6 +2882,7 @@ const getTreatSuggestViaTpid = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Failed to get treatment suggestion via tpid");
     console.log(error);
     return res
       .status(500)
@@ -2734,8 +2898,10 @@ const getTreatPrescriptionByTpid = (req, res) => {
 
   db.query(sql, [tpid, branch], (err, results) => {
     if (err) {
+      logger.error("Failed to get dental_prescription via tpid");
       res.status(500).json({ error: err.message });
     } else {
+      logger.info("successfully get dental_prescription via tpid");
       res.status(200).json({ results });
     }
   });
@@ -2748,11 +2914,13 @@ const getTreatmentDetailsViaTpid = (req, res) => {
       "SELECT * FROM dental_treatment WHERE tp_id = ? AND branch_name = ?";
     db.query(selectQuery, [tpid, branch], (err, result) => {
       if (err) {
+        logger.error("Failed to get dental_treatment Via Tpid");
         res.status(400).json({ success: false, message: err.message });
       }
       res.status(200).json({ result });
     });
   } catch (error) {
+    logger.error("Failed to get dental_treatment Via Tpid");
     console.log(error);
     res.status(500).json({ success: false, message: "internal server error" });
   }
@@ -2766,6 +2934,7 @@ const getDentalDataByTpid = (req, res) => {
     "SELECT * FROM dental_examination WHERE tp_id = ? AND branch_name = ?";
   db.query(sql, [tpid, branch], (err, result) => {
     if (err) {
+      logger.error("Failed to get dental_examination via tpid");
       console.error("Error retrieving data: ", err);
       res.status(500).send("Error retrieving data: " + err.message);
       return;
@@ -2775,7 +2944,7 @@ const getDentalDataByTpid = (req, res) => {
       res.status(404).send("No data found for appointment ID: " + tpid);
       return;
     }
-
+    
     res.status(200).json({ result });
   });
 };
@@ -2787,11 +2956,14 @@ const getAppointmentsWithPatientDetailsById = (req, res) => {
 
   db.query(sql, [tpid], (err, result) => {
     if (err) {
+      logger.error("Failed to get get Appointments With Patient Details By Id");
       console.error("Error executing query:", err.message);
       return res.status(500).json({ error: "Internal server error" });
     } else if (result.length === 0) {
+      logger.error("Failed to get get Appointments With Patient Details By Id");
       return res.status(404).json({ error: "TPID not found" });
     } else {
+      logger.info("Successfully getting Appointments With Patient Details By Id");
       return res.status(200).json({ message: "Get data by TPID", result });
     }
   });
@@ -2807,15 +2979,18 @@ const getTreatmentViaUhid = (req, res) => {
 
     db.query(sql, [branch,uhid], (err, results) => {
       if (err) {
+        logger.error("Failed to get treatment via uhid");
         console.error("Error fetching Treatment from MySql:", err);
         res.status(500).json({ error: "Error fetching Treatment" });
       } else {
+        logger.info("Successfully getting treatment via uhid");
         res
           .status(200)
           .json({ data: results, message: "Treatment fetched successfully" });
       }
     });
   } catch (error) {
+    logger.error("Failed to get treatment via uhid");
     console.error("Error fetching Treatment from MySql:", error);
     res.status(500).json({
       success: false,
@@ -2832,15 +3007,18 @@ const getBillViaUhid = (req, res) => {
 
     db.query(sql, [branch,uhid], (err, results) => {
       if (err) {
+        logger.error("Failed to get bill via uhid");
         console.error("Error fetching Bill from MySql:", err);
         res.status(500).json({ error: "Error fetching Bill" });
       } else {
+        logger.info("Successfully getting bill via uhid");
         res
           .status(200)
           .json({ data: results, message: "Bill fetched successfully" });
       }
     });
   } catch (error) {
+    logger.error("Failed to get bill via uhid");
     console.error("Error fetching Bill from MySql:", error);
     res.status(500).json({
       success: false,
@@ -2857,15 +3035,18 @@ const getExaminationViaUhid = (req, res) => {
 
     db.query(sql, [branch,uhid], (err, results) => {
       if (err) {
+        logger.error("Failed to get examination via uhid");
         console.error("Error fetching Examination from MySql:", err);
         res.status(500).json({ error: "Error fetching Examination" });
       } else {
+
         res
           .status(200)
           .json({ data: results, message: "Examination fetched successfully" });
       }
     });
   } catch (error) {
+    logger.error("Failed to get examination via uhid");
     console.error("Error fetching Examination from MySql:", error);
     res.status(500).json({
       success: false,
@@ -2882,15 +3063,18 @@ const getPrescriptionViaUhid = (req, res) => {
 
     db.query(sql, [branch,uhid], (err, results) => {
       if (err) {
+        logger.error("Failed to get prescription via uhid");
         console.error("Error fetching Prescription from MySql:", err);
         res.status(500).json({ error: "Error fetching Prescription" });
       } else {
+        logger.info("Prescription fetched successfully");
         res
           .status(200)
           .json({ data: results, message: "Prescription fetched successfully" });
       }
     });
   } catch (error) {
+    logger.error("Failed to get prescription via uhid");
     console.error("Error fetching Prescription from MySql:", error);
     res.status(500).json({
       success: false,
@@ -2997,9 +3181,11 @@ const sendOtp = (req, res) => {
 
   db.query(selectQuery, email, (err, result) => {
     if (err) {
+      logger.error("Failed to send otp");
       return res.status(400).json({ success: false, message: err.message });
     } else {
       if (!result || result.length === 0) {
+        logger.error("Failed to send otp : Email not found");
         return res.status(404).json({ success: false, message: "Email not found" });
       } else {
       
@@ -3035,6 +3221,7 @@ const sendOtp = (req, res) => {
 
           transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
+              logger.error("Failed to send otp email");
               console.error(error);
               return res.status(500).json({ success: false, message: "An error occurred while sending the email." });
             } else {
@@ -3050,6 +3237,7 @@ const sendOtp = (req, res) => {
             }
           });
         } catch (error) {
+          logger.error("Failed to send otp ");
           console.log(error);
           return res.status(500).json({ success: false, message: "An error occurred." });
         }
@@ -3069,6 +3257,7 @@ const verifyOtp = (req, res) => {
       [email, otp],
       (err, result) => {
         if (err) {
+          logger.error("Failed to verify otp");
           return res
             .status(500)
             .json({ success: false, message: "Internal server error" });
@@ -3085,6 +3274,7 @@ const verifyOtp = (req, res) => {
       }
     );
   } catch (error) {
+    logger.error("Failed to verify otp");
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
@@ -3098,6 +3288,7 @@ const resetPassword = (req, res) => {
       "SELECT * FROM employee_register WHERE employee_email = ?";
     db.query(selectQuery, email, (err, result) => {
       if (err) {
+        logger.error("Failed to reset password");
         res.status(400).json({ success: false, message: err.message });
       }
       if (result && result.length) {
@@ -3124,6 +3315,7 @@ const resetPassword = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Failed to reset password");
     console.log(error);
     res.status(500).send({ success: false, message: "Internal server error" });
   }
@@ -3138,6 +3330,7 @@ const updateTreatmentStatus = (req, res) => {
       "SELECT * FROM treatment_package WHERE branch_name = ? AND tp_id = ?";
     db.query(selectQuery, [branch, tpid], (err, result) => {
       if (err) {
+        logger.error("Failed to update Treatment Status");
         return res.status(400).json({ success: false, message: err.message });
       }
       if (result && result.length > 0) {
@@ -3162,6 +3355,7 @@ const updateTreatmentStatus = (req, res) => {
       }
     });
   } catch (error) {
+    logger.error("Failed to update Treatment Status");
     console.log(error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
@@ -3174,12 +3368,15 @@ const getPatientLabTestByPatientId = (req, res) => {
       "SELECT * FROM patient_lab_details LEFT JOIN patient_details ON patient_details.uhid = patient_lab_details.patient_uhid WHERE patient_lab_details.patient_uhid = ?";
     db.query(selectQuery, pid, (err, result) => {
       if (err) {
+        logger.error("Failed to get Patient Lab Test Details");
         res.status(400).json({ success: false, message: err.message });
         return;
       }
+      logger.info("successfully  get Patient Lab Test Details");
       res.status(200).send(result);
     });
   } catch (error) {
+    logger.error("Failed to get Patient Lab Test Details");
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };

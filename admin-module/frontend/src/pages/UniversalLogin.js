@@ -31,7 +31,7 @@ const UniversalLogin = () => {
   const getBranchList = async () => {
     try {
       const response = await axios.get(
-        "https://dentalguruadmin.doaguru.com//api/v1/admin/getBranch"
+        "https://dentalguruadmin.doaguru.com/api/v1/admin/getBranch"
       );
       console.log(response.data);
       setBranchList(response.data);
@@ -53,7 +53,7 @@ const UniversalLogin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://dentalguruadmin.doaguru.com/api/v1/admin/adminLoginUser",
+        "http://localhost:8888/api/v1/admin/adminLoginUser",
         {
           email,
           password,
@@ -117,7 +117,7 @@ const UniversalLogin = () => {
                           </select>
                         </div>
                         <p className="text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4">
-                          Login
+                          Admin Login
                         </p>
 
                         <form className="mx-1 mx-md-4" onSubmit={adminLogin}>
@@ -185,7 +185,7 @@ const UniversalLogin = () => {
                               Login
                             </button>
                           </div>
-                          <div className="col-sm-12 col-md-10 text-center ms-4">
+                          {/* <div className="col-sm-12 col-md-10 text-center ms-4">
                             <p>
                               Don't have an account?
                               <Link to="/receptionist_registration">
@@ -193,7 +193,7 @@ const UniversalLogin = () => {
                                 Register here
                               </Link>
                             </p>
-                          </div>
+                          </div> */}
                         </form>
                       </div>
                       <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1">

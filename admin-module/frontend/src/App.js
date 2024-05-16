@@ -315,12 +315,7 @@ const App = () => {
             )
           }
         />
-        <Route
-          path="/password-reset"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <PasswordReset />
-          }
-        />
+        <Route path="/password-reset" element={<PasswordReset />} />
         <Route
           path="/patient-list"
           element={

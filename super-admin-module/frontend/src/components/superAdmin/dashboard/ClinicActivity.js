@@ -158,7 +158,7 @@ const ClinicActivity = () => {
     }
   });
 
-  // console.log(filterAppointment);
+  console.log(filterAppointment);
 
   //filter for day wise Treatment
   const filterTreatment = appointmentList?.filter((item) => {
@@ -323,7 +323,7 @@ const ClinicActivity = () => {
             id="pills-tabContent"
           >
             <div
-              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade"
+              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade show active"
               id="pills-java"
               role="tabpanel"
               aria-labelledby="pills-java-tab"
@@ -345,10 +345,15 @@ const ClinicActivity = () => {
                           formattedDate ? (
                             <>
                               <p className="fw-bold">
-                                {formattedTime -
-                                  item.appointment_dateTime
-                                    .split("T")[1]
-                                    ?.split(":")[0]}{" "}
+                                {formattedTime >=
+                                item.appointment_dateTime
+                                  .split("T")[1]
+                                  ?.split(":")[0]
+                                  ? formattedTime -
+                                    item.appointment_dateTime
+                                      .split("T")[1]
+                                      ?.split(":")[0]
+                                  : "--:--"}{" "}
                                 Hours ago
                               </p>
                             </>
@@ -390,10 +395,15 @@ const ClinicActivity = () => {
                           formattedDate ? (
                             <>
                               <p className="fw-bold">
-                                {formattedTime -
-                                  item.appointment_dateTime
-                                    .split("T")[1]
-                                    ?.split(":")[0]}{" "}
+                                {formattedTime >=
+                                item.appointment_dateTime
+                                  .split("T")[1]
+                                  ?.split(":")[0]
+                                  ? formattedTime -
+                                    item.appointment_dateTime
+                                      .split("T")[1]
+                                      ?.split(":")[0]
+                                  : "--:--"}{" "}
                                 Hours ago
                               </p>
                             </>
@@ -476,11 +486,19 @@ const ClinicActivity = () => {
                         <div>
                           {item?.created_at?.split("T")[0] === formattedDate ? (
                             <>
-                              <p className="fw-bold">
+                              {/* <p className="fw-bold">
                                 {formattedTime -
                                   item.created_at
                                     ?.split("T")[1]
                                     ?.split(":")[0]}{" "}
+                                Hours ago
+                              </p> */}
+                              <p className="fw-bold">
+                                {formattedTime >=
+                                item.created_at.split("T")[1]?.split(":")[0]
+                                  ? formattedTime -
+                                    item.created_at.split("T")[1]?.split(":")[0]
+                                  : "--:--"}{" "}
                                 Hours ago
                               </p>
                             </>

@@ -13,73 +13,6 @@ import {
 } from "recharts";
 import styled from "styled-components";
 
-// const data = [
-//   {
-//     name: "Page A",
-//     uv: 4000,
-//     pv: 2400,
-//     amt: 2400,
-//   },
-//   {
-//     name: "Page B",
-//     uv: 3000,
-//     pv: 1398,
-//     amt: 2210,
-//   },
-//   {
-//     name: "Page C",
-//     uv: 2000,
-//     pv: 9800,
-//     amt: 2290,
-//   },
-//   {
-//     name: "Page D",
-//     uv: 2780,
-//     pv: 3908,
-//     amt: 2000,
-//   },
-//   {
-//     name: "Page E",
-//     uv: 1890,
-//     pv: 4800,
-//     amt: 2181,
-//   },
-//   {
-//     name: "Page F",
-//     uv: 2390,
-//     pv: 3800,
-//     amt: 2500,
-//   },
-//   {
-//     name: "Page G",
-//     uv: 3490,
-//     pv: 4300,
-//     amt: 2100,
-//   },
-// ];
-
-// const getIntroOfPage = (label) => {
-//   if (label === "Page A") {
-//     return "Page A is about men's clothing";
-//   }
-//   if (label === "Page B") {
-//     return "Page B is about women's dress";
-//   }
-//   if (label === "Page C") {
-//     return "Page C is about women's bag";
-//   }
-//   if (label === "Page D") {
-//     return "Page D is about household goods";
-//   }
-//   if (label === "Page E") {
-//     return "Page E is about food";
-//   }
-//   if (label === "Page F") {
-//     return "Page F is about baby food";
-//   }
-//   return "";
-// };
-
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
@@ -130,21 +63,6 @@ const ExpenseChart = () => {
   const lastDay = new Date(year, month, 0).getDate(); // Last day of the current month
   const formattedDate = `${year}-${month}`;
 
-  // const filterForPayStatus = appointmentList?.filter((item) => {
-  //   return item.payment_status === "success";
-  // });
-
-  // console.log(filterForPayStatus);
-
-  // Group appointments by date and count appointments for each day
-  // const dailyAppointments = filterForPayStatus?.reduce((acc, appointment) => {
-  //   const date = appointment.appointment_dateTime.split("T")[0];
-  //   acc[date] = acc[date] ? acc[date] + 1 : 1;
-  //   return acc;
-  // }, {});
-
-  // console.log(dailyAppointments);
-
   let totalAmountPerDay = {}; // Object to store total amount for each day
 
   appointmentList.forEach((item) => {
@@ -184,7 +102,16 @@ const ExpenseChart = () => {
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
+            <XAxis
+              dataKey="date"
+              tick={{
+                fontSize: 12,
+                transform: "translate(-10,0)",
+                dy: 5,
+                fill: "#666",
+                fontWeight: "bold",
+              }}
+            />
             <YAxis yAxisId="left" />
             <YAxis yAxisId="right" orientation="right" />
             <Tooltip />

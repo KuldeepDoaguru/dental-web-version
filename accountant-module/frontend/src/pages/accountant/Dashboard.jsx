@@ -18,17 +18,23 @@ const Accountant_Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  console.log(
-    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
-  );
+  console.log(`user ${user}`);
   console.log("User State:", user);
   const [billList, setBillList] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
+  const token = user.token;
+  console.log(token);
 
   const getTodaysBill = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getBillsByBranch/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getBillsByBranch/${user.branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setBillList(data);
     } catch (error) {
@@ -55,7 +61,13 @@ const Accountant_Dashboard = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getAppointmentData/${user.branch}`
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getAppointmentData/${user.branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
       setAppointmentList(response.data);

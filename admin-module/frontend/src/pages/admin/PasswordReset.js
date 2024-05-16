@@ -17,7 +17,7 @@ const PasswordReset = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://dentalguruadmin.doaguru.com//api/v1/admin/sendOtp",
+        "https://dentalguruadmin.doaguru.com//api/v1/admin/sendOtpEmail",
         {
           email,
         }
@@ -28,6 +28,7 @@ const PasswordReset = () => {
       setShowReset(false);
     } catch (error) {
       console.log(error);
+      cogoToast.error(error.response.data.message);
     }
   };
 

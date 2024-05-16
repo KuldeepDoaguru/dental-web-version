@@ -307,6 +307,7 @@ const ManageStaff = () => {
                           id="exampleFormControlInput1"
                           placeholder="Employee Name"
                           name="empName"
+                          required
                           value={inEmpData.empName}
                           onChange={handleInputChange}
                         />
@@ -326,6 +327,7 @@ const ManageStaff = () => {
                           id="exampleFormControlInput1"
                           placeholder="Employee Mobile"
                           name="empMobile"
+                          required
                           value={inEmpData.empMobile}
                           onChange={handleInputChange}
                         />
@@ -342,6 +344,7 @@ const ManageStaff = () => {
                         <select
                           name="empGender"
                           id=""
+                          required
                           class="form-control w-100"
                           value={inEmpData.empGender}
                           onChange={handleInputChange}
@@ -366,6 +369,7 @@ const ManageStaff = () => {
                           class="form-control"
                           id="exampleFormControlInput1"
                           placeholder="Employee Email"
+                          required
                           name="empEmail"
                           value={inEmpData.empEmail}
                           onChange={handleInputChange}
@@ -384,6 +388,7 @@ const ManageStaff = () => {
                           name="empDesignation"
                           id=""
                           class="form-select"
+                          required
                           aria-label="Default select example"
                           value={inEmpData.empDesignation}
                           onChange={handleInputChange}
@@ -410,6 +415,7 @@ const ManageStaff = () => {
                           type="text"
                           class="form-control"
                           id="exampleFormControlInput1"
+                          required
                           placeholder="Employee salary"
                           name="empSalary"
                           value={inEmpData.empSalary}
@@ -430,6 +436,7 @@ const ManageStaff = () => {
                           class="form-control"
                           id="exampleFormControlInput1"
                           placeholder="Employee Address"
+                          required
                           name="empAddress"
                           value={inEmpData.empAddress}
                           onChange={handleInputChange}
@@ -448,13 +455,14 @@ const ManageStaff = () => {
                           name="status"
                           id=""
                           class="form-select"
+                          required
                           aria-label="Default select example"
                           value={inEmpData.status}
                           onChange={handleInputChange}
                         >
                           <option value="">select-status</option>
                           <option value="onboard">Onboard</option>
-                          <option value="approved">Approved</option>
+                          <option value="Approved">Approved</option>
                           <option value="pending">Pending</option>
                           <option value="rejected">Rejected</option>
                           <option value="hold">Hold</option>
@@ -554,6 +562,7 @@ const ManageStaff = () => {
                               id="exampleFormControlInput1"
                               placeholder="Employee Mobile"
                               name="allDayShiftStartTime"
+                              required
                               value={inEmpData.allDayShiftStartTime}
                               onChange={handleInputChange}
                             />
@@ -570,6 +579,7 @@ const ManageStaff = () => {
                             <input
                               type="time"
                               class="form-control"
+                              required
                               id="exampleFormControlInput1"
                               placeholder="Employee Mobile"
                               name="allDayShiftEndTime"
@@ -595,6 +605,7 @@ const ManageStaff = () => {
                           id="exampleFormControlInput1"
                           placeholder="working days"
                           name="working_days"
+                          required
                           value={inEmpData.working_days}
                           onChange={handleInputChange}
                         />
@@ -614,6 +625,7 @@ const ManageStaff = () => {
                           id="exampleFormControlInput1"
                           placeholder="Employee Password"
                           name="password"
+                          required
                           value={inEmpData.password}
                           onChange={handleInputChange}
                         />
@@ -711,6 +723,7 @@ const ManageStaff = () => {
                               class="form-control"
                               id="exampleFormControlInput1"
                               placeholder="employee_education"
+                              required
                               name="employee_education"
                               value={inEmpData.employee_education}
                               onChange={handleInputChange}
@@ -732,6 +745,7 @@ const ManageStaff = () => {
                               id="exampleFormControlInput1"
                               placeholder="speciality"
                               name="speciality"
+                              required
                               value={inEmpData.speciality}
                               onChange={handleInputChange}
                             />
@@ -751,6 +765,7 @@ const ManageStaff = () => {
                               id="exampleFormControlInput1"
                               placeholder="language"
                               name="language"
+                              required
                               value={inEmpData.language}
                               onChange={handleInputChange}
                             />
@@ -769,6 +784,7 @@ const ManageStaff = () => {
                               class="form-control"
                               id="exampleFormControlInput1"
                               placeholder="experience"
+                              required
                               name="experience"
                               value={inEmpData.experience}
                               onChange={handleInputChange}
@@ -792,6 +808,7 @@ const ManageStaff = () => {
                           name="type_of"
                           value={inEmpData.type_of}
                           class="form-control"
+                          required
                           onChange={handleInputChange}
                         >
                           <option value="full time">Full Time</option>

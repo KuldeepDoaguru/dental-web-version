@@ -580,6 +580,179 @@ const sendOtp = (req, res) => {
   }
 };
 
+// const sendOtpEmail = (req, res) => {
+//   const { email } = req.body;
+
+//   // random otp
+//   function generateOTP(length) {
+//     const chars = "0123456789";
+//     let otp = "";
+
+//     for (let i = 0; i < length; i++) {
+//       const randomIndex = Math.floor(Math.random() * chars.length);
+//       otp += chars[randomIndex];
+//     }
+
+//     return otp;
+//   }
+
+//   const OTP = generateOTP(6);
+
+//   try {
+//     const transporter = nodemailer.createTransport({
+//       service: "Gmail",
+//       auth: {
+//         user: process.env.EMAILSENDER,
+//         pass: process.env.EMAILPASSWORD,
+//       },
+//     });
+
+//     // Check if email exists in the employee_register table
+//     const selectQuery =
+//       "SELECT * FROM employee_register WHERE employee_email = ?";
+//     db.query(selectQuery, email, (err, result) => {
+//       if (err) {
+//         res.status(400).json({ success: false, message: err.message });
+//       }
+
+//       if (result && result.length > 0) {
+//         // Email exists in employee_register table
+//         // Insert or update OTP in otpcollections table
+//         const insertQuery =
+//           "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)";
+//         db.query(insertQuery, [email, OTP], (insertErr, insertResult) => {
+//           if (insertErr) {
+//             return res
+//               .status(500)
+//               .json({ success: false, message: "Failed to store OTP" });
+//           }
+//           // Send OTP via email
+//           sendOtpByEmail(email, OTP, res);
+//         });
+//       } else {
+//         // Email does not exist in employee_register table
+//         res
+//           .status(404)
+//           .json({ message: "Email not found in the employee register" });
+//       }
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json("An error occurred.");
+//   }
+// };
+
+// // Function to send OTP via email
+// const sendOtpByEmail = (email, OTP, res) => {
+//   const transporter = nodemailer.createTransport({
+//     service: "Gmail",
+//     auth: {
+//       user: process.env.EMAILSENDER,
+//       pass: process.env.EMAILPASSWORD,
+//     },
+//   });
+
+//   const mailOptions = {
+//     from: process.env.EMAILSENDER,
+//     to: email,
+//     subject: "Password Reset OTP",
+//     text: `Your OTP for password reset is: ${OTP}`,
+//   };
+
+//   transporter.sendMail(mailOptions, (error, info) => {
+//     if (error) {
+//       console.error(error);
+//       return res.status(500).json("An error occurred while sending the email.");
+//     } else {
+//       console.log("OTP sent:", info.response);
+//       res.status(200).json({ message: "OTP sent successfully" });
+//     }
+//   });
+// };
+
+const sendOtpEmail = (req, res) => {
+  const { email } = req.body;
+
+  const selectQuery =
+    'SELECT * FROM employee_register WHERE employee_email = ? AND employee_role LIKE "%admin%"';
+
+  db.query(selectQuery, email, (err, result) => {
+    if (err) {
+      return res.status(400).json({ success: false, message: err.message });
+    } else {
+      if (!result || result.length === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Email not found" });
+      } else {
+        const user = result[0];
+
+        // Random OTP generation
+        function generateOTP(length) {
+          const chars = "0123456789";
+          let otp = "";
+
+          for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * chars.length);
+            otp += chars[randomIndex];
+          }
+
+          return otp;
+        }
+
+        const OTP = generateOTP(6);
+
+        try {
+          const transporter = nodemailer.createTransport({
+            service: "Gmail",
+            auth: {
+              user: process.env.EMAILSENDER,
+              pass: process.env.EMAILPASSWORD,
+            },
+          });
+
+          const mailOptions = {
+            from: process.env.EMAILSENDER,
+            to: email,
+            subject: "Password Reset OTP",
+            text: `Your OTP for password reset is: ${OTP}`,
+          };
+
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.error(error);
+              return res.status(500).json({
+                success: false,
+                message: "An error occurred while sending the email.",
+              });
+            } else {
+              console.log("OTP sent:", info.response);
+
+              const updateQuery =
+                "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)";
+              db.query(updateQuery, [email, OTP], (upErr, upResult) => {
+                if (upErr) {
+                  return res
+                    .status(400)
+                    .json({ success: false, message: upErr.message });
+                }
+                return res
+                  .status(200)
+                  .json({ message: "OTP sent successfully" });
+              });
+            }
+          });
+        } catch (error) {
+          console.log(error);
+          return res
+            .status(500)
+            .json({ success: false, message: "An error occurred." });
+        }
+      }
+    }
+  });
+};
+
 const verifyOtp = (req, res) => {
   try {
     const { email, otp } = req.body;
@@ -1130,4 +1303,5 @@ module.exports = {
   updateBillDetailsByBillId,
   deletePurInvoice,
   downloadBillRecById,
+  sendOtpEmail,
 };

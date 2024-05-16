@@ -96,7 +96,16 @@ const NewRegPatient = () => {
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
+            <XAxis
+              dataKey="date"
+              tick={{
+                fontSize: 12,
+                transform: "translate(-10,0)",
+                dy: 5,
+                fill: "#666",
+                fontWeight: "bold",
+              }}
+            />
             <YAxis />
             <Tooltip />
             <Legend />

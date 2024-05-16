@@ -6,6 +6,7 @@ import cogoToast from "cogo-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setBranch } from "../redux/slices/BranchSlicer";
 import { setUser } from "../redux/slices/UserSlicer";
+import { IoEye, IoEyeOffOutline } from "react-icons/io5";
 
 const UniversalLogin = () => {
   const dispatch = useDispatch();
@@ -19,16 +20,17 @@ const UniversalLogin = () => {
   const [selectedBranch, setSelectedBranch] = useState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
 
   console.log(selectedBranch);
 
   const getBranchList = async () => {
     try {
       const response = await axios.get(
-        "https://dentalguruaccountant.doaguru.com/api/v1/accountant/getBranch"
+        "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branches"
       );
-      console.log(response.data);
-      setBranchList(response.data);
+      console.log(response.data.data);
+      setBranchList(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -61,6 +63,7 @@ const UniversalLogin = () => {
         employee_name: response.data.user.employee_name,
         employee_mobile: response.data.user.employee_mobile,
         employee_designation: response.data.user.employee_designation,
+        token: response.data.user.token,
       };
       localStorage.setItem("userData", JSON.stringify(userData));
       dispatch(setUser(userData));
@@ -110,10 +113,10 @@ const UniversalLogin = () => {
                             </option>
                             {branchList?.map((branch) => (
                               <option
-                                key={branch.branch_name}
-                                value={branch.branch_name}
+                                key={branch?.branch_name}
+                                value={branch?.branch_name}
                               >
-                                {branch.branch_name}
+                                {branch?.branch_name}
                               </option>
                             ))}
                           </select>
@@ -156,15 +159,26 @@ const UniversalLogin = () => {
                               >
                                 Password
                               </label>
-                              <input
-                                name="password"
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="form-control"
-                                placeholder="password"
-                              />
+                              <div className="input-container">
+                                <input
+                                  name="password"
+                                  type={show ? "text" : "password"}
+                                  id="password"
+                                  value={password}
+                                  onChange={(e) => setPassword(e.target.value)}
+                                  className="form-control"
+                                  placeholder="password"
+                                />
+                                <div className="eye-icon">
+                                  {show ? (
+                                    <IoEye onClick={() => setShow(false)} />
+                                  ) : (
+                                    <IoEyeOffOutline
+                                      onClick={() => setShow(true)}
+                                    />
+                                  )}
+                                </div>
+                              </div>
                             </div>
                           </div>
 
@@ -233,5 +247,15 @@ const Container = styled.div`
 
   .box-cont {
     margin-top: 2rem;
+  }
+  .input-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  .eye-icon {
+    position: absolute;
+    right: 10px; /* Adjust the value to your preference */
+    cursor: pointer;
   }
 `;

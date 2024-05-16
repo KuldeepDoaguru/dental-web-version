@@ -417,10 +417,10 @@ const PatintDuePaymentPrint = () => {
                         </tbody>
                       </table>
 
-                      <div className="d-flex justify-content-between">
+                      {/* <div className="d-flex justify-content-between">
                         <h4 className="">Thank you </h4>
                         <h4 className="">Auth. signature</h4>
-                      </div>
+                      </div> */}
                     </div>
                     <div className="d-xxl-none d-xl-none d-lg-none col-md-1 col-sm-1"></div>
                   </div>

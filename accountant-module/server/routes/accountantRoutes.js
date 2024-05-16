@@ -55,6 +55,7 @@ const {
   getPatientLabTest,
   getPatientLabTestByPatientId,
 } = require("../controllers/employeeController");
+const authenticate = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -64,86 +65,152 @@ router.post("/verifyOtp", verifyOtp);
 router.put("/resetPassword", resetPassword);
 router.get("/getOPDDetailsByBranch/:branch", getOPDDetailsByBranch);
 router.get("/getTreatmentDetailsByBranch/:branch", getTreatmentDetailsByBranch);
-router.post("/voucherCreate", voucherCreate);
-router.get("/getVoucherListByBranch/:branch", getVoucherListByBranch);
+router.post("/voucherCreate", authenticate, voucherCreate);
+router.get(
+  "/getVoucherListByBranch/:branch",
+  authenticate,
+  getVoucherListByBranch
+);
 
-router.get("/getPatientBillsByBranch/:branch", getPatientBillsByBranch);
-router.get("/getBillsByBranch/:branch", getBillsByBranch);
-router.get("/getPurInventoryByBranch/:branch", getPurInventoryByBranch);
-router.get("/getAppointmentData/:branch", appointmentData);
-router.post("/addSecurityAmount", addSecurityAmount);
-router.get("/getAppointmentDetailsViaID/:id", getAppointmentDetailsViaID);
+router.get(
+  "/getPatientBillsByBranch/:branch",
+  authenticate,
+  getPatientBillsByBranch
+);
+router.get("/getBillsByBranch/:branch", authenticate, getBillsByBranch);
+router.get(
+  "/getPurInventoryByBranch/:branch",
+  authenticate,
+  getPurInventoryByBranch
+);
+router.get("/getAppointmentData/:branch", authenticate, appointmentData);
+router.post("/addSecurityAmount", authenticate, addSecurityAmount);
+router.get(
+  "/getAppointmentDetailsViaID/:id",
+  authenticate,
+  getAppointmentDetailsViaID
+);
 router.get(
   "/getAppointmentDetailsViaIDOPD/:id",
+  authenticate,
   getAppointmentDetailsViaIDForOPD
 );
 router.get(
   "/getSecurityAmountDataByBranch/:branch",
+  authenticate,
   getSecurityAmountDataByBranch
 );
 
-router.put("/updateSecurityAmount/:sid", updateSecurityAmount);
-router.get("/getSecurityAmountDataBySID/:sid", getSecurityAmountDataBySID);
-router.put("/updateRefundAmount/:sid", updateRefundAmount);
-router.put("/updatePatientSecurityAmt/:sid", updatePatientSecurityAmt);
+router.put("/updateSecurityAmount/:sid", authenticate, updateSecurityAmount);
+router.get(
+  "/getSecurityAmountDataBySID/:sid",
+  authenticate,
+  getSecurityAmountDataBySID
+);
+router.put("/updateRefundAmount/:sid", authenticate, updateRefundAmount);
+router.put(
+  "/updatePatientSecurityAmt/:sid",
+  authenticate,
+  updatePatientSecurityAmt
+);
 router.get("/getBranchDetailsByBranch/:branch", getBranchDetailsByBranch);
-router.get("/getTreatmentAmountByBranch/:branch", getTreatmentAmountByBranch);
+router.get(
+  "/getTreatmentAmountByBranch/:branch",
+  authenticate,
+  getTreatmentAmountByBranch
+);
 router.get(
   "/getPatientBillsAndSecurityAmountByBranch/:branch/:bid",
+  authenticate,
   getPatientBillsAndSecurityAmountByBranch
 );
 
-router.put("/makeBillPayment/:branch/:bid", makeBillPayment);
-router.get("/paidBillLIst/:branch", paidBillLIst);
+router.put("/makeBillPayment/:branch/:bid", authenticate, makeBillPayment);
+router.get("/paidBillLIst/:branch", authenticate, paidBillLIst);
 router.get("/getEmployeeDetails/:branch/:id", getEmployeeDetails);
-router.get("/paidBillDetails/:branch/:bid", paidBillDetails);
-router.get("/getEmployeeListByBranch/:branch", getEmployeeListByBranch);
-router.post("/addEmployeeSalary/:branch", addEmployeeSalary);
+router.get("/paidBillDetails/:branch/:bid", authenticate, paidBillDetails);
+router.get(
+  "/getEmployeeListByBranch/:branch",
+  authenticate,
+  getEmployeeListByBranch
+);
+router.post("/addEmployeeSalary/:branch", authenticate, addEmployeeSalary);
 router.get(
   "/getEmployeeListByBranchByID/:branch/:slid",
+  authenticate,
   getEmployeeListByBranchByID
 );
 
 // start working
 
-router.post("/markAttendanceLogin", MarkAttendanceLogin);
-router.put("/markAttendanceLogout", MarkAttendanceLogout);
+router.post("/markAttendanceLogin", authenticate, MarkAttendanceLogin);
+router.put("/markAttendanceLogout", authenticate, MarkAttendanceLogout);
 router.get(
   "/getTodayAttendance/:branch/:employee_ID/:date",
+  authenticate,
   getTodayAttendance
 );
-router.get("/getAttendancebyempId/:branch/:employee_ID", getAttendancebyempId);
-router.post("/apply-leave", applyLeave);
-router.get("/get-leaves/:branch/:employee_Id", getLeaves);
-router.get("/get-appointment-by-id/:branch/:appointmentId", getAppointmentById);
-router.get("/voucher/:branch/:id", getVoucherDataByBranchID);
-router.get("/getTreatmentTotal/:branch", getTreatmentTotal);
-router.get("/getTreatmentTotal/:appointID/:uhid", getTreatmentTotalById);
+router.get(
+  "/getAttendancebyempId/:branch/:employee_ID",
+  authenticate,
+  getAttendancebyempId
+);
+router.post("/apply-leave", authenticate, applyLeave);
+router.get("/get-leaves/:branch/:employee_Id", authenticate, getLeaves);
+router.get(
+  "/get-appointment-by-id/:branch/:appointmentId",
+  authenticate,
+  getAppointmentById
+);
+router.get("/voucher/:branch/:id", authenticate, getVoucherDataByBranchID);
+router.get("/getTreatmentTotal/:branch", authenticate, getTreatmentTotal);
+router.get(
+  "/getTreatmentTotal/:appointID/:uhid",
+  authenticate,
+  getTreatmentTotalById
+);
 router.get(
   "/getSecurityAmountDataByTPUHID/:tpid/:uhid",
+  authenticate,
   getSecurityAmountDataByTPUHID
 );
-router.put("/updateRemainingAmount/:tp_id/:uhid", updateRemainingAmount);
+router.put(
+  "/updateRemainingAmount/:tp_id/:uhid",
+  authenticate,
+  updateRemainingAmount
+);
 router.put(
   "/updateRemainingSecurityAmount/:tp_id/:uhid",
+  authenticate,
   updateRemainingSecurityAmount
 );
 
 // Final Bill routers
 
-router.get("/billDetailsViaTpid/:tpid", billDetailsViaTpid);
-router.get("/getTreatSuggestViaTpid/:tpid/:branch", getTreatSuggestViaTpid);
+router.get("/billDetailsViaTpid/:tpid", authenticate, billDetailsViaTpid);
+router.get(
+  "/getTreatSuggestViaTpid/:tpid/:branch",
+  authenticate,
+  getTreatSuggestViaTpid
+);
 router.get(
   "/getTreatPrescriptionByTpid/:tpid/:branch",
+  authenticate,
   getTreatPrescriptionByTpid
 );
 router.get(
   "/getTreatmentDetailsViaTpid/:tpid/:branch",
+  authenticate,
   getTreatmentDetailsViaTpid
 );
-router.get("/getDentalDataByTpid/:tpid/:branch", getDentalDataByTpid);
+router.get(
+  "/getDentalDataByTpid/:tpid/:branch",
+  authenticate,
+  getDentalDataByTpid
+);
 router.get(
   "/getAppointmentsWithPatientDetailsById/:tpid",
+  authenticate,
   getAppointmentsWithPatientDetailsById
 );
 

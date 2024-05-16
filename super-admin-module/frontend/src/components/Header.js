@@ -7,14 +7,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoSettings } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { clearUser } from "../redux/slices/UserSlicer";
+import { clearUser, toggleTableRefresh } from "../redux/slices/UserSlicer";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state);
+  const user = useSelector((state) => state.user);
   // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   // console.log("User State:", user);
+  const { refreshTable } = useSelector((state) => state.user);
   const branch = useSelector((state) => state.branch);
   // console.log(`User Name: ${branch.name}`);
   const [notifyList, setNotifyList] = useState([]);
@@ -22,18 +23,30 @@ const Header = () => {
   const getNotifyDetails = async () => {
     try {
       const { data } = await axios.get(
-        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getSuperAdminNotify"
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getSuperAdminNotify",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setNotifyList(data);
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   };
 
   const updateMarkRead = async (id) => {
     try {
       const response = await axios.put(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/markRead/${id}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/markRead/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       getNotifyDetails();
     } catch (error) {
@@ -60,19 +73,14 @@ const Header = () => {
 
   useEffect(() => {
     getNotifyDetails();
-    const intervalId = setInterval(getNotifyDetails, 5000);
+  }, [refreshTable]);
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
-
-  // console.log(notifyList);
+  console.log(notifyList);
 
   const filterForRead = notifyList?.filter((item) => {
     return item.status !== "read";
   });
-  // console.log(filterForRead);
+  console.log(filterForRead);
 
   return (
     <Wrapper>

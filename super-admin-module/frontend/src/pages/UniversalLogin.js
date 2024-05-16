@@ -209,6 +209,7 @@ const UniversalLogin = () => {
                             type={show ? "text" : "password"}
                             id="password"
                             value={password}
+                            required
                             onChange={(e) => setPassword(e.target.value)}
                             className="form-control relative"
                             placeholder="password"
@@ -226,7 +227,7 @@ const UniversalLogin = () => {
 
                     <div className="col-5 ms-3">
                       <p>
-                        <Link to="/password-reset">Forgot Password?</Link>
+                        <Link to={`/password-reset`}>Forgot Password?</Link>
                       </p>
                     </div>
 

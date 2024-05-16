@@ -8,16 +8,18 @@ const userSlice = createSlice({
       state.name = action.payload.name;
       state.id = action.payload.id;
       state.branch = action.payload.branch;
+      state.token = action.payload.token;
       console.log("User State after setUser:", state);
     },
     clearUser: (state) => {
       state.name = "";
       state.id = null;
       state.branch = null;
+      state.token = null;
     },
     toggleTableRefresh: (state) => {
       state.refreshTable = !state.refreshTable;
-  }
+    },
   },
 });
 

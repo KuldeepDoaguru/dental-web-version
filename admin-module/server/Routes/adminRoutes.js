@@ -23,6 +23,7 @@ const {
   deletePurInvoice,
   downloadBillRecById,
   editEmployeeDetails,
+  sendOtpEmail,
 } = require("../controllers/adminController");
 const {
   getPurchaseInvByPurId,
@@ -118,6 +119,7 @@ router.put(
 router.get("/getEmployeeDetails", getEmployeeData);
 router.post("/adminLoginUser", adminLoginUser);
 router.post("/sendOtp", sendOtp);
+router.post("/sendOtpEmail", sendOtpEmail);
 router.post("/verifyOtp", verifyOtp);
 router.put("/resetPassword", resetPassword);
 router.get("/getAppointmentData/:branch", appointmentData);

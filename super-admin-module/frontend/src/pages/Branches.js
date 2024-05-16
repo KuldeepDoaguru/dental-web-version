@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import BranchSelector from "../components/BranchSelector";
 import axios from "axios";
 import cogoToast from "cogo-toast";
+import { useSelector } from "react-redux";
 
 const Branches = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -13,6 +14,7 @@ const Branches = () => {
   const [branchHeadImg, setBranchHeadImg] = useState(null);
   const [branchFootImg, setBranchFootImg] = useState(null);
   const [popupVisible, setPopupVisible] = useState(false);
+  const user = useSelector((state) => state.user);
   const [branchList, setBranchList] = useState([]);
   const [upData, setUpData] = useState({
     name: "",
@@ -35,6 +37,9 @@ const Branches = () => {
 
   console.log(selectedItem);
 
+  console.log(upData, branchHeadImg);
+  console.log(branchFootImg.file);
+
   const updateBranchDetails = async (e, id) => {
     console.log(id);
     e.preventDefault();
@@ -55,9 +60,11 @@ const Branches = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${user.token}`,
           },
         }
       );
+
       console.log(response);
       getBranchList();
       setShowPopup(false);
@@ -204,7 +211,6 @@ const Branches = () => {
                                 class="p-1 w-100 rounded"
                                 placeholder="available stock"
                                 accept=".pdf, .jpg, .jpeg, .png"
-                                required
                                 name="branchHeadImg"
                                 onChange={handleBranchHeadPicture}
                               />
@@ -233,7 +239,6 @@ const Branches = () => {
                                 class="p-1 w-100 rounded"
                                 placeholder="available stock"
                                 accept=".pdf, .jpg, .jpeg, .png"
-                                required
                                 name="branchFootImg"
                                 onChange={handleBranchFootPicture}
                               />

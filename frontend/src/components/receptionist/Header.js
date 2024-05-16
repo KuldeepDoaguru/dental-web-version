@@ -16,7 +16,7 @@ function Header() {
 
         <nav className="navbar navbar-expand-lg ">
           <div className="container-fluid">
-            <Link to='/receptionist-dashboard'><img src={dental_logo} alt="Logo" width="75" height="50" style={{ marginLeft: "-1.3rem" }} /></Link>
+            <Link to='/receptionist-dashboard'><img src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1707404036/dental%20guru/dentalguru_v1g7k0.png" alt="Logo" width="75" height="50" style={{ marginLeft: "-1.3rem" }} /></Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>

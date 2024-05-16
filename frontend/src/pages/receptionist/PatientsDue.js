@@ -11,7 +11,8 @@ import MakePayment from '../../components/receptionist/SecurityAmount/MakePaymen
 import cogoToast from 'cogo-toast';
 import { Link, useNavigate } from "react-router-dom";
 
-function PatientsDue() {
+function 
+PatientsDue() {
   
   const {refreshTable,currentUser} = useSelector((state) => state.user);
   const  branch = currentUser.branch_name;
@@ -40,7 +41,7 @@ function PatientsDue() {
 
   console.log(patBill);
   const filterForUnPaidBills = patBill?.filter((item) => {
-    return item.payment_status !== "paid";
+    return item.payment_status !== "paid" &&  (item.total_amount - (item.paid_amount + item.pay_by_sec_amt)) !== 0;
   });
 
 

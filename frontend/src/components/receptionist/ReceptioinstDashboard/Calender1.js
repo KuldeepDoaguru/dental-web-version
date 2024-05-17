@@ -127,9 +127,11 @@ const handleDayClick = (selectedDate) => {
 
   // Generate time slots every 15 minutes
   while (currentTime < endTime) {
-    const timeSlot = currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    const dateTimeSlot = `${selectedDate.toLocaleDateString()} ${timeSlot}`; // Concatenate date and time
-    slots.push(dateTimeSlot);
+    // const timeSlot = currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    // const dateTimeSlot = `${selectedDate.toLocaleDateString()} ${timeSlot}`; // Concatenate date and time
+    // slots.push(dateTimeSlot);
+    const timeSlot = currentTime.toISOString();
+    slots.push(timeSlot);
     currentTime.setMinutes(currentTime.getMinutes() + parseInt(branchDetail[0]?.appoint_slot_duration.split(" "))); // Add 15 minutes
   }
 
@@ -206,7 +208,7 @@ const getCellStyle = (time) => {
   // Find any appointment that matches the time slot
   const appointment = filteredAppointmentData.find(appointment => {
     // Convert the appointment timing to match the format of time slots
-    const appointmentTime = new Date(appointment.appointment_dateTime);
+    const appointmentTime = new Date(appointment?.appointment_dateTime);
    
     return (
 
@@ -319,9 +321,9 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
           
             <tbody>
 
-            {timeSlotsColumns.map((column, columnIndex) => (
+            {timeSlotsColumns?.map((column, columnIndex) => (
   <tr key={columnIndex}>
-    {column.map((timeSlot, index) => (
+    {column?.map((timeSlot, index) => (
       <td key={index} className={getCellStyle(timeSlot)} onClick={() => handleTimeSlotClick(timeSlot)}>{new Date(timeSlot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
     ))}
   </tr>

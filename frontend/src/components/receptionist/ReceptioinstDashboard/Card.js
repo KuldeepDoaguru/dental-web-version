@@ -56,11 +56,11 @@ function Card() {
         }
       );
       
-      const filteredPatients = response?.data?.data.filter(patient => patient.payment_Status === "paid" && patient.created_at.includes(selectedDate));
+      const filteredPatients = response?.data?.data.filter(patient => patient?.payment_Status === "paid" && patient.created_at.includes(selectedDate));
       setOpdData(filteredPatients);
     } catch (error) {
       console.log(error);
-      if(error.response.status == 401){
+      if(error?.response?.status == 401){
         alert("Your token is expired please login again")
         navigate('/receptionist_login');
       }

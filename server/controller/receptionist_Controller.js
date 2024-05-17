@@ -2825,7 +2825,7 @@ const paidBillLIst = (req, res) => {
         logger.error("Failed to get paid bill list");
         res.status(400).json({ success: false, message: err.message });
       }
-      logger.info("Successfully getting paid patient bills");
+    
       res.status(200).send(result);
     });
   } catch (error) {
@@ -2846,7 +2846,7 @@ const billDetailsViaTpid = (req, res) => {
         logger.error("Failed to get patient bill details via tpid");
         res.status(400).json({ success: false, message: err.message });
       }
-      logger.info("Successfully getting patient bills  via tpid");
+    
       res.status(200).send(result);
     });
   } catch (error) {
@@ -2963,7 +2963,7 @@ const getAppointmentsWithPatientDetailsById = (req, res) => {
       logger.error("Failed to get get Appointments With Patient Details By Id");
       return res.status(404).json({ error: "TPID not found" });
     } else {
-      logger.info("Successfully getting Appointments With Patient Details By Id");
+      
       return res.status(200).json({ message: "Get data by TPID", result });
     }
   });
@@ -2983,7 +2983,7 @@ const getTreatmentViaUhid = (req, res) => {
         console.error("Error fetching Treatment from MySql:", err);
         res.status(500).json({ error: "Error fetching Treatment" });
       } else {
-        logger.info("Successfully getting treatment via uhid");
+       
         res
           .status(200)
           .json({ data: results, message: "Treatment fetched successfully" });
@@ -3011,7 +3011,7 @@ const getBillViaUhid = (req, res) => {
         console.error("Error fetching Bill from MySql:", err);
         res.status(500).json({ error: "Error fetching Bill" });
       } else {
-        logger.info("Successfully getting bill via uhid");
+       
         res
           .status(200)
           .json({ data: results, message: "Bill fetched successfully" });
@@ -3067,7 +3067,7 @@ const getPrescriptionViaUhid = (req, res) => {
         console.error("Error fetching Prescription from MySql:", err);
         res.status(500).json({ error: "Error fetching Prescription" });
       } else {
-        logger.info("Prescription fetched successfully");
+        
         res
           .status(200)
           .json({ data: results, message: "Prescription fetched successfully" });
@@ -3372,7 +3372,7 @@ const getPatientLabTestByPatientId = (req, res) => {
         res.status(400).json({ success: false, message: err.message });
         return;
       }
-      logger.info("successfully  get Patient Lab Test Details");
+     
       res.status(200).send(result);
     });
   } catch (error) {

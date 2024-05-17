@@ -758,7 +758,7 @@ function AddPatient() {
               <div className="col-sm-6">
                 <div className="form-outline" id="form1">
                   <label className="form-label" for="name">
-                    Patient name
+                    Patient name *
                   </label>
                   <input
                     type="text"
@@ -776,7 +776,7 @@ function AddPatient() {
               <div className="col-sm-6 ">
                 <div className="form-outline">
                   <label className="form-label" for="gender">
-                    Gender
+                    Gender *
                   </label>
                   <select
                     className="form-select"
@@ -794,8 +794,8 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="mobile">
-                    Moblie
+                  <label className="form-label mt-2" for="mobile">
+                    Mobile No. *
                   </label>
                   <input
                   id="mobile"
@@ -817,7 +817,7 @@ function AddPatient() {
 
               <div className="col-sm-6">
                 <div className="form-outline" id="form1">
-                  <label className="form-label" for="email">
+                  <label className="form-label mt-2" for="email">
                     Email
                   </label>
                   <input
@@ -832,8 +832,8 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="address">
-                    Address
+                  <label className="form-label mt-2" for="address">
+                    Address *
                   </label>
                   <input
                     type="text"
@@ -848,7 +848,7 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="aadhaar">
+                  <label className="form-label mt-2" for="aadhaar">
                     Aadhaar No.
                   </label>
                   <input
@@ -867,8 +867,8 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="contact_Person">
-                    Contact Person
+                  <label className="form-label mt-2" for="contact_Person">
+                    Contact Person *
                   </label>
                   <select
                     className="form-select"
@@ -891,7 +891,7 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" htmlFor="blood_Group">
+                  <label className="form-label mt-2" htmlFor="blood_Group">
                     Blood Group
                   </label>
                   <select
@@ -914,8 +914,8 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="contact_Person_Name">
-                    Cont. Per. Name
+                  <label className="form-label mt-2" for="contact_Person_Name">
+                    Cont. Per. Name *
                   </label>
                   <input
                     type="text"
@@ -932,7 +932,7 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="dob">
+                  <label className="form-label mt-2" for="dob">
                     Date of Birth
                   </label>
                   <input
@@ -948,8 +948,8 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="age">
-                    Age
+                  <label className="form-label mt-2" for="age">
+                    Age *
                   </label>
 
                   <input
@@ -968,8 +968,8 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="weight">
-                    Weight
+                  <label className="form-label mt-2" for="weight">
+                    Weight *
                   </label>
 
                   <input
@@ -987,7 +987,7 @@ function AddPatient() {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="allergy">
+                  <label className="form-label mt-2" for="allergy">
                     Have any allergy
                   </label>
 
@@ -1004,7 +1004,7 @@ function AddPatient() {
 
               <div className="col-sm-12">
                 <div className="form-outline">
-                  <label className="form-label" for="disease">
+                  <label className="form-label mt-2" for="disease">
                     Have any disease
                   </label>
                   <CreatableSelect
@@ -1022,8 +1022,8 @@ function AddPatient() {
 
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="patientType">
-                    Patient Type
+                  <label className="form-label mt-2" for="patientType">
+                    Patient Type *
                   </label>
 
                   <select
@@ -1062,7 +1062,7 @@ function AddPatient() {
                            
                           /> */}
                         <label className="form-label" for="date">
-                          Appointment Date
+                          Appointment Date *
                         </label>
                         <input
                         id="date"
@@ -1078,7 +1078,7 @@ function AddPatient() {
                     <div className="col-sm-6 ">
                       <div className="form-outline">
                         <label className="form-label" for="form6Example2">
-                          Appointment Time
+                          Appointment Time *
                         </label>
                         <Select
                           options={timeSlots}
@@ -1100,8 +1100,8 @@ function AddPatient() {
                  
                     <div className="col-sm-6">
                       <div className="form-outline">
-                        <label className="form-label" for="doctor">
-                          Doctor
+                        <label className="form-label mt-2" for="doctor">
+                          Doctor *
                         </label>
 
                         <input
@@ -1184,8 +1184,8 @@ function AddPatient() {
                       <>
                         <div className="col-sm-6">
                           <div className="form-outline">
-                            <label className="form-label" for="opd_amount">
-                              OPD Amount
+                            <label className="form-label mt-2" for="opd_amount">
+                              OPD Amount *
                             </label>
                             <input
                               type="number"
@@ -1200,8 +1200,8 @@ function AddPatient() {
                         </div>
                         <div className="col-sm-6">
                           <div className="form-outline">
-                            <label className="form-label" for="paymentMode">
-                              Payment Mode
+                            <label className="form-label mt-2" for="paymentMode">
+                              Payment Mode *
                             </label>
                             <select
                               className="form-select"
@@ -1219,8 +1219,8 @@ function AddPatient() {
                         {data.payment_Mode === "online" && (
                           <div className="col-sm-6">
                             <div className="form-outline">
-                              <label className="form-label" for="transaction_Id">
-                                Transaction Id
+                              <label className="form-label mt-2" for="transaction_Id">
+                                Transaction Id *
                               </label>
                               <input
                                 type="text"
@@ -1236,8 +1236,8 @@ function AddPatient() {
                         )}
                         <div className="col-sm-6">
                           <div className="form-outline">
-                            <label className="form-label" for="payment_Status">
-                              Payment Status
+                            <label className="form-label mt-2" for="payment_Status">
+                              Payment Status *
                             </label>
                             <select
                               className="form-select"
@@ -1257,7 +1257,7 @@ function AddPatient() {
 
                     <div className="col-sm-6">
                       <div className="form-outline">
-                        <label className="form-label" for="notes">
+                        <label className="form-label mt-2" for="notes">
                           Notes
                         </label>
                         <input

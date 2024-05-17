@@ -887,7 +887,7 @@ const isDoctorAvailable = (selectedDateTime) => {
               <div className="col-sm-6 col-md-12">
                 <div className="form-outline" id="form1">
                   <label className="form-label" for="name1">
-                    Patient name
+                    Patient name *
                   </label>
                   <input
                     type="text"
@@ -913,8 +913,8 @@ const isDoctorAvailable = (selectedDateTime) => {
                             required
                            
                           /> */}
-                  <label className="form-label" for="date1">
-                    Appointment Date
+                  <label className="form-label mt-2" for="date1">
+                    Appointment Date *
                   </label>
                   <input
                   id="date1"
@@ -929,8 +929,8 @@ const isDoctorAvailable = (selectedDateTime) => {
               </div>
               <div className="col-sm-6 ">
                 <div className="form-outline">
-                  <label className="form-label" for="form6Example2">
-                    Appointment Time
+                  <label className="form-label mt-2" for="form6Example2">
+                    Appointment Time *
                   </label>
                   <Select
                     options={timeSlots}
@@ -951,8 +951,8 @@ const isDoctorAvailable = (selectedDateTime) => {
 
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="doctor1">
-                    Doctor
+                  <label className="form-label mt-2" for="doctor1">
+                    Doctor *
                   </label>
 
                   <input
@@ -992,8 +992,8 @@ const isDoctorAvailable = (selectedDateTime) => {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline" id="form1">
-                  <label className="form-label" for="treatment">
-                    Add Treatment
+                  <label className="form-label mt-2" for="treatment">
+                    Add Treatment *
                   </label>
                   <Select
                     id="treatment"
@@ -1013,8 +1013,8 @@ const isDoctorAvailable = (selectedDateTime) => {
              <>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="opd_amount">
-                    OPD Amount
+                  <label className="form-label mt-2" for="opd_amount">
+                    OPD Amount *
                   </label>
                   <input
                     type="number"
@@ -1031,7 +1031,7 @@ const isDoctorAvailable = (selectedDateTime) => {
               </div>
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="paymentMode">Payment Mode</label>
+                  <label className="form-label mt-2" for="paymentMode">Payment Mode *</label>
                   <select
                     className="form-select"
                     id="paymentMode"
@@ -1048,8 +1048,8 @@ const isDoctorAvailable = (selectedDateTime) => {
               </div>
             {bookData.payment_Mode === "online" &&   <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="transaction_Id">
-                    Transaction Id
+                  <label className="form-label mt-2" for="transaction_Id">
+                    Transaction Id *
                   </label>
                   <input
                     type="text"
@@ -1065,7 +1065,7 @@ const isDoctorAvailable = (selectedDateTime) => {
               }
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="payment_Status">Payment Status</label>
+                  <label className="form-label mt-2" for="payment_Status">Payment Status *</label>
                   <select
                     className="form-select"
                     id="payment_Status"
@@ -1085,7 +1085,7 @@ const isDoctorAvailable = (selectedDateTime) => {
 
               <div className="col-sm-6">
                 <div className="form-outline">
-                  <label className="form-label" for="notes1">
+                  <label className="form-label mt-2" for="notes1">
                     Notes
                   </label>
                   <input

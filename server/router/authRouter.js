@@ -119,110 +119,183 @@ const {
   getDoctorDataByBranchWithLeave,
   getTreatSuggestViaTpid,
 } = require("../controller/authBook.js");
+const authenticate = require("../middleware/authMiddleware.js");
 
 const router = express.Router();
 
 // Examination  Routes START here......
-router.post("/dentalPediatric", dentalPediatric);
-router.put("/updatedentalPediatric/:id", updateDentalPediatric);
-router.get("/getDentalDataByID/:appointmentId/:tpid", getDentalDataByID);
-router.get("/getDentalDataByTpid/:tpid/:branch", getDentalDataByTpid);
-router.get("/getDentalPatientDataByID/:patientUHID", getDentalPatientDataByID);
-router.get("/getDentalPatientByID/:patientUHID", getDentalPatientByID);
-router.delete("/deleteDentalPediatric/:id", deleteDentalPediatric);
+router.post("/dentalPediatric", authenticate, dentalPediatric);
+router.put("/updatedentalPediatric/:id", authenticate, updateDentalPediatric);
+router.get(
+  "/getDentalDataByID/:appointmentId/:tpid",
+  authenticate,
+  getDentalDataByID
+);
+router.get(
+  "/getDentalDataByTpid/:tpid/:branch",
+  authenticate,
+  getDentalDataByTpid
+);
+router.get(
+  "/getDentalPatientDataByID/:patientUHID",
+  authenticate,
+  getDentalPatientDataByID
+);
+router.get(
+  "/getDentalPatientByID/:patientUHID",
+  authenticate,
+  getDentalPatientByID
+);
+router.delete(
+  "/deleteDentalPediatric/:id",
+  authenticate,
+  deleteDentalPediatric
+);
 // Examination  Routes END here......
 
 // Treatment Suggestion Routes START here......
-router.post("/insertTreatSuggest", insertTreatSuggest);
-router.get("/updateSittingCount/:appoint_id", updateSittingCount);
-router.post("/addSecurityAmount", addSecurityAmount);
-router.get("/getTreatSuggestById/:appoint_id", getTreatSuggestById);
+router.post("/insertTreatSuggest", authenticate, insertTreatSuggest);
+router.get("/updateSittingCount/:appoint_id", authenticate, updateSittingCount);
+router.post("/addSecurityAmount", authenticate, addSecurityAmount);
+router.get(
+  "/getTreatSuggestById/:appoint_id",
+  authenticate,
+  getTreatSuggestById
+);
 router.get(
   "/getSecurityAmountByAppointmentId/:tpid",
+  authenticate,
   getSecurityAmountByAppointmentId
 );
 // router.get('/patient-security/:appoint_id', getPatientSecurityAmt);
-router.get("/patient-security/:appoint_id/:branch_name", getPatientSecurityAmt);
-router.put("/update-security-amount/:sa_id", updatePatientSecurityAmt);
-router.get("/getAllSecurityAmounts/:sa_id/:branch_name", getAllSecurityAmounts);
-router.get("/treatPatientUHID/:patientUHID", treatPatientUHID);
-router.put("/updateSecurityAmount/:said", updateSecurityAmount);
+router.get(
+  "/patient-security/:appoint_id/:branch_name",
+  authenticate,
+  getPatientSecurityAmt
+);
+router.put(
+  "/update-security-amount/:sa_id",
+  authenticate,
+  updatePatientSecurityAmt
+);
+router.get(
+  "/getAllSecurityAmounts/:sa_id/:branch_name",
+  authenticate,
+  getAllSecurityAmounts
+);
+router.get("/treatPatientUHID/:patientUHID", authenticate, treatPatientUHID);
+router.put("/updateSecurityAmount/:said", authenticate, updateSecurityAmount);
 // Treatment Suggestion Routes END here........
 
 // Appointment  Routes START here......
 router.get(
   "/getAppointmentsWithPatientDetails",
+  authenticate,
   getAppointmentsWithPatientDetails
 );
 router.get(
   "/getAppointmentsWithPatientDetailsById/:tpid",
+  authenticate,
   getAppointmentsWithPatientDetailsById
 );
-router.put("/upDateAppointmentStatus", upDateAppointmentStatus);
+router.put("/upDateAppointmentStatus", authenticate, upDateAppointmentStatus);
 router.get(
   "/getAllAppointmentByPatientId/:patientId/:branch",
+  authenticate,
   getAllAppointmentByPatientId
 );
 
 // just for testing treatment suggest sitting logic
 router.get(
   "/getAppointmentsWithPatientDetailsTreatSugg/:doctor_id",
+  authenticate,
   getAppointmentsWithPatientDetailsTreatSugg
 );
 // Appointment Routes END here......
 
 // Branch Routes START here......
-router.get("/get-branches", getBranch);
+router.get("/get-branches", authenticate, getBranch);
 router.post("/doctor-login", LoginDoctor);
-router.post("/insertTimelineEvent", insertTimelineEvent);
-router.get("/getPatientTimeline/:branch/:patientId", getPatientTimeline);
+router.post("/insertTimelineEvent", authenticate, insertTimelineEvent);
+router.get(
+  "/getPatientTimeline/:branch/:patientId",
+  authenticate,
+  getPatientTimeline
+);
 // Branch Routes END here......
 
 // Treatment List Routes START here......
-router.get("/treatmentLists", getTreatmentList);
+router.get("/treatmentLists", authenticate, getTreatmentList);
 router.post(
   "/insertTreatmentData/:exam_id/:appointment_id/:tpid",
+  authenticate,
   insertTreatmentData
 );
 router.get(
   "/getExamDataIdbyAppointId/:id/:appointment_id",
+  authenticate,
   getExamDataIdbyAppointId
 );
 router.get(
   "/getTreatmentData/:appointment_id/:tpid/:branch/:sitting/:treatment",
+  authenticate,
   getTreatmentData
 );
-router.get("/treatPatientProfile/:patientUHID", getTreatPatientProfile);
-router.put("/updateTreatmentData/:id", updateTreatmentData);
-router.delete("/deleteTreatmentData/:id", deleteTreatmentData);
+router.get(
+  "/treatPatientProfile/:patientUHID",
+  authenticate,
+  getTreatPatientProfile
+);
+router.put("/updateTreatmentData/:id", authenticate, updateTreatmentData);
+router.delete("/deleteTreatmentData/:id", authenticate, deleteTreatmentData);
 
 // test purpose
-router.get("/getTreatmentDatasum/:appointment_id", getTreatmentDataSUM);
+router.get(
+  "/getTreatmentDatasum/:appointment_id",
+  authenticate,
+  getTreatmentDataSUM
+);
 // Treatment List Routes END here......
 
 // Medical Prescription Routes START here......
 router.post(
   "/insertTreatPrescription/:appoint_id/:tpid/:sitting",
+  authenticate,
   insertTreatPrescription
 );
-router.get("/getMedicineData", getMedicineData);
+router.get("/getMedicineData", authenticate, getMedicineData);
 router.get(
   "/getPrescriptionPatientProfile/:patientUHID",
+  authenticate,
   getPrescriptionPatientProfile
 );
-router.get("/prescripPatientUHID/:patientUHID", prescripPatientUHID);
+router.get(
+  "/prescripPatientUHID/:patientUHID",
+  authenticate,
+  prescripPatientUHID
+);
 router.get(
   "/getTreatPrescriptionByAppointId/:appoint_id/:tpid/:treatment",
+  authenticate,
   getTreatPrescriptionByAppointId
 );
 
 router.get(
   "/getTreatPrescriptionByTpid/:tpid/:branch",
+  authenticate,
   getTreatPrescriptionByTpid
 );
-router.delete("/deleteTreatPrescriptionById/:id", deleteTreatPrescriptionById);
-router.put("/updateAppointStatus/:appointId", updateAppointStatus);
-router.get("/onGoingTreat/:patientUHID", onGoingTreat);
+router.delete(
+  "/deleteTreatPrescriptionById/:id",
+  authenticate,
+  deleteTreatPrescriptionById
+);
+router.put(
+  "/updateAppointStatus/:appointId",
+  authenticate,
+  updateAppointStatus
+);
+router.get("/onGoingTreat/:patientUHID", authenticate, onGoingTreat);
 // Medical Prescription Routes END here......
 
 // Prescription Image Routes START here......
@@ -247,135 +320,216 @@ router.post(
   uploadImage
 );
 
-router.get("/getUploadedImages", getUploadedImages);
+router.get("/getUploadedImages", authenticate, getUploadedImages);
 // Prescription Image Routes END here......
 
 // Bill Routes START here......
-router.get("/bill-patient-data", billPatientData);
-router.get("/bill-patient-data/:appoint_id", billPatientDataByAppId);
-router.get("/get-patientBill-data/:patientUHID", getPatientBillUHID);
+router.get("/bill-patient-data", authenticate, billPatientData);
+router.get(
+  "/bill-patient-data/:appoint_id",
+  authenticate,
+  billPatientDataByAppId
+);
+router.get(
+  "/get-patientBill-data/:patientUHID",
+  authenticate,
+  getPatientBillUHID
+);
 // Bill Routes END here......
 
 //  Booking Appointment START here......
-router.post("/bookAppointment", bookAppointment);
-router.get("/getTreatSuggest/:appoint_id", getTreatSuggest);
-router.get("/getTreatSuggestViaTpid/:tpid/:branch", getTreatSuggestViaTpid);
+router.post("/bookAppointment", authenticate, bookAppointment);
+router.get("/getTreatSuggest/:appoint_id", authenticate, getTreatSuggest);
+router.get(
+  "/getTreatSuggestViaTpid/:tpid/:branch",
+  authenticate,
+  getTreatSuggestViaTpid
+);
 //  Booking Appointment END here......
 
 //  Patient Profile START here......
 // testing
 // router.get('/get-Patient-by-id/:branch/:patientId',getPatientDetails);
-router.get("/get-Patient-by-id/:patientId", getPatientDetails);
+router.get("/get-Patient-by-id/:patientId", authenticate, getPatientDetails);
 //  Patient Profile END here......
 
 //  lab section START here......
-router.post("/insertLabData", insertLabData);
-router.get("/lab-data/:appoint_id", getLabDataByAppointId);
+router.post("/insertLabData", authenticate, insertLabData);
+router.get("/lab-data/:appoint_id", authenticate, getLabDataByAppointId);
 
 //  lab section END here......
 // treatpackage routes
-router.post("/addTreatPackageDetails", addTreatPackageDetails);
-router.get("/getTreatList/:branch/:tpid", getTreatList);
-router.put("/updateTreatSitting/:branch/:tsid", updateTreatSitting);
-router.put("/updateTreatSittingStatus/:branch/:tsid", updateTreatSittingStatus);
-router.get("/get-branch-holidays/:branch", getBranchHoliday);
-router.get("/get-branch-detail/:branch", getBranchDetail);
-router.get("/get-treatments", getTreatment);
-router.get("/get-doctors-with-leave/:branch", getDoctorDataByBranchWithLeave);
-router.get("/getAppointmentsViaDocId/:branch/:did", getAppointmentsViaDocId);
-router.post("/bookSittingAppointment", bookSittingAppointment);
-router.put("/updateTreatSuggestion/:tsid/:branch", updateTreatSuggestion);
-router.delete("/deleteTreatSuggestion/:tsid/:branch", deleteTreatSuggestion);
-router.get("/getFilteredTreat/:tpid/:branch", getFilteredTreat);
-router.get("/getExaminedataById/:tpid", getExaminedataById);
+router.post("/addTreatPackageDetails", authenticate, addTreatPackageDetails);
+router.get("/getTreatList/:branch/:tpid", authenticate, getTreatList);
+router.put(
+  "/updateTreatSitting/:branch/:tsid",
+  authenticate,
+  updateTreatSitting
+);
+router.put(
+  "/updateTreatSittingStatus/:branch/:tsid",
+  authenticate,
+  updateTreatSittingStatus
+);
+router.get("/get-branch-holidays/:branch", authenticate, getBranchHoliday);
+router.get("/get-branch-detail/:branch", authenticate, getBranchDetail);
+router.get("/get-treatments", authenticate, getTreatment);
+router.get(
+  "/get-doctors-with-leave/:branch",
+  authenticate,
+  getDoctorDataByBranchWithLeave
+);
+router.get(
+  "/getAppointmentsViaDocId/:branch/:did",
+  authenticate,
+  getAppointmentsViaDocId
+);
+router.post("/bookSittingAppointment", authenticate, bookSittingAppointment);
+router.put(
+  "/updateTreatSuggestion/:tsid/:branch",
+  authenticate,
+  updateTreatSuggestion
+);
+router.delete(
+  "/deleteTreatSuggestion/:tsid/:branch",
+  authenticate,
+  deleteTreatSuggestion
+);
+router.get("/getFilteredTreat/:tpid/:branch", authenticate, getFilteredTreat);
+router.get("/getExaminedataById/:tpid", authenticate, getExaminedataById);
 router.get(
   "/getExaminedataByIdandexamine/:tsid/:tpid",
+  authenticate,
   getExaminedataByIdandexamine
 );
 
 router.get(
   "/getExaminedataByIdandexamineAfterSitOne/:tsid/:tpid",
+  authenticate,
   getExaminedataByIdandexamineAfterSitOne
 );
 
-router.get("/getProcedureList", getProcedureList);
+router.get("/getProcedureList", authenticate, getProcedureList);
 router.put(
   "/updateSecurityAmountAfterPayment/:tp_id",
+  authenticate,
   updateSecurityAmountAfterPayment
 );
 
 router.put(
   "/updateRecSecAmountAfterPayment/:tpid",
+  authenticate,
   updateRecSecAmountAfterPayment
 );
 
 router.get(
   "/getTreatmentDetailsViaSitting/:branch/:tpid/:sitting",
+  authenticate,
   getTreatmentDetailsViaSitting
 );
 
 router.get(
   "/getTreatmentDetailsViaTpid/:tpid/:branch",
+  authenticate,
   getTreatmentDetailsViaTpid
 );
 router.get(
   "/getTreatmentDataViaBranchAndTpid/:tpid/:branch",
+  authenticate,
   getTreatmentDataViaBranchAndTpid
 );
 
 //patient bill via tpid
-router.post("/generateFinalBillwithTpid", generateFinalBillwithTpid);
-router.get("/getBranchDetails/:branch", getBranchDetails);
-router.get("/billDetailsViaTpid/:tpid", billDetailsViaTpid);
-router.get("/getAttendancebyempId/:branch/:employee_ID", getAttendancebyempId);
-router.get("/get-leaves/:branch/:employee_Id", getLeaves);
+router.post(
+  "/generateFinalBillwithTpid",
+  authenticate,
+  generateFinalBillwithTpid
+);
+router.get("/getBranchDetails/:branch", authenticate, getBranchDetails);
+router.get("/billDetailsViaTpid/:tpid", authenticate, billDetailsViaTpid);
+router.get(
+  "/getAttendancebyempId/:branch/:employee_ID",
+  authenticate,
+  getAttendancebyempId
+);
+router.get("/get-leaves/:branch/:employee_Id", authenticate, getLeaves);
 router.get(
   "/getTodayAttendance/:branch/:employee_ID/:date",
+  authenticate,
   getTodayAttendance
 );
-router.post("/markAttendanceLogin", MarkAttendanceLogin);
-router.put("/markAttendanceLogout", MarkAttendanceLogout);
-router.post("/apply-leave", applyLeave);
+router.post("/markAttendanceLogin", authenticate, MarkAttendanceLogin);
+router.put("/markAttendanceLogout", authenticate, MarkAttendanceLogout);
+router.post("/apply-leave", authenticate, applyLeave);
 router.get(
   "/getSecurityAmountDataByTPUHID/:tpid",
+  authenticate,
   getSecurityAmountDataByTPUHID
 );
 router.get(
   "/getPatientBillsAndSecurityAmountByBranch/:branch/:tpid",
+  authenticate,
   getPatientBillsAndSecurityAmountByBranch
 );
 
 router.put(
   "/updateRemainingSecurityAmount/:tpid",
+  authenticate,
   updateRemainingSecurityAmount
 );
 
-router.put("/makeBillPayment/:tpid/:branch", makeBillPayment);
-router.post("/sendOtp", sendOtp);
-router.post("/verifyOtp", verifyOtp);
-router.put("/resetPassword", resetPassword);
-router.get("/getTreatmentViaUhid/:branch/:uhid", getTreatmentViaUhid);
-router.get("/getExaminationViaUhid/:branch/:uhid", getExaminationViaUhid);
-router.get("/getPrescriptionViaUhid/:branch/:uhid", getPrescriptionViaUhid);
-router.put("/updateTreatmentStatus/:branch/:tpid", updateTreatmentStatus);
+router.put("/makeBillPayment/:tpid/:branch", authenticate, makeBillPayment);
+router.post("/sendOtp", authenticate, sendOtp);
+router.post("/verifyOtp", authenticate, verifyOtp);
+router.put("/resetPassword", authenticate, resetPassword);
+router.get(
+  "/getTreatmentViaUhid/:branch/:uhid",
+  authenticate,
+  getTreatmentViaUhid
+);
+router.get(
+  "/getExaminationViaUhid/:branch/:uhid",
+  authenticate,
+  getExaminationViaUhid
+);
+router.get(
+  "/getPrescriptionViaUhid/:branch/:uhid",
+  authenticate,
+  getPrescriptionViaUhid
+);
+router.put(
+  "/updateTreatmentStatus/:branch/:tpid",
+  authenticate,
+  updateTreatmentStatus
+);
 // router.get('/getAllAppointmentByPatientId/:branch/:patientId',getAllAppointmentByPatientuhiId)
-router.get("/getTreatPackageViaTpidUhid/:branch", getTreatPackageViaTpidUhid);
+router.get(
+  "/getTreatPackageViaTpidUhid/:branch",
+  authenticate,
+  getTreatPackageViaTpidUhid
+);
 router.put(
   "/updateSecurityAmountForRemainingAmount/:said",
+  authenticate,
   updateSecurityAmountForRemainingAmount
 );
 
 router.put(
   "/updateAppointmentStatusAfterTreat/:appoint_id",
+  authenticate,
   updateAppointmentStatusAfterTreat
 );
 
-router.post("/insertLab", insertLab);
-router.get("/lab-details", getLabDetails);
-router.get("/getLabTest", getLabTest);
-router.get("/getLab", getLab);
-router.get("/getPatientLabTestByPatientId/:pid", getPatientLabTestByPatientId);
-// router.get("/branches/:branch_name", getBranchDetails);
-router.get("/getOnlyExaminv/:tpid/:examId", getOnlyExaminv);
+router.post("/insertLab", authenticate, insertLab);
+router.get("/lab-details", authenticate, getLabDetails);
+router.get("/getLabTest", authenticate, getLabTest);
+router.get("/getLab", authenticate, getLab);
+router.get(
+  "/getPatientLabTestByPatientId/:pid",
+  authenticate,
+  getPatientLabTestByPatientId
+);
+// router.get("/branches/:branch_name", authenticate, getBranchDetails);
+router.get("/getOnlyExaminv/:tpid/:examId", authenticate, getOnlyExaminv);
 
 module.exports = { authRoutes: router };

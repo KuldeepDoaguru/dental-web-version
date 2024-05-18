@@ -64,9 +64,11 @@ const TreatmentForm = () => {
 
   const getTreatmentList = async () => {
     try {
-      let endpoint = `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataByIdandexamine/${tsid}/${tp_id}`;
+      let endpoint;
       if (sitCheck.length > 0) {
         endpoint = `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataByIdandexamineAfterSitOne/${tsid}/${tp_id}`;
+      } else {
+        endpoint = `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataByIdandexamine/${tsid}/${tp_id}`;
       }
 
       const { data } = await axios.get(endpoint);
@@ -77,6 +79,10 @@ const TreatmentForm = () => {
       console.log("Error fetching treatments:", error);
     }
   };
+
+  useEffect(() => {
+    getTreatmentList();
+  }, [sitCheck.length]);
 
   console.log(treatments);
   const lastIndex = treatments.length - 1;
@@ -373,7 +379,7 @@ const TreatmentForm = () => {
 
         treatmentStatsUpdate();
         getPatientDetail();
-        getTreatmentList();
+
         navigate(
           `/TPrescriptionDash/${tsid}/${appoint_id}/${tp_id}/${lastTreatment?.current_sitting}/${treatment}`
         );
@@ -415,7 +421,6 @@ const TreatmentForm = () => {
 
   useEffect(() => {
     getPatientDetail();
-    getTreatmentList();
     getDentalTreatData();
   }, []);
 
@@ -551,6 +556,9 @@ const TreatmentForm = () => {
 
   console.log(showDirect, partPay);
   console.log(lastTreatment?.net_amount);
+
+  console.log(lastTreatment?.current_sitting);
+
   return (
     <>
       <Wrapper>

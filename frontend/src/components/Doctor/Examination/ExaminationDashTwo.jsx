@@ -13,6 +13,7 @@ const ExaminationDashTwo = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
+  const token = user.currentUser.token;
   console.log(branch);
   console.log(user.currentUser.branch_name);
   const [dcat, setDcat] = useState("");
@@ -38,6 +39,12 @@ const ExaminationDashTwo = () => {
           description: `Selected Category ${cat}`,
           branch: branch,
           patientId: uhid,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -51,7 +58,13 @@ const ExaminationDashTwo = () => {
     try {
       const { data } = await axios.post(
         "https://dentalgurudoctor.doaguru.com/api/doctor/addTreatPackageDetails",
-        updatedTreatData
+        updatedTreatData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data.result);
       cogoToast.success("treatment started added");

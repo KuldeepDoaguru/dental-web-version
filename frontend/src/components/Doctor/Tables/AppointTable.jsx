@@ -22,9 +22,11 @@ const AppointTable = () => {
   const dispatch = useDispatch();
   const { refreshTable } = useSelector((state) => state.user);
   const user = useSelector((state) => state.user);
+  console.log(user.currentUser.token);
   const doctor = user.currentUser.employee_name;
   const doctorId = user.currentUser.employee_ID;
   const branch = user.currentUser.branch_name;
+  const token = user.currentUser.token;
   // console.log(branch);
   // const [selectedActions, setSelectedActions] = useState({});
 
@@ -37,7 +39,13 @@ const AppointTable = () => {
   const fetchAppointments = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsTreatSugg/${doctorId}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsTreatSugg/${doctorId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setAppointments(data);
     } catch (error) {
@@ -94,6 +102,12 @@ const AppointTable = () => {
           description: "Start Examintion",
           branch: branch,
           patientId: uhid,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       // console.log(response);
@@ -111,6 +125,12 @@ const AppointTable = () => {
           description: "Cancel Treatment",
           branch: branch,
           patientId: uhid,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       // console.log(response);
@@ -122,7 +142,13 @@ const AppointTable = () => {
   const getTreatPackageData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPackageViaTpidUhid/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPackageViaTpidUhid/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setTreatData(data);
     } catch (error) {
@@ -174,7 +200,13 @@ const AppointTable = () => {
 
       await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/upDateAppointmentStatus`,
-        requestBody
+        requestBody,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (action === "in treatment") {
@@ -192,7 +224,13 @@ const AppointTable = () => {
       }
 
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/appointtreatSitting?date=${selectedDate}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/appointtreatSitting?date=${selectedDate}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setAppointments(res.data.result);
       setFilterTableData(res.data.result);
@@ -201,6 +239,8 @@ const AppointTable = () => {
       // console.error("Error updating appointment status:", error.message);
     }
   };
+
+  console.log(filteredData);
 
   return (
     <Wrapper>
@@ -446,13 +486,8 @@ const AppointTable = () => {
                                 )}
                               </td>
                               <td>
-                                {/* {item.treatment_names && item.treatment_names?.split(", ") > 0 {
-    for (let i = 0; i < Math.min(treatments.length, maxTreatments); i++) {
-        {item.treatment_names?.split(", ")[0]} <br />
-    }
-}} */}
                                 <small>
-                                  {item.treatment_names !== null
+                                  {item.treatment_provided !== "OPD"
                                     ? item.treatment_names
                                     : item.treatment_provided}
                                 </small>
@@ -469,14 +504,29 @@ const AppointTable = () => {
                               <td>{item.appointment_status}</td>
                               <td>
                                 <div className="dropdown">
-                                  <button
-                                    className="btn btn-secondary dropdown-toggle"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                  >
-                                    Action
-                                  </button>
+                                  {item.appointment_status === "Complete" ||
+                                  item.appointment_status === "Check Out" ||
+                                  item.appointment_status === "Appoint" ? (
+                                    <button
+                                      className="btn btn-secondary dropdown-toggle"
+                                      type="button"
+                                      disabled
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      Action
+                                    </button>
+                                  ) : (
+                                    <button
+                                      className="btn btn-secondary dropdown-toggle"
+                                      type="button"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      Action
+                                    </button>
+                                  )}
+
                                   {/* Option 1 */}
                                   <ul className="dropdown-menu">
                                     {item.appointment_status !== "Complete" &&

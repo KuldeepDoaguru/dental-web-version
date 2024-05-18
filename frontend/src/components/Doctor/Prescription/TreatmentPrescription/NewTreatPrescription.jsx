@@ -268,7 +268,7 @@ const NewTreatPrescription = () => {
   const getTreatmentSuggestAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentData/${id}/${tpid}/${branch}/${sitting}/${treatment}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentData/${appoint_id}/${tpid}/${branch}/${sitting}/${treatment}`
       );
       setGetTreatSug(data.data);
       console.log(data);

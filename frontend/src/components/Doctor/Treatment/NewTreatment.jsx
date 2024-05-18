@@ -219,7 +219,7 @@ const NewTreatment = () => {
                         <td>{item.on_examination}</td>
                         <td>{item.treatment_status}</td>
                         <td>
-                          {item.treatment_status === "complete" ? (
+                          {item.treatment_status === "completed" ? (
                             <button className="btn btn-success" disabled>
                               <FaHandHoldingMedical size={25} />
                             </button>

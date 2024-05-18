@@ -264,27 +264,32 @@ const ViewTreatPrescription = () => {
                   ))}
                 </table>
               </div>
-              <div className="diagnosis">
-                <p className="text-start fs-4 fw-bold">Lab Test</p>
-                <table className="table table-bordered border">
-                  <thead>
-                    <tr>
-                      <th>Test Name</th>
-                      <th>Test</th>
-                    </tr>
-                  </thead>
-                  {getLabData?.map((item, index) => (
-                    <tbody>
-                      <React.Fragment>
+              {getLabData.length > 0 ? (
+                <>
+                  <div className="diagnosis">
+                    <p className="text-start fs-4 fw-bold">Lab Test</p>
+                    <table className="table table-bordered border">
+                      <thead>
                         <tr>
-                          <td>{item.lab_name}</td>
-                          <td>{item.test}</td>
+                          <th>Test Name</th>
+                          <th>Test</th>
                         </tr>
-                      </React.Fragment>
-                    </tbody>
-                  ))}
-                </table>
-              </div>
+                      </thead>
+                      {getLabData?.map((item, index) => (
+                        <tbody>
+                          <React.Fragment>
+                            <tr>
+                              <td>{item.lab_name}</td>
+                              <td>{item.test}</td>
+                            </tr>
+                          </React.Fragment>
+                        </tbody>
+                      ))}
+                    </table>
+                  </div>
+                </>
+              ) : null}
+
               <div className="Treatment">
                 <p className="text-start fs-4 fw-bold">Treatment Procedure</p>
                 <table className="table table-bordered border">
@@ -297,6 +302,7 @@ const ViewTreatPrescription = () => {
                       <th>Cst * Qty</th>
                       <th>Disc %</th>
                       <th>Final Cost</th>
+                      <th>Sitting Paid Amount</th>
                       <th>Note</th>
                     </tr>
                   </thead>
@@ -311,6 +317,7 @@ const ViewTreatPrescription = () => {
                           <td>{item.total_amt}</td>
                           <td>{item.disc_amt}</td>
                           <td>{item.net_amount}</td>
+                          <td>{item.paid_amount}</td>
                           <td>{item.note}</td>
                         </tr>
                       </React.Fragment>
@@ -318,33 +325,39 @@ const ViewTreatPrescription = () => {
                   ))}
                 </table>
               </div>
-              <div className="Medicine">
-                <p className="text-start fs-4 fw-bold">Medicine Details</p>
-                <table className="table table-bordered border">
-                  <thead>
-                    <tr>
-                      <th>Medicine Name</th>
-                      <th>Dosage</th>
-                      <th>Frequency</th>
-                      <th>Duration</th>
-                      <th>Note</th>
-                    </tr>
-                  </thead>
-                  {getTreatMedicine?.map((item, index) => (
-                    <tbody>
-                      <React.Fragment>
+
+              {getTreatMedicine.length > 0 ? (
+                <>
+                  <div className="Medicine">
+                    <p className="text-start fs-4 fw-bold">Medicine Details</p>
+                    <table className="table table-bordered border">
+                      <thead>
                         <tr>
-                          <td>{item.medicine_name}</td>
-                          <td>{item.dosage}</td>
-                          <td>{item.frequency}</td>
-                          <td>{item.duration}</td>
-                          <td>{item.note}</td>
+                          <th>Medicine Name</th>
+                          <th>Dosage</th>
+                          <th>Frequency</th>
+                          <th>Duration</th>
+                          <th>Note</th>
                         </tr>
-                      </React.Fragment>
-                    </tbody>
-                  ))}
-                </table>
-              </div>
+                      </thead>
+                      {getTreatMedicine?.map((item, index) => (
+                        <tbody>
+                          <React.Fragment>
+                            <tr>
+                              <td>{item.medicine_name}</td>
+                              <td>{item.dosage}</td>
+                              <td>{item.frequency}</td>
+                              <td>{item.duration}</td>
+                              <td>{item.note}</td>
+                            </tr>
+                          </React.Fragment>
+                        </tbody>
+                      ))}
+                    </table>
+                  </div>
+                </>
+              ) : null}
+
               <div className="sign-seal">
                 <div>
                   <h4>Doctor's signature</h4>

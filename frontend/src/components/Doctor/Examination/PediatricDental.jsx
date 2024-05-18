@@ -223,6 +223,7 @@ const PediatricDentalTest = ({ tpid }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
+  const token = user.currentUser.token;
   console.log(branch);
   const navigate = useNavigate();
 
@@ -698,6 +699,12 @@ const PediatricDentalTest = ({ tpid }) => {
           description: "Add Teeth Pediatric DentalX",
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -710,7 +717,13 @@ const PediatricDentalTest = ({ tpid }) => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
@@ -753,7 +766,13 @@ const PediatricDentalTest = ({ tpid }) => {
     try {
       const response = await axios.post(
         "https://dentalgurudoctor.doaguru.com/api/doctor/dentalPediatric",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       cogoToast.success("data saved");

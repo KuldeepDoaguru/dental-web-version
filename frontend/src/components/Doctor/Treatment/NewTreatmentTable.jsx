@@ -181,11 +181,14 @@ const NewTreatmentTable = () => {
   console.log(getExamTeeth);
 
   console.log(treatmentData);
-  const filterTreatmentStats = getExamTeeth?.filter((item) => {
-    if (item.treatment_status === "ongoing") {
-      return true;
-    }
-  });
+  const filterTreatmentStats =
+    getExamTeeth?.every((item) => item.treatment_status === "pending") ||
+    (getExamTeeth?.some((item) => item.treatment_status === "completed") &&
+      getExamTeeth?.every(
+        (item) =>
+          item.treatment_status === "pending" ||
+          item.treatment_status === "completed"
+      ));
 
   console.log(filterTreatmentStats);
 
@@ -211,6 +214,7 @@ const NewTreatmentTable = () => {
                 <th>Cost * Qty</th>
                 <th>Discount %</th>
                 <th>Final Cost</th>
+                <th>Sitting Paid Amount</th>
                 <th>Note</th>
               </tr>
             </thead>
@@ -225,6 +229,7 @@ const NewTreatmentTable = () => {
                   <td>{item.cost_amt}</td>
                   <td>{item.disc_amt}</td>
                   <td>{item.net_amount}</td>
+                  <td>{item.paid_amount}</td>
                   <td>{item.note}</td>
                   {/* <td>
                     <button
@@ -267,7 +272,7 @@ const NewTreatmentTable = () => {
             </tbody>
           </table>
           <div className="text-center">
-            {filterTreatmentStats.length > 0 ? (
+            {filterTreatmentStats ? (
               <button className="btn btn-info fs-5 text-light" disabled>
                 Save & Continue <FaLocationArrow size={25} />
               </button>

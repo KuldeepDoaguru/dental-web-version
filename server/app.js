@@ -30,7 +30,16 @@ cron.schedule('0 8 * * *', () => {
   scheduled: true,
   timezone: "Asia/Kolkata"
 });
-zipLogs();
+
+
+// Schedule the cron job to log the zip codes
+// Schedule the task to run daily
+// This will run at 00:00 every day
+
+cron.schedule("0 0 * * *", () => {
+  zipLogs();
+});
+
 // run listen
 app.listen(PORT, () => {
   console.log(`Server Running on port ${PORT}`);

@@ -80,8 +80,9 @@ const zipLogs = async () => {
 
 // Schedule the task to run daily
 // This will run at 00:00 every day
-cron.schedule("0 0 * * *", () => {
-  zipLogs();
-});
+
+// cron.schedule("0 0 * * *", () => {
+//   zipLogs();
+// });
 
 module.exports = { zipLogs };

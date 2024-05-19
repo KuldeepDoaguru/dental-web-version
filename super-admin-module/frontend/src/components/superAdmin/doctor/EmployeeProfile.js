@@ -554,10 +554,11 @@ const EmployeeProfile = () => {
                         aria-label="Default select example"
                         value={inEmpData.status}
                         onChange={handleInputChange}
+
                       >
                         <option value="">select-status</option>
                         <option value="onboard">Onboard</option>
-                        <option value="approved">Approved</option>
+                        <option value="Approved">Approved</option>
                         <option value="pending">Pending</option>
                         <option value="rejected">Rejected</option>
                         <option value="hold">Hold</option>

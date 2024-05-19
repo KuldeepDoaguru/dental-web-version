@@ -37,12 +37,13 @@ const PatientStatisticChart = () => {
         setAppointmentList(response.data);
       } catch (error) {
         console.log(error);
+        
       }
     };
 
     getAppointList();
-  }, [user.branch_name]);
-
+  }, [branch.name]);
+  
   const getDate = new Date();
   const year = getDate.getFullYear();
   const month = String(getDate.getMonth() + 1).padStart(2, "0");
@@ -105,7 +106,7 @@ const PatientStatisticChart = () => {
               <XAxis
                 dataKey="date"
                 tick={{
-                  fontSize: 12,
+                  fontSize: 0,
                   transform: "translate(-10,0)",
                   dy: 5,
                   fill: "#666",

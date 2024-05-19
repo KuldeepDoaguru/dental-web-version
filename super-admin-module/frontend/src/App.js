@@ -137,10 +137,10 @@ const App = () => {
           path="/bill_section"
           element={user.id === null ? <UniversalLogin /> : <AllBills />}
         />
-        <Route
+        {/* <Route
           path="/inventory"
           element={user.id === null ? <UniversalLogin /> : <Inventory />}
-        />
+        /> */}
         <Route
           path="/add-invetory"
           element={user.id === null ? <UniversalLogin /> : <AddInventory />}

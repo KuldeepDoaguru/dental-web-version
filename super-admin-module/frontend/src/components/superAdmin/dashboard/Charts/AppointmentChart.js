@@ -99,7 +99,7 @@ const AppointmentChart = () => {
             <XAxis
               dataKey="date"
               tick={{
-                fontSize: 12,
+                fontSize: 0,
                 transform: "translate(-10,0)",
                 dy: 5,
                 fill: "#666",

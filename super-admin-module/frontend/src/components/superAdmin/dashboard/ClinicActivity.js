@@ -24,7 +24,7 @@ const ClinicActivity = () => {
   const handleCalender = () => {
     setShowCalender(!showCalender);
   };
-
+console.log(appointmentList);
   const getAppointList = async () => {
     // console.log(branch.name);
     try {

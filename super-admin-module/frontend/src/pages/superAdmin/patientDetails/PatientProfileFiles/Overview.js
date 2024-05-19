@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
+
 const Overview = () => {
   const dispatch = useDispatch();
   const { pid } = useParams();
   const user = useSelector((state) => state.user);
+
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
@@ -27,7 +29,13 @@ const Overview = () => {
   const getPresDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescriptionViaUhid/${branch.name}/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescriptionViaUhid/${branch.name}/${pid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setPresData(data);
     } catch (error) {
@@ -38,7 +46,13 @@ const Overview = () => {
   const getPendingBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientBillByBranchAndId/${branch.name}/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientBillByBranchAndId/${branch.name}/${pid}` , 
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setPatPendingBill(data);
@@ -52,7 +66,13 @@ const Overview = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentByBranchAndId/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getAppointmentByBranchAndId/${pid}` , 
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setPatAppointDetails(data);
@@ -64,7 +84,13 @@ const Overview = () => {
   const getExamineDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getExaminationViaUhid/${branch.name}/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getExaminationViaUhid/${branch.name}/${pid}` ,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setExmData(data);
     } catch (error) {
@@ -87,7 +113,13 @@ const Overview = () => {
   const fetchLatestTreatPatientData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getTreatmentViaUhid/${branch.name}/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getTreatmentViaUhid/${branch.name}/${pid}` ,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setTreatData(data);
@@ -173,7 +205,13 @@ const Overview = () => {
   const getPatBills = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/get-patientBill-data/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/get-patientBill-data/${pid}` , 
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setPatFinalBills(data);
     } catch (error) {

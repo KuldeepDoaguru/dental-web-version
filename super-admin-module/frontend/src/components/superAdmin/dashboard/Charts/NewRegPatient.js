@@ -91,7 +91,7 @@ const NewRegPatient = () => {
             margin={{
               top: 5,
               right: 10,
-              left: -40,
+              left: 0,
               bottom: 5,
             }}
           >
@@ -99,7 +99,7 @@ const NewRegPatient = () => {
             <XAxis
               dataKey="date"
               tick={{
-                fontSize: 12,
+                fontSize: 0,
                 transform: "translate(-10,0)",
                 dy: 5,
                 fill: "#666",

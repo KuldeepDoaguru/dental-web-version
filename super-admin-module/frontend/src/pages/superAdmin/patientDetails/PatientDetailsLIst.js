@@ -112,7 +112,7 @@ const PatientDetailsLIst = () => {
                             ) {
                               return val;
                             }
-                          })
+                          }).reverse()
                           .map((item) => (
                             <>
                               <tr className="table-row">

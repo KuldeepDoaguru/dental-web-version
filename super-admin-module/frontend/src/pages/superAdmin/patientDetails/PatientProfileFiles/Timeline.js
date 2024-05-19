@@ -17,7 +17,13 @@ const Timeline = () => {
   const getTimelineDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientTimeline/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientTimeline/${pid}`, 
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setPatTimeline(data);

@@ -87,7 +87,7 @@ const Header = () => {
       <div>
         <nav className="navbar navbar-expand-lg ">
           <div className="container-fluid">
-            <Link to="/">
+            <Link to="/superadmin-dashboard">
               <img
                 src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1707404036/dental%20guru/dentalguru_v1g7k0.png"
                 alt="Logo"
@@ -99,7 +99,7 @@ const Header = () => {
             <li style={{ listStyle: "none" }}>
               <Link
                 className="nav-link active text-white mt-2 mx-2 fs-5"
-                to="/"
+                to="/superadmin-dashboard"
               >
                 Dental Guru
               </Link>

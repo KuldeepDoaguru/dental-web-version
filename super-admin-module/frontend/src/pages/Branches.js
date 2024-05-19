@@ -17,10 +17,23 @@ const Branches = () => {
   const user = useSelector((state) => state.user);
   const [branchList, setBranchList] = useState([]);
   const [upData, setUpData] = useState({
-    name: "",
-    address: "",
-    contact: "",
+    name: selectedItem.branch_name,
+    address: selectedItem.branch_address,
+    contact: selectedItem.branch_contact,
   });
+
+    // Create references for file input fields
+    const branchHeadImgRef = useRef(null);
+    const branchFootImgRef = useRef(null);
+  useEffect(()=>{
+    setUpData({
+      name: selectedItem.branch_name,
+      address: selectedItem.branch_address,
+      contact: selectedItem.branch_contact,
+    })
+  },[selectedItem])
+
+  console.log(selectedItem.branch_name);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -30,15 +43,17 @@ const Branches = () => {
     });
   };
 
-  const openUpdatePopup = (id) => {
-    setSelectedItem(id);
+  const openUpdatePopup = (id, item) => {
+    setSelectedItem(item);
+    console.log(item);
     setShowPopup(true);
+    
   };
 
   console.log(selectedItem);
 
   console.log(upData, branchHeadImg);
-  console.log(branchFootImg.file);
+  // console.log(branchFootImg.file);
 
   const updateBranchDetails = async (e, id) => {
     console.log(id);
@@ -52,6 +67,7 @@ const Branches = () => {
 
       formData.append("head_img", branchHeadImg.file);
       formData.append("foot_img", branchFootImg.file);
+      
       console.log(upData, branchHeadImg, branchFootImg);
 
       const response = await axios.put(
@@ -66,9 +82,19 @@ const Branches = () => {
       );
 
       console.log(response);
+      setBranchHeadImg(null);
+      setBranchFootImg(null);
       getBranchList();
       setShowPopup(false);
       cogoToast.success("branch details updated successfully");
+      setUpData({
+        name: "",
+        address: "",
+        contact: "",
+      })
+     // Clear the file input fields
+     if (branchHeadImgRef.current) branchHeadImgRef.current.value = "";
+     if (branchFootImgRef.current) branchFootImgRef.current.value = "";
     } catch (error) {
       console.log(error);
     }
@@ -76,6 +102,8 @@ const Branches = () => {
 
   const closeUpdatePopup = () => {
     setShowPopup(false);
+  
+
   };
 
   const getBranchList = async () => {
@@ -157,7 +185,7 @@ const Branches = () => {
                         <h2>Update Branch Details</h2>
                         <form
                           className="d-flex flex-column"
-                          onSubmit={(e) => updateBranchDetails(e, selectedItem)}
+                          onSubmit={(e) => updateBranchDetails(e, selectedItem.branch_id)}
                         >
                           <div className="mb-3">
                             <label for="exampleInputEmail1" class="form-label">
@@ -167,9 +195,10 @@ const Branches = () => {
                               type="text"
                               name="name"
                               class="form-control"
-                              placeholder="branch name"
+                              placeholder={selectedItem.branch_name}
                               value={upData.name}
                               onChange={handleChange}
+                              required
                             />
                           </div>
                           <div className="mb-3">
@@ -177,11 +206,12 @@ const Branches = () => {
                               Branch Address
                             </label>
                             <input
-                              placeholder="update branch address"
+                              placeholder={selectedItem.branch_address}
                               class="form-control"
                               name="address"
                               value={upData.address}
                               onChange={handleChange}
+                              required
                             />
                           </div>
                           <div className="mb-3">
@@ -191,11 +221,12 @@ const Branches = () => {
                             <input
                               type="text"
                               className="form-control"
-                              placeholder="update branch contact number"
+                              placeholder={selectedItem.branch_contact}
                               name="contact"
                               value={upData.contact}
                               maxLength={10}
                               onChange={handleChange}
+                              required
                             />
                           </div>
                           <div className="d-flex">
@@ -212,14 +243,16 @@ const Branches = () => {
                                 placeholder="available stock"
                                 accept=".pdf, .jpg, .jpeg, .png"
                                 name="branchHeadImg"
+                                ref={branchHeadImgRef} // Attach ref to file input
                                 onChange={handleBranchHeadPicture}
+                               required
                               />
                             </div>
                             <div className="mx-2">
                               {branchHeadImg && (
                                 <img
                                   src={branchHeadImg.imageUrl}
-                                  alt="profile"
+                                  alt="Header"
                                   className="imgData"
                                 />
                               )}
@@ -241,13 +274,15 @@ const Branches = () => {
                                 accept=".pdf, .jpg, .jpeg, .png"
                                 name="branchFootImg"
                                 onChange={handleBranchFootPicture}
+                                ref={branchFootImgRef} // Attach ref to file input
+                                required
                               />
                             </div>
                             <div className="mx-2">
                               {branchFootImg && (
                                 <img
                                   src={branchFootImg.imageUrl}
-                                  alt="profile"
+                                  alt="Footer"
                                   className="imgData"
                                 />
                               )}
@@ -370,7 +405,7 @@ const Branches = () => {
                                   style={{ width: "10%" }}
                                 >
                                   <div className="smallImg">
-                                    <img src={item.foot_img} alt="header" />
+                                    <img src={item.foot_img} alt="footer" />
                                   </div>
                                 </td>
                                 <td
@@ -380,7 +415,7 @@ const Branches = () => {
                                   <button
                                     className="btn btn-warning"
                                     onClick={() =>
-                                      openUpdatePopup(item.branch_id)
+                                      openUpdatePopup(item.branch_id, item)
                                     }
                                   >
                                     Edit Details

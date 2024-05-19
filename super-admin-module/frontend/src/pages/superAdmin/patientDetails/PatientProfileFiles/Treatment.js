@@ -18,7 +18,13 @@ const Treatment = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getTreatmentViaUhid/${branch.name}/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getTreatmentViaUhid/${branch.name}/${pid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       console.log(data);
       setPatAppointDetails(data);

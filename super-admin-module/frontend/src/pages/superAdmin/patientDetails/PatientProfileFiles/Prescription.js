@@ -17,7 +17,13 @@ const Prescription = () => {
   const getPresDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescriptionViaUhid/${branch.name}/${pid}`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPrescriptionViaUhid/${branch.name}/${pid}` , 
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setPresData(data);
     } catch (error) {

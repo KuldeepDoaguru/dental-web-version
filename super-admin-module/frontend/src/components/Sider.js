@@ -103,7 +103,7 @@ const Sider = () => {
               </Link>
             </li>
             <hr />
-            <li>
+            {/* <li>
               <Link
                 to="/inventory"
                 className={`link-div ${getSidebarClass("/inventory")}`}
@@ -120,8 +120,8 @@ const Sider = () => {
                   </h3>
                 </div>
               </Link>
-            </li>
-            <hr />
+            </li> */}
+            {/* <hr /> */}
             <li>
               <Link
                 to="/patient-list"

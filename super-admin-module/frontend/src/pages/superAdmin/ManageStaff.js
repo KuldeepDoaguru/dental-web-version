@@ -41,6 +41,10 @@ const ManageStaff = () => {
     password: "",
     empRole: [],
     availability: "",
+    type_of: "",
+      experience: "",
+      language: "",
+      speciality: "",
   });
 
   const handleEmpProfilePicture = (e) => {
@@ -161,6 +165,8 @@ const ManageStaff = () => {
       console.log(error);
     }
   };
+
+  console.log(inEmpData);
   return (
     <>
       <Container>
@@ -327,6 +333,8 @@ const ManageStaff = () => {
                           id="exampleFormControlInput1"
                           placeholder="Employee Mobile"
                           name="empMobile"
+                          maxLength={10}
+                          minLength={10}
                           required
                           value={inEmpData.empMobile}
                           onChange={handleInputChange}
@@ -365,7 +373,7 @@ const ManageStaff = () => {
                           Employee Email
                         </label>
                         <input
-                          type="text"
+                          type="email"
                           class="form-control"
                           id="exampleFormControlInput1"
                           placeholder="Employee Email"
@@ -643,6 +651,7 @@ const ManageStaff = () => {
                               Morning Shift Start Time
                             </label>
                             <input
+                              required
                               type="time"
                               class="form-control"
                               id="exampleFormControlInput1"
@@ -669,6 +678,7 @@ const ManageStaff = () => {
                               name="morningShiftEndTime"
                               value={inEmpData.morningShiftEndTime}
                               onChange={handleInputChange}
+                              required
                             />
                           </div>
                         </div>
@@ -688,6 +698,7 @@ const ManageStaff = () => {
                               name="eveningShiftStartTime"
                               value={inEmpData.eveningShiftStartTime}
                               onChange={handleInputChange}
+                              required
                             />
                           </div>
                         </div>
@@ -707,6 +718,7 @@ const ManageStaff = () => {
                               name="eveningShiftEndTime"
                               value={inEmpData.eveningShiftEndTime}
                               onChange={handleInputChange}
+                              required
                             />
                           </div>
                         </div>
@@ -811,6 +823,7 @@ const ManageStaff = () => {
                           required
                           onChange={handleInputChange}
                         >
+                          <option value="">--Select--</option>
                           <option value="full time">Full Time</option>
                           <option value="half time">Part Time</option>
                         </select>

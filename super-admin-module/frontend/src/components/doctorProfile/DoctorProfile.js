@@ -1,10 +1,10 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-const DoctorProfile = () => {
+const DoctorProfile = ({refresh}) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
@@ -33,9 +33,9 @@ const DoctorProfile = () => {
     }
   };
 
-  useState(() => {
+  useEffect(() => {
     getEmployeeData();
-  }, [branch]);
+  }, [branch, refresh]);
 
   console.log(empData);
 

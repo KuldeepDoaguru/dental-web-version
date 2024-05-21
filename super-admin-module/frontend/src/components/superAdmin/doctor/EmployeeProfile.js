@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../../Header";
 import Sider from "../../Sider";
@@ -23,6 +23,7 @@ const EmployeeProfile = () => {
   const [empData, setEmpData] = useState([]);
   const [showEditEmployee, setShowEditEmployee] = useState(false);
   const [empProfilePicture, setEmpProfilePicture] = useState(null);
+  const [refresh, setRefresh] = useState(false); // Add refresh state
   const [inEmpData, setInEmpData] = useState({
     branch: branch.name,
     empName: "",
@@ -43,6 +44,10 @@ const EmployeeProfile = () => {
     password: "",
     empRole: [],
     availability: "",
+    type_of: "",
+    experience: "",
+    language: "",
+    speciality: "",
   });
 
   const handleEmpProfilePicture = (e) => {
@@ -158,10 +163,45 @@ const EmployeeProfile = () => {
       cogoToast.success("data updated successfuly");
       closeUpdatePopup();
       getEmployeeData();
+      setRefresh(!refresh); // Toggle refresh state to re-fetch data
     } catch (error) {
       console.log(error);
     }
   };
+  const formatTime = (timeString) => {
+    if (!timeString) return "";
+    const [hours, minutes] = timeString.split(":");
+    return `${hours}:${minutes}`;
+  };
+
+  useEffect(() => {
+    setInEmpData({
+      branch: branch.name,
+      empName: empData[0]?.employee_name,
+      empMobile: empData[0]?.employee_mobile,
+      empGender: inEmpData[0]?.empGender,
+      empEmail: empData[0]?.employee_email,
+      empDesignation: empData[0]?.employee_designation,
+      empSalary: empData[0]?.salary,
+      empAddress: empData[0]?.address,
+      status: empData[0]?.employee_status,
+      morningShiftStartTime: formatTime(empData[0]?.morning_shift_start_time),
+      morningShiftEndTime: formatTime(empData[0]?.morning_shift_end_time),
+      eveningShiftStartTime: formatTime(empData[0]?.evening_shift_start_time),
+      eveningShiftEndTime: formatTime(empData[0]?.evening_shift_end_time),
+      allDayShiftStartTime:formatTime(empData[0]?.allday_shift_start_time) ,
+      allDayShiftEndTime: formatTime(empData[0]?.allday_shift_end_time),
+      working_days: empData[0]?.working_days,
+      // password: "",
+      empRole: empData[0]?.employee_role.split(",") || [],
+      availability: empData[0]?.availability,
+      type_of: empData[0]?.type_of,
+      experience: empData[0]?.experience,
+      language: empData[0]?.language,
+      speciality: empData[0]?.speciality,
+    });
+  }, [empData]);
+  console.log(formatTime(empData[0]?.allday_shift_end_time));
   return (
     <>
       <Container>
@@ -208,7 +248,7 @@ const EmployeeProfile = () => {
                     </div>
                   </div>
                   {empData[0]?.employee_designation === "doctor" ? (
-                    <>{<DoctorProfile eid={eid} />}</>
+                    <>{<DoctorProfile eid={eid} refresh={refresh}/>}</>
                   ) : (
                     <>
                       <div className="row">
@@ -433,6 +473,7 @@ const EmployeeProfile = () => {
                         name="empName"
                         value={inEmpData.empName}
                         onChange={handleInputChange}
+                        required
                       />
                     </div>
                   </div>
@@ -447,8 +488,11 @@ const EmployeeProfile = () => {
                         id="exampleFormControlInput1"
                         placeholder={empData[0]?.employee_mobile}
                         name="empMobile"
+                        minLength={10}
+                        maxLength={10}
                         value={inEmpData.empMobile}
                         onChange={handleInputChange}
+                        required
                       />
                     </div>
                   </div>
@@ -463,6 +507,7 @@ const EmployeeProfile = () => {
                         class="form-control w-100"
                         value={inEmpData.empGender}
                         onChange={handleInputChange}
+                        required
                       >
                         <option value="">select-option</option>
                         <option value="male">Male</option>
@@ -477,13 +522,14 @@ const EmployeeProfile = () => {
                         Employee Email
                       </label>
                       <input
-                        type="text"
+                        type="email"
                         class="form-control"
                         id="exampleFormControlInput1"
                         placeholder={empData[0]?.employee_email}
                         name="empEmail"
                         value={inEmpData.empEmail}
                         onChange={handleInputChange}
+                        required
                       />
                     </div>
                   </div>
@@ -499,6 +545,7 @@ const EmployeeProfile = () => {
                         aria-label="Default select example"
                         value={inEmpData.empDesignation}
                         onChange={handleInputChange}
+                        required
                       >
                         <option value="">select-designation</option>
                         <option value="admin">Admin</option>
@@ -523,6 +570,7 @@ const EmployeeProfile = () => {
                         name="empSalary"
                         value={inEmpData.empSalary}
                         onChange={handleInputChange}
+                        required
                       />
                     </div>
                   </div>
@@ -539,6 +587,7 @@ const EmployeeProfile = () => {
                         name="empAddress"
                         value={inEmpData.empAddress}
                         onChange={handleInputChange}
+                        required
                       />
                     </div>
                   </div>
@@ -554,7 +603,7 @@ const EmployeeProfile = () => {
                         aria-label="Default select example"
                         value={inEmpData.status}
                         onChange={handleInputChange}
-
+                        required
                       >
                         <option value="">select-status</option>
                         <option value="onboard">Onboard</option>
@@ -867,6 +916,7 @@ const EmployeeProfile = () => {
                         value={inEmpData.type_of}
                         class="form-control"
                         onChange={handleInputChange}
+                        required
                       >
                         <option value="full time">Full Time</option>
                         <option value="half time">Part Time</option>
@@ -878,23 +928,26 @@ const EmployeeProfile = () => {
 
               <div className="d-flex justify-content-between">
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label">
+                  {/* <label for="exampleFormControlInput1" class="form-label">
                     Employee Role
                   </label>
-                  <div class="form-check">
+                  {["admin", "receptionist", "consultant", "lab attendant", "doctor"].map(
+          (role) => (
+            <>
+                  <div class="form-check" key={role}>
                     <input
                       class="form-check-input"
                       type="checkbox"
                       id="flexCheckDefault"
                       name="admin"
-                      value={inEmpData.empRole}
+                      value={inEmpData.empRole.includes(role)}
                       onChange={handleCheckChange}
                     />
                     <label class="form-check-label" for="flexCheckDefault">
                       Admin
                     </label>
                   </div>
-                  <div class="form-check">
+                  <div class="form-check" key={role}>
                     <input
                       class="form-check-input"
                       type="checkbox"
@@ -946,6 +999,38 @@ const EmployeeProfile = () => {
                       Doctor
                     </label>
                   </div>
+                  </>
+          )} */}
+                  <label
+                    htmlFor="exampleFormControlInput1"
+                    className="form-label"
+                  >
+                    Employee Role
+                  </label>
+                  {[
+                    "admin",
+                    "receptionist",
+                    "consultant",
+                    "lab attendant",
+                    "doctor",
+                  ].map((role) => (
+                    <div className="form-check" key={role}>
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id={`flexCheck${role}`}
+                        name={role}
+                        checked={inEmpData.empRole.includes(role)}
+                        onChange={handleCheckChange}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`flexCheck${role}`}
+                      >
+                        {role.charAt(0).toUpperCase() + role.slice(1)}
+                      </label>
+                    </div>
+                  ))}
                 </div>
                 <div className="d-flex">
                   <div className="mb-3">

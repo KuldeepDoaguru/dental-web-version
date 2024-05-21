@@ -13,6 +13,8 @@ import BranchSelector from "../../../components/BranchSelector";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { utils, writeFile } from "xlsx";
+import moment from 'moment';
+
 
 const FinancialReportCard = () => {
   const navigate = useNavigate();
@@ -26,7 +28,9 @@ const FinancialReportCard = () => {
   const [earnBill, setEarnBill] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
   const [fromDate, setFromDate] = useState("");
+  const [expensesfromDate, setExpensesFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [expensestoDate, setExpensesToDate] = useState("");
   const [selectedEarn, setSelectedEarn] = useState([]);
 
   const getBillDetails = async () => {
@@ -87,7 +91,7 @@ const FinancialReportCard = () => {
   const filterForPaidBills = earnBill?.filter((item) => {
     return (
       item.payment_status === "paid" &&
-      item.payment_date_time.split("T")[0].slice(0, 7) ===
+      item.payment_date_time?.split("T")[0].slice(0, 7) ===
         formattedDate.slice(0, 7)
     );
   });
@@ -97,7 +101,7 @@ const FinancialReportCard = () => {
   //filterforexpenses
   const filterForExpenses = appointmentList?.filter((item) => {
     return (
-      item.purchase_date.split("T")[0].slice(0, 7) === formattedDate.slice(0, 7)
+      item.purchase_date?.split("T")[0].slice(0, 7) === formattedDate.slice(0, 7)
     );
   });
 
@@ -176,7 +180,7 @@ const FinancialReportCard = () => {
     try {
       const { data } = await axios.post(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadExpenseReportByTime/${branch.name}`,
-        { fromDate: fromDate, toDate: toDate },
+        { expensesfromDate: expensesfromDate, expensestoDate: expensestoDate },
         {
           headers: {
             "Content-Type": "application/json",
@@ -194,7 +198,7 @@ const FinancialReportCard = () => {
         const worksheet = utils.json_to_sheet(data);
 
         utils.book_append_sheet(workbook, worksheet, `Expense Report`);
-        writeFile(workbook, `${fromDate} - ${toDate}-expense-report.xlsx`);
+        writeFile(workbook, `${expensesfromDate} - ${expensestoDate}-expense-report.xlsx`);
         console.log(data);
       } else {
         console.error("data is not an array");
@@ -205,6 +209,7 @@ const FinancialReportCard = () => {
   };
 
   console.log(`${fromDate} - ${toDate}`);
+  console.log(`${expensesfromDate} - ${expensestoDate}`);
 
   return (
     <>
@@ -333,11 +338,19 @@ const FinancialReportCard = () => {
                           <tbody>
                             {filterForPaidBills
                               ?.filter((item) => {
+                                // const billDate =
+                                //   item.payment_date_time?.split("T")[0];
                                 const billDate =
-                                  item.payment_date_time?.split("T")[0]; // Extracting the date part
-                                if (fromDate && toDate) {
+                                moment(item.payment_date_time.split("T")[0],'YYYY-MM-DD').add(1, 'days').format('DD-MM-YYYY')
+
+
+                                  //  if (fromDate && toDate) {
+                                  // return (
+                                  //   billDate >= fromDate && billDate <= toDate
+                                  // );
+                                   if (fromDate && toDate) {
                                   return (
-                                    billDate >= fromDate && billDate <= toDate
+                                    billDate >=  moment(fromDate,'YYYY-MM-DD').format('DD-MM-YYYY')    && billDate <= moment(toDate,'YYYY-MM-DD').format('DD-MM-YYYY')
                                   );
                                 } else {
                                   return true; // If no date range is selected, show all items
@@ -348,7 +361,8 @@ const FinancialReportCard = () => {
                                   <tr>
                                     <td>{item.bill_id}</td>
                                     <td>
-                                      {item.payment_date_time.split("T")[0]}
+                                      {moment(item.payment_date_time.split("T")[0],'YYYY-MM-DD').add(1, 'days').format('DD-MM-YYYY')}
+                                      
                                     </td>
                                     <td>{item.paid_amount}</td>
                                     <td>{item.patient_name}</td>
@@ -375,7 +389,7 @@ const FinancialReportCard = () => {
                                 type="date"
                                 required
                                 className="p-1 rounded"
-                                onChange={(e) => setFromDate(e.target.value)}
+                                onChange={(e) => setExpensesFromDate(e.target.value)}
                               />
                             </div>
                             <p className="mx-2">To</p>
@@ -384,7 +398,7 @@ const FinancialReportCard = () => {
                                 type="date"
                                 required
                                 className="p-1 rounded"
-                                onChange={(e) => setToDate(e.target.value)}
+                                onChange={(e) => setExpensesToDate(e.target.value)}
                               />
                             </div>
                           </div>
@@ -413,9 +427,9 @@ const FinancialReportCard = () => {
                               ?.filter((item) => {
                                 const billDate =
                                   item.purchase_date?.split("T")[0]; // Extracting the date part
-                                if (fromDate && toDate) {
+                                if (expensesfromDate && expensestoDate) {
                                   return (
-                                    billDate >= fromDate && billDate <= toDate
+                                    billDate >= expensesfromDate && billDate <= expensestoDate
                                   );
                                 } else {
                                   return true; // If no date range is selected, show all items

@@ -13,10 +13,11 @@ import BranchSelector from "../../../components/BranchSelector";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { utils, writeFile } from "xlsx";
+// import * as XLSX from "xlsx";
 import moment from 'moment';
 
 
-const FinancialReportCard = () => {
+const FinalFinancialReport = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -32,6 +33,7 @@ const FinancialReportCard = () => {
   const [toDate, setToDate] = useState("");
   const [expensestoDate, setExpensesToDate] = useState("");
   const [selectedEarn, setSelectedEarn] = useState([]);
+  const [selectedExpen, setSelectedExpen] = useState([]);
 
   const getBillDetails = async () => {
     try {
@@ -178,41 +180,75 @@ const FinancialReportCard = () => {
     }
   };
 
-  // const downloadExpenseData = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const { data } = await axios.post(
-  //       `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadExpenseReportByTime/${branch.name}`,
-  //       { expensesfromDate: expensesfromDate, expensestoDate: expensestoDate },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${user.token}`,
-  //         },
-  //       }
-  //     );
-  //     console.log(data);
-  //     setSelectedEarn(data);
-  //     if (Array.isArray(data)) {
-  //       // Create a new workbook
-  //       const workbook = utils.book_new();
 
-  //       // Convert the report data to worksheet format
-  //       const worksheet = utils.json_to_sheet(data);
 
-  //       utils.book_append_sheet(workbook, worksheet, `Expense Report`);
-  //       writeFile(workbook, `${expensesfromDate} - ${expensestoDate}-expense-report.xlsx`);
-  //       console.log(data);
-  //     } else {
-  //       console.error("data is not an array");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const downloadExpenseData = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.post(
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadExpenseReportByTime/${branch.name}`,
+        { expensesfromDate: expensesfromDate, expensestoDate: expensestoDate },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+      console.log(data);
+      setSelectedExpen(data);
+      if (Array.isArray(data)) {
+        // Create a new workbook
+        const workbook = utils.book_new();
+
+        // Convert the report data to worksheet format
+        const worksheet = utils.json_to_sheet(data);
+
+        utils.book_append_sheet(workbook, worksheet, `Expense Report`);
+        writeFile(workbook, `${expensesfromDate} - ${expensestoDate}-expense-report.xlsx`);
+        console.log(data);
+      } else {
+        console.error("data is not an array");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+//   const downloadExpenseData = async (e) => {
+//     e.preventDefault();
+//     if (!expensesfromDate || !expensestoDate) {
+//       alert("Please select Date");
+//       return;
+//     }
+//     const filteredData = vlist.filter((item) => {
+//       const date = moment(item.voucher_date).format("YYYY-MM-DD"); 
+//       return moment(date).isBetween(fromDate, toDate, null, "[]");
+//     });
+
+//     const formattedData = filteredData.map((item) => ({
+//       SN: item.voucher_id,
+//       Name: item.for_name,
+//       For: item.for_use,
+//       Amount: item.voucher_amount,
+//       Date: moment(item.voucher_date).format("YYYY-MM-DD"),
+//       "Created by": item.created_by,
+//       // Add more fields as needed
+//     }));
+
+//     const worksheet = XLSX.utils.json_to_sheet(formattedData);
+//     const wb = XLSX.utils.book_new();
+//     XLSX.utils.book_append_sheet(wb, worksheet, "Report");
+//     XLSX.writeFile(wb, "voucherReport.xlsx");
+//   };
+    
+  
+
+
 
   console.log(`${fromDate} - ${toDate}`);
   console.log(`${expensesfromDate} - ${expensestoDate}`);
+  console.log(filterForExpenses);
 
   return (
     <>
@@ -244,7 +280,7 @@ const FinancialReportCard = () => {
                   <FinancialTables /> */}
                 </div>
                 <div className="container-fluid">
-                  <div class="row mt-4 d-flex justify-content-center">
+                  <div class="row mt-4">
                     <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                       <div className="card">
                         <div className="card-body">
@@ -257,7 +293,7 @@ const FinancialReportCard = () => {
                         </div>
                       </div>
                     </div>
-                    {/* <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                    <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                       <div className="card">
                         <div className="card-body">
                           <div className="round-circle">
@@ -270,8 +306,8 @@ const FinancialReportCard = () => {
                           <h4 className="text-light">EXPENSES</h4>
                         </div>
                       </div>
-                    </div> */}
-                    {/* <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                    </div>
+                    <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                       <div className="card">
                         <div className="card-body">
                           <div className="round-circle">
@@ -286,12 +322,12 @@ const FinancialReportCard = () => {
                           <h4 className="text-light">NET PROFIT/LOSS</h4>
                         </div>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 </div>
                 <div className="container-fluid">
                   <div className="row mt-2 g-5">
-                    <div className="col-sm-12 col-md-11 col-lg-12 col-xl-12">
+                    <div className="col-sm-12 col-md-11 col-lg-6 col-xl-6">
                       <div className="d-flex justify-content-center">
                         <button class="btn btn-outline-success fs-3 shadow">
                           Earning
@@ -378,7 +414,7 @@ const FinancialReportCard = () => {
                       </div>
                     </div>
 
-                    {/* <div className="col-sm-12 col-md-11 col-lg-6 col-xl-6">
+                    <div className="col-sm-12 col-md-11 col-lg-6 col-xl-6">
                       <div className="d-flex justify-content-center">
                         <button class="btn btn-outline-success fs-3 shadow">
                           Expenses
@@ -453,7 +489,7 @@ const FinancialReportCard = () => {
                           </tbody>
                         </table>
                       </div>
-                    </div> */}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -465,7 +501,7 @@ const FinancialReportCard = () => {
   );
 };
 
-export default FinancialReportCard;
+export default FinalFinancialReport;
 const Container = styled.div`
   .select-style {
     border: none;

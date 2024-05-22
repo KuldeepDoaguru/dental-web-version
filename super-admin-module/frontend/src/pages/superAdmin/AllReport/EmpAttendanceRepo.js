@@ -118,39 +118,76 @@ const EmpAttendanceRepo = () => {
     getAttendDetails();
   }, [branch.name]);
 
+  // const downloadAttendData = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const { data } = await axios.post(
+  //       `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadAttendanceReportByTime/${branch.name}`,
+  //       { fromDate: fromDate, toDate: toDate },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${user.token}`,
+  //         },
+  //       }
+  //     );
+  //     console.log(data);
+  //     // setSelectedEarn(data);
+  //     if (Array.isArray(data) && data.length > 0) {
+  //       // Create a new workbook
+  //       const workbook = utils.book_new();
+
+  //       // Convert the report data to worksheet format
+  //       const worksheet = utils.json_to_sheet(data);
+
+  //       utils.book_append_sheet(workbook, worksheet, `Attendance Report`);
+  //       writeFile(workbook, `${fromDate} - ${toDate}-attendance-report.xlsx`);
+  //       console.log(data);
+  //     } else {
+  //       cogoToast.error("Data not found");
+  //       console.error("data is not an array");
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   const downloadAttendData = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadAttendanceReportByTime/${branch.name}`,
-        { fromDate: fromDate, toDate: toDate },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`,
-          },
+        const fromDateFormatted = new Date(fromDate).toISOString().split('T')[0];
+        const toDateFormatted = new Date(toDate).toISOString().split('T')[0];
+
+        const { data } = await axios.post(
+            `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadAttendanceReportByTime/${branch.name}`,
+            { fromDate: fromDateFormatted, toDate: toDateFormatted },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                },
+            }
+        );
+
+        console.log('API Response:', data);  // Log the response
+
+        if (Array.isArray(data) && data.length > 0) {
+            const workbook = utils.book_new();
+            const worksheet = utils.json_to_sheet(data);
+
+            utils.book_append_sheet(workbook, worksheet, 'Attendance Report');
+            writeFile(workbook, `${fromDateFormatted} - ${toDateFormatted}-attendance-report.xlsx`);
+        } else {
+            cogoToast.error("No data found for the specified date range.");
+            console.error("Data is not an array or is empty.");
         }
-      );
-      console.log(data);
-      // setSelectedEarn(data);
-      if (Array.isArray(data) && data.length > 0) {
-        // Create a new workbook
-        const workbook = utils.book_new();
-
-        // Convert the report data to worksheet format
-        const worksheet = utils.json_to_sheet(data);
-
-        utils.book_append_sheet(workbook, worksheet, `Attendance Report`);
-        writeFile(workbook, `${fromDate} - ${toDate}-attendance-report.xlsx`);
-        console.log(data);
-      } else {
-        cogoToast.error("Data not found");
-        console.error("data is not an array");
-      }
     } catch (error) {
-      console.log(error);
+        cogoToast.error("An error occurred while downloading the report.");
+        console.error(error);
     }
-  };
+};
+
+
 
   console.log(attendRepo);
   console.log(daysInMonth[0]);
@@ -232,9 +269,9 @@ const EmpAttendanceRepo = () => {
                             <table class="table table-bordered">
                               <thead className="table-head">
                                 <tr>
-                                  <th>EMP ID</th>
-                                  <th>Employee Name</th>
-                                  <th>Dessignation</th>
+                                  <th className="sticky">EMP ID</th>
+                                  <th className="sticky">Employee Name</th>
+                                  <th className="sticky">Dessignation</th>
 
                                   {daysInMonth
                                     ?.filter((item) => {
@@ -250,7 +287,7 @@ const EmpAttendanceRepo = () => {
                                     })
                                     .map((day) => (
                                       <>
-                                        <th key={day}>
+                                        <th key={day} className="sticky">
                                           {day} {monthName}
                                         </th>
                                       </>
@@ -369,5 +406,16 @@ const Container = styled.div`
 
   .attend-approve {
     color: green;
+  }
+
+  .table-responsive{
+    height: 30rem;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    color: white;
+    z-index: 1;
   }
 `;

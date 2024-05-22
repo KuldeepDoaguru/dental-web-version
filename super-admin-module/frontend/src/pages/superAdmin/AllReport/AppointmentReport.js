@@ -133,7 +133,7 @@ const AppointmentReport = () => {
                         </nav>
                       </div>
                       <div className="container">
-                        <div class="table-responsive mt-4">
+                        <div class="mt-4">
                           <div className="d-flex justify-content-between mb-2">
                             <form onSubmit={downloadAppointmentData}>
                               <div className="d-flex justify-content-between">
@@ -208,18 +208,18 @@ const AppointmentReport = () => {
                               <table class="table table-bordered rounded shadow">
                                 <thead className="table-head">
                                   <tr>
-                                    <th className="table-sno">
+                                    <th className="table-sno sticky">
                                       Appointment ID
                                     </th>
-                                    <th>Patient UHID</th>
+                                    <th className="sticky">Patient UHID</th>
 
-                                    <th className="table-small">
+                                    <th className="table-small sticky">
                                       Patient Name
                                     </th>
-                                    <th className="table-small">
+                                    <th className="table-small sticky">
                                       Contact Number
                                     </th>
-                                    <th className="table-small">
+                                    <th className="table-small sticky">
                                       Assigned Doctor
                                     </th>
                                     {/* <th className="table-small">
@@ -231,17 +231,17 @@ const AppointmentReport = () => {
                                 Payment Date & Time
                               </th> */}
 
-                                    <th className="table-small">
+                                    <th className="table-small sticky">
                                       Appointed by
                                     </th>
-                                    <th className="table-small">Updated by</th>
-                                    <th className="table-small">
+                                    <th className="table-small sticky">Updated by</th>
+                                    <th className="table-small sticky">
                                       Appointment Date & Time
                                     </th>
-                                    <th className="table-small">
+                                    <th className="table-small sticky">
                                       Appointment Status
                                     </th>
-                                    <th>Cancel Reason</th>
+                                    <th className="sticky">Cancel Reason</th>
                                     {/* <th className="table-small">Edit</th>
                                     <th className="table-small">Delete</th> */}
                                   </tr>
@@ -363,8 +363,18 @@ const Container = styled.div`
     color: white;
   }
 
+  .table-responsive{
+    height: 30rem;
+  }
+
   th {
     background-color: #004aad;
     color: white;
+  }
+  .sticky {
+    position: sticky;
+    top: 0;
+    color: white;
+    z-index: 1;
   }
 `;

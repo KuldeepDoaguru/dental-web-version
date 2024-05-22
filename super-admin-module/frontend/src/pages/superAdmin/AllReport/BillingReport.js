@@ -132,7 +132,7 @@ const BillingReport = () => {
                         </nav>
                       </div>
                       <div className="container">
-                        <div class="table-responsive mt-4">
+                        <div class=" mt-4">
                           <div className="d-flex justify-content-between mb-2">
                             <form onSubmit={downloadBillingData}>
                               <div className="d-flex justify-content-between">
@@ -205,33 +205,33 @@ const BillingReport = () => {
                               <table class="table table-bordered rounded shadow">
                                 <thead className="table-head">
                                   <tr>
-                                    <th className="table-sno">Bill ID</th>
-                                    <th>Bill Date</th>
-                                    <th className="table-small">
+                                    <th className="table-sno sticky">Bill ID</th>
+                                    <th className="sticky">Bill Date</th>
+                                    <th className="table-small sticky">
                                       Patient UHID
                                     </th>
-                                    <th className="table-small">
+                                    <th className="table-small sticky">
                                       Patient Name
                                     </th>
-                                    <th className="table-small">
+                                    <th className="table-small sticky">
                                       Patient Mobile
                                     </th>
-                                    <th className="table-small">
+                                    <th className="table-small sticky">
                                       Patient Email
                                     </th>
-                                    <th className="table-small">Treatment</th>
-                                    <th className="table-small">
+                                    <th className="table-small sticky">Treatment</th>
+                                    <th className="table-small sticky">
                                       Treatment Status
                                     </th>
-                                    <th className="table-small">
+                                    <th className="table-small sticky">
                                       Drugs with Quantity
                                     </th>
-                                    <th className="table-small">
+                                    <th className="table-small sticky">
                                       Total Amount
                                     </th>
-                                    <th>Paid Amount</th>
-                                    <th>Payment Status</th>
-                                    <th>Payment Date & Time</th>
+                                    <th className="sticky">Paid Amount</th>
+                                    <th className="sticky">Payment Status</th>
+                                    <th className="sticky">Payment Date & Time</th>
                                     {/* <th>Edit Details</th>
                                     <th className="table-small">Delete</th> */}
                                   </tr>
@@ -328,8 +328,22 @@ const Container = styled.div`
     color: white;
   }
 
+  .table-responsive{
+    height: 30rem;
+  }
+
   th {
     background-color: #004aad;
     color: white;
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
+  }
+  .sticky {
+    position: sticky;
+    top: 0;
+    color: white;
+    z-index: 1;
   }
 `;

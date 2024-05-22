@@ -43,10 +43,11 @@ const Lab = () => {
   console.log(showPopup);
   const getListLabDetails = async () => {
     try {
-      const { data } = await axios.get(
+      const data = await axios.get(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`
       );
       setLabList(data);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -57,7 +58,7 @@ const Lab = () => {
 
   useEffect(() => {
     getListLabDetails();
-  }, [refreshTable]);
+  }, []);
 
   const updateLabData = async (e) => {
     e.preventDefault();

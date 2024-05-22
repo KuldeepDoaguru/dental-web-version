@@ -85,6 +85,7 @@ import BloodTest from "./pages/superAdmin/AllReport/LabReport/BloodTest";
 import RadiologyTest from "./pages/superAdmin/AllReport/LabReport/RadiologyTest";
 import PendingTest from "./pages/superAdmin/AllReport/LabReport/PendingTest";
 import Compleated from "./pages/superAdmin/AllReport/LabReport/Compleated";
+import FinalFinancialReport from "./pages/superAdmin/FinancialReport/FinalFinancialReport";
 
 const App = () => {
   // const storedUserData = localStorage.getItem("userData");
@@ -205,6 +206,12 @@ const App = () => {
           path="/finance-reports"
           element={
             user.id === null ? <UniversalLogin /> : <FinancialReportCard />
+          }
+        />
+         <Route
+          path="/finance-report-final"
+          element={
+            user.id === null ? <UniversalLogin /> : <FinalFinancialReport />
           }
         />
         <Route

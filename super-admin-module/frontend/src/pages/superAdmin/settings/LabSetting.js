@@ -126,6 +126,14 @@ const LabSetting = () => {
       cogoToast.success("Lab Test Added Successfully");
       dispatch(toggleTableRefresh());
       closeUpdatePopup();
+      setAddLabTestField({
+        test_name: "",
+        test_code: "",
+        waiting_days: "",
+        default_lab: "",
+        test_date: "",
+        test_cost: "",
+      })
     } catch (error) {
       console.log(error);
       cogoToast.error("Test Code Already Exist");
@@ -167,25 +175,25 @@ const LabSetting = () => {
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    <BranchSelector />
+                    {/* <BranchSelector /> */}
                   </div>
                 </div>
                 <div className="container-fluid mt-3">
                   <h2 className="text-center">Lab Settings</h2>
                   <div className="mid-box">
                     <div className="row mt-5 background">
-                      <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
-                        {/* <input
+                      {/* <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
+                        <input
                           type="text"
                           placeholder="search here"
                           className="inputser"
                         />
                         <button className="mx-2 btn btn-info">
                           <FaSearch />
-                        </button> */}
-                      </div>
-                      <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
-                        <div className="d-flex justify-content-end">
+                        </button> 
+                      </div> */}
+                      <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 m-md-3">
+                        <div className="">
                           <button
                             className="btn btn-info lab-actbtn"
                             onClick={() => openAddLabPopup()}
@@ -194,8 +202,8 @@ const LabSetting = () => {
                           </button>
                         </div>
                       </div>
-                      <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
-                        <div className="d-flex justify-content-center">
+                      <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 m-md-3">
+                        <div className="">
                           <button
                             className="btn btn-info lab-actbtn"
                             onClick={() => openAddLabTestPopup()}
@@ -245,7 +253,7 @@ const LabSetting = () => {
                     <div className="flex-grow-1 p-3 mainback">
                       {selectedTab === "tab1" && <Lab />}
                       {selectedTab === "tab2" && <LabTest />}
-                      {selectedTab === "tab3" && <LabTasks />}
+                      {/* {selectedTab === "tab3" && <LabTasks />} */}
                     </div>
                   </div>
                   {/* nav-items-ends */}
@@ -580,7 +588,7 @@ const LabSetting = () => {
           </div>
 
           {/* pop-up for adding lab */}
-          {/* ************************************************************************************* */}
+          {/* ************************************************************************************* */} 
         </div>
       </Container>
     </>
@@ -636,6 +644,7 @@ const Container = styled.div`
     padding: 1rem;
     border-radius: 0.5rem;
     box-shadow: inset 0px 0px 4px #b1adad;
+    margin-left: 0.5rem;
   }
 
   .select-style {
@@ -655,7 +664,8 @@ const Container = styled.div`
   }
 
   .lab-actbtn {
-    height: 4rem;
+    height: 3rem;
     font-weight: bold;
+    white-space: nowrap;
   }
 `;

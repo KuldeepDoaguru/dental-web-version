@@ -159,7 +159,7 @@ const LabPatientReport = () => {
                               <div className="col-lg-4">
                                 <input
                                   type="text"
-                                  placeholder="Search by name or doctor"
+                                  placeholder="Search by Patient Name"
                                   value={searchQuery}
                                   onChange={(e) =>
                                     setSearchQuery(e.target.value)
@@ -232,7 +232,7 @@ const LabPatientReport = () => {
                           </div>
                         </div>
 
-                        <div className="d-flex justify-content-center">
+                        <div className="d-flex justify-content-center mt-3">
                           <div>
                             <exportToExcel />
                             <button
@@ -268,6 +268,11 @@ const Container = styled.div`
     background-color: #004aad;
     color: white;
     position: sticky;
+    white-space: nowrap;
+  }
+
+  td{
+    white-space: nowrap;
   }
 
   .sticky {

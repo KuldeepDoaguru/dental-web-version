@@ -3,13 +3,19 @@ import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { AiFillDelete } from "react-icons/ai";
+import { TbEdit } from "react-icons/tb";
+import ReactPaginate from "react-paginate";
 
 const LabTest = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [labTestList, setLabTestList] = useState([]);
+  const user = useSelector((state) => state.user);
   const { refreshTable } = useSelector((state) => state.user);
   const [selectedItem, setSelectedItem] = useState([]);
   const [labList, setLabList] = useState([]);
+  const complaintsPerPage = 5; // Number of complaints per page
+  const [currentPage, setCurrentPage] = useState(0); // Start from the first page
   const [upLabTestField, setUpLabTestField] = useState({
     test_name: "",
     test_code: "",
@@ -39,13 +45,19 @@ const LabTest = () => {
 
   const closeUpdatePopup = () => {
     setShowPopup(false);
-  };
+  }; 
 
   console.log(showPopup);
   const getLabtestDetails = async () => {
     try {
       const { data } = await axios.get(
-        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabTest"
+        "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabTest",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setLabTestList(data);
     } catch (error) {
@@ -64,7 +76,13 @@ const LabTest = () => {
     try {
       const response = await axios.put(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateLabTestDetails/${selectedItem.lab_tid}`,
-        upLabTestField
+        upLabTestField,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       cogoToast.success("Lab Test details updated successfully");
       getLabtestDetails();
@@ -77,7 +95,13 @@ const LabTest = () => {
   const getListLabDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       setLabList(data);
     } catch (error) {
@@ -104,6 +128,20 @@ const LabTest = () => {
     }
   };
 
+  const totalPages = Math.ceil(labTestList.length / complaintsPerPage);
+
+  const filterAppointDataByMonth = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return labTestList?.slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const displayedAppointments = filterAppointDataByMonth();
+
   return (
     <>
       <Container>
@@ -121,7 +159,7 @@ const LabTest = () => {
               </tr>
             </thead>
             <tbody>
-              {labTestList?.map((item) => (
+              {displayedAppointments?.map((item) => (
                 <>
                   <tr className="table-row">
                     <td>{item.test_name}</td>
@@ -132,16 +170,16 @@ const LabTest = () => {
                     <td>{item.test_cost}</td>
                     <td>
                       <button
-                        className="btn btn-warning"
+                        className="btn btn-warning text-light"
                         onClick={() => openUpdatePopup(item)}
                       >
-                        Edit
+                        <TbEdit size={22}/>
                       </button>
                       <button
                         className="btn btn-danger mx-1"
                         onClick={() => deleteLabTestData(item.lab_tid)}
                       >
-                        Delete
+                        <AiFillDelete size={22}/>
                       </button>
                     </td>
                   </tr>
@@ -149,6 +187,21 @@ const LabTest = () => {
               ))}
             </tbody>
           </table>
+
+          <PaginationContainer>
+                      <ReactPaginate
+                        previousLabel={"Previous"}
+                        nextLabel={"Next"}
+                        breakLabel={"..."}
+                        pageCount={totalPages}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageChange}
+                        containerClassName={"pagination"}
+                        activeClassName={"active"}
+                      />
+                       </PaginationContainer>
+
           {/* pop-up for creating notice */}
           <div className={`popup-container${showPopup ? " active" : ""}`}>
             <div className="popup">
@@ -290,5 +343,43 @@ const Container = styled.div`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid black;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .pagination li.active a {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+  }
+
+  .pagination li.disabled a {
+    color: #ddd;
+    cursor: not-allowed;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #ddd;
   }
 `;

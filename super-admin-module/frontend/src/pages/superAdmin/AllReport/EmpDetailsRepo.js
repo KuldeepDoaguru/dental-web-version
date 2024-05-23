@@ -50,7 +50,7 @@ const EmpDetailsRepo = () => {
   const downloadEmployeeData = async () => {
     try {
       const { data } = await axios.post(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadStaffReport/${branch.name}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/downloadStaffReport/${branch.name}`, {},
         {
           headers: {
             "Content-Type": "application/json",
@@ -154,15 +154,15 @@ const EmpDetailsRepo = () => {
                           <table class="table table-bordered">
                             <thead className="table-head">
                               <tr>
-                                <th className="thead">Emp ID</th>
-                                <th className="thead">Name</th>
-                                <th className="thead">Mobile</th>
-                                <th className="thead">Email</th>
-                                <th className="thead">Designation</th>
-                                <th className="thead">Role</th>
-                                <th className="thead">Salary</th>
-                                <th className="thead">Address</th>
-                                <th>Profile Picture</th>
+                                <th className="thead sticky">Emp ID</th>
+                                <th className="thead sticky">Name</th>
+                                <th className="thead sticky">Mobile</th>
+                                <th className="thead sticky">Email</th>
+                                <th className="thead sticky">Designation</th>
+                                <th className="thead sticky">Role</th>
+                                <th className="thead sticky">Salary</th>
+                                <th className="thead sticky">Address</th>
+                                <th className="thead sticky">Profile Picture</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -237,9 +237,16 @@ const Container = styled.div`
     font-weight: bold;
     color: white;
   }
+  .table-responsive{
+    height: 30rem;
+  }
   th {
     background-color: #004aad;
     color: white;
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
   }
 
   .smallImg {
@@ -247,5 +254,12 @@ const Container = styled.div`
       height: 6rem;
       width: auto;
     }
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    color: white;
+    z-index: 1;
   }
 `;

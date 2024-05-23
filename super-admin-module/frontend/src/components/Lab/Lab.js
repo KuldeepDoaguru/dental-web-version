@@ -3,13 +3,20 @@ import cogoToast from "cogo-toast";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { AiFillDelete } from "react-icons/ai";
+import { TbEdit } from "react-icons/tb";
+import ReactPaginate from "react-paginate";
 
 const Lab = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [labList, setLabList] = useState([]);
   const [branchList, setBranchList] = useState([]);
   const [selectedItem, setSelectedItem] = useState();
+  const user = useSelector((state) => state.user);
   const { refreshTable } = useSelector((state) => state.user);
+  const [searchTerm, setSearchTerm] = useState("");
+  const complaintsPerPage = 8; // Number of complaints per page
+  const [currentPage, setCurrentPage] = useState(0); // Start from the first page
   const [upLabField, setUpLabField] = useState({
     branch: "",
     name: "",
@@ -33,6 +40,15 @@ const Lab = () => {
   const openUpdatePopup = (item) => {
     setSelectedItem(item);
     console.log("open pop up");
+    setUpLabField({
+      branch: item.branch_name,
+      name: item.lab_name,
+      type: item.lab_type,
+      contact: item.lab_contact,
+      email: item.lab_email,
+      address: item.address,
+      status: item.status,
+    });
     setShowPopup(true);
   };
 
@@ -44,10 +60,16 @@ const Lab = () => {
   const getListLabDetails = async () => {
     try {
       const data = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
-      setLabList(data);
-      console.log(data);
+      setLabList(data.data);
+      console.log(data.data);
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +128,39 @@ const Lab = () => {
     getBranchList();
   }, []);
 
-  console.log(branchList);
+  console.log(branchList); 
+
+  const handleSearchChange = (e) =>{
+    setSearchTerm(e.target.value);
+  }
+
+  const searchFilter = labList.filter((lab)=>lab.lab_name.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
+
+  const filterAppointDataByMonth = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return searchFilter?.slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const displayedAppointments = filterAppointDataByMonth();
+
+  // useEffect(()=>{
+  //   setUpLabField({
+  //     branch: labList.branch_name,
+  //     name: labList.name,
+  //     type: labList.type,
+  //     contact: labList.contact,
+  //     email: labList.email,
+  //     address: labList.address,
+  //     status: labList.status,
+  //   })
+  // }, [labList]);
 
   return (
     <>
@@ -118,6 +172,8 @@ const Lab = () => {
                 type="text"
                 placeholder="search here"
                 className="inputser"
+                value={searchTerm}
+                onChange={handleSearchChange}
               />
             </div>
           </div>
@@ -137,7 +193,7 @@ const Lab = () => {
               </tr>
             </thead>
             <tbody>
-              {labList?.map((item) => (
+              {displayedAppointments?.map((item) => (
                 <>
                   <tr className="table-row">
                     <td>{item.branch_name}</td>
@@ -149,16 +205,16 @@ const Lab = () => {
                     <td>{item.status}</td>
                     <td>
                       <button
-                        className="btn btn-warning"
-                        onClick={() => openUpdatePopup(item.lab_id)}
+                        className="btn btn-warning text-light"
+                        onClick={() => openUpdatePopup(item)}
                       >
-                        Edit
+                        <TbEdit size={22}/>
                       </button>
                       <button
                         className="btn btn-danger mx-1"
                         onClick={() => deleteLabData(item.lab_id)}
                       >
-                        Delete
+                        <AiFillDelete size={22}/>
                       </button>
                     </td>
                   </tr>
@@ -166,6 +222,20 @@ const Lab = () => {
               ))}
             </tbody>
           </table>
+
+          <PaginationContainer>
+                      <ReactPaginate
+                        previousLabel={"previous"}
+                        nextLabel={"next"}
+                        breakLabel={"..."}
+                        pageCount={totalPages}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageChange}
+                        containerClassName={"pagination"}
+                        activeClassName={"active"}
+                      />
+                       </PaginationContainer>
 
           {/* pop-up for creating notice */}
           <div className={`popup-container${showPopup ? " active" : ""}`}>
@@ -326,5 +396,69 @@ const Container = styled.div`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  input::placeholder {
+            color: #aaa;
+            opacity: 1; /* Ensure placeholder is visible */
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        input:focus::placeholder {
+            color: transparent; /* Hide placeholder on focus */
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #007bff; /* Change border color on focus */
+        }
+
+`;
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid black;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .pagination li.active a {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+  }
+
+  .pagination li.disabled a {
+    color: #ddd;
+    cursor: not-allowed;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #ddd;
   }
 `;

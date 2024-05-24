@@ -113,16 +113,17 @@ const DoctorProfile = ({refresh}) => {
                         <h4 className="fw-bold">Working Hours</h4>
                         <p>
                           <strong style={{ color: "#1abc9c" }}>
-                            Mon-Fri :{" "}
+                            Morning :{" "}
                           </strong>
-                          {empData[0]?.allday_shift_start_time.slice(0, 5)}-
-                          {empData[0]?.allday_shift_end_time.slice(0, 5)}
+                          {empData[0]?.morning_shift_start_time.slice(0, 5)}-
+                          {empData[0]?.morning_shift_end_time.slice(0, 5)}
                         </p>
                         <p>
                           <strong style={{ color: "#1abc9c" }}>
-                            Sunday :{" "}
+                            Evening :{" "}
                           </strong>
-                          OFF
+                          {empData[0]?.evening_shift_start_time.slice(0, 5)}-
+                          {empData[0]?.evening_shift_end_time.slice(0, 5)}
                         </p>
                         <p>
                           <strong style={{ color: "#1abc9c" }}>
@@ -184,6 +185,14 @@ const DoctorProfile = ({refresh}) => {
                               ? empData[0]?.employee_role
                               : " - "}
                           </p>
+                        </div>
+                      </div>
+                      <div className="col-lg-4">
+                        <label className="fw-bold" style={{ color: "#1abc9c" }}>
+                          Working Days
+                        </label>
+                        <div className="shadow-none p-1 bg-light rounded">
+                          <p className="m-0">{empData[0]?.working_days}</p>
                         </div>
                       </div>
                     </div>

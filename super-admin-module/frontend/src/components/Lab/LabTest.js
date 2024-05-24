@@ -38,6 +38,14 @@ const LabTest = () => {
   const openUpdatePopup = (item) => {
     setSelectedItem(item);
     console.log("open pop up");
+    setUpLabTestField({
+      test_name: item.test_name,
+      test_code: item.test_code,
+      waiting_days: item.waiting_days,
+      default_lab: item.default_lab,
+      test_date: item.test_date,
+      test_cost: item.test_cost,
+    })
     setShowPopup(true);
   };
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef} from "react";
 import styled from "styled-components";
 import Header from "../../Header";
 import Sider from "../../Sider";
@@ -18,6 +18,7 @@ const EmployeeProfile = () => {
   console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
   console.log(`User Name: ${branch.name}`);
+  const fileinput = useRef(null);
   const { eid } = useParams();
   const location = useLocation();
   const [empData, setEmpData] = useState([]);
@@ -48,6 +49,7 @@ const EmployeeProfile = () => {
     experience: "",
     language: "",
     speciality: "",
+    employee_education: ""
   });
 
   const handleEmpProfilePicture = (e) => {
@@ -109,6 +111,34 @@ const EmployeeProfile = () => {
   };
 
   const closeUpdatePopup = () => {
+    setInEmpData({
+      branch: branch.name,
+      empName: empData[0]?.employee_name,
+      empMobile: empData[0]?.employee_mobile,
+      empGender: empData[0]?.gender,
+      empEmail: empData[0]?.employee_email,
+      empDesignation: empData[0]?.employee_designation,
+      empSalary: empData[0]?.salary,
+      empAddress: empData[0]?.address,
+      status: empData[0]?.employee_status,
+      morningShiftStartTime: formatTime(empData[0]?.morning_shift_start_time),
+      morningShiftEndTime: formatTime(empData[0]?.morning_shift_end_time),
+      eveningShiftStartTime: formatTime(empData[0]?.evening_shift_start_time),
+      eveningShiftEndTime: formatTime(empData[0]?.evening_shift_end_time),
+      allDayShiftStartTime:formatTime(empData[0]?.allday_shift_start_time) ,
+      allDayShiftEndTime: formatTime(empData[0]?.allday_shift_end_time),
+      working_days: empData[0]?.working_days,
+      // password: "",
+      empRole: empData[0]?.employee_role.split(",") || [],
+      availability: empData[0]?.availability,
+      type_of: empData[0]?.type_of,
+      experience: empData[0]?.experience,
+      language: empData[0]?.language,
+      speciality: empData[0]?.speciality,
+      employee_education: empData[0]?.employee_education,
+    });
+    fileinput.current.value = "";
+    setEmpProfilePicture(null);
     setShowEditEmployee(false);
   };
 
@@ -179,7 +209,7 @@ const EmployeeProfile = () => {
       branch: branch.name,
       empName: empData[0]?.employee_name,
       empMobile: empData[0]?.employee_mobile,
-      empGender: inEmpData[0]?.empGender,
+      empGender: empData[0]?.gender,
       empEmail: empData[0]?.employee_email,
       empDesignation: empData[0]?.employee_designation,
       empSalary: empData[0]?.salary,
@@ -199,6 +229,7 @@ const EmployeeProfile = () => {
       experience: empData[0]?.experience,
       language: empData[0]?.language,
       speciality: empData[0]?.speciality,
+      employee_education: empData[0]?.employee_education,
     });
   }, [empData]);
   console.log(formatTime(empData[0]?.allday_shift_end_time));
@@ -1044,6 +1075,7 @@ const EmployeeProfile = () => {
                       accept=".pdf, .jpg, .jpeg, .png"
                       name="empProfilePicture"
                       onChange={handleEmpProfilePicture}
+                      ref={fileinput}
                     />
                   </div>
                   <div className="mb-3 mx-2">

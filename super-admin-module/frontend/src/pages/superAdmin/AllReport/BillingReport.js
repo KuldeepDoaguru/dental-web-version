@@ -216,7 +216,7 @@ const BillingReport = () => {
                                     <th className="table-small sticky">
                                       Patient Mobile
                                     </th>
-                                    <th className="table-small sticky">
+                                    {/* <th className="table-small sticky">
                                       Patient Email
                                     </th>
                                     <th className="table-small sticky">Treatment</th>
@@ -225,7 +225,7 @@ const BillingReport = () => {
                                     </th>
                                     <th className="table-small sticky">
                                       Drugs with Quantity
-                                    </th>
+                                    </th> */}
                                     <th className="table-small sticky">
                                       Total Amount
                                     </th>
@@ -266,10 +266,10 @@ const BillingReport = () => {
                                             {item.patient_name}
                                           </td>
                                           <td>{item.patient_mobile}</td>
-                                          <td>{item.patient_email}</td>
+                                          {/* <td>{item.patient_email}</td>
                                           <td>{item.treatment}</td>
                                           <td>{item.treatment_status}</td>
-                                          <td>{item.drugs_quantity}</td>
+                                          <td>{item.drugs_quantity}</td> */}
                                           <td className="table-small">
                                             {item.total_amount}
                                           </td>

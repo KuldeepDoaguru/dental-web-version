@@ -4,7 +4,7 @@ import Sider from "../../../components/Sider";
 import Header from "../../../components/Header";
 import styled from "styled-components";
 import { FaSearch } from "react-icons/fa";
-import BranchSelector from "../../../components/BranchSelector";
+import BranchSelector from "../../../components/BranchSelector"; 
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import axios from "axios";
@@ -40,6 +40,8 @@ const PrescriptionTemplate = () => {
     duration: "",
     notes: "",
   });
+
+  console.log(getPresList);
 
   const handleAddPres = (event) => {
     const { name, value } = event.target;
@@ -223,15 +225,15 @@ const PrescriptionTemplate = () => {
                       <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
                         <input
                           type="text"
-                          placeholder="search here"
+                          placeholder="Search by Medicine Name"
                           className="inputser"
                           value={keyword}
                           onChange={(e) =>
                             setkeyword(e.target.value.toLowerCase())
                           }
                         />
-                        <button className="mx-2 btn btn-info">
-                          <FaSearch />
+                        <button className="mx-2 btn btn-primary">
+                          <FaSearch size={20}/>
                         </button>
                       </div>
                       <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
@@ -523,8 +525,34 @@ const Container = styled.div`
   .inputser {
     border-radius: 1.5rem;
     padding: 0.5rem;
-    width: 80%;
+    width: 30%;
   }
+
+  input::placeholder {
+            color: #aaa;
+            opacity: 1; /* Ensure placeholder is visible */
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        input:focus::placeholder {
+            color: transparent; /* Hide placeholder on focus */
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #007bff; /* Change border color on focus */
+        }
 
   .navlink.active {
     background-color: red;

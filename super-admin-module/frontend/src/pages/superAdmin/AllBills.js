@@ -12,6 +12,7 @@ import axios from "axios";
 import cogoToast from "cogo-toast";
 import { Link } from "react-router-dom";
 // import "bootstrap/dist/css/bootstrap.min.css";
+import ReactPaginate from "react-paginate";
 
 const AllBills = () => {
   const dispatch = useDispatch();
@@ -25,8 +26,10 @@ const AllBills = () => {
   const [selectedItem, setSelectedItem] = useState();
   const [popupVisible, setPopupVisible] = useState(false);
   const [placehold, setPlacehold] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10);
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const [itemsPerPage] = useState(10);
+  const complaintsPerPage = 8; // Number of complaints per page
+  const [currentPage, setCurrentPage] = useState(0); // Start from the first page
   const [upData, setUpData] = useState({
     bill_date: "",
     uhid: "",
@@ -168,43 +171,59 @@ const AllBills = () => {
   // });
 
   // console.log(filterBillDataByMonth);
-  const filterBillDataByMonth = () => {
-    // Filter and paginate appointment data based on currentPage and itemsPerPage
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return listBills
-      .filter(
-        (item) =>
-          item.bill_date.split("T")[0].slice(0, 7) === formattedDate.slice(0, 7)
-      )
-      .slice(startIndex, endIndex);
+
+
+  // const filterBillDataByMonth = () => {
+  //   // Filter and paginate appointment data based on currentPage and itemsPerPage
+  //   const startIndex = (currentPage - 1) * itemsPerPage;
+  //   const endIndex = startIndex + itemsPerPage;
+  //   return listBills
+  //     .filter(
+  //       (item) =>
+  //         item.bill_date.split("T")[0].slice(0, 7) === formattedDate.slice(0, 7)
+  //     )
+  //     .slice(startIndex, endIndex);
+  // };
+
+  // console.log(filterBillDataByMonth());
+  // const filterBillMonth = filterBillDataByMonth();
+
+  // const totalPages = Math.ceil(filterBillMonth.length / itemsPerPage);
+
+  // const handlePageChange = (pageNumber) => {
+  //   setCurrentPage(pageNumber);
+  // };
+
+  // const renderPaginationButtons = () => {
+  //   const buttons = [];
+  //   for (let i = 1; i <= totalPages; i++) {
+  //     buttons.push(
+  //       <li key={i}>
+  //         <button
+  //           className="btn btn-secondary"
+  //           onClick={() => handlePageChange(i)}
+  //         >
+  //           {i}
+  //         </button>
+  //       </li>
+  //     );
+  //   }
+  //   return buttons;
+  // };
+
+  const totalPages = Math.ceil(listBills.length / complaintsPerPage);
+
+  const filterAppointDataByMonth = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return listBills?.slice(startIndex, endIndex);
   };
 
-  console.log(filterBillDataByMonth());
-  const filterBillMonth = filterBillDataByMonth();
-
-  const totalPages = Math.ceil(filterBillMonth.length / itemsPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
   };
 
-  const renderPaginationButtons = () => {
-    const buttons = [];
-    for (let i = 1; i <= totalPages; i++) {
-      buttons.push(
-        <li key={i}>
-          <button
-            className="btn btn-secondary"
-            onClick={() => handlePageChange(i)}
-          >
-            {i}
-          </button>
-        </li>
-      );
-    }
-    return buttons;
-  };
+  const displayedAppointments = filterAppointDataByMonth();
   return (
     <>
       <Container>
@@ -225,7 +244,7 @@ const AllBills = () => {
                   <h3 className="text-center">Bill List</h3>
                   <hr />
                   <div className="container-fluid mt-3">
-                    {filterBillDataByMonth()?.length > 0 ? (
+                    {displayedAppointments?.length > 0 ? (
                       <>
                         <div class="table-responsive rounded">
                           <table class="table table-bordered rounded shadow">
@@ -248,7 +267,7 @@ const AllBills = () => {
                               </tr>
                             </thead>
                             <tbody>
-                              {filterBillDataByMonth()?.map((item) => (
+                              {displayedAppointments?.map((item) => (
                                 <>
                                   <tr className="table-row">
                                     <td className="table-sno">
@@ -294,7 +313,20 @@ const AllBills = () => {
                             </tbody>
                           </table>
                         </div>
-                        <div className="pagination">
+                        <PaginationContainer>
+                      <ReactPaginate
+                        previousLabel={"previous"}
+                        nextLabel={"next"}
+                        breakLabel={"..."}
+                        pageCount={totalPages}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageChange}
+                        containerClassName={"pagination"}
+                        activeClassName={"active"}
+                      />
+                       </PaginationContainer>
+                        {/* <div className="pagination">
                           <ul>
                             <li>
                               <button
@@ -320,7 +352,7 @@ const AllBills = () => {
                               </button>
                             </li>
                           </ul>
-                        </div>
+                        </div> */}
                       </>
                     ) : (
                       <>
@@ -619,3 +651,42 @@ const Container = styled.div`
     }
   }
 `;
+
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid black;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .pagination li.active a {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+  }
+
+  .pagination li.disabled a {
+    color: #ddd;
+    cursor: not-allowed;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #ddd;
+  }
+`;
+

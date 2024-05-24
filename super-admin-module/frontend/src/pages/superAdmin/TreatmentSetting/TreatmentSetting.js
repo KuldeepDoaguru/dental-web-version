@@ -9,17 +9,22 @@ import axios from "axios";
 import cogoToast from "cogo-toast";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useSelector } from "react-redux";
+import { TbEdit } from "react-icons/tb";
+import { GrAdd } from "react-icons/gr";
+import ReactPaginate from "react-paginate";
 
 const TreatmentSetting = () => {
   const location = useLocation();
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
-  const [showAddTreatments, setShowAddTreatments] = useState(false);
+  const [showAddTreatments, setShowAddTreatments] = useState(false); 
   const [showEditTreatments, setShowEditTreatments] = useState(false);
   const [keyword, setkeyword] = useState("");
   const [treatList, setTreatList] = useState([]);
   const [trID, setTrID] = useState();
+  const complaintsPerPage = 7; // Number of complaints per page
+  const [currentPage, setCurrentPage] = useState(0); // Start from the first page
   const [treatData, setTreatData] = useState({
     treatName: "",
     treatCost: "",
@@ -37,6 +42,7 @@ const TreatmentSetting = () => {
   };
 
   console.log(treatData);
+  console.log(treatList);
 
   const openAddTreatmentsPopup = (index, item) => {
     // setSelectedItem(item);
@@ -150,6 +156,25 @@ const TreatmentSetting = () => {
   const goBack = () => {
     window.history.go(-1);
   };
+
+  const totalCount = treatList.length;
+
+  const searchFilter = treatList.filter((lab)=>lab.treatment_name.toLowerCase().includes(keyword.toLowerCase()));
+
+  const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
+
+  const filterAppointDataByMonth = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return searchFilter?.slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const displayedAppointments = filterAppointDataByMonth();
+
   return (
     <Container>
       <Header />
@@ -161,7 +186,7 @@ const TreatmentSetting = () => {
             </div>
             <div className="col-lg-11 col-11 ps-0">
               <div className="container-fluid mt-3">
-                <BranchSelector />
+                {/* <BranchSelector /> */}
               </div>
               <div className="container-fluid mt-3">
                 <button className="btn btn-success" onClick={goBack}>
@@ -180,10 +205,10 @@ const TreatmentSetting = () => {
                     </div>
                     <div className="container-fluid">
                       <div className="row mt-5">
-                        <div className="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-12">
+                        <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-12 col-12">
                           <input
                             type="text"
-                            placeholder="search here"
+                            placeholder="Search by Treatment Name"
                             className="inputser"
                             value={keyword}
                             onChange={(e) =>
@@ -191,45 +216,47 @@ const TreatmentSetting = () => {
                             }
                           />
                           <button className="mx-2 btn btn-info btnback">
-                            <FaSearch />
+                            <FaSearch size={20}/>
                           </button>
                         </div>
-                        <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+                        {/* <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12">
                           <button
                             className="btn btn-info btnback"
                             onClick={() => openAddTreatmentsPopup()}
                           >
-                            Add Treatment
+                            <GrAdd size={22}/>
                           </button>
-                        </div>
+                        </div> */}
+                        {/* Add Treatment Comment Out */}
                       </div>
                     </div>
 
-                    <div class="table-responsive rounded">
+                    <div class="table-sticky rounded">
                       <div className="banner-mid mt-2">
                         <div>
                           <h6 className="text-light">Treatments</h6>
                         </div>
                         <div>
                           <p className="fw-bold text-light">
-                            Total Treatments - 25
+                            Total Treatments - {totalCount? totalCount: "0"}
                           </p>
                         </div>
                       </div>
-                      <table class="table table-bordered rounded shadow">
+                      <table class="table table-bordered rounded shadow tableStyle">
                         <thead className="table-head">
                           <tr>
                             <th className="table-sno">Treatment ID</th>
+                            <th className="table-small">Treatment Producer Name</th>
                             <th className="table-small">Treatment Name</th>
                             <th className="table-small">Cost(INR)</th>
                             <th className="table-small">
                               Maximum Discount To give
                             </th>
-                            <th className="table-small">Actions</th>
+                            {/* <th className="table-small">Actions</th> */}
                           </tr>
                         </thead>
                         <tbody>
-                          {treatList
+                          {displayedAppointments
                             ?.filter((val) => {
                               if (keyword === "") {
                                 return true;
@@ -251,6 +278,9 @@ const TreatmentSetting = () => {
                                     {item.treatment_id}
                                   </td>
                                   <td className="table-small">
+                                    {item.treat_procedure_name}
+                                  </td>
+                                  <td className="table-small">
                                     {item.treatment_name}
                                   </td>
                                   <td className="table-small">
@@ -259,17 +289,20 @@ const TreatmentSetting = () => {
                                   <td className="table-small">
                                     {item.treatment_discount}
                                   </td>
-                                  <td>
+                                  {/* <td>
                                     <button
-                                      className="btn btn-warning"
+                                      className="btn btn-warning text-light"
                                       onClick={() =>
                                         openEditTreatmentsPopup(
                                           item.treatment_id
                                         )
                                       }
                                     >
-                                      Edit
+                                      <TbEdit size={22}/>
                                     </button>
+
+                                    // Delete Comment out haa
+
                                     {/* <button
                                       type="button"
                                       class="btn btn-danger mx-2"
@@ -277,8 +310,11 @@ const TreatmentSetting = () => {
                                       data-bs-target="#exampleModal"
                                     >
                                       Delete
-                                    </button> */}
-                                  </td>
+                                    </button> 
+
+                                    // Delete Comment out haa
+
+                                  </td> */}
                                 </tr>
                                 <div
                                   class="modal fade rounded"
@@ -325,6 +361,20 @@ const TreatmentSetting = () => {
                             ))}
                         </tbody>
                       </table>
+
+                      <PaginationContainer>
+                      <ReactPaginate
+                        previousLabel={"previous"}
+                        nextLabel={"next"}
+                        breakLabel={"..."}
+                        pageCount={totalPages}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageChange}
+                        containerClassName={"pagination"}
+                        activeClassName={"active"}
+                      />
+                       </PaginationContainer>
                     </div>
                   </div>
                 </div>
@@ -458,8 +508,34 @@ const Container = styled.div`
   .inputser {
     border-radius: 1.5rem;
     padding: 0.5rem;
-    width: 80%;
+    width: 30%;
   }
+
+  input::placeholder {
+            color: #aaa;
+            opacity: 1; /* Ensure placeholder is visible */
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        input:focus::placeholder {
+            color: transparent; /* Hide placeholder on focus */
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #007bff; /* Change border color on focus */
+        }
 
   .navlink.active {
     background-color: red;
@@ -502,5 +578,42 @@ const Container = styled.div`
   .btnback {
     background: #004aad;
     color: white;
+  }
+`;
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid black;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .pagination li.active a {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+  }
+
+  .pagination li.disabled a {
+    color: #ddd;
+    cursor: not-allowed;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #ddd;
   }
 `;

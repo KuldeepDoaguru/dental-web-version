@@ -179,6 +179,14 @@ const CalenderSetting = () => {
       );
       // console.log(response);
       cogoToast.success("Holiday Added Successfully");
+      setHolidays({
+        branch_name: branch.name,
+        holiday_name: "",
+        holiday_date: "",
+        holiday_start_time: "",
+        holiday_end_time: "",
+        notes: "",
+      })
       closeUpdatePopup();
       getHolidayList();
     } catch (error) {
@@ -453,7 +461,7 @@ const CalenderSetting = () => {
             className={`popup-container${showAddBlockDays ? " active" : ""}`}
           >
             <div className="popup">
-              <h4 className="text-center">Add Drugs</h4>
+              <h4 className="text-center">Add Block Day</h4>
               <form className="d-flex flex-column" onSubmit={addHolidays}>
                 <input
                   type="text"

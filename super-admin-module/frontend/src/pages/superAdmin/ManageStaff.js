@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
@@ -13,6 +13,7 @@ const ManageStaff = () => {
   const [showEditEmployee, setShowEditEmployee] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const fileinput = useRef(null);
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
@@ -131,8 +132,35 @@ const ManageStaff = () => {
   };
 
   const closeUpdatePopup = () => {
+    setInEmpData({
+      branch: branch.name,
+      empName: "",
+      empMobile: "",
+      empGender: "",
+      empEmail: "",
+      empDesignation: "",
+      empSalary: "",
+      empAddress: "",
+      status: "",
+      morningShiftStartTime: "",
+      morningShiftEndTime: "",
+      eveningShiftStartTime: "",
+      eveningShiftEndTime: "",
+      allDayShiftStartTime: "",
+      allDayShiftEndTime: "",
+      working_days: "",
+      password: "",
+      empRole: [],
+      availability: "",
+      type_of: "",
+        experience: "",
+        language: "",
+        speciality: "",
+    })
     setShowAddEmployee(false);
     setShowEditEmployee(false);
+    fileinput.current.value = "";
+    setEmpProfilePicture(null);
   };
 
   const enrollEmployeeDetails = async (e) => {
@@ -160,7 +188,35 @@ const ManageStaff = () => {
 
       cogoToast.success("Registration successful!");
       getDocDetailsList();
+      setInEmpData({
+        branch: branch.name,
+        empName: "",
+        empMobile: "",
+        empGender: "",
+        empEmail: "",
+        empDesignation: "",
+        empSalary: "",
+        empAddress: "",
+        status: "",
+        morningShiftStartTime: "",
+        morningShiftEndTime: "",
+        eveningShiftStartTime: "",
+        eveningShiftEndTime: "",
+        allDayShiftStartTime: "",
+        allDayShiftEndTime: "",
+        working_days: "",
+        password: "",
+        empRole: [],
+        availability: "",
+        type_of: "",
+          experience: "",
+          language: "",
+          speciality: "",
+      })
+      fileinput.current.value = "";
+      setEmpProfilePicture(null);
       closeUpdatePopup();
+
     } catch (error) {
       console.log(error);
     }
@@ -916,6 +972,7 @@ const ManageStaff = () => {
                         required
                         name="empProfilePicture"
                         onChange={handleEmpProfilePicture}
+                        ref={fileinput}
                       />
                     </div>
                     <div className="mb-3 mx-2">

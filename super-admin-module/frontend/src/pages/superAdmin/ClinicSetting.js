@@ -97,7 +97,7 @@ const ClinicSetting = () => {
                               </Link>
                             </div> */}
 
-                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                            {/* <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/communication-setting">
                                 <div className="card">
                                   <div class="card-body">
@@ -107,7 +107,7 @@ const ClinicSetting = () => {
                                   </div>
                                 </div>
                               </Link>
-                            </div>
+                            </div> */}
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/prescription-templates">

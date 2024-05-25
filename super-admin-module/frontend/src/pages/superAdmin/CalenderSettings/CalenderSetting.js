@@ -62,6 +62,30 @@ const CalenderSetting = () => {
     }
   };
 
+
+  const ConvertToIST = ( utcDateString ) => {
+    // Convert the date string to a Date object
+    const utcDate = new Date(utcDateString);
+  
+    // Convert the UTC date to IST by adding 5 hours and 30 minutes
+    const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
+    const istDate = new Date(utcDate.getTime() + istOffset);
+  
+    // Format the IST date
+    const options = {
+      timeZone: 'Asia/Kolkata',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      // hour: '2-digit',
+      // minute: '2-digit',
+      // second: '2-digit',
+    };
+    const istDateString = new Intl.DateTimeFormat('en-IN', options).format(istDate);
+  
+    return istDateString;
+  };
+
   const handleHoliday = (event) => {
     const { name, value } = event.target;
     setHolidays({
@@ -86,9 +110,9 @@ const CalenderSetting = () => {
     setShowAddBlockDays(true);
   };
 
-  const openEditBlockDaysPopup = (id) => {
+  const openEditBlockDaysPopup = (id,item) => {
     console.log(id);
-    setSelected(id);
+    setSelected(item);
     console.log("open pop up");
     setShowEditBlockDays(true);
   };
@@ -139,12 +163,58 @@ const CalenderSetting = () => {
       console.log(error);
     }
   };
-
+ 
   useEffect(() => {
     getBranchDetails();
   }, []);
 
-  console.log(brData);
+    // Convert UTC date to IST date
+    const convertToIST = (utcDateString) => {
+      const utcDate = new Date(utcDateString);
+      const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
+      const istDate = new Date(utcDate.getTime() + istOffset);
+    
+      // Format the date to YYYY-MM-DD for input field
+      const year = istDate.getUTCFullYear();
+      const month = (`0${istDate.getUTCMonth() + 1}`).slice(-2); // months are zero-based
+      const day = (`0${istDate.getUTCDate()}`).slice(-2);
+    
+      return `${year}-${month}-${day}`;
+    };
+
+    // const convertToIST = (utcDateString) => {
+    //   const utcDate = new Date(utcDateString);
+    //   const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
+    //   const istDate = new Date(utcDate.getTime() + istOffset);
+    //   return istDate;
+    // };
+
+    console.log(selected);
+
+  useEffect(() => {
+    if (selected) {
+
+      console.log("UTC Date:", selected.holiday_date);
+      // Format the date and time fields correctly
+      // const istDate = convertToIST(selected.holiday_date);
+      // const formattedDate = istDate.toISOString().split("T")[0];
+      const formattedDate = convertToIST(selected.holiday_date);
+      // const formattedDate =  new Date(selected.holiday_date).toISOString().split("T")[0];
+      const formattedStartTime = selected.holiday_start_time.slice(0, 5);
+      const formattedEndTime = selected.holiday_end_time.slice(0, 5);
+      console.log("Formatted Date:", formattedDate); 
+      setUpHolidays({
+        ...upHolidays,
+        holiday_name: selected.holiday_name || "",
+        holiday_date: formattedDate || "",
+        holiday_start_time: formattedStartTime || "",
+        holiday_end_time: formattedEndTime || "",
+        notes: selected.notes || "",
+      });
+    }
+  }, [selected]);
+
+  console.log(selected);
   console.log(upData);
 
   const getHolidayList = async () => {
@@ -200,7 +270,8 @@ const CalenderSetting = () => {
     console.log(selected);
     try {
       const response = await axios.put(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateHolidays/${selected}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateHolidays/${selected.holiday_id
+      }`,
         upHolidays,
         {
           headers: {
@@ -240,6 +311,12 @@ const CalenderSetting = () => {
   useEffect(() => {
     getHolidayList();
   }, [branch.name]);
+
+  useEffect(()=>{
+
+  }, []);
+
+  console.log(holidayList);
 
   return (
     <>
@@ -415,7 +492,8 @@ const CalenderSetting = () => {
                               <tr className="table-row">
                                 <td>{item.holiday_name}</td>
                                 <td className="table-sno">
-                                  {item.holiday_date.split("T")[0]}
+                                  {/* {item.holiday_date.split("T")[0]} */}
+                                  {ConvertToIST(item.holiday_date)}
                                 </td>
                                 <td className="table-small">
                                   {item.holiday_start_time?.split(".")[0]}
@@ -429,7 +507,7 @@ const CalenderSetting = () => {
                                   <button
                                     className="btn btn-warning"
                                     onClick={() =>
-                                      openEditBlockDaysPopup(item.holiday_id)
+                                      openEditBlockDaysPopup(item.holiday_id,item)
                                     }
                                   >
                                     Edit

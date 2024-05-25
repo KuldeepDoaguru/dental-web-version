@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import axios from "axios";
 import cogoToast from "cogo-toast";
+import ReactPaginate from "react-paginate";
 
 const PrescriptionTemplate = () => {
   const [showAddPreTemp, setShowAddPreTemp] = useState(false);
@@ -24,20 +25,19 @@ const PrescriptionTemplate = () => {
   const [keyword, setkeyword] = useState("");
   const [selected, setSelected] = useState();
   const [pressById, setPressById] = useState([]);
+  const complaintsPerPage = 8; // Number of complaints per page
+  const [currentPage, setCurrentPage] = useState(0); // Start from the first page
   const [addPres, setAddPres] = useState({
     branch_name: branch.name,
     medicine_name: "",
     dosage: "",
-    frequency: "",
-    duration: "",
+  
     notes: "",
   });
 
   const [upPres, setUpPres] = useState({
-    medicine_name: "",
+    medicine_name:"",
     dosage: "",
-    frequency: "",
-    duration: "",
     notes: "",
   });
 
@@ -68,13 +68,18 @@ const PrescriptionTemplate = () => {
     setShowAddPreTemp(true);
   };
 
-  const openEditPreTempPopup = (id) => {
-    setSelected(id);
+  const openEditPreTempPopup = (id,item) => {
+    setSelected(item);
     console.log("open pop up");
     setShowEditPreTemp(true);
   };
-
+ console.log(selected)
   const closeUpdatePopup = () => {
+    setUpPres({
+      medicine_name: getPresList?.medicine_name,
+      dosage: getPresList?.dosage,
+      notes: getPresList?.notes,
+    })
     setShowAddPreTemp(false);
     setShowEditPreTemp(false);
   };
@@ -116,6 +121,12 @@ const PrescriptionTemplate = () => {
       closeUpdatePopup();
       getPrescriptionDetails();
       cogoToast.success("prescription details added successfully");
+      setAddPres({
+        branch_name: branch.name,
+        medicine_name: "",
+        dosage: "",
+        notes: "",
+      });
     } catch (error) {
       console.log(error);
     }
@@ -142,7 +153,7 @@ const PrescriptionTemplate = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updatePrescriptionDetails/${selected}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updatePrescriptionDetails/${selected.pr_id}`,
         upPres,
         {
           headers: {
@@ -153,6 +164,12 @@ const PrescriptionTemplate = () => {
       );
       closeUpdatePopup();
       getPrescriptionDetails();
+      // setAddPres({
+      //   branch_name: branch.name,
+      //   medicine_name: "",
+      //   dosage: "",
+      //   notes: "",
+      // });
       cogoToast.success("prescription details updated successfully");
     } catch (error) {
       console.log(error);
@@ -160,7 +177,10 @@ const PrescriptionTemplate = () => {
   };
 
   const deletePrescription = async (id) => {
-    alert("hello");
+    const isConfirmed = window.confirm("Are you sure you want to delete this data?");
+    if (!isConfirmed) {
+      return; // Exit if the user cancels the action
+    }
     try {
       const response = await axios.delete(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deletePrescription/${id}`,
@@ -171,6 +191,7 @@ const PrescriptionTemplate = () => {
           },
         }
       );
+    
       getPrescriptionDetails();
       cogoToast.success("prescription deleted successfully");
     } catch (error) {
@@ -187,6 +208,30 @@ const PrescriptionTemplate = () => {
 
   useEffect(() => {
     getPresDetailsById();
+  }, [selected]);
+
+  const searchFilter = getPresList.filter((lab)=>lab.medicine_name.toLowerCase().includes(keyword.toLowerCase()));
+
+  const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
+
+  const filterAppointDataByMonth = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return searchFilter?.slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const displayedAppointments = filterAppointDataByMonth();
+
+  useEffect(()=>{
+    setUpPres({
+      medicine_name: selected?.medicine_name,
+      dosage: selected?.dosage,
+      notes: selected?.notes,
+    })
   }, [selected]);
 
   return (
@@ -254,7 +299,7 @@ const PrescriptionTemplate = () => {
                         </h6>
                       </div>
                       <div>
-                        <p className="fw-bold text-light">Total - 30</p>
+                        <p className="fw-bold text-light">Total - {getPresList.length ? getPresList.length: "0"}</p>
                       </div>
                     </div>
                     <div class="table-responsive rounded">
@@ -264,25 +309,12 @@ const PrescriptionTemplate = () => {
                             <th className="table-sno">Prescription ID</th>
                             <th className="table-small">Medicine Name</th>
                             <th className="table-small">Dosage</th>
-                            <th className="table-small">Frequency</th>
-                            <th className="table-small">Duration</th>
-                            <th>Note</th>
+                            <th className="table-small">Note</th>
                             <th className="table-small">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
-                          {getPresList
-                            ?.filter((val) => {
-                              if (keyword === "") {
-                                return true;
-                              } else if (
-                                val.medicine_name
-                                  .toLowerCase()
-                                  .includes(keyword.toLowerCase())
-                              ) {
-                                return val;
-                              }
-                            })
+                          {displayedAppointments
                             .map((item) => (
                               <>
                                 <tr className="table-row">
@@ -291,18 +323,18 @@ const PrescriptionTemplate = () => {
                                     {item.medicine_name}
                                   </td>
                                   <td className="table-small">{item.dosage}</td>
-                                  <td className="table-small">
+                                  {/* <td className="table-small">
                                     {item.frequency}
                                   </td>
                                   <td className="table-small">
                                     {item.duration}
-                                  </td>
+                                  </td> */}
                                   <td>{item.notes}</td>
                                   <td>
                                     <button
                                       className="btn btn-warning"
                                       onClick={() =>
-                                        openEditPreTempPopup(item.pr_id)
+                                        openEditPreTempPopup(item.pr_id,item)
                                       }
                                     >
                                       Edit
@@ -310,14 +342,17 @@ const PrescriptionTemplate = () => {
                                     <button
                                       type="button"
                                       class="btn btn-danger mx-2"
-                                      data-bs-toggle="modal"
-                                      data-bs-target="#exampleModal"
+                                      // data-bs-toggle="modal"
+                                      // data-bs-target="#exampleModal"
+                                      onClick={() =>
+                                        deletePrescription(item.pr_id)
+                                      }
                                     >
                                       Delete
                                     </button>
                                   </td>
                                 </tr>
-                                <div
+                                {/* <div
                                   class="modal fade rounded"
                                   id="exampleModal"
                                   tabindex="-1"
@@ -357,11 +392,25 @@ const PrescriptionTemplate = () => {
                                       </div>
                                     </div>
                                   </div>
-                                </div>
+                                </div> */}
                               </>
                             ))}
                         </tbody>
                       </table>
+
+                      <PaginationContainer>
+                      <ReactPaginate
+                        previousLabel={"previous"}
+                        nextLabel={"next"}
+                        breakLabel={"..."}
+                        pageCount={totalPages}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageChange}
+                        containerClassName={"pagination"}
+                        activeClassName={"active"}
+                      />
+                       </PaginationContainer>
                     </div>
                   </div>
                 </div>
@@ -396,7 +445,7 @@ const PrescriptionTemplate = () => {
                   onChange={handleAddPres}
                 />
                 <br />
-                <input
+                {/* <input
                   type="text"
                   placeholder="Add frequency"
                   className="rounded p-2"
@@ -404,8 +453,8 @@ const PrescriptionTemplate = () => {
                   value={addPres.frequency}
                   onChange={handleAddPres}
                 />
-                <br />
-                <input
+                <br /> */}
+                {/* <input
                   type="text"
                   placeholder="Add duration"
                   className="rounded p-2"
@@ -413,7 +462,7 @@ const PrescriptionTemplate = () => {
                   value={addPres.duration}
                   onChange={handleAddPres}
                 />
-                <br />
+                <br /> */}
                 <input
                   type="text"
                   placeholder="Add notes"
@@ -452,7 +501,7 @@ const PrescriptionTemplate = () => {
               <form className="d-flex flex-column" onSubmit={updatePresData}>
                 <input
                   type="text"
-                  placeholder={pressById[0]?.medicine_name}
+                  placeholder={pressById?.medicine_name}
                   className="rounded p-2"
                   name="medicine_name"
                   value={upPres.medicine_name}
@@ -461,14 +510,14 @@ const PrescriptionTemplate = () => {
                 <br />
                 <input
                   type="text"
-                  placeholder={pressById[0]?.dosage}
+                  placeholder={pressById?.dosage}
                   className="rounded p-2"
                   name="dosage"
                   value={upPres.dosage}
                   onChange={handleUpdatePres}
                 />
                 <br />
-                <input
+                {/* <input
                   type="text"
                   placeholder={pressById[0]?.frequency}
                   className="rounded p-2"
@@ -485,7 +534,7 @@ const PrescriptionTemplate = () => {
                   value={upPres.duration}
                   onChange={handleUpdatePres}
                 />
-                <br />
+                <br /> */}
                 <input
                   type="text"
                   placeholder={pressById[0]?.notes}
@@ -590,5 +639,42 @@ const Container = styled.div`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+`;
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid black;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .pagination li.active a {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+  }
+
+  .pagination li.disabled a {
+    color: #ddd;
+    cursor: not-allowed;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #ddd;
   }
 `;

@@ -6,16 +6,20 @@ import { Link, useNavigate } from "react-router-dom";
 import BranchSelector from "../../components/BranchSelector";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { clearUser, toggleTableRefresh } from "../../redux/slices/UserSlicer";
+import moment from 'moment';
 
 const SuperAdmNotify = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  console.log(user.token);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
   const branch = useSelector((state) => state.branch);
   console.log(`User Name: ${branch.name}`);
   const [notifyList, setNotifyList] = useState([]);
+  const { refreshTable } = useSelector((state) => state.user);
 
   const getNotifyDetails = async () => {
     try {
@@ -37,7 +41,7 @@ const SuperAdmNotify = () => {
   const updateMarkRead = async (id) => {
     try {
       const response = await axios.put(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/markRead/${id}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/markRead/${id}`,{}, 
         {
           headers: {
             "Content-Type": "application/json",
@@ -46,6 +50,7 @@ const SuperAdmNotify = () => {
         }
       );
       getNotifyDetails();
+      dispatch(toggleTableRefresh());
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +58,7 @@ const SuperAdmNotify = () => {
 
   useEffect(() => {
     getNotifyDetails();
-  }, [notifyList.length]);
+  }, [notifyList.length , refreshTable]);
 
   console.log(notifyList);
 
@@ -103,14 +108,8 @@ const SuperAdmNotify = () => {
                                     </a>
                                   </h4>
                                   <p>{item.event_msg}</p>
-                                  <p>Date : {item.time.split("T")[0]} </p>
-                                  <p>
-                                    Time :{" "}
-                                    {item.time
-                                      .split("T")[1]
-                                      .split(".")[0]
-                                      .slice(0, 5)}
-                                  </p>
+                                  {/* <p>Date : {moment(item.time).utc().format('YYYY-MM-DD')}</p> */}
+                                   {/* <p>Time : {moment(item.time).utc().format('HH:mm')}</p> */}
                                 </div>
                                 {item.status !== "read" ? (
                                   <>

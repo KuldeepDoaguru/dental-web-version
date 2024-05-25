@@ -187,6 +187,7 @@ const ManageStaff = () => {
       );
 
       cogoToast.success("Registration successful!");
+      addEmployeeTimeline();
       getDocDetailsList();
       setInEmpData({
         branch: branch.name,
@@ -222,7 +223,33 @@ const ManageStaff = () => {
     }
   };
 
-  console.log(inEmpData);
+  console.log(new Date().toISOString().split("T")[0]);
+
+
+  const addEmployeeTimeline = async() =>{
+    try {
+      const response = await axios.post(
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/addSuperAdminNotify`,
+        {
+          branch_name: branch.name,
+          title: "New Employee Registered",
+          event_msg: `Please Check Manage Staff List ${inEmpData.empName}`,
+          open: "/manage-staff",
+          status: "unread",
+          time : new Date().toISOString().split("T")[0],
+        }
+        , 
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(`error employee TimeLine ${error}`);
+    }
+  }
   return (
     <>
       <Container>

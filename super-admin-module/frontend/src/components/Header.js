@@ -41,6 +41,7 @@ const Header = () => {
     try {
       const response = await axios.put(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/markRead/${id}`,
+        {},
         {
           headers: {
             "Content-Type": "application/json",
@@ -49,6 +50,7 @@ const Header = () => {
         }
       );
       getNotifyDetails();
+      dispatch(toggleTableRefresh());
     } catch (error) {
       // console.log(error);
     }
@@ -74,6 +76,15 @@ const Header = () => {
   useEffect(() => {
     getNotifyDetails();
   }, [refreshTable]);
+
+  useEffect(() => {
+    getNotifyDetails();
+    const intervalId = setInterval(getNotifyDetails, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   console.log(notifyList);
 
@@ -163,47 +174,58 @@ const Header = () => {
                     <AiFillBell className="icon" />
                     <div className="nav-cart-count">{filterForRead.length}</div>
                   </a>
-                  <ul className="dropdown-menu third-dropdown">
-                    {filterForRead?.slice(-10).map((item) => {
-                      return (
-                        <>
-                          <li key={item.id}>
-                            <div className="d-flex p-3 justify-content-between">
-                              <div className="right-noti">
-                                <h4>
-                                  <a
-                                    href={item.open}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                  >
-                                    {item.title}
-                                  </a>
-                                </h4>
-                                <p>{item.event_msg}</p>
+                  {filterForRead.length == 0 ? (
+                    <>
+                      <ul className="dropdown-menu first-dropdown">
+                        {" "}
+                        <Link to="/super-admin-notification" className="mx-2">
+                          <button className="btn btn-info">view all</button>
+                        </Link>
+                      </ul>
+                    </>
+                  ) : (
+                    <ul className="dropdown-menu third-dropdown">
+                      {filterForRead?.slice(-10).map((item) => {
+                        return (
+                          <>
+                            <li key={item.id}>
+                              <div className="d-flex p-3 justify-content-between">
+                                <div className="right-noti">
+                                  <h4>
+                                    <a
+                                      href={item.open}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {item.title}
+                                    </a>
+                                  </h4>
+                                  <p>{item.event_msg}</p>
+                                </div>
                               </div>
-                            </div>
-                            <div className="mx-2">
-                              <button
-                                className="btn btn-info"
-                                onClick={() => updateMarkRead(item.event_id)}
-                              >
-                                Mark as Read
-                              </button>
-                              <Link
-                                to="/super-admin-notification"
-                                className="mx-2"
-                              >
-                                <button className="btn btn-info">
-                                  view all
+                              <div className="mx-2">
+                                <button
+                                  className="btn btn-info"
+                                  onClick={() => updateMarkRead(item.event_id)}
+                                >
+                                  Mark as Read
                                 </button>
-                              </Link>
-                            </div>
-                          </li>
-                          <hr />
-                        </>
-                      );
-                    })}
-                  </ul>
+                                <Link
+                                  to="/super-admin-notification"
+                                  className="mx-2"
+                                >
+                                  <button className="btn btn-info">
+                                    view all
+                                  </button>
+                                </Link>
+                              </div>
+                            </li>
+                            <hr />
+                          </>
+                        );
+                      })}
+                    </ul>
+                  )}
                 </li>
               </ul>
             </div>
@@ -268,6 +290,23 @@ const Wrapper = styled.div`
     width: 500px;
     left: -27rem;
     overflow-y: auto;
+    max-height: calc(100vh - 100px);
+    @media screen and (max-width: 900px) {
+      width: 500px;
+      left: 0rem;
+      overflow-y: auto;
+      max-height: calc(100vh - 100px);
+      position: absolute;
+    }
+  }
+
+  .first-dropdown {
+    width: 75px;
+    left: -5rem;
+    background: transparent;
+    border: 0;
+    overflow-y: auto;
+    text-align: center;
     max-height: calc(100vh - 100px);
     @media screen and (max-width: 900px) {
       width: 500px;

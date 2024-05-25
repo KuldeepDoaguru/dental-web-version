@@ -5,7 +5,7 @@ const userSlice = createSlice({
   initialState: { currentUser: null },
   reducers: {
     setUser: (state, action) => {
-      state.currentUser = action.payload;
+      state.currentUser = action.payload; 
     },
     clearUser: (state) => {
       alert("clear user called");

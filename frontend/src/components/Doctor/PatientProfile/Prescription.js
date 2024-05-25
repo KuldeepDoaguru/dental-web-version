@@ -11,7 +11,7 @@ const Prescription = () => {
   console.log(uhid);
   const user = useSelector((state) => state.user);
   const branch = useSelector((state) => state.branch);
-
+  const token = user.currentUser.token;
   const [presData, setPresData] = useState([]);
 
   const getPresDetails = async () => {
@@ -20,7 +20,13 @@ const Prescription = () => {
       //   `http://localhost:7777/api/v1/super-admin/getPrescriptionDetailsById/${pid}`
       // );
       const response = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getPrescriptionPatientProfile/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getPrescriptionPatientProfile/${uhid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setPresData(response.data);

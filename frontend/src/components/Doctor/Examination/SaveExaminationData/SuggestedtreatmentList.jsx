@@ -12,6 +12,7 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
   const user = useSelector((state) => state.user);
   const { refreshTable, currentUser } = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
+  const token = user.currentUser.token;
   console.log(branch);
   const [treatList, setTreatList] = useState([]);
   const [showEditPopup, setShowEditPopup] = useState(false);
@@ -22,7 +23,13 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
   const getListTreatment = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatList/${branch}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatList/${branch}/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
       setTreatList(data);

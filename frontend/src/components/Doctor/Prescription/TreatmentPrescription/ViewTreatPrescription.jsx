@@ -11,6 +11,7 @@ const ViewTreatPrescription = () => {
   const navigate = useNavigate();
   const [getPatientData, setGetPatientData] = useState([]);
   const user = useSelector((state) => state.user);
+  const token = user.currentUser.token;
   console.log(user);
   const branch = user.currentUser.branch_name;
   console.log(branch);
@@ -24,7 +25,13 @@ const ViewTreatPrescription = () => {
   const getBranchDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
       setGetBranch(data);
@@ -39,7 +46,13 @@ const ViewTreatPrescription = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetPatientData(res.data.result);
     } catch (error) {
@@ -50,7 +63,13 @@ const ViewTreatPrescription = () => {
   const getLabAllData = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-details/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-details/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetLabData(res.data.lab_details);
       console.log(res.data.lab_details);
@@ -70,7 +89,13 @@ const ViewTreatPrescription = () => {
   const getExaminDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByTpid/${tpid}/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetExaminData(res.data);
       console.log(res.data);
@@ -88,7 +113,13 @@ const ViewTreatPrescription = () => {
   const getTreatDetail = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDetailsViaSitting/${branch}/${tpid}/${sitting}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDetailsViaSitting/${branch}/${tpid}/${sitting}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetTreatData(data);
       console.log(data);
@@ -107,7 +138,13 @@ const ViewTreatPrescription = () => {
   const getTreatPrescriptionByAppointId = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${appoint_id}/${tpid}/${treatment}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${appoint_id}/${tpid}/${treatment}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetTreatMedicine(res.data);
       console.log(res.data);
@@ -125,7 +162,13 @@ const ViewTreatPrescription = () => {
   const getTreatmentSuggestAppointId = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentData/${appoint_id}/${tpid}/${branch}/${sitting}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentData/${appoint_id}/${tpid}/${branch}/${sitting}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetTreatSug(res.data.data);
       console.log(res.data.data);

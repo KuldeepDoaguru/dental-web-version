@@ -68,6 +68,7 @@ const ClinicExamin = () => {
   // const { pid } = useParams();
   const { uhid } = useParams();
   const user = useSelector((state) => state.user);
+  const token = user.currentUser.token;
   // console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
   const branch = user.currentUser.branch_name;
@@ -81,7 +82,13 @@ const ClinicExamin = () => {
       //   `http://localhost:7777/api/v1/super-admin/examinDetailsByPatId/${pid}`
       // );
       const respsData = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalPatientDataByID/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalPatientDataByID/${uhid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setExmData(respsData.data);
       console.log(respsData.data);

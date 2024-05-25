@@ -6,6 +6,7 @@ import { FaPrescriptionBottleMedical } from "react-icons/fa6";
 import { MdEdit } from "react-icons/md";
 import { FaLocationArrow } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
+import cogoToast from "cogo-toast";
 
 const NewTreatmentTable = () => {
   const { id, tpid } = useParams();
@@ -21,6 +22,7 @@ const NewTreatmentTable = () => {
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
   const doctor = user.currentUser.employee_name;
+  const token = user.currentUser.token;
   console.log(branch);
   console.log(doctor);
 
@@ -28,7 +30,13 @@ const NewTreatmentTable = () => {
   const getPatientDetail = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data.result[0]?.patient_name);
       setGetPatientData(data.result);
@@ -42,7 +50,13 @@ const NewTreatmentTable = () => {
   const fetchTreatmentData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDataViaBranchAndTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDataViaBranchAndTpid/${tpid}/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setTreatmentData(data);
       console.log(data);
@@ -57,7 +71,7 @@ const NewTreatmentTable = () => {
     try {
       let total = 0;
       treatmentData.forEach((item) => {
-        total = total + parseFloat(item.net_amount);
+        total = total + parseFloat(item.paid_amount);
       });
       console.log(total);
       return total;
@@ -130,6 +144,12 @@ const NewTreatmentTable = () => {
           description: `Final Bill Generated for TPID : ${tpid}`,
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -142,7 +162,13 @@ const NewTreatmentTable = () => {
     try {
       const res = await axios.post(
         "https://dentalgurudoctor.doaguru.com/api/doctor/generateFinalBillwithTpid",
-        billInputField
+        billInputField,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(res);
       setBillData(res.data);
@@ -151,6 +177,7 @@ const NewTreatmentTable = () => {
       navigate(`/ViewPatientTotalBill/${tpid}`);
     } catch (error) {
       console.log(error);
+      cogoToast.error(error.response.data.message);
     }
   };
 
@@ -163,7 +190,13 @@ const NewTreatmentTable = () => {
   const getExamintionTeeth = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataById/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetExamTeeth(res.data);
       console.log(res.data);
@@ -181,14 +214,9 @@ const NewTreatmentTable = () => {
   console.log(getExamTeeth);
 
   console.log(treatmentData);
-  const filterTreatmentStats =
-    getExamTeeth?.every((item) => item.treatment_status === "pending") ||
-    (getExamTeeth?.some((item) => item.treatment_status === "completed") &&
-      getExamTeeth?.every(
-        (item) =>
-          item.treatment_status === "pending" ||
-          item.treatment_status === "completed"
-      ));
+  const filterTreatmentStats = getExamTeeth?.some(
+    (item) => item.treatment_status === "completed"
+  );
 
   console.log(filterTreatmentStats);
 
@@ -273,14 +301,14 @@ const NewTreatmentTable = () => {
           </table>
           <div className="text-center">
             {filterTreatmentStats ? (
-              <button className="btn btn-info fs-5 text-light" disabled>
-                Save & Continue <FaLocationArrow size={25} />
-              </button>
-            ) : (
               <button
                 className="btn btn-info fs-5 text-light"
                 onClick={generateFinalBill}
               >
+                Save & Continue <FaLocationArrow size={25} />
+              </button>
+            ) : (
+              <button className="btn btn-info fs-5 text-light" disabled>
                 Save & Continue <FaLocationArrow size={25} />
               </button>
             )}

@@ -975,6 +975,21 @@ const applyLeave = (req, res) => {
   }
 };
 
+const getPatBills = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ?";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "internal server error" });
+  }
+};
+
 module.exports = {
   getTreatmentList,
   insertTreatmentData,
@@ -1008,4 +1023,5 @@ module.exports = {
   MarkAttendanceLogin,
   MarkAttendanceLogout,
   applyLeave,
+  getPatBills,
 };

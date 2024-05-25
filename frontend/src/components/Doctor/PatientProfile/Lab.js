@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -7,11 +8,18 @@ const Lab = () => {
   const { uhid } = useParams();
   console.log(uhid);
   const [testData, setTestData] = useState([]);
-
+  const user = useSelector((state) => state.user);
+  const token = user.currentUser.token;
   const getLabTest = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getPatientLabTestByPatientId/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getPatientLabTestByPatientId/${uhid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setTestData(data);
     } catch (error) {

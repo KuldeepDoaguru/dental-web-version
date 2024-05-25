@@ -10,6 +10,7 @@ const Treatment = () => {
   const { uhid } = useParams();
   console.log(uhid);
   const user = useSelector((state) => state.user);
+  const token = user.currentUser.token;
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
   const branch = user.currentUser.branch_name;
@@ -25,7 +26,13 @@ const Treatment = () => {
       // );
 
       const resps = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentViaUhid/${branch}/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentViaUhid/${branch}/${uhid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(resps.data);
       setTreatDetails(resps.data);

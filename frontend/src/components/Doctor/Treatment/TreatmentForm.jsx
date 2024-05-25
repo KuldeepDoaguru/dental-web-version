@@ -12,12 +12,12 @@ const TreatmentForm = () => {
   const { tsid } = useParams();
   const { appoint_id } = useParams();
   const { tp_id, treatment } = useParams();
-
   console.log(tsid, appoint_id, tp_id, treatment);
   const navigate = useNavigate();
   const [getPatientData, setGetPatientData] = useState([]);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const token = user.currentUser.token;
   console.log(user.currentUser.employee_ID);
   const branch = user.currentUser.branch_name;
   console.log(branch);
@@ -52,7 +52,13 @@ const TreatmentForm = () => {
   const getDentalTreatData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getOnlyExaminv/${tp_id}/${tsid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getOnlyExaminv/${tp_id}/${tsid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setSitCheck(data);
     } catch (error) {
@@ -84,7 +90,7 @@ const TreatmentForm = () => {
     getTreatmentList();
   }, [sitCheck.length]);
 
-  console.log(treatments);
+  console.log(treatments[0]?.current_sitting);
   const lastIndex = treatments.length - 1;
   const lastTreatment = treatments[lastIndex];
   console.log(lastTreatment);
@@ -163,18 +169,85 @@ const TreatmentForm = () => {
   console.log(rawNetAmount);
   console.log(netAmount);
   console.log(formData.paid_amount);
-  const pendingValue = () => {
-    if (lastTreatment?.pending_amount > 0) {
-      if (formData.sitting_payment_status === "Pending") {
-        return lastTreatment?.pending_amount;
+
+  const secrecAmount = () => {
+    if (treatments[0]?.current_sitting > 1) {
+      if (lastTreatment?.pending_amount === undefined) {
+        if (showDirect) {
+          if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
+            return securityAmt[0]?.remaining_amount;
+          } else {
+            return formData.paid_amount;
+          }
+        } else if ((formData.paid_amount !== "") & showDirect) {
+          if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
+            return securityAmt[0]?.remaining_amount;
+          } else {
+            return formData.paid_amount;
+          }
+        } else {
+          return 0;
+        }
       } else {
-        return lastTreatment?.pending_amount - formData.paid_amount;
+        if (showDirect) {
+          if (
+            securityAmt[0]?.remaining_amount <= lastTreatment?.pending_amount
+          ) {
+            return securityAmt[0]?.remaining_amount;
+          } else {
+            return lastTreatment?.pending_amount;
+          }
+        } else if ((formData.paid_amount !== "") & showDirect) {
+          if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
+            return securityAmt[0]?.remaining_amount;
+          } else {
+            return formData.paid_amount;
+          }
+        } else {
+          return 0;
+        }
       }
     } else {
-      if (formData.sitting_payment_status === "Pending") {
-        return lastTreatment?.pending_amount;
+      if (showDirect) {
+        if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
+          return securityAmt[0]?.remaining_amount;
+        } else {
+          return formData.paid_amount;
+        }
+      } else if ((formData.paid_amount !== "") & showDirect) {
+        if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
+          return securityAmt[0]?.remaining_amount;
+        } else {
+          return formData.paid_amount;
+        }
       } else {
         return 0;
+      }
+    }
+  };
+
+  const secRecValue = secrecAmount();
+  console.log(secRecValue);
+  const pendingValue = () => {
+    if (treatments[0]?.current_sitting > 1) {
+      if (lastTreatment?.pending_amount > 0) {
+        if (formData.sitting_payment_status === "Pending") {
+          return lastTreatment?.pending_amount;
+        } else {
+          return lastTreatment?.pending_amount - formData.paid_amount;
+        }
+      } else {
+        if (formData.sitting_payment_status === "Pending") {
+          return lastTreatment?.pending_amount;
+        } else {
+          return 0;
+        }
+      }
+    } else {
+      if (showDirect) {
+        return secRecValue - formData.paid_amount;
+      } else {
+        return formData.paid_amount;
       }
     }
   };
@@ -182,7 +255,7 @@ const TreatmentForm = () => {
   console.log(pendingValue());
   useEffect(() => {
     pendingValue();
-  }, [formData.paid_amount, formData.sitting_payment_status, showDirect]);
+  }, [formData.paid_amount, formData.sitting_payment_status]);
 
   const pendingAmountValue = pendingValue();
 
@@ -198,6 +271,12 @@ const TreatmentForm = () => {
               : `Sitting Done, TPID : ${tp_id}`,
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -265,44 +344,6 @@ const TreatmentForm = () => {
   const payableAmountafterSecAmount = paysecAmt();
   console.log(payableAmountafterSecAmount);
 
-  const secrecAmount = () => {
-    if (lastTreatment?.pending_amount === undefined) {
-      if (showDirect) {
-        if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
-          return securityAmt[0]?.remaining_amount;
-        } else {
-          return formData.paid_amount;
-        }
-      } else if ((formData.paid_amount !== "") & showDirect) {
-        if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
-          return securityAmt[0]?.remaining_amount;
-        } else {
-          return formData.paid_amount;
-        }
-      } else {
-        return 0;
-      }
-    } else {
-      if (showDirect) {
-        if (securityAmt[0]?.remaining_amount <= lastTreatment?.pending_amount) {
-          return securityAmt[0]?.remaining_amount;
-        } else {
-          return lastTreatment?.pending_amount;
-        }
-      } else if ((formData.paid_amount !== "") & showDirect) {
-        if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
-          return securityAmt[0]?.remaining_amount;
-        } else {
-          return formData.paid_amount;
-        }
-      } else {
-        return 0;
-      }
-    }
-  };
-
-  const secRecValue = secrecAmount();
-  console.log(secRecValue);
   console.log(pendingAmountValue, secRecValue);
 
   const formDetails = {
@@ -347,7 +388,13 @@ const TreatmentForm = () => {
     try {
       const response = await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatSittingStatus/${branch}/${tsid}`,
-        { treatment_status: treatStats }
+        { treatment_status: treatStats },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       // alert("treatment status updated");
     } catch (error) {
@@ -359,7 +406,13 @@ const TreatmentForm = () => {
     try {
       const res = await axios.post(
         `https://dentalgurudoctor.doaguru.com/api/doctor/insertTreatmentData/${tsid}/${appoint_id}/${tp_id}`,
-        formDetails
+        formDetails,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (res.status >= 200 && res.status < 300) {
         timelineForTreatForm();
@@ -399,7 +452,13 @@ const TreatmentForm = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tp_id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tp_id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       const uhid = res.data.result.length > 0 ? res.data.result[0].uhid : null;
@@ -444,7 +503,13 @@ const TreatmentForm = () => {
   const getSecurityAmt = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getSecurityAmountByAppointmentId/${tp_id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getSecurityAmountByAppointmentId/${tp_id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setSecurityAmt(data.data);
       console.log(data.data);
@@ -498,6 +563,12 @@ const TreatmentForm = () => {
               : netAmount > securityAmt[0]?.remaining_amount
               ? "pending"
               : "Received",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(res);
@@ -525,6 +596,12 @@ const TreatmentForm = () => {
           } security amount used`,
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -540,7 +617,13 @@ const TreatmentForm = () => {
       try {
         const res = await axios.put(
           `https://dentalgurudoctor.doaguru.com/api/doctor/updateSecurityAmountAfterPayment/${tp_id}`,
-          { remaining_amount: remaining_amount }
+          { remaining_amount: remaining_amount },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log(res);
 
@@ -854,7 +937,8 @@ const TreatmentForm = () => {
                       </label>
                       <div>
                         {securityAmt[0]?.remaining_amount > 0 &&
-                        (formData.disc_amt || lastTreatment?.disc_amt > 0) ? (
+                        ((formData.disc_amt && formData.paid_amount) ||
+                          lastTreatment?.disc_amt > 0) ? (
                           !showDirect ? (
                             <button
                               type="button"
@@ -891,27 +975,46 @@ const TreatmentForm = () => {
                           ? "Do you want to make payment directly"
                           : "Payment Status"}
                       </label>
-
-                      {!showDirect ? (
+                      {treatments[0]?.current_sitting > 1 ? (
+                        !showDirect ? (
+                          <>
+                            <small className="ms-2" style={{ color: "red" }}>
+                              (Remaining Pending Payment :{" "}
+                              {lastTreatment?.pending_amount === 0
+                                ? netAmount <= 0
+                                  ? 0
+                                  : netAmount
+                                : lastTreatment?.pending_amount}
+                              )
+                            </small>
+                          </>
+                        ) : (
+                          <>
+                            <small className="ms-2" style={{ color: "red" }}>
+                              (Remaining Current Payment :{" "}
+                              {lastTreatment?.pending_amount - secRecValue})
+                            </small>
+                          </>
+                        )
+                      ) : !showDirect ? (
                         <>
                           <small className="ms-2" style={{ color: "red" }}>
                             (Remaining Pending Payment :{" "}
-                            {lastTreatment?.pending_amount === 0
-                              ? netAmount <= 0
-                                ? 0
-                                : netAmount
-                              : lastTreatment?.pending_amount}
+                            {formData.paid_amount === rawNetAmount
+                              ? 0
+                              : rawNetAmount - formData.paid_amount}
                             )
                           </small>
                         </>
                       ) : (
                         <>
                           <small className="ms-2" style={{ color: "red" }}>
-                            (Remaining Net Payment :{" "}
-                            {lastTreatment?.pending_amount - secRecValue})
+                            (Remaining Current Payment :{" "}
+                            {formData.paid_amount - secRecValue})
                           </small>
                         </>
                       )}
+
                       <select
                         class="form-control"
                         id=""

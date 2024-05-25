@@ -989,6 +989,7 @@ const ExaminationPatientTest = ({ tpid }) => {
         }
       );
       console.log(response.data);
+      cogoToast.success("data saved");
       dispatch(toggleTableRefresh());
       timelineForExamination();
       setInputItem({

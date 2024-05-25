@@ -15,6 +15,7 @@ const EditTreatSuggestModal = ({ onClose, selectedData, openBookAppoint }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
+  const token = user.currentUser.token;
   console.log(branch);
   console.log(selectedData);
   const [changeSitting, setChangeSitting] = useState(
@@ -29,7 +30,13 @@ const EditTreatSuggestModal = ({ onClose, selectedData, openBookAppoint }) => {
       if (selectedData.current_sitting < changeSitting) {
         const { data } = await axios.put(
           `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatSuggestion/${selectedData.ts_id}/${branch}`,
-          { total_sitting: changeSitting }
+          { total_sitting: changeSitting },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         cogoToast.success("sitting updated");
         onClose();

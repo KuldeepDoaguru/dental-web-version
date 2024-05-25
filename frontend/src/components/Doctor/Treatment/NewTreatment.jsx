@@ -13,22 +13,55 @@ const NewTreatment = () => {
   console.log(appoint_id);
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedData, setSelectedData] = useState();
-
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const { refreshTable, currentUser } = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
+  const token = user.currentUser.token;
   const [getPatientData, setGetPatientData] = useState([]);
   const [uniqueValue, setUniqueValue] = useState([]);
   const [getExamTeeth, setGetExamTeeth] = useState([]);
   const [vdata, setVdata] = useState([]);
+  const [patBills, setPatBills] = useState([]);
   const navigate = useNavigate();
+
+  const getBillData = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getPatBills/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setPatBills(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(patBills[4]?.tp_id, Number(tpid));
+
+  const filterBills = patBills?.filter((item) => {
+    return item.tp_id === Number(tpid);
+  });
+
+  console.log(filterBills);
 
   // Get Patient Details START
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetPatientData(res.data.result);
     } catch (error) {
@@ -53,7 +86,13 @@ const NewTreatment = () => {
   const getExamintionTeeth = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminedataById/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetExamTeeth(res.data);
       console.log(res.data);
@@ -64,6 +103,7 @@ const NewTreatment = () => {
 
   useEffect(() => {
     getExamintionTeeth();
+    getBillData();
   }, []);
 
   // Get Examintion Teeth Details END
@@ -78,7 +118,13 @@ const NewTreatment = () => {
   const getUniqueTreatValues = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getFilteredTreat/13/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getFilteredTreat/13/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setUniqueValue(data);
     } catch (error) {
@@ -93,7 +139,13 @@ const NewTreatment = () => {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByID/${appoint_id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByID/${appoint_id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setVdata(data);
     } catch (error) {
@@ -223,13 +275,27 @@ const NewTreatment = () => {
                             <button className="btn btn-success" disabled>
                               <FaHandHoldingMedical size={25} />
                             </button>
-                          ) : (
+                          ) : filterBills.length === 0 ? (
                             <button
                               className="btn btn-secondary"
                               onClick={() => handleShowTreatProcess(item)}
                             >
                               <FaHandHoldingMedical size={25} />
                             </button>
+                          ) : (
+                            <>
+                              <div className="tooltip-container">
+                                <button
+                                  className="btn btn-secondary disabledbtn"
+                                  disabled
+                                >
+                                  <FaHandHoldingMedical size={25} />
+                                </button>
+                                <span className="tooltip-text">
+                                  Bill has been generated already
+                                </span>
+                              </div>
+                            </>
                           )}
                         </td>
                       </tr>
@@ -292,5 +358,44 @@ const Wrapper = styled.div`
     @media screen and (min-width: 480px) and (max-width: 768px) {
       width: 100%;
     }
+  }
+
+  .tooltip-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .tooltip-container .tooltip-text {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    font-size: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%; /* Position the tooltip above the button */
+    left: 50%;
+    margin-left: -60px; /* Center the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tooltip-container .tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%; /* At the bottom of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent; /* Arrow color */
+  }
+
+  .tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
   }
 `;

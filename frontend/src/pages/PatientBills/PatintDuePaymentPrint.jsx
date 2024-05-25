@@ -12,6 +12,9 @@ const PatintDuePaymentPrint = () => {
   const navigate = useNavigate();
   const { tpid } = useParams();
   const user = useSelector((state) => state.user.currentUser);
+  const userToken = useSelector((state) => state.user);
+  const token = userToken.currentUser.token;
+  console.log(token);
   console.log(user);
   const [branchData, setBranchData] = useState([]);
   const [billAmount, setBillAmount] = useState([]);
@@ -38,7 +41,13 @@ const PatintDuePaymentPrint = () => {
   const getBranchDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${user.branch_name}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${user.branch_name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
       setBranchData(data);
@@ -52,7 +61,13 @@ const PatintDuePaymentPrint = () => {
   const secuirtyAmtBytpuhid = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getSecurityAmountDataByTPUHID/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getSecurityAmountDataByTPUHID/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
       setSaAmt(data);
@@ -64,7 +79,13 @@ const PatintDuePaymentPrint = () => {
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getPatientBillsAndSecurityAmountByBranch/${user.branch_name}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getPatientBillsAndSecurityAmountByBranch/${user.branch_name}/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setBillAmount(data);
     } catch (error) {
@@ -139,6 +160,12 @@ const PatintDuePaymentPrint = () => {
         `https://dentalgurudoctor.doaguru.com/api/doctor/updateRemainingSecurityAmount/${tpid}`,
         {
           remaining_amount: remainingSecurityAmount,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       cogoToast.success("update remaining Successfully amt");
@@ -163,6 +190,12 @@ const PatintDuePaymentPrint = () => {
           receiver_name: user.employee_name,
           receiver_emp_id: user.id,
           pay_by_sec_amt: updatedPay_by_sec_amt,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       if (response.data.success) {
@@ -202,10 +235,18 @@ const PatintDuePaymentPrint = () => {
   const completeTreatment = async () => {
     try {
       const res = await axios.put(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatmentStatus/${user.branch_name}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatmentStatus/${user.branch_name}/${tpid}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(res);
       cogoToast.success("Treatment Completed");
+      navigate("/doctor-dashboard");
     } catch (error) {
       console.log(error.response.data.message);
       cogoToast.error(error.response.data.message);
@@ -448,7 +489,7 @@ const PatintDuePaymentPrint = () => {
                         className="btn btn-warning ms-2"
                         onClick={completeTreatment}
                       >
-                        Mark Treatment Complete
+                        Mark Treatment Complete & Go to dashboard
                       </button>
                     </>
                   ) : (

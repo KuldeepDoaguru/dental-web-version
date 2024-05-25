@@ -23,11 +23,19 @@ const SaveData = ({ id, tpid }) => {
   const [modalIndex, setModalIndex] = useState(null); // State to manage which modal is open
   const dispatch = useDispatch();
   const { refreshTable, currentUser } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user);
+  const token = user.currentUser.token;
 
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByID/${id}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByID/${id}/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setData(data);
     } catch (error) {
@@ -61,6 +69,12 @@ const SaveData = ({ id, tpid }) => {
           description: "Add Teeth Pediatric DentalX",
           // branch: branch,
           // patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -76,7 +90,13 @@ const SaveData = ({ id, tpid }) => {
     try {
       const response = await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/updatedentalPediatric/${id}`,
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       // window.location.reload();
@@ -111,7 +131,13 @@ const SaveData = ({ id, tpid }) => {
 
       if (confirmed) {
         const res = await axios.delete(
-          `https://dentalgurudoctor.doaguru.com/api/doctor/deleteDentalPediatric/${id}`
+          `https://dentalgurudoctor.doaguru.com/api/doctor/deleteDentalPediatric/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log(res.data);
         setData(data.filter((item) => item.exm_id !== id));

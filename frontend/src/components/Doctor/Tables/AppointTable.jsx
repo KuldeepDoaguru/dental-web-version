@@ -182,21 +182,21 @@ const AppointTable = () => {
         appointId,
       };
 
-      if (action === "Cancel") {
-        // console.log(uhid);
-        const cancelReason = prompt(
-          "Please provide a reason for cancellation:"
-        );
-        if (cancelReason !== null) {
-          requestBody.reason = cancelReason;
-          timelineForCancelTreat(uhid);
-          // console.log(uhid);
-          cogoToast.success("Patient Appointment Cancel Successfully");
-        } else {
-          // console.log(uhid);
-          return;
-        }
-      }
+      // if (action === "Cancel") {
+      //   // console.log(uhid);
+      //   const cancelReason = prompt(
+      //     "Please provide a reason for cancellation:"
+      //   );
+      //   if (cancelReason !== null) {
+      //     requestBody.reason = cancelReason;
+      //     timelineForCancelTreat(uhid);
+      //     // console.log(uhid);
+      //     cogoToast.success("Patient Appointment Cancel Successfully");
+      //   } else {
+      //     // console.log(uhid);
+      //     return;
+      //   }
+      // }
 
       await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/upDateAppointmentStatus`,
@@ -385,7 +385,7 @@ const AppointTable = () => {
                                           Start Treatment
                                         </button>
                                       </li>
-                                      <li>
+                                      {/* <li>
                                         <button
                                           className="dropdown-item mx-0"
                                           onClick={() =>
@@ -398,7 +398,7 @@ const AppointTable = () => {
                                         >
                                           Cancel Treatment
                                         </button>
-                                      </li>
+                                      </li> */}
                                       {/* <li>
                                   <button
                                     className="dropdown-item mx-0"
@@ -549,7 +549,7 @@ const AppointTable = () => {
                                               Start Treatment
                                             </button>
                                           </li>
-                                          <li>
+                                          {/* <li>
                                             <button
                                               className="dropdown-item mx-0"
                                               onClick={() =>
@@ -562,7 +562,7 @@ const AppointTable = () => {
                                             >
                                               Cancel Treatment
                                             </button>
-                                          </li>
+                                          </li> */}
                                           {/* <li>
                                   <button
                                     className="dropdown-item mx-0"

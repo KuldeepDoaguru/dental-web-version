@@ -14,6 +14,7 @@ const TreatSuggest = () => {
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
   const employeeName = user.currentUser.employee_name;
+  const token = user.currentUser.token;
   console.log(branch);
   const { id, tpid } = useParams();
   console.log(id, tpid);
@@ -67,7 +68,13 @@ const TreatSuggest = () => {
   const getData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByID/${id}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByID/${id}/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setData(data);
     } catch (error) {
@@ -96,7 +103,13 @@ const TreatSuggest = () => {
   const getTreatmentList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/treatmentLists`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/treatmentLists`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
       setTreatments(data.data);
@@ -110,7 +123,13 @@ const TreatSuggest = () => {
   const getProcedureTreat = async () => {
     try {
       const { data } = await axios.get(
-        "https://dentalgurudoctor.doaguru.com/api/doctor/getProcedureList"
+        "https://dentalgurudoctor.doaguru.com/api/doctor/getProcedureList",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
       setProcedureTreat(data);
@@ -134,7 +153,13 @@ const TreatSuggest = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetPatientData(res.data.result);
       console.log(res.data.result);
@@ -152,7 +177,13 @@ const TreatSuggest = () => {
   const getLabAllData = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-details/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-details/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetLabData(res.data.lab_details);
       console.log(res.data.lab_details);
@@ -175,6 +206,12 @@ const TreatSuggest = () => {
           description: `Select Treatment : ${formData.treatment_name} for desease : ${formData.desease}`,
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -220,7 +257,13 @@ const TreatSuggest = () => {
     try {
       const res = await axios.post(
         `https://dentalgurudoctor.doaguru.com/api/doctor/insertTreatSuggest`,
-        forms
+        forms,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       alert("Successfully added!");
       console.log(res.data);
@@ -283,7 +326,13 @@ const TreatSuggest = () => {
     try {
       const response = await axios.post(
         `https://dentalgurudoctor.doaguru.com/api/doctor/insertLab`,
-        formsData
+        formsData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setLabData({
         ...labData,
@@ -302,7 +351,13 @@ const TreatSuggest = () => {
   const getLabList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getLab`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getLab`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setLabList(data);
     } catch (error) {
@@ -313,7 +368,13 @@ const TreatSuggest = () => {
   const getLabTestList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getLabTest`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getLabTest`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setLabTestList(data);
     } catch (error) {

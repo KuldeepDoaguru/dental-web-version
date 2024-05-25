@@ -9,6 +9,7 @@ import { toggleTableRefresh } from "../../redux/user/userSlice";
 const MarkAttendance = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
+  const token = user.token;
   console.log(user);
   const branch_name = user.branch_name;
   const employee_name = user.employee_name;
@@ -22,7 +23,13 @@ const MarkAttendance = () => {
   const getTodayAttendance = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTodayAttendance/${branch_name}/${employee_ID}/${date}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTodayAttendance/${branch_name}/${employee_ID}/${date}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setTodayAttendance(response?.data?.data);
     } catch (error) {
@@ -55,6 +62,12 @@ const MarkAttendance = () => {
           employee_designation,
           date,
           loginTime,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       if (response.data.success) {
@@ -89,6 +102,12 @@ const MarkAttendance = () => {
           employee_designation,
           date,
           logoutTime,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 

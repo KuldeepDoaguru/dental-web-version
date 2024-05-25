@@ -8,6 +8,7 @@ import HeadBar from "../HeadBar";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTableRefresh } from "../../../redux/user/userSlice";
 import SecurityAmtUpdateModal from "./SecurityAmtUpdateModal";
+import moment from "moment";
 
 const SecurityAmount = () => {
   const { id, tpid } = useParams();
@@ -23,6 +24,8 @@ const SecurityAmount = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const { refreshTable } = useSelector((state) => state.user);
   const branch = currentUser.branch_name;
+  const user = useSelector((state) => state.user);
+  const token = user.currentUser.token;
   console.log(branch);
   const [formData, setFormData] = useState({
     tp_id: tpid,
@@ -46,7 +49,13 @@ const SecurityAmount = () => {
   const newGetFetchData = async () => {
     try {
       const resps = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/patient-security/${id}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/patient-security/${id}/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       const { patient_name, uhid, treatment_name, mobileno, totalCost } =
         resps.data.result[0];
@@ -71,7 +80,13 @@ const SecurityAmount = () => {
   const getListTreatment = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatList/${branch}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatList/${branch}/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
       setTreatList(data);
@@ -153,6 +168,12 @@ const SecurityAmount = () => {
           description: `${formData.amount} Secuirty Amount Added`,
           branch: currentUser ? currentUser.branch_name : "",
           patientId: formData.uhid,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -184,7 +205,13 @@ const SecurityAmount = () => {
 
       const resp = await axios.post(
         `https://dentalgurudoctor.doaguru.com/api/doctor/addSecurityAmount`,
-        formsCorrect
+        formsCorrect,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       console.log(resp.data);
@@ -198,7 +225,13 @@ const SecurityAmount = () => {
   const getSecurityAmt = async () => {
     try {
       const resdata = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getSecurityAmountByAppointmentId/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getSecurityAmountByAppointmentId/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setSecurityAmt(resdata.data.data);
       console.log(resdata.data.data);
@@ -520,7 +553,10 @@ const SecurityAmount = () => {
                         <tbody>
                           {securityAmt.map((item, index) => (
                             <tr className="table-row" key={index}>
-                              <td>{item.date}</td>
+                              <td>
+                                {item.date?.split("T")[0]} -{" "}
+                                {item.date?.split("T")[1].split(".")[0]}
+                              </td>
                               <td>{tpid}</td>
                               <td>{item.appointment_id}</td>
                               <td>{item.uhid}</td>

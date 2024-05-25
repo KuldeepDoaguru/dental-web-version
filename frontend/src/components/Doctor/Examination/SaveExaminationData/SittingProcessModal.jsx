@@ -14,6 +14,7 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
+  const token = user.currentUser.token;
   console.log(branch);
   console.log(selectedData);
   const [show, setShow] = useState(true);
@@ -48,6 +49,12 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
           description: `${formData.current_sitting} Sitting Started`,
           branch: branch,
           patientId: uhid,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -62,7 +69,13 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
     try {
       const { data } = await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatSitting/${branch}/${selectedData.ts_id}`,
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       cogoToast.success("sitting considered");
       console.log(data.result.consider_sitting);

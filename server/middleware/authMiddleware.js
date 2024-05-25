@@ -1,27 +1,32 @@
-const verifyAdminToken = require('./verifyAdminToken.js');
+const verifyAdminToken = require("./verifyAdminToken.js");
 
 // Middleware to check authentication
 const authenticate = async (req, res, next) => {
-    const authorizationHeader = req.headers.authorization;
+  const authorizationHeader = req.headers.authorization;
 
-    if (!authorizationHeader) {
-        return res.status(401).json({ success:false,message: 'Unauthorized - Missing token' });
-    }
+  if (!authorizationHeader) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Unauthorized - Missing token" });
+  }
 
-    const token = authorizationHeader.slice(7);
+  const token = authorizationHeader.slice(7);
+  console.log(token);
 
-    // Verify and decode the token (you need to implement this function)
-    
-    const user = await verifyAdminToken(token);
+  // Verify and decode the token (you need to implement this function)
 
-    if (!user) {
-        return res.status(401).json({ success:false,message: 'Unauthorized - Invalid token' });
-    }
+  const user = await verifyAdminToken(token);
 
-    // Attach the user to the request for later use
-    req.user = user;
-    console.log(user)
-    next();
+  if (!user) {
+    return res
+      .status(401)
+      .json({ success: false, message: "Unauthorized - Invalid token" });
+  }
+
+  // Attach the user to the request for later use
+  req.user = user;
+  console.log(user);
+  next();
 };
 
 module.exports = authenticate;

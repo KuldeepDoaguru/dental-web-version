@@ -23,7 +23,7 @@ const AttendanceLeave = () => {
     `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
   );
   console.log("User State:", user);
-
+  const token = user.token;
   const branch = user.branch_name;
   const employeeName = user.employee_name;
   const employeeId = user.employee_ID;
@@ -40,10 +40,17 @@ const AttendanceLeave = () => {
 
   const [Attendance, setAttendance] = useState([]);
 
+  console.log(token);
   const getAttendance = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAttendancebyempId/${branch}/${employeeId}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAttendancebyempId/${branch}/${employeeId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setAttendance(data?.data);
       console.log(data?.data);
@@ -61,7 +68,13 @@ const AttendanceLeave = () => {
   const getLeaves = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/get-leaves/${branch}/${employeeId}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-leaves/${branch}/${employeeId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setLeaveData(data?.data);
       console.log(data?.data);

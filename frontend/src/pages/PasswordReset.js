@@ -16,7 +16,7 @@ const PasswordReset = () => {
   const sendOtp = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
+      const response = await axios.put(
         "https://dentalgurudoctor.doaguru.com/api/doctor/sendOtp",
         {
           email,

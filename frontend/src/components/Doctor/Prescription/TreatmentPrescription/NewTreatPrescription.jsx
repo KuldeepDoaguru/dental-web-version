@@ -14,6 +14,7 @@ const NewTreatPrescription = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const token = user.currentUser.token;
   console.log(user);
   const branch = user.currentUser.branch_name;
   const employeeName = user.currentUser.employee_name;
@@ -62,7 +63,13 @@ const NewTreatPrescription = () => {
   const getPatientDetail = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetPatientData(data.result);
       console.log(data.result);
@@ -82,7 +89,13 @@ const NewTreatPrescription = () => {
   const getExaminDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByTpid/${tpid}/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetExaminData(res.data);
       console.log(res.data);
@@ -94,7 +107,13 @@ const NewTreatPrescription = () => {
   const getLabAllData = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-details/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-details/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetLabData(res.data.lab_details);
       console.log(res.data.lab_details);
@@ -117,7 +136,13 @@ const NewTreatPrescription = () => {
   const getTreatDetail = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatList/${branch}/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatList/${branch}/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetTreatData(data);
       console.log(data);
@@ -147,6 +172,12 @@ const NewTreatPrescription = () => {
           description: "Medicine Added Successfully",
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -176,7 +207,13 @@ const NewTreatPrescription = () => {
     try {
       const response = await axios.post(
         `https://dentalgurudoctor.doaguru.com/api/doctor/insertTreatPrescription/${appoint_id}/${tpid}/${sitting}`,
-        medicineInput
+        medicineInput,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       timelineForMedical();
@@ -214,7 +251,13 @@ const NewTreatPrescription = () => {
   const fetchMedicineOptions = async () => {
     try {
       const { data } = await axios.get(
-        "https://dentalgurudoctor.doaguru.com/api/doctor/getMedicineData"
+        "https://dentalgurudoctor.doaguru.com/api/doctor/getMedicineData",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setMedicineOptions(data);
     } catch (error) {
@@ -231,7 +274,13 @@ const NewTreatPrescription = () => {
   const getTreatPrescriptionByAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${appoint_id}/${tpid}/${treatment}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${appoint_id}/${tpid}/${treatment}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetTreatMedicine(data);
       console.log(data);
@@ -250,7 +299,13 @@ const NewTreatPrescription = () => {
   const getlabByAppointId = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-data/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/lab-data/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetlab(res.data.data);
       console.log(res.data.data);
@@ -268,7 +323,13 @@ const NewTreatPrescription = () => {
   const getTreatmentSuggestAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentData/${appoint_id}/${tpid}/${branch}/${sitting}/${treatment}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentData/${appoint_id}/${tpid}/${branch}/${sitting}/${treatment}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetTreatSug(data.data);
       console.log(data);
@@ -313,6 +374,12 @@ const NewTreatPrescription = () => {
           description: "Bill Generated for the sitting",
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -328,6 +395,12 @@ const NewTreatPrescription = () => {
         `https://dentalgurudoctor.doaguru.com/api/doctor/updateAppointmentStatusAfterTreat/${appoint_id}`,
         {
           status: "Complete",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(res);
@@ -341,7 +414,13 @@ const NewTreatPrescription = () => {
     try {
       // Make the API call to fetch bill data
       const billResponse = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/bill-patient-data/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/bill-patient-data/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log("Bill data fetched successfully");
       timelineForBill();
@@ -362,7 +441,13 @@ const NewTreatPrescription = () => {
   const grandTotal = async (id) => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDatasum/${id}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDatasum/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetSum(res.data.total_amount);
     } catch (error) {
@@ -473,30 +558,36 @@ const NewTreatPrescription = () => {
         </div>
 
         <div className="container">
-          <legend className="">Patient Lab Test</legend>
-          <div className="table-responsive rounded">
-            <table
-              className="table table-bordered table-striped border"
-              style={{ overflowX: "scroll" }}
-            >
-              <thead>
-                <tr>
-                  <th>Test Name</th>
-                  <th>Test</th>
-                </tr>
-              </thead>
-              <tbody>
-                {getLabData?.map((item) => (
-                  <>
+          {getLabData.length > 0 ? (
+            <>
+              <legend className="">Patient Lab Test</legend>
+              <div className="table-responsive rounded">
+                <table
+                  className="table table-bordered table-striped border"
+                  style={{ overflowX: "scroll" }}
+                >
+                  <thead>
                     <tr>
-                      <td>{item.lab_name}</td>
-                      <td>{item.test}</td>
+                      <th>Test Name</th>
+                      <th>Test</th>
                     </tr>
-                  </>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                  </thead>
+                  <tbody>
+                    {getLabData?.map((item) => (
+                      <>
+                        <tr>
+                          <td>{item.lab_name}</td>
+                          <td>{item.test}</td>
+                        </tr>
+                      </>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
         </div>
 
         {/* Patient Treatment Details */}
@@ -517,6 +608,8 @@ const NewTreatPrescription = () => {
                   <th>Total Cost</th>
                   <th>Discount %</th>
                   <th>Net Amount</th>
+                  <th>Paid Amount</th>
+                  <th>Pending Amount</th>
                   <th>Note</th>
                 </tr>
               </thead>
@@ -532,6 +625,8 @@ const NewTreatPrescription = () => {
                       <td>{item.total_amt}</td>
                       <td>{item.disc_amt}</td>
                       <td>{item.net_amount}</td>
+                      <td>{item.sec_rec_amt + item.dir_rec_amt}</td>
+                      <td>{item.pending_amount}</td>
                       <td>{item.note}</td>
                     </tr>
                   </>

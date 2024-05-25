@@ -14,10 +14,9 @@ const Overview = () => {
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
   const branch = user.currentUser.branch_name;
-
+  const token = user.currentUser.token;
   const [patPendingBill, setPatPendingBill] = useState([]);
   const [patAppointDetails, setPatAppointDetails] = useState([]);
-
   const [presData, setPresData] = useState([]);
   const [nextAppoint, setNextAppoint] = useState(null);
   const [prevAppoint, setPrevAppoint] = useState(null);
@@ -58,7 +57,13 @@ const Overview = () => {
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAllAppointmentByPatientId/${uhid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAllAppointmentByPatientId/${uhid}/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       // console.log(data);
       setPatAppointDetails(data?.data);
@@ -139,7 +144,13 @@ const Overview = () => {
   const fetchLatestDentalPatientData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminationViaUhid/${branch}/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getExaminationViaUhid/${branch}/${uhid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data); // Assuming your API returns the data directly
       setClinicExam(data);
@@ -156,7 +167,13 @@ const Overview = () => {
   const fetchLatestTreatPatientData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentViaUhid/${branch}/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentViaUhid/${branch}/${uhid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
       setTreatData(data);
@@ -172,7 +189,13 @@ const Overview = () => {
   const fetchLatestPrescriptionPatientData = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getPrescriptionViaUhid/${branch}/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getPrescriptionViaUhid/${branch}/${uhid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data); // Assuming your API returns the data directly
       setPrescpData(data);
@@ -188,7 +211,13 @@ const Overview = () => {
   const fetchLatestBillPatientData = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/get-patientBill-data/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-patientBill-data/${uhid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data); // Assuming your API returns the data directly
       setBillData(response.data);
@@ -216,7 +245,13 @@ const Overview = () => {
   const onGoingTreat = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/onGoingTreat/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/onGoingTreat/${uhid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data);
       setOngoing(response.data);

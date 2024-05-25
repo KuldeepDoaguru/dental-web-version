@@ -10,6 +10,7 @@ const PatientBillsByTpid = () => {
   const navigate = useNavigate();
   const [getPatientData, setGetPatientData] = useState([]);
   const user = useSelector((state) => state.user);
+  const token = user.currentUser.token;
   const branch = user.currentUser.branch_name;
   console.log(branch);
   const [getExaminData, setGetExaminData] = useState([]);
@@ -22,7 +23,13 @@ const PatientBillsByTpid = () => {
   const getBranchDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
       setGetBranch(data);
@@ -36,7 +43,13 @@ const PatientBillsByTpid = () => {
   const getPatientDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsById/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetPatientData(res.data.result);
     } catch (error) {
@@ -55,7 +68,13 @@ const PatientBillsByTpid = () => {
   const getExaminDetail = async () => {
     try {
       const res = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getDentalDataByTpid/${tpid}/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetExaminData(res.data);
       console.log(res.data);
@@ -73,7 +92,13 @@ const PatientBillsByTpid = () => {
   const getTreatDetail = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDetailsViaTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDetailsViaTpid/${tpid}/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetTreatData(data);
       console.log(data);
@@ -94,7 +119,13 @@ const PatientBillsByTpid = () => {
   const getTreatPrescriptionByAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByTpid/${tpid}/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetTreatMedicine(data);
       console.log(data);
@@ -112,7 +143,13 @@ const PatientBillsByTpid = () => {
   const getTreatmentSuggestAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatSuggestViaTpid/${tpid}/${branch}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatSuggestViaTpid/${tpid}/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setGetTreatSug(data.data);
       console.log(data.data);
@@ -133,7 +170,7 @@ const PatientBillsByTpid = () => {
   };
 
   const totalBillvalueWithoutGst = getTreatData?.reduce(
-    (total, item) => total + item.net_amount,
+    (total, item) => total + item.sec_rec_amt + item.dir_rec_amt,
     0
   );
 
@@ -142,7 +179,13 @@ const PatientBillsByTpid = () => {
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/billDetailsViaTpid/${tpid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/billDetailsViaTpid/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setBillDetails(data);
     } catch (error) {
@@ -360,7 +403,7 @@ const PatientBillsByTpid = () => {
                   <th>Cost</th>
                   <th>Cst * Qty</th>
                   <th>Disc %</th>
-                  <th>Final Cost</th>
+                  <th>Paid Amount</th>
                 </tr>
               </thead>
               {getTreatData?.map((item, index) => (
@@ -378,7 +421,7 @@ const PatientBillsByTpid = () => {
                       <td>{item.cost_amt}</td>
                       <td>{item.total_amt}</td>
                       <td>{item.disc_amt}</td>
-                      <td>{item.net_amount}</td>
+                      <td>{item.sec_rec_amt + item.dir_rec_amt}</td>
                     </tr>
                   </React.Fragment>
                 </tbody>
@@ -396,7 +439,8 @@ const PatientBillsByTpid = () => {
                     {/* Calculate total cost here */}
                     {/* Assuming getTreatData is an array of objects with 'net_amount' property */}
                     {getTreatData.reduce(
-                      (total, item) => total + item.net_amount,
+                      (total, item) =>
+                        total + item.sec_rec_amt + item.dir_rec_amt,
                       0
                     )}
                   </td>

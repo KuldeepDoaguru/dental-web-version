@@ -9,7 +9,8 @@ const Timeline = () => {
   const dispatch = useDispatch();
   const { uhid } = useParams();
   const { currentUser } = useSelector((state) => state.user);
-
+  const user = useSelector((state) => state.user);
+  const token = user.currentUser.token;
   const branch = currentUser.branch_name;
 
   const [patTimeline, setPatTimeline] = useState([]);
@@ -17,7 +18,13 @@ const Timeline = () => {
   const getTimelineDetails = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getPatientTimeline/${branch}/${uhid}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getPatientTimeline/${branch}/${uhid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response.data.data);
       setPatTimeline(response.data.data);

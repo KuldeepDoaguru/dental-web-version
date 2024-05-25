@@ -14,6 +14,7 @@ import { toggleTableRefresh } from "../../redux/user/userSlice";
 const ApplyLeave = () => {
   const { refreshTable } = useSelector((state) => state.user);
   const user = useSelector((state) => state.user.currentUser);
+  const token = user.token;
   console.log(user);
   const dispatch = useDispatch();
   const branch = user.branch_name;
@@ -34,7 +35,13 @@ const ApplyLeave = () => {
   const getLeaves = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/get-leaves/${branch}/${employeeId}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-leaves/${branch}/${employeeId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setLeaveData(response?.data?.data);
     } catch (error) {
@@ -99,7 +106,13 @@ const ApplyLeave = () => {
       try {
         const response = await axios.post(
           "https://dentalgurudoctor.doaguru.com/api/doctor/apply-leave",
-          updatedFormData
+          updatedFormData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (response.data.success) {
           cogoToast.success(response?.data?.message);

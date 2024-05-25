@@ -13,7 +13,7 @@ const PrintSecurityAmt = () => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
-
+  const token = user.currentUser.token;
   const branch = currentUser.branch_name;
   const [data, setData] = useState("");
   const [hospitalDoc, setHospitalDoc] = useState([]);
@@ -34,7 +34,13 @@ const PrintSecurityAmt = () => {
     console.log(user.id);
     try {
       const viewDoc = await axios.get(
-        ` https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${branch}`
+        ` https://dentalgurudoctor.doaguru.com/api/doctor/getBranchDetails/${branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       console.log(viewDoc.data);
@@ -50,7 +56,13 @@ const PrintSecurityAmt = () => {
     const getSecurityAmtID = async () => {
       try {
         const resps = await axios.get(
-          `https://dentalgurudoctor.doaguru.com/api/doctor/getAllSecurityAmounts/${sa_id}/${branch}`
+          `https://dentalgurudoctor.doaguru.com/api/doctor/getAllSecurityAmounts/${sa_id}/${branch}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log(resps.data.result);
         setShowData(resps.data.result);

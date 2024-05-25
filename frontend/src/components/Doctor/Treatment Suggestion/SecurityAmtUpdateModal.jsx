@@ -11,6 +11,8 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
   const currentUser = useSelector((state) => state.user.currentUser);
   const { refreshTable } = useSelector((state) => state.user);
   const branch = currentUser.branch_name;
+  const user = useSelector((state) => state.user);
+  const token = user.currentUser.token;
   console.log(selectedData);
   console.log(branch);
   const [formData, setFormData] = useState({
@@ -44,7 +46,13 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
     try {
       const response = await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/updateSecurityAmountForRemainingAmount/${selectedData.sa_id}`,
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       cogoToast.success("security amount detail updated");
       onClose();

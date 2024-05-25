@@ -99,9 +99,13 @@ const LoginDoctor = (req, res) => {
           });
         }
 
-        const token = JWT.sign({ id: user.id }, process.env.JWT_SECRET, {
-          expiresIn: "7d",
-        });
+        const token = JWT.sign(
+          { id: user.employee_ID },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "7d",
+          }
+        );
 
         res.status(200).json({
           success: "true",

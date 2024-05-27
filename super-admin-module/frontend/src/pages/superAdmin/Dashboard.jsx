@@ -113,10 +113,10 @@ const Dashboard = () => {
                     <h3 className="text-center">Earning report this month</h3>
                     <EarningChart />
                   </div>
-                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                  {/* <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Expense report this month</h3>
                     <ExpenseChart />
-                  </div>
+                  </div> */}
                 </div>
                 {/* <div className="row g-5 mt-3"></div> */}
               </div>

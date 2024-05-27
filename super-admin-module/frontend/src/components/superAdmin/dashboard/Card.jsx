@@ -86,7 +86,7 @@ const Card = () => {
 
   const formattedDate = `${year}-${month}`;
   const formateForDay = `${year}-${month}-${day}`;
-  console.log(formattedDate);
+  console.log(formateForDay);
 
   console.log(
     appointmentList[0]?.appointment_dateTime?.split("T")[0].slice(0, 7)
@@ -95,11 +95,11 @@ const Card = () => {
   //filterForPatAppointToday
   const filterForOpdEarnToday = appointmentList?.filter(
     (item) =>
-      item.appointment_dateTime.split("T")[0].slice(0, 7) === formattedDate &&
+      item.appointment_dateTime.split("T")[0] === formateForDay &&
       item.treatment_provided === "OPD"
   );
 
-  console.log(filterForOpdEarnToday);
+  console.log(appointmentList);
   const totalPrice = () => {
     try {
       let total = 0;
@@ -151,10 +151,10 @@ const Card = () => {
   const filterForEarningToday = treatValue?.filter(
     (item) =>
       item.payment_status === "paid" &&
-      item.payment_date_time?.split("T")[0].slice(0, 7) === formattedDate
+      item.bill_date?.split("T")[0] === formateForDay
   );
 
-  console.log(filterForEarningToday);
+  console.log(treatValue);
 
   const totalTreatPrice = () => {
     try {
@@ -175,7 +175,7 @@ const Card = () => {
 
   const filterForTodayAppoint = appointmentList?.filter(
     (item) =>
-      item.appointment_dateTime.split("T")[0].slice(0, 7) === formattedDate
+      item.appointment_dateTime.split("T")[0] === formateForDay
   );
 
   console.log(filterForTodayAppoint);
@@ -233,7 +233,7 @@ const Card = () => {
                   <i className="bi bi-people-fill icon"></i>
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title">Total Available Doctors Today</h5>
+                  <h5 className="card-title">Available Doctors Today</h5>
                   <p className="card-text">{filterForDocAVToday.length}</p>
                 </div>
               </div>

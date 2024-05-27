@@ -24,7 +24,7 @@ const ClinicActivity = () => {
   const handleCalender = () => {
     setShowCalender(!showCalender);
   };
-console.log(appointmentList);
+  console.log(appointmentList);
   const getAppointList = async () => {
     // console.log(branch.name);
     try {
@@ -147,18 +147,77 @@ console.log(appointmentList);
 
   // console.log(currentDate);
 
+  // UTC Time Start here
+
+  // const ConvertToIST = ( utcDateString ) => {
+  //   // Convert the date string to a Date object
+  //   const utcDate = new Date(utcDateString);
+
+  //   // Convert the UTC date to IST by adding 5 hours and 30 minutes
+  //   const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
+  //   const istDate = new Date(utcDate.getTime() + istOffset);
+
+  //   // Format the IST date
+  //   const options = {
+  //     timeZone: 'Asia/Kolkata',
+  //     year: 'numeric',
+  //     month: '2-digit',
+  //     day: '2-digit',
+  //     // hour: '2-digit',
+  //     // minute: '2-digit',
+  //     // second: '2-digit',
+  //   };
+  //   const istDateString = new Intl.DateTimeFormat('en-IN', options).format(istDate);
+
+  //   return istDateString;
+  // };
+
+  const ConvertToIST = (utcDateString) => {
+    // Convert the date string to a Date object
+    const utcDate = new Date(utcDateString);
+
+    // Convert the UTC date to IST by adding 5 hours and 30 minutes
+    const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
+    const istDate = new Date(utcDate.getTime() + istOffset);
+
+    // Get the components of the date
+    const year = istDate.getFullYear();
+    const month = String(istDate.getMonth() + 1).padStart(2, "0"); // Months are zero-indexed
+    const day = String(istDate.getDate()).padStart(2, "0");
+
+    // Format the IST date as "YYYY-MM-DD"
+    const istDateString = `${year}-${month}-${day}`;
+
+    return istDateString;
+  };
+
   //filter for day wise Appointment
   const filterAppointment = appointmentList?.filter((item) => {
     if (currentDate) {
-      return item.appointment_dateTime?.split("T")[0] === currentDate;
+      // return item.created_at?.split("T")[0] === currentDate;
+      return ConvertToIST(item.created_at) === currentDate;
     } else {
       return (
-        item.appointment_dateTime?.split("T")[0] === todayDate?.split("T")[0]
+        // item.created_at?.split("T")[0] === todayDate?.split("T")[0]
+        ConvertToIST(item.created_at) === todayDate?.split("T")[0]
       );
     }
   });
 
+  const getFormattedTimeDifference = (createdAt) => {
+    const currentTime = new Date();
+    const appointmentTime = new Date(createdAt);
+
+    const timeDifference = Math.abs(currentTime - appointmentTime);
+    const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+
+    return hoursDifference;
+  };
+
   console.log(filterAppointment);
+  console.log(appointmentList);
+  console.log(currentDate);
+  console.log(todayDate?.split("T")[0]);
 
   //filter for day wise Treatment
   const filterTreatment = appointmentList?.filter((item) => {
@@ -328,29 +387,29 @@ console.log(appointmentList);
               role="tabpanel"
               aria-labelledby="pills-java-tab"
             >
-              <ul>
+              <ul className="appointHeight">
                 {filterAppointment?.map((item) => (
                   <>
                     <li>
                       <div className="d-flex justify-content-between">
                         <div>
-                          <h4>
+                          <h5>
                             <FaDotCircle className="mx-1" /> Appointment of{" "}
                             {item.patient_name} has been scheduled by{" "}
                             {item.appointed_by} at {item.branch_name} Branch
-                          </h4>
+                          </h5>
                         </div>
                         <div>
-                          {item.appointment_dateTime.split("T")[0] ===
+                          {/* {item.created_at.split("T")[0] ===
                           formattedDate ? (
                             <>
                               <p className="fw-bold">
                                 {formattedTime >=
-                                item.appointment_dateTime
+                                item.created_at
                                   .split("T")[1]
                                   ?.split(":")[0]
                                   ? formattedTime -
-                                    item.appointment_dateTime
+                                    item.created_at
                                       .split("T")[1]
                                       ?.split(":")[0]
                                   : "--:--"}{" "}
@@ -359,8 +418,21 @@ console.log(appointmentList);
                             </>
                           ) : (
                             <>
-                              <p>{item.appointment_dateTime.split("T")[0]}</p>
+                              <p className="fw-bold">{item.created_at.split("T")[0]}</p>
                             </>
+                          )} */}
+                          {ConvertToIST(item.created_at) === formattedDate ? (
+                            <p className="fw-bold">
+                              {formattedTime >=
+                              item.created_at.split("T")[1]?.split(":")[0]
+                                ? getFormattedTimeDifference(item.created_at)
+                                : "--:--"}{" "}
+                              Hours ago
+                            </p>
+                          ) : (
+                            <p className="fw-bold">
+                              {ConvertToIST(item.created_at)}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -377,18 +449,18 @@ console.log(appointmentList);
               role="tabpanel"
               aria-labelledby="pills-treatment-tab"
             >
-              <ul>
+              <ul className="appointHeight">
                 {filterTreatment?.map((item) => (
                   <>
                     <li>
                       <div className="d-flex justify-content-between">
                         <div>
-                          <h4>
+                          <h5>
                             <FaDotCircle className="mx-1" />{" "}
                             {item.treatment_provided} Treatment provided to{" "}
-                            patient
-                            {item.patient_name} by Dr. {item.assigned_doctor}
-                          </h4>
+                            patient {item.patient_name} by Dr.{" "}
+                            {item.assigned_doctor_name}
+                          </h5>
                         </div>
                         <div>
                           {item.appointment_dateTime.split("T")[0] ===
@@ -403,7 +475,7 @@ console.log(appointmentList);
                                     item.appointment_dateTime
                                       .split("T")[1]
                                       ?.split(":")[0]
-                                  : "--:--"}{" "}
+                                  : "0"}{" "}
                                 Hours ago
                               </p>
                             </>
@@ -412,6 +484,22 @@ console.log(appointmentList);
                               <p>{item.appointment_dateTime.split("T")[0]}</p>
                             </>
                           )}
+                          {/* {item.created_at.split("T")[0] ===
+                          formattedDate ? (
+                            <p className="fw-bold">
+                              {formattedTime >=
+                              item.created_at
+                                .split("T")[1]
+                                ?.split(":")[0]
+                                ? getFormattedTimeDifference(
+                                    item.created_at
+                                  )
+                                : "0"}{" "}
+                              Hours ago
+                            </p>
+                          ) : (
+                            <p>{ConvertToIST(item.created_at)}</p>
+                          )} */}
                         </div>
                       </div>
                     </li>
@@ -427,17 +515,17 @@ console.log(appointmentList);
               role="tabpanel"
               aria-labelledby="pills-billing-tab"
             >
-              <ul>
+              <ul className="appointHeight">
                 {filterBilling?.map((item) => (
                   <>
                     <li>
                       <div className="d-flex justify-content-between">
                         <div>
-                          <h4>
+                          <h5>
                             <FaDotCircle className="mx-1" /> Patient{" "}
                             {item.patient_name} has paid {item.paid_amount}/-
                             for the Treatment.
-                          </h4>
+                          </h5>
                         </div>
                         <div>
                           {item.appointment_dateTime?.split("T")[0] ===
@@ -471,17 +559,17 @@ console.log(appointmentList);
               role="tabpanel"
               aria-labelledby="pills-Patient-tab"
             >
-              <ul>
+              <ul className="appointHeight">
                 {filterPatient?.map((item) => (
                   <>
                     <li>
                       <div className="d-flex justify-content-between">
                         <div>
-                          <h4>
+                          <h5>
                             <FaDotCircle className="mx-1" /> Patient{" "}
                             {item.patient_name} has been registered at{" "}
                             {item.branch_name} Branch.
-                          </h4>
+                          </h5>
                         </div>
                         <div>
                           {item?.created_at?.split("T")[0] === formattedDate ? (
@@ -498,7 +586,7 @@ console.log(appointmentList);
                                 item.created_at.split("T")[1]?.split(":")[0]
                                   ? formattedTime -
                                     item.created_at.split("T")[1]?.split(":")[0]
-                                  : "--:--"}{" "}
+                                  : "0"}{" "}
                                 Hours ago
                               </p>
                             </>
@@ -542,5 +630,9 @@ const Container = styled.div`
   .tab-content {
     height: 100%;
     overflow: auto;
+  }
+
+  .appointHeight {
+    height: 15rem;
   }
 `;

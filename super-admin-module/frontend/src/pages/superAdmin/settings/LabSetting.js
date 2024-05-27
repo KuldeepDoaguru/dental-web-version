@@ -175,7 +175,7 @@ const LabSetting = () => {
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    {/* <BranchSelector /> */}
+                    <BranchSelector />
                   </div>
                 </div>
                 <div className="container-fluid mt-3">
@@ -192,7 +192,10 @@ const LabSetting = () => {
                           <FaSearch />
                         </button> 
                       </div> */}
-                      <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 m-md-3">
+
+
+                      {/* Add Lab Button Commont out */}
+                      {/* <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 m-md-3">
                         <div className="">
                           <button
                             className="btn btn-info lab-actbtn"
@@ -201,7 +204,8 @@ const LabSetting = () => {
                             Add Lab
                           </button>
                         </div>
-                      </div>
+                      </div> */}
+
                       <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 m-md-3">
                         <div className="">
                           <button

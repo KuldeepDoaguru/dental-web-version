@@ -120,6 +120,14 @@ const CalenderSetting = () => {
   const closeUpdatePopup = () => {
     setShowAddBlockDays(false);
     setShowEditBlockDays(false);
+    setHolidays({
+      branch_name: branch.name,
+      holiday_name: "",
+      holiday_date: "",
+      holiday_start_time: "",
+      holiday_end_time: "",
+      notes: "",
+    })
   };
 
   const goBack = () => {
@@ -177,7 +185,7 @@ const CalenderSetting = () => {
       // Format the date to YYYY-MM-DD for input field
       const year = istDate.getUTCFullYear();
       const month = (`0${istDate.getUTCMonth() + 1}`).slice(-2); // months are zero-based
-      const day = (`0${istDate.getUTCDate()}`).slice(-2);
+      const day = (`0${istDate.getUTCDate() + 1}`).slice(-2);
     
       return `${year}-${month}-${day}`;
     };
@@ -291,6 +299,10 @@ const CalenderSetting = () => {
   console.log(selected);
 
   const deleteHoliday = async (id) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this data?");
+    if (!isConfirmed) {
+      return; // Exit if the user cancels the action
+    }
     try {
       const response = await axios.delete(
         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/deleteHolidays/${id}`,
@@ -478,12 +490,12 @@ const CalenderSetting = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="table-sno">Holiday Name</th>
-                            <th className="table-small">Date</th>
-                            <th>Start Time</th>
-                            <th>End Time</th>
-                            <th className="table-small">Notes</th>
-                            <th className="table-small">Actions</th>
+                            <th className="table-sno sticky">Holiday Name</th>
+                            <th className="table-small sticky">Date</th>
+                            <th className="sticky">Start Time</th>
+                            <th className="sticky">End Time</th>
+                            <th className="table-small sticky">Notes</th>
+                            <th className="table-small sticky">Actions</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -720,6 +732,7 @@ const Container = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
     align-items: center;
     justify-content: center;
+    z-index: 2;
   }
 
   .popup-container.active {
@@ -732,5 +745,20 @@ const Container = styled.div`
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  th {
+    background-color: #004aad;
+    color: white;
+    white-space: nowrap;
+  }
+  .sticky {
+    position: sticky;
+    top: 0;
+    color: white;
+    z-index: 1;
+  }
+  .table-responsive{
+    height: 20rem;
   }
 `;

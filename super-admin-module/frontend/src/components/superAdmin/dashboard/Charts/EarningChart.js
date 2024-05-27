@@ -225,8 +225,8 @@ const EarnTMAdmin = () => {
 
   // Group appointments by date and count appointments for each day
   const dailyAppointments = filterForPayStatus?.reduce((acc, appointment) => {
-    if (appointment.payment_date_time) { // Ensure payment_date_time is not null or undefined
-      const date = appointment.payment_date_time.split("T")[0];
+    if (appointment.bill_date) { // Ensure payment_date_time is not null or undefined
+      const date = appointment.bill_date.split("T")[0];
       acc[date] = acc[date] ? acc[date] + 1 : 1;
     }
     return acc;
@@ -235,8 +235,8 @@ const EarnTMAdmin = () => {
   let totalAmountPerDay = {}; // Object to store total amount for each day
 
   filterForPayStatus.forEach((item) => {
-    if (item.payment_date_time) { // Ensure payment_date_time is not null or undefined
-      const date = item.payment_date_time.split("T")[0];
+    if (item.bill_date) { // Ensure payment_date_time is not null or undefined
+      const date = item.bill_date.split("T")[0];
       totalAmountPerDay[date] =
         (totalAmountPerDay[date] || 0) +
         parseFloat(item.paid_amount) +

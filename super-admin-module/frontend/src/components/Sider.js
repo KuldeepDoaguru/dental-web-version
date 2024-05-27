@@ -259,12 +259,14 @@ const Wrapper = styled.div`
   }
   #navleft {
     font-size: 12px;
+    white-space: nowrap;
     margin-left: -0.2rem;
     color: white;
   }
   #sidebar {
     width: 100%;
     height: 150rem;
+    
     background-color: #004aad;
     @media screen and (max-width: 768px) {
       width: 100%;
@@ -288,6 +290,7 @@ const Wrapper = styled.div`
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    padding: 0.5rem;
   }
   a {
     text-decoration: none;

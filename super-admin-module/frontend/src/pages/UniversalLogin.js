@@ -129,13 +129,13 @@ const UniversalLogin = () => {
                     value={otp}
                     onChange={(e) => setOtp(e.target.value)}
                   />
-                  <div className="d-flex">
+                  <div className="d-flex justify-content-between">
                     <button type="submit" className="btn btn-success mt-2 mb-2">
                       Login
                     </button>
                     <button
                       type="button"
-                      className="btn btn-danger mt-2 mx-2"
+                      className="btn btn-danger mt-2 mb-2"
                       onClick={onClose}
                     >
                       Cancel

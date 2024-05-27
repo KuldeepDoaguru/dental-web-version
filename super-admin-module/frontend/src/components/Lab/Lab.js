@@ -86,8 +86,14 @@ const Lab = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateLabDetails/${selectedItem}`,
-        upLabField
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/updateLabDetails/${selectedItem.lab_id}`,
+        upLabField,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.token}`,
+          },
+        }
       );
       cogoToast.success("Lab details updated successfully");
       getListLabDetails();
@@ -97,12 +103,20 @@ const Lab = () => {
     }
   };
 
+  console.log(selectedItem);
+
   const deleteLabData = async (id) => {
     try {
       const isConfirmed = window.confirm("Are you sure you want to delete?");
       if (isConfirmed) {
         const response = await axios.delete(
-          `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/labDelete/${id}`
+          `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/labDelete/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${user.token}`,
+            },
+          }
         );
         cogoToast.success("lab deleted successfully");
         getListLabDetails();
@@ -280,6 +294,7 @@ const Lab = () => {
                         name="name"
                         value={upLabField.name}
                         onChange={handleAddLabChange}
+                        readOnly
                       />
                     </div>
                     <div className="d-flex flex-column mx-2 w-100">

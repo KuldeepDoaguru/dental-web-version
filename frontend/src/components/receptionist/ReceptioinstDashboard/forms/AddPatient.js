@@ -770,6 +770,7 @@ function AddPatient() {
         title="Text should contain only letters"
         placeholder="Enter full name"
                     required
+                    autocomplete="off"
                   />
                 </div>
               </div>
@@ -1016,6 +1017,7 @@ function AddPatient() {
                     inputValue={inputDisease}
                     onInputChange={setInputDisease}
                     placeholder="Select or type to add..."
+                    autocomplete="off"
                   />
                 </div>
               </div>
@@ -1113,6 +1115,7 @@ function AddPatient() {
                           onChange={handleSearchDoctor}
                           required
                           placeholder="Search Doctor"
+                          autocomplete="off"
                         />
                         <DoctorList>
                           <div>

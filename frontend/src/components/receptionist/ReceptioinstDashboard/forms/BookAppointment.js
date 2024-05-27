@@ -963,6 +963,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                     onChange={handleSearchDoctor}
                     required
                     placeholder="Search Doctor"
+                    autocomplete="off"
                   />
                   <DoctorList>
                     <div>

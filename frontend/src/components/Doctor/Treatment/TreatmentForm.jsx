@@ -627,7 +627,7 @@ const TreatmentForm = () => {
         );
         console.log(res);
 
-        updateAmountAfterPayViaSecAmount();
+        // updateAmountAfterPayViaSecAmount();
         timelineForMakePayViaSecurity();
         setShowDirect(true);
         // updateAmountAfterPayViaSecAmount();

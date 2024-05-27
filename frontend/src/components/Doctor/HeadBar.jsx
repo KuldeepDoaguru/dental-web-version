@@ -4,8 +4,12 @@ import { AiFillBell } from "react-icons/ai";
 import { FaUserAlt } from "react-icons/fa";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 const HeadBar = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  console.log(user.currentUser.employee_name);
   return (
     <Wrapper>
       <div>
@@ -28,6 +32,7 @@ const HeadBar = () => {
                 Dental Guru
               </Link>
             </li>
+
             <button
               className="navbar-toggler"
               type="button"
@@ -44,6 +49,9 @@ const HeadBar = () => {
               id="navbarSupportedContent"
             >
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+                <p className="text-white fw-bold">
+                  Hello <strong>Dr. {user.currentUser.employee_name}</strong>
+                </p>
                 <li className="nav-item dropdown mx-3" id="userid">
                   <a
                     className="nav-link dropdown-toggle"
@@ -54,6 +62,7 @@ const HeadBar = () => {
                   >
                     <FaUserAlt className="icon" />
                   </a>
+
                   <ul className="dropdown-menu second-dropdown">
                     <li className="text-center">
                       <Link to="/profileDashboard">View Profile</Link>

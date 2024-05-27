@@ -188,7 +188,7 @@ const PatintDuePaymentPrint = () => {
           transaction_Id: data.transaction_Id,
           note: data.note,
           receiver_name: user.employee_name,
-          receiver_emp_id: user.id,
+          receiver_emp_id: user.employee_ID,
           pay_by_sec_amt: updatedPay_by_sec_amt,
         },
         {
@@ -480,9 +480,10 @@ const PatintDuePaymentPrint = () => {
                       <button
                         type="button"
                         class="btn btn-primary hide-during-print"
-                        disabled
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
                       >
-                        Pay Now
+                        Add Payment Details
                       </button>
                       <button
                         type="button"
@@ -528,24 +529,34 @@ const PatintDuePaymentPrint = () => {
                     class="modal-title fs-5 text-center"
                     id="exampleModalLabel"
                   >
-                    Do you want to make payment
+                    {dueAmt <= 0
+                      ? `Add Payment Details`
+                      : `Do you want to make payment`}
                   </h1>
                 </div>
                 <div className="modal-body">
                   <form>
-                    <div data-mdb-input-init class="form-outline mb-4">
-                      <label class="form-label" for="form1Example1">
-                        Due Amount
-                      </label>
-                      <input
-                        name="note"
-                        type="text"
-                        id="form1Example2"
-                        class="form-control"
-                        value={finalAmt}
-                        readOnly
-                      />
-                    </div>
+                    {dueAmt > 0 ? (
+                      <>
+                        {" "}
+                        <div data-mdb-input-init class="form-outline mb-4">
+                          <label class="form-label" for="form1Example1">
+                            Due Amount
+                          </label>
+                          <input
+                            name="note"
+                            type="text"
+                            id="form1Example2"
+                            class="form-control"
+                            value={finalAmt}
+                            readOnly
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      ""
+                    )}
+
                     <div data-mdb-input-init class="form-outline mb-4">
                       <label class="form-label" for="form1Example1">
                         Payment Mode

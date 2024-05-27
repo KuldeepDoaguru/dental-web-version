@@ -170,7 +170,7 @@ const PatientBillsByTpid = () => {
   };
 
   const totalBillvalueWithoutGst = getTreatData?.reduce(
-    (total, item) => total + item.sec_rec_amt + item.dir_rec_amt,
+    (total, item) => total + item.paid_amount,
     0
   );
 
@@ -421,7 +421,7 @@ const PatientBillsByTpid = () => {
                       <td>{item.cost_amt}</td>
                       <td>{item.total_amt}</td>
                       <td>{item.disc_amt}</td>
-                      <td>{item.sec_rec_amt + item.dir_rec_amt}</td>
+                      <td>{item.paid_amount}</td>
                     </tr>
                   </React.Fragment>
                 </tbody>
@@ -439,8 +439,7 @@ const PatientBillsByTpid = () => {
                     {/* Calculate total cost here */}
                     {/* Assuming getTreatData is an array of objects with 'net_amount' property */}
                     {getTreatData.reduce(
-                      (total, item) =>
-                        total + item.sec_rec_amt + item.dir_rec_amt,
+                      (total, item) => total + item.paid_amount,
                       0
                     )}
                   </td>
@@ -536,14 +535,23 @@ const PatientBillsByTpid = () => {
         {/* print button */}
         <div className="container-fluid">
           <div className="d-flex justify-content-center align-items-center">
-            <button className="btn btn-info no-print" onClick={handleButton}>
+            <button
+              className="btn btn-info no-print mt-2 mb-2"
+              onClick={handleButton}
+            >
               Print
             </button>
             <button
-              className="btn btn-success ms-2 no-print"
+              className="btn btn-success ms-2 no-print mt-2 mb-2"
               onClick={() => navigate(`/patient-due-payment-print/${tpid}`)}
             >
-              Pay Now
+              Go to Payment page
+            </button>
+            <button
+              className="btn btn-info no-print mx-3 mt-2 mb-2"
+              onClick={() => navigate("/doctor-dashboard")}
+            >
+              Appointment Dashboard
             </button>
           </div>
         </div>

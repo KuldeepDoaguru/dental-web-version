@@ -174,7 +174,7 @@ const Branches = () => {
                 <div className="row d-flex justify-content-between mx-3">
                   <div className="col-12 col-md-12 mt-4">
                     <div className="d-flex justify-content-between">
-                      <BranchSelector />
+                      {/* <BranchSelector /> */}
                     </div>
 
                     {/* pop-up for creating notice */}

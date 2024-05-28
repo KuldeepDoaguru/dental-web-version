@@ -17,6 +17,7 @@ const LabPatientReport = () => {
 
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
+  const branch = useSelector((state) => state.branch);
   console.log("User State:", user);
 
   const goBack = () => {
@@ -27,7 +28,7 @@ const LabPatientReport = () => {
     const fetchPatientDetails = async () => {
       try {
         const response = await axios.get(
-          `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientLabTest`,
+          `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientLabTest/${branch.name}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -42,7 +43,9 @@ const LabPatientReport = () => {
     };
 
     fetchPatientDetails();
-  }, []);
+  }, [branch.name]);
+
+  
 
   const filteredPatients = patientDetails.filter((patient) => {
     const fullName =
@@ -134,7 +137,7 @@ const LabPatientReport = () => {
                 />
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    {/* <BranchSelector /> */}
+                    <BranchSelector />
                   </div>
                 </div>
                 <div className="container mt-3">

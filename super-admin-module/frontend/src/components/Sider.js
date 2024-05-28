@@ -35,7 +35,7 @@ const Sider = () => {
                 </div>
                 <div>
                   <h3
-                    className=" d-none d-sm-inline fs-6 icon-view"
+                    className=" d-none d-sm-inline icon-view"
                     id="navleft1"
                   >
                     Dashboard
@@ -54,10 +54,10 @@ const Sider = () => {
                 </div>
                 <div>
                   <h3
-                    className=" d-none d-sm-inline fs-6 icon-view"
+                    className=" d-none d-sm-inline icon-view"
                     id="navleft1"
                   >
-                    Branch
+                   &nbsp; Branch &nbsp;
                   </h3>
                 </div>
               </Link>
@@ -66,7 +66,7 @@ const Sider = () => {
             <li>
               <Link
                 to="/super-admin-appointment"
-                className={`link-div ${getSidebarClass(
+                className={`link-app ${getSidebarClass(
                   "/super-admin-appointment"
                 )}`}
               >
@@ -75,7 +75,7 @@ const Sider = () => {
                 </div>
                 <div>
                   <h3
-                    className="d-none d-sm-inline fs-6 icon-view"
+                    className="d-none d-sm-inline icon-view"
                     id="navleft2"
                   >
                     Appointment
@@ -94,10 +94,10 @@ const Sider = () => {
                 </div>
                 <div>
                   <h3
-                    className=" d-none d-sm-inline fs-6 icon-view"
+                    className=" d-none d-sm-inline icon-view"
                     id="navleft"
                   >
-                    Bills
+                   &nbsp; &nbsp; Bills &nbsp; &nbsp;
                   </h3>
                 </div>
               </Link>
@@ -132,10 +132,10 @@ const Sider = () => {
                 </div>
                 <div>
                   <h3
-                    className=" d-none d-sm-inline fs-6 icon-view"
+                    className=" d-none d-sm-inline icon-view"
                     id="navleft"
                   >
-                    Patient
+                   &nbsp; Patient &nbsp;
                   </h3>
                 </div>
               </Link>
@@ -168,7 +168,7 @@ const Sider = () => {
                 </div>
                 <div>
                   <h3
-                    className=" d-none d-sm-inline fs-6 icon-view"
+                    className=" d-none d-sm-inline icon-view"
                     id="navleft"
                   >
                     Manage Staff
@@ -189,7 +189,7 @@ const Sider = () => {
                 </div>
                 <div>
                   <h3
-                    className=" d-none d-sm-inline fs-6 icon-view"
+                    className=" d-none d-sm-inline icon-view"
                     id="navleft"
                   >
                     Leave Details
@@ -208,10 +208,11 @@ const Sider = () => {
                 </div>
                 <div>
                   <h3
-                    className=" d-none d-sm-inline fs-6 icon-view"
+                    className=" d-none d-sm-inline icon-view"
                     id="navleft"
                   >
-                    Lab
+                  &nbsp; &nbsp; Lab &nbsp; &nbsp; 
+           
                   </h3>
                 </div>
               </Link>
@@ -229,10 +230,10 @@ const Sider = () => {
                 </div>
                 <div>
                   <h3
-                    className=" d-none d-sm-inline fs-6 icon-view"
+                    className=" d-none d-sm-inline icon-view"
                     id="navleft"
                   >
-                    Report
+                   &nbsp;  Report &nbsp;
                   </h3>
                 </div>
               </Link>
@@ -251,17 +252,30 @@ const Wrapper = styled.div`
     font-size: 12px;
     margin-left: 0rem;
     color: white;
+    @media (min-width: 1281px) and (max-width: 2000px) {
+      font-size: 16px;
+    }
   }
   #navleft2 {
     font-size: 12px;
     margin-left: 0rem;
     color: white;
+    /* @media (min-width: 901px) and (max-width: 1212) {
+      font-size: 11px;
+    } */
+    @media (min-width: 1281px) and (max-width: 2000px) {
+      font-size: 16px;
+    }
   }
   #navleft {
     font-size: 12px;
     white-space: nowrap;
     margin-left: -0.2rem;
     color: white;
+    @media (min-width: 1281px) and (max-width: 2000px) {
+      font-size: 15px;
+      padding: 0.5rem;
+    }
   }
   #sidebar {
     width: 100%;
@@ -292,13 +306,20 @@ const Wrapper = styled.div`
     align-items: center;
     padding: 0.5rem;
   }
+  .link-app {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+  }
   a {
     text-decoration: none;
   }
 
   .active-nav {
     background-color: #0e67dd;
-    padding: 1rem;
+    padding: 0.5rem;
     box-shadow: 1px 0px 30px #0e67dd;
     border-radius: 10px;
   }
@@ -306,6 +327,12 @@ const Wrapper = styled.div`
   .icon-view {
     @media (max-width: 900px) {
       display: none !important;
+    }
+    @media (min-width: 1024px) and (max-width: 1280px) {
+      font-size: 14px;
+    }
+    @media (min-width: 1281px) and (max-width: 2000px) {
+      font-size: 16px;
     }
   }
 `;

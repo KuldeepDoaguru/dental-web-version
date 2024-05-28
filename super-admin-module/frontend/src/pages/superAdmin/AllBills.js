@@ -26,6 +26,7 @@ const AllBills = () => {
   const [selectedItem, setSelectedItem] = useState();
   const [popupVisible, setPopupVisible] = useState(false);
   const [placehold, setPlacehold] = useState([]);
+  const [keyword, setkeyword] = useState("");
   // const [currentPage, setCurrentPage] = useState(1);
   // const [itemsPerPage] = useState(10);
   const complaintsPerPage = 8; // Number of complaints per page
@@ -172,7 +173,6 @@ const AllBills = () => {
 
   // console.log(filterBillDataByMonth);
 
-
   // const filterBillDataByMonth = () => {
   //   // Filter and paginate appointment data based on currentPage and itemsPerPage
   //   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -211,12 +211,20 @@ const AllBills = () => {
   //   return buttons;
   // };
 
-  const totalPages = Math.ceil(listBills.length / complaintsPerPage);
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword]);
+
+  const searchFilter = listBills.filter((lab) =>
+    lab.patient_name.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
 
   const filterAppointDataByMonth = () => {
     const startIndex = currentPage * complaintsPerPage;
     const endIndex = startIndex + complaintsPerPage;
-    return listBills?.slice(startIndex, endIndex);
+    return searchFilter?.slice(startIndex, endIndex);
   };
 
   const handlePageChange = ({ selected }) => {
@@ -234,7 +242,7 @@ const AllBills = () => {
               <div className="col-lg-1 col-md-1 col-1 p-0">
                 <Sider />
               </div>
-              <div className="col-lg-11 col-md-11 col-11 ps-0">
+              <div className="col-lg-11 col-md-11 col-11 ps-0 mx-3">
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between mx-2">
                     <BranchSelector />
@@ -242,91 +250,108 @@ const AllBills = () => {
                 </div>
                 <div className="container-fluid mt-3">
                   <h3 className="text-center">Bill List</h3>
-                  <hr />
-                  <div className="container-fluid mt-3">
-                    {displayedAppointments?.length > 0 ? (
-                      <>
-                        <div class="table-responsive rounded">
-                          <table class="table table-bordered rounded shadow">
-                            <thead className="table-head">
-                              <tr>
-                                <th className="table-sno">Bill ID</th>
-                                <th>Bill Date</th>
-                                <th className="table-small">Patient UHID</th>
-                                <th className="table-small">
-                                  Treatment Package ID
-                                </th>
-                                <th className="table-small">Patient Name</th>
-                                <th className="table-small">Patient Mobile</th>
-                                <th className="table-small">Patient Email</th>
-                                <th className="table-small">Total Amount</th>
-                                <th>Paid Amount</th>
-                                <th>Payment Status</th>
-                                <th>Payment Date & Time</th>
-                                <th>Pending Amount</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {displayedAppointments?.map((item) => (
-                                <>
-                                  <tr className="table-row">
-                                    <td className="table-sno">
-                                      {item.bill_id}
-                                    </td>
-                                    <td className="table-small">
-                                      {item.bill_date?.split("T")[0]}
-                                    </td>
-                                    <td className="table-small">
-                                      <Link
-                                        to={`/patient-profile/${item.uhid}`}
-                                        style={{ textDecoration: "none" }}
-                                      >
-                                        {item.uhid}
-                                      </Link>
-                                    </td>
-                                    <td className="table-small">
-                                      {item.tp_id}
-                                    </td>
-                                    <td className="table-small">
-                                      {item.patient_name}
-                                    </td>
-                                    <td>{item.patient_mobile}</td>
-                                    <td>{item.patient_email}</td>
-                                    <td className="table-small">
-                                      {item.total_amount}
-                                    </td>
-                                    <td className="table-small">
-                                      {item.paid_amount}
-                                    </td>
-                                    <td>{item.payment_status}</td>
-                                    <td>
-                                      {item.payment_date_time?.split("T")[0]}
-                                    </td>
-                                    <td>
-                                      <td>
-                                        {item.total_amount - item.paid_amount}
-                                      </td>
-                                    </td>
-                                  </tr>
-                                </>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                        <PaginationContainer>
-                      <ReactPaginate
-                        previousLabel={"previous"}
-                        nextLabel={"next"}
-                        breakLabel={"..."}
-                        pageCount={totalPages}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={handlePageChange}
-                        containerClassName={"pagination"}
-                        activeClassName={"active"}
+                  <div className="d-flex justify-content-between">
+                    <div>
+                      {/* <label>Patient Name :</label> */}
+                      <input
+                        type="text"
+                        placeholder="Search Patient Name"
+                        className=""
+                        value={keyword}
+                        onChange={(e) =>
+                          setkeyword(e.target.value.toLowerCase())
+                        }
                       />
-                       </PaginationContainer>
-                        {/* <div className="pagination">
+                    </div>
+                    <div>
+                      {/* <button
+                        className="btn btn-success"
+                        // onClick={() => openAddEmployeePopup()}
+                      >
+                        Add Employee
+                      </button> */}
+                    </div>
+                  </div>
+
+                  {displayedAppointments?.length > 0 ? (
+                    <>
+                      <div class="table-responsive rounded mt-4">
+                        <table class="table table-bordered rounded shadow">
+                          <thead className="table-head">
+                            <tr>
+                              <th className="table-sno">Bill ID</th>
+                              <th>Bill Date</th>
+                              <th className="table-small">Patient UHID</th>
+                              <th className="table-small">
+                                Treatment Package ID
+                              </th>
+                              <th className="table-small">Patient Name</th>
+                              <th className="table-small">Patient Mobile</th>
+                              <th className="table-small">Patient Email</th>
+                              <th className="table-small">Total Amount</th>
+                              <th>Paid Amount</th>
+                              <th>Payment Status</th>
+                              <th>Payment Date & Time</th>
+                              <th>Pending Amount</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {displayedAppointments?.map((item) => (
+                              <>
+                                <tr className="table-row">
+                                  <td className="table-sno">{item.bill_id}</td>
+                                  <td className="table-small">
+                                    {item.bill_date?.split("T")[0]}
+                                  </td>
+                                  <td className="table-small">
+                                    <Link
+                                      to={`/patient-profile/${item.uhid}`}
+                                      style={{ textDecoration: "none" }}
+                                    >
+                                      {item.uhid}
+                                    </Link>
+                                  </td>
+                                  <td className="table-small">{item.tp_id}</td>
+                                  <td className="table-small">
+                                    {item.patient_name}
+                                  </td>
+                                  <td>{item.patient_mobile}</td>
+                                  <td>{item.patient_email}</td>
+                                  <td className="table-small">
+                                    {item.total_amount}
+                                  </td>
+                                  <td className="table-small">
+                                    {item.paid_amount}
+                                  </td>
+                                  <td>{item.payment_status}</td>
+                                  <td>
+                                    {item.payment_date_time?.split("T")[0]}
+                                  </td>
+                                  <td>
+                                    <td>
+                                      {item.total_amount - item.paid_amount}
+                                    </td>
+                                  </td>
+                                </tr>
+                              </>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                      <PaginationContainer>
+                        <ReactPaginate
+                          previousLabel={"previous"}
+                          nextLabel={"next"}
+                          breakLabel={"..."}
+                          pageCount={totalPages}
+                          marginPagesDisplayed={2}
+                          pageRangeDisplayed={5}
+                          onPageChange={handlePageChange}
+                          containerClassName={"pagination"}
+                          activeClassName={"active"}
+                        />
+                      </PaginationContainer>
+                      {/* <div className="pagination">
                           <ul>
                             <li>
                               <button
@@ -353,13 +378,12 @@ const AllBills = () => {
                             </li>
                           </ul>
                         </div> */}
-                      </>
-                    ) : (
-                      <>
-                        <h1>No Bill Found</h1>
-                      </>
-                    )}
-                  </div>
+                    </>
+                  ) : (
+                    <>
+                      <h1>No Bill Found</h1>
+                    </>
+                  )}
                 </div>
               </div>
             </div>
@@ -629,6 +653,7 @@ const Container = styled.div`
   th {
     background-color: #004aad;
     color: white;
+    white-space: nowrap;
   }
 
   .select-style {
@@ -649,6 +674,41 @@ const Container = styled.div`
         list-style: none;
       }
     }
+  }
+
+  input::placeholder {
+    color: #aaa;
+    opacity: 1; /* Ensure placeholder is visible */
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+  }
+
+  input:focus::placeholder {
+    color: transparent; /* Hide placeholder on focus */
+  }
+
+  input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    /* @media (min-width: 1280px) and (max-width: 2000px){
+              width: 18%;
+            }
+            @media (min-width: 1024px) and (max-width: 1279px){
+              width: 30%;
+            }
+            @media (min-width: 768px) and (max-width: 1023px){
+              width: 38%;
+            } */
+  }
+
+  input:focus {
+    border-color: #007bff; /* Change border color on focus */
   }
 `;
 
@@ -689,4 +749,3 @@ const PaginationContainer = styled.div`
     background-color: #ddd;
   }
 `;
-

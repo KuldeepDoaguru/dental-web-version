@@ -21,7 +21,7 @@ const ReportDash = () => {
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    <BranchSelector />
+                    {/* <BranchSelector /> */}
                   </div>
                 </div>
                 <div className="container mt-3">

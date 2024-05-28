@@ -70,10 +70,21 @@ const Card = () => {
 
   console.log(treatValue);
 
+ 
   useEffect(() => {
     getAppointList();
     getEmployeeAvailable();
     getTreatmentValues();
+
+    const interval = setInterval(() => {
+      getAppointList();
+      getEmployeeAvailable();
+      getTreatmentValues();
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [branch.name]);
 
   console.log(appointmentList);
@@ -183,8 +194,9 @@ const Card = () => {
   return (
     <>
       <Container>
+        <div className="container">
         <div className="row d-flex justify-content-around">
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-4 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-5 my-3 p-0">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column align-items-center">
                 <div>
@@ -198,7 +210,7 @@ const Card = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-4 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-5 my-3 p-0">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column align-items-center">
                 <div>
@@ -212,7 +224,7 @@ const Card = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-4 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-5 my-3 p-0">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column align-items-center">
                 <div>
@@ -226,7 +238,7 @@ const Card = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-4 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-5 my-3 p-0">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column align-items-center">
                 <div>
@@ -240,7 +252,7 @@ const Card = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-4 my-3 p-0">
+          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-5 my-3 p-0">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column align-items-center">
                 <div>
@@ -255,6 +267,7 @@ const Card = () => {
             </div>
           </div>
         </div>
+        </div>
       </Container>
     </>
   );
@@ -263,6 +276,7 @@ const Card = () => {
 export default Card;
 
 const Container = styled.div`
+ 
   .card {
     background: #004aad;
     height: 9.5rem;

@@ -12,7 +12,8 @@ const Lab = () => {
   const [labList, setLabList] = useState([]);
   const [branchList, setBranchList] = useState([]);
   const [selectedItem, setSelectedItem] = useState();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.user); 
+  const branch = useSelector((state) => state.branch);
   const { refreshTable } = useSelector((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
   const complaintsPerPage = 8; // Number of complaints per page
@@ -60,7 +61,7 @@ const Lab = () => {
   const getListLabDetails = async () => {
     try {
       const data = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLabList/${branch.name}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -81,6 +82,10 @@ const Lab = () => {
   useEffect(() => {
     getListLabDetails();
   }, []);
+
+  useEffect(() => {
+    getListLabDetails();
+  }, [branch.name]);
 
   const updateLabData = async (e) => {
     e.preventDefault();

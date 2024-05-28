@@ -482,6 +482,7 @@ import { useSelector } from "react-redux";
 
 const ReportCardPage = () => {
   const user = useSelector((state) => state.user);
+  const branch = useSelector((state) => state.branch);
   const [testCounts, setTestCounts] = useState({
     oral: 0,
     blood: 0,
@@ -494,7 +495,7 @@ const ReportCardPage = () => {
     const fetchTestCounts = async () => {
       try {
         const response = await axios.get(
-          "https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientLabTest",
+         `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getPatientLabTest/${branch.name}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -532,7 +533,7 @@ const ReportCardPage = () => {
     };
 
     fetchTestCounts();
-  }, []);
+  }, [branch.name]);
 
   console.log(testCounts);
 

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import cogoToast from "cogo-toast";
+import ReactPaginate from "react-paginate";
 
 const StaffLeave = () => {
   const user = useSelector((state) => state.user);
@@ -16,11 +17,13 @@ const StaffLeave = () => {
   const [leaveData, setLeaveData] = useState([]);
   const [afterAction, setAfterAction] = useState(false);
   const [keyword, setkeyword] = useState("");
+  const complaintsPerPage = 10; // Number of complaints per page
+  const [currentPage, setCurrentPage] = useState(0); // Start from the first page
 
   const getLeaveList = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLeaveList`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getLeaveList/${branch.name}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -39,6 +42,10 @@ const StaffLeave = () => {
   useEffect(() => {
     getLeaveList();
   }, []);
+
+  useEffect(() => {
+    getLeaveList();
+  }, [branch.name]);
 
   const handleLeaveApprove = async (id) => {
     try {
@@ -84,6 +91,29 @@ const StaffLeave = () => {
     }
   };
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword]);
+
+  
+  const searchFilter = leaveData.filter((lab) =>
+    lab.employee_name.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
+
+  const filterAppointDataByMonth = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return searchFilter?.slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const displayedAppointments = filterAppointDataByMonth();
+
   return (
     <>
       <Container>
@@ -103,7 +133,7 @@ const StaffLeave = () => {
                 <div className="container mt-3">
                   <div className="container-fluid">
                     <h3>Employee Leave Management</h3>
-                    <label>Employee Name :</label>
+                    {/* <label>Employee Name :</label> */}
                     <input
                       type="text"
                       placeholder="search employee name"
@@ -127,19 +157,7 @@ const StaffLeave = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {leaveData
-                            ?.filter((val) => {
-                              if (keyword === "") {
-                                return true;
-                              } else if (
-                                val.employee_name
-                                  .toLowerCase()
-                                  .includes(keyword.toLowerCase())
-                              ) {
-                                return val;
-                              }
-                            })
-                            .map((item) => (
+                          {displayedAppointments.map((item) => (
                               <>
                                 <tr className="table-row">
                                   <td className="table-sno">
@@ -200,6 +218,19 @@ const StaffLeave = () => {
                         </tbody>
                       </table>
                     </div>
+                    <PaginationContainer>
+                        <ReactPaginate
+                          previousLabel={"previous"}
+                          nextLabel={"next"}
+                          breakLabel={"..."}
+                          pageCount={totalPages}
+                          marginPagesDisplayed={2}
+                          pageRangeDisplayed={5}
+                          onPageChange={handlePageChange}
+                          containerClassName={"pagination"}
+                          activeClassName={"active"}
+                        />
+                      </PaginationContainer>
                   </div>
                 </div>
               </div>
@@ -231,4 +262,78 @@ const Container = styled.div`
     color: white;
     z-index: 1;
   }
+
+  input::placeholder {
+            color: #aaa;
+            opacity: 1; /* Ensure placeholder is visible */
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        input:focus::placeholder {
+            color: transparent; /* Hide placeholder on focus */
+        }
+
+        input {
+          /* width: 100%; */
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+            @media (min-width: 1280px) and (max-width: 2000px){
+              width: 18%;
+            }
+            @media (min-width: 1024px) and (max-width: 1279px){
+              width: 30%;
+            }
+            @media (min-width: 768px) and (max-width: 1023px){
+              width: 38%;
+            }
+        }
+
+        input:focus {
+            border-color: #007bff; /* Change border color on focus */
+        }
 `;
+
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid black;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .pagination li.active a {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+  }
+
+  .pagination li.disabled a {
+    color: #ddd;
+    cursor: not-allowed;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #ddd;
+  }
+`;
+

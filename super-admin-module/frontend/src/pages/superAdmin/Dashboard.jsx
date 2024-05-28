@@ -32,12 +32,12 @@ const Dashboard = () => {
       <div className="main">
         <div className="container-fluid">
           <div className="row flex-nowrap ">
-            <div className="col-lg-1 col-md-2 col-1 p-0">
+            <div className="col-lg-1 col-1 p-0">
               <Sider />
             </div>
-            <div className="col-lg-11 col-md-9 col-11 ps-0">
+            <div className="col-lg-11 col-11 ps-0">
               <div className="row d-flex justify-content-between mx-3">
-                <div className="col-12 col-md-4 mt-4">
+                <div className="col-12 col-md-7 mt-4">
                   <BranchSelector />
 
                   <h3> Welcome to Dental Guru! </h3>
@@ -141,6 +141,7 @@ const Dashboard = () => {
 export default Dashboard;
 
 const Wrapper = styled.div`
+ overflow: hidden;
   .main {
     height: 100%;
     background-color: #e6ecf1;
@@ -176,6 +177,9 @@ const Wrapper = styled.div`
     position: absolute;
     width: 20rem;
     z-index: 9999;
+    @media screen and (max-width: 768px) {
+      width: 13rem;
+    }
     a {
       text-decoration: none;
       font-weight: bold;

@@ -42,6 +42,9 @@ const EmpDetailsRepo = () => {
   useEffect(() => {
     getDocDetailsList();
   }, []);
+  useEffect(() => {
+    getDocDetailsList();
+  }, [branch.name]);
 
   const goBack = () => {
     window.history.go(-1);

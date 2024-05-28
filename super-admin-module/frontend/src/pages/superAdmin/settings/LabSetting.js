@@ -133,7 +133,7 @@ const LabSetting = () => {
         default_lab: "",
         test_date: "",
         test_cost: "",
-      })
+      });
     } catch (error) {
       console.log(error);
       cogoToast.error("Test Code Already Exist");
@@ -192,7 +192,6 @@ const LabSetting = () => {
                           <FaSearch />
                         </button> 
                       </div> */}
-
 
                       {/* Add Lab Button Commont out */}
                       {/* <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 m-md-3">
@@ -592,7 +591,7 @@ const LabSetting = () => {
           </div>
 
           {/* pop-up for adding lab */}
-          {/* ************************************************************************************* */} 
+          {/* ************************************************************************************* */}
         </div>
       </Container>
     </>

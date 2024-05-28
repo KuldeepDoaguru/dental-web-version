@@ -17,6 +17,7 @@ const Apointment = () => {
   const user = useSelector((state) => state.user);
   const [appointmentList, setAppointmentList] = useState([]);
   const [timeLIneData, setTimeLineData] = useState();
+  const [keyword, setkeyword] = useState("");
   const [updateData, setUpdateData] = useState({
     branch: branch.name,
     patientName: "",
@@ -67,22 +68,30 @@ const Apointment = () => {
     getAppointList();
   }, [branch.name]);
 
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword]);
+
   const todayDate = new Date();
   const year = todayDate.getFullYear();
   const month = String(todayDate.getMonth() + 1).padStart(2, "0");
   const date = String(todayDate.getDate()).padStart(2, "0");
   const formattedDate = `${year}-${month}-${date}`;
 
-  const filterforOneMonth = appointmentList?.filter((item) => {
-    return item.appointment_dateTime?.slice(0, 7) === formattedDate.slice(0, 7);
-  });
+  const searchFilter = appointmentList.filter((lab) =>
+    lab.patient_name.toLowerCase().includes(keyword.toLowerCase())
+  );
 
-  const totalPages = Math.ceil(filterforOneMonth.length / complaintsPerPage);
+  // const filterforOneMonth = searchFilter?.filter((item) => {
+  //   return item.appointment_dateTime?.slice(0, 7) === formattedDate.slice(0, 7);
+  // });
+
+  const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
 
   const filterAppointDataByMonth = () => {
     const startIndex = currentPage * complaintsPerPage;
     const endIndex = startIndex + complaintsPerPage;
-    return filterforOneMonth?.slice(startIndex, endIndex);
+    return searchFilter?.slice(startIndex, endIndex);
   };
 
   const handlePageChange = ({ selected }) => {
@@ -108,8 +117,20 @@ const Apointment = () => {
                       <BranchSelector />
                     </div>
 
-                    <h2 className="text-center"> Appointment Details </h2>
                     <div className="container-fluid mt-3">
+                      <h2 className="text-center"> Appointment Details </h2>
+                      <div>
+                        {/* <label>Employee Name :</label> */}
+                        <input
+                          type="text"
+                          placeholder="Search Employee Name"
+                          className="input"
+                          value={keyword}
+                          onChange={(e) =>
+                            setkeyword(e.target.value.toLowerCase())
+                          }
+                        />
+                      </div>
                       <div className="table-responsive rounded">
                         <table className="table table-bordered rounded shadow">
                           <thead className="table-head">
@@ -122,8 +143,12 @@ const Apointment = () => {
                               <th className="table-small">Assigned Doctor</th>
                               <th className="table-small">Appointed by</th>
                               <th className="table-small">Updated by</th>
-                              <th className="table-small">Appointment Date & Time</th>
-                              <th className="table-small">Appointment Status</th>
+                              <th className="table-small">
+                                Appointment Date & Time
+                              </th>
+                              <th className="table-small">
+                                Appointment Status
+                              </th>
                               <th>Cancel Reason</th>
                             </tr>
                           </thead>
@@ -142,9 +167,15 @@ const Apointment = () => {
                                 <td className="table-small">{item.tp_id}</td>
                                 <td>{item.patient_name}</td>
                                 <td className="table-small">{item.mobileno}</td>
-                                <td className="table-small">{item.assigned_doctor_name}</td>
-                                <td className="table-small">{item.appointment_created_by}</td>
-                                <td className="table-small">{item.updated_by ? item.updated_by : "-"}</td>
+                                <td className="table-small">
+                                  {item.assigned_doctor_name}
+                                </td>
+                                <td className="table-small">
+                                  {item.appointment_created_by}
+                                </td>
+                                <td className="table-small">
+                                  {item.updated_by ? item.updated_by : "-"}
+                                </td>
                                 <td className="table-small">
                                   {item.appointment_dateTime?.split("T")[0]}{" "}
                                   {item.appointment_dateTime?.split("T")[1]}
@@ -157,18 +188,18 @@ const Apointment = () => {
                         </table>
                       </div>
                       <PaginationContainer>
-                      <ReactPaginate
-                        previousLabel={"previous"}
-                        nextLabel={"next"}
-                        breakLabel={"..."}
-                        pageCount={totalPages}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={handlePageChange}
-                        containerClassName={"pagination"}
-                        activeClassName={"active"}
-                      />
-                       </PaginationContainer>
+                        <ReactPaginate
+                          previousLabel={"previous"}
+                          nextLabel={"next"}
+                          breakLabel={"..."}
+                          pageCount={totalPages}
+                          marginPagesDisplayed={2}
+                          pageRangeDisplayed={5}
+                          onPageChange={handlePageChange}
+                          containerClassName={"pagination"}
+                          activeClassName={"active"}
+                        />
+                      </PaginationContainer>
                     </div>
                   </div>
                 </div>
@@ -233,7 +264,6 @@ const Apointment = () => {
   );
 };
 
-
 export default Apointment;
 const Container = styled.div`
   .popup-container {
@@ -265,7 +295,7 @@ const Container = styled.div`
     color: white;
     white-space: nowrap;
   }
-  td{
+  td {
     white-space: nowrap;
   }
 
@@ -292,7 +322,41 @@ const Container = styled.div`
       }
     }
   }
-`
+
+  input::placeholder {
+    color: #aaa;
+    opacity: 1; /* Ensure placeholder is visible */
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+  }
+
+  input:focus::placeholder {
+    color: transparent; /* Hide placeholder on focus */
+  }
+
+  input {
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    @media (min-width: 1280px) and (max-width: 2000px) {
+      width: 18%;
+    }
+    @media (min-width: 1024px) and (max-width: 1279px) {
+      width: 30%;
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+      width: 38%;
+    }
+  }
+
+  input:focus {
+    border-color: #007bff; /* Change border color on focus */
+  }
+`;
 
 const PaginationContainer = styled.div`
   .pagination {

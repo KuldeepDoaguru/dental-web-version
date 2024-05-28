@@ -6,6 +6,7 @@ import BranchSelector from "../../../components/BranchSelector";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import ReactPaginate from "react-paginate";
 
 const PatientDetailsLIst = () => {
   const dispatch = useDispatch();
@@ -16,6 +17,8 @@ const PatientDetailsLIst = () => {
   console.log(`User Name: ${branch.name}`);
   const [patList, setPatList] = useState([]);
   const [keyword, setkeyword] = useState("");
+  const complaintsPerPage = 8; // Number of complaints per page
+  const [currentPage, setCurrentPage] = useState(0); // Start from the first page
 
   const getPatByBranch = async () => {
     try {
@@ -40,6 +43,29 @@ const PatientDetailsLIst = () => {
   }, [branch.name]);
 
   console.log(patList);
+
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword]);
+
+  const searchFilter = patList.filter((lab) =>
+    lab.patient_name.toLowerCase().includes(keyword.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
+
+  const filterAppointDataByMonth = () => {
+    const startIndex = currentPage * complaintsPerPage;
+    const endIndex = startIndex + complaintsPerPage;
+    return searchFilter?.slice(startIndex, endIndex);
+  };
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
+  const displayedAppointments = filterAppointDataByMonth();
+
   return (
     <>
       <Container>
@@ -60,11 +86,11 @@ const PatientDetailsLIst = () => {
                   <h2 className="text-center">Patient Details List</h2>
                   <div className="d-flex justify-content-between">
                     <div>
-                      <label>Employee Name :</label>
+                      {/* <label>Patient Name :</label> */}
                       <input
                         type="text"
-                        placeholder="search patient name"
-                        className="mx-3 p-1 rounded"
+                        placeholder="Search Patient Name"
+                        className=""
                         value={keyword}
                         onChange={(e) =>
                           setkeyword(e.target.value.toLowerCase())
@@ -101,53 +127,54 @@ const PatientDetailsLIst = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {patList
-                          ?.filter((val) => {
-                            if (keyword === "") {
-                              return true;
-                            } else if (
-                              val.patient_name
-                                .toLowerCase()
-                                .includes(keyword.toLowerCase())
-                            ) {
-                              return val;
-                            }
-                          }).reverse()
-                          .map((item) => (
-                            <>
-                              <tr className="table-row">
-                                <td className="thead">
-                                  <Link
-                                    to={`/patient-profile/${item.uhid}`}
-                                    style={{ textDecoration: "none" }}
-                                  >
-                                    {item.uhid}
+                        {displayedAppointments.map((item) => (
+                          <>
+                            <tr className="table-row">
+                              <td className="thead">
+                                <Link
+                                  to={`/patient-profile/${item.uhid}`}
+                                  style={{ textDecoration: "none" }}
+                                >
+                                  {item.uhid}
+                                </Link>
+                              </td>
+                              <td className="thead">{item.patient_name}</td>
+                              <td className="thead">{item.mobileno}</td>
+                              <td className="thead">{item.gender}</td>
+                              <td className="thead">{item.emailid}</td>
+                              <td className="thead">{item.dob}</td>
+                              <td className="thead">{item.maritalstatus}</td>
+                              <td className="thead">{item.patient_type}</td>
+                              <td className="thead">{item.address}</td>
+                              <td className="thead">{item.adharno}</td>
+                              <td className="" style={{ minWidth: "10rem" }}>
+                                <div className="d-flex">
+                                  <Link to={`/patient-profile/${item.uhid}`}>
+                                    <button className="btn btn-warning">
+                                      View Details
+                                    </button>
                                   </Link>
-                                </td>
-                                <td className="thead">{item.patient_name}</td>
-                                <td className="thead">{item.mobileno}</td>
-                                <td className="thead">{item.gender}</td>
-                                <td className="thead">{item.emailid}</td>
-                                <td className="thead">{item.dob}</td>
-                                <td className="thead">{item.maritalstatus}</td>
-                                <td className="thead">{item.patient_type}</td>
-                                <td className="thead">{item.address}</td>
-                                <td className="thead">{item.adharno}</td>
-                                <td className="" style={{ minWidth: "10rem" }}>
-                                  <div className="d-flex">
-                                    <Link to={`/patient-profile/${item.uhid}`}>
-                                      <button className="btn btn-warning">
-                                        View Details
-                                      </button>
-                                    </Link>
-                                  </div>
-                                </td>
-                              </tr>
-                            </>
-                          ))}
+                                </div>
+                              </td>
+                            </tr>
+                          </>
+                        ))}
                       </tbody>
                     </table>
                   </div>
+                  <PaginationContainer>
+                    <ReactPaginate
+                      previousLabel={"previous"}
+                      nextLabel={"next"}
+                      breakLabel={"..."}
+                      pageCount={totalPages}
+                      marginPagesDisplayed={2}
+                      pageRangeDisplayed={5}
+                      onPageChange={handlePageChange}
+                      containerClassName={"pagination"}
+                      activeClassName={"active"}
+                    />
+                  </PaginationContainer>
                 </div>
               </div>
             </div>
@@ -173,15 +200,16 @@ const Container = styled.div`
     min-width: 8rem;
   }
 
-  .table-responsive {
+  /* .table-responsive {
     height: 30rem;
     overflow: auto;
-  }
+  } */
 
   th {
     background-color: #004aad;
     color: white;
     position: sticky;
+    white-space: nowrap;
   }
 
   .sticky {
@@ -190,5 +218,69 @@ const Container = styled.div`
     background-color: #004aad;
     color: white;
     z-index: 1;
+  }
+
+  input::placeholder {
+    color: #aaa;
+    opacity: 1; /* Ensure placeholder is visible */
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+  }
+
+  input:focus::placeholder {
+    color: transparent; /* Hide placeholder on focus */
+  }
+
+  input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+
+  input:focus {
+    border-color: #007bff; /* Change border color on focus */
+  }
+`;
+
+const PaginationContainer = styled.div`
+  .pagination {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    list-style: none;
+    border-radius: 5px;
+  }
+
+  .pagination li {
+    margin: 0 5px;
+  }
+
+  .pagination li a {
+    display: block;
+    padding: 8px 16px;
+    border: 1px solid black;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .pagination li.active a {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+  }
+
+  .pagination li.disabled a {
+    color: #ddd;
+    cursor: not-allowed;
+  }
+
+  .pagination li a:hover:not(.active) {
+    background-color: #ddd;
   }
 `;

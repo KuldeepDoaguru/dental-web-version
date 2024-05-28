@@ -117,6 +117,10 @@ const ManageStaff = () => {
     getDocDetailsList();
   }, []);
 
+  useEffect(() => {
+    getDocDetailsList();
+  }, [branch.name]);
+
   console.log(doctorList);
 
   const openAddEmployeePopup = (index, item) => {
@@ -270,11 +274,11 @@ const ManageStaff = () => {
                   <h2 className="text-center">Manage Employee</h2>
                   <div className="d-flex justify-content-between">
                     <div>
-                      <label>Employee Name :</label>
+                      {/* <label>Employee Name :</label> */}
                       <input
                         type="text"
-                        placeholder="search employee name"
-                        className="mx-3 p-1 rounded"
+                        placeholder="Search Employee Name"
+                        className="input"
                         value={keyword}
                         onChange={(e) =>
                           setkeyword(e.target.value.toLowerCase())
@@ -1122,4 +1126,30 @@ const Container = styled.div`
     color: white;
     z-index: 1;
   }
+
+  .input::placeholder {
+            color: #aaa;
+            opacity: 1; /* Ensure placeholder is visible */
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .input:focus::placeholder {
+            color: transparent; /* Hide placeholder on focus */
+        }
+
+        .input {
+            width: 110%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        .input:focus {
+            border-color: #007bff; /* Change border color on focus */
+        }
 `;

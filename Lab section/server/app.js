@@ -2,6 +2,8 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const {authRoutes} = require("./router/authRouter");
+const { zipLogs } = require("./scheduler");
+
 
 dotenv.config();
 // Create Express app
@@ -21,3 +23,6 @@ const PORT = process.env.PORT || 8888;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+zipLogs();
+
+// run listen

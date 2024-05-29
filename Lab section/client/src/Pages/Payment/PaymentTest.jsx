@@ -139,14 +139,14 @@ const PaymentTest = () => {
                 <Sider />
               </div>
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 p-0" style={{marginTop:"5rem"}}> 
-                <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 mx-4">
                   <IoArrowBackSharp
                     className="fs-1 mt-2 text-black d-print-none"
                     onClick={goBack}
                   />{" "}
                 </div>
 
-                <div className="d-flex justify-content-center mt-4">
+                <div className="d-flex justify-content-center mt-4 mx-4">
                   <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 ">
                     <div className="d-flex justify-content-start ms-lg-5 ms-md-1">
                       <div>
@@ -177,7 +177,7 @@ const PaymentTest = () => {
                   </div>
                 </div>
 
-                <div className="d-flex justify-content-center">
+                <div className="d-flex justify-content-center mx-4">
                   <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 rounded mt-4">
                     <div className="d-flex justify-content-start ms-lg-5 ms-md-1">
                       <div>
@@ -259,7 +259,7 @@ const PaymentTest = () => {
                   </div>
                 </div>
                 <div className="">
-                  <div className="row  mt-5">
+                  <div className="row  mt-5 mx-3">
                   <div className="d-flex justify-content-between">
                       <div className="col-lg-4 form-group">
                         <div className="text-center">
@@ -311,7 +311,7 @@ const PaymentTest = () => {
 <div className="text-center">
         {paymentStatus === 'pending' && (
           <button
-            className="btn text-light text-capitalize px-4 btn-print"
+            className="btn text-light text-capitalize px-4 mt-2 mb-2 btn-print"
             style={{ backgroundColor: "#213555" }}
             onClick={handlePayButtonClick}
             disabled={isPaid} // Disable button if payment is already made
@@ -322,14 +322,14 @@ const PaymentTest = () => {
         {paymentStatus === 'paid' && (
           <>
             <button
-              className="btn text-light text-capitalize px-4 mx-2 btn-print"
+              className="btn text-light text-capitalize px-4 mx-2 btn-print mt-2 mb-2"
               style={{ backgroundColor: "#213555" }}
               onClick={() => window.print()}
             >
               Print
             </button>
             <button
-              className="btn text-light text-capitalize px-4 btn-print"
+              className="btn text-light text-capitalize px-4 btn-print mt-2 mb-2"
               style={{ backgroundColor: "#213555" }}
               onClick={() => navigate(`/oral-testing/${id}`, { state: { test: patienttest , cost: patientcost} })}
             >

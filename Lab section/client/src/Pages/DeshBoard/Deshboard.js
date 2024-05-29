@@ -38,9 +38,13 @@ const Deshboard = () => {
                   <div className="mt-2">
                       <h3> Welcome to Dental Guru! </h3>
                     </div>
+                    <div>
+                            <h5>Lab Attendant Dashboard</h5>
+                          </div>
                   <div>
                             <h5>Branch : {branch}</h5>
                           </div>
+         
                          
                           <form className="d-flex fw-semibold">
                             <p>Address </p>

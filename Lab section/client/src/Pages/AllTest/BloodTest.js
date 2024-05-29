@@ -215,7 +215,7 @@ const BloodTest = () => {
   }, []);
 
   const filteredPatients = patientDetails.filter(patient => {
-     const fullName = `${patient.patient_uhid}`.toLowerCase();
+     const fullName = `${patient.patient_name}`.toLowerCase();
     const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
     return fullName.includes(searchQuery.toLowerCase()) && (!dateFilter || formattedDate === dateFilter);
   });
@@ -275,7 +275,7 @@ const BloodTest = () => {
                     <div className="col-lg-2">
                       <input
                         type="text"
-                        placeholder="Search by Patient UHID"
+                        placeholder="Search by Patient Name"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="form-control"
@@ -292,7 +292,11 @@ const BloodTest = () => {
                   </div>
                 </div>
                 <div className="" style={{ maxHeight: "700px", overflowY: "auto" }}>
-                  <table className="table table-bordered">
+                {filteredPatients.length === 0 ? (
+        <div className='mb-2 fs-4 fw-bold text-center'>No tests available</div>
+        ) : (
+          <>
+          <table className="table table-bordered">
                     <thead>
                       <tr>
                         <th>ID</th>
@@ -347,6 +351,9 @@ const BloodTest = () => {
                       ))}
                     </tbody>
                   </table>
+          </>
+        )}
+                  
                 </div>
               </div>
 

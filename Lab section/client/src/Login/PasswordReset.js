@@ -16,8 +16,32 @@ const PasswordReset = () => {
  
   const currentUser = useSelector(state => state.auth.user);
   
-  const token = currentUser?.token;
+ 
 
+  // const sendOtp = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post(
+  //       "https://dentalgurulab.doaguru.com/api/lab/sendOtp",
+  //       {
+  //         email,
+  //       }
+  //     );
+  //     console.log(response);
+  //     cogoToast.success("OTP sent to your email");
+  //     setShowOtp(false);
+  //     setShowVerify(true);
+  //     setShowReset(false);
+  //   } catch (error) {
+  //     if (error.response && error.response.data) {
+  //       cogoToast.error(error.response.data.message || "Something went wrong");
+  //     } else {
+  //       // If there's no response data, show a generic error message
+  //       cogoToast.error("Something went wrong");
+  //     }
+  //   }
+  // };
+  
   const sendOtp = async (e) => {
     e.preventDefault();
     try {
@@ -25,12 +49,7 @@ const PasswordReset = () => {
         "https://dentalgurulab.doaguru.com/api/lab/sendOtp",
         {
           email,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }}
+        }
       );
       console.log(response);
       cogoToast.success("OTP sent to your email");
@@ -38,15 +57,11 @@ const PasswordReset = () => {
       setShowVerify(true);
       setShowReset(false);
     } catch (error) {
-      if (error.response && error.response.data) {
-        cogoToast.error(error.response.data.message || "Something went wrong");
-      } else {
-        // If there's no response data, show a generic error message
-        cogoToast.error("Something went wrong");
-      }
+      console.log(error);
+      cogoToast.error(error?.response?.data?.message
+        || "Something went wrong");
     }
   };
-  
 
   const verifyOtpAdmin = async (e) => {
     e.preventDefault();
@@ -56,12 +71,7 @@ const PasswordReset = () => {
         {
           email,
           otp,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }}
+        }
       );
       console.log(response);
       setShowOtp(false);
@@ -81,12 +91,7 @@ const PasswordReset = () => {
         {
           email,
           password: newPassword,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }}
+        }
       );
 
       console.log(response);

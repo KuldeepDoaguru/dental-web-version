@@ -61,7 +61,7 @@ function Edit_Patient_test() {
         const response = await axios.put(
           `https://dentalgurulab.doaguru.com/api/lab/update-patent-test-data/${id}`,
           {patient_test: patienttest, 
-            test: patienttest , result:patientresult, unit:patientunit,cost:patientcost ,collection_date: patientcollection_date,authenticate_date:patientauthenticate_date},
+            test: patienttest , result:patientresult, unit:patientunit,cost:patientcost ,collection_date:   patientcollection_date,authenticate_date:patientauthenticate_date},
             {
               headers: {
                 'Content-Type': 'application/json',

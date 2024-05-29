@@ -93,7 +93,7 @@ const ReportCardPage = () => {
                           </div>
                           <div className="cardtext">
                             <h5 className="card-title text-light">
-                              pathology Test
+                              Pathology Test
                             </h5>
                             <p className="card-text">{testCounts.pathology}</p>
                           </div>

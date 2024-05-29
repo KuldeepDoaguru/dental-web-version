@@ -40,7 +40,7 @@ const RadiologyTest = () => {
     }, []);
 
     const filteredPatients = patientDetails.filter(patient => {
-       const fullName = `${patient.patient_uhid}`.toLowerCase();
+       const fullName = `${patient.patient_name}`.toLowerCase();
       const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
       return fullName.includes(searchQuery.toLowerCase()) && (!dateFilter || formattedDate === dateFilter);
     });
@@ -101,7 +101,7 @@ const RadiologyTest = () => {
           <div className="col-lg-2">
           <input
             type="text"
-            placeholder="Search by Patient UHID"
+            placeholder="Search by Patient Name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="form-control"
@@ -120,6 +120,11 @@ const RadiologyTest = () => {
         
         </div>
         <div className="" style={{ maxHeight: "700px", overflowY: "auto" }}>
+        {filteredPatients.length === 0 ? (
+        <div className='mb-2 fs-4 fw-bold text-center'>No tests available</div>
+        ) : (
+          <>
+          
           <table className="table table-bordered">
             <thead>
               <tr>
@@ -188,6 +193,9 @@ const RadiologyTest = () => {
 
 
           </table>
+          </>
+        )}
+          
         </div>
       </div>
 

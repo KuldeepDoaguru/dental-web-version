@@ -94,14 +94,40 @@ const hundleSumbit = async () => {
   
   // Check if all required fields are filled
   if (
-    patientcollection_date === '' ||
-    patientauthenticate_date === '' ||
-    patientresult === ''
+    patientcollection_date === ''
   ) {
-    alert('Please fill in all required fields.');
+    alert('Please fill patient collection date.');
     return;
   }
+  if (
+    patientauthenticate_date === ''
+  ) {
+    alert('Please fill patient authenticate date.');
+    return;
+  }
+  if (
+    patientresult === ''
+  ) {
+    alert('Please fill patient result .');
+    return;
+  }
+  if (labName==='oral' && patientunit === '') {
+    alert('Please fill patient unit .')
+    return;
+  }
+  if (labName==='pathology' && patientunit === '') {
+    alert('Please fill patient unit .')
+    return;
+  }
+  if (labName==='radiology' && patientcost === '') {
+    alert('Please fill patient cost .')
+    return;
+  }
+ 
 
+ 
+
+  
   try {
     // Update the test status
     const responsee = await axios.put(`https://dentalgurulab.doaguru.com/api/lab/update-test-status/${id}`,[],
@@ -119,7 +145,7 @@ const hundleSumbit = async () => {
       `https://dentalgurulab.doaguru.com/api/lab/update-patent-test-data/${patientbill_no}`,
       {
         test: patienttest , result:patientresult, unit:patientunit,cost:patientcost ,collection_date: patientcollection_date,authenticate_date:patientauthenticate_date,
-        lab_type:labType
+ lab_type:labType
       
       },
       {
@@ -149,6 +175,8 @@ const hundleSumbit = async () => {
 
 
 
+
+
   return (
    <Wrapper>
      <div className="">
@@ -172,9 +200,9 @@ const hundleSumbit = async () => {
             onClick={goBack}
             style={{ cursor: "pointer" }}
           />
-                <div className="mx-4">
+                <div className="">
                   <div className="row">
-                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
                       <div className="row d-flex justify-content-between">
                         <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-8 col-sm-6 mt-4">
                         <div>
@@ -200,7 +228,7 @@ const hundleSumbit = async () => {
                         </div>
 
                         <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-6 mt-4">
-                          <div className="text-center mt-2 footer ">
+                          <div className="text-center mt-2 footer">
                             <img
                               className="ms-4"
                               src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1707404036/dental%20guru/dentalguru_v1g7k0.png"
@@ -428,7 +456,7 @@ const hundleSumbit = async () => {
 
                   <div className="container-fluid">
                     <div className="row d-print-none">
-                      <div className="d-flex justify-content-between">
+                      <div className="d-flex justify-content-between form">
                         <div className="col-lg-4 form-group">
                           <label className="fw-bold fs-5">
                             Test (Methodology)
@@ -481,6 +509,7 @@ const hundleSumbit = async () => {
                             type="text"
                             value={patientunit}
                             onChange={(e)=>setPatientunit(e.target.value)}
+                            required
                           />
                          
                         </div>
@@ -496,6 +525,7 @@ const hundleSumbit = async () => {
                             type="text"
                             value={patientcost}
                             onChange={(e)=>setPatientcost(e.target.value)}
+                            required
                           />
                          
                         </div>

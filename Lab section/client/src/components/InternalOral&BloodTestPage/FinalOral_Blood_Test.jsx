@@ -8,6 +8,10 @@ import { Link } from "react-router-dom";
 import { IoArrowBackSharp } from "react-icons/io5";
 import { useSelector } from "react-redux";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Modal, Button, Form } from 'react-bootstrap';
+
+
 function FinalOral_Blood_Test() {
   const [patientbill_no, setPatientbill_no] = useState("");
   const [patientUHID, setPatientUHID] = useState("");
@@ -25,7 +29,8 @@ function FinalOral_Blood_Test() {
   const [patientauthenticate_date, setPatientauthenticate_date] = useState("");
   const [labName, setLabName] = useState("");
   const [patienttid , setPatienttid] = useState('')
-   
+  const [showModal, setShowModal] = useState(false); 
+  const [message, setMessage] = useState("");
   const currentUser = useSelector(state => state.auth.user);
   
   const token = currentUser?.token;
@@ -71,7 +76,7 @@ function FinalOral_Blood_Test() {
     fetchPatientDetails();
   }, []);
 
-  useEffect(() => {
+
     const fetchPatientTestDetails = async () => {
       try {
         const response = await axios.get(
@@ -93,8 +98,12 @@ function FinalOral_Blood_Test() {
       }
     };
 
-    fetchPatientTestDetails();
-  }, []);
+    useEffect(() => {
+      fetchPatientTestDetails();
+    }, []);
+
+    
+  
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -144,6 +153,51 @@ function FinalOral_Blood_Test() {
       }
     }
   };
+
+  const handleShowModal = () => setShowModal(true);
+  const handleCloseModal = () =>{ setShowModal(false);
+  fetchPatientTestDetails();
+  }
+ const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.put(
+        `https://dentalgurulab.doaguru.com/api/lab/update-patent-test-data/${id}`,
+        {
+          patient_test: patienttest,
+          test: patienttest,
+          result: patientresult,
+          unit: patientunit,
+          cost: patientcost,
+          collection_date: patientcollection_date,authenticate_date:patientauthenticate_date,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      if (response.status === 200) {
+        setMessage(response.data.message);
+        
+        fetchPatientTestDetails();
+       
+      } else {
+        setMessage(response.data.error || "Failed to update Patient test data");
+      }
+    } catch (error) {
+      console.error("Error updating Patient test data", error);
+    }
+
+    setShowModal(false);
+  };
+
+
+
+
+
   const handlePrintPage = () => {
     navigate(`/print-oral-testing/${patientbill_no}`);
     handleTopPageLink();
@@ -338,9 +392,8 @@ function FinalOral_Blood_Test() {
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="container-fluid">
+            
+              <div className="container-fluid">
             <div className="row">
               <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <table className=" bg-white text-center table table-borderless">
@@ -383,11 +436,12 @@ function FinalOral_Blood_Test() {
                       {labName === "radiology" && <td>{patientcost}</td>}
 
                       <td>
-                        <Link to={`/update-patient-test-data/${id}`}>
+                        {/* <Link to={`/update-patient-test-data/${id}`}>
                           <button className="btn btn-secondary m-1">
                             Edit
                           </button>
-                        </Link>
+                        </Link> */}
+                        <Button onClick={handleShowModal} variant="primary">Edit</Button>
                         <button
                           className="btn btn-danger mx-sm-0 mx-lg-2 m-1"
                           onClick={() => handleDelete(patientbill_no)}
@@ -436,8 +490,6 @@ function FinalOral_Blood_Test() {
               </div>
             </div>
           </div>
-          <div className="container-fluid"></div>
-
           <div className="">
             <button
               className="btn btn-success p-3 w-75 mb-2 mt-4 w-100"
@@ -446,6 +498,79 @@ function FinalOral_Blood_Test() {
               Print_Page
             </button>
           </div>
+          </div>
+
+        
+          <Modal show={showModal} >
+                      <Modal.Header closeButton onClick={handleCloseModal}>
+                        <Modal.Title>Edit Patient Details</Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <Form onSubmit={handleSubmit}>
+                        <Form.Group controlId="formpatienttest">
+            <Form.Label> Test Name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder=" Test Name"
+              value={patienttest}
+              onChange={(e) => setPatienttest(e.target.value)}
+              disabled
+            />
+            <Form.Label className="mt-3"> result</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter new  result"
+              value={patientresult}
+              onChange={(e) => setPatientresult(e.target.value)}
+            />
+              {labName === "pathology" && (
+                <>
+            <Form.Label className="mt-3"> Unit</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter new  Unit"
+              value={patientunit}
+              onChange={(e) => setPatientunit(e.target.value)}
+            />
+            
+            </>
+              )}
+              {labName === "oral" && (
+                <>
+            <Form.Label className="mt-3"> Unit</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter new  Unit"
+              value={patientunit}
+              onChange={(e) => setPatientunit(e.target.value)}
+            />
+            
+            </>
+              )}
+             {patientcost > ''   && (
+                <> <Form.Label className="mt-3">cost</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter new cost"
+              value={patientcost}
+              onChange={(e) => setPatientcost(e.target.value)}
+              disabled
+            />
+        </>
+             )}
+            
+          </Form.Group>
+
+                       
+
+                          <Button variant="primary" type="submit" className="mt-3">
+                            Save Changes
+                          </Button>
+                        </Form>
+                      </Modal.Body>
+                    </Modal>
+
+       
         </div>
       </div>
           </div>

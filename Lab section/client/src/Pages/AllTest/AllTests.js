@@ -89,7 +89,7 @@ const AllTests = ({ data }) => {
     }, []);
 
     const filteredPatients = patientDetails.filter(patient => {
-       const fullName = `${patient.patient_uhid}`.toLowerCase();
+       const fullName = `${patient.patient_name}`.toLowerCase();
       const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
       return fullName.includes(searchQuery.toLowerCase()) && (!dateFilter || formattedDate === dateFilter);
     });
@@ -279,7 +279,7 @@ const AllTests = ({ data }) => {
           <div className="col-lg-2">
           <input
             type="text"
-            placeholder="Search by Patient UHID"
+            placeholder="Search by Patient Name"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="form-control mb-lg-0  mb-md-2"
@@ -298,10 +298,15 @@ const AllTests = ({ data }) => {
         
         </div>
         <div className="" style={{ maxHeight: "700px", overflow: "auto" }}>
-          <table className="table table-bordered">
+
+        {filteredPatients.length === 0 ? (
+        <div className='mb-2 fs-4 fw-bold text-center'>No tests available</div>
+        ) : (
+          <>
+             <table className="table table-bordered">
             <thead>
               <tr>
-                <th>ID</th>
+                <th>S.no</th>
                 <th>Patient UHID </th>
                 <th>Patient Name </th>
                 <th> Age </th>
@@ -310,7 +315,7 @@ const AllTests = ({ data }) => {
                 <th>Assigned Doctor Name</th>
                 <th>Lab Name</th>
                 <th>Created Date</th>
-                <th>Patient Tests </th>
+                <th>Tests Name </th>
                 <th>Tests Status </th>
            
               </tr>
@@ -318,6 +323,7 @@ const AllTests = ({ data }) => {
        
 
 <tbody>
+
   {filteredPatients.map((patient, index) => (
     <>
      
@@ -361,6 +367,10 @@ const AllTests = ({ data }) => {
 
 
           </table>
+          </>
+
+        )}
+       
         </div>
       </div>
 
@@ -372,7 +382,7 @@ const AllTests = ({ data }) => {
                       <exportToExcel />
                       <button
                         type="button"
-                        class="btn btn1 text-light py-2 px-4"
+                        class="btn btn1 text-light py-2 px-4 mb-3 mt-3"
                         onClick={exportToExcel}
                       >
                         Download

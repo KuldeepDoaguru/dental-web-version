@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { FaHandHoldingMedical } from "react-icons/fa";
 import NewTreatmentTable from "./NewTreatmentTable";
 import { GiFastBackwardButton } from "react-icons/gi";
 import SittingProcessModal from "../Examination/SaveExaminationData/SittingProcessModal";
+import moment from "moment";
 
 const NewTreatment = () => {
+  const [patientDetails, setPatientDetails] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const { tpid, appoint_id } = useParams();
   console.log(appoint_id);
   const [showEditPopup, setShowEditPopup] = useState(false);
@@ -76,8 +79,19 @@ const NewTreatment = () => {
   }, []);
   console.log(getPatientData);
   const handleShowTreatProcess = (item) => {
-    setSelectedData(item);
-    setShowEditPopup(true);
+    if (patientDetails[0]?.test_status === "pending") {
+      const userConfirmed = window.confirm(
+        "Are you sure you want to continue lab test is still pending ?"
+      );
+
+      if (userConfirmed) {
+        setSelectedData(item);
+        setShowEditPopup(true);
+      }
+    } else {
+      setSelectedData(item);
+      setShowEditPopup(true);
+    }
   };
   // Get Patient Details END
 
@@ -155,6 +169,30 @@ const NewTreatment = () => {
   useEffect(() => {
     getData();
   }, []);
+
+  const fetchPatientDetails = async () => {
+    try {
+      const response = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getPatientLabWithPatientDetails/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setPatientDetails(response.data.result);
+      console.log(patientDetails);
+    } catch (error) {
+      console.error("Error fetching patient details:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPatientDetails();
+  }, [token]);
+
+  console.log(patientDetails);
 
   return (
     <>
@@ -306,6 +344,74 @@ const NewTreatment = () => {
             {/* <div>
               <h5>Grand Total : {grandTotal}</h5>
             </div> */}
+          </div>
+        </div>
+        <div className="mt-4 mx-3">
+          <h2 style={{ color: "#213555" }}>List of Tests</h2>
+          <div className="mb-3">
+            <div className="row"></div>
+          </div>
+          <div className="" style={{ maxHeight: "700px", overflowY: "auto" }}>
+            {patientDetails.length === 0 ? (
+              <div className="mb-2 fs-4 fw-bold text-center">
+                No tests available
+              </div>
+            ) : (
+              <>
+                <table className="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>S.no</th>
+                      <th>Patient UHID</th>
+                      <th>Patient Name</th>
+                      <th>Age</th>
+                      <th>Gender</th>
+                      <th>Branch Name</th>
+                      <th>Assigned Doctor Name</th>
+                      <th>Lab Name</th>
+                      <th>Created Date</th>
+                      <th>Tests Name</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {patientDetails.map((patient, index) => (
+                      <>
+                        <tr key={patient.testid}>
+                          <td>{index + 1}</td>
+                          <td>{patient.patient_uhid}</td>
+                          <td>{patient.patient_name}</td>
+                          <td>{patient.age}</td>
+                          <td>{patient.gender}</td>
+                          <td>{patient.branch_name}</td>
+                          <td>{patient.assigned_doctor_name}</td>
+                          <td>{patient.lab_name}</td>
+                          <td>
+                            {moment(patient.created_date).format("DD/MM/YYYY")}
+                          </td>
+                          <td>{patient.test}</td>
+                          <td className="text-success fw-bold">
+                            {patient.test_status}
+                          </td>
+                          <td>
+                            <div className="">
+                              <Link
+                                to={`/print-oral-testing/${patient.testid}`}
+                              >
+                                <button className="btn btn-success m-1">
+                                  View
+                                </button>
+                              </Link>
+                            </div>
+                          </td>
+                        </tr>
+                      </>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            )}
           </div>
         </div>
 

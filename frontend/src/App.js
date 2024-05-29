@@ -27,6 +27,7 @@ import AttendanceLeave from "./pages/DoctorPage/AttendanceLeave";
 import PatintDuePaymentPrint from "./pages/PatientBills/PatintDuePaymentPrint";
 import PasswordReset from "./pages/PasswordReset";
 import ScrollToTop from "./components/ScrollToTop";
+import Print_Oral_Blood from "./pages/DoctorPage/Print_Oral_Blood";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -207,6 +208,12 @@ function App() {
           }
         />
         <Route path="/password-reset" element={<PasswordReset />} />
+        <Route
+          path="/print-oral-testing/:id"
+          element={
+            user.currentUser === null ? <DoctorLogin /> : <Print_Oral_Blood />
+          }
+        />
 
         {/* ****************** Doctor Routes End Here ******************* */}
 

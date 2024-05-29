@@ -103,6 +103,7 @@ const {
   MarkAttendanceLogin,
   MarkAttendanceLogout,
   applyLeave,
+  getPatBills,
 } = require("../controller/authTreatment.js");
 const {
   uploadImage,
@@ -118,6 +119,11 @@ const {
   getTreatment,
   getDoctorDataByBranchWithLeave,
   getTreatSuggestViaTpid,
+  getPatientLabWithPatientDetails,
+  patrientDetailbyid,
+  patienttestdatabyid,
+  getpatienttestnotesbyid,
+  purchaseInventory,
 } = require("../controller/authBook.js");
 const authenticate = require("../middleware/authMiddleware.js");
 
@@ -531,5 +537,19 @@ router.get(
 );
 // router.get("/branches/:branch_name", authenticate, getBranchDetails);
 router.get("/getOnlyExaminv/:tpid/:examId", authenticate, getOnlyExaminv);
+router.get("/getPatBills/:branch", authenticate, getPatBills);
+router.get(
+  "/getPatientLabWithPatientDetails/:tpid",
+  getPatientLabWithPatientDetails
+);
+router.get("/get-patient-details-by-id/:id", patrientDetailbyid);
+router.get("/get-patient-test-details-by-id/:id", patienttestdatabyid);
+router.get(
+  "/getpatienttest-notes/:testId",
+  authenticate,
+  getpatienttestnotesbyid
+);
+
+router.post("/purchaseInventory/:branch", purchaseInventory);
 
 module.exports = { authRoutes: router };

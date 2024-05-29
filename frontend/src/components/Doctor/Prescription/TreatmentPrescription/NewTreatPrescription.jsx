@@ -7,6 +7,7 @@ import CreatableSelect from "react-select/creatable";
 import { FaPrescriptionBottleMedical } from "react-icons/fa6";
 import { FaLocationArrow } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
+import cogoToast from "cogo-toast";
 
 const NewTreatPrescription = () => {
   const { tsid, id, appoint_id, tpid, sitting, treatment } = useParams();
@@ -202,6 +203,30 @@ const NewTreatPrescription = () => {
   };
 
   console.log(medicineInput);
+
+  const addNewMedicine = async () => {
+    try {
+      const response = await axios.post(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/purchaseInventory/${branch}`,
+        {
+          item_name: otherMed,
+          item_category: "drugs",
+          branch_name: branch,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response);
+      cogoToast.success("New medicine added successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -216,6 +241,7 @@ const NewTreatPrescription = () => {
         }
       );
       console.log(response.data);
+      addNewMedicine();
       timelineForMedical();
       getTreatPrescriptionByAppointId();
       setPrescriptionData({

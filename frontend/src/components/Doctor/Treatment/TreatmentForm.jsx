@@ -642,6 +642,20 @@ const TreatmentForm = () => {
 
   console.log(lastTreatment?.current_sitting);
 
+  const paidAmountAlert = () => {
+    if (formData.paid_amount > rawNetAmount) {
+      alert("Amount can not be greater than pending amount");
+      setFormData((prevData) => ({
+        ...prevData,
+        paid_amount: "",
+      }));
+    }
+  };
+
+  useEffect(() => {
+    paidAmountAlert();
+  }, [formData.paid_amount]);
+
   return (
     <>
       <Wrapper>
@@ -892,15 +906,17 @@ const TreatmentForm = () => {
                           onChange={handleChange}
                         />
                       ) : (
-                        <input
-                          type="text"
-                          required
-                          name="paid_amount"
-                          className="shadow-none p-1 bg-light rounded border-0 w-75"
-                          value={formData.paid_amount}
-                          placeholder="Paid Amount"
-                          onChange={handleChange}
-                        />
+                        <>
+                          <input
+                            type="text"
+                            required
+                            name="paid_amount"
+                            className="shadow-none p-1 bg-light rounded border-0 w-75"
+                            value={formData.paid_amount}
+                            placeholder="Paid Amount"
+                            onChange={handleChange}
+                          />
+                        </>
                       )}
 
                       <br />

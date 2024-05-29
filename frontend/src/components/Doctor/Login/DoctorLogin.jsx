@@ -19,6 +19,7 @@ const DoctorLogin = () => {
   const [localhost, setLocalhost] = useState([]);
   const [braches, setBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const getBranches = async () => {
     try {
@@ -43,6 +44,7 @@ const DoctorLogin = () => {
   console.log(selectedBranch);
   const receptionistLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
         "https://dentalgurudoctor.doaguru.com/api/doctor/doctor-login",
@@ -54,19 +56,22 @@ const DoctorLogin = () => {
       );
 
       console.log(response.data);
-
+      setLoading(false);
       // cogoToast.success(response.data.message);
       setLocalhost(response.data);
       if (response.data.success === "true") {
         // sendOtp();
         cogoToast.success(response.data.message);
         dispatch(setUser(response.data.user));
+        setLoading(false);
         navigate("/doctor-dashboard");
         // setPopupVisible(true);
       } else {
+        setLoading(false);
         cogoToast.error(response.data.message);
       }
     } catch (error) {
+      setLoading(false);
       console.log("Axios error:", error);
       // cogoToast.error("Axios error:", error)
 
@@ -75,9 +80,11 @@ const DoctorLogin = () => {
         error.response.data &&
         error.response.data.message
       ) {
+        setLoading(false);
         // If there is a response object and it contains a message property
         cogoToast.info(error.response.data.message);
       } else {
+        setLoading(false);
         // If there is no response object or no message property
         cogoToast.error("An error occurred while processing your request.");
       }
@@ -188,11 +195,13 @@ const DoctorLogin = () => {
 
                           <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                             {/* <Link to="/superadmin-dashboard"></Link> */}
+
                             <button
                               type="submit"
+                              disabled={loading}
                               className="btn btn-primary btn-lg"
                             >
-                              Login
+                              {loading ? "Login..." : "Login"}{" "}
                             </button>
                           </div>
                         </form>

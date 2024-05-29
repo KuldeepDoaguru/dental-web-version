@@ -373,6 +373,136 @@ const getTreatSuggestViaTpid = (req, res) => {
   }
 };
 
+const getPatientLabWithPatientDetails = (req, res) => {
+  const tpid = req.params.tpid;
+  console.log("378", tpid);
+  const sql = `SELECT pt.testid, pt.tpid, pt.branch_name, pt.assigned_doctor_name, pt.lab_name, pt.test,
+  pt.created_date, pt.patient_uhid, pt.patient_name, pt.test_status, p.mobileno, p.age, p.dob, p.gender,
+  p.emailid, p.weight FROM patient_lab_details AS pt JOIN patient_details AS p ON pt.patient_uhid = p.uhid
+WHERE pt.tpid = ?`;
+
+  db.query(sql, tpid, (err, result) => {
+    if (err) {
+      console.error("Error executing query:", err.stack);
+      return res.status(500).json({ error: "Internal server error" });
+    } else {
+      // console.log('Query executed successfully');
+      return res.status(200).json({
+        message: "Get data from patient lab and patient_details",
+        result,
+      });
+    }
+  });
+};
+
+const patrientDetailbyid = (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sql = "SELECT * FROM  patient_lab_details WHERE testid = ?  ";
+
+    db.query(sql, id, (error, result) => {
+      if (error) {
+        console.log("Patient Detail not found", error);
+        logger.registrationLogger.log("error", "Internal Server Error");
+
+        res.status(500).json({ error: "Internal Server Error" });
+      } else {
+        res.status(200).json(result);
+      }
+    });
+  } catch (error) {
+    console.log("error", error);
+    logger.registrationLogger.log("error", "Internal Server Error");
+
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const patienttestdatabyid = (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const sql = "SELECT * FROM  patient_lab_test_details WHERE testid = ?  ";
+
+    db.query(sql, id, (error, result) => {
+      if (error) {
+        console.log("Patient Test Detail not found", error);
+        logger.registrationLogger.log("error", "Patient Test Detail not found");
+
+        res.status(500).json({ error: "Patient Test Detail not found" });
+      } else {
+        res.status(200).json(result);
+      }
+    });
+  } catch (error) {
+    console.log("error", error);
+    logger.registrationLogger.log("error", "Internal Server Error");
+
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getpatienttestnotesbyid = (req, res) => {
+  const { testId } = req.params;
+
+  const sql = `SELECT * FROM patient_test_notes WHERE testid = ?`;
+  db.query(sql, [testId], (err, result) => {
+    if (err) {
+      console.error("Error Fetching Nots :", err);
+      logger.registrationLogger.log("error", "Internal Server Error");
+
+      res.status(500).json({ error: "Internal Server Error" });
+    } else {
+      res.status(200).json(result);
+    }
+  });
+};
+
+const purchaseInventory = (req, res) => {
+  try {
+    const { item_name, item_category, branch_name } = req.body;
+
+    // Validations
+    const requiredFields = [item_name, item_category, branch_name];
+    if (requiredFields.some((field) => !field)) {
+      logger.registrationLogger.log("error", "All fields are required");
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const selectQuery = "SELECT * FROM purchase_inventory WHERE item_name = ?";
+
+    db.query(selectQuery, item_name, (err, result) => {
+      if (err) {
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result.length === 0) {
+        const insertQuery =
+          "INSERT INTO purchase_inventory (item_name, item_category, branch_name) VALUES (?,?,?)";
+
+        const insertParams = [item_name, item_category, branch_name];
+
+        db.query(insertQuery, insertParams, (err, result) => {
+          if (err) {
+            return res
+              .status(400)
+              .send({ success: false, message: err.message });
+          }
+
+          return res.status(200).send({ success: true, result: result });
+        });
+      } else {
+        return res.status(400).send("item name already exist try adding stock");
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(500)
+      .send({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   bookAppointment,
   getTreatSuggest,
@@ -383,4 +513,9 @@ module.exports = {
   getTreatment,
   getDoctorDataByBranchWithLeave,
   getTreatSuggestViaTpid,
+  getPatientLabWithPatientDetails,
+  patrientDetailbyid,
+  patienttestdatabyid,
+  getpatienttestnotesbyid,
+  purchaseInventory,
 };

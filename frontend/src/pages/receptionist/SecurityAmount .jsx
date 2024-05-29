@@ -17,6 +17,7 @@ function SecurityAmount() {
   const branch = currentUser.branch_name
   const [patients, setPatients] = useState([]);
   const token = currentUser?.token;
+  const [loading,setLoading] = useState(false);
 
 
   const dispatch = useDispatch();
@@ -195,6 +196,7 @@ function SecurityAmount() {
   const MakeRefund = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await axios.put(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updateRefundAmount/${selected}`,
         {
@@ -212,12 +214,15 @@ function SecurityAmount() {
         }
         }
       );
+      setLoading(false);
       cogoToast.success("Amount Refunded Successfully");
       getSecurityAmountList();
       closeUpdatePopup();
     } catch (error) {
+      setLoading(false);
       console.log(error);
-      cogoToast.error(error?.response?.data?.message);
+      cogoToast.error(error?.response?.data?.message || 'Something went wrong');
+
     }
   };
 
@@ -232,6 +237,7 @@ function SecurityAmount() {
 
     console.log(updatedData);
     try {
+      setLoading(true);
       const response = await axios.put(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updatePatientSecurityAmt/${selected}`,
         updatedData   ,
@@ -242,6 +248,7 @@ function SecurityAmount() {
         }
         }
       );
+      setLoading(false);
       cogoToast.success("Amount Paid Successfully");
       setData({
         ...data,
@@ -253,8 +260,10 @@ function SecurityAmount() {
       getSecurityAmountList();
       closeUpdatePopup();
     } catch (error) {
+      setLoading(false);
       console.log(error);
-      cogoToast.error(error?.response?.data?.message);
+      cogoToast.error(error?.response?.data?.message || "Something went wrong");
+
     }
   };
 
@@ -716,7 +725,7 @@ function SecurityAmount() {
               <div>
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">
-                    Security Amount Submitted -{" "}
+                    Security Amount Submitted -{": "}
                     {outStanding.length === 0
                       ? filterForSecAmountDef[0]?.amount
                       : outStanding[0]?.amount}
@@ -725,13 +734,13 @@ function SecurityAmount() {
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">
                     {/* Total Outstanding - {totalValue} */}
-                    Remaning Secuirty Amount -{" "}
+                    Remaning Secuirty Amount -{": "}
                     {filterForSecAmountDef[0]?.remaining_amount}
                   </label>
                 </div>
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label">
-                    Refund Amount :
+                    Refund Amount -:{" "}
                     {/* {outStanding.length === 0
                           ? filterForSecAmountDef[0]?.amount
                           : outStanding[0]?.amount - totalValue} */}
@@ -755,8 +764,8 @@ function SecurityAmount() {
             </div>
 
             <div className="d-flex justify-content-center">
-              <button type="submit" className="btn btn-success mt-2">
-                Refund
+              <button type="submit" className="btn btn-success mt-2" disabled={loading}>
+                {loading ? "Loading..."  :  "Refund" }
               </button>
               <button
                 type="button"
@@ -834,8 +843,8 @@ function SecurityAmount() {
             </div>
 
             <div className="d-flex justify-content-center">
-              <button type="submit" className="btn btn-success mt-2">
-                Pay
+              <button type="submit" className="btn btn-success mt-2" disabled={loading}>
+                {loading ? "Loading..." : "Pay"}
               </button>
               <button
                 type="button"

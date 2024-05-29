@@ -35,6 +35,7 @@ function AddPatient() {
   const [appointmentsData, setAppointmentsData] = useState([]);
   const [branchDetail, setBranchDetail] = useState([]);
   const [branchHolidays, setBranchHolidays] = useState([]);
+  const [loading,setLoading] = useState(false);
 
   const opdCost = treatments?.filter(
     (treatment) => treatment?.treatment_name === "OPD"
@@ -632,8 +633,9 @@ function AddPatient() {
           return; // If the user cancels, return early
         }
       }
-
+     
       try {
+        setLoading(true)
         const response = await axios.post(
           "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/add-patient", 
           newPatient , 
@@ -646,6 +648,7 @@ function AddPatient() {
         );
         console.log(response);
         if (response?.data?.success) {
+          setLoading(false);
           cogoToast.success(response?.data?.message);
           dispatch(toggleTableRefresh());
           timelineData(response?.data?.user?.patientId);
@@ -691,11 +694,13 @@ function AddPatient() {
             navigate(`/print_Opd_Reciept/${response?.data?.data?.insertId}`);
           }
         } else {
-          cogoToast.error(response?.data?.message);
+          setLoading(false);
+          cogoToast.error(response?.data?.message || "Something went wrong");
         }
       } catch (error) {
+        setLoading(false);
         console.log(error);
-        cogoToast.error(error.response.data.message);
+        cogoToast.error(error.response.data.message || "Something went wrong");
       }
 
       // setPatients([...patients, newPatient]);
@@ -771,6 +776,7 @@ function AddPatient() {
         placeholder="Enter full name"
                     required
                     autocomplete="off"
+                    maxLength={100}
                   />
                 </div>
               </div>
@@ -844,6 +850,7 @@ function AddPatient() {
                     onChange={handleChange}
                     required
                     placeholder="Enter address"
+                    maxLength={250}
                   />
                 </div>
               </div>
@@ -928,6 +935,7 @@ function AddPatient() {
                     pattern="[A-Za-z\s]*"
                     title="Text should contain only letters"
                     placeholder="Enter contact person name"
+                    maxLength={100}
                   />
                 </div>
               </div>
@@ -1269,6 +1277,7 @@ function AddPatient() {
                           className="form-control"
                           name="notes"
                           onChange={handleChange}
+                          maxLength={250}
                         />
                       </div>
                     </div>
@@ -1359,9 +1368,9 @@ function AddPatient() {
                 </li>
               </ul>
               <div className="formbtn d-flex justify-content-lg-center justify-content-md-center">
-                <button className="btn btn-success " type="submit" id="btn2">
+                <button className="btn btn-success " type="submit" id="btn2" disabled={loading}>
                   {" "}
-                  Add Patient & Book Appointment
+                 {loading ? "Loading...": "Add Patient & Book Appointment"} 
                 </button>
               </div>
             </div>

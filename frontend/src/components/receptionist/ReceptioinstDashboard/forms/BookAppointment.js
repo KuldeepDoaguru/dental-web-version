@@ -33,6 +33,7 @@ function BookAppointment() {
   const opdCost = treatments?.filter((treatment) => treatment?.treatment_name === "OPD")[0]?.treatment_cost;
   const minDate = new Date();
  console.log(patientTreatmentDetails);
+ const [loading,setLoading] = useState(false);
   
   const [opdAmount, setOpdAmount] = useState(opdCost); // State to store the OPD amount, initialized with opdCost
 
@@ -704,8 +705,9 @@ const isDoctorAvailable = (selectedDateTime) => {
       }
 
     }
-
+   
     try{
+      setLoading(true)
       const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/book-appointment',newAppointment ,
       {
         headers: {
@@ -715,6 +717,7 @@ const isDoctorAvailable = (selectedDateTime) => {
       });
       
       if(response.data.success){
+        setLoading(false)
         cogoToast.success(response?.data?.message);
         dispatch(toggleTableRefresh());
         timelineData(selectedPatient.uhid);
@@ -728,15 +731,18 @@ const isDoctorAvailable = (selectedDateTime) => {
         navigate(`/print_Opd_Reciept/${response?.data?.data?.insertId}`)}
        }
        else{
-        cogoToast.error(response?.data?.message);
+        setLoading(false)
+        cogoToast.error(response?.data?.message || "Something went wrong");
+
         
         console.log(response.data);
        }
 
    }
    catch(error){
+    setLoading(false)
      console.log(error)
-        cogoToast.error(error?.response?.data?.message);
+        cogoToast.error(error?.response?.data?.message || "Something went wrong");
 
    }
     // setAppointmentData([...appointment_data,newAppointment]);
@@ -1095,6 +1101,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                     className="form-control"
                     onChange={handleBookChange}
                     name="notes"
+                    maxLength={250}
                   />
                 </div>
               </div>
@@ -1184,9 +1191,9 @@ const isDoctorAvailable = (selectedDateTime) => {
                      </div> */}
 
               <div className="formbtn d-flex justify-content-lg-center justify-content-md-center">
-                <button className="btn btn-success " type="submit" id="btn2">
+                <button className="btn btn-success " type="submit" id="btn2" disabled={loading}>
                   {" "}
-                  Book Appointment
+                 {loading ? "Loading..."  : "Book Appointment"} 
                 </button>
               </div>
             </div>

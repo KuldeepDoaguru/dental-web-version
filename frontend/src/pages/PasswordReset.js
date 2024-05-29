@@ -8,6 +8,7 @@ const PasswordReset = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [loading,setLoading] = useState(false);
   const [otp, setOtp] = useState("");
   const [showOtp, setShowOtp] = useState(true);
   const [showVerify, setShowVerify] = useState(false);
@@ -16,6 +17,7 @@ const PasswordReset = () => {
   const sendOtp = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await axios.post(
         "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/sendOtp",
         {
@@ -24,10 +26,12 @@ const PasswordReset = () => {
       );
       console.log(response);
       cogoToast.success("OTP sent to your email");
+      setLoading(false);
       setShowOtp(false);
       setShowVerify(true);
       setShowReset(false);
     } catch (error) {
+      setLoading(false);
       console.log(error);
       cogoToast.error(error?.response?.data?.message
         || "Something went wrong");
@@ -37,6 +41,7 @@ const PasswordReset = () => {
   const verifyOtpAdmin = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await axios.post(
         "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/verifyOtp",
         {
@@ -45,10 +50,12 @@ const PasswordReset = () => {
         }
       );
       console.log(response);
+      setLoading(false);
       setShowOtp(false);
       setShowVerify(false);
       setShowReset(true);
     } catch (error) {
+      setLoading(false);
       console.log(error);
       cogoToast.error("Wrong OTP!");
     }
@@ -57,6 +64,7 @@ const PasswordReset = () => {
   const changePassword = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await axios.put(
         "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/resetPassword",
         {
@@ -64,11 +72,12 @@ const PasswordReset = () => {
           password: newPassword,
         }
       );
-
+      setLoading(false);
       console.log(response);
       cogoToast.success("password update successfully");
       navigate("/");
     } catch (error) {
+      setLoading(false);
       console.log(error);
       cogoToast.error(error?.response?.data?.message || "Something went wrong")
     }
@@ -106,8 +115,8 @@ const PasswordReset = () => {
                     </div>
 
                     <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <button type="submit" className="btn btn-primary btn-lg">
-                        Send OTP
+                      <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
+                       {loading ? "Loading..." : "Send OTP"} 
                       </button>
                     </div>
                   </form>
@@ -152,8 +161,8 @@ const PasswordReset = () => {
                     </div>
 
                     <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <button type="submit" className="btn btn-primary btn-lg">
-                        Verify OTP
+                      <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
+                       {loading ? "Loading..." : "Verify OTP" } 
                       </button>
                     </div>
                   </form>
@@ -180,8 +189,8 @@ const PasswordReset = () => {
                     </div>
 
                     <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                      <button type="submit" className="btn btn-primary btn-lg">
-                        Reset Password
+                      <button type="submit" className="btn btn-primary btn-lg" disabled={loading}>
+                        {loading ? "Loading..." : "Reset Password"} 
                       </button>
                     </div>
                   </form>

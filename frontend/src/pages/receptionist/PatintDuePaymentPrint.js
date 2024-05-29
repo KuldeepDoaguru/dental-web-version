@@ -12,6 +12,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 function PatintDuePaymentPrint() {
     const navigate = useNavigate();
     const { bid, tpid, uhid } = useParams();
+    const [loading,setLoading] = useState(false);
     const {refreshTable,currentUser} = useSelector((state) => state.user);
     const token = currentUser?.token;
   const  branch = currentUser.branch_name
@@ -169,6 +170,7 @@ function PatintDuePaymentPrint() {
   
     const makePayment = async () => {
       try {
+        setLoading(true);
         const response = await axios.put(
           `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/makeBillPayment/${branch}/${bid}`,
           {
@@ -191,6 +193,7 @@ function PatintDuePaymentPrint() {
           }
         );
         if (response.data.success) {
+          setLoading(false);
           cogoToast.success("payment successful");
           completeTreatment();
           getBillDetails();
@@ -203,9 +206,11 @@ function PatintDuePaymentPrint() {
           });
           navigate(`/patient-bill/${bid}/${tpid}`);
         } else {
+          setLoading(false);
           cogoToast.success("Failed to paid bill");
         }
       } catch (error) {
+        setLoading(false);
         console.log(error);
         cogoToast.error("Failed to paid bill");
       }
@@ -494,8 +499,9 @@ function PatintDuePaymentPrint() {
                         class="btn btn-primary hide-during-print"
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
+                        disabled={loading}
                       >
-                        Pay Now
+                       {loading ? "Loading..." : "Pay Now"}
                       </button>
                     </>
                   )}
@@ -553,10 +559,8 @@ function PatintDuePaymentPrint() {
                         className="p-1 w-100 rounded"
                         required
                       >
-                        <option value="" selected>
-                          Select Payment Method
-                        </option>
-                        <option value="cash">Cash</option>
+                        
+                        <option value="cash" selected>Cash</option>
                         <option value="online">Online</option>
                       </select>
                     </div>
@@ -605,8 +609,9 @@ function PatintDuePaymentPrint() {
                     class="btn btn-success"
                     data-bs-dismiss="modal"
                     onClick={makePayment}
+                    disabled={loading}
                   >
-                    Pay Now
+                    {loading ? "Loading..." : "Pay Now"}
                   </button>
                 </div>
               </div>

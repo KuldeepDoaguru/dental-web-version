@@ -131,6 +131,7 @@ const UniversalLogin = () => {
   const [localhost, setLocalhost] = useState([]);
   const [braches,setBranches] = useState([]);
   const [selectedBranch,setSelectedBranch] = useState("");
+  const [loading,setLoading] = useState(false);
 
   // const sendOtp = async () => {
   //   try {
@@ -168,6 +169,7 @@ const handleSelectBranch = (e)=>{
 console.log(selectedBranch)
   const receptionistLogin = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       const response = await axios.post(
         "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/receptionist-login",
@@ -188,10 +190,13 @@ console.log(selectedBranch)
         dispatch(setUser(response.data.user));
         navigate("/receptionist-dashboard");
         // setPopupVisible(true);
+        setLoading(false)
       } else {
+        setLoading(false)
         cogoToast.error(response.data.message);
       }
     } catch (error) {
+      setLoading(false)
       console.log("Axios error:", error);
 
       if (
@@ -381,9 +386,10 @@ console.log(selectedBranch)
                             {/* <Link to="/superadmin-dashboard"></Link> */}
                             <button
                               type="submit"
+                              disabled={loading}
                               className="btn btn-primary btn-lg"
                             >
-                              Login
+                             {loading ? "Loading..." : "Login"}
                             </button>
                           </div>
                         </form>

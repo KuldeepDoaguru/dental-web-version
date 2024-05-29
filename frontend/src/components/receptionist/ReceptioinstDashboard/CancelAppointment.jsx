@@ -12,6 +12,7 @@ import cogoToast from 'cogo-toast';
 
 function CancleAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   const dispatch = useDispatch();
+  const [loading,setLoading] = useState(false);
   const {currentUser} = useSelector((state) => state.user);
   const token = currentUser?.token;
   const [show, setShow] = useState(false);
@@ -342,6 +343,7 @@ const handleCancelAppointment = async (e)=>{
 
 
       try{
+        setLoading(true)
         const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/cancel-appointment-status-opd',newAppointment ,
         {
           headers: {
@@ -351,6 +353,7 @@ const handleCancelAppointment = async (e)=>{
         });
         console.log(response);
         if(response.data.success){
+          setLoading(false);
           cogoToast.success(response?.data?.message);
           dispatch(toggleTableRefresh());
           timelineData(appointmentInfo.uhid);
@@ -358,13 +361,15 @@ const handleCancelAppointment = async (e)=>{
           
          }
          else{
-          cogoToast.error(response?.data?.message);
+          setLoading(false);
+          cogoToast.error(response?.data?.message || "Failed to cancel appointment");
          }
   
      }
      catch(error){
+      setLoading(false);
        console.log(error)
-          cogoToast.error(error?.response?.data?.message);
+          cogoToast.error(error?.response?.data?.message || "Failed to cancel appointment");
   
      }
 }
@@ -469,7 +474,7 @@ useEffect(()=>{
             <label for="message-text" class="col-form-label">Status:</label>
             <input type="text" value={data.appointment_status} onChange={handleChange} name='appointment_status'  class="form-control" id="recipient-name"/>
           </div> */}
-        <button type="submit" class="btn btn-primary">Cancel Appointment</button>
+        <button type="submit" class="btn btn-primary" disabled={loading}>{loading ? "Loading..." : "Cancel Appointment"} </button>
         </form>
         </Modal.Body>
         <Modal.Footer>

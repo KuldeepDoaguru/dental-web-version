@@ -13,6 +13,7 @@ import cogoToast from 'cogo-toast';
 
 function EditPatientDetails({ onClose, patientInfo, allPatientData }) {
   const dispatch = useDispatch();
+  const [loading,setLoading] = useState(false);
   const {currentUser,refreshTable} = useSelector((state) => state.user);
   const branch = currentUser.branch_name
   const token = currentUser?.token;
@@ -24,6 +25,7 @@ function EditPatientDetails({ onClose, patientInfo, allPatientData }) {
   const timelineData = async (id) => {
   
     try {
+      
       const response = await axios.post(
         "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/insertTimelineEvent",
         {
@@ -40,8 +42,10 @@ function EditPatientDetails({ onClose, patientInfo, allPatientData }) {
       }
       }
       );
+      
       console.log(response);
     } catch (error) {
+      
       console.log(error);
     }
   };
@@ -162,6 +166,7 @@ useEffect(()=>{
   };
    
   try{
+    setLoading(true);
     const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-patient-details', updatedData ,
     {
       headers: {
@@ -171,19 +176,22 @@ useEffect(()=>{
     });
     console.log(response);
     if(response.data.success){
+      setLoading(false);
       cogoToast.success(response?.data?.message);
       dispatch(toggleTableRefresh());
       timelineData(patientInfo.uhid);
       onClose();
      }
      else{
-      cogoToast.error(response?.data?.message);
+      setLoading(false);
+      cogoToast.error(response?.data?.message || "Failed to edit details");
      }
 
  }
  catch(error){
+  setLoading(false);
    console.log(error)
-      cogoToast.error(error?.response?.data?.message);
+      cogoToast.error(error?.response?.data?.message || "Failed to edit details");
 
  }
  }
@@ -222,6 +230,7 @@ useEffect(()=>{
                             pattern="[A-Za-z\s]*"
                             title="Text should contain only letters"
                             placeholder="Enter full name"
+                            maxLength={100}
 
                           />
           </div>
@@ -282,6 +291,7 @@ useEffect(()=>{
                             required
                             value={data.address}
                             placeholder="Enter address"
+                            maxLength={250}
                           />
           </div>
           <div class="mb-3">
@@ -333,6 +343,7 @@ useEffect(()=>{
                             pattern="[A-Za-z\s]*"
                             title="Text should contain only letters"
                             placeholder="Enter contact person name"
+                            maxLength={100}
                           />
           </div>
           <div class="mb-3">
@@ -451,7 +462,7 @@ useEffect(()=>{
     </select>
           </div>
          
-        <button type="submit" class="btn btn-primary">Edit</button>
+        <button type="submit" class="btn btn-primary" disabled={loading}> { loading ? "Loading..." : "Edit"}</button>
         </form>
         </Modal.Body>
         <Modal.Footer>

@@ -14,6 +14,7 @@ import { toggleTableRefresh } from '../../redux/user/userSlice';
 
 function ApplyLeave() {
     const {refreshTable,currentUser} = useSelector((state) => state.user);
+    const [loading,setLoading] = useState(false);
     const token = currentUser?.token;
     const dispatch = useDispatch();
   const  branch = currentUser.branch_name;
@@ -121,6 +122,7 @@ function ApplyLeave() {
     
         }
         try {
+          setLoading(true);
             const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/apply-leave', updatedFormData ,
             {
               headers: {
@@ -128,7 +130,9 @@ function ApplyLeave() {
                 'Authorization': `Bearer ${token}`
             }
             });
+           
             if(response.data.success){
+              setLoading(false);
                 cogoToast.success(response?.data?.message);
                 setSelectedDates([]);
                 setFormData((prev) => ({
@@ -141,9 +145,11 @@ function ApplyLeave() {
     
             }
             else{
+              setLoading(false);
                 cogoToast.error(response?.data?.message);
             }
         } catch (error) {
+          setLoading(false);
             console.log(error)
           cogoToast.error(error?.response?.data?.message);
         }
@@ -208,8 +214,8 @@ console.log(formData)
             </div>
 
             <div>
-              <button type="submit" className="btn btn-success">
-                Apply
+              <button type="submit" className="btn btn-success" disabled={loading}>
+                {loading ? "Loading..." : "Apply"}
               </button>
             </div>
           </form>

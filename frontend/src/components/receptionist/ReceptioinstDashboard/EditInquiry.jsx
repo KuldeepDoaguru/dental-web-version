@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleTableRefresh } from '../../../redux/user/userSlice';
 
 function EditInquiry({ onClose, inquiryInfo }) {
+  const [loading,setLoading] = useState(false);
   const dispatch = useDispatch();
   const {currentUser} = useSelector((state) => state.user);
   const token = currentUser?.token;
@@ -40,6 +41,7 @@ function EditInquiry({ onClose, inquiryInfo }) {
 
  const getDoctors = async ()=>{
     try{
+      
       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}` ,
       {
         headers: {
@@ -101,6 +103,7 @@ console.log(data)
           }
 
           try {
+            setLoading(true);
             const response = await axios.put('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-inquiry', updatedInquiry ,
             {
               headers: {
@@ -110,6 +113,7 @@ console.log(data)
             });
             console.log(response);
             if (response.data.success) {
+              setLoading(false);
                 dispatch(toggleTableRefresh());
               alert(response?.data?.message);
               onClose();
@@ -120,11 +124,13 @@ console.log(data)
             }
             
            else {
+            setLoading(false);
           alert(response?.data?.message);
         }
       
       }
        catch(error){
+        setLoading(false);
          console.log(error)
             alert(error?.response?.data?.message);
       
@@ -219,7 +225,7 @@ console.log(data)
        
         
         
-        <button type="submit" class="btn btn-primary">Edit Appointment</button>
+        <button type="submit" class="btn btn-primary" disabled={loading}>{loading ? "Loading..." : "Edit Appointment"} </button>
         </form>
         </Modal.Body>
         <Modal.Footer>

@@ -33,6 +33,7 @@ const AppointTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const branch = currentUser.branch_name;
   const [appointmentsData, setAppointmentData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [selectedDateAppData, setSelectedDateAppData] = useState([]);
 
@@ -154,6 +155,7 @@ const AppointTable = () => {
   // Add an async function to handle status change
   const handleStatusChange = async (appointmentId, patient_uhid, newStatus) => {
     try {
+      setLoading(true);
       // Send a PUT request to your backend endpoint to update the status
       await axios.put(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-appointment-status`, { status: newStatus, appointmentId: appointmentId, appointment_updated_by: currentUser.employee_name, appointment_updated_by_emp_id: currentUser.employee_ID } ,
       {
@@ -163,11 +165,13 @@ const AppointTable = () => {
       }
       });
       // Optionally, you can re-fetch appointments after successful update
+      setLoading(false);
       getAppointments();
       dispatch(toggleTableRefresh());
       timelineDataForCheckIn(patient_uhid);
       cogoToast.success(`Patient Successfully ${newStatus}`)
     } catch (error) {
+      setLoading(false);
       console.error('Error updating status:', error);
       cogoToast.error("Error updating status")
     }
@@ -432,20 +436,36 @@ const AppointTable = () => {
                         Action
                       </button>}
 
-                      <ul className="dropdown-menu">
+                      {/* <ul className="dropdown-menu drop-pointer">
                         {(patient.appointment_status !== "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime.split("T")[0] == todayDate) && <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, patient.uhid, 'Check-In')}>Check-In</a></li>}
                         {(patient.appointment_status == "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime.split("T")[0] == todayDate) && <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, patient.uhid, 'Appoint')}>Change Status to "Appoint"</a></li>}
-                        {/* <li><a className="dropdown-item mx-0" onClick={() => handleStatusChange(patient.appoint_id, 'Check-In')}>Check-In</a></li> */}
-                        {/* <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Check-Out')}>Check-Out</a></li>
-  <li><a className="dropdown-item mx-0"  onClick={() => handleStatusChange(patient.appoint_id, 'Complete')}>Complete</a></li> */}
+                        
                         {(patient.appointment_status == "Appoint" && patient.appointment_status !== "Cancel") && <li><a className="dropdown-item mx-0" onClick={() => handleEditAppointment(patient)}>Edit Appointment</a></li>}
                         {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" && <li><a className="dropdown-item mx-0" onClick={() => handleCancelAppointment(patient)}>Cancel Appointment</a></li>}
+                      </ul> */}
 
-
-
-
-
-                      </ul>
+<ul className="dropdown-menu drop-pointer">
+  {(patient.appointment_status !== "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime.split("T")[0] === todayDate) && (
+    <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
+      <a onClick={!loading ? () => handleStatusChange(patient.appoint_id, patient.uhid, 'Check-In') : null}>Check-In</a>
+    </li>
+  )}
+  {(patient.appointment_status === "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime.split("T")[0] === todayDate) && (
+    <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
+      <a onClick={!loading ? () => handleStatusChange(patient.appoint_id, patient.uhid, 'Appoint') : null}>Change Status to "Appoint"</a>
+    </li>
+  )}
+  {(patient.appointment_status === "Appoint" && patient.appointment_status !== "Cancel") && (
+    <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
+      <a onClick={!loading ? () => handleEditAppointment(patient) : null}>Edit Appointment</a>
+    </li>
+  )}
+  {(patient.appointment_status === "Check-In" || patient.appointment_status !== "Cancel") && (
+    <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
+      <a onClick={!loading ? () => handleCancelAppointment(patient) : null}>Cancel Appointment</a>
+    </li>
+  )}
+</ul>
                     </div></td>
                   </tr>
                 ))}
@@ -537,5 +557,12 @@ const Wrapper = styled.div`
   .dropdown-item {
   
   }
+  .drop-pointer{
+    cursor: pointer;
+  }
+  .dropdown-item.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
   
 `;

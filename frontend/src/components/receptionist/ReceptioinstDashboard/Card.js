@@ -296,8 +296,9 @@ const Wrapper = styled.div`
   }
   .dotrem1 {
     list-style-type: none;
-    width: 25px;
-    padding-left:4px;
+    width: 30px;
+   
+    text-align: center;
     @media screen and (min-width: 1020px) and (max-width: 1500px) {
        
        

@@ -13,6 +13,7 @@ import cogoToast from 'cogo-toast'
 function Inquiry() {
 
   const user = useSelector((state) => state.user);
+  const [loading,setLoading] = useState(false);
   const {refreshTable} = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -218,6 +219,7 @@ const handleSubmit =async (e)=>{
   }
 
     try {
+      setLoading(true);
       const response = await axios.post('https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/add-inquiry', newData ,
       {
         headers: {
@@ -227,6 +229,7 @@ const handleSubmit =async (e)=>{
       });
       console.log(response);
       if (response.data.success) {
+        setLoading(false);
        cogoToast.success(response?.data?.message);
         // dispatch(toggleTableRefresh());
         setFormData({
@@ -244,11 +247,13 @@ const handleSubmit =async (e)=>{
       }
       
      else {
+      setLoading(false);
     cogoToast.error(response?.data?.message);
   }
 
 }
  catch(error){
+  setLoading(false);
    console.log(error)
       cogoToast.error(error?.response?.data?.message);
 
@@ -269,6 +274,7 @@ const handleDelete = async (id)=>{
   }
  
   try {
+    
     const response = await axios.delete(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/delete-inquiry/${id}` ,
     {
       headers: {
@@ -278,6 +284,7 @@ const handleDelete = async (id)=>{
     });
     console.log(response);
     if (response.data.success) {
+      
         dispatch(toggleTableRefresh());
       cogoToast.success(response?.data?.message);
       
@@ -288,11 +295,13 @@ const handleDelete = async (id)=>{
     }
     
    else {
+    
  cogoToast.error(response?.data?.message);
 }
 
 }
 catch(error){
+  
  console.log(error)
     cogoToast.error(error?.response?.data?.message);
 
@@ -406,7 +415,7 @@ catch(error){
  
   
  <div className='text-center'>
- <button type="submit" class="btn btn-primary">Submit</button>
+ <button type="submit" class="btn btn-primary" disabled={loading}>{loading ? "Loading..." : "Submit" }</button>
  </div>
  
 </form>

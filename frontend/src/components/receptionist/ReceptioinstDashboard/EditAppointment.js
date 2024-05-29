@@ -13,6 +13,7 @@ import cogoToast from "cogo-toast";
 function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
+  const [loading,setLoading] = useState(false);
   const token = currentUser?.token;
   const [show, setShow] = useState(false);
   const [searchDoctor, setSearchDoctor] = useState(
@@ -554,6 +555,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
       }
 
       try {
+        setLoading(true)
         const response = await axios.put(
           "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-appointment",
           newAppointment,
@@ -566,16 +568,20 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
         );
         console.log(response);
         if (response.data.success) {
+          setLoading(false);
           cogoToast.success(response?.data?.message);
           dispatch(toggleTableRefresh());
           timelineData(appointmentInfo.uhid);
           onClose();
         } else {
-          cogoToast.error(response?.data?.message);
+          setLoading(false);
+          cogoToast.error(response?.data?.message ||  "Failed to update appointment");
+
         }
       } catch (error) {
+        setLoading(false);
         console.log(error);
-        cogoToast.error(error?.response?.data?.message);
+        cogoToast.error(error?.response?.data?.message || "Failed to update appointment");
       }
       // setAppointmentData([...appointment_data,newAppointment]);
       // Reset form data
@@ -792,14 +798,15 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
                     name="notes"
                     onChange={handleChange}
                     id="message-text"
+                    maxLength={250}
                   />
                 </div>
                 {/* <div class="mb-3">
             <label for="message-text" class="col-form-label">Status:</label>
             <input type="text" value={data.appointment_status} onChange={handleChange} name='appointment_status'  class="form-control" id="recipient-name"/>
           </div> */}
-                <button type="submit" class="btn btn-primary">
-                  Edit Appointment
+                <button type="submit" class="btn btn-primary" disabled={loading}>
+                 {loading ? "Loading..." : "Edit Appointment"}
                 </button>
               </form>
             </Modal.Body>

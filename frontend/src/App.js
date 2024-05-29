@@ -43,7 +43,7 @@ function App() {
   return (
     <Routes>
       
-      <Route path="/superadmin-dashboard" element={<Dashboard />} />
+      {/* <Route path="/superadmin-dashboard" element={<Dashboard />} /> */}
       <Route path="/" element={<UniversalLogin />} />
 
       {/* receptionist routes start */}

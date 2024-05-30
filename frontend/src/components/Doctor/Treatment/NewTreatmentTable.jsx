@@ -12,6 +12,7 @@ const NewTreatmentTable = () => {
   const { id, tpid } = useParams();
   console.log(id);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [treatmentData, setTreatmentData] = useState([]);
   const [modalIndex, setModalIndex] = useState(null);
   const [getExamTeeth, setGetExamTeeth] = useState([]);
@@ -159,6 +160,7 @@ const NewTreatmentTable = () => {
   };
 
   const generateFinalBill = async () => {
+    setLoading(true);
     try {
       const res = await axios.post(
         "https://dentalgurudoctor.doaguru.com/api/doctor/generateFinalBillwithTpid",
@@ -171,11 +173,13 @@ const NewTreatmentTable = () => {
         }
       );
       console.log(res);
+      setLoading(false);
       setBillData(res.data);
       timelineForFinalBill();
       alert("bill generated successfully");
       navigate(`/ViewPatientTotalBill/${tpid}`);
     } catch (error) {
+      setLoading(false);
       console.log(error);
       cogoToast.error(error.response.data.message);
     }
@@ -304,8 +308,10 @@ const NewTreatmentTable = () => {
               <button
                 className="btn btn-info fs-5 text-light"
                 onClick={generateFinalBill}
+                disabled={loading}
               >
-                Save & Continue <FaLocationArrow size={25} />
+                {loading ? "Save & Continue..." : "Save & Continue"}{" "}
+                <FaLocationArrow size={25} />
               </button>
             ) : (
               <button className="btn btn-info fs-5 text-light" disabled>

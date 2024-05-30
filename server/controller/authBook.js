@@ -503,6 +503,21 @@ const purchaseInventory = (req, res) => {
   }
 };
 
+const deleteLabTestSuggest = (req, res) => {
+  const tid = req.params.tid;
+  const sql = `DELETE FROM patient_lab_details WHERE testid=?`;
+  db.query(sql, tid, (err, result) => {
+    if (err) {
+      console.error("Error deleting data: ", err);
+      return res.status(400).json({ success: false, message: err });
+    } else {
+      return res
+        .status(200)
+        .json({ success: true, message: "Data deleted successfully", result });
+    }
+  });
+};
+
 module.exports = {
   bookAppointment,
   getTreatSuggest,
@@ -518,4 +533,5 @@ module.exports = {
   patienttestdatabyid,
   getpatienttestnotesbyid,
   purchaseInventory,
+  deleteLabTestSuggest,
 };

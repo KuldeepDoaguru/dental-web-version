@@ -201,6 +201,7 @@ import SaveData from "./SaveExaminationData/SaveData";
 
 const PediatricDentalTest = ({ tpid }) => {
   console.log(tpid);
+  const [loading, setLoading] = useState(false);
   const { id, dcat } = useParams();
   console.log(id);
   const [selectedTeeth, setSelectedTeeth] = useState([]);
@@ -210,7 +211,7 @@ const PediatricDentalTest = ({ tpid }) => {
     appointment_id: id,
     patient_uhid: null,
     selectTeeth: [],
-    desease: "",
+    disease: "",
     chiefComplain: "",
     advice: "",
     onExamination: "",
@@ -330,14 +331,14 @@ const PediatricDentalTest = ({ tpid }) => {
     // Check if "Caries" is already present in the disease array
     setInputItem((prevInputItem) => ({
       ...prevInputItem,
-      desease: prevInputItem.desease === "Caries" ? "" : "Caries",
+      disease: prevInputItem.disease === "Caries" ? "" : "Caries",
     }));
 
     // Update the tooth images
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-        if (inputItem.desease && inputItem.desease === "Caries") {
+        if (inputItem.disease && inputItem.disease === "Caries") {
           toothElement.src = toothDefaultMapping[toothId];
         } else {
           toothElement.src = toothImageMapping[toothId];
@@ -378,14 +379,14 @@ const PediatricDentalTest = ({ tpid }) => {
   const fracture = () => {
     setInputItem((prevInputItem) => ({
       ...prevInputItem,
-      desease: prevInputItem.desease === "Fracture" ? "" : "Fracture",
+      disease: prevInputItem.disease === "Fracture" ? "" : "Fracture",
     }));
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-        if (inputItem.desease && inputItem.desease === "Fracture") {
+        if (inputItem.disease && inputItem.disease === "Fracture") {
           toothElement.src = toothDefaultMapping[toothId];
         } else {
           toothElement.src = toothfractureImageMapping[toothId];
@@ -423,14 +424,14 @@ const PediatricDentalTest = ({ tpid }) => {
   const impacted = () => {
     setInputItem((prevInputItem) => ({
       ...prevInputItem,
-      desease: prevInputItem.desease === "Impacted" ? "" : "Impacted",
+      disease: prevInputItem.disease === "Impacted" ? "" : "Impacted",
     }));
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-        if (inputItem.desease && inputItem.desease.includes("Impacted")) {
+        if (inputItem.disease && inputItem.disease.includes("Impacted")) {
           toothElement.src = toothDefaultMapping[toothId];
         } else {
           toothElement.src = toothimpactedImageMapping[toothId];
@@ -469,13 +470,13 @@ const PediatricDentalTest = ({ tpid }) => {
   const missing = () => {
     setInputItem((prevInputItem) => ({
       ...prevInputItem,
-      desease: prevInputItem.desease === "Missing Tooth" ? "" : "Missing Tooth",
+      disease: prevInputItem.disease === "Missing Tooth" ? "" : "Missing Tooth",
     }));
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-        if (inputItem.desease && inputItem.desease.includes("Missing Tooth")) {
+        if (inputItem.disease && inputItem.disease.includes("Missing Tooth")) {
           toothElement.src = toothDefaultMapping[toothId];
         } else {
           toothElement.src = toothmissingImageMapping[toothId];
@@ -514,13 +515,13 @@ const PediatricDentalTest = ({ tpid }) => {
   const mobility = () => {
     setInputItem((prevInputItem) => ({
       ...prevInputItem,
-      desease: prevInputItem.desease === "Mobility" ? "" : "Mobility",
+      disease: prevInputItem.disease === "Mobility" ? "" : "Mobility",
     }));
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-        if (inputItem.desease && inputItem.desease.includes("Mobility")) {
+        if (inputItem.disease && inputItem.disease.includes("Mobility")) {
           toothElement.src = toothDefaultMapping[toothId];
         } else {
           toothElement.src = toothmobilityImageMapping[toothId];
@@ -559,8 +560,8 @@ const PediatricDentalTest = ({ tpid }) => {
   const periapical = () => {
     setInputItem((prevInputItem) => ({
       ...prevInputItem,
-      desease:
-        prevInputItem.desease === "Periapical Abscess"
+      disease:
+        prevInputItem.disease === "Periapical Abscess"
           ? ""
           : "Periapical Abscess",
     }));
@@ -569,8 +570,8 @@ const PediatricDentalTest = ({ tpid }) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
         if (
-          inputItem.desease &&
-          inputItem.desease.includes("Periapical Abscess")
+          inputItem.disease &&
+          inputItem.disease.includes("Periapical Abscess")
         ) {
           toothElement.src = toothDefaultMapping[toothId];
         } else {
@@ -611,14 +612,14 @@ const PediatricDentalTest = ({ tpid }) => {
   const root = () => {
     setInputItem((prevInputItem) => ({
       ...prevInputItem,
-      desease: prevInputItem.desease === "Root Stump" ? "" : "Root Stump",
+      disease: prevInputItem.disease === "Root Stump" ? "" : "Root Stump",
     }));
 
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-        if (inputItem.desease && inputItem.desease.includes("Root Stump")) {
+        if (inputItem.disease && inputItem.disease.includes("Root Stump")) {
           toothElement.src = toothDefaultMapping[toothId];
         } else {
           toothElement.src = toothrootImageMapping[toothId];
@@ -658,13 +659,13 @@ const PediatricDentalTest = ({ tpid }) => {
     let updatedDisease;
     setInputItem((prevInputItem) => ({
       ...prevInputItem,
-      desease: prevInputItem.desease === "Supra Erupted" ? "" : "Supra Erupted",
+      disease: prevInputItem.disease === "Supra Erupted" ? "" : "Supra Erupted",
     }));
     // Additional logic here if needed
     inputItem.selectTeeth.forEach((toothId) => {
       const toothElement = document.getElementById(`tooth_${toothId}`);
       if (toothElement) {
-        if (inputItem.desease && inputItem.desease.includes("Supra Erupted")) {
+        if (inputItem.disease && inputItem.disease.includes("Supra Erupted")) {
           toothElement.src = toothDefaultMapping[toothId];
         } else {
           toothElement.src = toothsuparaImageMapping[toothId];
@@ -683,7 +684,7 @@ const PediatricDentalTest = ({ tpid }) => {
     }));
     setIsFormFilled(
       !!inputItem.selectTeeth.length ||
-        inputItem.desease ||
+        inputItem.disease ||
         inputItem.chiefComplain ||
         inputItem.advice ||
         inputItem.onExamination
@@ -750,7 +751,7 @@ const PediatricDentalTest = ({ tpid }) => {
     branch: branch,
     patient_uhid: getPatientData[0]?.uhid,
     selectedTeeth: inputItem.selectTeeth.join(", "),
-    disease: inputItem.desease,
+    disease: inputItem.disease,
     chiefComplain: inputItem.chiefComplain,
     advice: inputItem.advice,
     onExamination: inputItem.onExamination,
@@ -760,7 +761,7 @@ const PediatricDentalTest = ({ tpid }) => {
   console.log(formData);
   const handleSave = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     // Prepare data to send to the backend
 
     try {
@@ -774,6 +775,7 @@ const PediatricDentalTest = ({ tpid }) => {
           },
         }
       );
+      setLoading(false);
       console.log(response.data);
       cogoToast.success("data saved");
       dispatch(toggleTableRefresh());
@@ -781,7 +783,7 @@ const PediatricDentalTest = ({ tpid }) => {
       setInputItem({
         appointment_id: id,
         selectTeeth: [],
-        desease: "",
+        disease: "",
         chiefComplain: "",
         advice: "",
         onExamination: "",
@@ -796,6 +798,7 @@ const PediatricDentalTest = ({ tpid }) => {
       setSelectedTeeth([]);
       // window.location.reload();
     } catch (error) {
+      setLoading(false);
       console.error("Error:", error);
       cogoToast.error(error.response.data.message);
     }
@@ -1303,9 +1306,9 @@ const PediatricDentalTest = ({ tpid }) => {
                         <label className="lable">Dental Condition</label>
                         <input
                           type="text"
-                          value={inputItem.desease}
+                          value={inputItem.disease}
                           required
-                          name="desease"
+                          name="disease"
                           id="form8Example2"
                           placeholder="Enter diseases"
                           className="form-control"
@@ -1366,10 +1369,11 @@ const PediatricDentalTest = ({ tpid }) => {
                   <div className="text-center m-3">
                     <button
                       type="submit"
+                      disabled={loading}
                       className="btn btn-info text-light mx-3"
                       // onClick={handleAddNew}
                     >
-                      Save
+                      {loading ? "Save..." : "Save"}
                     </button>
                   </div>
                 </form>

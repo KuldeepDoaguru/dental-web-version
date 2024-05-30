@@ -124,6 +124,7 @@ const {
   patienttestdatabyid,
   getpatienttestnotesbyid,
   purchaseInventory,
+  deleteLabTestSuggest,
 } = require("../controller/authBook.js");
 const authenticate = require("../middleware/authMiddleware.js");
 
@@ -551,5 +552,6 @@ router.get(
 );
 
 router.post("/purchaseInventory/:branch", purchaseInventory);
+router.delete("/deleteLabTestSuggest/:tid", deleteLabTestSuggest);
 
 module.exports = { authRoutes: router };

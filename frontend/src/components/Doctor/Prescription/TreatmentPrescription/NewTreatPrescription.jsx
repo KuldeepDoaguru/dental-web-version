@@ -14,6 +14,7 @@ const NewTreatPrescription = () => {
   console.log(appoint_id, id, tpid, treatment);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user);
   const token = user.currentUser.token;
   console.log(user);
@@ -29,7 +30,7 @@ const NewTreatPrescription = () => {
   const [prescriptionData, setPrescriptionData] = useState({
     branch_name: branch,
     patient_uhid: "",
-    desease: "",
+    disease: "",
     treatment: "",
     medicine_name: "",
     dosage: "",
@@ -190,7 +191,7 @@ const NewTreatPrescription = () => {
   const medicineInput = {
     branch_name: branch,
     patient_uhid: getPatientData[0]?.uhid,
-    desease: treatments[0]?.disease,
+    disease: treatments[0]?.disease,
     treatment: treatment,
     medicine_name:
       prescriptionData.medicine_name === "other"
@@ -221,14 +222,17 @@ const NewTreatPrescription = () => {
         }
       );
       console.log(response);
+      // setLoading(false);
       cogoToast.success("New medicine added successfully");
     } catch (error) {
+      // setLoading(false);
       console.log(error);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
         `https://dentalgurudoctor.doaguru.com/api/doctor/insertTreatPrescription/${appoint_id}/${tpid}/${sitting}`,
@@ -241,11 +245,12 @@ const NewTreatPrescription = () => {
         }
       );
       console.log(response.data);
+      setLoading(false);
       addNewMedicine();
       timelineForMedical();
       getTreatPrescriptionByAppointId();
       setPrescriptionData({
-        desease: "",
+        disease: "",
         treatment: "",
         medicine_name: "",
         dosage: "",
@@ -254,6 +259,7 @@ const NewTreatPrescription = () => {
         note: "",
       });
     } catch (error) {
+      setLoading(false);
       console.error("Error:", error.response.data);
       alert("Error:", error.response.data);
       // Handle error, maybe show an error message
@@ -560,7 +566,7 @@ const NewTreatPrescription = () => {
               <thead>
                 <tr>
                   <th>Seleted Teeth</th>
-                  <th>Desease</th>
+                  <th>disease</th>
                   <th>Chief Complain</th>
                   <th>On Exmination</th>
                   <th>Advice</th>
@@ -693,7 +699,7 @@ const NewTreatPrescription = () => {
                 </div>
                 <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div className="form-outline">
-                    <label>Desease</label>
+                    <label>disease</label>
                     <input
                       type="text"
                       value={treatments[0]?.disease}
@@ -831,8 +837,9 @@ const NewTreatPrescription = () => {
                     <button
                       className="btn btn-secondary fs-5 mt-4"
                       type="submit"
+                      disabled={loading}
                     >
-                      Add
+                      {loading ? "Add..." : "Add"}
                       <IoMdAdd size={20} />
                     </button>
                   </div>

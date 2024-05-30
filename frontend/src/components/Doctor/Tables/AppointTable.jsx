@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleTableRefresh } from "../../../redux/user/userSlice";
 import cogoToast from "cogo-toast";
 import moment from "moment";
+import animationData from "../../../animation/animation-four.json";
+import Lottie from "lottie-react";
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -16,6 +18,7 @@ const AppointTable = () => {
   const [keyword, setkeyword] = useState("");
   const [filterTableData, setFilterTableData] = useState([]);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
@@ -37,6 +40,7 @@ const AppointTable = () => {
   };
   // console.log(selectedDate === "");
   const fetchAppointments = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsWithPatientDetailsTreatSugg/${doctorId}`,
@@ -47,8 +51,10 @@ const AppointTable = () => {
           },
         }
       );
+      // setLoading(false);
       setAppointments(data);
     } catch (error) {
+      // setLoading(false);
       // console.error("Error fetching appointments:", error.message);
     }
   };
@@ -222,7 +228,7 @@ const AppointTable = () => {
         }
         window.scrollTo(0, 0);
       }
-
+      // setLoading(true);
       const res = await axios.get(
         `https://dentalgurudoctor.doaguru.com/api/doctor/appointtreatSitting?date=${selectedDate}`,
         {
@@ -232,10 +238,12 @@ const AppointTable = () => {
           },
         }
       );
+      // setLoading(false);
       setAppointments(res.data.result);
       setFilterTableData(res.data.result);
       // setSelectedActions({ ...selectedActions, [appointId]: action });
     } catch (error) {
+      // setLoading(false);
       // console.error("Error updating appointment status:", error.message);
     }
   };
@@ -339,9 +347,9 @@ const AppointTable = () => {
                             )}
                           </td>
                           <td>
-                            {item.treatment_names !== null
-                              ? item.treatment_names
-                              : item.treatment_provided}
+                            {item.treatment_names === null
+                              ? item.treatment_provided
+                              : item.treatment_names}
                           </td>
                           <td>{item.bloodgroup}</td>
                           <td>{item.dob}</td>
@@ -454,102 +462,108 @@ const AppointTable = () => {
                           <th>Type of Action</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        {filteredData
-                          ?.filter((val) => {
-                            if (keyword === "") {
-                              return true;
-                            } else if (
-                              val.patient_name
-                                ?.toLowerCase()
-                                ?.includes(keyword.toLowerCase()) ||
-                              val.mobileno?.includes(keyword)
-                            ) {
-                              return val;
-                            }
-                          })
-                          .map((item, index) => (
-                            <tr key={index}>
-                              <td>{item.appoint_id}</td>
-                              <td>
-                                <Link
-                                  to={`/Patient-profile/${item.patient_uhid}`}
-                                >
-                                  {item.patient_uhid}
-                                </Link>
-                              </td>
-                              <td>{item.patient_name}</td>
-                              <td>{item.mobileno}</td>
-                              <td>
-                                {moment(item?.appointment_dateTime).format(
-                                  "h:mm A"
-                                )}
-                              </td>
-                              <td>
-                                <small>
-                                  {item.treatment_provided !== "OPD"
-                                    ? item.treatment_names
-                                    : item.treatment_provided}
-                                </small>
-                              </td>
-                              <td>{item.bloodgroup}</td>
-                              <td>{item.dob}</td>
-                              <td>{item.age}</td>
-                              <td>{item.weight}</td>
-                              <td>{item.allergy}</td>
-                              <td>{item.disease}</td>
-                              <td>{item.patient_type}</td>
-                              <td>{item.notes}</td>
-                              <td>{item.current_sitting + 1}</td>
-                              <td>{item.appointment_status}</td>
-                              <td>
-                                <div className="dropdown">
-                                  {item.appointment_status === "Complete" ||
-                                  item.appointment_status === "Check Out" ||
-                                  item.appointment_status === "Appoint" ? (
-                                    <button
-                                      className="btn btn-secondary dropdown-toggle"
-                                      type="button"
-                                      disabled
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      Action
-                                    </button>
-                                  ) : (
-                                    <button
-                                      className="btn btn-secondary dropdown-toggle"
-                                      type="button"
-                                      data-bs-toggle="dropdown"
-                                      aria-expanded="false"
-                                    >
-                                      Action
-                                    </button>
-                                  )}
 
-                                  {/* Option 1 */}
-                                  <ul className="dropdown-menu">
-                                    {item.appointment_status !== "Complete" &&
-                                      item.appointment_status !== "Check Out" &&
-                                      item.appointment_status !== "Appoint" && (
-                                        <>
-                                          <li>
-                                            <button
-                                              className="dropdown-item mx-0"
-                                              onClick={() =>
-                                                handleAction(
-                                                  "in treatment",
-                                                  item.appoint_id,
-                                                  item.patient_uhid,
-                                                  item.appointment_status,
-                                                  item.tp_id
-                                                )
-                                              }
-                                            >
-                                              Start Treatment
-                                            </button>
-                                          </li>
-                                          {/* <li>
+                      <tbody>
+                        <>
+                          {filteredData
+                            ?.filter((val) => {
+                              if (keyword === "") {
+                                return true;
+                              } else if (
+                                val.patient_name
+                                  ?.toLowerCase()
+                                  ?.includes(keyword.toLowerCase()) ||
+                                val.mobileno?.includes(keyword)
+                              ) {
+                                return val;
+                              }
+                            })
+                            .map((item, index) => (
+                              <tr key={index}>
+                                <td>{item.appoint_id}</td>
+                                <td>
+                                  <Link
+                                    to={`/Patient-profile/${item.patient_uhid}`}
+                                  >
+                                    {item.patient_uhid}
+                                  </Link>
+                                </td>
+                                <td>{item.patient_name}</td>
+                                <td>{item.mobileno}</td>
+                                <td>
+                                  {moment(item?.appointment_dateTime).format(
+                                    "h:mm A"
+                                  )}
+                                </td>
+                                <td>
+                                  <small>
+                                    {item.treatment_provided !== "OPD"
+                                      ? item.treatment_names === null
+                                        ? item.treatment_provided
+                                        : item.treatment_names
+                                      : item.treatment_provided}
+                                  </small>
+                                </td>
+                                <td>{item.bloodgroup}</td>
+                                <td>{item.dob}</td>
+                                <td>{item.age}</td>
+                                <td>{item.weight}</td>
+                                <td>{item.allergy}</td>
+                                <td>{item.disease}</td>
+                                <td>{item.patient_type}</td>
+                                <td>{item.notes}</td>
+                                <td>{item.current_sitting + 1}</td>
+                                <td>{item.appointment_status}</td>
+                                <td>
+                                  <div className="dropdown">
+                                    {item.appointment_status === "Complete" ||
+                                    item.appointment_status === "Check Out" ||
+                                    item.appointment_status === "Appoint" ? (
+                                      <button
+                                        className="btn btn-secondary dropdown-toggle"
+                                        type="button"
+                                        disabled
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        Action
+                                      </button>
+                                    ) : (
+                                      <button
+                                        className="btn btn-secondary dropdown-toggle"
+                                        type="button"
+                                        data-bs-toggle="dropdown"
+                                        aria-expanded="false"
+                                      >
+                                        Action
+                                      </button>
+                                    )}
+
+                                    {/* Option 1 */}
+                                    <ul className="dropdown-menu">
+                                      {item.appointment_status !== "Complete" &&
+                                        item.appointment_status !==
+                                          "Check Out" &&
+                                        item.appointment_status !==
+                                          "Appoint" && (
+                                          <>
+                                            <li>
+                                              <button
+                                                className="dropdown-item mx-0"
+                                                onClick={() =>
+                                                  handleAction(
+                                                    "in treatment",
+                                                    item.appoint_id,
+                                                    item.patient_uhid,
+                                                    item.appointment_status,
+                                                    item.tp_id
+                                                  )
+                                                }
+                                              >
+                                                Start Treatment
+                                              </button>
+                                            </li>
+                                            {/* <li>
                                             <button
                                               className="dropdown-item mx-0"
                                               onClick={() =>
@@ -563,7 +577,7 @@ const AppointTable = () => {
                                               Cancel Treatment
                                             </button>
                                           </li> */}
-                                          {/* <li>
+                                            {/* <li>
                                   <button
                                     className="dropdown-item mx-0"
                                     onClick={() =>
@@ -577,13 +591,14 @@ const AppointTable = () => {
                                     Hold
                                   </button>
                                 </li> */}
-                                        </>
-                                      )}
-                                  </ul>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
+                                          </>
+                                        )}
+                                    </ul>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                        </>
                       </tbody>
                     </table>
                   </div>

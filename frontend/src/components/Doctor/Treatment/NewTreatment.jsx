@@ -122,9 +122,9 @@ const NewTreatment = () => {
 
   // Get Examintion Teeth Details END
 
-  const handleNavigate = (exid, appointment_id, desease) => {
+  const handleNavigate = (exid, appointment_id, disease) => {
     navigate(`/treatmentDashTwo/${exid}/${appointment_id}/${tpid}`, {
-      state: desease,
+      state: disease,
     });
   };
 
@@ -274,7 +274,7 @@ const NewTreatment = () => {
               <thead>
                 <tr>
                   <th>Treatment</th>
-                  <th>Desease</th>
+                  <th>disease</th>
                   <th>Teeth</th>
                   <th>Chief Complain</th>
                   <th>Advice</th>
@@ -396,13 +396,22 @@ const NewTreatment = () => {
                           </td>
                           <td>
                             <div className="">
-                              <Link
-                                to={`/print-oral-testing/${patient.testid}`}
-                              >
-                                <button className="btn btn-success m-1">
+                              {patient.test_status === "pending" ? (
+                                <button
+                                  className="btn btn-success m-1"
+                                  disabled
+                                >
                                   View
                                 </button>
-                              </Link>
+                              ) : (
+                                <Link
+                                  to={`/print-oral-testing/${patient.testid}`}
+                                >
+                                  <button className="btn btn-success m-1">
+                                    View
+                                  </button>
+                                </Link>
+                              )}
                             </div>
                           </td>
                         </tr>

@@ -19,6 +19,7 @@ const SecurityAmount = () => {
   const [selectedData, setSelectedData] = useState();
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [securityAmt, setSecurityAmt] = useState([]);
+  const [loading, setLoading] = useState(false);
   // const [getPatientData, setGetPatientData] = useState([]);
   const [treatList, setTreatList] = useState([]);
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -136,8 +137,10 @@ const SecurityAmount = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await insertCorrectData();
+      setLoading(false);
       alert("Security Amount Added");
       setFormData({
         // branch_name: "",
@@ -154,6 +157,7 @@ const SecurityAmount = () => {
         received_by: currentUser ? currentUser.employee_name : "",
       });
     } catch (error) {
+      setLoading(false);
       console.error("Error submitting security amount:", error);
       alert("An error occurred while submitting security amount");
     }
@@ -519,8 +523,9 @@ const SecurityAmount = () => {
                               <button
                                 className="btn btn-primary text-light btnbox fw-bold shadow p-1 w-100 rounded"
                                 type="submit"
+                                disabled={loading}
                               >
-                                Submit
+                                {loading ? "Submit..." : "Submit"}{" "}
                               </button>
                             </div>
                           </div>

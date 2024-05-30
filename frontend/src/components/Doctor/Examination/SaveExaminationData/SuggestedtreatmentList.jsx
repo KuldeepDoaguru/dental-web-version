@@ -107,7 +107,7 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
             >
               <thead>
                 <tr>
-                  <th>Desease</th>
+                  <th>disease</th>
                   <th>Treatment</th>
                   <th>Treatment Cost</th>
                   <th>Total Req. Sitting</th>

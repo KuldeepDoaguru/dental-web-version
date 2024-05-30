@@ -7,10 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import EditAppointment from "./BookSittingAppointment";
 import { toggleTableRefresh } from "../../../redux/user/userSlice";
 import SuggestedtreatmentList from "../Examination/SaveExaminationData/SuggestedtreatmentList";
+import cogoToast from "cogo-toast";
 
 const TreatSuggest = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [loadingTestBt, setLoadingTestBt] = useState(false);
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
   const employeeName = user.currentUser.employee_name;
@@ -33,7 +36,7 @@ const TreatSuggest = () => {
     branch: branch,
     p_uhid: "",
     tp_id: tpid,
-    desease: "",
+    disease: "",
     treatment_procedure: "",
     treatment_name: "",
     total_sitting: "",
@@ -203,7 +206,7 @@ const TreatSuggest = () => {
         "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
           type: "Treatment Suggest",
-          description: `Select Treatment : ${formData.treatment_name} for desease : ${formData.desease}`,
+          description: `Select Treatment : ${formData.treatment_name} for disease : ${formData.disease}`,
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
         },
@@ -242,7 +245,7 @@ const TreatSuggest = () => {
     branch: branch,
     p_uhid: getPatientData[0]?.uhid,
     tp_id: tpid,
-    desease: formData.desease,
+    desease: formData.disease,
     treatment_procedure: formData.treatment_procedure,
     treatment_name: formData.treatment_name,
     totalCost: formData.total_cost,
@@ -254,6 +257,7 @@ const TreatSuggest = () => {
   //form number one
   const handleSubmitForm = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await axios.post(
         `https://dentalgurudoctor.doaguru.com/api/doctor/insertTreatSuggest`,
@@ -265,12 +269,14 @@ const TreatSuggest = () => {
           },
         }
       );
-      alert("Successfully added!");
+
+      setLoading(false);
+      cogoToast.success("successfully added");
       console.log(res.data);
       timelineForTreatSuggest();
       setFormData({
         ...formData,
-        desease: "",
+        disease: "",
         treatment_procedure: "",
         treatment_name: "",
         total_sitting: "",
@@ -278,6 +284,7 @@ const TreatSuggest = () => {
       });
       dispatch(toggleTableRefresh());
     } catch (error) {
+      setLoading(false);
       console.log(error);
       alert(error.response.data.message);
     }
@@ -322,6 +329,7 @@ const TreatSuggest = () => {
 
   const handleLabSubmit = async (e) => {
     e.preventDefault();
+    setLoadingTestBt(true);
 
     try {
       const response = await axios.post(
@@ -334,16 +342,19 @@ const TreatSuggest = () => {
           },
         }
       );
+      setLoadingTestBt(false);
       setLabData({
         ...labData,
         lab_name: "",
         test: "",
       });
       dispatch(toggleTableRefresh());
-      alert("Successfully added!");
+      cogoToast.success("successfully added");
       console.log(response.data);
     } catch (error) {
+      setLoadingTestBt(false);
       console.error("Error inserting data:", error);
+      cogoToast.error("lab test already exist");
       // Handle error, maybe show an error message to the user
     }
   };
@@ -396,6 +407,29 @@ const TreatSuggest = () => {
     return item.test_name === labData.lab_name;
   });
   console.log(filter);
+
+  const deleteSuggestedLabData = async (id) => {
+    const quest = window.confirm("Do you really want to delete the lab test?");
+    if (quest) {
+      try {
+        const response = await axios.delete(
+          `https://dentalgurudoctor.doaguru.com/api/doctor/deleteLabTestSuggest/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        getLabAllData();
+        cogoToast.success("Lab test deleted successfully");
+      } catch (error) {
+        console.error(error);
+        cogoToast.error("Failed to delete lab test");
+      }
+    }
+  };
+
   return (
     <>
       <Wrapper>
@@ -468,17 +502,17 @@ const TreatSuggest = () => {
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
                     <div className="">
                       <div className="text-start">
-                        <label className="label">Select Desease</label>
+                        <label className="label">Select disease</label>
                       </div>
                       <select
                         className="form-select text-start w-100"
-                        name="desease"
+                        name="disease"
                         aria-label="Default select example"
                         onChange={handleChange}
-                        value={formData.desease}
+                        value={formData.disease}
                         required
                       >
-                        <option value="">-select desease-</option>
+                        <option value="">-select disease-</option>
                         {uniqueDiseases.map((item, index) => (
                           <option key={index}>{item}</option>
                         ))}
@@ -571,9 +605,10 @@ const TreatSuggest = () => {
                     <div className="h-100 d-flex justify-content-center align-items-center">
                       <button
                         type="submit"
+                        disabled={loading}
                         className="btn btn-info text-light mt-5"
                       >
-                        Save
+                        {loading ? "Save..." : "Save"}
                       </button>
                     </div>
                   </div>
@@ -716,9 +751,10 @@ const TreatSuggest = () => {
                       <div className="h-100 d-flex justify-content-center align-items-center">
                         <button
                           type="submit"
+                          disabled={loadingTestBt}
                           className="btn btn-info text-light mt-5"
                         >
-                          Submit Test
+                          {loadingTestBt ? "Submit Test..." : "Submit Test"}
                         </button>
                       </div>
                     </div>
@@ -739,6 +775,7 @@ const TreatSuggest = () => {
                 <tr>
                   <th>Test Name</th>
                   <th>Test</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -747,6 +784,14 @@ const TreatSuggest = () => {
                     <tr>
                       <td>{item.lab_name}</td>
                       <td>{item.test}</td>
+                      <td>
+                        <button
+                          className="btn btn-outline-danger"
+                          onClick={() => deleteSuggestedLabData(item.testid)}
+                        >
+                          Delete
+                        </button>
+                      </td>
                     </tr>
                   </>
                 ))}

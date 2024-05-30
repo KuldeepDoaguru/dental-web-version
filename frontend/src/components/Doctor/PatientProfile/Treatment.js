@@ -73,7 +73,7 @@ const Treatment = () => {
                     <>
                       <tr>
                         <td>{item.tp_id}</td>
-                        <td>{item.desease}</td>
+                        <td>{item.disease}</td>
                         <td>{item.treatment_name}</td>
                         <td>{item.total_sitting}</td>
                         <td>{item.current_sitting}</td>

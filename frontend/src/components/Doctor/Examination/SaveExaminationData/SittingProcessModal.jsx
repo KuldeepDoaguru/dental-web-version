@@ -21,6 +21,7 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
   const [sitConsider, setSitConsider] = useState("");
   const [treat, setTreat] = useState([]);
   const [showBook, setShowBook] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     current_sitting:
       selectedData.treatment_status === "ongoing"
@@ -66,6 +67,7 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
   console.log(formData);
   const updateSitting = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const { data } = await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatSitting/${branch}/${selectedData.ts_id}`,
@@ -77,6 +79,7 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
           },
         }
       );
+      setLoading(false);
       cogoToast.success("sitting considered");
       console.log(data.result.consider_sitting);
       setTreat(data.result.consider_sitting);
@@ -85,6 +88,7 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
         `/treatmentDashTwo/${selectedData.ts_id}/${appoint_id}/${selectedData.tp_id}/${selectedData.treatment_name}`
       );
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -163,8 +167,12 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
                     </button>
                   )} */}
 
-                    <button type="submit" class="btn btn-primary">
-                      Submit
+                    <button
+                      type="submit"
+                      class="btn btn-primary"
+                      disabled={loading}
+                    >
+                      {loading ? "Submit..." : "Submit"}{" "}
                     </button>
                   </div>
                 </form>

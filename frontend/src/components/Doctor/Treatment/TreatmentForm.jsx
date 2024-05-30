@@ -12,6 +12,7 @@ const TreatmentForm = () => {
   const { tsid } = useParams();
   const { appoint_id } = useParams();
   const { tp_id, treatment } = useParams();
+  const [loading, setLoading] = useState(false);
   console.log(tsid, appoint_id, tp_id, treatment);
   const navigate = useNavigate();
   const [getPatientData, setGetPatientData] = useState([]);
@@ -32,7 +33,7 @@ const TreatmentForm = () => {
 
   const [formData, setFormData] = useState({
     patient_uhid: "",
-    desease: "",
+    disease: "",
     dental_treatment: treatment,
     no_teeth: "",
     qty: "",
@@ -50,6 +51,7 @@ const TreatmentForm = () => {
   console.log(treatStats);
 
   const getDentalTreatData = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://dentalgurudoctor.doaguru.com/api/doctor/getOnlyExaminv/${tp_id}/${tsid}`,
@@ -60,8 +62,10 @@ const TreatmentForm = () => {
           },
         }
       );
+      setLoading(false);
       setSitCheck(data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -112,7 +116,7 @@ const TreatmentForm = () => {
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-      desease: lastTreatment?.desease || "",
+      disease: lastTreatment?.disease || "",
       no_teeth: lastTreatment?.selected_teeth || "",
       qty: lastTreatment?.selected_teeth
         ? lastTreatment?.selected_teeth.split(", ").length
@@ -350,7 +354,7 @@ const TreatmentForm = () => {
     branch: branch,
     sitting_number: lastTreatment?.current_sitting,
     patient_uhid: formData.patient_uhid,
-    desease: lastTreatment?.desease,
+    disease: lastTreatment?.disease,
     dental_treatment: treatment,
     no_teeth: lastTreatment?.selected_teeth,
     qty: dataArray?.length,
@@ -403,6 +407,7 @@ const TreatmentForm = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const res = await axios.post(
         `https://dentalgurudoctor.doaguru.com/api/doctor/insertTreatmentData/${tsid}/${appoint_id}/${tp_id}`,
@@ -429,7 +434,7 @@ const TreatmentForm = () => {
           sitting_payment_status: "",
           note: "",
         });
-
+        setLoading(false);
         treatmentStatsUpdate();
         getPatientDetail();
 
@@ -438,12 +443,14 @@ const TreatmentForm = () => {
         );
         // navigate(`/TreatmentDashBoard/${appoint_id}/${tp_id}`);
       } else {
+        setLoading(false);
         console.error(
           "Failed to insert treatment details. Server returned status:",
           res.status
         );
       }
     } catch (error) {
+      setLoading(false);
       console.error("Failed to insert treatment details:", error);
     }
   };
@@ -489,6 +496,7 @@ const TreatmentForm = () => {
 
   const handleTreatSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     if (bookingStats === "yes") {
       setShowBookingPopup(true);
     } else {
@@ -731,13 +739,13 @@ const TreatmentForm = () => {
                   <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
-                        Desease
+                        disease
                       </label>
                       <input
                         type="text"
                         className="form-control shadow-none p-1 bg-light rounded border-0 w-75"
-                        value={lastTreatment?.desease}
-                        placeholder="Desease"
+                        value={lastTreatment?.disease}
+                        placeholder="disease"
                       />
                     </div>
                   </div>
@@ -959,9 +967,12 @@ const TreatmentForm = () => {
                             <button
                               type="button"
                               className="btn btn-info"
+                              disabled={loading}
                               onClick={MakePaymentViaSecurityAmount}
                             >
-                              Make Payment using security amount
+                              {loading
+                                ? "Make Payment using security amount..."
+                                : "Make Payment using security amount"}
                             </button>
                           ) : (
                             <button
@@ -1127,9 +1138,12 @@ const TreatmentForm = () => {
                             <button
                               type="submit"
                               className="btn btn-info btn text-dark mt-2"
+                              disabled={loading}
                               // onClick={handleEditAppointment}
                             >
-                              Book Next Treatment & Submit
+                              {loading
+                                ? "Book Next Treatment & Submit..."
+                                : "Book Next Treatment & Submit"}
                             </button>
                           </>
                         ) : (
@@ -1137,8 +1151,9 @@ const TreatmentForm = () => {
                             <button
                               type="submit"
                               className="btn btn-info text-dark mt-2 ms-2"
+                              disabled={loading}
                             >
-                              Treatment Done
+                              {loading ? "Treatment Done..." : "Treatment Done"}
                               <FaTooth size={22} />
                             </button>
                           </>
@@ -1152,16 +1167,20 @@ const TreatmentForm = () => {
                           <button
                             type="submit"
                             className="btn btn-info btn text-dark mt-2"
+                            disabled={loading}
                             // onClick={handleEditAppointment}
                           >
-                            Book Next Sitting & Submit
+                            {loading
+                              ? "Book Next Sitting & Submit..."
+                              : "Book Next Sitting & Submit"}
                           </button>
                         ) : (
                           <button
                             type="submit"
                             className="btn btn-info text-dark mt-2 ms-2"
+                            disabled={loading}
                           >
-                            Sitting Done
+                            {loading ? "Sitting Done..." : "Sitting Done"}
                             <FaTooth size={22} />
                           </button>
                         )}

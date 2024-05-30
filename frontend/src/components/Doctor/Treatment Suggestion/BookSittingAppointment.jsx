@@ -25,7 +25,8 @@ const BookSittingAppointment = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const { branch_name, employee_ID, employee_name, email } = user.currentUser;
+  const { branch_name, employee_ID, employee_name, email, token } =
+    user.currentUser;
   // Function to format date in YYYY-MM-DD format
   const formatDate = (date) => {
     const year = date.getFullYear();
@@ -37,6 +38,7 @@ const BookSittingAppointment = ({
   console.log(doctorDetailsStore);
   const [show, setShow] = useState(false);
   const [treatments, setTreatment] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [branchHolidays, setBranchHolidays] = useState([]);
   const [branchDetail, setBranchDetail] = useState([]);
   const [weekOffDay, setWeekOffDay] = useState("");
@@ -94,7 +96,13 @@ const BookSittingAppointment = ({
   const getBranchDetail = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/get-branch-detail/${branch_name}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-branch-detail/${branch_name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(response);
       setBranchDetail(response.data.data);
@@ -106,7 +114,13 @@ const BookSittingAppointment = ({
   const getBranchHolidays = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/get-branch-holidays/${branch_name}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-branch-holidays/${branch_name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
       setBranchHolidays(data.data);
@@ -162,7 +176,13 @@ const BookSittingAppointment = ({
   const getDoctorsWithLeave = async () => {
     try {
       const response = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/get-doctors-with-leave/${branch_name}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-doctors-with-leave/${branch_name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setDoctorWithLeave(response?.data?.data);
     } catch (error) {
@@ -173,14 +193,20 @@ const BookSittingAppointment = ({
   const getDoctorAppoint = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsViaDocId/${branch_name}/${employee_ID}`
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getAppointmentsViaDocId/${branch_name}/${employee_ID}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setDocAppoint(data);
     } catch (error) {
       console.log(error);
     }
   };
-
+  console.log(branchDetail[0]?.open_time);
   const generateTimeSlots = () => {
     const slots = [];
     for (
@@ -212,6 +238,7 @@ const BookSittingAppointment = ({
   };
 
   const timeSlots = generateTimeSlots();
+  console.log(timeSlots);
 
   useEffect(() => {
     const selectedDateTime = new Date(selectedDate);
@@ -242,6 +269,12 @@ const BookSittingAppointment = ({
           description: "Next Sitting Scheduled Successfully",
           branch: branch_name,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);
@@ -252,13 +285,14 @@ const BookSittingAppointment = ({
 
   const handleBookSittingAppointment = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const selectedDay = new Date(selectedDate).getDay();
     if (selectedDay === weekOffDay) {
       alert("Selected date is a week off day. Please choose another date.");
       return;
     }
-
+    setLoading(false);
     // Convert appointment time to Date object
     const selectedDateTime = new Date(data.appointment_dateTime);
 
@@ -304,7 +338,7 @@ const BookSittingAppointment = ({
       alert(`Selected date is branch holiday please selected other date`);
       return;
     }
-
+    setLoading(false);
     // Check if the selected doctor is available during the appointment time
     const isDoctorAvailable = (selectedDateTime) => {
       const morningStart = new Date(selectedDateTime);
@@ -367,13 +401,20 @@ const BookSittingAppointment = ({
           return;
         }
       }
-
+      setLoading(false);
       try {
         const response = await axios.post(
           "https://dentalgurudoctor.doaguru.com/api/doctor/bookSittingAppointment",
-          data
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         console.log(response);
+        setLoading(false);
         cogoToast.success(response?.data?.message);
         dispatch(toggleTableRefresh());
         timelineData(getPatientData[0]?.uhid);
@@ -383,10 +424,12 @@ const BookSittingAppointment = ({
         //   `/TPrescriptionDash/${tsid}/${tp_id}/${currentSitting}/${treatment}`
         // );
       } catch (error) {
+        setLoading(false);
         console.log(error);
         cogoToast.error(error?.response?.data?.message);
       }
     } else {
+      setLoading(false);
       // Slot is not available
       alert(
         "The selected doctor's slot is already booked at the specified time"
@@ -406,6 +449,12 @@ const BookSittingAppointment = ({
           description: "Book Sitting Appointment",
           branch: branch_name,
           patientId: getPatientData[0]?.uhid,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       console.log(response);

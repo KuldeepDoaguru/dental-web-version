@@ -12,6 +12,7 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
   const { refreshTable } = useSelector((state) => state.user);
   const branch = currentUser.branch_name;
   const user = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
   const token = user.currentUser.token;
   console.log(selectedData);
   console.log(branch);
@@ -43,6 +44,7 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
 
   const updateSecAmountDetails = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/updateSecurityAmountForRemainingAmount/${selectedData.sa_id}`,
@@ -54,10 +56,12 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
           },
         }
       );
+      setLoading(false);
       cogoToast.success("security amount detail updated");
       onClose();
       dispatch(toggleTableRefresh());
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -153,8 +157,12 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
                 </>
               )}
               <div class="mb-3 d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">
-                  Submit
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  disabled={loading}
+                >
+                  {loading ? "Submit..." : "Submit"}{" "}
                 </button>
               </div>
             </form>

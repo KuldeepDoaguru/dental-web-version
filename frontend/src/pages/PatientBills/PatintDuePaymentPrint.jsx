@@ -100,7 +100,7 @@ const PatintDuePaymentPrint = () => {
   }, []);
 
   console.log(branchData);
-  console.log(billAmount);
+  console.log(billAmount[0]?.payment_status);
 
   const todayDate = new Date();
   const year = todayDate.getFullYear();
@@ -485,13 +485,24 @@ const PatintDuePaymentPrint = () => {
                       >
                         Add Payment Details
                       </button>
-                      <button
-                        type="button"
-                        className="btn btn-warning ms-2"
-                        onClick={completeTreatment}
-                      >
-                        Mark Treatment Complete & Go to dashboard
-                      </button>
+                      {billAmount[0]?.payment_status === null ||
+                      billAmount[0]?.payment_status === "pending" ? (
+                        <button
+                          type="button"
+                          className="btn btn-warning ms-2"
+                          disabled
+                        >
+                          Mark Treatment Complete & Go to dashboard
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className="btn btn-warning ms-2"
+                          onClick={completeTreatment}
+                        >
+                          Mark Treatment Complete & Go to dashboard
+                        </button>
+                      )}
                     </>
                   ) : (
                     <>

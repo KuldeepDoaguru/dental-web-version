@@ -88,7 +88,7 @@ const AppointTable = () => {
   };
 
 
-
+console.log(appointmentsData);
   useEffect(() => {
     const intervalId = setInterval(() => {
       dispatch(toggleTableRefresh());

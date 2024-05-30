@@ -116,7 +116,7 @@ const Timeline = () => {
                 {patTimeline?.map((item) => (
                   <>
                     <tr>
-                      <td>{moment(item?.event_date).format('DD/MM/YYYY') }</td>
+                      <td>{item?.event_date}</td>
                       <td>{item?.event_time.split(".")[0]}</td>
                       <td>{item?.event_type}</td>
                       <td>{item?.event_description}</td>

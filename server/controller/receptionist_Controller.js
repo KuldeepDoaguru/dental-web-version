@@ -4,7 +4,8 @@ const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
 dotenv.config();
 const nodemailer = require("nodemailer");
-const {logger} = require("./logger")
+const {logger} = require("./logger");
+const moment = require('moment-timezone');
 
 // const addPatient = (req,res) =>{
 //          try{
@@ -175,7 +176,8 @@ const addPatient = (req, res) => {
       patient_added_by_emp_id,
     } = req.body;
 
-    const created_at = new Date();
+    // const created_at = new Date();
+    const created_at =  moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
     // Generate Patient ID
     const generatePatientId = (count) => {
@@ -646,7 +648,8 @@ const bookAppointment = (req, res) => {
       appointment_created_by_emp_id,
     } = req.body;
 
-    const created_at = new Date();
+    // const created_at = new Date();
+    const created_at =  moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
    
     const bookAppointmentQuery = `
       INSERT INTO appointments (
@@ -2438,14 +2441,18 @@ const updatePatientSecurityAmt = (req, res) => {
 // };
 
 
+
 const insertTimelineEvent = (req, res) => {
+  const date = moment().tz("Asia/Kolkata").format("DD-MM-YYYY"); // Get today's date in DD-MM-YYYY format
+  const time = moment().tz("Asia/Kolkata").format("HH:mm:ss"); 
   try {
     const { type, description, branch, patientId } = req.body;
     const insertQuery =
-      "INSERT INTO patient_timeline (event_type,	event_description,	branch_name,	uhid	) VALUES (?,?,?,?)";
+      "INSERT INTO patient_timeline (event_type,	event_description,	branch_name,	uhid , event_time , event_date	) VALUES (?,?,?,?,?,?)";
+
     db.query(
       insertQuery,
-      [type, description, branch, patientId],
+      [type, description, branch, patientId , time , date],
       (err, result) => {
         if (err) {
           logger.error("Error adding timeline event");

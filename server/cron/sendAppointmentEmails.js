@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const { db } = require("../db");
 const dotenv = require("dotenv");
 dotenv.config();
+const moment = require('moment-timezone');
 
 const transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -25,7 +26,7 @@ const transporter = nodemailer.createTransport({
 
  // Function to query appointments scheduled for today
 const getAppointmentsForToday = () => {
-    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    const today = moment().tz("Asia/Kolkata").format("YYYY-MM-DD"); // Get today's date in YYYY-MM-DD format
     const sql = `
       SELECT 
           a.appoint_id,

@@ -4,6 +4,8 @@ const cors = require("cors");
 const receptionist_Routes = require("./routes/receptionist_Routes");
 dotenv.config();
 const cron = require('node-cron');
+
+
 // rest object
 const app = express();
 const {sendEmails} = require("./cron/sendAppointmentEmails");
@@ -36,9 +38,12 @@ cron.schedule('0 8 * * *', () => {
 // Schedule the task to run daily
 // This will run at 00:00 every day
 
+
 cron.schedule("0 0 * * *", () => {
   zipLogs();
 });
+
+
 
 // run listen
 app.listen(PORT, () => {

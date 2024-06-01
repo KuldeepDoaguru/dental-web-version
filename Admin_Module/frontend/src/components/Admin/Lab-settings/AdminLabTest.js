@@ -12,6 +12,8 @@ const AdminLabTest = () => {
   const { refreshTable } = useSelector((state) => state.user);
   const [selectedItem, setSelectedItem] = useState([]);
   const [labList, setLabList] = useState([]);
+  const [totalLab, setTotalLab] = useState(0);
+
   const [upLabTestField, setUpLabTestField] = useState({
     test_name: "",
     test_code: "",
@@ -56,6 +58,7 @@ const AdminLabTest = () => {
         }
       );
       setLabTestList(data);
+      setTotalLab(data.length); 
     } catch (error) {
       console.log(error);
     }
@@ -100,6 +103,7 @@ const AdminLabTest = () => {
         }
       );
       setLabList(data);
+    
     } catch (error) {
       console.log(error);
     }
@@ -134,6 +138,9 @@ const AdminLabTest = () => {
     <>
       <Container>
         <div class="table-responsive mt-4">
+        <div>
+                        <p className="fw-bold">Total Test - {totalLab}</p>
+                      </div>
           <table class="table table-bordered">
             <thead className="table-head">
               <tr>

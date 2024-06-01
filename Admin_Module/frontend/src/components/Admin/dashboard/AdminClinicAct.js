@@ -318,11 +318,11 @@ const AdminClinicAct = () => {
               role="tabpanel"
               aria-labelledby="pills-java-tab"
             >
-              <ul>
+              <ul style={{maxHeight:"50rem" , overflow:"scroll"}}>
                 {filterAppointment?.map((item) => (
                   <>
-                    <li>
-                      <div className="d-flex justify-content-between">
+                    <li >
+                      <div className="d-flex justify-content-between" >
                         <div>
                           <h4>
                             <FaDotCircle className="mx-1" /> Appointment of{" "}
@@ -368,7 +368,7 @@ const AdminClinicAct = () => {
               role="tabpanel"
               aria-labelledby="pills-treatment-tab"
             >
-              <ul>
+              <ul style={{maxHeight:"40rem" , overflow:"scroll"}}>
                 {filterTreatment?.map((item) => (
                   <>
                     <li>
@@ -418,7 +418,7 @@ const AdminClinicAct = () => {
               role="tabpanel"
               aria-labelledby="pills-billing-tab"
             >
-              <ul>
+              <ul style={{maxHeight:"40rem" , overflow:"scroll"}}>
                 {filterBilling?.map((item) => (
                   <>
                     <li>
@@ -463,7 +463,7 @@ const AdminClinicAct = () => {
               role="tabpanel"
               aria-labelledby="pills-Patient-tab"
             >
-              <ul>
+              <ul style={{maxHeight:"40rem" , overflow:"scroll"}}>
                 {filterPatient?.map((item) => (
                   <>
                     <li>

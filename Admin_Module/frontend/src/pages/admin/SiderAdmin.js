@@ -89,7 +89,7 @@ const SiderAdmin = () => {
                   </div>
                 </Link>
               </li>
-              <hr />
+              {/* <hr />
               <li>
                 <Link
                   to="/admin-inventory"
@@ -107,7 +107,7 @@ const SiderAdmin = () => {
                     </h3>
                   </div>
                 </Link>
-              </li>
+              </li> */}
               <hr />
               <li>
                 <Link
@@ -264,8 +264,10 @@ const Container = styled.div`
     }
   }
   #sidebar {
-    width: 100%;
-    height: 160rem;
+    width: 8%;
+    height: 100vh;
+    position: fixed;
+    margin-top: 4.8rem;
     background-color: #1abc9c;
     @media screen and (max-width: 768px) {
       width: fit-content;

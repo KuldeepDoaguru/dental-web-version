@@ -23,6 +23,7 @@ const UniversalLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
+  const [loading, setloading] = useState(false);
 
   // const HandleChange = (event) => {
   //   setBranchList(event.target.value);
@@ -52,8 +53,9 @@ const UniversalLogin = () => {
   const adminLogin = async (e) => {
     e.preventDefault();
     try {
+      setloading(true)
       const response = await axios.post(
-        "http://localhost:8888/api/v1/admin/adminLoginUser",
+        "https://dentalguruadmin.doaguru.com/api/v1/admin/adminLoginUser",
         {
           email,
           password,
@@ -74,6 +76,7 @@ const UniversalLogin = () => {
       cogoToast.success("Login Successful");
       navigate("/admin-dashboard");
     } catch (error) {
+      setloading(false)
       console.log("Axios error:", error);
       cogoToast.error(error.response.data.message);
     }
@@ -138,6 +141,7 @@ const UniversalLogin = () => {
                                 onChange={(e) => setEmail(e.target.value)}
                                 className="form-control"
                                 placeholder="email"
+                                required
                               />
                             </div>
                           </div>
@@ -157,6 +161,7 @@ const UniversalLogin = () => {
                                   onChange={(e) => setPassword(e.target.value)}
                                   className="form-control relative"
                                   placeholder="password"
+                                  required
                                 />
                                 <div className="eye-icon">
                                   {show ? (
@@ -181,8 +186,9 @@ const UniversalLogin = () => {
                             <button
                               type="submit"
                               className="btn btn-primary btn-lg"
+                              disabled = {loading}
                             >
-                              Login
+                               {loading ? "Loding..." : "Login"}
                             </button>
                           </div>
                           {/* <div className="col-sm-12 col-md-10 text-center ms-4">

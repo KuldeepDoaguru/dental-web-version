@@ -255,7 +255,7 @@ const Wrapper = styled.div`
   .navbar {
     background-color: #1abc9c;
     box-shadow: 1px 1px 6px black;
-    /* position: fixed; */
+     position: fixed; 
     min-width: 100%;
     z-index: 100;
     /* margin-bottom: 4rem; */

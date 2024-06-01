@@ -52,7 +52,7 @@ const AdminPatientLIst = () => {
               <div className="col-lg-1 col-md-2 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-md-10 col-11 ps-0">
+              <div className="col-lg-11 col-md-10 col-11 ps-0" style={{marginTop:"4rem"}}>
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     {/* <BranchSelector /> */}
@@ -62,7 +62,7 @@ const AdminPatientLIst = () => {
                   <h2 className="text-center">Patient Details List</h2>
                   <div className="d-flex justify-content-between">
                     <div>
-                      <label>Employee Name :</label>
+                      <label>Patient Name :</label>
                       <input
                         type="text"
                         placeholder="search patient name"

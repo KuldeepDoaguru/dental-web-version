@@ -108,8 +108,8 @@ const ExpenseTMAdmin = () => {
             data={data}
             margin={{
               top: 5,
-              right: 10,
-              left: -40,
+              right: 0,
+              left: -20,
               bottom: 5,
             }}
           >
@@ -128,7 +128,7 @@ const ExpenseTMAdmin = () => {
             <Bar
               dataKey="Amount"
               fill="#40407a"
-              yAxisId="right"
+              yAxisId="left"
               name="Amount"
             />
           </BarChart>

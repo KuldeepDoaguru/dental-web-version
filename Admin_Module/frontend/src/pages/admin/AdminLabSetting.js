@@ -168,7 +168,7 @@ const AdminLabSetting = () => {
               <div className="col-lg-1 col-md-2 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-md-10 col-11 ps-0">
+              <div className="col-lg-11 col-md-10 col-11 ps-0" style={{marginTop:"5rem"}}>
                 <div className="d-flex p-2">
                   <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
@@ -242,9 +242,9 @@ const AdminLabSetting = () => {
                           </Nav.Link>
                         </Nav.Item> */}
                       </div>
-                      <div>
+                      {/* <div>
                         <p className="fw-bold">Total Lab - 09</p>
-                      </div>
+                      </div> */}
                     </Nav>
                     <div className="flex-grow-1 p-3 mainback">
                       {selectedTab === "tab1" && <AdminLab />}

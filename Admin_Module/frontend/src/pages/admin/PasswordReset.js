@@ -98,6 +98,7 @@ const PasswordReset = () => {
                           onChange={(e) => setEmail(e.target.value)}
                           className="form-control"
                           placeholder="email"
+                          required
                         />
                       </div>
                     </div>

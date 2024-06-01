@@ -12,6 +12,7 @@ const AdminLab = () => {
   const { refreshTable } = useSelector((state) => state.user);
   const [selectedItem, setSelectedItem] = useState();
   const [labList, setLabList] = useState([]);
+  const [totalLab, setTotalLab] = useState(0);
   const [upLabField, setUpLabField] = useState({
     branch: "",
     name: "",
@@ -124,10 +125,12 @@ const AdminLab = () => {
       );
       console.log(data);
       setBranchList(data);
+      setTotalLab(data.length); 
     } catch (error) {
       console.log(error);
     }
   };
+ 
 
   useEffect(() => {
     getBranchList();
@@ -138,6 +141,9 @@ const AdminLab = () => {
     <>
       <Container>
         <div class="table-responsive mt-4">
+        <div>
+                        <p className="fw-bold">Total Lab - {totalLab}</p>
+                      </div>
           <table class="table table-bordered">
             <thead className="table-head">
               <tr>

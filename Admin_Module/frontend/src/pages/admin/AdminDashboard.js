@@ -46,7 +46,7 @@ const AdminDashboard = () => {
             <div className="col-lg-1 col-md-2 col-1 p-0">
               <SiderAdmin />
             </div>
-            <div className="col-lg-11 col-md-10 col-11 ps-0">
+            <div className="col-lg-11 col-md-10 col-11 ps-0" style={{marginTop:"6rem"}}>
               <div className="row d-flex justify-content-between mx-3">
                 <div className="col-xl-6 col-lg-6 col-12 col-md-6 mt-4">
                   <h3> Welcome to DentalGuru! </h3>

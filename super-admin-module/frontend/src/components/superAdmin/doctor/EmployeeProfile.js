@@ -581,6 +581,7 @@ const EmployeeProfile = () => {
                         <option value="">select-designation</option>
                         <option value="admin">Admin</option>
                         <option value="receptionist">Receptionist</option>
+                        <option value="accountant">Accountant</option>
                         <option value="consultant">Consultant</option>
                         <option value="helper">Helper</option>
                         <option value="lab attendant">Lab Attendent</option>
@@ -1042,6 +1043,7 @@ const EmployeeProfile = () => {
                     "admin",
                     "receptionist",
                     "consultant",
+                    "accountant",
                     "lab attendant",
                     "doctor",
                   ].map((role) => (

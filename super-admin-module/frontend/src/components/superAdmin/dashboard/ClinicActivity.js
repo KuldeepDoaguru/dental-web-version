@@ -122,7 +122,7 @@ const ClinicActivity = () => {
   const getTreatmentValues = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/getTreatSuggest/${branch.name}`,
+        `https://dentalgurusuperadmin.doaguru.com/api/v1/super-admin/getTreatSuggest/${branch.name}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -247,15 +247,15 @@ const ClinicActivity = () => {
   });
 
   console.log(filterBilling);
-  console.log(patDetails[0]?.created_at?.split("T")[0]);
+  console.log(patDetails[0]?.created_at?.split(" ")[0]);
   console.log(currentDate);
   console.log(todayDate?.split("T")[0]);
   //filter for day wise patient registeration
   const filterPatient = patDetails?.filter((item) => {
     if (currentDate) {
-      return item.created_at?.split("T")[0] === currentDate;
+      return item.created_at?.split(" ")[0] === currentDate;
     }
-    return item.created_at?.split("T")[0] === todayDate?.split("T")[0];
+    return item.created_at?.split(" ")[0] === todayDate?.split("T")[0];
   });
 
   console.log(filterPatient);
@@ -421,17 +421,26 @@ const ClinicActivity = () => {
                               <p className="fw-bold">{item.created_at.split("T")[0]}</p>
                             </>
                           )} */}
-                          {ConvertToIST(item.created_at) === formattedDate ? (
+                          {item.created_at.split(" ")[0] === formattedDate ? 
+                          // (
+                          //   <p className="fw-bold">
+                          //     {formattedTime >=
+                          //     item.created_at.split(" ")[1]?.split(":")[0]
+                          //       ? getFormattedTimeDifference(item.created_at)
+                          //       : "--:--"}{" "}
+                          //     Hours ago
+                          //   </p>
+                          // ) 
+                          (
                             <p className="fw-bold">
-                              {formattedTime >=
-                              item.created_at.split("T")[1]?.split(":")[0]
-                                ? getFormattedTimeDifference(item.created_at)
-                                : "--:--"}{" "}
-                              Hours ago
+                            
+                             {  item.created_at.split(" ")[1] }
+                               
                             </p>
-                          ) : (
+                          ) 
+                          : (
                             <p className="fw-bold">
-                              {ConvertToIST(item.created_at)}
+                              {item.created_at}
                             </p>
                           )}
                         </div>
@@ -583,16 +592,16 @@ const ClinicActivity = () => {
                               </p> */}
                               <p className="fw-bold">
                                 {formattedTime >=
-                                item.created_at.split("T")[1]?.split(":")[0]
+                                item.created_at.split(" ")[1]?.split(":")[0]
                                   ? formattedTime -
-                                    item.created_at.split("T")[1]?.split(":")[0]
+                                    item.created_at.split(" ")[1]?.split(":")[0]
                                   : "0"}{" "}
                                 Hours ago
                               </p>
                             </>
                           ) : (
                             <>
-                              <p>{item.created_at?.split("T")[0]}</p>
+                              <p>{item.created_at?.split(" ")[0]}</p>
                             </>
                           )}
                         </div>

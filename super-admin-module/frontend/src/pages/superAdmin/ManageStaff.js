@@ -224,6 +224,7 @@ const ManageStaff = () => {
 
     } catch (error) {
       console.log(error);
+      alert(error?.response?.data?.error  || "Something went wrong");
     }
   };
 
@@ -492,6 +493,7 @@ const ManageStaff = () => {
                           <option value="admin">Admin</option>
                           <option value="receptionist">Receptionist</option>
                           <option value="consultant">Consultant</option>
+                          <option value="accountant">Accountant</option>
                           <option value="helper">Helper</option>
                           <option value="lab attendant">Lab Attendent</option>
                           <option value="doctor">Doctor</option>
@@ -948,6 +950,19 @@ const ManageStaff = () => {
                       />
                       <label class="form-check-label" for="flexCheckDefault">
                         Receptionist
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        id="flexCheckDefault"
+                        name="accountant"
+                        value={inEmpData.empRole}
+                        onChange={handleCheckChange}
+                      />
+                      <label class="form-check-label" for="flexCheckDefault">
+                      Accountant
                       </label>
                     </div>
                     <div class="form-check">

@@ -52,18 +52,31 @@ const PatientStatisticChart = () => {
   const formattedDate = `${year}-${month}`;
 
   const filterByTreated = appointmentList?.filter(
-    (item) => item.treatment_provided === "OPD"
+    (item) => item.treatment_provided === "OPD" && item.payment_Status === "paid"
   );
 
   // Group appointments by date and count appointments for each day
   const dailyAppointments = filterByTreated.reduce((acc, appointment) => {
-    const date = appointment.appointment_dateTime.split("T")[0];
+    const date = appointment.created_at.split(" ")[0];
     acc[date] = acc[date] ? acc[date] + 1 : 1;
     return acc;
   }, {});
 
   console.log(dailyAppointments[formattedDate]);
 
+
+  let totalAmountPerDay = {}; // Object to store total amount for each day
+
+  filterByTreated.forEach((item) => {
+    if (item.appointment_dateTime) { // Ensure payment_date_time is not null or undefined
+      const date = item.created_at.split(" ")[0];
+      totalAmountPerDay[date] =
+        (totalAmountPerDay[date] || 0) +
+        parseFloat(item.opd_amount) 
+       
+    }
+  });
+  console.log(totalAmountPerDay);
   // Create an array containing data for all days of the month
   const data = Array.from({ length: lastDay }, (_, index) => {
     const day = String(index + 1).padStart(2, "0");
@@ -71,8 +84,10 @@ const PatientStatisticChart = () => {
     return {
       date,
       patients: dailyAppointments[date] || 0,
+      Amount: totalAmountPerDay[date] || 0,
     };
   });
+
 
   const tickValues = Object.keys(dailyAppointments)
     .filter((date) => new Date(date).getDate() === 1)
@@ -113,10 +128,18 @@ const PatientStatisticChart = () => {
                   fontWeight: "bold",
                 }}
               />
-              <YAxis />
+                <YAxis yAxisId="left" />
+            <YAxis yAxisId="right" orientation="right" />
               <Tooltip />
               <Legend />
-              <Bar dataKey="patients" fill="#8884d8" />
+              <Bar dataKey="patients" fill="#8884d8" yAxisId="left"
+              name="Patients"/>
+              <Bar
+              dataKey="Amount"
+              fill="#c23616"
+              yAxisId="right"
+              name="Amount"
+            />
             </BarChart>
           </div>
         </div>

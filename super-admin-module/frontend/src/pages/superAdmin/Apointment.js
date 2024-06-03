@@ -72,6 +72,8 @@ const Apointment = () => {
     setCurrentPage(0);
   }, [keyword]);
 
+  console.log(appointmentList);
+
   const todayDate = new Date();
   const year = todayDate.getFullYear();
   const month = String(todayDate.getMonth() + 1).padStart(2, "0");
@@ -174,7 +176,7 @@ const Apointment = () => {
                                   {item.appointment_created_by}
                                 </td>
                                 <td className="table-small">
-                                  {item.updated_by ? item.updated_by : "-"}
+                                  {item.updated_at ? item.updated_at?.split("T")[0] : "-"}
                                 </td>
                                 <td className="table-small">
                                   {item.appointment_dateTime?.split("T")[0]}{" "}

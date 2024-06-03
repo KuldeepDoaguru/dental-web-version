@@ -117,7 +117,7 @@ const PatientDetailsLIst = () => {
                           <th className="thead sticky">Gender</th>
                           <th className="thead sticky">Email</th>
                           <th className="thead sticky">Date of Birth</th>
-                          <th className="thead sticky">Marital Status</th>
+                          {/* <th className="thead sticky">Marital Status</th> */}
                           <th className="thead sticky">Patient Type</th>
                           <th className="thead sticky">Address</th>
                           <th className="thead sticky">Adhaar Number</th>
@@ -143,7 +143,7 @@ const PatientDetailsLIst = () => {
                               <td className="thead">{item.gender}</td>
                               <td className="thead">{item.emailid}</td>
                               <td className="thead">{item.dob}</td>
-                              <td className="thead">{item.maritalstatus}</td>
+                              {/* <td className="thead">{item.maritalstatus}</td> */}
                               <td className="thead">{item.patient_type}</td>
                               <td className="thead">{item.address}</td>
                               <td className="thead">{item.adharno}</td>

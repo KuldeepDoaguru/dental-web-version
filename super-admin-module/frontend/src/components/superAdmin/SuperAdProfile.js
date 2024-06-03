@@ -16,7 +16,7 @@ const SuperAdProfile = () => {
               </div>
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container mt-3">
-                  <div className="d-flex justify-content-between">
+                  {/* <div className="d-flex justify-content-between">
                     <div className="d-flex">
                       <div>
                         <h4>Select Branch : </h4>
@@ -41,12 +41,14 @@ const SuperAdProfile = () => {
                           <button className="btn btn-success">
                             Add Branch
                           </button>
-                        </Link> */}
+                        </Link> *}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="container mt-3">
-                  <h3 className="text-center">Hello Admin Name</h3>
+                  <h2 className="text-center">Welcome to Dental Guru!</h2>
+                  <h5 className="text-center">Super Admin Profile</h5>
+                  {/* <hr /> */}
                   <div className="container mt-3 d-flex justify-content-center">
                     {/* <div className="card shadow" style={{ width: "18rem" }}>
                       <div class="card-body">

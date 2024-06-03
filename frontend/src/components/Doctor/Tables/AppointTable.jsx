@@ -174,6 +174,8 @@ const AppointTable = () => {
     getTreatPackageData();
   }, []);
 
+  // const joinTables =
+
   const handleAction = async (
     action,
     appointId,

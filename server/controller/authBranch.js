@@ -820,6 +820,81 @@ const getBranchDetails = (req, res) => {
   }
 };
 
+const updateAppointmentPath = (req, res) => {
+  try {
+    const appoint_id = req.params.appoint_id;
+    const branch = req.params.branch;
+    const { currentPath, tpid } = req.body;
+    const selectQuery =
+      "SELECT * FROM appointments WHERE branch_name = ? AND appoint_id = ?";
+
+    db.query(selectQuery, [branch, appoint_id], (err, result) => {
+      if (err) {
+        // logger.registrationLogger.log(
+        //   "error",
+        //   "An error occurred while fetching data"
+        // );
+        return res.status(400).json({ success: false, message: err.message });
+      }
+      if (result && result.length > 0) {
+        const updateFields = [];
+        const updateValues = [];
+
+        if (tpid) {
+          updateFields.push("tp_id = ?");
+          updateValues.push(tpid);
+        }
+
+        if (currentPath) {
+          updateFields.push("current_path = ?");
+          updateValues.push(currentPath);
+        }
+
+        const updateQuery = `UPDATE appointments SET ${updateFields.join(
+          ", "
+        )} WHERE branch_name = ? AND appoint_id = ?`;
+
+        db.query(
+          updateQuery,
+          [...updateValues, branch, appoint_id],
+          (err, result) => {
+            if (err) {
+              // logger.registrationLogger.log(
+              //   "error",
+              //   "Failed to update details"
+              // );
+              console.log("866", err);
+              return res.status(500).json({
+                success: false,
+                message: "Failed to update details",
+              });
+            } else {
+              // logger.registrationLogger.log(
+              //   "info",
+              //   "Appointment updated successfully"
+              // );
+              return res.status(200).json({
+                success: true,
+                message: "Appointment updated successfully",
+              });
+            }
+          }
+        );
+      } else {
+        // logger.registrationLogger.log("error", "branch or tpid not found");
+        return res.status(404).json({
+          success: false,
+          message: "Branch/tpid not found",
+        });
+      }
+    });
+  } catch (error) {
+    // logger.registrationLogger.log("error", "Internal server error");
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getBranch,
   LoginDoctor,
@@ -840,4 +915,5 @@ module.exports = {
   getPrescriptionViaUhid,
   updateTreatmentStatus,
   getBranchDetails,
+  updateAppointmentPath,
 };

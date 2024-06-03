@@ -66,13 +66,17 @@ const NewTreatmentTable = () => {
     }
   };
 
-  console.log(treatmentData);
+  console.log(treatmentData[1]?.dir_rec_amt);
   //total bill amount
   const totalFinalBillPrice = () => {
     try {
       let total = 0;
       treatmentData.forEach((item) => {
-        total = total + parseFloat(item.paid_amount);
+        if (item.paid_amount === item.net_amount) {
+          total = total + parseFloat(item.paid_amount);
+        } else {
+          total = total + parseFloat(item.net_amount);
+        }
       });
       console.log(total);
       return total;
@@ -89,17 +93,17 @@ const NewTreatmentTable = () => {
   const totalPaidAmount = () => {
     try {
       let total = 0;
-      treatmentData.forEach((item) => {
-        total = total + parseFloat(item.dir_rec_amt);
+      treatmentData?.forEach((item) => {
+        const dirRecAmt = item.dir_rec_amt || 0;
+        total += dirRecAmt;
       });
-      console.log(total);
+      console.log(`Final total: ${total}`);
       return total;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return 0;
     }
   };
-
   const totalPaidValue = totalPaidAmount();
   console.log(totalPaidValue);
 
@@ -131,6 +135,8 @@ const NewTreatmentTable = () => {
     assigned_doctor_name: doctor,
     total_amount: totalFinalBillValue,
     paid_amount: totalPaidValue,
+    due_amount:
+      totalFinalBillValue - (totalPaidValue + totSecurityAmountUsedValue),
     pay_by_sec_amt: totSecurityAmountUsedValue,
   };
 
@@ -176,7 +182,7 @@ const NewTreatmentTable = () => {
       setLoading(false);
       setBillData(res.data);
       timelineForFinalBill();
-      alert("bill generated successfully");
+      cogoToast.success("bill generated successfully");
       navigate(`/ViewPatientTotalBill/${tpid}`);
     } catch (error) {
       setLoading(false);

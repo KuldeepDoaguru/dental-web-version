@@ -141,7 +141,7 @@ const SecurityAmount = () => {
     try {
       await insertCorrectData();
       setLoading(false);
-      alert("Security Amount Added");
+      cogoToast.success("Security Amount Added");
       setFormData({
         // branch_name: "",
         date: "",
@@ -159,7 +159,7 @@ const SecurityAmount = () => {
     } catch (error) {
       setLoading(false);
       console.error("Error submitting security amount:", error);
-      alert("An error occurred while submitting security amount");
+      cogoToast.error("An error occurred while submitting security amount");
     }
   };
 

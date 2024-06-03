@@ -25,7 +25,7 @@ const ExaminationDashTwo = () => {
     doctor_id: user.currentUser.employee_ID,
     doctor_name: user.currentUser.employee_name,
     diagnosis_category: dcat,
-    package_status: "ongoing",
+    package_status: "started",
   });
 
   console.log(treatData);

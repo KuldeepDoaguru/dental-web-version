@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { setUser } from "../../../../redux/user/userSlice";
+import cogoToast from "cogo-toast";
 
 const ViewTreatPrescription = () => {
   const { appoint_id, tpid, sitting, treatment } = useParams();
@@ -191,7 +192,7 @@ const ViewTreatPrescription = () => {
   };
 
   const handleTreatNavigattion = () => {
-    alert(appoint_id);
+    cogoToast.success(appoint_id);
     navigate(`/TreatmentDashBoard/${tpid}/${appoint_id}`);
   };
 

@@ -960,9 +960,9 @@ const TreatmentForm = () => {
                         </strong>
                       </label>
                       <div>
-                        {securityAmt[0]?.remaining_amount > 0 &&
-                        ((formData.disc_amt && formData.paid_amount) ||
-                          lastTreatment?.disc_amt > 0) ? (
+                        {(securityAmt[0]?.remaining_amount > 0 &&
+                          formData.paid_amount > 0) ||
+                        lastTreatment?.disc_amt > 0 ? (
                           !showDirect ? (
                             <button
                               type="button"

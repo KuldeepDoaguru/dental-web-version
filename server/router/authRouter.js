@@ -69,6 +69,7 @@ const {
   getExaminationViaUhid,
   getPrescriptionViaUhid,
   updateTreatmentStatus,
+  updateAppointmentPath,
 } = require("../controller/authBranch.js");
 const {
   getTreatmentList,
@@ -553,5 +554,6 @@ router.get(
 
 router.post("/purchaseInventory/:branch", purchaseInventory);
 router.delete("/deleteLabTestSuggest/:tid", deleteLabTestSuggest);
+router.put("/updateAppointmentPath/:appoint_id/:branch", updateAppointmentPath);
 
 module.exports = { authRoutes: router };

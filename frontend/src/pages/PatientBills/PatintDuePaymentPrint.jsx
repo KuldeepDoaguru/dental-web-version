@@ -19,7 +19,7 @@ const PatintDuePaymentPrint = () => {
   const [branchData, setBranchData] = useState([]);
   const [billAmount, setBillAmount] = useState([]);
   const [saAmt, setSaAmt] = useState([]);
-
+  const [getTreatData, setGetTreatData] = useState([]);
   const [data, setData] = useState({
     payment_mode: "",
     transaction_Id: "",
@@ -93,14 +93,35 @@ const PatintDuePaymentPrint = () => {
     }
   };
 
+  const getTreatDetail = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDetailsViaTpid/${tpid}/${user.branch_name}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setGetTreatData(data);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(getTreatData);
+
   useEffect(() => {
     getBranchDetails();
     getBillDetails();
     secuirtyAmtBytpuhid();
+    getTreatDetail();
   }, []);
 
   console.log(branchData);
-  console.log(billAmount[0]?.payment_status);
+  console.log(billAmount);
 
   const todayDate = new Date();
   const year = todayDate.getFullYear();
@@ -151,6 +172,7 @@ const PatintDuePaymentPrint = () => {
       remainingSecurityAmount);
 
   const updatedPaidAmt = billAmount[0]?.paid_amount + finalAmt;
+  console.log(updatedPaidAmt);
 
   const updateRemainingSecurity = async () => {
     console.log(remainingSecurityAmount);
@@ -176,21 +198,40 @@ const PatintDuePaymentPrint = () => {
     }
   };
 
+  const upDueValAmount = () => {
+    const gettea = updatedPaidAmt + updatedPay_by_sec_amt;
+    if (gettea >= billAmount[0]?.due_amount) {
+      return 0;
+    } else {
+      return (
+        billAmount[0]?.due_amount - (updatedPaidAmt + updatedPay_by_sec_amt)
+      );
+    }
+  };
+
+  const callDue = upDueValAmount();
+  console.log(callDue);
+
+  const BillInput = {
+    paid_amount: updatedPaidAmt,
+    payment_status: "paid",
+    payment_date_time: formattedDate,
+    payment_mode: data.payment_mode,
+    transaction_Id: data.transaction_Id,
+    note: data.note,
+    receiver_name: user.employee_name,
+    receiver_emp_id: user.employee_ID,
+    pay_by_sec_amt: updatedPay_by_sec_amt,
+    due_amount: String(callDue),
+  };
+
+  console.log(BillInput);
+
   const makePayment = async () => {
     try {
       const response = await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/makeBillPayment/${tpid}/${user.branch_name}`,
-        {
-          paid_amount: updatedPaidAmt,
-          payment_status: "paid",
-          payment_date_time: formattedDate,
-          payment_mode: data.payment_mode,
-          transaction_Id: data.transaction_Id,
-          note: data.note,
-          receiver_name: user.employee_name,
-          receiver_emp_id: user.employee_ID,
-          pay_by_sec_amt: updatedPay_by_sec_amt,
-        },
+        BillInput,
         {
           headers: {
             "Content-Type": "application/json",
@@ -200,7 +241,7 @@ const PatintDuePaymentPrint = () => {
       );
       if (response.data.success) {
         cogoToast.success("payment successful");
-        completeTreatment();
+        // completeTreatment();
         getBillDetails();
         console.log(response.data);
         updateRemainingSecurity();

@@ -332,6 +332,26 @@ const ExaminationPatientTest = ({ tpid }) => {
   const token = user.currentUser.token;
   console.log(branch);
 
+  const updateAppointmentData = async () => {
+    try {
+      const res = await axios.put(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateAppointmentPath/${id}/${branch}`,
+        {
+          currentPath: `/ExaminationDashBoardPatient/${id}/${dcat}/${tpid}`,
+          tpid: tpid,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // console.log(getPatientData[0].uhid);
 
   useEffect(() => {
@@ -990,6 +1010,7 @@ const ExaminationPatientTest = ({ tpid }) => {
       );
       console.log(response.data);
       cogoToast.success("data saved");
+      updateAppointmentData();
       dispatch(toggleTableRefresh());
       timelineForExamination();
       setInputItem({

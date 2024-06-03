@@ -261,7 +261,7 @@ const NewTreatPrescription = () => {
     } catch (error) {
       setLoading(false);
       console.error("Error:", error.response.data);
-      alert("Error:", error.response.data);
+      cogoToast.error("Error:", error.response.data);
       // Handle error, maybe show an error message
     }
   };
@@ -393,7 +393,7 @@ const NewTreatPrescription = () => {
     } catch (error) {
       console.log(error);
       // Optionally, provide feedback to the user
-      window.alert("An error occurred while deleting the item.");
+      cogoToast.error("An error occurred while deleting the item.");
     }
   };
 
@@ -436,7 +436,7 @@ const NewTreatPrescription = () => {
         }
       );
       console.log(res);
-      alert("appointment status updated");
+      cogoToast.success("appointment status updated");
     } catch (error) {
       console.log(error);
     }

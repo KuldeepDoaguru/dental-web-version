@@ -83,6 +83,8 @@ const PatientBillsByTpid = () => {
     }
   };
 
+  console.log(getExaminData);
+
   useEffect(() => {
     getExaminDetail();
   }, []);
@@ -106,8 +108,6 @@ const PatientBillsByTpid = () => {
       console.log(error);
     }
   };
-
-  console.log(getPatientData[0]?.patient_type);
 
   console.log(getTreatData);
   useEffect(() => {
@@ -169,13 +169,6 @@ const PatientBillsByTpid = () => {
     }
   };
 
-  const totalBillvalueWithoutGst = getTreatData?.reduce(
-    (total, item) => total + item.paid_amount,
-    0
-  );
-
-  console.log(totalBillvalueWithoutGst);
-
   const getBillDetails = async () => {
     try {
       const { data } = await axios.get(
@@ -193,12 +186,29 @@ const PatientBillsByTpid = () => {
     }
   };
 
+  console.log(billDetails[0]?.due_amount === billDetails[0]?.net_amount);
+  const totalBillvalueWithoutGst = getTreatData?.reduce((total, item) => {
+    if (billDetails[0]?.due_amount === billDetails[0]?.net_amount) {
+      return total + item.paid_amount;
+    } else {
+      return billDetails[0]?.paid_amount + billDetails[0]?.pay_by_sec_amt;
+    }
+  }, 0);
+
+  console.log(totalBillvalueWithoutGst);
+
   useEffect(() => {
     getTreatmentSuggestAppointId();
     getBillDetails();
   }, []);
 
-  console.log(billDetails);
+  console.log(billDetails[0]?.total_amount);
+
+  const totalDueAmount = getTreatData?.reduce((total, item) => {
+    return total + Number(item.total_amt);
+  }, 0);
+
+  console.log(billDetails[0]?.total_amount - totalBillvalueWithoutGst);
   return (
     <>
       <Wrapper>
@@ -403,6 +413,7 @@ const PatientBillsByTpid = () => {
                   <th>Cost</th>
                   <th>Cst * Qty</th>
                   <th>Disc %</th>
+                  <th>Net Amount</th>
                   <th>Paid Amount</th>
                 </tr>
               </thead>
@@ -421,6 +432,10 @@ const PatientBillsByTpid = () => {
                       <td>{item.cost_amt}</td>
                       <td>{item.total_amt}</td>
                       <td>{item.disc_amt}</td>
+                      <td>
+                        {item.total_amt -
+                          (item.total_amt * item.disc_amt) / 100}
+                      </td>
                       <td>{item.paid_amount}</td>
                     </tr>
                   </React.Fragment>
@@ -429,15 +444,39 @@ const PatientBillsByTpid = () => {
               <tfoot>
                 <tr>
                   <td
-                    colSpan="7"
+                    colSpan="8"
                     style={{ textAlign: "center" }}
-                    className="heading-title"
+                    className="heading-title text-danger fw-bold"
                   >
-                    Total Cost:
+                    Treatment Pending Payment:
                   </td>
-                  <td className="heading-title">
+                  <td className="heading-title text-danger fw-bold">
                     {/* Calculate total cost here */}
                     {/* Assuming getTreatData is an array of objects with 'net_amount' property */}
+                    {billDetails[0]?.total_amount - totalBillvalueWithoutGst}
+                  </td>
+                </tr>
+              </tfoot>
+              <tfoot>
+                <tr>
+                  <td
+                    colSpan="7"
+                    style={{ textAlign: "right" }}
+                    className="heading-title"
+                  >
+                    Treatment Total:
+                  </td>
+                  <td className="heading-title">
+                    {getTreatData.reduce(
+                      (total, item) =>
+                        total +
+                        (item.total_amt -
+                          (item.total_amt * item.disc_amt) / 100),
+                      0
+                    )}
+                  </td>
+
+                  <td className="heading-title">
                     {getTreatData.reduce(
                       (total, item) => total + item.paid_amount,
                       0
@@ -508,7 +547,7 @@ const PatientBillsByTpid = () => {
                   <tbody>
                     <tr>
                       <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-end total-tr">
-                        Total Amount:
+                        Total Amount Recieved:
                       </td>
                       <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-center total-tr">
                         {totalBillvalueWithoutGst}
@@ -545,7 +584,9 @@ const PatientBillsByTpid = () => {
               className="btn btn-success ms-2 no-print mt-2 mb-2"
               onClick={() => navigate(`/patient-due-payment-print/${tpid}`)}
             >
-              Go to Payment page
+              {billDetails[0]?.payment_status === "paid"
+                ? "Visit to complete treatment"
+                : "Go to Payment page"}
             </button>
             <button
               className="btn btn-info no-print mx-3 mt-2 mb-2"

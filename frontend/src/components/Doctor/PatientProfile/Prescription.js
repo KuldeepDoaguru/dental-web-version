@@ -94,7 +94,7 @@ const Wrapper = styled.div`
   }
 
   .cont-box {
-    width: 68rem;
+    width: 100%;
     @media screen and (max-width: 900px) {
       width: 100% !important;
     }

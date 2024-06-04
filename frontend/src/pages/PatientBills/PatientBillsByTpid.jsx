@@ -209,6 +209,10 @@ const PatientBillsByTpid = () => {
   }, 0);
 
   console.log(billDetails[0]?.total_amount - totalBillvalueWithoutGst);
+
+  const netVal = getTreatData?.filter((item) => {
+    return item.sitting_number === 1;
+  });
   return (
     <>
       <Wrapper>
@@ -467,7 +471,7 @@ const PatientBillsByTpid = () => {
                     Treatment Total:
                   </td>
                   <td className="heading-title">
-                    {getTreatData.reduce(
+                    {netVal.reduce(
                       (total, item) =>
                         total +
                         (item.total_amt -

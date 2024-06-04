@@ -45,7 +45,7 @@ const Bill = () => {
       <div className="container-fluid cont-box">
         <div className="" id="table">
           <div
-            className="widget-area-2 proclinic-box-shadow mx-3 mt-5"
+            className="widget-area-2 proclinic-box-shadow mt-5"
             id="tableres"
           >
             <div className="table-responsive">
@@ -54,7 +54,7 @@ const Bill = () => {
                   <tr>
                     <th>Bill Date</th>
                     <th>Bill ID</th>
-                    <th>Doctor</th>
+                    {/* <th>Doctor</th> */}
                     <th>Total Amount(INR)</th>
                     <th>Direct Paid Amount(INR)</th>
                     <th>Pay By Security Amount</th>
@@ -70,7 +70,7 @@ const Bill = () => {
                       <tr>
                         <td>{item?.bill_date?.split("T")[0]}</td>
                         <td>{item.bill_id}</td>
-                        <td>{item.assigned_doctor_name}</td>
+                        {/* <td>{item.assigned_doctor_name}</td> */}
                         <td>{item.total_amount}</td>
                         <td>{item.paid_amount}</td>
                         <td>{item.pay_by_sec_amt}</td>
@@ -134,12 +134,12 @@ const Wrapper = styled.div`
   #table {
     @media screen and (max-width: 768px) {
       width: 100%;
-      margin-left: -1rem;
+      margin-left: 0rem;
     }
   }
 
   .cont-box {
-    width: 68rem;
+    width: 100%;
     @media screen and (max-width: 900px) {
       width: 100%;
     }

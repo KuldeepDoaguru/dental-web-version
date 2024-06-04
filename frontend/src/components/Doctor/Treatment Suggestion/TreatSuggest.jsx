@@ -66,6 +66,26 @@ const TreatSuggest = () => {
     });
   };
 
+  const updateAppointmentData = async () => {
+    try {
+      const res = await axios.put(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateAppointmentPath/${id}/${branch}`,
+        {
+          currentPath: `/treatmentSuggestion/${id}/${tpid}`,
+          tpid: tpid,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   console.log(formData);
 
   const getData = async () => {
@@ -273,6 +293,7 @@ const TreatSuggest = () => {
       setLoading(false);
       cogoToast.success("successfully added");
       console.log(res.data);
+      updateAppointmentData();
       timelineForTreatSuggest();
       setFormData({
         ...formData,
@@ -342,6 +363,7 @@ const TreatSuggest = () => {
           },
         }
       );
+      updateAppointmentData();
       setLoadingTestBt(false);
       setLabData({
         ...labData,

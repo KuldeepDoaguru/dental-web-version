@@ -78,7 +78,7 @@ const Wrapper = styled.div`
   .appointTable {
     @media screen and (min-width: 768px) and (max-width: 850px) {
       width: 100%;
-      margin-left: 1.5rem;
+      margin-left: 0rem;
     }
     @media screen and (min-width: 851px) and (max-width: 1024px) {
       width: 100%;

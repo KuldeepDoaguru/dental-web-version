@@ -47,6 +47,26 @@ const SecurityAmount = () => {
 
   console.log(formData);
 
+  const updateAppointmentData = async () => {
+    try {
+      const res = await axios.put(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateAppointmentPath/${id}/${branch}`,
+        {
+          currentPath: `/SecurityAmount/${id}/${tpid}`,
+          tpid: tpid,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const newGetFetchData = async () => {
     try {
       const resps = await axios.get(
@@ -142,6 +162,7 @@ const SecurityAmount = () => {
       await insertCorrectData();
       setLoading(false);
       cogoToast.success("Security Amount Added");
+      updateAppointmentData();
       setFormData({
         // branch_name: "",
         date: "",
@@ -219,6 +240,7 @@ const SecurityAmount = () => {
       );
 
       console.log(resp.data);
+      updateAppointmentData();
       timelineForSecuirty();
       dispatch(toggleTableRefresh());
     } catch (error) {

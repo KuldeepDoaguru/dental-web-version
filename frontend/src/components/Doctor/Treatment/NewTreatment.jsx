@@ -77,6 +77,7 @@ const NewTreatment = () => {
   useEffect(() => {
     getPatientDetail();
   }, []);
+
   console.log(getPatientData);
   const handleShowTreatProcess = (item) => {
     if (patientDetails[0]?.test_status === "pending") {

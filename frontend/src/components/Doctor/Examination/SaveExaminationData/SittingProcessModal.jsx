@@ -65,6 +65,28 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
   };
 
   console.log(formData);
+
+  const updateTreatmentStatus = async () => {
+    try {
+      const res = await axios.put(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatmentStatus/${branch}/${selectedData.tp_id}`,
+        { package_status: "ongoing" },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(res);
+      cogoToast.success("Treatment status updated");
+      // navigate("/doctor-dashboard");
+    } catch (error) {
+      console.log(error.response.data.message);
+      cogoToast.error(error.response.data.message);
+    }
+  };
+
   const updateSitting = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -80,6 +102,7 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
         }
       );
       setLoading(false);
+      updateTreatmentStatus();
       cogoToast.success("sitting considered");
       console.log(data.result.consider_sitting);
       setTreat(data.result.consider_sitting);

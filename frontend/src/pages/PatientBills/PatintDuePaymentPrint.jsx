@@ -277,7 +277,7 @@ const PatintDuePaymentPrint = () => {
     try {
       const res = await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/updateTreatmentStatus/${user.branch_name}/${tpid}`,
-        {},
+        { finalStats: "completed" },
         {
           headers: {
             "Content-Type": "application/json",

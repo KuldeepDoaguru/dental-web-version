@@ -64,8 +64,6 @@ const AppointTable = () => {
   const filteredData = appointments?.filter((item) => {
     return item.appointment_dateTime?.split("T")[0] === selectedDate;
   });
-  // setAppointments(appointments);
-  // console.log(filteredData);
 
   useEffect(() => {
     fetchAppointments();
@@ -162,13 +160,7 @@ const AppointTable = () => {
     }
   };
 
-  // const filterForPendingTp = treatData?.filter((item) => {
-  //   return item.tp_id === tp_id && item.package_status !== null;
-  // });
-
-  // console.log(filterForPendingTp);
-
-  // console.log(treatData);
+  console.log(treatData);
 
   useEffect(() => {
     getTreatPackageData();
@@ -190,22 +182,6 @@ const AppointTable = () => {
         appointId,
       };
 
-      // if (action === "Cancel") {
-      //   // console.log(uhid);
-      //   const cancelReason = prompt(
-      //     "Please provide a reason for cancellation:"
-      //   );
-      //   if (cancelReason !== null) {
-      //     requestBody.reason = cancelReason;
-      //     timelineForCancelTreat(uhid);
-      //     // console.log(uhid);
-      //     cogoToast.success("Patient Appointment Cancel Successfully");
-      //   } else {
-      //     // console.log(uhid);
-      //     return;
-      //   }
-      // }
-
       await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/upDateAppointmentStatus`,
         requestBody,
@@ -219,18 +195,30 @@ const AppointTable = () => {
 
       if (action === "in treatment") {
         timelineForStartTreat(uhid);
-        // alert(appointment_status);
+
         const filterForPendingTp = treatData?.filter((item) => {
           return item.tp_id === tpid && item.package_status === "ongoing";
         });
+        // alert(filterForPendingTp.length);
+        console.log(filterForPendingTp.length);
+
+        const filterForGoingTp = treatData?.filter((item) => {
+          return item.tp_id === tpid && item.package_status === "started";
+        });
+
+        console.log(filterForGoingTp);
         if (filterForPendingTp.length > 0) {
           navigate(`/TreatmentDashBoard/${tpid}/${appointId}`);
+        } else if (filterForGoingTp.length > 0) {
+          const appointFilter = appointments?.filter((tad) => {
+            return tad.appoint_id === appointId;
+          });
+          navigate(appointFilter[0]?.current_path);
         } else {
           navigate(`/examination-Dashboard/${appointId}/${uhid}`);
         }
         window.scrollTo(0, 0);
       }
-      // setLoading(true);
       const res = await axios.get(
         `https://dentalgurudoctor.doaguru.com/api/doctor/appointtreatSitting?date=${selectedDate}`,
         {
@@ -240,7 +228,7 @@ const AppointTable = () => {
           },
         }
       );
-      // setLoading(false);
+
       setAppointments(res.data.result);
       setFilterTableData(res.data.result);
       // setSelectedActions({ ...selectedActions, [appointId]: action });
@@ -660,6 +648,14 @@ const Wrapper = styled.div`
       width: 5rem;
     }
   }
+
+  .widget-header {
+    h5 {
+      @media screen and (min-width: 750px) and (max-width: 850px) {
+        font-size: 10px;
+      }
+    }
+  }
   .appointMain {
     h5 {
       font-size: 24px;
@@ -670,7 +666,7 @@ const Wrapper = styled.div`
     }
     @media screen and (min-width: 750px) and (max-width: 850px) {
       h5 {
-        font-size: 15px;
+        font-size: 10px;
         margin: 0 0 0 10px;
       }
       .arrow {

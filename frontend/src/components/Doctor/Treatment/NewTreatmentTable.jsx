@@ -66,19 +66,35 @@ const NewTreatmentTable = () => {
     }
   };
 
-  console.log(treatmentData[1]?.dir_rec_amt);
+  console.log(treatmentData);
+
+  const netVal = treatmentData?.filter((item) => {
+    return item.sitting_number === 1;
+  });
+
+  console.log(netVal);
+
   //total bill amount
   const totalFinalBillPrice = () => {
     try {
+      let totalNetAmount = 0;
       let total = 0;
+
+      netVal?.forEach((item) => {
+        totalNetAmount += item.net_amount;
+      });
+
       treatmentData.forEach((item) => {
-        if (item.paid_amount === item.net_amount) {
-          total = total + parseFloat(item.paid_amount);
-        } else {
-          total = total + parseFloat(item.net_amount);
-        }
+        total = total + parseFloat(item.paid_amount);
       });
       console.log(total);
+      console.log(totalNetAmount);
+
+      if (totalNetAmount === total) {
+        return total;
+      } else {
+        return totalNetAmount;
+      }
       return total;
     } catch (error) {
       console.log(error);

@@ -1101,6 +1101,56 @@ const deleteDrug = (req, res) => {
   }
 };
 
+
+const downloadOPDReportByTime = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const { fromDate, toDate } = req.body;
+
+    const toDateAdjusted = new Date(toDate);
+    toDateAdjusted.setDate(toDateAdjusted.getDate() + 1);
+    const selectQuery =
+      "SELECT * FROM appointments WHERE branch_name = ? AND treatment_provided = 'OPD' AND appointment_dateTime >= ? AND appointment_dateTime <= ?";
+    db.query(selectQuery, [branch, fromDate, toDateAdjusted], (err, result) => {
+      if (err) {
+        logger.registrationLogger.log("error", "internal server error");
+        res.status(400).json({ success: false, message: err.message });
+      }
+      logger.registrationLogger.log("info", "Billing report downloaded");
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    logger.registrationLogger.log("error", "internal server error");
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+const downloadLabReportByTime = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const { fromDate, toDate } = req.body;
+
+    const toDateAdjusted = new Date(toDate);
+    toDateAdjusted.setDate(toDateAdjusted.getDate() + 1);
+    const selectQuery =
+      "SELECT * FROM patient_lab_test_details JOIN patient_lab_details ON patient_lab_details.testid = patient_lab_test_details.testid WHERE branch_name = ? AND patient_lab_test_details.payment_status = 'done' AND patient_lab_test_details.collection_date >= ? AND patient_lab_test_details.collection_date <= ?";
+    db.query(selectQuery, [branch, fromDate, toDateAdjusted], (err, result) => {
+      if (err) {
+        logger.registrationLogger.log("error", "internal server error");
+        res.status(400).json({ success: false, message: err.message });
+      }
+       logger.registrationLogger.log("info", "Lab report downloaded");
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    logger.registrationLogger.log("error", "internal server error");
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+
 module.exports = {
   getPurchaseInvByPurId,
   purchaseInventory,
@@ -1131,4 +1181,6 @@ module.exports = {
   addDrugs,
   updateDrugDetails,
   deleteDrug,
+  downloadOPDReportByTime,
+  downloadLabReportByTime,
 };

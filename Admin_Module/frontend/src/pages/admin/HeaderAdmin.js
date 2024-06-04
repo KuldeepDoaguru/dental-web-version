@@ -19,17 +19,17 @@ const HeaderAdmin = () => {
   const getNotifyDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/getSuperAdminNotify/${user.branch_name}`,
+        "https://dentalguruadmin.doaguru.com/api/v1/admin/getSuperAdminNotify",
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
         }
       );
       setNotifyList(data);
     } catch (error) {
-      // console.log(error);
+      console.log(error);
     }
   };
 
@@ -37,19 +37,20 @@ const HeaderAdmin = () => {
     try {
       const response = await axios.put(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/markRead/${id}`,
+        {},
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
         }
       );
       getNotifyDetails();
+    
     } catch (error) {
       // console.log(error);
     }
   };
-
   const logoutHandler = () => {
     try {
       localStorage.removeItem("userData");
@@ -154,7 +155,7 @@ const HeaderAdmin = () => {
                   </ul>
                 </li>
 
-                <li className="nav-item dropdown" id="bell">
+                {/* <li className="nav-item dropdown" id="bell">
                   <a
                     className="nav-link"
                     href="/"
@@ -203,7 +204,72 @@ const HeaderAdmin = () => {
                       );
                     })}
                   </ul>
+                </li> */}
+                    <li className="nav-item dropdown" id="bell">
+                  <a
+                    className="nav-link"
+                    href="/"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <AiFillBell className="icon" />
+                    <div className="nav-cart-count">{filterForRead.length}</div>
+                  </a>
+                  {filterForRead.length == 0 ? (
+                    <>
+                      <ul className="dropdown-menu first-dropdown">
+                        {" "}
+                        <Link to="/admin-notification" className="mx-2">
+                          <button className="btn btn-info">view all</button>
+                        </Link>
+                      </ul>
+                    </>
+                  ) : (
+                    <ul className="dropdown-menu third-dropdown">
+                      {filterForRead?.slice(-10).map((item) => {
+                        return (
+                          <>
+                            <li key={item.id}>
+                              <div className="d-flex p-3 justify-content-between">
+                                <div className="right-noti">
+                                  <h4>
+                                    <a
+                                      href={item.open}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {item.title}
+                                    </a>
+                                  </h4>
+                                  <p>{item.event_msg}</p>
+                                </div>
+                              </div>
+                              <div className="mx-2">
+                                <button
+                                  className="btn btn-info"
+                                  onClick={() => updateMarkRead(item.event_id)}
+                                >
+                                  Mark as Read
+                                </button>
+                                <Link
+                                  to="/admin-notification"
+                                  className="mx-2"
+                                >
+                                  <button className="btn btn-info">
+                                    view all
+                                  </button>
+                                </Link>
+                              </div>
+                            </li>
+                            <hr />
+                          </>
+                        );
+                      })}
+                    </ul>
+                  )}
                 </li>
+             
               </ul>
             </div>
           </div>

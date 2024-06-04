@@ -26,7 +26,7 @@ const AdminEmpDetailReport = () => {
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getEmployeeDataByBranch/${user.branch_name}`,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
         }
@@ -49,10 +49,10 @@ const AdminEmpDetailReport = () => {
   const downloadEmployeeData = async () => {
     try {
       const { data } = await axios.post(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/downloadStaffReport/${user.branch_name}`,
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/downloadStaffReport/${user.branch_name}`,{},
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
         }
@@ -87,7 +87,7 @@ const AdminEmpDetailReport = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-11 ps-0" style={{marginTop:"4rem"}}>
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     {/* <BranchSelector /> */}
@@ -246,5 +246,8 @@ const Container = styled.div`
       height: 6rem;
       width: auto;
     }
+  }
+  .table-responsive{
+    height: 30rem;
   }
 `;

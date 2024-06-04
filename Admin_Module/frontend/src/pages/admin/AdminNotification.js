@@ -12,11 +12,10 @@ import SiderAdmin from "./SiderAdmin";
 const AdminNotification = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
-  console.log(`User Name: ${user.name}, User ID: ${user.id}`);
-  console.log("User State:", user);
-  const branch = useSelector((state) => state.branch);
-  console.log(`User Name: ${branch.name}`);
+  const user = useSelector((state) => state.user.currentUser);
+ 
+  const branch = user.branch_name;
+ 
   const [notifyList, setNotifyList] = useState([]);
 
   const getNotifyDetails = async () => {
@@ -39,7 +38,7 @@ const AdminNotification = () => {
   const updateMarkRead = async (id) => {
     try {
       const response = await axios.put(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/markRead/${id}`,
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/markRead/${id}`,{},
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -124,7 +123,7 @@ const AdminNotification = () => {
                                     Mark as Read
                                   </button>
                                   <Link
-                                    to="/super-admin-notification"
+                                    to="/admin-notification"
                                     className="mx-2"
                                   ></Link>
                                 </div>

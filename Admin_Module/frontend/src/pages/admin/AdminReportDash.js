@@ -15,7 +15,7 @@ const AdminReportDash = () => {
               <div className="col-lg-1 col-md-2 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-md-10 col-11 ps-0">
+              <div className="col-lg-11 col-md-10 col-11 ps-0" style={{marginTop:"6rem"}}>
                 <div className="container-fluid mt-3">
                   <div className="container-fluid">
                     <div className="row mt-3">
@@ -33,7 +33,7 @@ const AdminReportDash = () => {
                         {/* <div className="col-1"></div> */}
                         <div className="col-12">
                           <div class="row g-5">
-                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                            {/* <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/admin-finance-reports">
                                 <div className="card">
                                   <div class="card-body d-flex justify-content-center text-light align-items-center">
@@ -43,7 +43,7 @@ const AdminReportDash = () => {
                                   </div>
                                 </div>
                               </Link>
-                            </div>
+                            </div> */}
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12 col-12">
                               <Link to="/admin-appointment-report">
@@ -69,7 +69,7 @@ const AdminReportDash = () => {
                               </Link>
                             </div>
 
-                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                            {/* <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/admin-inventory-report">
                                 <div className="card">
                                   <div class="card-body">
@@ -79,7 +79,7 @@ const AdminReportDash = () => {
                                   </div>
                                 </div>
                               </Link>
-                            </div>
+                            </div> */}
 
                             <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
                               <Link to="/admin-employee-attendance-report">

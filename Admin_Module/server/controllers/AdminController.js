@@ -1767,6 +1767,22 @@ const approveLeave = (req, res) => {
   }
 };
 
+const getLabData = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const selectQuery =
+      "SELECT * FROM patient_lab_test_details JOIN patient_lab_details ON patient_lab_details.testid = patient_lab_test_details.testid WHERE branch_name = ? AND patient_lab_test_details.payment_status = 'done'";
+    db.query(selectQuery, branch, (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 
 module.exports = {
   getBranch,
@@ -1800,5 +1816,6 @@ module.exports = {
   getAttendancebyempId,
     approveLeave,
   getLeaveList,
+  getLabData,
    
 };

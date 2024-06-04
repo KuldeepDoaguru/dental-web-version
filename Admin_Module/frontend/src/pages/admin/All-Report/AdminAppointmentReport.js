@@ -11,9 +11,13 @@ import { utils, writeFile } from "xlsx";
 import SiderAdmin from "../SiderAdmin";
 import HeaderAdmin from "../HeaderAdmin";
 
+
+
 const AdminAppointmentReport = () => {
   const user = useSelector((state) => state.user.currentUser);
-  console.log(user);
+  
+  const branch = user.branch_name;
+
   const [appointmentList, setAppointmentList] = useState([]);
   const location = useLocation();
   const [fromDate, setFromDate] = useState("");
@@ -22,10 +26,10 @@ const AdminAppointmentReport = () => {
   const getAppointList = async () => {
     try {
       const response = await axios.get(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${user.branch_name}`,
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${branch}`,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
         }
@@ -39,7 +43,7 @@ const AdminAppointmentReport = () => {
 
   useEffect(() => {
     getAppointList();
-  }, [user.branch_name]);
+  }, [branch]);
 
   const todayDate = new Date();
 
@@ -55,7 +59,7 @@ const AdminAppointmentReport = () => {
 
   const filterAppointDataByMonth = appointmentList?.filter((item) => {
     return (
-      item.appointment_dateTime?.split("T")[0].slice(0, 7) ===
+      item.appointment_dateTime.split("T")[0].slice(0, 7) ===
       formattedDate.slice(0, 7)
     );
   });
@@ -66,16 +70,15 @@ const AdminAppointmentReport = () => {
     window.history.go(-1);
   };
 
-  console.log("from date:", fromDate, "to date:", toDate);
   const downloadAppointmentData = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/downloadAppointReportByTime/${user.branch_name}`,
-        { fromDate, toDate },
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/downloadAppointReportByTime/${branch}`,
+        { fromDate: fromDate, toDate: toDate },
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
         }
@@ -100,8 +103,7 @@ const AdminAppointmentReport = () => {
     }
   };
 
-  console.log(filterAppointDataByMonth);
-
+  console.log(fromDate, "-To-", toDate);
   return (
     <>
       <Container>
@@ -112,12 +114,12 @@ const AdminAppointmentReport = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
-                <div className="container-fluid mt-3">
+              <div className="col-lg-11 col-11 ps-0" style={{marginTop:"5rem"}}>
+                {/* <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
-                    {/* <BranchSelector /> */}
+                    <BranchSelector />
                   </div>
-                </div>
+                </div> */}
                 <div className="container-fluid mt-3">
                   <div className="container-fluid">
                     <button className="btn btn-success" onClick={goBack}>
@@ -134,7 +136,7 @@ const AdminAppointmentReport = () => {
                         </nav>
                       </div>
                       <div className="container">
-                        <div class="table-responsive mt-4">
+                        <div class="mt-4">
                           <div className="d-flex justify-content-between mb-2">
                             <form onSubmit={downloadAppointmentData}>
                               <div className="d-flex justify-content-between">
@@ -205,7 +207,7 @@ const AdminAppointmentReport = () => {
                             </div> */}
                           </div>
                           <div className="container-fluid mt-3">
-                            <div class="table-responsive second-table rounded">
+                            <div class="table-responsive rounded">
                               <table class="table table-bordered rounded shadow">
                                 <thead className="table-head">
                                   <tr>
@@ -235,9 +237,7 @@ const AdminAppointmentReport = () => {
                                     <th className="table-small sticky">
                                       Appointed by
                                     </th>
-                                    <th className="table-small sticky">
-                                      Updated by
-                                    </th>
+                                    <th className="table-small sticky">Updated by</th>
                                     <th className="table-small sticky">
                                       Appointment Date & Time
                                     </th>
@@ -357,6 +357,7 @@ const AdminAppointmentReport = () => {
   );
 };
 
+
 export default AdminAppointmentReport;
 const Container = styled.div`
   .select-style {
@@ -370,6 +371,9 @@ const Container = styled.div`
     background-color: #1abc9c;
     color: white;
     position: sticky;
+  }
+  .table-responsive{
+    height: 30rem;
   }
 
   .sticky {

@@ -215,7 +215,7 @@ const AdminBillList = () => {
               <div className="col-lg-1 col-md-2 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-md-10 col-11 ps-0">
+              <div className="col-lg-11 col-md-10 col-11 ps-0" style={{marginTop:"5rem"}}>
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     {/* <BranchSelector /> */}

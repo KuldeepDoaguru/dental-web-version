@@ -15,7 +15,7 @@ const ReportCardPage = () => {
   console.log(user);
   const [testCounts, setTestCounts] = useState({
     oral: 0,
-    blood: 0,
+    pathology: 0,
     radiology: 0,
     doneTest: 0,
     pendingTest: 0,
@@ -35,9 +35,9 @@ const ReportCardPage = () => {
         );
         if (response.status === 200) {
           const data = response.data;
-          // Filter data for oral, blood, and radiology tests
+          // Filter data for oral, pathology, and radiology tests
           const oralTests = data.filter((item) => item.lab_name === "oral");
-          const bloodTests = data.filter((item) => item.lab_name === "blood");
+          const pathologyTests = data.filter((item) => item.lab_name === "pathology");
           const radiologyTests = data.filter(
             (item) => item.lab_name === "radiology"
           );
@@ -51,7 +51,7 @@ const ReportCardPage = () => {
           // Update state with test counts
           setTestCounts({
             oral: oralTests.length,
-            blood: bloodTests.length,
+           pathology:pathologyTests.length,
             radiology: radiologyTests.length,
             doneTest: doneTests,
             pendingTest: pendingTests,
@@ -94,8 +94,8 @@ const ReportCardPage = () => {
                   <SiMoneygram />
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title text-light">Blood Report</h5>
-                  <p className="card-text">{testCounts.blood}</p>
+                  <h5 className="card-title text-light">Pathology Report</h5>
+                  <p className="card-text">{testCounts.pathology}</p>
                 </div>
               </div>
             </Link>

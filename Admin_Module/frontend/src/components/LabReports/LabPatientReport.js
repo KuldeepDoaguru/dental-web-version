@@ -126,7 +126,7 @@ const LabPatientReport = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-11 ps-0" style={{marginTop:"6rem"}}>
                 <IoArrowBackSharp
                   className="fs-1 text-black d-print-none"
                   onClick={goBack}
@@ -158,7 +158,7 @@ const LabPatientReport = () => {
                               <div className="col-lg-4">
                                 <input
                                   type="text"
-                                  placeholder="Search by name or doctor"
+                                  placeholder="Search by patient name "
                                   value={searchQuery}
                                   onChange={(e) =>
                                     setSearchQuery(e.target.value)
@@ -236,7 +236,7 @@ const LabPatientReport = () => {
                             <exportToExcel />
                             <button
                               type="button"
-                              class="btn btn-primary themecolor text-light py-2 px-4"
+                              class="btn btn-primary themecolor text-light py-2 px-4 mb-3 mt-3"
                               onClick={exportToExcel}
                             >
                               Download

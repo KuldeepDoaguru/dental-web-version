@@ -166,7 +166,7 @@ const AdminEmpAttendReport = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-11 ps-0" style={{marginTop:"4rem"}}>
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     {/* <BranchSelector /> */}
@@ -365,4 +365,8 @@ const Container = styled.div`
   .attend-approve {
     color: green;
   }
+  .table-responsive{
+    height: 30rem;
+  }
+
 `;

@@ -32,6 +32,7 @@ const {
   getAttendancebyempId,
     approveLeave,
   getLeaveList,
+  getLabData,
  
 } = require("../controllers/AdminController");
 const {
@@ -64,6 +65,8 @@ const {
   addDrugs,
   updateDrugDetails,
   deleteDrug,
+  downloadLabReportByTime,
+  downloadOPDReportByTime,
 } = require("../controllers/billController");
 
 const {
@@ -139,6 +142,11 @@ router.get("/getBillBYBillId/:bid",authenticate, getBillBYBillId);
 router.put("/updateBillDetailsByBillId/:bid",authenticate, updateBillDetailsByBillId);
 router.delete("/deletePurInvoice/:branch/:id",authenticate, deletePurInvoice);
 router.get("/downloadBillRecById/:file",authenticate, downloadBillRecById);
+router.get("/getLabData/:branch",authenticate, getLabData);
+router.post("/downloadLabReportByTime/:branch",authenticate, downloadLabReportByTime);
+router.post("/downloadOPDReportByTime/:branch",authenticate, downloadOPDReportByTime);
+
+
 
 // *******************************************************************************************************
 

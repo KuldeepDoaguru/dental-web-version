@@ -95,13 +95,13 @@ const BloodTest = () => {
               </div>
 
               <div className="container-fluid mt-4">
-                <h2>List of Blood Test</h2>
+                <h2>List of Pathology Test</h2>
                 <div className="mb-3">
                   <div className="row">
                     <div className="col-lg-2">
                       <input
                         type="text"
-                        placeholder="Search by name or doctor"
+                        placeholder="search by patient name"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="form-control"
@@ -140,7 +140,7 @@ const BloodTest = () => {
                     <tbody>
                       {filteredPatients.map((patient, index) => (
                         <React.Fragment key={patient.testid}>
-                          {patient.lab_name === "blood" && (
+                          {patient.lab_name === "pathology" && (
                             <tr>
                               <td>{index + 1}</td>
                               <td>{patient.patient_uhid}</td>

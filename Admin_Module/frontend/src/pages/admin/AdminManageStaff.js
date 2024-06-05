@@ -226,7 +226,8 @@ const AdminManageStaff = () => {
     } catch (error) {
       console.log(error);
 
-      alert(`${error?.response?.data?.error}` || "some error");
+      // alert(`${error?.response?.data?.error}` || "some error");
+      cogoToast.error(`${error?.response?.data?.error}` || "some error");
     }
   };
 
@@ -250,7 +251,8 @@ const AdminManageStaff = () => {
         }
       );
     } catch (error) {
-      console.log(`error employee TimeLine ${error}`);
+      // console.log(`error employee TimeLine ${error}`);
+      cogoToast.error(`error employee TimeLine ${error}`);
     }
   };
   return (
@@ -280,11 +282,11 @@ const AdminManageStaff = () => {
                   /> */}
                   <div className="d-flex justify-content-between">
                     <div>
-                      <label>Employee Name :</label>
+                     
                       <input
                         type="text"
-                        placeholder="search employee name"
-                        className="mx-3 p-1 rounded"
+                        placeholder="Search Employee Name"
+                        className=""
                         value={keyword}
                         onChange={(e) =>
                           setkeyword(e.target.value.toLowerCase())
@@ -1091,5 +1093,30 @@ const Container = styled.div`
       height: 5rem;
       width: 5rem;
     }
+  }
+  input::placeholder {
+    color: #aaa;
+    opacity: 1; /* Ensure placeholder is visible */
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+  }
+
+  input:focus::placeholder {
+    color: transparent; /* Hide placeholder on focus */
+  }
+
+  input {
+    width: 115%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+
+  input:focus {
+    border-color:  #1abc9c;
   }
 `;

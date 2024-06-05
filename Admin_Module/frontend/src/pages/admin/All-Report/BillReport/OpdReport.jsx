@@ -256,7 +256,7 @@ export default OpdReport;
 const Container = styled.div`
   .select-style {
     border: none;
-    background-color: #22a6b3;
+    background-color: #1abc9c;
     font-weight: bold;
     color: white;
   }
@@ -266,7 +266,7 @@ const Container = styled.div`
   }
 
   th {
-    background-color: #004aad;
+    background-color: #1abc9c;
     color: white;
     white-space: nowrap;
   }

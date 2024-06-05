@@ -21,7 +21,7 @@ const AdminNotification = () => {
   const getNotifyDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalguruadmin.doaguru.com/api/v1/admin/getSuperAdminNotify/${branch}`,
+        `https://dentalguruadmin.doaguru.com/api/v1/admin/getSuperAdminNotify`,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -50,7 +50,7 @@ const AdminNotification = () => {
     } catch (error) {
       console.log(error);
     }
-  };
+  };      
 
   useEffect(() => {
     getNotifyDetails();
@@ -72,7 +72,7 @@ const AdminNotification = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-11 ps-0" style={{marginTop:"4rem"}}>
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     {/* <BranchSelector /> */}
@@ -86,8 +86,8 @@ const AdminNotification = () => {
                 <div className="container-fluid mt-3">
                   <h3 className="text-center">Notification List</h3>
                   <hr />
-                  <div className="container mt-3">
-                    <ul className="">
+                  <div className="container mt-3" style={{maxHeight:"35rem",overflow:"auto"}}>
+                    {/* <ul className="">
                       {filterForRead?.slice(-10).map((item) => {
                         return (
                           <>
@@ -127,6 +127,55 @@ const AdminNotification = () => {
                                     className="mx-2"
                                   ></Link>
                                 </div>
+                              </div>
+                            </li>
+                            <hr />
+                          </>
+                        );
+                      })}
+                    </ul> */}
+                    <ul className="">
+                      {notifyList?.map((item) => {
+                        return (
+                          <>
+                            <li key={item.id}>
+                              <div className="d-flex p-3 justify-content-between">
+                                <div className="right-noti">
+                                  <h4>
+                                    <a
+                                      href={item.open}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                    >
+                                      {item.title}
+                                    </a>
+                                  </h4>
+                                  <p>{item.event_msg}</p>
+                                  {/* <p>Date : {moment(item.time).utc().format('YYYY-MM-DD')}</p> */}
+                                   {/* <p>Time : {moment(item.time).utc().format('HH:mm')}</p> */}
+                                </div>
+                                {item.status !== "read" ? (
+                                  <>
+                                    <div className="mx-2">
+                                      <button
+                                        className="btn btn-info"
+                                        onClick={() =>
+                                          updateMarkRead(item.event_id)
+                                        }
+                                      >
+                                        Mark as Read
+                                      </button>
+                                      <Link
+                                        to="/admin-notification"
+                                        className="mx-2"
+                                      ></Link>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <p>checked</p>
+                                  </>
+                                )}
                               </div>
                             </li>
                             <hr />

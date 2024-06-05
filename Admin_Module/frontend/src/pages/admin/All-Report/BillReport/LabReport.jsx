@@ -59,7 +59,7 @@ const LabReport = () => {
 
   const filterBillDataByMonth = labBills?.filter((item) => {
     return (
-      item.authenticate_date?.split("T")[0].slice(0, 7) ===
+      item.created_date?.split("T")[0].slice(0, 7) ===
       formattedDate.slice(0, 7)
     );
   });
@@ -154,41 +154,98 @@ const LabReport = () => {
                         </tr>
                       </thead>
                       <tbody>
-  {labBills
+                        {fromDate !== "" && toDate !== ""
+                          ? labBills
     ?.filter((item) => {
-      const billDate = item.authenticate_date?.split("T")[0];
+                                const billDate =
+                                  item.created_date?.split("T")[0];
       if (fromDate && toDate) {
-        return billDate >= fromDate && billDate <= toDate;
+                                  return (
+                                    billDate >= fromDate && billDate <= toDate
+                                  );
       } else {
         return true;
       }
     })
     .map((item) => (
-      <tr className="table-row" key={item.testid}>
+                                <>
+                                  <tr className="table-row">
         <td className="table-sno">{item.testid}</td>
         <td className="table-small">
-          {item.authenticate_date?.split("T")[0]}
+          {item.created_date?.split("T")[0]}
         </td>
-        <td className="table-small">{item.patient_uhid}</td>
-        <td className="table-small">{item.patient_name}</td>
+                                    <td className="table-small">
+                                      {item.patient_uhid}
+                                    </td>
+                                    <td className="table-small">
+                                      {item.patient_name}
+                                    </td>
         <td>{item.test}</td>
         <td className="table-small">{item.cost}</td>
-        <td className="table-small">{item.payment}</td>
+                                    <td className="table-small">
+                                      {item.payment}
+                                    </td>
+                                    <td>{item.payment_status}</td>
+
+                                    <td>
+                                      {item?.created_date
+                                        ? moment(
+                                            item?.created_date,
+                                            "YYYY-MM-DDTHH:mm"
+                                          ).format("DD/MM/YYYY hh:mm A")
+                                        : "--"}
+                                    </td>
+                                  </tr>
+                                </>
+                              ))
+                          : filterBillDataByMonth
+                              ?.filter((item) => {
+                                const billDate =
+                                  item.created_date?.split("T")[0];
+                                if (fromDate && toDate) {
+                                  return (
+                                    billDate >= fromDate && billDate <= toDate
+                                  );
+                                } else {
+                                  return true;
+                                }
+                              })
+                              .map((item) => (
+                                <>
+                                  <tr className="table-row">
+                                    <td className="table-sno">{item.testid}</td>
+                                    <td className="table-small">
+                                      {item.created_date?.split("T")[0]}
+                                    </td>
+                                    <td className="table-small">
+                                      {item.patient_uhid}
+                                    </td>
+                                    <td className="table-small">
+                                      {item.patient_name}
+                                    </td>
+                                    <td>{item.test}</td>
+                                    <td className="table-small">{item.cost}</td>
+                                    <td className="table-small">
+                                      {item.payment}
+                                    </td>
         <td>{item.payment_status}</td>
         <td>
-          {item?.collection_date
-            ? moment(item?.collection_date, "YYYY-MM-DDTHH:mm").format(
-                "DD/MM/YYYY hh:mm A"
-              )
+          {item?.created_date
+                                        ? moment(
+                                            item?.created_date,
+                                            "YYYY-MM-DDTHH:mm"
+                                          ).format("DD/MM/YYYY hh:mm A")
             : "--"}
         </td>
       </tr>
+                                </>
     ))}
 </tbody>
 
                     </table>
                   </div>
-               
+              
+            
             </div>
           </div>
         </div>
@@ -201,7 +258,7 @@ export default LabReport;
 const Container = styled.div`
   .select-style {
     border: none;
-    background-color: #22a6b3;
+    background-color:  #1abc9c;
     font-weight: bold;
     color: white;
   }
@@ -211,7 +268,7 @@ const Container = styled.div`
   }
 
   th {
-    background-color: #004aad;
+    background-color:  #1abc9c;
     color: white;
     white-space: nowrap;
   }
@@ -225,3 +282,93 @@ const Container = styled.div`
     z-index: 1;
   }
 `;
+
+
+{/* <Container>
+<div className="container-fluid">
+  <div class=" mt-4">
+    <div className="d-flex justify-content-between mb-2">
+      <form onSubmit={downloadBillingData}>
+        <div className="d-flex justify-content-between">
+          <div>
+            <input
+              type="date"
+              name=""
+              id=""
+              className="p-2 rounded"
+              onChange={(e) => setFromDate(e.target.value)}
+            />
+          </div>
+          <div className="mx-2">To</div>
+          <div>
+            <input
+              type="date"
+              name=""
+              id=""
+              className="p-2 rounded"
+              onChange={(e) => setToDate(e.target.value)}
+            />
+          </div>
+          <button className="btn btn-warning mx-2" type="submit">
+            Download Report
+          </button>
+        </div>
+      </form>
+    </div>
+    <div className="container-fluid mt-3">
+    
+          <div class="table-responsive rounded">
+            <table class="table table-bordered rounded shadow">
+              <thead className="table-head">
+                <tr>
+                  <th className="table-sno sticky">Test ID</th>
+                  <th className="sticky">Test Date</th>
+                  <th className="table-small sticky">Patient UHID</th>
+                  <th className="table-small sticky">Patient Name</th>
+                  <th className="table-small sticky">Lab Test</th>
+                  <th className="table-small sticky">Total Amount</th>
+                  <th className="sticky">Paid Amount</th>
+                  <th className="sticky">Payment Status</th>
+                  <th className="sticky">Payment Date & Time</th>
+                </tr>
+              </thead>
+              <tbody>
+{labBills
+?.filter((item) => {
+const billDate = item.created_date?.split("T")[0];
+if (fromDate && toDate) {
+return billDate >= fromDate && billDate <= toDate;
+} else {
+return true;
+}
+})
+.map((item) => (
+<tr className="table-row" key={item.testid}>
+<td className="table-sno">{item.testid}</td>
+<td className="table-small">
+  {item.created_date?.split("T")[0]}
+</td>
+<td className="table-small">{item.patient_uhid}</td>
+<td className="table-small">{item.patient_name}</td>
+<td>{item.test}</td>
+<td className="table-small">{item.cost}</td>
+<td className="table-small">{item.payment}</td>
+<td>{item.payment_status}</td>
+<td>
+  {item?.created_date
+    ? moment(item?.created_date, "YYYY-MM-DDTHH:mm").format(
+        "DD/MM/YYYY hh:mm A"
+      )
+    : "--"}
+</td>
+</tr>
+))}
+</tbody>
+
+            </table>
+          </div>
+       
+    </div>
+  </div>
+</div>
+</Container> */}

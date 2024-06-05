@@ -208,18 +208,18 @@ const LabPatientReport = () => {
                                       </td>
                                       <td>{patient.test}</td>
                                       {patient.test_status === "done" && (
-                                        <td>
-                                          <button className="btn btn-success themecolor">
+                                        <td className=" text-success fw-bold">
+                                         
                                             {patient.test_status}
-                                          </button>
+                                          
                                         </td>
                                       )}
 
                                       {patient.test_status === "pending" && (
-                                        <td>
-                                          <button className="btn btn-danger">
+                                        <td className=" text-danger fw-bold">
+                                        
                                             {patient.test_status}
-                                          </button>
+                                         
                                         </td>
                                       )}
                                     </tr>

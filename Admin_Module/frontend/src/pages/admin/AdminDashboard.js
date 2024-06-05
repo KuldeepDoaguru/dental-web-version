@@ -28,6 +28,7 @@ import AdminComplaintsSec from "../../components/Admin/dashboard/AdminComplaints
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import routesConfig from "./RoutesConfig";
+import AdminLabChart from "../../components/Admin/dashboard/AdminLabChart";
 
 const AdminDashboard = () => {
   const dispatch = useDispatch();
@@ -120,9 +121,13 @@ const AdminDashboard = () => {
                     <EarnTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                    <h3 className="text-center">Lab report this month</h3>
+                    <AdminLabChart />
+                  </div>
+                  {/* <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Expense report this month</h3>
                     <ExpenseTMAdmin />
-                  </div>
+                  </div> */}
                 </div>
                 {/* <div className="row g-5 mt-3"></div> */}
               </div>
@@ -134,6 +139,7 @@ const AdminDashboard = () => {
                   {/* <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                     <AdminComplaintsSec />
                   </div> */}
+                  
                 </div>
               </div>
             </div>

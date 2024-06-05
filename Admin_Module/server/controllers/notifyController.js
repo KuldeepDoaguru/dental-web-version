@@ -486,25 +486,38 @@ const deleteTreatment = (req, res) => {
   }
 };
 
+// const getSuperAdminNotify = (req, res) => {
+//   try {
+//     const branch = req.params.branch;
+//     const selectQuery = "SELECT * FROM employee_timeline WHERE branch_name = ?";
+//     db.query(selectQuery, branch, (err, result) => {
+//       if (err) {
+//           logger.registrationLogger.log("error", "invalid branch");
+//         res.status(400).json({ success: false, message: err.message });
+//       }
+//       logger.registrationLogger.log("info", "notification fetched successfully");
+//       res.status(200).send(result);
+//     });
+//   } catch (error) {
+//       logger.registrationLogger.log("error", "internal server error");
+//     console.log(error);
+//     res.status(500).json({ success: false, message: error.message });
+//   }
+// };
 const getSuperAdminNotify = (req, res) => {
   try {
-    const branch = req.params.branch;
-    const selectQuery = "SELECT * FROM employee_timeline WHERE branch_name = ?";
-    db.query(selectQuery, branch, (err, result) => {
+    const selectQuery = "SELECT * FROM employee_timeline";
+    db.query(selectQuery, (err, result) => {
       if (err) {
-          logger.registrationLogger.log("error", "invalid branch");
         res.status(400).json({ success: false, message: err.message });
       }
-      logger.registrationLogger.log("info", "notification fetched successfully");
       res.status(200).send(result);
     });
   } catch (error) {
-      logger.registrationLogger.log("error", "internal server error");
     console.log(error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 const markRead = (req, res) => {
   try {
     const snid = req.params.snid;

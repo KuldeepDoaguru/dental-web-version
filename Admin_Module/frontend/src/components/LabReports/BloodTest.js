@@ -157,7 +157,7 @@ const BloodTest = () => {
                               </td>
                               <td>{patient.test}</td>
                               {patient.test_status === "done" && (
-                                <td>
+                                <td >
                                   <p className="text-success fw-bold">
                                     {patient.test_status}
                                   </p>

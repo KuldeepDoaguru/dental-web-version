@@ -144,6 +144,12 @@ const HeaderAdmin = () => {
                         View Profile
                       </Link>
                     </li>
+                    <hr className="dropdown-divider" />
+                    <li>
+                      <Link className="dropdown-item" to="/attendance-dashboard">
+                      Attendance
+                      </Link>
+                    </li>
                     <li>
                       <hr className="dropdown-divider" />
                     </li>

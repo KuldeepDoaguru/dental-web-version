@@ -513,8 +513,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import Sider from "../../../components/Sider";
-import Header from "../../../components/Header";
+
 import { FaSearch } from "react-icons/fa";
 
 import axios from "axios";
@@ -524,6 +523,8 @@ import { useSelector } from "react-redux";
 import { TbEdit } from "react-icons/tb";
 import { GrAdd } from "react-icons/gr";
 import ReactPaginate from "react-paginate";
+import HeaderAdmin from "../HeaderAdmin";
+import SiderAdmin from "../SiderAdmin";
 
 const AdminTreatSetting = () => {
   const location = useLocation();
@@ -690,14 +691,14 @@ const AdminTreatSetting = () => {
 
   return (
     <Container>
-      <Header />
+      <HeaderAdmin />
       <div className="main">
         <div className="container-fluid">
           <div className="row flex-nowrap ">
             <div className="col-lg-1 col-1 p-0">
-              <Sider />
+              <SiderAdmin />
             </div>
-            <div className="col-lg-11 col-11 ps-0">
+            <div className="col-lg-11 col-11 ps-0" style={{marginTop:"5rem"}}>
               <div className="container-fluid mt-3">
                 {/* <BranchSelector /> */}
               </div>

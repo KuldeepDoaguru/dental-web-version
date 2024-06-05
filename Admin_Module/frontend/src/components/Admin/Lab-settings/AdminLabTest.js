@@ -495,7 +495,7 @@ const LabTest = () => {
       <Container>
         <div class="table-responsive mt-4">
           <div>
-         <p className="fw-bold">Total Lab - {totalLab +1 }</p>
+         <p className="fw-bold">Total Lab Test - {totalLab +1 }</p>
        </div>
           <table class="table table-bordered">
             <thead className="table-head">

@@ -79,7 +79,7 @@ const AdminPatientProfile = () => {
         <div className="col-lg-1 col-md-2 col-1" id="sider">
           <SiderAdmin />
         </div>
-        <div className="col-lg-11 col-md-10 col-11" style={{marginTop:"3rem"}}>
+        <div className="col-lg-11 col-md-10 col-11" style={{marginTop:"5rem"}}>
           <div className="container-fluid mt-3">
             <div className="d-flex justify-content-between">
               {/* <BranchSelector /> */}

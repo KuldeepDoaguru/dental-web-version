@@ -633,28 +633,16 @@ const downloadAttendanceReportByTime = (req, res) => {
   try {
     const branch = req.params.branch;
     const { fromDate, toDate } = req.body;
-
-    // Parse dates to ensure they are in the correct format
-    const start = new Date(fromDate);
-    const end = new Date(toDate);
-
-    // Set the time of the end date to the end of the day to include the entire toDate
-    end.setHours(23, 59, 59, 999);
-
     const selectQuery =
       "SELECT * FROM employee_attendance WHERE branch = ? AND date >= ? AND date <= ?";
-    db.query(
-      selectQuery,
-      [branch, start.toISOString(), end.toISOString()],
-      (err, result) => {
-        if (err) {
-            logger.registrationLogger.log("error", "failed to fetched employee attendance");
-          res.status(400).json({ success: false, message: err.message });
-        }
-        logger.registrationLogger.log("info", "employee attendance data fetched successfully");
-        res.status(200).send(result);
+    db.query(selectQuery, [branch, fromDate, toDate], (err, result) => {
+      if (err) {
+          logger.registrationLogger.log("error", "invalid branch or fromDate or to date");
+        res.status(400).json({ success: false, message: err.message });
       }
-    );
+      logger.registrationLogger.log("info", "downloaded attendance report");
+      res.status(200).send(result);
+    });
   } catch (error) {
       logger.registrationLogger.log("error", "internal server error");
     console.log(error);

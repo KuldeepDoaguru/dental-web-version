@@ -47,6 +47,7 @@ import BloodTest from "./components/LabReports/BloodTest";
 import RadiologyTest from "./components/LabReports/RadiologyTest";
 import PendingTest from "./components/LabReports/PendingTest";
 import Compleated from "./components/LabReports/Compleated";
+import AdminAllBills from './pages/AdminAllBills';
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -54,12 +55,14 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<UniversalLogin />} />{" "}
+        <Route path="/" element={ user.currentUser ? <AdminDashboard /> :<UniversalLogin />} />{" "}
+        
         <Route
           path="/admin-dashboard"
           element={
             user.currentUser === null ? <UniversalLogin /> : <AdminDashboard />
           }
+          
         />
         <Route
           path="/admin-clinic-setting"
@@ -89,10 +92,16 @@ const App = () => {
             user.currentUser === null ? <UniversalLogin /> : <AdminApointment />
           }
         />
-        <Route
+        {/* <Route
           path="/admin-bill_section"
           element={
             user.currentUser === null ? <UniversalLogin /> : <AdminBillList />
+          }
+        /> */}
+        <Route
+          path="/admin-bill_section"
+          element={
+            user.currentUser === null ? <UniversalLogin /> : <AdminAllBills />
           }
         />
         <Route

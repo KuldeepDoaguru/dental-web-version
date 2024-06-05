@@ -136,8 +136,8 @@ const AdminEmpDetailReport = () => {
                                 <option value="">Select-designation</option>
                                 <option value="admin">Admin</option>
                                 <option value="doctor">Doctor</option>
-                                <option value="lab_assistant">
-                                  Lab Assistant
+                                <option value="lab attendant">
+                                Lab Attendant
                                 </option>
                                 <option value="helper">Helper</option>
                                 <option value="consultant">Consultant</option>

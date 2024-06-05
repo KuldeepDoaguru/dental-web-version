@@ -169,7 +169,7 @@ const SiderAdmin = () => {
                 </Link>
               </li>
               <hr />
-              <li>
+              {/* <li>
                 <Link
                   to="/attendance-dashboard"
                   className={`link-div ${getSidebarClass(
@@ -178,7 +178,7 @@ const SiderAdmin = () => {
                 >
                   <div>
                     {/* <i className="fs-4 bi bi-house-door-fill"></i> */}
-                    <BsFileEarmarkPerson className="fs-2 text-dark" />
+                    {/* <BsFileEarmarkPerson className="fs-2 text-dark" />
                   </div>
                   <div>
                     <h3
@@ -188,9 +188,9 @@ const SiderAdmin = () => {
                       Attendance
                     </h3>
                   </div>
-                </Link>
-              </li>
-              <hr />
+                </Link> */}
+              {/* </li> */} 
+              {/* <hr /> */}
 
               <li>
                 <Link

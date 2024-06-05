@@ -279,7 +279,13 @@ const StaffLeave = () => {
     getLeaveList();
   }, []);
 
-  const handleLeaveApprove = async (id) => {
+  const handleLeaveApprove = async (id, employee_id) => {
+    if(employee_id === user.employee_ID){
+
+      alert(`You can not approved your leave`)
+     
+      return
+    }
     try {
       const response = await axios.put(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/approveLeave/${id}`,
@@ -434,7 +440,7 @@ const StaffLeave = () => {
                                           <button
                                             className="btn btn-success"
                                             onClick={() =>
-                                              handleLeaveApprove(item.id)
+                                              handleLeaveApprove(item.id,item.employee_ID)
                                             }
                                           >
                                             Approve
@@ -489,7 +495,7 @@ const Container = styled.div`
   }
 
   th {
-    background-color: #004aad;
+    background-color: #1abc9c;
     color: white;
     position: sticky;
   }
@@ -497,7 +503,7 @@ const Container = styled.div`
   .sticky {
     position: sticky;
     top: 0;
-    background-color: #004aad;
+    background-color: #1abc9c;
     color: white;
     z-index: 1;
   }

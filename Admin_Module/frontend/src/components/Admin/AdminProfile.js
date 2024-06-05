@@ -188,14 +188,14 @@ const AdminProfile = () => {
                             {" "}
                             <h3>Employee Profile</h3>
                           </div>
-                          <div>
+                          {/* <div>
                             <button
                               className="btn btn-warning fw-bold shadow"
                               onClick={() => openEditEmployeePopup()}
                             >
                               Update Details
                             </button>
-                          </div>
+                          </div> */}
                         </div>
 
                         <hr />

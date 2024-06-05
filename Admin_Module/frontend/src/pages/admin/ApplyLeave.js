@@ -140,18 +140,21 @@ function ApplyLeave() {
             }
             });
             if(response.data.success){
+               setLoading(false)
                 cogoToast.success(response?.data?.message);
                 setSelectedDates([]);
                 setFormData((prev) => ({
                     ...prev,
                     leave_reason : ""
                 }))
+               
                 getLeaves();
                 // dispatch(toggleTableRefresh())
                 handleClose();
     
             }
             else{
+              setLoading(false)
                 cogoToast.error(response?.data?.message);
             }
         } catch (error) {
@@ -223,7 +226,7 @@ console.log(formData)
               <button type="submit" className="btn btn-success"
               disabled = {loading}
               >
-                {loading ? 'Apply ...' : 'Apply'}
+                {loading ? 'Apply...' : 'Apply'}
                 
               </button>
             </div>

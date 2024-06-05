@@ -1281,7 +1281,7 @@ const CalenderSetting = () => {
             className={`popup-container${showEditBlockDays ? " active" : ""}`}
           >
             <div className="popup">
-              <h4 className="text-center">Edit Drugs Details</h4>
+              <h4 className="text-center">Edit Block Details</h4>
               <form className="d-flex flex-column" onSubmit={updateHolidetails}>
                 <input
                   type="text"

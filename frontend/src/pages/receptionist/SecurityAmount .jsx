@@ -595,7 +595,7 @@ function SecurityAmount() {
                       {currentRows.map((item) => (
                         <>
                           <tr className="table-row">
-                            <td>{item.date.split("T")[0]}</td>
+                            <td>{moment(item.date.split("T")[0]).format('DD/MM/YYYY')}</td>
                             <td>{item.appointment_id}</td>
                             <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
                             <td>{item.patient_name}</td>

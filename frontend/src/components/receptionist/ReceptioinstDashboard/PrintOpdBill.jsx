@@ -254,7 +254,7 @@ const PrintOpdBill = () => {
                     >
                       OPD
                     </td>
-                    <td className="text-end pe-4">{data.opd_amount}</td>
+                    <td className="text-end pe-4">{data.opd_amount}{".00"}</td>
                   </tr>
 
                   <tr>

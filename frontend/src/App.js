@@ -36,6 +36,7 @@ import PatintDuePaymentPrint from "./pages/receptionist/PatintDuePaymentPrint";
 import PatientsPaid from "./pages/receptionist/PatientsPaid";
 import PatientBillsByTpid from "./pages/receptionist/PatientBillsByTpid";
 import PasswordReset from "./pages/PasswordReset";
+import F404page from "./pages/receptionist/F404page";
 
 function App() {
 
@@ -44,10 +45,10 @@ function App() {
     <Routes>
       
       {/* <Route path="/superadmin-dashboard" element={<Dashboard />} /> */}
-      <Route path="/" element={<UniversalLogin />} />
+      <Route path="/" element={user.currentUser ?  <Receptionistdash/> : <UniversalLogin />} />
 
       {/* receptionist routes start */}
-      <Route path="/receptionist_login" element={<UniversalLogin/>} />
+      <Route path="/receptionist_login" element={user.currentUser ?  <Receptionistdash/> : <UniversalLogin />} />
       <Route path="/receptionist_registration" element={<Registration />} />
       <Route path='/receptionist-dashboard' element={ user.currentUser=== null ? <UniversalLogin/>  : <Receptionistdash/>}/>
     <Route path='/all_patient' element={user.currentUser=== null ? <UniversalLogin/>  :<AllPatient/>}/>
@@ -77,6 +78,8 @@ function App() {
     <Route path='/attendanceLeave' element={ user.currentUser=== null ? <UniversalLogin/>  :<AttendanceLeave/>}/>
 
     <Route path="/password-reset" element={<PasswordReset />} />
+    <Route path="*" element={<F404page/>} />
+
 
     {/* receptionist routes end */}
     </Routes>

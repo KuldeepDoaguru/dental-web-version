@@ -65,6 +65,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
+import moment from "moment";
 
 const Prescription = () => {
   const dispatch = useDispatch();
@@ -122,7 +123,7 @@ const Prescription = () => {
                 {prescriptions?.map((item) => (
                   <>
                     <tr>
-                    <td>{item.date?.split("T")[0]}</td>
+                    <td>{moment(item.date?.split("T")[0]).format('DD/MM/YYYY')}</td>
                           <td>{item.treatment}</td>
                           <td>{item.medicine_name}</td>
                           <td>{item.dosage}</td>

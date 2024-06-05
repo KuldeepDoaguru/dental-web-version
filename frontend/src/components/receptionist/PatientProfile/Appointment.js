@@ -155,6 +155,7 @@
 
 
 import axios from "axios";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -222,7 +223,7 @@ const Appointment = () => {
                   {patAppointDetails?.map((item) => (
                     <>
                       <tr>
-                        <td>{item.appointment_dateTime?.split("T")[0]}</td>
+                        <td>{moment(item.appointment_dateTime?.split("T")[0]).format('DD/MM/YYYY')} </td>
                         <td>
                           {item.appointment_dateTime
                             ?.split("T")[1]

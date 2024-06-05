@@ -281,7 +281,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                                           (item.paid_amount +
                                             item.pay_by_sec_amt)}
                                       </td>
-                                      <td>{item.bill_date.split("T")[0]}</td>
+                                      <td>{moment(item.bill_date.split("T")[0]).format('DD/MM/YYYY')}</td>
                                       <td>
                                           <Link
                                             to={`/PatintDuePaymentPrint/${item.bill_id}/${item.tp_id}/${item.uhid}`}

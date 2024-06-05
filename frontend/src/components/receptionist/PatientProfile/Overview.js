@@ -279,7 +279,7 @@ const getExaminationDetails = async () => {
                     {bills?.slice(-3).map((item) => (
                       <>
                         <tr>
-                          <td>{item.bill_date.split("T")[0]}</td>
+                          <td>{moment(item.bill_date.split("T")[0]).format('DD/MM/YYYY')}</td>
                           <td>{item.total_amount}</td>
                           <td>{item.paid_amount}</td>
                           <td>{item.payment_status}</td>
@@ -306,7 +306,7 @@ const getExaminationDetails = async () => {
                     {examinations?.slice(-3).map((item) => (
                       <>
                         <tr>
-                          <td>{item?.date.split("T")[0]}</td>
+                          <td>{moment(item?.date.split("T")[0]).format('DD/MM/YYYY')}</td>
                           <td>{item.disease}</td>
                           <td>{item.chief_complain}</td>
 
@@ -335,7 +335,7 @@ const getExaminationDetails = async () => {
                     {prescriptions?.slice(-6).map((item) => (
                       <>
                         <tr>
-                          <td>{item.date?.split("T")[0]}</td>
+                          <td>{moment(item.date?.split("T")[0]).format('DD/MM/YYYY')}</td>
                           <td>{item.treatment}</td>
                           <td>{item.medicine_name}</td>
                           <td>{item.duration}</td>

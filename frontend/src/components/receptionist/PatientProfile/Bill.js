@@ -174,6 +174,7 @@
 // `
 
 import axios from "axios";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -213,6 +214,7 @@ const Bill = () => {
   }, []);
 
   console.log(bills);
+  
 
   return (
     <Wrapper>
@@ -244,7 +246,7 @@ const Bill = () => {
                   {bills?.map((item) => (
                     <>
                       <tr>
-                        <td>{item.bill_date.split("T")[0]}</td>
+                        <td>{moment(item.bill_date.split("T")[0]).format('DD/MM/YYYY')}</td>
                         <td>{item.bill_id}</td>
                       
                         <td>{item.assigned_doctor_name}</td>
@@ -252,7 +254,7 @@ const Bill = () => {
                         <td>{item.paid_amount}</td>
                         <td>{item.pay_by_sec_amt}</td>
                         <td>{item.payment_mode}</td>
-                        <td>{item.payment_date_time	}</td>
+                        <td>{moment(item.payment_date_time.split("T")[0]).format('DD/MM/YYYY')}</td>
                         <td>{item.payment_status}</td>
                       </tr>
                     </>
@@ -269,6 +271,7 @@ const Bill = () => {
 
 export default Bill;
 const Wrapper = styled.div`
+/* overflow-x: hidden; */
   #card1 {
     background-image: linear-gradient(#9dc5f8, #cbfdd9);
     width: 20rem;
@@ -321,4 +324,13 @@ const Wrapper = styled.div`
       width: 100%;
     }
   }
+  /* .table-responsive {
+  
+    -ms-overflow-style: none;  // IE and Edge 
+    scrollbar-width: none;  // Firefox 
+  }
+
+  .table-responsive::-webkit-scrollbar {
+    display: none; // Hides the scrollbar in Chrome, Safari, and Opera 
+  } */
 `;

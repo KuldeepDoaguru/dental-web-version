@@ -495,6 +495,7 @@ console.log(branch)
 
 export default PatientProfile;
 const Wrapper = styled.div`
+ 
   .ongoing-treat {
     line-height: 1.9rem;
   }
@@ -531,7 +532,8 @@ margin-left: -4.5rem;
 padding-left: 150px; /* Width of sidebar */
 padding-top: 90px; /* Height of header */
 flex-grow: 1;
-overflow-y: auto;
+overflow: hidden;
+/* overflow-y: auto; */
 
 @media screen and (max-width: 768px) {
   margin-left: -2rem;

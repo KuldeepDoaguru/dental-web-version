@@ -355,6 +355,7 @@ const Navbar = () => {
 
 export default Navbar;
 const Wrapper = styled.div`
+overflow-y: auto;
   #tableresponsive {
     @media screen and (max-width: 768px) {
       width: 73%;
@@ -371,6 +372,7 @@ const Wrapper = styled.div`
       margin-left: 1.2rem;
     }
   }
+
   /* #app {
     width: 75rem;
   } */

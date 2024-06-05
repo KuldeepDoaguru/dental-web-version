@@ -2008,7 +2008,7 @@ const deleteInquiry = (req, res) => {
 const getInquiries = (req, res) => {
   const branch = req.params.branch;
   try {
-    const sql = "SELECT * FROM inquiries WHERE branch = ?";
+    const sql = "SELECT * FROM inquiries WHERE branch = ? ORDER BY id DESC";
 
     db.query(sql, [branch], (err, results) => {
       if (err) {

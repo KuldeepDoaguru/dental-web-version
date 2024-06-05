@@ -264,7 +264,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                                   <>
                                     <tr className="table-row">
                                       <td>{item.bill_id}</td>
-                                      <td>{item.bill_date.split("T")[0]}</td>
+                                      <td>{moment(item.bill_date.split("T")[0]).format('DD/MM/YYYY')}</td>
                                       <td>{item.tp_id}</td>
                                       <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
                                       <td>{item.patient_name}</td>
@@ -274,7 +274,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                                       <td>{item.paid_amount}</td>
                                       <td>{item.pay_by_sec_amt}</td>
                                       <td>
-                                        {item.payment_date_time?.split("T")[0]}
+                                        {moment(item.payment_date_time?.split("T")[0]).format('DD/MM/YYYY')}
                                       </td>
                                       <td>
                                         <Link

@@ -1,14 +1,15 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-const DoctorProfile = () => {
+const DoctorProfile = ({refresh}) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
-  console.log(user);
+ 
   const branch = user.branch_name;
+  
   const { eid } = useParams();
   console.log(eid);
   const [empData, setEmpData] = useState([]);
@@ -19,7 +20,7 @@ const DoctorProfile = () => {
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getEmployeeDetails/${branch}/${eid}`,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${user.token}`,
           },
         }
@@ -31,9 +32,9 @@ const DoctorProfile = () => {
     }
   };
 
-  useState(() => {
+  useEffect(() => {
     getEmployeeData();
-  }, [branch]);
+  }, [branch, refresh]);
 
   console.log(empData);
 
@@ -59,13 +60,13 @@ const DoctorProfile = () => {
                   <div className="row">
                     <div className="col-6">
                       <p>
-                        <strong style={{ color: "#1abc9c" }}>
+                        <strong style= {{ color: "#1abc9c" }}>
                           Speciality :{" "}
                         </strong>
                         {empData[0]?.speciality}
                       </p>
                       <p>
-                        <strong style={{ color: "#1abc9c" }}>
+                        <strong style= {{ color: "#1abc9c" }}>
                           Language :{" "}
                         </strong>
                         {empData[0]?.language}
@@ -111,16 +112,17 @@ const DoctorProfile = () => {
                         <h4 className="fw-bold">Working Hours</h4>
                         <p>
                           <strong style={{ color: "#1abc9c" }}>
-                            Mon-Fri :{" "}
+                            Morning :{" "}
                           </strong>
-                          {empData[0]?.allday_shift_start_time.slice(0, 5)}-
-                          {empData[0]?.allday_shift_end_time.slice(0, 5)}
+                          {empData[0]?.morning_shift_start_time.slice(0, 5)}-
+                          {empData[0]?.morning_shift_end_time.slice(0, 5)}
                         </p>
                         <p>
                           <strong style={{ color: "#1abc9c" }}>
-                            Sunday :{" "}
+                            Evening :{" "}
                           </strong>
-                          OFF
+                          {empData[0]?.evening_shift_start_time.slice(0, 5)}-
+                          {empData[0]?.evening_shift_end_time.slice(0, 5)}
                         </p>
                         <p>
                           <strong style={{ color: "#1abc9c" }}>
@@ -182,6 +184,14 @@ const DoctorProfile = () => {
                               ? empData[0]?.employee_role
                               : " - "}
                           </p>
+                        </div>
+                      </div>
+                      <div className="col-lg-4">
+                        <label className="fw-bold" style={{ color: "#1abc9c" }}>
+                          Working Days
+                        </label>
+                        <div className="shadow-none p-1 bg-light rounded">
+                          <p className="m-0">{empData[0]?.working_days}</p>
                         </div>
                       </div>
                     </div>

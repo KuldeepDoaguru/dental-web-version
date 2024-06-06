@@ -12,6 +12,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import styled from "styled-components";
+import animationData from "../../../pages/animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const PatientVisTMAdmin = () => {
   const dispatch = useDispatch();
@@ -109,10 +111,23 @@ const PatientVisTMAdmin = () => {
     ...tickValues.filter((date) => date !== "2024-05-01"),
   ];
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
+
   return (
     <Wrapper>
       <div className="container-fluid mt-4" id="main">
-       
+      {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
             <div className="row">
               <div className="col-12 d-flex justify-content-center">
                 <BarChart
@@ -156,7 +171,8 @@ const PatientVisTMAdmin = () => {
                 </BarChart>
               </div>
             </div>
-         
+            </>
+          )}
       </div>
     </Wrapper>
   );

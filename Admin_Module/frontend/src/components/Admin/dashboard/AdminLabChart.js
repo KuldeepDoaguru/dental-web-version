@@ -12,6 +12,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import styled from "styled-components";
+import animationData from "../../../pages/animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -34,6 +36,7 @@ const AdminLabChart = () => {
  
   const [appointmentList, setAppointmentList] = useState([]);
   const [loading, setLoading] = useState(false);
+
 
   useEffect(() => {
     const getAppointList = async () => {
@@ -108,6 +111,15 @@ const AdminLabChart = () => {
       Amount: totalAmountPerDay[date] || 0,
     };
   });
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
 
   // console.log(data);
 
@@ -115,7 +127,10 @@ const AdminLabChart = () => {
     <>
       <Container>
         <div className="container-fluid mt-4" id="main">
-         
+        {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
               <BarChart
                 width={400}
                 height={300}
@@ -155,7 +170,8 @@ const AdminLabChart = () => {
                   name="Amount"
                 />
               </BarChart>
-           
+              </>
+          )}
         </div>
       </Container>
     </>

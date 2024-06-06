@@ -5,6 +5,8 @@ import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import animationData from "../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 
 const LabBills = () => {
@@ -57,7 +59,7 @@ const LabBills = () => {
 
   useEffect(() => {
     setCurrentPage(0);
-  }, []);
+  }, [keyword]);
 
   console.log(appointmentList);
   const searchFilter = appointmentList.filter((lab) =>
@@ -80,6 +82,16 @@ const LabBills = () => {
 
   const displayedAppointments = filterAppointDataByMonth();
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
+
   return (
     <>
       <Container>
@@ -95,7 +107,10 @@ const LabBills = () => {
           </div>
         </div>
 
-    
+        {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
             {displayedAppointments?.length > 0 ? (
               <>
                 <div class="table-responsive rounded mt-4">
@@ -172,6 +187,8 @@ const LabBills = () => {
                 <h1>No Bill Found</h1>
               </>
             )}
+              </>
+          )}
           
       </Container>
     </>

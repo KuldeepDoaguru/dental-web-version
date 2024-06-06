@@ -827,100 +827,75 @@ const getLabList = (req, res) => {
 };
 
 const updateLabDetails = (req, res) => {
-  try {
-    const lid = req.params.lid;
-    const {
-      branch,
-      lab_name,
-      lab_type,
-      lab_contact,
-      lab_email,
-      address,
-      status,
-    } = req.body;
+  const lid = req.params.lid;
+  const { branch, name, type, contact, email, address, status } = req.body;
+  
+  const selectQuery = "SELECT * FROM lab_details WHERE lab_id = ?";
+  db.query(selectQuery, lid, (err, result) => {
+    if (err) {
+        logger.registrationLogger.log("error", "invalid lab id");
+      console.error("Database error:", err);
+      return res.status(500).json({ success: false, message: "Database error" });
+    }
 
-    const selectQuery = "SELECT * FROM lab_details WHERE lab_id = ?";
-    db.query(selectQuery, lid, (err, result) => {
+    if (result.length === 0) {
+        logger.registrationLogger.log("error", "Lab ID not found");
+      return res.status(404).json({ success: false, message: "Lab ID not found" });
+    }
+
+    const updateFields = [];
+    const updateValues = [];
+
+if (branch) {
+      updateFields.push("branch_name = ?");
+      updateValues.push(branch);
+    }
+    
+    
+    if (name) {
+      updateFields.push("lab_name = ?");
+      updateValues.push(name);
+    }
+
+    if (type) {
+      updateFields.push("lab_type = ?");
+      updateValues.push(type);
+    }
+
+    if (contact) {
+      updateFields.push("lab_contact = ?");
+      updateValues.push(contact);
+    }
+
+    if (email) {
+      updateFields.push("lab_email = ?");
+      updateValues.push(email);
+    }
+
+    if (address) {
+      updateFields.push("address = ?");
+      updateValues.push(address);
+    }
+
+    if (status) {
+      updateFields.push("status = ?");
+      updateValues.push(status);
+    }
+
+    const updateQuery = `UPDATE lab_details SET ${updateFields.join(", ")} WHERE lab_id = ?`;
+
+    db.query(updateQuery, [...updateValues, lid], (err, result) => {
       if (err) {
-          logger.registrationLogger.log("error", "invalid leave ID");
-        console.error("Error selecting lab details:", err);
-        return res
-          .status(500)
-          .json({ success: false, message: "Failed to update details" });
+          logger.registrationLogger.log("error", "failed to update lab details");
+        console.error("Update error:", err);
+        return res.status(500).json({ success: false, message: "Failed to update lab details" });
       }
-
-      if (!result || result.length === 0) {
-          logger.registrationLogger.log("error", "Lab ID not found");
-        return res
-          .status(404)
-          .json({ success: false, message: "Lab ID not found" });
-      }
-
-      // Build update fields and values
-      const updateFields = [];
-      const updateValues = [];
-
-      if (branch) {
-        updateFields.push("branch_name = ?");
-        updateValues.push(branch);
-      }
-
-      if (lab_name) {
-        updateFields.push("lab_name = ?");
-        updateValues.push(lab_name);
-      }
-
-      if (lab_type) {
-        updateFields.push("lab_type = ?");
-        updateValues.push(lab_type);
-      }
-
-      if (lab_contact) {
-        updateFields.push("lab_contact = ?");
-        updateValues.push(lab_contact);
-      }
-
-      if (lab_email) {
-        updateFields.push("lab_email = ?");
-        updateValues.push(lab_email);
-      }
-
-      if (address) {
-        updateFields.push("address = ?");
-        updateValues.push(address);
-      }
-
-      if (status) {
-        updateFields.push("status = ?");
-        updateValues.push(status);
-      }
-
-      // Update query
-      const updateQuery = `UPDATE lab_details SET ${updateFields.join(
-        ", "
-      )} WHERE lab_id = ?`;
-      db.query(updateQuery, [...updateValues, lid], (err) => {
-        if (err) {
-            logger.registrationLogger.log("error", "error updating lab details");
-          console.error("Error updating lab details:", err);
-          return res
-            .status(500)
-            .json({ success: false, message: "Failed to update details" });
-        }
-            
-            logger.registrationLogger.log("info", "Lab details updated successfully");
-        return res
-          .status(200)
-          .json({ success: true, message: "Lab details updated successfully" });
-      });
+      logger.registrationLogger.log("info", "Lab details updated successfully");
+      
+      return res.status(200).json({ success: true, message: "Lab details updated successfully" });
     });
-  } catch (error) {
-      logger.registrationLogger.log("error", "internal server error");
-    console.error("Error in updateLabDetails:", error);
-    res.status(400).json({ success: false, message: error.message });
-  }
+  });
 };
-
 
 const labDelete = (req, res) => {
   try {

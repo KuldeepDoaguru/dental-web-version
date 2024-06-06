@@ -337,6 +337,9 @@ import styled from "styled-components";
 import { AiFillDelete } from "react-icons/ai";
 import { TbEdit } from "react-icons/tb";
 import ReactPaginate from "react-paginate";
+import animationData from "../../../pages/animation/loading-effect.json";
+import Lottie from "react-lottie";
+
 
 const LabTest = () => {
   const [showPopup, setShowPopup] = useState(false);
@@ -348,6 +351,9 @@ const LabTest = () => {
   const complaintsPerPage = 5; // Number of complaints per page
   const [currentPage, setCurrentPage] = useState(0); // Start from the first page
   const [totalLab, setTotalLab] = useState(0); 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [keyword, setkeyword] = useState("");
+  const [loading, setLoading] = useState(false);
   const [upLabTestField, setUpLabTestField] = useState({
     test_name: "",
     test_code: "",
@@ -389,6 +395,8 @@ const LabTest = () => {
 
   console.log(showPopup);
   const getLabtestDetails = async () => {
+    
+    setLoading(true);
     try {
       const { data } = await axios.get(
         "https://dentalguruadmin.doaguru.com/api/v1/admin/getLabTest",
@@ -399,9 +407,11 @@ const LabTest = () => {
           },
         }
       );
+      setLoading(false);
       setLabTestList(data);
       setTotalLab(data.length)
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -413,6 +423,7 @@ const LabTest = () => {
   console.log(labTestList);
 
   const updateLabData = async (e) => {
+
     e.preventDefault();
     try {
       const response = await axios.put(
@@ -476,12 +487,23 @@ const LabTest = () => {
     }
   };
 
-  const totalPages = Math.ceil(labTestList.length / complaintsPerPage);
+  const handleSearchChange = (e) =>{
+    setSearchTerm(e.target.value);
+  }
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword]);
+
+
+  const searchFilter = labTestList.filter((lab)=>lab.test_name.toLowerCase().includes(keyword.toLowerCase()));
+
+
+  const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
 
   const filterAppointDataByMonth = () => {
     const startIndex = currentPage * complaintsPerPage;
     const endIndex = startIndex + complaintsPerPage;
-    return labTestList?.slice(startIndex, endIndex);
+    return searchFilter?.slice(startIndex, endIndex);
   };
 
   const handlePageChange = ({ selected }) => {
@@ -489,10 +511,36 @@ const LabTest = () => {
   };
 
   const displayedAppointments = filterAppointDataByMonth();
-
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
   return (
     <>
       <Container>
+      <div className="mid-box">
+          <div className="row mt-2 background">
+            <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
+              <input
+                type="text"
+                placeholder="search here"
+                className="inputser"
+                value={keyword}
+                onChange={(e) =>
+                  setkeyword(e.target.value.toLowerCase())
+                }
+              />
+            </div>
+          </div>
+        </div>
+      {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
         <div class="table-responsive mt-4">
           <div>
          <p className="fw-bold">Total Lab Test - {totalLab +1 }</p>
@@ -665,6 +713,8 @@ const LabTest = () => {
 
           {/* popup for updating notice */}
         </div>
+        </>
+          )}
       </Container>
     </>
   );
@@ -733,4 +783,30 @@ const PaginationContainer = styled.div`
   .pagination li a:hover:not(.active) {
     background-color: #ddd;
   }
+
+  input::placeholder {
+            color: #aaa;
+            opacity: 1; /* Ensure placeholder is visible */
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        input:focus::placeholder {
+            color: transparent; /* Hide placeholder on focus */
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #007bff; /* Change border color on focus */
+        }
 `;

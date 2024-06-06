@@ -544,12 +544,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import cogoToast from "cogo-toast";
+import animationData from "../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const AdminAppointment = () => {
   const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
   const [appointmentList, setAppointmentList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [updateData, setUpdateData] = useState({
     branch: user.branch_name,
     patientName: "",
@@ -584,6 +587,7 @@ const AdminAppointment = () => {
   };
 
   const getAppointList = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${user.branch_name}`,
@@ -594,8 +598,10 @@ const AdminAppointment = () => {
           },
         }
       );
+      setLoading(false);
       setAppointmentList(response.data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -702,6 +708,15 @@ const AdminAppointment = () => {
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   
   return (
     <>
@@ -737,6 +752,10 @@ const AdminAppointment = () => {
                       />
                     </div>
                       <div className="table-responsive rounded">
+                      {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
                         <table className="table table-bordered rounded shadow">
                           <thead className="table-head">
                             <tr>
@@ -801,6 +820,9 @@ const AdminAppointment = () => {
                             ))}
                           </tbody>
                         </table>
+
+                        </>
+          )}
                       </div>
                     </div>
                   </div>

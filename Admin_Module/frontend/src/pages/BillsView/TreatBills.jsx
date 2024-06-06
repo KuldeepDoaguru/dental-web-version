@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ReactPaginate from "react-paginate";
 import moment from "moment";
+import animationData from "../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const TreatBills = () => {
   const dispatch = useDispatch();
@@ -22,8 +24,9 @@ const TreatBills = () => {
   const [keyword, setkeyword] = useState("");
   // const [currentPage, setCurrentPage] = useState(1);
   // const [itemsPerPage] = useState(10);
-  const complaintsPerPage = 8; // Number of complaints per page
+
   const [currentPage, setCurrentPage] = useState(0); // Start from the first page
+  
   const [upData, setUpData] = useState({
     bill_date: "",
     uhid: "",
@@ -39,6 +42,7 @@ const TreatBills = () => {
     payment_status: "",
     payment_date_time: "",
   });
+  
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -98,6 +102,7 @@ const TreatBills = () => {
   };
 
   const getBillDetailsByBid = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getBillBYBillId/${selectedItem}`,
@@ -108,8 +113,10 @@ const TreatBills = () => {
           },
         }
       );
+      setLoading(false);
       setPlacehold(data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -164,23 +171,32 @@ const TreatBills = () => {
 
   useEffect(() => {
     setCurrentPage(0);
-  }, []);
+  }, [keyword]);
 
   const searchFilter = listBills.filter((lab) =>
     lab.patient_name.toLowerCase().includes(keyword.toLowerCase())
   );
-
-  const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
+  const billPerPage = 10;
+  const totalPages = Math.ceil(searchFilter.length / billPerPage);
 
   const filterAppointDataByMonth = () => {
-    const startIndex = currentPage * complaintsPerPage;
-    const endIndex = startIndex + complaintsPerPage;
+    const startIndex = currentPage * billPerPage;
+    const endIndex = startIndex + billPerPage;
     return searchFilter?.slice(startIndex, endIndex);
   };
 
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
 
   const displayedAppointments = filterAppointDataByMonth();
   return (
@@ -206,9 +222,14 @@ const TreatBills = () => {
                       </button> */}
           </div>
         </div>
-       
+        {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
             {displayedAppointments?.length > 0 ? (
               <>
+  
+
                 <div class="table-responsive rounded mt-4">
                   <table class="table table-bordered rounded shadow">
                     <thead className="table-head">
@@ -300,12 +321,16 @@ const TreatBills = () => {
                             </li>
                           </ul>
                         </div> */}
+                       
               </>
             ) : (
               <>
                 <h1>No Bill Found</h1>
               </>
             )}
+  </>
+          )}
+            
         
 
         {/* ********************************************************************************************* */}

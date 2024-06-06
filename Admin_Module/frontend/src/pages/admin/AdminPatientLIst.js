@@ -206,6 +206,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import HeaderAdmin from "./HeaderAdmin";
 import SiderAdmin from "./SiderAdmin";
+import animationData from "../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 
 const AdminPatientLIst = () => {
@@ -269,6 +271,16 @@ const AdminPatientLIst = () => {
     setCurrentPage(selected);
   };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
+
   const displayedAppointments = filterAppointDataByMonth();
 
   return (
@@ -311,7 +323,10 @@ const AdminPatientLIst = () => {
                       </button> */}
                     </div>
                   </div>
-
+                  {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
                 
                       <div class="table-responsive mt-4">
                         <table class="table table-bordered">
@@ -376,6 +391,9 @@ const AdminPatientLIst = () => {
                           </tbody>
                         </table>
                       </div>
+
+                      </>
+          )}
                       <PaginationContainer>
                         <ReactPaginate
                           previousLabel={"previous"}

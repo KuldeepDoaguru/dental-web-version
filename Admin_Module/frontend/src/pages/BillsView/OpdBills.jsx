@@ -4,6 +4,8 @@ import ReactPaginate from "react-paginate";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import animationData from "../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 
 const OpdBills = () => {
@@ -56,7 +58,7 @@ const OpdBills = () => {
 
   useEffect(() => {
     setCurrentPage(0);
-  }, []);
+  }, [keyword]);
 
   console.log(appointmentList);
 
@@ -81,6 +83,14 @@ const OpdBills = () => {
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   const displayedAppointments = filterAppointDataByMonth();
 
@@ -99,7 +109,10 @@ const OpdBills = () => {
           </div>
         </div>
 
-       
+        {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
          
             {displayedAppointments?.length > 0 ? (
               <>
@@ -159,6 +172,9 @@ const OpdBills = () => {
                 <h1>No Bill Found</h1>
               </>
             )}
+  </>
+          )}
+
          
       </Container>
     </>

@@ -215,6 +215,8 @@ const AdminClinicAct = () => {
   // Format as 'YYYY-MM-DD'
   const formattedDate = `${year}-${month}-${date}`;
 
+  
+
   // console.log(formattedDate);
   return (
     <>

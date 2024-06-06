@@ -359,19 +359,24 @@ import styled from "styled-components";
 import { AiFillDelete } from "react-icons/ai";
 import { TbEdit } from "react-icons/tb";
 import ReactPaginate from "react-paginate";
+import animationData from "../../../pages/animation/loading-effect.json";
+import Lottie from "react-lottie";
+
 
 const Lab = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [labList, setLabList] = useState([]);
   const [branchList, setBranchList] = useState([]);
   const [selectedItem, setSelectedItem] = useState();
+  const [loading, setLoading] = useState(false);
   const user = useSelector((state) => state.user.currentUser);
-  
+  const [keyword, setkeyword] = useState("");
   const { refreshTable } = useSelector((state) => state.user);
   const [searchTerm, setSearchTerm] = useState("");
   const complaintsPerPage = 8; // Number of complaints per page
   const [currentPage, setCurrentPage] = useState(0); // Start from the first page
   const [totalLab, setTotalLab] = useState(0);
+  
   const [upLabField, setUpLabField] = useState({
     branch: "",
     name: "",
@@ -413,6 +418,7 @@ const Lab = () => {
 
   console.log(showPopup);
   const getListLabDetails = async () => {
+    setLoading(true);
     try {
       const data = await axios.get(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getLabList/${user.branch_name}`,
@@ -423,9 +429,12 @@ const Lab = () => {
           },
         }
       );
+      setLoading(false);
       setLabList(data.data);
+      setTotalLab(data.data.length); 
       console.log(data.data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -492,7 +501,7 @@ const Lab = () => {
       );
       console.log(response.data);
       setBranchList(response.data);
-      setTotalLab(response.data.length ); 
+      
     } catch (error) {
       console.log(error);
     }
@@ -508,7 +517,12 @@ const Lab = () => {
     setSearchTerm(e.target.value);
   }
 
-  const searchFilter = labList.filter((lab)=>lab.lab_name.toLowerCase().includes(searchTerm.toLowerCase()));
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [keyword]);
+
+
+  const searchFilter = labList.filter((lab)=>lab.lab_name.toLowerCase().includes(keyword.toLowerCase()));
 
   const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
 
@@ -536,6 +550,15 @@ const Lab = () => {
   //   })
   // }, [labList]);
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <>
       <Container>
@@ -546,15 +569,23 @@ const Lab = () => {
                 type="text"
                 placeholder="search here"
                 className="inputser"
-                value={searchTerm}
-                onChange={handleSearchChange}
+                value={keyword}
+                onChange={(e) =>
+                  setkeyword(e.target.value.toLowerCase())
+                }
               />
             </div>
           </div>
         </div>
+
+        {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
+
         <div class="table-responsive mt-4">
         <div>
-           <p className="fw-bold">Total Lab - {totalLab +1}</p>
+           <p className="fw-bold">Total Lab - {totalLab}</p>
          </div>
           <table class="table table-bordered">
             <thead className="table-head">
@@ -660,7 +691,7 @@ const Lab = () => {
                         readOnly
                       />
                     </div>
-                    <div className="d-flex flex-column mx-2 w-100">
+                    <div className="d-flex flex-column mx-2 mt-2 w-100">
                       <label htmlFor="">Type</label>
                       <select
                         className="typeset w-100"
@@ -670,7 +701,7 @@ const Lab = () => {
                       >
                         <option value="">-select-</option>
                         <option value="internal">Internal</option>
-                        <option value="external">External</option>
+                       
                       </select>
                     </div>
                   </div>
@@ -744,7 +775,12 @@ const Lab = () => {
           </div>
 
           {/* popup for updating notice */}
+        
+        
         </div>
+
+       </>
+          )}
       </Container>
     </>
   );

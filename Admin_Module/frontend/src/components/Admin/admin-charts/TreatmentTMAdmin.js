@@ -3,12 +3,15 @@ import ReactApexChart from "react-apexcharts";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import Lottie from "react-lottie";
+import animationData from "../../../pages/animation/loading-effect.json";
 
 const TreatmentTMAdmin = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
   console.log(user);
   const [appointmentList, setAppointmentList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [chartData, setChartData] = useState({
     series: [],
     options: {
@@ -36,6 +39,7 @@ const TreatmentTMAdmin = () => {
 
   const getAppointList = async () => {
     console.log(user.branch_name);
+    setLoading(true);
     try {
       const response = await axios.get(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${user.branch_name}`,
@@ -46,8 +50,10 @@ const TreatmentTMAdmin = () => {
           },
         }
       );
+      setLoading(false);
       setAppointmentList(response.data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -118,9 +124,27 @@ const TreatmentTMAdmin = () => {
   }, [appointmentList, user.branch_name]); // Added branch as a dependency
   console.log(chartData.options);
   console.log(chartData.series);
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
+
+
+
+
   return (
     <Container>
       <div className="d-flex justify-content-center align-items-center pt-5">
+
+      {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
         <div id="chart">
           {appointmentList.length > 0 ? (
             <>
@@ -150,6 +174,8 @@ const TreatmentTMAdmin = () => {
             </>
           )}
         </div>
+        </>
+          )}
       </div>
     </Container>
   );

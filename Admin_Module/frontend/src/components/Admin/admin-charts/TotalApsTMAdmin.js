@@ -12,6 +12,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import styled from "styled-components";
+import animationData from "../../../pages/animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -32,9 +34,11 @@ const TotalApsTMAdmin = () => {
   const user = useSelector((state) => state.user.currentUser);
   console.log(user);
   const [appointmentList, setAppointmentList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getAppointList = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${user.branch_name}`,
@@ -45,8 +49,10 @@ const TotalApsTMAdmin = () => {
             },
           }
         );
+        setLoading(false);
         setAppointmentList(response.data);
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     };
@@ -76,11 +82,24 @@ const TotalApsTMAdmin = () => {
       patients: dailyAppointments[date] || 0,
     };
   });
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
 
   return (
     <>
       <Container>
         <div className="container-fluid mt-4" id="main">
+        {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
           <BarChart
             width={390}
             height={300}
@@ -99,6 +118,8 @@ const TotalApsTMAdmin = () => {
             <Legend />
             <Bar dataKey="patients" fill="#40407a" />
           </BarChart>
+          </>
+          )}
         </div>
       </Container>
     </>

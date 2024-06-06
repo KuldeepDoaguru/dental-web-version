@@ -9,6 +9,8 @@ import axios from "axios";
 import moment from "moment";
 
 import cogoToast from "cogo-toast";
+import Lottie from "react-lottie";
+import animationData from "../../images/animation/loading-effect.json";
 
 // import BranchDetails from "../components/BranchDetails";
 // import ApplyLeave from "../components/btModal/ApplyLeave";
@@ -34,6 +36,8 @@ const AttendanceLeave = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [leavesData,setLeaveData] = useState([]);
+  const [loadingEffect1, setLoadingEffect1] = useState(false);
+  const [loadingEffect2, setLoadingEffect2] = useState(false);
 
 
   const [Attendance, setAttendance] = useState([]);
@@ -42,6 +46,7 @@ const AttendanceLeave = () => {
   const getAttendance = async () => {
      
     try{
+      setLoadingEffect1(true);
         const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAttendancebyempId/${branch}/${employeeId}`
         ,
         {
@@ -52,9 +57,11 @@ const AttendanceLeave = () => {
         }
         );
         setAttendance(response?.data?.data)
+        setLoadingEffect1(false);
       }
       catch(error){
         console.log(error)
+        setLoadingEffect1(false);
       }
   }
   
@@ -63,7 +70,7 @@ const AttendanceLeave = () => {
   },[refreshTable])
 
   const getLeaves = async () => {
-     
+    setLoadingEffect2(true);
     try{
         const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-leaves/${branch}/${employeeId}` ,
         {
@@ -73,9 +80,11 @@ const AttendanceLeave = () => {
         }
         });
         setLeaveData(response?.data?.data)
+        setLoadingEffect2(false);
       }
       catch(error){
         console.log(error)
+        setLoadingEffect2(false);
       }
   }
 
@@ -159,6 +168,15 @@ const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = { year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString("en-GB", options);
+};
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+    
+  },
 };
   return (
     <>
@@ -317,6 +335,16 @@ const formatDate = (dateString) => {
                             <div className="mt-5 text-center">
                              <h4>Attendance details</h4>
                             </div>
+                            {loadingEffect1 ? (
+            
+            <Lottie
+                          options={defaultOptions}
+                          height={300}
+                          width={400}
+                          style={{ background: "transparent" }}
+                        ></Lottie>
+          
+          ) : (
                           <div className="table-container">
                             <table className="table table-bordered">
                               <thead className="table-head">
@@ -349,12 +377,23 @@ const formatDate = (dateString) => {
                               </tbody>
                             </table>
                           </div>
+          )}
                           </div>
                           
                           <div className="mt-5">
                             <div className="mt-5 text-center">
                              <h4>Leave details</h4>
                             </div>
+                            {loadingEffect2 ? (
+            
+            <Lottie
+                          options={defaultOptions}
+                          height={300}
+                          width={400}
+                          style={{ background: "transparent" }}
+                        ></Lottie>
+          
+          ) : (
                           <div className="table-container">
                             <table className="table table-bordered">
                               <thead className="table-head">
@@ -394,6 +433,7 @@ const formatDate = (dateString) => {
                               </tbody>
                             </table>
                           </div>
+          )}
                           </div>
                         </div>
                       </div>

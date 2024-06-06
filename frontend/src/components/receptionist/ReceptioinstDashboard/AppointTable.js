@@ -13,6 +13,8 @@ import moment from 'moment';
 import cogoToast from 'cogo-toast';
 import { Link } from 'react-router-dom';
 import CancleAppointment from './CancelAppointment';
+import Lottie from "react-lottie";
+import animationData from "../../../images/animation/loading-effect.json";
 
 const AppointTable = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -34,6 +36,7 @@ const AppointTable = () => {
   const branch = currentUser.branch_name;
   const [appointmentsData, setAppointmentData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingEffect, setLoadingEffect] = useState(true);
 
   const [selectedDateAppData, setSelectedDateAppData] = useState([]);
 
@@ -112,6 +115,7 @@ console.log(appointmentsData);
   }, [appointmentsData, selectedDate])
 
   const getAppointments = async () => {
+    
     try {
       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}` ,
       {
@@ -121,9 +125,11 @@ console.log(appointmentsData);
       }
       });
       setAppointmentData(response?.data?.data)
+      setLoadingEffect(false)
     }
     catch (error) {
       console.log(error)
+      setLoadingEffect(false)
     }
   }
 
@@ -155,6 +161,7 @@ console.log(appointmentsData);
   // Add an async function to handle status change
   const handleStatusChange = async (appointmentId, patient_uhid, newStatus) => {
     try {
+      setLoadingEffect(true)
       setLoading(true);
       // Send a PUT request to your backend endpoint to update the status
       await axios.put(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/update-appointment-status`, { status: newStatus, appointmentId: appointmentId, appointment_updated_by: currentUser.employee_name, appointment_updated_by_emp_id: currentUser.employee_ID } ,
@@ -166,6 +173,7 @@ console.log(appointmentsData);
       });
       // Optionally, you can re-fetch appointments after successful update
       setLoading(false);
+      
       getAppointments();
       dispatch(toggleTableRefresh());
       timelineDataForCheckIn(patient_uhid);
@@ -236,7 +244,7 @@ console.log(appointmentsData);
     setCurrentPage(1); // Reset to the first page when searching
 
     const filteredResults = appointmentsData.filter((row) =>
-      (row.patient_name.toLowerCase().includes(searchTerm) || row.mobileno.includes(searchTerm) || row.uhid.toLowerCase().includes(searchTerm) || row.appointment_status.toLowerCase().includes(searchTerm) )
+      (row.patient_name.toLowerCase().includes(searchTerm.trim()) || row.mobileno.includes(searchTerm.trim()) || row.uhid.toLowerCase().includes(searchTerm.trim()) || row.appointment_status.toLowerCase().includes(searchTerm.trim()) )
       && row.appointment_dateTime.includes(selectedDate)
     );
 
@@ -328,6 +336,16 @@ console.log(appointmentsData);
     return null;
   });
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+      
+    },
+  };
+
   return (
     <Wrapper>
       <div className=''>
@@ -385,7 +403,16 @@ console.log(appointmentsData);
               />
             </div>
           </div>
-
+          {loadingEffect ? (
+            
+            <Lottie
+                          options={defaultOptions}
+                          height={300}
+                          width={400}
+                          style={{ background: "transparent" }}
+                        ></Lottie>
+          
+          ) : (
           <div className="table-responsive">
             <table className="table table-bordered table-striped">
               <thead>
@@ -472,6 +499,7 @@ console.log(appointmentsData);
               </tbody>
             </table>
           </div>
+          )}
           <div className="container mt-3 mb-3">
             <div className="row">
               <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">  <h4

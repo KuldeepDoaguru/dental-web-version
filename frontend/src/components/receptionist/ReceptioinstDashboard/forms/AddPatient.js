@@ -379,7 +379,7 @@ function AddPatient() {
       ? availableDoctorOnDate.filter((doctor) =>
           doctor.employee_name
             .toLowerCase()
-            .includes(searchDoctor.toLowerCase())
+            .includes(searchDoctor.toLowerCase().trim())
         )
       : [];
     setFilteredDoctor(filtered);

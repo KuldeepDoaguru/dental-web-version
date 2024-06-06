@@ -10,6 +10,8 @@ import moment from 'moment'
 import MakePayment from '../../components/receptionist/SecurityAmount/MakePayment';
 import cogoToast from 'cogo-toast';
 import { Link, useNavigate } from "react-router-dom";
+import Lottie from "react-lottie";
+import animationData from "../../images/animation/loading-effect.json";
 
 function 
 PatientsDue() {
@@ -17,11 +19,13 @@ PatientsDue() {
   const {refreshTable,currentUser} = useSelector((state) => state.user);
   const  branch = currentUser.branch_name;
   const token = currentUser?.token;
+  const [loadingEffect, setLoadingEffect] = useState(false);
 
   
   const [patBill, setPatBill] = useState([]);
 
   const getPatBills = async () => {
+    setLoadingEffect(true);
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPatientBillsByBranch/${branch}`
@@ -34,8 +38,10 @@ PatientsDue() {
         }
       );
       setPatBill(data);
+      setLoadingEffect(false);
     } catch (error) {
       console.log(error);
+      setLoadingEffect(false);
     }
   };
 
@@ -78,7 +84,7 @@ PatientsDue() {
     setCurrentPage(1); // Reset to the first page when searching
 
     const filteredResults = filterForUnPaidBills.filter((row) =>
-      row?.patient_name.toLowerCase().includes(searchTerm) || row?.patient_mobile.includes(searchTerm) || row?.uhid.toLowerCase().includes(searchTerm)
+      row?.patient_name.toLowerCase().includes(searchTerm.trim()) || row?.patient_mobile.includes(searchTerm.trim()) || row?.uhid.toLowerCase().includes(searchTerm.trim())
     );
 
     setFilteredData(filteredResults);
@@ -168,7 +174,15 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
   }
   return null;
 });
-
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+    
+  },
+};
 
   return (
     <Wrapper>
@@ -238,7 +252,16 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
    <div className="col-lg-12">
    <div className="widget-area-2 proclinic-box-shadow  mt-5" id='tableres'>
                     
-                    
+   {loadingEffect ? (
+            
+            <Lottie
+                          options={defaultOptions}
+                          height={300}
+                          width={400}
+                          style={{ background: "transparent" }}
+                        ></Lottie>
+          
+          ) : (
                     <div className="table-responsive">
                       <table className="table table-bordered table-striped">
                         <thead>
@@ -303,6 +326,7 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                         </tbody>
                       </table>
                     </div>
+          )}
                     <div className="container mt-3 mb-3">
                   <div className="row">
                     <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">  <h4

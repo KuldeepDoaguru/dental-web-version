@@ -296,7 +296,7 @@ useEffect(() => {
   const filterDoctor = () => {
     if (searchDoctor.trim() !== "") {
       const filteredDoctors = availableDoctorOnDate.filter((doctor) => {
-        return doctor.employee_name.toLowerCase().includes(searchDoctor.toLowerCase());
+        return doctor.employee_name.toLowerCase().includes(searchDoctor.toLowerCase().trim());
       });
       setFilteredDoctor(filteredDoctors);
     } else {

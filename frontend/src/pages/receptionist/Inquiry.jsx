@@ -9,7 +9,9 @@ import axios from 'axios'
 import EditInquiry from '../../components/receptionist/ReceptioinstDashboard/EditInquiry';
 import { toggleTableRefresh } from '../../redux/user/userSlice';
 import moment from 'moment'
-import cogoToast from 'cogo-toast'
+import cogoToast from 'cogo-toast';
+import Lottie from "react-lottie";
+import animationData from "../../images/animation/loading-effect.json";
 function Inquiry() {
 
   const user = useSelector((state) => state.user);
@@ -31,6 +33,7 @@ function Inquiry() {
 
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [selectedInquiry, setSelectedInquiry] = useState("");
+  const [loadingEffect, setLoadingEffect] = useState(false);
 
   const getDoctors = async ()=>{
     try{
@@ -48,6 +51,7 @@ function Inquiry() {
     }
   }
   const getInquiries = async ()=>{
+    setLoadingEffect(true)
     try{
       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-inquiries/${branch}` ,
       {
@@ -57,9 +61,11 @@ function Inquiry() {
       }
       });
       setInquiries(response?.data?.data)
+      setLoadingEffect(false)
     }
     catch(error){
       console.log(error)
+      setLoadingEffect(false)
     }
   }
 
@@ -98,7 +104,7 @@ function Inquiry() {
     setCurrentPage(1); // Reset to the first page when searching
 
     const filteredResults = inquiries.filter((row) =>
-      row.patient_name.toLowerCase().includes(searchTerm) || row.mobile.includes(searchTerm)
+      row.patient_name.toLowerCase().includes(searchTerm.trim()) || row.mobile.includes(searchTerm.trim())
     );
 
     setFilteredData(filteredResults);
@@ -307,6 +313,15 @@ catch(error){
 
 }
 }
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+    
+  },
+};
 
 
   return (
@@ -475,7 +490,16 @@ catch(error){
    <div className="col-lg-12">
    <div className="widget-area-2 proclinic-box-shadow  mt-5" id='tableres'>
                     
-                    
+   {loadingEffect ? (
+            
+            <Lottie
+                          options={defaultOptions}
+                          height={300}
+                          width={400}
+                          style={{ background: "transparent" }}
+                        ></Lottie>
+          
+          ) : (
                     <div className="table-responsive" style={{ overflowX: "auto" }}>
                       <table className="table table-bordered table-striped">
                         <thead>
@@ -528,6 +552,7 @@ catch(error){
                         </tbody>
                       </table>
                     </div>
+          )}
                     <div className="container mt-3 mb-3">
                   <div className="row">
                     <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">  <h4

@@ -9,6 +9,19 @@ const Profile = () => {
 
     const {refreshTable,currentUser} = useSelector((state) => state.user);
   const  branch = currentUser?.branch_name;
+    // Function to convert 24-hour time to AM/PM format
+const convertToAMPM = (time) => {
+    const [hours, minutes] = time.split(':');
+    let suffix = 'AM';
+    let formattedHours = parseInt(hours, 10);
+  
+    if (formattedHours >= 12) {
+      suffix = 'PM';
+      formattedHours = formattedHours !== 12 ? formattedHours - 12 : formattedHours;
+    }
+  
+    return `${formattedHours}:${minutes} ${suffix}`;
+  };
   return (
     <>
       <Wrapper>
@@ -25,7 +38,7 @@ const Profile = () => {
             <div className="row">
                 <div className="col-lg-12 col-12">
                     <div className="text-start p-2">
-                        <h3>Receptionist Profile</h3>
+                        <h3>Employee Profile</h3>
                         <hr />
                     </div>
                 </div>
@@ -37,13 +50,13 @@ const Profile = () => {
                 <div className="col-lg-8">
                     <div className="row mb-3">
                         <div className="col-lg-4">
-                            <label className="text-info">UserID</label>
+                            <label className="text-info">Employee ID</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.employee_ID}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
-                        <label className="text-info">User Name</label>
+                        <label className="text-info">Employee Name</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.employee_name}</p>
                             </div>
@@ -57,7 +70,7 @@ const Profile = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col-lg-4">
-                            <label className="text-info">Sex</label>
+                            <label className="text-info">Gender</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.gender}</p>
                             </div>
@@ -93,11 +106,60 @@ const Profile = () => {
                             </div>
                         </div>
                         <div className="col-lg-4">
-                        <label className="text-info">Working Shift</label>
+                        <label className="text-info">Employee Role</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">12PM - 2PM</p>
+                                <p className="m-0">{currentUser?.employee_role}</p>
                             </div>
                         </div>
+                        
+                    </div>
+                    <div className="row mb-3">
+                        
+                  
+                    <div className="col-lg-4">
+                        <label className="text-info">Morning Shift Start Time</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{convertToAMPM(currentUser?.morning_shift_start_time)}</p>
+                            </div>
+                        </div>
+                    <div className="col-lg-4">
+                        <label className="text-info">Morning Shift End Time</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{convertToAMPM(currentUser?.morning_shift_end_time)}</p>
+                            </div>
+                        </div>
+                    <div className="col-lg-4">
+                        <label className="text-info">Evening Shift Start Time</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{convertToAMPM(currentUser?.evening_shift_start_time)}</p>
+                            </div>
+                        </div>
+                       
+                       
+                    </div>
+                    <div className="row mb-3">
+                        
+                  
+                    <div className="col-lg-4">
+                        <label className="text-info">Evening Shift End Time</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{convertToAMPM(currentUser?.evening_shift_end_time)}</p>
+                            </div>
+                        </div>
+                    <div className="col-lg-4">
+                        <label className="text-info">All Day Shift Start Time</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{convertToAMPM(currentUser?.allday_shift_start_time)}</p>
+                            </div>
+                        </div>
+                    <div className="col-lg-4">
+                        <label className="text-info">All Day Shift End Time</label>
+                            <div className="shadow-none p-1 bg-light rounded">
+                                <p className="m-0">{convertToAMPM(currentUser?.allday_shift_end_time)}</p>
+                            </div>
+                        </div>
+                       
+                       
                     </div>
                    
                    

@@ -10,6 +10,8 @@ import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
 import EditPatientDetails from "../../components/receptionist/AllPatients/EditPatientDetails";
 import moment from "moment";
+import Lottie from "react-lottie";
+import animationData from "../../images/animation/loading-effect.json";
 function OpdCollection() {
   const { refreshTable, currentUser } = useSelector((state) => state.user);
   const branch = currentUser.branch_name;
@@ -17,7 +19,7 @@ function OpdCollection() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Initialize with today's date
   const [appointmentsData, setAppointmentData] = useState([]);
 
-
+  const [loadingEffect, setLoadingEffect] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -33,6 +35,7 @@ function OpdCollection() {
   };
 
   const getAppointments = async () => {
+    setLoadingEffect(true)
     try {
       const response = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-appointments/${branch}` ,
@@ -46,8 +49,10 @@ function OpdCollection() {
      
       const filteredPatients = response?.data?.data?.filter(patient =>  patient?.created_at?.includes(selectedDate) && patient.treatment_provided === "OPD");
       setAppointmentData(filteredPatients);
+      setLoadingEffect(false);
     } catch (error) {
       console.log(error);
+      setLoadingEffect(false);
     }
   };
 
@@ -65,9 +70,9 @@ function OpdCollection() {
 
     const filteredResults = appointmentsData.filter(
       (row) =>
-        row.patient_name.toLowerCase().includes(searchTerm) ||
-        row.mobileno.includes(searchTerm) ||
-        row.uhid.toLowerCase().includes(searchTerm)
+        row.patient_name.toLowerCase().includes(searchTerm.trim()) ||
+        row.mobileno.includes(searchTerm.trim()) ||
+        row.uhid.toLowerCase().includes(searchTerm.trim())
     );
 
     setFilteredData(filteredResults);
@@ -160,6 +165,15 @@ function OpdCollection() {
     return null;
   });
 console.log(appointmentsData)
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+    
+  },
+};
   return (
     <Wrapper>
       <div className='header'>
@@ -243,6 +257,16 @@ console.log(appointmentsData)
                 className="widget-area-2 proclinic-box-shadow mt-5"
                 id="tableres"
               >
+                {loadingEffect ? (
+            
+            <Lottie
+                          options={defaultOptions}
+                          height={300}
+                          width={400}
+                          style={{ background: "transparent" }}
+                        ></Lottie>
+          
+          ) : (
                 <div className="table-responsive">
                   <table className="table table-bordered table-striped">
                     <thead>
@@ -306,6 +330,7 @@ console.log(appointmentsData)
                     </tbody>
                   </table>
                 </div>
+          )}
                 <div className="container mt-3 mb-3">
                   <div className="row">
                     <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">

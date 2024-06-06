@@ -10,6 +10,8 @@ import moment from 'moment'
 import MakePayment from '../../components/receptionist/SecurityAmount/MakePayment';
 import cogoToast from 'cogo-toast';
 import { Link, useNavigate } from "react-router-dom";
+import Lottie from "react-lottie";
+import animationData from "../../images/animation/loading-effect.json";
 
 function SecurityAmount() {
 
@@ -18,6 +20,7 @@ function SecurityAmount() {
   const [patients, setPatients] = useState([]);
   const token = currentUser?.token;
   const [loading,setLoading] = useState(false);
+  const [loadingEffect, setLoadingEffect] = useState(false);
 
 
   const dispatch = useDispatch();
@@ -124,6 +127,7 @@ function SecurityAmount() {
   };
 
   const getSecurityAmountList = async () => {
+    setLoadingEffect(true)
     try {
       const { data } = await axios.get(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getSecurityAmountDataByBranch/${branch}`
@@ -136,8 +140,10 @@ function SecurityAmount() {
       }
       );
       setSecurityList(data);
+      setLoadingEffect(false)
     } catch (error) {
       console.log(error);
+      setLoadingEffect(false)
     }
   };
 
@@ -408,7 +414,7 @@ function SecurityAmount() {
     setCurrentPage(1); // Reset to the first page when searching
 
     const filteredResults = securityList.filter((row) =>
-      row?.patient_name.toLowerCase().includes(searchTerm) || row?.patient_number.includes(searchTerm) || row?.uhid.toLowerCase().includes(searchTerm)
+      row?.patient_name.toLowerCase().includes(searchTerm.trim()) || row?.patient_number.includes(searchTerm.trim()) || row?.uhid.toLowerCase().includes(searchTerm.trim())
     );
 
     setFilteredData(filteredResults);
@@ -499,6 +505,15 @@ function SecurityAmount() {
     return null;
   });
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+      
+    },
+  };
 
   return (
     <Wrapper>
@@ -568,7 +583,16 @@ function SecurityAmount() {
             <div className="col-lg-12">
               <div className="widget-area-2 proclinic-box-shadow  mt-5" id='tableres'>
 
-
+              {loadingEffect ? (
+            
+            <Lottie
+                          options={defaultOptions}
+                          height={300}
+                          width={400}
+                          style={{ background: "transparent" }}
+                        ></Lottie>
+          
+          ) : (
                 <div className="table-responsive">
                   <table className="table table-bordered table-striped">
                     <thead>
@@ -664,6 +688,7 @@ function SecurityAmount() {
                     </tbody>
                   </table>
                 </div>
+          )}
                 <div className="container mt-3 mb-3">
                   <div className="row">
                     <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">  <h4

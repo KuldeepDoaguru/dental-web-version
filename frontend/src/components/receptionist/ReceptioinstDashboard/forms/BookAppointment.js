@@ -375,7 +375,7 @@ console.log(availableDoctorOnDate);
     // Filter patients based on the search query if there's a search query, otherwise set an empty array
     const filtered = searchQuery
       ? patients.filter((patient) =>
-          patient.patient_name.toLowerCase().includes(searchQuery.toLowerCase()) || patient.mobileno.includes(searchQuery) || patient.uhid.toLowerCase().includes(searchQuery.toLowerCase())
+          patient.patient_name.toLowerCase().includes(searchQuery.toLowerCase().trim()) || patient.mobileno.includes(searchQuery.trim()) || patient.uhid.toLowerCase().includes(searchQuery.toLowerCase().trim())
         )
       : [];
     setFilteredPatients(filtered);
@@ -392,7 +392,7 @@ console.log(availableDoctorOnDate);
     
     const filtered = showDoctorList
       ? availableDoctorOnDate.filter((doctor) =>
-          doctor.employee_name.toLowerCase().includes(searchDoctor.toLowerCase())
+          doctor.employee_name.toLowerCase().includes(searchDoctor.toLowerCase().trim())
         )
       : [];
     setFilteredDoctor(filtered);

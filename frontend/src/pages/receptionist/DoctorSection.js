@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios'
 import Toast from 'react-bootstrap/Toast';
 import moment from 'moment';
+import Lottie from "react-lottie";
+import animationData from "../../images/animation/loading-effect.json";
 
 function DoctorSection() {
 
@@ -25,6 +27,7 @@ function DoctorSection() {
   const [doctorWithLeave,setDoctorWithLeave] = useState([]);
   const [doctorWithUpcommingLeave,setDoctorWithUpcommingLeave] = useState([]);
   const todayDate = moment().format('YYYY-MM-DD');
+  const [loadingEffect, setLoadingEffect] = useState(false);
   console.log(todayDate)
   
  
@@ -45,6 +48,7 @@ function DoctorSection() {
   }
 
   const getDoctors = async ()=>{
+    setLoadingEffect(true)
     try{
       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}` ,
       {
@@ -54,9 +58,11 @@ function DoctorSection() {
       }
       });
       setDoctors(response?.data?.data)
+      setLoadingEffect(false)
     }
     catch(error){
       console.log(error)
+      setLoadingEffect(false)
     }
   }
 
@@ -122,7 +128,7 @@ const convertToAMPM = (time) => {
       setCurrentPage(1); // Reset to the first page when searching
   
       const filteredResults = doctors.filter((row) =>
-        row.employee_name.toLowerCase().includes(searchTerm) || row.employee_mobile.includes(searchTerm)
+        row.employee_name.toLowerCase().includes(searchTerm.trim()) || row.employee_mobile.includes(searchTerm.trim())
       );
   
       setFilteredData(filteredResults);
@@ -223,6 +229,15 @@ const formatDate = (dateString) => {
 
   return formattedDate;
 };
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+    
+  },
+};
   
   return (
     <Wrapper>
@@ -290,6 +305,16 @@ const formatDate = (dateString) => {
    </div>
              
               <div className="widget-area-2 proclinic-box-shadow  mt-5" id="tableres">
+              {loadingEffect ? (
+            
+            <Lottie
+                          options={defaultOptions}
+                          height={300}
+                          width={400}
+                          style={{ background: "transparent" }}
+                        ></Lottie>
+          
+          ) : (
                 <div className="table-responsive">
                   <table className="table table-bordered table-striped">
                     <thead>
@@ -374,6 +399,7 @@ const formatDate = (dateString) => {
                     </tbody>
                   </table>
                 </div>
+          )}
                 <div className="container mt-3 mb-3">
                   <div className="row">
                     <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">

@@ -7,7 +7,9 @@ import { Table, Input, Button, Form } from "react-bootstrap";
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import EditPatientDetails from '../../components/receptionist/AllPatients/EditPatientDetails'
-import moment from 'moment'
+import moment from 'moment';
+import Lottie from "react-lottie";
+import animationData from "../../images/animation/loading-effect.json";
 function AllPatient() {
   
   const {refreshTable,currentUser} = useSelector((state) => state.user);
@@ -22,8 +24,10 @@ function AllPatient() {
 
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const getPatient = async () =>{
+    setLoading(true);
     try{
       const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-Patients/${branch}` ,
       {
@@ -34,9 +38,11 @@ function AllPatient() {
       });
       console.log(response);
       setPatients(response?.data?.data)
+      setLoading(false);
      }
      catch(error){
         console.log(error)
+        setLoading(false);
      }
     
   }
@@ -65,7 +71,7 @@ function AllPatient() {
     setCurrentPage(1); // Reset to the first page when searching
 
     const filteredResults = patients.filter((row) =>
-      row.patient_name.toLowerCase().includes(searchTerm) || row.mobileno.includes(searchTerm) || row.uhid.toLowerCase().includes(searchTerm)
+      row.patient_name.toLowerCase().includes(searchTerm.trim()) || row.mobileno.includes(searchTerm.trim()) || row.uhid.toLowerCase().includes(searchTerm.trim())
     );
 
     setFilteredData(filteredResults);
@@ -156,6 +162,16 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
   return null;
 });
 
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+    
+  },
+};
+
 
   return (
     <Wrapper>
@@ -224,11 +240,22 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
 </nav>  
    </div>
 
-   <div className="col-lg-12 table">
-   <div className="widget-area-2 proclinic-box-shadow  mt-5" id='tableres'>
-                    
+   <div className="col-lg-12 table" >
+   <div className="widget-area-2 proclinic-box-shadow  mt-5" id='tableres' >
+   {loading ? (
+            <LottieWrapper>
+            <Lottie
+                          options={defaultOptions}
+                          height={300}
+                          width={400}
+                          style={{ background: "transparent" }}
+                        ></Lottie>
+          </LottieWrapper>
+          ) : (
                     
                     <div className="table-responsive">
+                  
+            <>
                       <table className="table table-bordered table-striped">
                         <thead>
                           <tr>
@@ -277,7 +304,9 @@ const renderPageNumbers = pageNumbers.map((number, index) => {
                          
                         </tbody>
                       </table>
+                      </>
                     </div>
+          )}
                     <div className="container mt-3 mb-3">
                   <div className="row pagination">
                     <div className="col-lg-10 col-xl-8 col-md-12 col-sm-12 col-8">  <h4
@@ -461,4 +490,12 @@ td{
   z-index: 100;
 }
 
+
 `
+const LottieWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  height: 100%;
+`;

@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import moment from 'moment';
+import Lottie from "react-lottie";
+import animationData from "../../images/animation/loading-effect.json";
 
 const BranchInfo = () => {
     const [branchDetail,setBranchDetail] = useState([]);
@@ -13,6 +15,7 @@ const BranchInfo = () => {
     const {refreshTable,currentUser} = useSelector((state) => state.user);
     const  branch = currentUser?.branch_name;
     const token = currentUser?.token;
+    const [loadingEffect, setLoadingEffect] = useState(false);
     const getBranchDetail = async ()=>{
         try{
            const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-detail/${branch}`)
@@ -25,6 +28,7 @@ const BranchInfo = () => {
       }
     
       const getBranchHolidays = async ()=>{
+        setLoadingEffect(true);
         try{
            const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-branch-holidays/${branch}` ,
            {
@@ -35,9 +39,11 @@ const BranchInfo = () => {
            })
            console.log(response)
            setBranchHolidays(response.data.data)
+           setLoadingEffect(false);
         }
         catch(error){
           console.log(error)
+          setLoadingEffect(false);
         }
       }
   useEffect(()=>{
@@ -45,6 +51,15 @@ const BranchInfo = () => {
     getBranchHolidays()
 
   },[])
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+      
+    },
+  };
 
   console.log(branchDetail)
     return (
@@ -166,7 +181,16 @@ const BranchInfo = () => {
             <div className="col-lg-12">
    <div className="widget-area-2 proclinic-box-shadow  mt-5" id='tableres'>
                     
-                    
+   {loadingEffect ? (
+            
+            <Lottie
+                          options={defaultOptions}
+                          height={300}
+                          width={400}
+                          style={{ background: "transparent" }}
+                        ></Lottie>
+          
+          ) : (
                     <div className="table-responsive" style={{ overflowX: "auto" }}>
                       <table className="table table-bordered table-striped">
                         <thead>
@@ -201,6 +225,7 @@ const BranchInfo = () => {
                         </tbody>
                       </table>
                     </div>
+          )}
                 
                   </div>
    </div>

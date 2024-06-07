@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import cogoToast from "cogo-toast";
 import moment from "moment";
+import animationData from "../pages/loading-effect.json";
+import Lottie from "react-lottie";
 
 const SecurityAmount = () => {
   const dispatch = useDispatch();
@@ -29,6 +31,7 @@ const SecurityAmount = () => {
   const [itemsPerPage, setItemsPerPage] = useState(7);
   // const [refAmount, setRefAmount] = useState();
   // const [filteredSecurityList, setFilteredSecurityList] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [addSecurityAmount, setAddSecurityAmount] = useState({
     branch_name: user.branch,
     date: "",
@@ -42,21 +45,20 @@ const SecurityAmount = () => {
     received_by: user.name,
   });
 
-  const filteredItems = securityList.filter((item) =>
-    item.patient_name.toLowerCase().includes(keyword)
+  // const filteredItems = securityList.filter((item) =>
+  //   item.patient_name.trim().toLowerCase().includes(keyword)
+  // );
+
+  const filteredItems = securityList.filter(
+    (row) =>
+      row?.patient_name.toLowerCase().includes(keyword.trim()) ||
+      row?.patient_number.includes(keyword.trim()) ||
+      row?.uhid.toLowerCase().includes(keyword.trim())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
-
-  // const nextPage = () => {
-  //   setCurrentPage((prevPage) => prevPage + 1);
-  // };
-
-  // const prevPage = () => {
-  //   setCurrentPage((prevPage) => prevPage - 1);
-  // };
 
   const nextPage = () => {
     if (currentPage < Math.ceil(filteredItems.length / itemsPerPage)) {
@@ -163,6 +165,7 @@ const SecurityAmount = () => {
   };
 
   const getSecurityAmountList = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getSecurityAmountDataByBranch/${user.branch}`,
@@ -173,8 +176,10 @@ const SecurityAmount = () => {
           },
         }
       );
+      setLoading(false);
       setSecurityList(data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -295,6 +300,15 @@ const SecurityAmount = () => {
   //   setFilteredSecurityList(filteredList);
   // };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <>
       <Container>
@@ -319,128 +333,131 @@ const SecurityAmount = () => {
                         placeholder="Search by Patient Name"
                         className="p-1 rounded input"
                         value={keyword}
-                        // onChange={(e) =>
-                        //   setKeyword(e.target.value.toLowerCase())
-                        // }
                         onChange={(e) => {
-                          setKeyword(e.target.value.toLowerCase());
+                          setKeyword(e.target.value.trim().toLowerCase());
                           setCurrentPage(1);
                         }}
-                        // onChange={(e) => {
-                        //   setKeyword(e.target.value.toLowerCase());
-                        //   const filteredList = securityList.filter((item) =>
-                        //     item.patient_name
-                        //       .toLowerCase()
-                        //       .includes(e.target.value.toLowerCase())
-                        //   );
-                        //   setFilteredSecurityList(filteredList);
-                        // }}
                       />
                     </div>
                     <div class="table-responsive mt-4">
-                      <table class="table table-bordered">
-                        <thead className="table-head">
-                          <tr>
-                            <th>Date</th>
-                            <th>Appointment ID</th>
-                            <th>UHID</th>
-                            <th>Patient Name</th>
-                            <th>Patient Number</th>
-                            <th>Assigned Doctor</th>
-                            <th>Deposit Security Amount</th>
-                            <th>Remaning Security Amount</th>
-                            <th>Payment Mode</th>
-                            <th>Transaction Id</th>
-                            <th>Payment Date</th>
-                            <th>Refund Date</th>
-                            <th>Payment Status</th>
-                            <th>Refund Amount</th>
-                            <th>Action</th>
-                            <th>Print</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {currentItems
-                            ?.filter((val) => {
-                              if (keyword === "") {
-                                return true;
-                              } else if (
-                                val.patient_name
-                                  .toLowerCase()
-                                  .includes(keyword.toLowerCase())
-                              ) {
-                                return val;
-                              }
-                            })
-                            .map((item) => (
-                              <>
-                                <tr className="table-row">
-                                  <td>
-                                    {moment(
-                                      item.date.split("T")[0],
-                                      "YYYY-MM-DD"
-                                    ).format("DD/MM/YYYY")}
-                                  </td>
-                                  <td>{item.appointment_id}</td>
-                                  <td>{item.uhid}</td>
-                                  <td>{item.patient_name}</td>
-                                  <td>{item.patient_number}</td>
-                                  <td>{item.assigned_doctor}</td>
-                                  <td>{item.amount}</td>
-                                  <td>{item.remaining_amount}</td>
-                                  <td>{item.payment_Mode}</td>
-                                  <td>{item.transaction_Id}</td>
-                                  <td>
-                                    {item.payment_date
-                                      ? moment(item?.payment_date).format(
-                                          "DD/MM/YYYY"
-                                        )
-                                      : ""}
-                                  </td>
-                                  <td>
-                                    {item?.refund_date
-                                      ? moment(
-                                          item?.refund_date,
-                                          "YYYY-MM-DDTHH:mm"
-                                        ).format("DD/MM/YYYY")
-                                      : ""}
-                                  </td>
-                                  <td>
-                                    <div className="d-flex">
-                                      <h6>{item.payment_status}</h6>
-                                    </div>
-                                  </td>
-                                  <td>{item.refund_amount}</td>
-                                  <td>
-                                    {/* {item?.remaining_amount === 0 && ( */}
-                                    {item.payment_status === "pending" ? (
-                                      <>
-                                        <button
-                                          className="mx-2 btn btn-info"
-                                          onClick={() =>
-                                            openSecurityAmtPay(item.sa_id)
-                                          }
-                                        >
-                                          Pay now
-                                        </button>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <button
-                                          className={`mx-2 btn btn-warning ${
-                                            item.remaining_amount === 0
-                                              ? "disabled"
-                                              : ""
-                                          } `}
-                                          onClick={() =>
-                                            openSecAmountSubPopup(item.sa_id)
-                                          }
-                                        >
-                                          Make Refund
-                                        </button>
-                                      </>
-                                    )}
-                                    {/* <button
+                      {loading ? (
+                        <Lottie
+                          options={defaultOptions}
+                          height={300}
+                          width={400}
+                        />
+                      ) : (
+                        <>
+                          <table class="table table-bordered">
+                            <thead className="table-head">
+                              <tr>
+                                <th>Date</th>
+                                <th>Appointment ID</th>
+                                <th>UHID</th>
+                                <th>Patient Name</th>
+                                <th>Patient Number</th>
+                                <th>Assigned Doctor</th>
+                                <th>Deposit Security Amount</th>
+                                <th>Remaning Security Amount</th>
+                                <th>Payment Mode</th>
+                                <th>Transaction Id</th>
+                                <th>Payment Date</th>
+                                <th>Refund Date</th>
+                                <th>Payment Status</th>
+                                <th>Refund Amount</th>
+                                <th>Action</th>
+                                <th>Print</th>
+                              </tr>
+                            </thead>
+                            {currentItems?.length === 0 ? (
+                              <div className="text-center fs-4 nodata">
+                                <p> No data found</p>
+                              </div>
+                            ) : (
+                              <tbody>
+                                {currentItems
+                                  // ?.filter((val) => {
+                                  //   if (keyword === "") {
+                                  //     return true;
+                                  //   } else if (
+                                  //     val.patient_name
+                                  //       .toLowerCase()
+                                  //       .includes(keyword.toLowerCase().trim())
+                                  //   ) {
+                                  //     return val;
+                                  //   }
+                                  // })
+                                  .map((item) => (
+                                    <>
+                                      <tr className="table-row">
+                                        <td>
+                                          {moment(
+                                            item.date.split("T")[0],
+                                            "YYYY-MM-DD"
+                                          ).format("DD/MM/YYYY")}
+                                        </td>
+                                        <td>{item.appointment_id}</td>
+                                        <td>{item.uhid}</td>
+                                        <td>{item.patient_name}</td>
+                                        <td>{item.patient_number}</td>
+                                        <td>{item.assigned_doctor}</td>
+                                        <td>{item.amount}</td>
+                                        <td>{item.remaining_amount}</td>
+                                        <td>{item.payment_Mode}</td>
+                                        <td>{item.transaction_Id}</td>
+                                        <td>
+                                          {item.payment_date
+                                            ? moment(item?.payment_date).format(
+                                                "DD/MM/YYYY"
+                                              )
+                                            : ""}
+                                        </td>
+                                        <td>
+                                          {item?.refund_date
+                                            ? moment(
+                                                item?.refund_date,
+                                                "YYYY-MM-DDTHH:mm"
+                                              ).format("DD/MM/YYYY")
+                                            : ""}
+                                        </td>
+                                        <td>
+                                          <div className="d-flex">
+                                            <h6>{item.payment_status}</h6>
+                                          </div>
+                                        </td>
+                                        <td>{item.refund_amount}</td>
+                                        <td>
+                                          {/* {item?.remaining_amount === 0 && ( */}
+                                          {item.payment_status === "pending" ? (
+                                            <>
+                                              <button
+                                                className="mx-2 btn btn-info"
+                                                onClick={() =>
+                                                  openSecurityAmtPay(item.sa_id)
+                                                }
+                                              >
+                                                Pay now
+                                              </button>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <button
+                                                className={`mx-2 btn btn-warning ${
+                                                  item.remaining_amount === 0
+                                                    ? "disabled"
+                                                    : ""
+                                                } `}
+                                                onClick={() =>
+                                                  openSecAmountSubPopup(
+                                                    item.sa_id
+                                                  )
+                                                }
+                                              >
+                                                Make Refund
+                                              </button>
+                                            </>
+                                          )}
+                                          {/* <button
                                       className={`mx-2 btn btn-warning ${
                                         item.remaining_amount === 0
                                           ? "disabled"
@@ -452,22 +469,25 @@ const SecurityAmount = () => {
                                     >
                                       Make Refund
                                     </button> */}
-                                    {/* )} */}
-                                  </td>
-                                  <td>
-                                    <Link
-                                      to={`/security-amount-reciept/${item.sa_id}`}
-                                    >
-                                      <button className="btn btn-success">
-                                        Print
-                                      </button>
-                                    </Link>
-                                  </td>
-                                </tr>
-                              </>
-                            ))}
-                        </tbody>
-                      </table>
+                                          {/* )} */}
+                                        </td>
+                                        <td>
+                                          <Link
+                                            to={`/security-amount-reciept/${item.sa_id}`}
+                                          >
+                                            <button className="btn btn-success">
+                                              Print
+                                            </button>
+                                          </Link>
+                                        </td>
+                                      </tr>
+                                    </>
+                                  ))}
+                              </tbody>
+                            )}
+                          </table>
+                        </>
+                      )}
                     </div>
                     <div className="d-flex justify-content-center mt-3">
                       <button

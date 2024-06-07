@@ -7,6 +7,8 @@ import BranchDetails from "../BranchDetails";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import moment from "moment";
+import animationData from "../../pages/loading-effect.json";
+import Lottie from "react-lottie";
 
 const PatientsDue = () => {
   const user = useSelector((state) => state.user);
@@ -20,8 +22,10 @@ const PatientsDue = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [keyword, setKeyword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const getPatBills = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getPatientBillsByBranch/${user.branch}`,
@@ -32,8 +36,10 @@ const PatientsDue = () => {
           },
         }
       );
+      setLoading(false);
       setPatBill(data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -86,6 +92,15 @@ const PatientsDue = () => {
     }
   };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <>
       <Container>
@@ -122,85 +137,105 @@ const PatientsDue = () => {
                             />
                           </div>
                           <div class="table-responsive rounded mt-4">
-                            <table class="table table-bordered rounded shadow">
-                              <thead className="table-head">
-                                <tr>
-                                  <th className="table-sno sticky">TPID</th>
-                                  <th className="sticky">Patient UHID</th>
-                                  <th className=" sticky">Patients Name</th>
-                                  <th className=" sticky">Patients Mobile</th>
-                                  <th className=" sticky">Patients Email</th>
-                                  <th className=" sticky">Doctor Name</th>
-                                  <th className=" sticky">Total Amount</th>
-                                  <th className=" sticky">
-                                    Paid By Direct Amount
-                                  </th>
-                                  <th className=" sticky">
-                                    Paid By Secuirty Amt
-                                  </th>
-                                  <th className=" sticky">Due Amount</th>
-                                  <th className=" sticky">Bill Date</th>
-                                  <th className=" sticky">Action</th>
-                                </tr>
-                              </thead>
-
-                              <tbody>
-                                {currentItems?.map((item) => (
-                                  <>
-                                    <tr className="table-row">
-                                      <td className="table-sno">
-                                        {item.tp_id}
-                                      </td>
-                                      <td>{item.uhid}</td>
-                                      <td>{item.patient_name}</td>
-                                      <td>{item.patient_mobile}</td>
-                                      <td>{item.patient_email}</td>
-                                      <td>{item.assigned_doctor_name}</td>
-                                      <td>{item.total_amount}</td>
-                                      <td>{item.paid_amount}</td>
-                                      <td>{item.pay_by_sec_amt}</td>
-                                      <td>
-                                        {item.total_amount -
-                                          (item.paid_amount +
-                                            item.pay_by_sec_amt)}
-                                      </td>
-                                      <td>
-                                        {moment(
-                                          item.bill_date?.split("T")[0],
-                                          "YYYY-MM-DD"
-                                        ).format("DD/MM/YYYY")}
-                                      </td>
-                                      <td>
-                                        {item.total_amount >
-                                        item.paid_amount ? (
-                                          <Link
-                                            to={`/PatintDuePaymentPrint/${item.bill_id}/${item.tp_id}/${item.uhid}`}
-                                          >
-                                            <button
-                                              className="btn"
-                                              style={{
-                                                backgroundColor: "#FFA600",
-                                              }}
-                                            >
-                                              Pay Now
-                                            </button>
-                                          </Link>
-                                        ) : (
-                                          <span>
-                                            <button
-                                              className="btn btn-secondary disabled"
-                                              disabled
-                                            >
-                                              Pay Now
-                                            </button>
-                                          </span>
-                                        )}
-                                      </td>
+                            {loading ? (
+                              <Lottie
+                                options={defaultOptions}
+                                height={300}
+                                width={400}
+                              />
+                            ) : (
+                              <>
+                                <table class="table table-bordered rounded shadow">
+                                  <thead className="table-head">
+                                    <tr>
+                                      <th className="table-sno sticky">TPID</th>
+                                      <th className="sticky">Patient UHID</th>
+                                      <th className=" sticky">Patients Name</th>
+                                      <th className=" sticky">
+                                        Patients Mobile
+                                      </th>
+                                      <th className=" sticky">
+                                        Patients Email
+                                      </th>
+                                      <th className=" sticky">Doctor Name</th>
+                                      <th className=" sticky">Total Amount</th>
+                                      <th className=" sticky">
+                                        Paid By Direct Amount
+                                      </th>
+                                      <th className=" sticky">
+                                        Paid By Secuirty Amt
+                                      </th>
+                                      <th className=" sticky">Due Amount</th>
+                                      <th className=" sticky">Bill Date</th>
+                                      <th className=" sticky">Action</th>
                                     </tr>
-                                  </>
-                                ))}
-                              </tbody>
-                            </table>
+                                  </thead>
+                                  {currentItems?.length === 0 ? (
+                                    <div className="text-center fs-4 nodata">
+                                      <p> No data found</p>
+                                    </div>
+                                  ) : (
+                                    <tbody>
+                                      {currentItems?.map((item) => (
+                                        <>
+                                          <tr className="table-row">
+                                            <td className="table-sno">
+                                              {item.tp_id}
+                                            </td>
+                                            <td>{item.uhid}</td>
+                                            <td>{item.patient_name}</td>
+                                            <td>{item.patient_mobile}</td>
+                                            <td>{item.patient_email}</td>
+                                            <td>{item.assigned_doctor_name}</td>
+                                            <td>{item.total_amount}</td>
+                                            <td>{item.paid_amount}</td>
+                                            <td>{item.pay_by_sec_amt}</td>
+                                            <td>
+                                              {item.total_amount -
+                                                (item.paid_amount +
+                                                  item.pay_by_sec_amt)}
+                                            </td>
+                                            <td>
+                                              {moment(
+                                                item.bill_date?.split("T")[0],
+                                                "YYYY-MM-DD"
+                                              ).format("DD/MM/YYYY")}
+                                            </td>
+                                            <td>
+                                              {item.total_amount >
+                                              item.paid_amount ? (
+                                                <Link
+                                                  to={`/PatintDuePaymentPrint/${item.bill_id}/${item.tp_id}/${item.uhid}`}
+                                                >
+                                                  <button
+                                                    className="btn"
+                                                    style={{
+                                                      backgroundColor:
+                                                        "#FFA600",
+                                                    }}
+                                                  >
+                                                    Pay Now
+                                                  </button>
+                                                </Link>
+                                              ) : (
+                                                <span>
+                                                  <button
+                                                    className="btn btn-secondary disabled"
+                                                    disabled
+                                                  >
+                                                    Pay Now
+                                                  </button>
+                                                </span>
+                                              )}
+                                            </td>
+                                          </tr>
+                                        </>
+                                      ))}
+                                    </tbody>
+                                  )}
+                                </table>
+                              </>
+                            )}
                           </div>
                           <div className="d-flex justify-content-center mt-3">
                             <button

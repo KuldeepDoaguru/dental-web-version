@@ -10,6 +10,8 @@ import BranchDetails from "./BranchDetails";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import moment from "moment";
+import animationData from "../pages/loading-effect.json";
+import Lottie from "react-lottie";
 
 const OpdIncome = () => {
   const user = useSelector((state) => state.user);
@@ -19,12 +21,14 @@ const OpdIncome = () => {
     `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
   );
   console.log("User State:", user);
+  const [loading, setLoading] = useState(false);
   const [opdAmount, setOpdAmount] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const getOpdAmt = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getAppointmentData/${user.branch}`,
@@ -35,9 +39,11 @@ const OpdIncome = () => {
           },
         }
       );
+      setLoading(false);
       setOpdAmount(data);
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -231,6 +237,15 @@ const OpdIncome = () => {
     }
   };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <Container>
       <BranchDetails />
@@ -371,82 +386,94 @@ const OpdIncome = () => {
                 </div>
 
                 <div class="table-responsive rounded">
-                  <table class="table table-bordered rounded shadow">
-                    <thead className="table-head">
-                      <tr>
-                        <th className="sticky">Appointment ID</th>
-                        <th className="sticky">Appointment Date</th>
-                        <th className="sticky">Patient UHID</th>
-                        <th className="sticky">Patient Name</th>
-                        <th className="sticky">Contact</th>
-                        <th className="sticky">Doctor Name</th>
-                        <th className="sticky">Doctor ID</th>
-                        <th className="sticky">Consultation Fee</th>
-                        <th className="sticky">Payment Mode</th>
-                        <th className="sticky">Transaction ID</th>
-                        <th className="sticky">Payment Status</th>
-                        <th className="sticky">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {currentItems
-                        ?.filter((val) => {
-                          const name = val.patient_name.toLowerCase();
-                          const lowerKeyword = keyword.toLowerCase();
-                          if (keyword === "") {
-                            return true;
-                          } else {
-                            if (name.startsWith(lowerKeyword)) {
-                              return true;
-                            } else {
-                              if (name.includes(lowerKeyword)) {
-                                return true;
-                              }
-                            }
-                          }
-                        })
+                  {loading ? (
+                    <Lottie options={defaultOptions} height={300} width={400} />
+                  ) : (
+                    <>
+                      <table class="table table-bordered rounded shadow">
+                        <thead className="table-head">
+                          <tr>
+                            <th className="sticky">Appointment ID</th>
+                            <th className="sticky">Appointment Date</th>
+                            <th className="sticky">Patient UHID</th>
+                            <th className="sticky">Patient Name</th>
+                            <th className="sticky">Contact</th>
+                            <th className="sticky">Doctor Name</th>
+                            <th className="sticky">Doctor ID</th>
+                            <th className="sticky">Consultation Fee</th>
+                            <th className="sticky">Payment Mode</th>
+                            <th className="sticky">Transaction ID</th>
+                            <th className="sticky">Payment Status</th>
+                            <th className="sticky">Action</th>
+                          </tr>
+                        </thead>
+                        {currentItems?.length === 0 ? (
+                          <div className="text-center fs-4 nodata">
+                            <p className="text-center"> No data found</p>
+                          </div>
+                        ) : (
+                          <tbody>
+                            {currentItems
+                              ?.filter((val) => {
+                                const name = val.patient_name.toLowerCase();
+                                const lowerKeyword = keyword.toLowerCase();
+                                if (keyword === "") {
+                                  return true;
+                                } else {
+                                  if (name.startsWith(lowerKeyword)) {
+                                    return true;
+                                  } else {
+                                    if (name.includes(lowerKeyword)) {
+                                      return true;
+                                    }
+                                  }
+                                }
+                              })
 
-                        .map((item) => (
-                          <>
-                            <tr className="table-row">
-                              <td>{item.appoint_id}</td>
-                              <td>
-                                {item?.appointment_dateTime
-                                  ? moment(
-                                      item?.appointment_dateTime,
-                                      "YYYY-MM-DDTHH:mm"
-                                    ).format("DD/MM/YYYY hh:mm A")
-                                  : ""}
-                              </td>
-                              <td>{item.uhid}</td>
-                              <td>{item.patient_name}</td>
-                              <td>{item.mobileno}</td>
-                              <td>{item.assigned_doctor_name}</td>
-                              <td>{item.assigned_doctor_id}</td>
-                              <td>{item.opd_amount}</td>
-                              <td>{item.payment_Mode}</td>
-                              <td>{item.transaction_Id}</td>
-                              <td>{item.payment_Status}</td>
-                              <td>
-                                <Link
-                                  to={`/OpdBills/${item.appoint_id}`}
-                                  target="_blank"
-                                >
-                                  <button
-                                    className="btn"
-                                    style={{
-                                      backgroundColor: "#FFA600",
-                                    }}
-                                  >
-                                    View Receipt
-                                  </button>
-                                </Link>
-                              </td>
-                            </tr>
-                          </>
-                        ))}
-                    </tbody>
-                  </table>
+                              .map((item) => (
+                                <>
+                                  <tr className="table-row">
+                                    <td>{item.appoint_id}</td>
+                                    <td>
+                                      {item?.appointment_dateTime
+                                        ? moment(
+                                            item?.appointment_dateTime,
+                                            "YYYY-MM-DDTHH:mm"
+                                          ).format("DD/MM/YYYY hh:mm A")
+                                        : ""}
+                                    </td>
+                                    <td>{item.uhid}</td>
+                                    <td>{item.patient_name}</td>
+                                    <td>{item.mobileno}</td>
+                                    <td>{item.assigned_doctor_name}</td>
+                                    <td>{item.assigned_doctor_id}</td>
+                                    <td>{item.opd_amount}</td>
+                                    <td>{item.payment_Mode}</td>
+                                    <td>{item.transaction_Id}</td>
+                                    <td>{item.payment_Status}</td>
+                                    <td>
+                                      <Link
+                                        to={`/OpdBills/${item.appoint_id}`}
+                                        target="_blank"
+                                      >
+                                        <button
+                                          className="btn"
+                                          style={{
+                                            backgroundColor: "#FFA600",
+                                          }}
+                                        >
+                                          View Receipt
+                                        </button>
+                                      </Link>
+                                    </td>
+                                  </tr>
+                                </>
+                              ))}
+                          </tbody>
+                        )}
+                      </table>
+                    </>
+                  )}
                 </div>
                 <div className="d-flex justify-content-center mt-3">
                   <button
@@ -512,6 +539,7 @@ const Container = styled.div`
 
   .table-responsive {
     overflow: auto;
+    position: relative;
   }
 
   th {
@@ -563,5 +591,18 @@ const Container = styled.div`
 
   .input:focus {
     border-color: #007bff; /* Change border color on focus */
+  }
+  .nodata {
+    /* white-space: nowrap;
+    position: absolute;
+    top: 29px;
+    left: 0; */
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: #333;
+   
+    width: 100%; */
   }
 `;

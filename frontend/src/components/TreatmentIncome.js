@@ -10,6 +10,8 @@ import BranchDetails from "./BranchDetails";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import moment from "moment";
+import animationData from "../pages/loading-effect.json";
+import Lottie from "react-lottie";
 
 const TreatmentIncome = () => {
   const user = useSelector((state) => state.user);
@@ -23,8 +25,10 @@ const TreatmentIncome = () => {
   const [keyword, setKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [loading, setLoading] = useState(false);
 
   const getTreatmentAmt = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getTreatmentTotal/${user.branch}`,
@@ -35,9 +39,11 @@ const TreatmentIncome = () => {
           },
         }
       );
+      setLoading(false);
       setTreatAmount(data.results);
       console.log(data.results);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -245,6 +251,15 @@ const TreatmentIncome = () => {
     }
   };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <>
       <Container>
@@ -387,91 +402,109 @@ const TreatmentIncome = () => {
                     </div>
                   </div>
                   <div class="table-responsive rounded">
-                    <table class="table table-bordered rounded shadow">
-                      <thead className="table-head">
-                        <tr>
-                          <th className="sticky">Appointment ID</th>
-                          <th className="sticky">Appointment Date</th>
-                          <th className="sticky">Patient UHID</th>
-                          <th className="sticky">Patient Name</th>
-                          <th className="sticky">Contact</th>
-                          <th className="sticky">Doctor Name</th>
-                          <th className="sticky">Doctor ID</th>
-                          <th className="sticky">Treatment</th>
-                          <th className="sticky">Treatment Fee</th>
-                          {/* <th className="sticky">Payment Mode</th> */}
-                          <th className="sticky">Payment Date</th>
-                          <th className="sticky">Payment Status</th>
-                          <th className="sticky">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {currentItems
-                          ?.filter((val) => {
-                            const name = val.patient_name.toLowerCase();
-                            const lowerKeyword = keyword.toLowerCase();
-                            if (keyword === "") {
-                              return true;
-                            } else {
-                              if (name.startsWith(lowerKeyword)) {
-                                return true;
-                              } else {
-                                if (name.includes(lowerKeyword)) {
-                                  return true;
-                                }
-                              }
-                            }
-                          })
+                    {loading ? (
+                      <Lottie
+                        options={defaultOptions}
+                        height={300}
+                        width={400}
+                      />
+                    ) : (
+                      <>
+                        <table class="table table-bordered rounded shadow">
+                          <thead className="table-head">
+                            <tr>
+                              <th className="sticky">Appointment ID</th>
+                              <th className="sticky">Appointment Date</th>
+                              <th className="sticky">Patient UHID</th>
+                              <th className="sticky">Patient Name</th>
+                              <th className="sticky">Contact</th>
+                              <th className="sticky">Doctor Name</th>
+                              <th className="sticky">Doctor ID</th>
+                              <th className="sticky">Treatment</th>
+                              <th className="sticky">Treatment Fee</th>
+                              {/* <th className="sticky">Payment Mode</th> */}
+                              <th className="sticky">Payment Date</th>
+                              <th className="sticky">Payment Status</th>
+                              <th className="sticky">Action</th>
+                            </tr>
+                          </thead>
+                          {currentItems?.length === 0 ? (
+                            <div className="text-center fs-4 nodata">
+                              <p> No data found</p>
+                            </div>
+                          ) : (
+                            <tbody>
+                              {currentItems
+                                ?.filter((val) => {
+                                  const name = val.patient_name.toLowerCase();
+                                  const lowerKeyword = keyword.toLowerCase();
+                                  if (keyword === "") {
+                                    return true;
+                                  } else {
+                                    if (name.startsWith(lowerKeyword)) {
+                                      return true;
+                                    } else {
+                                      if (name.includes(lowerKeyword)) {
+                                        return true;
+                                      }
+                                    }
+                                  }
+                                })
 
-                          .map((item) => (
-                            <>
-                              <tr className="table-row">
-                                <td>{item.appoint_id}</td>
-                                <td>
-                                  {moment(item.appointment_dateTime).format(
-                                    "DD-MM-YYYY h:mm A"
-                                  )}
-                                </td>
-                                <td>{item.uhid}</td>
-                                <td>{item.patient_name}</td>
-                                <td>{item.mobileno}</td>
-                                <td>{item.assigned_doctor_name}</td>
-                                <td>{item.assigned_doctor_id}</td>
-                                <td>{item.dental_treatment}</td>
-                                <td>{item.net_amount}</td>
-                                {/* <td>{item.payment_Mode}</td> */}
-                                <td>{item.date.split("T")[0]}</td>
-                                <td>{item.sitting_payment_status}</td>
-                                <td>
-                                  {item.payment_Status !== "Pending" &&
-                                  item.payment_Status !== "" ? (
-                                    <Link
-                                      to={`/TreatmentBills/${item.appoint_id}/${item.uhid}`}
-                                      target="_blank"
-                                    >
-                                      <button
-                                        className="btn"
-                                        style={{ backgroundColor: "#FFA600" }}
-                                      >
-                                        View Receipt
-                                      </button>
-                                    </Link>
-                                  ) : (
-                                    <span>
-                                      <button
-                                        className="btn btn-secondary disabled"
-                                        disabled
-                                      >
-                                        View Receipt
-                                      </button>
-                                    </span>
-                                  )}
-                                </td>
-                              </tr>
-                            </>
-                          ))}
-                      </tbody>
-                    </table>
+                                .map((item) => (
+                                  <>
+                                    <tr className="table-row">
+                                      <td>{item.appoint_id}</td>
+                                      <td>
+                                        {moment(
+                                          item.appointment_dateTime
+                                        ).format("DD-MM-YYYY h:mm A")}
+                                      </td>
+                                      <td>{item.uhid}</td>
+                                      <td>{item.patient_name}</td>
+                                      <td>{item.mobileno}</td>
+                                      <td>{item.assigned_doctor_name}</td>
+                                      <td>{item.assigned_doctor_id}</td>
+                                      <td>{item.dental_treatment}</td>
+                                      <td>{item.net_amount}</td>
+                                      {/* <td>{item.payment_Mode}</td> */}
+                                      <td>{item.date.split("T")[0]}</td>
+                                      <td>{item.sitting_payment_status}</td>
+                                      <td>
+                                        {item.payment_Status !== "Pending" &&
+                                        item.payment_Status !== "" ? (
+                                          <Link
+                                            to={`/TreatmentBills/${item.appoint_id}/${item.uhid}`}
+                                            target="_blank"
+                                          >
+                                            <button
+                                              className="btn"
+                                              style={{
+                                                backgroundColor: "#FFA600",
+                                              }}
+                                            >
+                                              View Receipt
+                                            </button>
+                                          </Link>
+                                        ) : (
+                                          <span>
+                                            <button
+                                              className="btn btn-secondary disabled"
+                                              disabled
+                                            >
+                                              View Receipt
+                                            </button>
+                                          </span>
+                                        )}
+                                      </td>
+                                    </tr>
+                                  </>
+                                ))}
+                            </tbody>
+                          )}
+                        </table>
+                      </>
+                    )}
                   </div>
                   <div className="d-flex justify-content-center mt-3">
                     <button

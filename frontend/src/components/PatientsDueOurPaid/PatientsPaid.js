@@ -7,6 +7,8 @@ import BranchDetails from "../BranchDetails";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import moment from "moment";
+import animationData from "../../pages/loading-effect.json";
+import Lottie from "react-lottie";
 
 const PatientsPaid = () => {
   const user = useSelector((state) => state.user);
@@ -20,8 +22,10 @@ const PatientsPaid = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(7);
   const [keyword, setKeyword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const getBillPaidList = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://dentalguruaccountant.doaguru.com/api/v1/accountant/paidBillLIst/${user.branch}`,
@@ -32,8 +36,10 @@ const PatientsPaid = () => {
           },
         }
       );
+      setLoading(false);
       setPaidList(data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -77,6 +83,15 @@ const PatientsPaid = () => {
     }
   };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <>
       <Container>
@@ -111,74 +126,92 @@ const PatientsPaid = () => {
                             />
                           </div>
                           <div class="table-responsive rounded mt-4">
-                            <table class="table table-bordered rounded shadow">
-                              <thead className="table-head">
-                                <tr>
-                                  <th className="sticky">Bill ID</th>
-                                  <th className="sticky">Bill Date</th>
-                                  <th className="sticky">TPID</th>
-                                  <th className="sticky">Patient UHID</th>
-                                  <th className="sticky">Patient Name</th>
-                                  <th className="sticky">Patient No</th>
-                                  <th className="sticky">Doctor Name</th>
-                                  <th className="sticky">Total Amount</th>
-                                  <th className="sticky">
-                                    Paid By Direct Amount
-                                  </th>
-                                  <th className="sticky">
-                                    Paid By Secuirty Amt
-                                  </th>
-                                  <th className="sticky">Payment Date</th>
-                                  <th className="sticky">Payment Status</th>
-                                  <th className="sticky">Action</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {currentItems?.map((item) => (
-                                  <>
-                                    <tr className="table-row">
-                                      <td>{item.bill_id}</td>
-                                      <td>
-                                        {moment(
-                                          item.bill_date?.split("T")[0],
-                                          "YYYY-MM-DD"
-                                        ).format("DD/MM/YYYY")}
-                                      </td>
-                                      <td>{item.tp_id}</td>
-                                      <td>{item.uhid}</td>
-                                      <td>{item.patient_name}</td>
-                                      <td>{item.patient_mobile}</td>
-                                      <td>{item.assigned_doctor_name}</td>
-                                      <td>{item.total_amount}</td>
-                                      <td>{item.paid_amount}</td>
-                                      <td>{item.pay_by_sec_amt}</td>
-                                      <td>
-                                        {moment(
-                                          item.payment_date_time?.split("T")[0],
-                                          "YYYY-MM-DD"
-                                        ).format("DD/MM/YYYY")}
-                                      </td>
-                                      <td>{item.payment_status}</td>
-                                      <td>
-                                        <Link
-                                          // to={`/PatintPaidPaymentPrint/${item.bill_id}`}
-                                          to={`/patient-bill/${item.bill_id}/${item.tp_id}`}
-                                        >
-                                          <button
-                                            className="btn"
-                                            style={{
-                                              backgroundColor: "#FFA600",
-                                            }}
-                                          >
-                                            Print
-                                          </button>
-                                        </Link>
-                                      </td>
+                            {loading ? (
+                              <Lottie
+                                options={defaultOptions}
+                                height={300}
+                                width={400}
+                              />
+                            ) : (
+                              <>
+                                <table class="table table-bordered rounded shadow">
+                                  <thead className="table-head">
+                                    <tr>
+                                      <th className="sticky">Bill ID</th>
+                                      <th className="sticky">Bill Date</th>
+                                      <th className="sticky">TPID</th>
+                                      <th className="sticky">Patient UHID</th>
+                                      <th className="sticky">Patient Name</th>
+                                      <th className="sticky">Patient No</th>
+                                      <th className="sticky">Doctor Name</th>
+                                      <th className="sticky">Total Amount</th>
+                                      <th className="sticky">
+                                        Paid By Direct Amount
+                                      </th>
+                                      <th className="sticky">
+                                        Paid By Secuirty Amt
+                                      </th>
+                                      <th className="sticky">Payment Date</th>
+                                      <th className="sticky">Payment Status</th>
+                                      <th className="sticky">Action</th>
                                     </tr>
-                                  </>
-                                ))}
-                              </tbody>
-                            </table>
+                                  </thead>
+                                  {currentItems?.length === 0 ? (
+                                    <div className="text-center fs-4 nodata">
+                                      <p> No data found</p>
+                                    </div>
+                                  ) : (
+                                    <tbody>
+                                      {currentItems?.map((item) => (
+                                        <>
+                                          <tr className="table-row">
+                                            <td>{item.bill_id}</td>
+                                            <td>
+                                              {moment(
+                                                item.bill_date?.split("T")[0],
+                                                "YYYY-MM-DD"
+                                              ).format("DD/MM/YYYY")}
+                                            </td>
+                                            <td>{item.tp_id}</td>
+                                            <td>{item.uhid}</td>
+                                            <td>{item.patient_name}</td>
+                                            <td>{item.patient_mobile}</td>
+                                            <td>{item.assigned_doctor_name}</td>
+                                            <td>{item.total_amount}</td>
+                                            <td>{item.paid_amount}</td>
+                                            <td>{item.pay_by_sec_amt}</td>
+                                            <td>
+                                              {moment(
+                                                item.payment_date_time?.split(
+                                                  "T"
+                                                )[0],
+                                                "YYYY-MM-DD"
+                                              ).format("DD/MM/YYYY")}
+                                            </td>
+                                            <td>{item.payment_status}</td>
+                                            <td>
+                                              <Link
+                                                // to={`/PatintPaidPaymentPrint/${item.bill_id}`}
+                                                to={`/patient-bill/${item.bill_id}/${item.tp_id}`}
+                                              >
+                                                <button
+                                                  className="btn"
+                                                  style={{
+                                                    backgroundColor: "#FFA600",
+                                                  }}
+                                                >
+                                                  Print
+                                                </button>
+                                              </Link>
+                                            </td>
+                                          </tr>
+                                        </>
+                                      ))}
+                                    </tbody>
+                                  )}
+                                </table>
+                              </>
+                            )}
                           </div>
                           <div className="d-flex justify-content-center mt-3">
                             <button

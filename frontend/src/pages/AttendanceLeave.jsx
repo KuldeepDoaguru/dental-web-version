@@ -7,7 +7,6 @@ import Header from "../components/Header";
 import Sider from "../components/Sider";
 import BranchDetails from "../components/BranchDetails";
 // import ApplyLeave from "../components/btModal/ApplyLeave";
-
 import axios from "axios";
 import moment from "moment";
 import { useSelector } from "react-redux";
@@ -37,6 +36,7 @@ const AttendanceLeave = () => {
   const [toDate, setToDate] = useState("");
   const [leavesData, setLeaveData] = useState([]);
   const [Attendance, setAttendance] = useState([]);
+
   const getAttendance = async () => {
     try {
       const response = await axios.get(

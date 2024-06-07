@@ -12,6 +12,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import styled from "styled-components";
+import animationData from "../../../pages/loading-effect.json";
+import Lottie from "react-lottie";
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -30,6 +32,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 const MonthIncome = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(false);
   const token = user.token;
   console.log(token);
   console.log(
@@ -40,6 +43,7 @@ const MonthIncome = () => {
 
   useEffect(() => {
     const getAppointList = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getBillsByBranch/${user.branch}`,
@@ -50,9 +54,11 @@ const MonthIncome = () => {
             },
           }
         );
+        setLoading(false);
         setAppointmentList(response.data);
         console.log(response.data);
       } catch (error) {
+        setLoading(false);
         console.log(error);
       }
     };
@@ -122,40 +128,55 @@ const MonthIncome = () => {
 
   console.log(data);
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <>
       <Container>
         <div className="container-fluid mt-4" id="main">
-          <BarChart
-            width={400}
-            height={300}
-            data={data}
-            margin={{
-              top: 5,
-              right: 10,
-              left: -40,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis yAxisId="left" />
-            <YAxis yAxisId="right" orientation="right" />
-            <Tooltip />
-            <Legend />
-            {/* <Bar
+          {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
+              <BarChart
+                width={400}
+                height={300}
+                data={data}
+                margin={{
+                  top: 5,
+                  right: 10,
+                  left: -40,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis yAxisId="left" />
+                <YAxis yAxisId="right" orientation="right" />
+                <Tooltip />
+                <Legend />
+                {/* <Bar
               dataKey="patients"
               fill="#dfdfe2"
               yAxisId="left"
               name="Patients"
             /> */}
-            <Bar
-              dataKey="Amount"
-              fill="#c23616"
-              yAxisId="right"
-              name="Amount"
-            />
-          </BarChart>
+                <Bar
+                  dataKey="Amount"
+                  fill="#c23616"
+                  yAxisId="right"
+                  name="Amount"
+                />
+              </BarChart>
+            </>
+          )}
         </div>
       </Container>
     </>

@@ -355,6 +355,11 @@ const defaultOptions = {
                                   <th>Logout Time</th>
                                 </tr>
                               </thead>
+                              {  Attendance.length === 0 ? (
+              <div className="no-data-container">
+              <h4>No Data Found</h4>
+            </div>
+            ) : (
                               <tbody>
                                 {Attendance?.map((item,index) => {
 
@@ -375,6 +380,7 @@ const defaultOptions = {
                                   
                         })}
                               </tbody>
+            )}
                             </table>
                           </div>
           )}
@@ -405,6 +411,11 @@ const defaultOptions = {
                                   <th>Created At</th>
                                 </tr>
                               </thead>
+                              {  leavesData.length === 0 ? (
+              <div className="no-data-container">
+              <h4>No Data Found</h4>
+            </div>
+            ) : (
                               <tbody>
                                 {leavesData?.map((item,index) => {
 
@@ -431,6 +442,7 @@ const defaultOptions = {
                                   
                         })}
                               </tbody>
+            )}
                             </table>
                           </div>
           )}
@@ -542,4 +554,5 @@ overflow-y: auto;
     
   }
 }
+
 `;

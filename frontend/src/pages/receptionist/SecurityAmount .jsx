@@ -615,6 +615,11 @@ function SecurityAmount() {
                         <th>Print</th>
                       </tr>
                     </thead>
+                    {  currentRows.length === 0 ? (
+              <div className="no-data-container">
+              <h4>No Data Found</h4>
+            </div>
+            ) : (
                     <tbody>
                       {currentRows.map((item) => (
                         <>
@@ -686,6 +691,7 @@ function SecurityAmount() {
                         </>
                       ))}
                     </tbody>
+            )}
                   </table>
                 </div>
           )}
@@ -1038,5 +1044,24 @@ td{
   min-width: 100%;
   z-index: 100;
 }
+.table-responsive {
+  position: relative;
+  min-height: 10rem;
+}
 
+.loading-container,
+.no-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  height: 100px; /* Adjust as necessary */
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.no-data-container h4 {
+  margin: 0;
+}
 `

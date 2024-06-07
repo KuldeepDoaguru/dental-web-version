@@ -1128,7 +1128,14 @@ function AddPatient() {
                         <DoctorList>
                           <div>
                             <ul className="list-group">
-                              {searchDoctor &&
+                            {
+                          showDoctorList && filteredDoctor.length === 0 ? (
+                            <li className="list-group-item">
+                              <h6>No Data Found</h6>
+                            </li>
+                          )
+                          :
+                              searchDoctor &&
                                 filteredDoctor.map((doctor) => (
                                   <li
                                     key={doctor.employee_ID}

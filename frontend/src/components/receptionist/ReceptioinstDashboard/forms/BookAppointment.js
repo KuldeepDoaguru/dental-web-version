@@ -870,7 +870,15 @@ const isDoctorAvailable = (selectedDateTime) => {
             />
             <PatientList>
               <ul className="list-group">
-                {filteredPatients.map((patient) => (
+                {
+                 searchQuery && filteredPatients.length === 0 ? (
+                  <li className="list-group-item text-center">
+                  <h6>No Data Found</h6>
+                </li>
+                  )
+                  :
+                ( 
+                filteredPatients.map((patient) => (
                   <li
                     key={patient.uid}
                     className={`list-group-item ${
@@ -885,7 +893,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                     {"-"} Mobile : {patient.mobileno}
                     {/* Display other patient details as needed */}
                   </li>
-                ))}
+                )  ))}
               </ul>
             </PatientList>
 
@@ -974,7 +982,15 @@ const isDoctorAvailable = (selectedDateTime) => {
                   <DoctorList>
                     <div>
                       <ul className="list-group">
-                        {searchDoctor &&
+                        {
+                          showDoctorList && filteredDoctor.length === 0 ? (
+                            <li className="list-group-item">
+                              <h6>No Data Found</h6>
+                            </li>
+                          )
+                          :
+                        
+                        searchDoctor &&
                           filteredDoctor.map((doctor) => (
                             <li
                               key={doctor.employee_ID}

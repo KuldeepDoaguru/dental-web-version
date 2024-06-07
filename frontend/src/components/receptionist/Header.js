@@ -23,7 +23,7 @@ function Header() {
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <Link to='/receptionist-dashboard' className="nav-link active text-white mt-2  fs-4" aria-current="page" >Dental Guru</Link>
+                  <Link to='/receptionist-dashboard' className="nav-link active text-white mt-2  fs-4" aria-current="page" >DentalGuru</Link>
                 </li>
                 
                

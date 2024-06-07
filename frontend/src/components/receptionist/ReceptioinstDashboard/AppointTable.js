@@ -413,6 +413,7 @@ console.log(appointmentsData);
                         ></Lottie>
           
           ) : (
+          
           <div className="table-responsive">
             <table className="table table-bordered table-striped">
               <thead>
@@ -434,6 +435,11 @@ console.log(appointmentsData);
 
                 </tr>
               </thead>
+               {  currentRows.length === 0 ? (
+              <div className="no-data-container">
+              <h4>No Data Found</h4>
+            </div>
+            ) : (
               <tbody>
                 {currentRows.map((patient, index) => (
                   <tr key={index}>
@@ -497,8 +503,10 @@ console.log(appointmentsData);
                   </tr>
                 ))}
               </tbody>
+)}
             </table>
           </div>
+            
           )}
           <div className="container mt-3 mb-3">
             <div className="row">
@@ -591,6 +599,25 @@ const Wrapper = styled.div`
   .dropdown-item.disabled {
   pointer-events: none;
   opacity: 0.6;
+}
+.table-responsive {
+  position: relative;
+}
+
+.loading-container,
+.no-data-container {
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  height: 100px; /* Adjust as necessary */
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.no-data-container h4 {
+  margin: 0 20px;
 }
   
 `;

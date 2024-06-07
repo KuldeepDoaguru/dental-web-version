@@ -371,9 +371,9 @@ console.log(appointmentsData);
               controlId="rowsPerPageSelect"
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <Form.Label className="d-flex  align-items-center row-per-page ">
-                Rows Per Page :{" "}
-              </Form.Label>
+             
+               <h5  className="d-flex  align-items-center row-per-page "> Rows Per Page :{" "} </h5>
+              
               <Form.Control
                 as="select"
                 value={rowsPerPage}

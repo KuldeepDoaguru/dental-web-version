@@ -544,9 +544,7 @@ function SecurityAmount() {
                       controlId="rowsPerPageSelect"
                       style={{ display: "flex" }}
                     >
-                      <Form.Label className="d-flex align-items-center">
-                        Rows Per Page :{" "}
-                      </Form.Label>
+                      <h6 className="d-flex align-items-center"> Rows Per Page :{" "}</h6>
                       <Form.Control
                         as="select"
                         value={rowsPerPage}

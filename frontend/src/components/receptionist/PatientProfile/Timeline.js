@@ -147,4 +147,7 @@ const Wrapper = styled.div`
       width: 100%;
     }
   }
+  th{
+    white-space: nowrap;
+  }
 `;

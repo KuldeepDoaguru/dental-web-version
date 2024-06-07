@@ -186,7 +186,7 @@ const Navbar = () => {
             aria-controls="profile-tab-pane10"
             aria-selected="false"
           >
-            TimeLine
+            Timeline
           </button>
         </li>
 

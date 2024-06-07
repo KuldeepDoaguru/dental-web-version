@@ -333,7 +333,7 @@ console.log(branch)
                       <div>
                         <div className="row">
                           <div className="col-xl-5 col-lg-5 col-md-6 col-12">
-                            <strong >Adhaar Number :</strong>
+                            <strong >Adhaar No :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">{patientData?.aadhaar_no}</span>
@@ -545,8 +545,12 @@ overflow: hidden;
   margin-left: -2rem;
   
 }
-@media screen and (min-width: 1500px) and (max-width: 2000px) {
+@media screen and (min-width: 1500px) and (max-width: 1750px) {
   margin-left: -1.9rem;
+  
+}
+@media screen and (min-width: 1750px) and (max-width: 2000px) {
+  margin-left: -1.0rem;
   
 }
 

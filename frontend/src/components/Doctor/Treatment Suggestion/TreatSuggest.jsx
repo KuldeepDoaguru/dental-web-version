@@ -112,6 +112,7 @@ const TreatSuggest = () => {
 
   console.log(labList);
   console.log(labTestList);
+  console.log(data[0]?.diagnosis_category);
 
   const diseases = new Set(
     data.flatMap((entry) =>
@@ -452,189 +453,189 @@ const TreatSuggest = () => {
     }
   };
 
+  console.log(uniqueDiseases);
+
   return (
     <>
       <Wrapper>
-        <div className="container main">
-          <div className="">
-            <div className="text-start">
+        <div className="container-fluid">
+          <div className="container-fluid main">
+            <div className="d-flex justify-content-start align-items-center">
               <button
                 className="btn btn-secondary mb-2"
                 onClick={() => window.history.back()}
               >
                 <GiFastBackwardButton size={22} />
               </button>
+              <h5 className="mx-2">{data[0]?.diagnosis_category}</h5>
+            </div>
+            <p className="fs-1 p-3 rounded text-center">Treatment Suggestion</p>
+          </div>
+          <div className="container-fluid patient">
+            <div className="row shadow-sm p-3 mb-3 bg-body rounded">
+              {getPatientData.map((item, index) => (
+                <>
+                  <div key={index} className="col-lg-12 ">
+                    <div className="row">
+                      <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                        <p>
+                          <strong>Treatment PID</strong> : {tpid}
+                        </p>
+                      </div>
+                      <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                        <p>
+                          <strong>Patient Name</strong> : {item.patient_name}
+                        </p>
+                      </div>
+                      <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                        <p>
+                          <strong>Patient Mobile No.</strong> : {item.mobileno}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div key={index + "secondRow"} className="col-lg-12 ">
+                    <div className="row">
+                      <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                        <p className="mb-0">
+                          <strong>Blood Group</strong> : {item.bloodgroup}
+                        </p>
+                      </div>
+                      <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                        <p className="mb-0">
+                          <strong>Disease</strong> : {item.disease}
+                        </p>
+                      </div>
+                      <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
+                        <p className="mb-0">
+                          <strong>Allergy</strong> : {item.allergy}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ))}
             </div>
           </div>
-          <p className="fs-1 p-3 bg-light rounded text-center">
-            Treatment Suggestion
-          </p>
-        </div>
-        <div className="container patient">
-          <div className="row shadow-sm p-3 mb-3 bg-body rounded">
-            {getPatientData.map((item, index) => (
-              <>
-                <div key={index} className="col-lg-12 ">
+          <div className="container-fluid mainbody">
+            <div className="row shadow-sm p-2 mb-2 bg-body rounded">
+              <form onSubmit={handleSubmitForm}>
+                <div className="container-fluid">
                   <div className="row">
-                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                      <p>
-                        <strong>Treatment PID</strong> : {tpid}
-                      </p>
-                    </div>
-                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                      <p>
-                        <strong>Patient Name</strong> : {item.patient_name}
-                      </p>
-                    </div>
-                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                      <p>
-                        <strong>Patient Mobile No.</strong> : {item.mobileno}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div key={index + "secondRow"} className="col-lg-12 ">
-                  <div className="row">
-                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                      <p className="mb-0">
-                        <strong>Blood Group</strong> : {item.bloodgroup}
-                      </p>
-                    </div>
-                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                      <p className="mb-0">
-                        <strong>Disease</strong> : {item.disease}
-                      </p>
-                    </div>
-                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-6">
-                      <p className="mb-0">
-                        <strong>Allergy</strong> : {item.allergy}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </>
-            ))}
-          </div>
-        </div>
-        <div className="container mainbody">
-          <div className="row shadow-sm p-3 mb-2 bg-body rounded">
-            <form onSubmit={handleSubmitForm}>
-              <div className="container">
-                <div className="row">
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                    <div className="">
-                      <div className="text-start">
-                        <label className="label">Select disease</label>
-                      </div>
-                      <select
-                        className="form-select text-start w-100"
-                        name="disease"
-                        aria-label="Default select example"
-                        onChange={handleChange}
-                        value={formData.disease}
-                        required
-                      >
-                        <option value="">-select disease-</option>
-                        {uniqueDiseases.map((item, index) => (
-                          <option key={index}>{item}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                    <div className="">
-                      <div className="text-start">
-                        <label className="label">Select Procedure</label>
-                      </div>
-                      <select
-                        className="form-select text-start w-100"
-                        name="treatment_procedure"
-                        aria-label="Default select example"
-                        onChange={handleChange}
-                        required
-                        value={formData.treatment_procedure}
-                      >
-                        <option value="">-select treatment-</option>
-                        {procedureTreat.map((item, index) => (
-                          <option key={index}>
-                            {item.treat_procedure_name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                    <div className="">
-                      <div className="text-start">
-                        <label className="label">Select Treatments</label>
-                      </div>
-                      <select
-                        className="form-select text-start w-100"
-                        name="treatment_name"
-                        aria-label="Default select example"
-                        onChange={handleChange}
-                        required
-                        value={formData.treatment_name}
-                      >
-                        <option value="">-select treatment-</option>
-
-                        {treatments
-                          ?.filter(
-                            (item) =>
-                              item.treat_procedure_name ===
-                              formData.treatment_procedure
-                          )
-                          .map((item, index) => (
-                            <option key={index}>{item.treatment_name}</option>
-                          ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                    <div className="text-start">
-                      <label className="label">Total Cost</label>
-                      <input
-                        type="text" // Change the input type to text for now
-                        className="form-control w-100"
-                        name="total_cost"
-                        required
-                        value={
-                          formData.treatment_name ? formData.total_cost : ""
-                        }
-                        // onChange={handleChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
-                    <div className="text-start">
-                      <label className="label">Required Sitting</label>
-                      <div className="d-flex justify-content-center align-item-center">
-                        <input
-                          type="number"
-                          className="form-control w-100"
-                          name="total_sitting"
-                          placeholder="Answer...."
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                      <div className="">
+                        <div className="text-start">
+                          <label className="label">Select Disease</label>
+                        </div>
+                        <select
+                          className="form-select text-start w-100"
+                          name="disease"
+                          aria-label="Default select example"
                           onChange={handleChange}
-                          value={formData.total_sitting}
-                          min="1"
+                          value={formData.disease}
                           required
+                        >
+                          <option value="">-select disease-</option>
+                          {uniqueDiseases.map((item, index) => (
+                            <option key={index}>{item}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                      <div className="">
+                        <div className="text-start">
+                          <label className="label">Select Procedure</label>
+                        </div>
+                        <select
+                          className="form-select text-start w-100"
+                          name="treatment_procedure"
+                          aria-label="Default select example"
+                          onChange={handleChange}
+                          required
+                          value={formData.treatment_procedure}
+                        >
+                          <option value="">-select treatment-</option>
+                          {procedureTreat.map((item, index) => (
+                            <option key={index}>
+                              {item.treat_procedure_name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                      <div className="">
+                        <div className="text-start">
+                          <label className="label">Select Treatments</label>
+                        </div>
+                        <select
+                          className="form-select text-start w-100"
+                          name="treatment_name"
+                          aria-label="Default select example"
+                          onChange={handleChange}
+                          required
+                          value={formData.treatment_name}
+                        >
+                          <option value="">-select treatment-</option>
+
+                          {treatments
+                            ?.filter(
+                              (item) =>
+                                item.treat_procedure_name ===
+                                formData.treatment_procedure
+                            )
+                            .map((item, index) => (
+                              <option key={index}>{item.treatment_name}</option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                      <div className="text-start">
+                        <label className="label">Total Cost</label>
+                        <input
+                          type="text" // Change the input type to text for now
+                          className="form-control w-100"
+                          name="total_cost"
+                          required
+                          value={
+                            formData.treatment_name ? formData.total_cost : ""
+                          }
+                          // onChange={handleChange}
                         />
                       </div>
                     </div>
-                  </div>
-                  <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-12 col-12">
-                    <div className="h-100 d-flex justify-content-center align-items-center">
-                      <button
-                        type="submit"
-                        disabled={loading}
-                        className="btn btn-info text-light mt-5"
-                      >
-                        {loading ? "Save..." : "Save"}
-                      </button>
+                    <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                      <div className="text-start">
+                        <label className="label">Required Sitting</label>
+                        <div className="d-flex justify-content-center align-item-center">
+                          <input
+                            type="number"
+                            className="form-control w-100"
+                            name="total_sitting"
+                            placeholder="Answer...."
+                            onChange={handleChange}
+                            value={formData.total_sitting}
+                            min="1"
+                            required
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  {/* <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
+                    <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-12 col-12">
+                      <div className="h-100 d-flex justify-content-center align-items-center">
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="btn btn-info text-light mt-5"
+                        >
+                          {loading ? "Save..." : "Save"}
+                        </button>
+                      </div>
+                    </div>
+                    {/* <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12">
                     <div className="d-flex flex-column align-items-center mt-3 mb-3">
                       <label className="label">
                         Consider this is first Sitting ?
@@ -705,140 +706,135 @@ const TreatSuggest = () => {
                       </div>
                     </div>
                   </div> */}
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div className="container p-0">
-          <SuggestedtreatmentList tpid={tpid} getPatientData={getPatientData} />
-        </div>
-
-        <div className="container">
-          <div className="row shadow-sm p-3 mb-5 bg-body rounded">
-            <div className="text-start">
-              <h3>Suggested Lab Test</h3>
-            </div>
-            <div>
-              <form onSubmit={handleLabSubmit}>
-                <div className="container">
-                  <div className="row">
-                    <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-12 col-12">
-                      <div className="text-start">
-                        <label className="label">Test Name</label>
-                        <select
-                          name="lab_name"
-                          onChange={handleLabChange}
-                          value={labData.lab_name}
-                          className="form-select text-start"
-                        >
-                          <option value="">---Select Test Name ---</option>
-                          {labList?.map((item) => (
-                            <>
-                              <option value={item.lab_name}>
-                                {item.lab_name}
-                              </option>
-                            </>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-12 col-12">
-                      <div className="text-start">
-                        <label className="label">Test</label>
-                        <div className="d-flex justify-content-center align-item-center">
-                          <select
-                            name="test"
-                            onChange={handleLabChange}
-                            value={labData.test}
-                            className="form-select text-start"
-                          >
-                            <option value="">-select-</option>
-                            {labTestList
-                              ?.filter(
-                                (item) => item.default_lab === labData.lab_name
-                              )
-                              .map((test, index) => (
-                                <>
-                                  <option key={index} value={test.test_name}>
-                                    {test.test_name}
-                                  </option>
-                                </>
-                              ))}
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
-                      <div className="h-100 d-flex justify-content-center align-items-center">
-                        <button
-                          type="submit"
-                          disabled={loadingTestBt}
-                          className="btn btn-info text-light mt-5"
-                        >
-                          {loadingTestBt ? "Submit Test..." : "Submit Test"}
-                        </button>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </form>
             </div>
           </div>
-        </div>
-        <div className="container">
-          <legend className="">Patient Lab Test</legend>
-          <div className="table-responsive rounded">
-            <table
-              className="table table-bordered table-striped border"
-              style={{ overflowX: "scroll" }}
-            >
-              <thead>
-                <tr>
-                  <th>Test Name</th>
-                  <th>Test</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {getLabData?.map((item) => (
-                  <>
-                    <tr>
-                      <td>{item.lab_name}</td>
-                      <td>{item.test}</td>
-                      <td>
-                        <button
-                          className="btn btn-outline-danger"
-                          onClick={() => deleteSuggestedLabData(item.testid)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  </>
-                ))}
-              </tbody>
-            </table>
+          <div className="container-fluid rounded p-0">
+            <SuggestedtreatmentList
+              tpid={tpid}
+              getPatientData={getPatientData}
+            />
           </div>
-        </div>
 
-        <div className="container">
-          <div className="row shadow-sm p-3 mb-5 bg-body rounded">
-            <div className="d-flex justify-content-center align-items-center">
-              {/* <button
-                className="btn btn-info text-light mx-2"
-                onClick={handleNavigate}
-              >
-                Start Treatment
-              </button> */}
-              <button
-                type="button"
-                className="btn btn-info text-light"
-                onClick={handleCollect}
-              >
-                Collect Security Money
-              </button>
+          <div className="container-fluid">
+            <div className="row shadow-sm p-3 mb-5 bg-body rounded">
+              <div className="text-start">
+                <h3>Suggested Lab Test</h3>
+              </div>
+              <div>
+                <form onSubmit={handleLabSubmit}>
+                  <div className="container-fluid">
+                    <div className="row">
+                      <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-12 col-12">
+                        <div className="text-start">
+                          <label className="label">Test Name</label>
+                          <select
+                            name="lab_name"
+                            onChange={handleLabChange}
+                            value={labData.lab_name}
+                            className="form-select text-start"
+                          >
+                            <option value="">---Select Test Name ---</option>
+                            {labList?.map((item) => (
+                              <>
+                                <option value={item.lab_name}>
+                                  {item.lab_name}
+                                </option>
+                              </>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-12 col-12">
+                        <div className="text-start">
+                          <label className="label">Test</label>
+                          <div className="d-flex justify-content-center align-item-center">
+                            <select
+                              name="test"
+                              onChange={handleLabChange}
+                              value={labData.test}
+                              className="form-select text-start"
+                            >
+                              <option value="">-select-</option>
+                              {labTestList
+                                ?.filter(
+                                  (item) =>
+                                    item.default_lab === labData.lab_name
+                                )
+                                .map((test, index) => (
+                                  <>
+                                    <option key={index} value={test.test_name}>
+                                      {test.test_name}
+                                    </option>
+                                  </>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-12 col-sm-12 col-12">
+                        <div className="h-100 d-flex justify-content-center align-items-center">
+                          <button
+                            type="submit"
+                            disabled={loadingTestBt}
+                            className="btn btn-info text-light mt-5"
+                          >
+                            {loadingTestBt ? "Submit Test..." : "Submit Test"}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
+          </div>
+          <div className="container-fluid">
+            <legend className="">Patient Lab Test</legend>
+            <div className="table-responsive rounded">
+              <table
+                className="table table-bordered table-striped border"
+                style={{ overflowX: "scroll" }}
+              >
+                <thead>
+                  <tr>
+                    <th>Test Name</th>
+                    <th>Test</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {getLabData?.map((item) => (
+                    <>
+                      <tr>
+                        <td>{item.lab_name}</td>
+                        <td>{item.test}</td>
+                        <td>
+                          <button
+                            className="btn btn-outline-danger"
+                            onClick={() => deleteSuggestedLabData(item.testid)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    </>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="d-flex justify-content-center align-items-center">
+            <button
+              type="button"
+              className="btn btn-info text-light shadow fw-bold"
+              onClick={handleCollect}
+            >
+              Collect Security Money
+            </button>
           </div>
         </div>
       </Wrapper>

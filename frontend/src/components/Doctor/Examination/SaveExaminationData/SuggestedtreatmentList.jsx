@@ -99,13 +99,13 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
   return (
     <>
       <Container>
-        <div className="box">
-          <div className="table-responsive">
+        <div className="box rounded">
+          <div className="table-responsive rounded">
             <table
-              className="table table-bordered table-striped border"
+              className="table table-bordered table-striped border rounded"
               style={{ overflowX: "scroll" }}
             >
-              <thead>
+              <thead className="">
                 <tr>
                   <th>disease</th>
                   <th>Treatment</th>

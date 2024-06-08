@@ -664,6 +664,19 @@ const TreatmentForm = () => {
     paidAmountAlert();
   }, [formData.paid_amount]);
 
+  const checkBookingPopup = () => {
+    if (!showBookingPopup) {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    checkBookingPopup();
+  }, [showBookingPopup]);
+
+  console.log(showBookingPopup);
+  console.log(loading);
+
   return (
     <>
       <Wrapper>
@@ -676,8 +689,8 @@ const TreatmentForm = () => {
             </div>
           </div>
 
-          <div className="container-fluid patient">
-            <div className="row shadow-sm p-3 mb-3 bg-body rounded">
+          <div className="patient">
+            <div className="row shadow-sm p-4 mb-3 bg-body rounded">
               <div className="d-flex justify-content-between">
                 <p></p>
                 <p>
@@ -736,7 +749,7 @@ const TreatmentForm = () => {
             <form onSubmit={handleTreatSubmit}>
               <div className="container">
                 <div className="row g-2">
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         disease
@@ -749,7 +762,7 @@ const TreatmentForm = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         Treatment
@@ -762,7 +775,7 @@ const TreatmentForm = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         Teeth Number
@@ -777,7 +790,7 @@ const TreatmentForm = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         Total Teeth
@@ -792,7 +805,7 @@ const TreatmentForm = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         Treatment cost per tooth
@@ -807,7 +820,7 @@ const TreatmentForm = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         Total Treatment Cost
@@ -822,7 +835,7 @@ const TreatmentForm = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         Discount Amount %
@@ -864,7 +877,7 @@ const TreatmentForm = () => {
                     ""
                   ) : (
                     <>
-                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+                      <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-12 col-12">
                         <label htmlFor="" class="form-label fw-bold">
                           Net Amount
                         </label>
@@ -877,7 +890,7 @@ const TreatmentForm = () => {
                     </>
                   )}
 
-                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-2 col-sm-12 col-12">
+                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         Paid Amount
@@ -936,7 +949,7 @@ const TreatmentForm = () => {
                       </small>
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         Notes
@@ -951,7 +964,7 @@ const TreatmentForm = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-12">
+                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         Remaining Security Amount :{" "}

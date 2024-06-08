@@ -6,6 +6,7 @@ import { GiFastBackwardButton } from "react-icons/gi";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import cogoToast from "cogo-toast";
+import { TbHandClick } from "react-icons/tb";
 
 const ExaminationDashTwo = () => {
   const navigate = useNavigate();
@@ -67,7 +68,7 @@ const ExaminationDashTwo = () => {
         }
       );
       console.log(data.result);
-      cogoToast.success("treatment started added");
+      // cogoToast.success("treatment started added");
       timelineForExamination(data.result.diagnosis_category);
       if (data.result.diagnosis_category === "Dental-X") {
         navigate(
@@ -133,13 +134,13 @@ const ExaminationDashTwo = () => {
                   className="dental shadow p-5 m-3 bg-body rounded mx-3"
                   onClick={() => uniFunc("Dental-X")}
                 >
-                  Dental-X Chart
+                  Dental-X Chart <TbHandClick />
                 </div>
                 <div
                   className="dental shadow p-5 mt-5 bg-body rounded mx-3"
                   onClick={() => uniFunc("Pediatric")}
                 >
-                  Pediatric Chart
+                  Pediatric Chart <TbHandClick />
                 </div>
               </div>
             </div>
@@ -181,5 +182,15 @@ const Wrapper = styled.div`
     align-content: center;
     justify-content: center;
     align-items: center;
+  }
+
+  .dental {
+    transition: 0.3s ease, color 0.3s ease, transform 0.3s ease;
+
+    &:hover {
+      background: #000 !important;
+      color: #fff;
+      transform: scale(1.05);
+    }
   }
 `;

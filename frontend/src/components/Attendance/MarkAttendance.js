@@ -5,9 +5,11 @@ import cogoToast from "cogo-toast";
 // import { toggleTableRefresh } from "../redux/slices/UserSlicer";
 import moment from "moment";
 import { toggleTableRefresh } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const MarkAttendance = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user.currentUser);
   const token = user.token;
   console.log(user);
@@ -74,6 +76,7 @@ const MarkAttendance = () => {
         cogoToast.success("Login time recorded successfully");
         getTodayAttendance();
         dispatch(toggleTableRefresh());
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error marking login time:", error);

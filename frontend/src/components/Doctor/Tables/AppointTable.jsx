@@ -240,44 +240,66 @@ const AppointTable = () => {
 
   console.log(filteredData);
 
+  const handleSearch = (e) => {
+    setkeyword(e.target.value);
+  };
+
+  const trimmedKeyword = keyword.trim().toLowerCase();
+  console.log(trimmedKeyword);
+
   return (
     <Wrapper>
       <div className="container-fluid pt-4">
         <div className="widget-area-2 proclinic-box-shadow" id="tableres">
-          <div className="d-flex justify-content-between mb-3 widget-header appointMain">
-            <h5 className="widget-title m-0 pt-2" id="title">
-              Current Appointment
-              <h5 className="d-inline">Total - {filteredData.length}</h5>
-            </h5>
-
-            <div className="pt-1">
-              <FaArrowCircleLeft
-                // style={{ fontSize: "35px", cursor: "pointer" }}
-                className="arrow"
-                onClick={() => handleDateChange(-1)}
-              />
+          <div className="mb-3 widget-header appointMain">
+            <div className="row">
+              <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                {" "}
+                <h5 className="widget-title m-0 pt-2" id="title">
+                  Current Appointment : Total - {filteredData.length}
+                </h5>
+              </div>
+              <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                {" "}
+                <div className="d-flex justify-content-center align-items-center">
+                  <div className="pt-2">
+                    <FaArrowCircleLeft
+                      // style={{ fontSize: "35px", cursor: "pointer" }}
+                      className="arrow"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleDateChange(-1)}
+                    />
+                  </div>
+                  <input
+                    type="date"
+                    className="form-control inputDate mx-2"
+                    value={selectedDate}
+                    style={{ cursor: "pointer" }}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                  />
+                  <div className="pt-1">
+                    <FaArrowCircleRight
+                      // style={{ fontSize: "35px", cursor: "pointer" }}
+                      className="arrow"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => handleDateChange(1)}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                <div className="d-flex justify-content-end align-items-center">
+                  <h5>Search Patient :</h5>
+                  <input
+                    type="text"
+                    placeholder="Search Name or Number"
+                    className=" mx-1 p-1 rounded searchint"
+                    value={keyword}
+                    onChange={handleSearch}
+                  />
+                </div>
+              </div>
             </div>
-            <input
-              type="date"
-              className="form-control w-25 inputDate"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-            />
-            <div className="pt-1 mx-2">
-              <FaArrowCircleRight
-                // style={{ fontSize: "35px", cursor: "pointer" }}
-                className="arrow"
-                onClick={() => handleDateChange(1)}
-              />
-            </div>
-
-            <input
-              type="text"
-              placeholder="search name or number"
-              className="mx-3 p-1 rounded"
-              value={keyword}
-              onChange={(e) => setkeyword(e.target.value.toLowerCase())}
-            />
           </div>
           {selectedDate === "" ? (
             <>
@@ -315,8 +337,8 @@ const AppointTable = () => {
                         } else if (
                           val.patient_name
                             ?.toLowerCase()
-                            ?.includes(keyword.toLowerCase()) ||
-                          val.mobileno?.includes(keyword)
+                            ?.includes(trimmedKeyword) ||
+                          val.mobileno?.includes(trimmedKeyword)
                         ) {
                           return val;
                         }
@@ -462,8 +484,8 @@ const AppointTable = () => {
                               } else if (
                                 val.patient_name
                                   ?.toLowerCase()
-                                  ?.includes(keyword.toLowerCase()) ||
-                                val.mobileno?.includes(keyword)
+                                  .includes(trimmedKeyword) ||
+                                val.mobileno?.includes(trimmedKeyword)
                               ) {
                                 return val;
                               }
@@ -596,7 +618,7 @@ const AppointTable = () => {
               ) : (
                 <>
                   <hr />
-                  <p>No Appointments Today</p>
+                  <h5>No Appointments Today</h5>
                 </>
               )}
             </>
@@ -723,5 +745,12 @@ const Wrapper = styled.div`
     /* background-color: #1abc9c;
     color: white; */
     z-index: 1;
+  }
+
+  .searchint {
+    width: 100%;
+    @media screen and (min-width: 851px) and (max-width: 1024px) {
+      width: 50% !important;
+    }
   }
 `;

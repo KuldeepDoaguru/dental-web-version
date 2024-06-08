@@ -300,7 +300,7 @@ const PatintDuePaymentPrint = () => {
         <HeadBar />
         <div className="container-fluid">
           <div className="row">
-            <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-10 col-sm-12 col-12">
+            <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <IoArrowBackSharp
                 className="fs-1 mt-2 text-black"
                 onClick={goBack}
@@ -341,10 +341,10 @@ const PatintDuePaymentPrint = () => {
                   </div>
                   <hr />
                   <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-                    <div className="d-flex justify-content-center">
-                      <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-11 col-sm-11">
-                        <div className="row  mt-2 d-flex justify-content-between">
-                          <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-5 col-sm-5">
+                    <div className="">
+                      <div className="">
+                        <div className="row mt-2 d-flex justify-content-between">
+                          <div className="col-xxl-5 col-xl-5 col-lg-5 col-md-6 col-sm-5">
                             <div class=" rounded mt-4">
                               <h4>PATIENT SUMMARY </h4>
                               <div className="d-flex ">
@@ -381,8 +381,8 @@ const PatintDuePaymentPrint = () => {
                           </div>
 
                           <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                            <div class=" rounded d-flex justify-content-end mt-5 me-5">
-                              <div class="card" style={{ width: "18rem" }}>
+                            <div class=" rounded d-flex justify-content-end mt-5">
+                              <div class="card cardwid">
                                 <div className="ms-4 mt-2">
                                   <h1> ₹{billAmount[0]?.total_amount}</h1>
                                   <h5 className="text-danger">
@@ -405,7 +405,8 @@ const PatintDuePaymentPrint = () => {
                 </div>
                 <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
                   <div className="d-flex justify-content-center mt-4">
-                    <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-11 col-sm-11">
+                    <div className="d-xxl-none d-xl-none d-lg-none col-md-1 col-sm-1"></div>
+                    <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-10 col-sm-10">
                       <table class="table table-bordered shadow">
                         <thead class="table-primary  rounded">
                           <tr>
@@ -705,5 +706,12 @@ const Container = styled.div`
 
   .desc-width {
     width: 90%;
+  }
+
+  .cardwid {
+    width: 50%;
+    @media screen and (min-width: 750px) and (max-width: 1100px) {
+      width: 80%;
+    }
   }
 `;

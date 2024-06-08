@@ -59,7 +59,7 @@ const Timeline = () => {
                   <>
                     <tr>
                       <td>{item.event_date}</td>
-                      <td>{item.event_time?.slice(0, 5)}</td>
+                      <td>{item.event_time}</td>
                       <td>{item.event_type}</td>
                       <td>{item.event_description}</td>
                     </tr>

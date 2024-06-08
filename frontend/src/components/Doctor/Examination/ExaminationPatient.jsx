@@ -1061,21 +1061,14 @@ const ExaminationPatientTest = ({ tpid }) => {
     <>
       <Wrapper>
         <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-12 text-start p-3">
-              <button
-                className="btn btn-secondary"
-                onClick={() => window.history.back()}
-              >
-                <GiFastBackwardButton size={21} />
-              </button>
-              {/* <button
-                className="btn btn-info text-light"
-                onClick={handleRedirect}
-              >
-                Pediatric Dental-X Chart
-              </button> */}
-            </div>
+          <div className="d-flex justify-content-start align-items-center p-3">
+            <button
+              className="btn btn-secondary"
+              onClick={() => window.history.back()}
+            >
+              <GiFastBackwardButton size={21} />
+            </button>{" "}
+            <h5 className="mx-2">{dcat}</h5>
           </div>
           <div className="row shadow-sm p-3 mb-3 bg-body rounded patient">
             {getPatientData.map((item, index) => (

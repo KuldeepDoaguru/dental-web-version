@@ -160,7 +160,7 @@ const Container = styled.div`
   }
 
   input {
-    width: 100%;
+    width: 30%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -168,18 +168,20 @@ const Container = styled.div`
     border-radius: 20px;
     box-sizing: border-box;
     transition: border-color 0.3s ease;
-    /* @media (min-width: 1280px) and (max-width: 2000px){
-              width: 18%;
+ 
+            @media (min-width: 1279px) and (max-width: 1600px){
+              width: 45%;
             }
             @media (min-width: 1024px) and (max-width: 1279px){
-              width: 30%;
+              width: 60%;
             }
             @media (min-width: 768px) and (max-width: 1023px){
-              width: 38%;
-            } */
+              width: 100%;
+            }
   }
 
   input:focus {
     border-color: #007bff; /* Change border color on focus */
   }
+
 `;

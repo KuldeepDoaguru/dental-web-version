@@ -66,17 +66,26 @@ const OpdBills = () => {
     return item.treatment_provided === "OPD";
   });
 
-  const searchFilter = filterOpd.filter((lab) =>
-    lab.patient_name.toLowerCase().includes(keyword.toLowerCase())
-  );
+  // const searchFilter = filterOpd.filter((lab) =>
+  //   lab.patient_name.toLowerCase().trim().includes(keyword.toLowerCase().trim())
+  // );
 
-  const billPerPage = 10;
+  const searchFilter = filterOpd.filter((opd) => {
+    const lowerKeyword = keyword.toLowerCase().trim();
+    return (
+      opd.patient_name.toLowerCase().trim().includes(lowerKeyword) ||
+      opd.patient_uhid.toLowerCase().trim().includes(lowerKeyword) 
+    );
+  });
 
-  const totalPages = Math.ceil(searchFilter.length / billPerPage);
+
+  const opdPerPage = 10;
+
+  const totalPages = Math.ceil(searchFilter.length / opdPerPage);
 
   const filterAppointDataByMonth = () => {
-    const startIndex = currentPage * billPerPage;
-    const endIndex = startIndex + billPerPage;
+    const startIndex = currentPage * opdPerPage;
+    const endIndex = startIndex + opdPerPage;
     return searchFilter?.slice(startIndex, endIndex);
   };
 
@@ -97,11 +106,11 @@ const OpdBills = () => {
   return (
     <>
       <Container>
-        <div className="d-flex justify-content-between">
+        <div className="">
           <div>
             <input
               type="text"
-              placeholder="Search Patient Name"
+              placeholder="Search Patient Name or UHID  "
               className=""
               value={keyword}
               onChange={(e) => setkeyword(e.target.value.toLowerCase())}

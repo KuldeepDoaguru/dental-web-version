@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { utils, writeFile } from "xlsx";
 import moment from "moment";
-
+import animationData from "../../../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const OpdReport = () => {
   const location = useLocation();
@@ -101,6 +102,14 @@ const OpdReport = () => {
       console.log(error);
     }
   };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   useEffect(() => {
     getBillDetailsList();
@@ -142,7 +151,10 @@ const OpdReport = () => {
               </form>
             </div>
             <div className="container-fluid mt-3">
-             
+            {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
                   <div class="table-responsive rounded">
                     <table class="table table-bordered rounded shadow">
                       <thead className="table-head">
@@ -243,7 +255,8 @@ const OpdReport = () => {
                       </tbody>
                     </table>
                   </div>
-              
+                  </>
+  )}
             </div>
           </div>
         </div>

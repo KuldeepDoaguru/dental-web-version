@@ -10,6 +10,8 @@ import axios from "axios";
 import { utils, writeFile } from "xlsx";
 import SiderAdmin from "../SiderAdmin";
 import HeaderAdmin from "../HeaderAdmin";
+import animationData from "../../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 
 
@@ -21,9 +23,11 @@ const AdminAppointmentReport = () => {
   const [appointmentList, setAppointmentList] = useState([]);
   const location = useLocation();
   const [fromDate, setFromDate] = useState("");
+  const [loading,setLoading] = useState("");
   const [toDate, setToDate] = useState("");
 
   const getAppointList = async () => {
+    setLoading(true);
     try {
       const response = await axios.get(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getAppointmentData/${branch}`,
@@ -34,9 +38,11 @@ const AdminAppointmentReport = () => {
           },
         }
       );
+      setLoading(false);
       console.log(response);
       setAppointmentList(response.data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -101,6 +107,14 @@ const AdminAppointmentReport = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
   };
 
   console.log(fromDate, "-To-", toDate);
@@ -207,6 +221,10 @@ const AdminAppointmentReport = () => {
                             </div> */}
                           </div>
                           <div className="container-fluid mt-3">
+                          {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
                             <div class="table-responsive rounded">
                               <table class="table table-bordered rounded shadow">
                                 <thead className="table-head">
@@ -342,6 +360,9 @@ const AdminAppointmentReport = () => {
                                 </tbody>
                               </table>
                             </div>
+                            </>
+  )}
+                          
                           </div>
                         </div>
                       </div>

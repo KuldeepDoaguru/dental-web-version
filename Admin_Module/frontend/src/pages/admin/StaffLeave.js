@@ -245,6 +245,8 @@ import cogoToast from "cogo-toast";
 import ReactPaginate from "react-paginate";
 import HeaderAdmin from "./HeaderAdmin";
 import SiderAdmin from "./SiderAdmin";
+import animationData from "../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const StaffLeave = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -256,9 +258,10 @@ const StaffLeave = () => {
   const [keyword, setkeyword] = useState("");
   const complaintsPerPage = 10; // Number of complaints per page
   const [currentPage, setCurrentPage] = useState(0); // Start from the first page
-
+  const [loading, setLoading] = useState(false);
  
   const getLeaveList = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getLeaveList/${branch}`,
@@ -269,8 +272,10 @@ const StaffLeave = () => {
           },
         }
       );
+      setLoading(false);
       setLeaveData(data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -292,6 +297,7 @@ const StaffLeave = () => {
         {
           status: "Approved",
         },
+        
         {
           headers: {
             "Content-Type": "application/json",
@@ -341,9 +347,19 @@ const StaffLeave = () => {
   }, [keyword]);
 
   
-  const searchFilter = leaveData.filter((lab) =>
-    lab.employee_name.toLowerCase().includes(keyword.toLowerCase())
+const searchFilter = leaveData.filter((item) => {
+  const lowerKeyword = keyword.toLowerCase().trim();
+  return (
+   item.employee_name.toLowerCase().trim().includes(lowerKeyword) ||
+   item.employee_ID.toLowerCase().trim().includes(lowerKeyword) 
+ 
   );
+});
+
+
+
+
+
 
   const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
 
@@ -358,6 +374,17 @@ const StaffLeave = () => {
   };
 
   const displayedAppointments = filterAppointDataByMonth();
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
+
 
   return (
     <>
@@ -381,11 +408,15 @@ const StaffLeave = () => {
                     {/* <label>Employee Name :</label> */}
                     <input
                       type="text"
-                      placeholder="search employee name"
-                      className="mx-3 p-1 rounded"
+                      placeholder="search employee name or uhid"
+                      className=""
                       value={keyword}
                       onChange={(e) => setkeyword(e.target.value.toLowerCase())}
                     />
+ {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
                     <div class="table-responsive rounded">
                       <table class="table table-bordered rounded shadow mt-2">
                         <thead className="table-head">
@@ -463,6 +494,9 @@ const StaffLeave = () => {
                         </tbody>
                       </table>
                     </div>
+   </>
+  )}
+
                     <PaginationContainer>
                         <ReactPaginate
                           previousLabel={"previous"}
@@ -520,24 +554,26 @@ const Container = styled.div`
         }
 
         input {
-          /* width: 100%; */
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 20px;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
-            @media (min-width: 1280px) and (max-width: 2000px){
-              width: 18%;
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+ 
+            @media (min-width: 1279px) and (max-width: 1600px){
+              width: 45%;
             }
             @media (min-width: 1024px) and (max-width: 1279px){
-              width: 30%;
+              width: 60%;
             }
             @media (min-width: 768px) and (max-width: 1023px){
-              width: 38%;
+              width: 100%;
             }
-        }
+  }
+
 
         input:focus {
             border-color: #007bff; /* Change border color on focus */

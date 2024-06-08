@@ -525,6 +525,8 @@ import { GrAdd } from "react-icons/gr";
 import ReactPaginate from "react-paginate";
 import HeaderAdmin from "../HeaderAdmin";
 import SiderAdmin from "../SiderAdmin";
+import animationData from "../../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const AdminTreatSetting = () => {
   const location = useLocation();
@@ -534,6 +536,7 @@ const AdminTreatSetting = () => {
   const [showEditTreatments, setShowEditTreatments] = useState(false);
   const [keyword, setkeyword] = useState("");
   const [treatList, setTreatList] = useState([]);
+  const [loading,setLoading] = useState("");
   const [totalTreatment, settotalTreatment] = useState(0);
   const [trID, setTrID] = useState();
   const complaintsPerPage = 7; // Number of complaints per page
@@ -602,6 +605,7 @@ const AdminTreatSetting = () => {
   };
 
   const getTreatmentList = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         "https://dentalguruadmin.doaguru.com/api/v1/admin/getTreatmentList",
@@ -612,10 +616,12 @@ const AdminTreatSetting = () => {
           },
         }
       );
+      setLoading(false);
       console.log(data);
       setTreatList(data);
       settotalTreatment(data.length); 
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -686,6 +692,15 @@ const AdminTreatSetting = () => {
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
 
   const displayedAppointments = filterAppointDataByMonth();
 
@@ -726,7 +741,7 @@ const AdminTreatSetting = () => {
                             className="inputser"
                             value={keyword}
                             onChange={(e) =>
-                              setkeyword(e.target.value.toLowerCase())
+                              setkeyword(e.target.value.toLowerCase().trim())
                             }
                           />
                           <button className="mx-2 btn  btnback" style={{backgroundColor:"#1abc9c"}}>
@@ -756,6 +771,10 @@ const AdminTreatSetting = () => {
                           </p>
                         </div>
                       </div>
+                      {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
                       <table class="table table-bordered rounded shadow tableStyle">
                         <thead className="table-head">
                           <tr>
@@ -875,7 +894,8 @@ const AdminTreatSetting = () => {
                             ))}
                         </tbody>
                       </table>
-
+                      </>
+  )}
                       <PaginationContainer>
                       <ReactPaginate
                         previousLabel={"previous"}

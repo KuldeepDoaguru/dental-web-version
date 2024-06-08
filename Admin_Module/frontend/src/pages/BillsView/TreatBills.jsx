@@ -172,10 +172,20 @@ const TreatBills = () => {
   useEffect(() => {
     setCurrentPage(0);
   }, [keyword]);
+  
 
-  const searchFilter = listBills.filter((lab) =>
-    lab.patient_name.toLowerCase().includes(keyword.toLowerCase())
-  );
+  // const searchFilter = listBills.filter((lab) =>
+  //   lab.patient_name.toLowerCase().trim().includes(keyword.toLowerCase().trim())
+  // );
+  const searchFilter = listBills.filter((bill) => {
+    const lowerKeyword = keyword.toLowerCase().trim();
+    return (
+      bill.patient_name.toLowerCase().trim().includes(lowerKeyword) ||
+      bill.uhid.toLowerCase().trim().includes(lowerKeyword) ||
+      bill.patient_mobile.trim().includes(lowerKeyword)
+    );
+  });
+
   const billPerPage = 10;
   const totalPages = Math.ceil(searchFilter.length / billPerPage);
 
@@ -202,13 +212,13 @@ const TreatBills = () => {
   return (
     <>
       <Container>
-        <div className="d-flex justify-content-between">
+        <div className="">
           <div>
             {/* <label>Patient Name :</label> */}
             <input
               type="text"
-              placeholder="Search Patient Name"
-              className=""
+              placeholder="Search Patient Name or UHID or mobile number"
+              className="searchbar"
               value={keyword}
               onChange={(e) => setkeyword(e.target.value.toLowerCase())}
             />
@@ -600,4 +610,6 @@ const PaginationContainer = styled.div`
   .pagination li a:hover:not(.active) {
     background-color: #ddd;
   }
+  
+  
 `;

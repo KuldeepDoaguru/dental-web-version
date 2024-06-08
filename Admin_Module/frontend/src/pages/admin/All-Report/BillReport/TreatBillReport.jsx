@@ -5,11 +5,13 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { utils, writeFile } from "xlsx";
-
+import animationData from "../../../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const TreatBillReport = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  
   const user = useSelector((state) => state.user.currentUser);
   const branch = user.branch_name;
  
@@ -93,6 +95,16 @@ const TreatBillReport = () => {
     }
   };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
+
   useEffect(() => {
     getBillDetailsList();
   }, [branch]);
@@ -133,6 +145,10 @@ const TreatBillReport = () => {
               </form>
             </div>
             <div className="container-fluid mt-3">
+            {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
              
                   <div class="table-responsive rounded">
                     <table class="table table-bordered rounded shadow">
@@ -226,7 +242,8 @@ const TreatBillReport = () => {
                       </tbody>
                     </table>
                   </div>
-              
+                  </>
+  )}
             </div>
           </div>
         </div>

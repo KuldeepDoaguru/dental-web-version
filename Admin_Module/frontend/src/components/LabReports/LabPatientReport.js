@@ -10,6 +10,8 @@ import HeaderAdmin from "../../pages/admin/HeaderAdmin";
 import SiderAdmin from "../../pages/admin/SiderAdmin";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useSelector } from "react-redux";
+import animationData from "../../pages/animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const LabPatientReport = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -17,13 +19,14 @@ const LabPatientReport = () => {
   const [patientDetails, setPatientDetails] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [dateFilter, setDateFilter] = useState("");
-
+  const [loading,setLoading] = useState("");
   const goBack = () => {
     window.history.go(-1);
   };
 
   useEffect(() => {
     const fetchPatientDetails = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           `https://dentalguruadmin.doaguru.com/api/v1/admin/getPatientLabTest`,
@@ -34,8 +37,10 @@ const LabPatientReport = () => {
             },
           }
         );
+        setLoading(false);
         setPatientDetails(response.data);
       } catch (error) {
+        setLoading(false);
         console.error("Error fetching patient details:", error);
       }
     };
@@ -43,15 +48,28 @@ const LabPatientReport = () => {
     fetchPatientDetails();
   }, []);
 
+  // const filteredPatients = patientDetails.filter((patient) => {
+  //   const fullName =
+  //     `${patient.patient_name} ${patient.assigned_doctor_name}`.toLowerCase();
+  //   const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
+  //   return (
+  //     fullName.includes(searchQuery.toLowerCase()) &&
+  //     (!dateFilter || formattedDate === dateFilter)
+  //   );
+  // });
+
   const filteredPatients = patientDetails.filter((patient) => {
-    const fullName =
-      `${patient.patient_name} ${patient.assigned_doctor_name}`.toLowerCase();
-    const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
+    const fullName = `${patient.patient_name} ${patient.patient_uhid}`.toLowerCase().trim();
+    const formattedDate = moment(patient.created_date).format("YYYY-MM-DD").trim();
+    const trimmedSearchQuery = searchQuery.toLowerCase().trim();
+    const trimmedDateFilter = dateFilter ? dateFilter.trim() : null;
+    
     return (
-      fullName.includes(searchQuery.toLowerCase()) &&
-      (!dateFilter || formattedDate === dateFilter)
+      fullName.includes(trimmedSearchQuery) &&
+      (!trimmedDateFilter || formattedDate === trimmedDateFilter)
     );
   });
+  
 
   const navigate = useNavigate();
 
@@ -116,6 +134,16 @@ const LabPatientReport = () => {
     });
     setSorted(newArr);
   };
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <>
       <Container>
@@ -155,19 +183,23 @@ const LabPatientReport = () => {
                           </h2>
                           <div className="mb-3">
                             <div className="row">
-                              <div className="col-lg-4">
+                              <div className="">
                                 <input
                                   type="text"
-                                  placeholder="Search by patient name "
+                                  placeholder="Search by patient name and uhid "
                                   value={searchQuery}
                                   onChange={(e) =>
                                     setSearchQuery(e.target.value)
                                   }
-                                  className="form-control mb-lg-0  mb-md-2 rounded p-2"
+                                  className="form-control "
                                 />
                               </div>
                             </div>
                           </div>
+                          {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
                           <div className="res-table">
                             <table className="table table-bordered">
                               <thead>
@@ -229,6 +261,8 @@ const LabPatientReport = () => {
                               </tbody>
                             </table>
                           </div>
+                          </>
+  )}
                         </div>
 
                         <div className="d-flex justify-content-center">
@@ -280,4 +314,25 @@ const Container = styled.div`
     background-color: #1abc9c !important;
     border: none;
   }
+  input {
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+ 
+            @media (min-width: 1279px) and (max-width: 1600px){
+              width: 45%;
+            }
+            @media (min-width: 1024px) and (max-width: 1279px){
+              width: 60%;
+            }
+            @media (min-width: 768px) and (max-width: 1023px){
+              width: 100%;
+            }
+  }
+
 `;

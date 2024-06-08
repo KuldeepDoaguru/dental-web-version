@@ -887,30 +887,50 @@ const resetPassword = (req, res) => {
   }
 };
 
+// const appointmentData = (req, res) => {
+//   const branchName = req.params.branch;
+//   try {
+//     // const getQuery =
+//     //   "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid WHERE appointments.branch_name = ?";
+//         const getQuery =
+//   "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid WHERE appointments.branch_name = ? ORDER BY appointments.appointment_dateTime DESC";
+//     db.query(getQuery, branchName, (err, result) => {
+//       if (err) {
+//           logger.registrationLogger.log("error", "invalid branch");
+//         console.error("Error retrieving appointment:", err); // Log the error for debugging
+//         return res
+//           .status(500)
+//           .json({ success: false, message: "Error getting appointment" });
+//       }
+//       logger.registrationLogger.log("info", "appointment data fetched successfully");
+//       res.status(200).send(result);
+//     });
+//   } catch (error) {
+//       logger.registrationLogger.log("error", "Internal server error");
+//     console.error("Error in try-catch block:", error); // Log any synchronous errors
+//     res.status(500).json({ success: false, message: "Internal server error" });
+//   }
+// };
 const appointmentData = (req, res) => {
   const branchName = req.params.branch;
   try {
-    // const getQuery =
-    //   "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid WHERE appointments.branch_name = ?";
-        const getQuery =
-  "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid WHERE appointments.branch_name = ? ORDER BY appointments.appointment_dateTime DESC";
+    const getQuery =
+      "SELECT appointments.*,appointments.created_at AS appointment_created_at,  patient_details.* FROM appointments JOIN patient_details ON     appointments.patient_uhid = patient_details.uhid WHERE     appointments.branch_name = ? ORDER BY appointments.appoint_id DESC";
     db.query(getQuery, branchName, (err, result) => {
       if (err) {
-          logger.registrationLogger.log("error", "invalid branch");
         console.error("Error retrieving appointment:", err); // Log the error for debugging
         return res
           .status(500)
           .json({ success: false, message: "Error getting appointment" });
       }
-      logger.registrationLogger.log("info", "appointment data fetched successfully");
       res.status(200).send(result);
     });
   } catch (error) {
-      logger.registrationLogger.log("error", "Internal server error");
     console.error("Error in try-catch block:", error); // Log any synchronous errors
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
 
 const getAvailableEmp = (req, res) => {
   try {
@@ -931,25 +951,39 @@ const getAvailableEmp = (req, res) => {
   }
 };
 
+// const getPatientDetailsByBranch = (req, res) => {
+//   try {
+//     const branch = req.params.branch;
+//     const getQuery = `SELECT * FROM patient_details WHERE branch_name = ? ORDER BY created_at DESC`;
+//     db.query(getQuery, branch, (err, result) => {
+//       if (err) {
+//           logger.registrationLogger.log("error", "invalid branch");
+//         res.status(400).send(err);
+//       }
+//       logger.registrationLogger.log("info", "patient details fetched successfully");
+//       res.status(200).send(result);
+//     });
+//   } catch (error) {
+//       logger.registrationLogger.log("error", "internal server error");
+//     console.log(error);
+//     res.status(500).json({ success: false, message: "Internal server error" });
+//   }
+// };
 const getPatientDetailsByBranch = (req, res) => {
   try {
     const branch = req.params.branch;
-    const getQuery = `SELECT * FROM patient_details WHERE branch_name = ? ORDER BY created_at DESC`;
+    const getQuery = `SELECT * FROM patient_details WHERE branch_name = ?`;
     db.query(getQuery, branch, (err, result) => {
       if (err) {
-          logger.registrationLogger.log("error", "invalid branch");
         res.status(400).send(err);
       }
-      logger.registrationLogger.log("info", "patient details fetched successfully");
       res.status(200).send(result);
     });
   } catch (error) {
-      logger.registrationLogger.log("error", "internal server error");
     console.log(error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
-
 const getBillsByBranch = (req, res) => {
   try {
     const branch = req.params.branch;

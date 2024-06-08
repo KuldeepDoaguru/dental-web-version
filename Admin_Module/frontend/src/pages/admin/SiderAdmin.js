@@ -39,7 +39,7 @@ const SiderAdmin = () => {
                   </div>
                   <div>
                     <h3
-                      className=" d-none d-sm-inline fs-6 icon-view icon-view"
+                      className=" d-none d-sm-inline icon-view icon-view"
                       id="navleft1"
                     >
                       Dashboard
@@ -60,7 +60,7 @@ const SiderAdmin = () => {
                   </div>
                   <div>
                     <h3
-                      className="d-none d-sm-inline fs-6 icon-view"
+                      className="d-none d-sm-inline icon-view"
                       id="navleft2"
                     >
                       Appointment
@@ -81,7 +81,7 @@ const SiderAdmin = () => {
                   </div>
                   <div>
                     <h3
-                      className=" d-none d-sm-inline fs-6 icon-view"
+                      className=" d-none d-sm-inline icon-view"
                       id="navleft"
                     >
                       Bills
@@ -100,7 +100,7 @@ const SiderAdmin = () => {
                   </div>
                   <div>
                     <h3
-                      className="d-none d-sm-inline fs-6 icon-view"
+                      className="d-none d-sm-inline icon-view"
                       id="navleft"
                     >
                       Inventory
@@ -119,7 +119,7 @@ const SiderAdmin = () => {
                   </div>
                   <div>
                     <h3
-                      className=" d-none d-sm-inline fs-6 icon-view icon-view"
+                      className=" d-none d-sm-inline icon-view icon-view"
                       id="navleft"
                     >
                       Patient
@@ -139,7 +139,7 @@ const SiderAdmin = () => {
                   </div>
                   <div>
                     <h3
-                      className=" d-none d-sm-inline fs-6 icon-view"
+                      className=" d-none d-sm-inline icon-view"
                       id="navleft"
                     >
                       Manage Staff
@@ -160,7 +160,7 @@ const SiderAdmin = () => {
                   </div>
                   <div>
                     <h3
-                      className=" d-none d-sm-inline fs-6 icon-view"
+                      className=" d-none d-sm-inline icon-view"
                       id="navleft"
                     >
                       Lab
@@ -182,7 +182,7 @@ const SiderAdmin = () => {
                   </div>
                   <div>
                     <h3
-                      className="d-none d-sm-inline fs-6 icon-text"
+                      className="d-none d-sm-inline icon-text"
                       id="navleft1"
                     >
                       Attendance
@@ -204,7 +204,7 @@ const SiderAdmin = () => {
                   </div>
                   <div>
                     <h3
-                      className=" d-none d-sm-inline fs-6 icon-view"
+                      className=" d-none d-sm-inline icon-view"
                       id="navleft"
                     >
                       Leave Details
@@ -226,7 +226,7 @@ const SiderAdmin = () => {
                   </div>
                   <div>
                     <h3
-                      className=" d-none d-sm-inline fs-6 icon-view"
+                      className=" d-none d-sm-inline icon-view"
                       id="navleft"
                     >
                       Report
@@ -249,11 +249,29 @@ const Container = styled.div`
     font-size: 12px;
     margin-left: 0rem;
     color: #000;
+    @media (max-width: 900px) {
+      display: none !important;
+    }
+    @media (min-width: 1024px) and (max-width: 1280px) {
+      font-size: 12px;
+    }
+    @media (min-width: 1281px) and (max-width: 2000px) {
+      font-size: 16px;
+    }
   }
   #navleft2 {
     font-size: 12px;
     margin-left: 0rem;
     color: #000;
+    @media (max-width: 900px) {
+      display: none !important;
+    }
+    @media (min-width: 1024px) and (max-width: 1280px) {
+      font-size: 12px;
+    }
+    @media (min-width: 1281px) and (max-width: 2000px) {
+      font-size: 16px;
+    }
   }
   #navleft {
     font-size: 12px;
@@ -261,6 +279,12 @@ const Container = styled.div`
     color: #000;
     @media (max-width: 900px) {
       display: none !important;
+    }
+    @media (min-width: 1024px) and (max-width: 1280px) {
+      font-size: 12px;
+    }
+    @media (min-width: 1281px) and (max-width: 2000px) {
+      font-size: 16px;
     }
   }
   #sidebar {
@@ -302,9 +326,6 @@ const Container = styled.div`
     box-shadow: 0px 0px 16px #9af5c996;
   }
 
-  .icon-view {
-    @media (max-width: 900px) {
-      display: none !important;
-    }
-  }
+
+
 `;

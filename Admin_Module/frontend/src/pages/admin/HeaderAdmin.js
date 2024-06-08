@@ -101,7 +101,7 @@ const HeaderAdmin = () => {
             </Link>
             <li style={{ listStyle: "none" }}>
               <Link
-                className="nav-link active text-white mt-2 mx-2 fs-5"
+                className="nav-link active text-white mt-2  fs-5"
                 to="/"
               >
                 Dental Guru
@@ -224,10 +224,10 @@ const HeaderAdmin = () => {
                   </a>
                   {filterForRead.length == 0 ? (
                     <>
-                      <ul className="dropdown-menu first-dropdown">
+                      <ul className="dropdown-menu first-dropdown " style={{marginLeft:"-7rem"}}>
                         {" "}
                         <Link to="/admin-notification" className="mx-2">
-                          <button className="btn btn-info">view all</button>
+                          <button className="btn btn-info w-75">view all</button>
                         </Link>
                       </ul>
                     </>

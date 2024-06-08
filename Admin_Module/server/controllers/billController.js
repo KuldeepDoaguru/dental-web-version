@@ -692,9 +692,10 @@ const getBranchDetailsByBranch = (req, res) => {
 const updateBranchCalenderSetting = (req, res) => {
   try {
     const branch = req.params.branch;
-    const { open_time, close_time, appoint_slot_duration } = req.body;
+    const { open_time, close_time, appoint_slot_duration, week_off } = req.body;
     const selectQuery = "SELECT * FROM branches WHERE branch_name = ?";
     db.query(selectQuery, branch, (err, result) => {
+        
       if (err) {
           logger.registrationLogger.log("error", "invalid branch");
         return res.status(400).json({ success: false, message: err.message });
@@ -717,6 +718,11 @@ const updateBranchCalenderSetting = (req, res) => {
           updateFields.push("appoint_slot_duration = ?");
           updateValues.push(appoint_slot_duration);
         }
+        
+        if (week_off) {
+          updateFields.push("week_off = ?");
+          updateValues.push(week_off);
+        }
 
         const updateQuery = `UPDATE branches SET ${updateFields.join(
           ", "
@@ -724,7 +730,7 @@ const updateBranchCalenderSetting = (req, res) => {
 
         db.query(updateQuery, [...updateValues, branch], (err, result) => {
           if (err) {
-              logger.registrationLogger.log("error", "Failed to update details");
+              logger.registrationLogger.log("error", "failed to update details");
             return res.status(500).json({
               success: false,
               message: "Failed to update details",

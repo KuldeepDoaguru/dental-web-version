@@ -1150,6 +1150,7 @@ const AdminManageStaff = () => {
   
   const [doctorList, setDoctorList] = useState([]);
   const [keyword, setkeyword] = useState("");
+
   const [empProfilePicture, setEmpProfilePicture] = useState(null);
   const [inEmpData, setInEmpData] = useState({
     branch: branch,
@@ -1406,6 +1407,15 @@ const AdminManageStaff = () => {
     },
   };
 
+  const filteredDoctorList = doctorList.filter((employee) => {
+    const lowerKeyword = keyword.toLowerCase().trim();
+    return (
+      employee.employee_ID.toLowerCase().trim().includes(lowerKeyword) ||
+      employee.employee_mobile.trim().includes(lowerKeyword) ||
+      employee.employee_name.toLowerCase().trim().includes(lowerKeyword)
+    );
+  });
+
 
   console.log(inEmpData);
 
@@ -1427,12 +1437,12 @@ const AdminManageStaff = () => {
                 </div> */}
                 <div className="container-fluid mt-3">
                   <h2 className="text-center">Manage Employee</h2>
-                  <div className="d-flex justify-content-between">
+                  <div className="">
                     <div>
                       {/* <label>Employee Name :</label> */}
                       <input
                         type="text"
-                        placeholder="Search Employee Name"
+                        placeholder="Search Employee Name or UHID or mobile number"
                         className="input"
                         value={keyword}
                         onChange={(e) =>
@@ -1476,19 +1486,7 @@ const AdminManageStaff = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {doctorList
-                              ?.filter((val) => {
-                                if (keyword === "") {
-                                  return true;
-                                } else if (
-                                  val.employee_name
-                                    .toLowerCase()
-                                    .includes(keyword.toLowerCase())
-                                ) {
-                                  return val;
-                                }
-                              })
-                              .map((item) => (
+                          {filteredDoctorList.map((item) => (
                                 <>
                                   <tr className="table-row">
                                     <td className="thead">
@@ -2253,8 +2251,8 @@ const Container = styled.div`
     color: transparent; /* Hide placeholder on focus */
   }
 
-  .input {
-    width: 110%;
+  input {
+    width: 30%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
@@ -2262,7 +2260,18 @@ const Container = styled.div`
     border-radius: 20px;
     box-sizing: border-box;
     transition: border-color 0.3s ease;
+ 
+            @media (min-width: 1279px) and (max-width: 1600px){
+              width: 45%;
+            }
+            @media (min-width: 1024px) and (max-width: 1279px){
+              width: 60%;
+            }
+            @media (min-width: 768px) and (max-width: 1023px){
+              width: 100%;
+            }
   }
+
 
   .input:focus {
     border-color: #007bff; /* Change border color on focus */

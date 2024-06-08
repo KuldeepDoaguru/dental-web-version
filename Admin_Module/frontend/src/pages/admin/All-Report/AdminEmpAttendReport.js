@@ -12,6 +12,8 @@ import { utils, writeFile } from "xlsx";
 import cogoToast from "cogo-toast";
 import HeaderAdmin from "../HeaderAdmin";
 import SiderAdmin from "../SiderAdmin";
+import animationData from "../../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const AdminEmpAttendReport = () => {
   const location = useLocation();
@@ -25,6 +27,7 @@ const AdminEmpAttendReport = () => {
   const [formattedDate, setFormattedDate] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [loading,setLoading] = useState("");
 
   const generateDaysInMonth = (fromDate, toDate) => {
     const currentDate = new Date();
@@ -93,6 +96,7 @@ const AdminEmpAttendReport = () => {
   console.log(fitlerByDuration);
 
   const getAttendDetails = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getAttendanceDetails/${user.branch_name}`,
@@ -103,9 +107,10 @@ const AdminEmpAttendReport = () => {
           },
         }
       );
-
+      setLoading(false);
       setAttendRepo(data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -153,6 +158,15 @@ const AdminEmpAttendReport = () => {
   const goBack = () => {
     window.history.go(-1);
   };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
 
   console.log(daysInMonth);
   console.log(fromDate?.slice(0, 2));
@@ -225,6 +239,10 @@ const AdminEmpAttendReport = () => {
                               </div>
                             </form>
                           </div>
+                          {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
                           <div class="table-responsive">
                             <table class="table table-bordered">
                               <thead className="table-head">
@@ -319,6 +337,8 @@ const AdminEmpAttendReport = () => {
                               </tbody>
                             </table>
                           </div>
+                          </>
+  )}
                         </div>
                       </div>
                     </div>

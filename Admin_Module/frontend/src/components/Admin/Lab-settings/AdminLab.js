@@ -522,7 +522,9 @@ const Lab = () => {
   }, [keyword]);
 
 
-  const searchFilter = labList.filter((lab)=>lab.lab_name.toLowerCase().includes(keyword.toLowerCase()));
+  const searchFilter = labList.filter((lab)=>lab.lab_name.toLowerCase().trim().includes(keyword.toLowerCase().trim())
+);
+
 
   const totalPages = Math.ceil(searchFilter.length / complaintsPerPage);
 

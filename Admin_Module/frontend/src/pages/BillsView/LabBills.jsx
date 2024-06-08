@@ -62,17 +62,26 @@ const LabBills = () => {
   }, [keyword]);
 
   console.log(appointmentList);
-  const searchFilter = appointmentList.filter((lab) =>
-    lab.patient_name.toLowerCase().includes(keyword.toLowerCase())
-  );
+  // const searchFilter = appointmentList.filter((lab) =>
+  //   lab.patient_name.toLowerCase().trim().includes(keyword.toLowerCase().trim())
 
-  const billPerPage = 10;
+  // );
+  const searchFilter = appointmentList.filter((lab) => {
+    const lowerKeyword = keyword.toLowerCase().trim();
+    return (
+        lab.patient_name.toLowerCase().trim().includes(lowerKeyword) ||
+        lab.patient_uhid.toLowerCase().trim().includes(lowerKeyword)
+    );
+  });
 
-  const totalPages = Math.ceil(searchFilter.length / billPerPage);
+
+  const labPerPage = 10;
+
+  const totalPages = Math.ceil(searchFilter.length / labPerPage);
 
   const filterAppointDataByMonth = () => {
-    const startIndex = currentPage * billPerPage;
-    const endIndex = startIndex + billPerPage;
+    const startIndex = currentPage * labPerPage;
+    const endIndex = startIndex + labPerPage;
     return searchFilter?.slice(startIndex, endIndex);
   };
 
@@ -95,11 +104,11 @@ const LabBills = () => {
   return (
     <>
       <Container>
-        <div className="d-flex justify-content-between">
+        <div className="">
           <div>
             <input
               type="text"
-              placeholder="Search Patient Name"
+              placeholder="Search Patient Name or UHID "
               className=""
               value={keyword}
               onChange={(e) => setkeyword(e.target.value.toLowerCase())}

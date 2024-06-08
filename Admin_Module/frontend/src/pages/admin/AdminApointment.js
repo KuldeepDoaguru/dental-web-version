@@ -536,7 +536,7 @@
 
 
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import HeaderAdmin from "./HeaderAdmin";
 import SiderAdmin from "./SiderAdmin";
@@ -690,17 +690,34 @@ const AdminAppointment = () => {
   };
 
  
+  // const filterBySearchQuery = (data) => {
+  //   if (searchQuery === "") {
+  //     return data;
+  //   }
+  //   return data.filter((item) =>
+  //     item.patient_name.toLowerCase().includes(searchQuery.toLowerCase())
+  //   );
+  // };
+
   const filterBySearchQuery = (data) => {
-    if (searchQuery === "") {
+    const trimmedSearchQuery = searchQuery.trim().toLowerCase();
+    if (trimmedSearchQuery === "") {
       return data;
     }
     return data.filter((item) =>
-      item.patient_name.toLowerCase().includes(searchQuery.toLowerCase())
+      item.patient_name.toLowerCase().includes(trimmedSearchQuery) ||
+      item.patient_uhid.toLowerCase().includes(trimmedSearchQuery) ||
+      item.mobileno.includes(trimmedSearchQuery)
     );
   };
- 
+
+  const filteredData = useMemo(
+    () => filterBySearchQuery(filterAppointDataByMonth()),
+    [appointmentList, searchQuery, formattedDate]
+  );
+
   // Assuming filteredData is the array of items to be paginated
-  const filteredData = filterBySearchQuery(filterAppointDataByMonth());
+  // const filteredData = filterBySearchQuery(filterAppointDataByMonth());
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
@@ -741,7 +758,7 @@ const AdminAppointment = () => {
                     <div className="d-flex justify-content-between">
                       <input
                         type="text"
-                        placeholder="Search by Patient Name"
+                        placeholder="Search by Patient Name or UHID or mobile number"
                         value={searchQuery}
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
@@ -923,19 +940,54 @@ const Container = styled.div`
     background-color: #007bff;
     color: white;
   }
-  .search-input {
+  /* .search-input {
     margin-bottom: 1rem;
     padding: 0.5rem;
     width: 100%;
     max-width: 400px;
     border-radius: 5px;
     border: 1px solid #ddd;
-  } 
+  }  */
   
    th {
      background-color: #1abc9c;
      color: white;
    }
+   input::placeholder {
+    color: #aaa;
+    opacity: 1; /* Ensure placeholder is visible */
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+  }
+
+  input:focus::placeholder {
+    color: transparent; /* Hide placeholder on focus */
+  }
+
+  input {
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+ 
+            @media (min-width: 1279px) and (max-width: 1600px){
+              width: 45%;
+            }
+            @media (min-width: 1024px) and (max-width: 1279px){
+              width: 60%;
+            }
+            @media (min-width: 768px) and (max-width: 1023px){
+              width: 100%;
+            }
+  }
+
+  input:focus {
+    border-color: #007bff; /* Change border color on focus */
+  }
 `;
 
 export default AdminAppointment;

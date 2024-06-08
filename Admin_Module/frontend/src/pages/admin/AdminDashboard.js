@@ -36,8 +36,8 @@ const AdminDashboard = () => {
   const user = useSelector((state) => state.user.currentUser);
   console.log(user);
   const searchData = routesConfig;
-  const [keyword, setkeyword] = useState("");
-
+  const [keyword, setKeyword] = useState("");
+  const trimmedSearchQuery = keyword.trim().toLowerCase();
   return (
     <Wrapper>
       <HeaderAdmin />
@@ -50,81 +50,81 @@ const AdminDashboard = () => {
             <div className="col-lg-11 col-md-10 col-11 ps-0" style={{marginTop:"6rem"}}>
               <div className="row d-flex justify-content-between mx-3">
                 <div className="col-xl-6 col-lg-6 col-12 col-md-6 mt-4">
-                  <h3> Welcome to DentalGuru! </h3>
+                  <h3> Welcome to DentalGuru </h3>
                   <p className="fs-4 fw-bold">
                     Admin Dashboard - {user.branch_name} Branch
                   </p>
                 </div>
-                <div className="col-xl-6 col-lg-6 col-12 col-md-6 my-3">
+                <div className="col-xl-4 col-lg-4 col-12 col-md-4 my-3">
                   <form className="d-flex ms-auto my-sm" role="search">
                     <input
-                      className="form-control me-2"
+                      className="form-control w-100"
                       type="search"
                       placeholder="Search"
                       aria-label="Search"
                       value={keyword}
-                      onChange={(e) => setkeyword(e.target.value.toLowerCase())}
+                      onChange={(e) => setKeyword(e.target.value)}
                     />
-                    <button
+                    {/* <button
                       className="btn btn-primary"
                       style={{ backgroundColor: "#1abc9c", border: "none" }}
                       type="submit"
                     >
                       Search
-                    </button>
+                    </button> */}
                   </form>
                   <div className="suedo-shado">
                     <ul className="bg-light">
-                      {keyword &&
+                      {trimmedSearchQuery &&
                         searchData
                           ?.filter((val) =>
-                            val.title.toLowerCase().includes(keyword)
+                            val.title.toLowerCase().includes(trimmedSearchQuery)
                           )
                           ?.map((item, index) => (
-                            <>
-                              <li key={index}>
+                            <React.Fragment key={index}>
+                              <li>
                                 <Link to={item.path}>{item.title}</Link>
                               </li>
                               <hr />
-                            </>
+                            </React.Fragment>
                           ))}
                     </ul>
                   </div>
-                </div>
+                  </div>
               </div>
               <AdminCards />
               <div className="container-fluid pb-3">
                 <div className="row g-5 mt-3">
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Treatment this month</h3>
                     <TreatmentTMAdmin />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">
                       Patient visits this month(OPD)
                     </h3>
                     <PatientVisTMAdmin />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">
                       Total apointments this month
                     </h3>
                     <TotalApsTMAdmin />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">New Patient this Month</h3>
 
                     <NewPatientTMAdmin />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Earning report this month</h3>
                     <EarnTMAdmin />
                   </div>
-                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Lab report this month</h3>
                     <AdminLabChart />
                   </div>
-                  {/* <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                  {/* <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Expense report this month</h3>
                     <ExpenseTMAdmin />
                   </div> */}

@@ -54,7 +54,8 @@ const App = () => {
   console.log(user);
   return (
     <BrowserRouter>
-      <Routes>
+    <div>
+      <Routes> 
         <Route path="/" element={ user.currentUser ? <AdminDashboard /> :<UniversalLogin />} />{" "}
         
         <Route
@@ -404,6 +405,7 @@ const App = () => {
           }
         />
       </Routes>
+      </div>
     </BrowserRouter>
   );
 };

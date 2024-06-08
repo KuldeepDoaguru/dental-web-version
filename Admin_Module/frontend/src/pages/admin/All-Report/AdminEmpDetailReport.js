@@ -10,6 +10,8 @@ import axios from "axios";
 import { utils, writeFile } from "xlsx";
 import HeaderAdmin from "../HeaderAdmin";
 import SiderAdmin from "../SiderAdmin";
+import animationData from "../../animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const AdminEmpDetailReport = () => {
   const location = useLocation();
@@ -19,8 +21,9 @@ const AdminEmpDetailReport = () => {
   console.log(user);
   const [doctorList, setDoctorList] = useState([]);
   const [designation, setDesignation] = useState("");
-
+  const [loading,setLoading] = useState("");
   const getDocDetailsList = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getEmployeeDataByBranch/${user.branch_name}`,
@@ -31,9 +34,11 @@ const AdminEmpDetailReport = () => {
           },
         }
       );
+      setLoading(false);
       console.log(data);
       setDoctorList(data);
     } catch (error) {
+      setLoading(false);
       console.log(error);
     }
   };
@@ -76,6 +81,15 @@ const AdminEmpDetailReport = () => {
       console.log(error);
     }
   };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
 
   return (
     <>
@@ -149,6 +163,10 @@ const AdminEmpDetailReport = () => {
                             </div>
                           </div>
                         </div>
+                        {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
                         <div class="table-responsive mt-4">
                           <table class="table table-bordered">
                             <thead className="table-head">
@@ -215,6 +233,8 @@ const AdminEmpDetailReport = () => {
                             </tbody>
                           </table>
                         </div>
+                        </>
+  )}          
                       </div>
                     </div>
                   </div>

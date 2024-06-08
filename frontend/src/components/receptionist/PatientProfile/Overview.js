@@ -311,7 +311,7 @@ const getExaminationDetails = async () => {
                           <td>{item.chief_complain}</td>
 
                           <td>{item.selected_teeth}</td>
-                          <td>{item.advice}</td>
+                          <td>{item.diagnosis_category}</td>
                           <td>{item.on_examination}</td>
                         </tr>
                       </>
@@ -411,4 +411,5 @@ const Container = styled.div`
       width: 100%;
     }
   }
+ 
 `;

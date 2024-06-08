@@ -271,7 +271,7 @@ console.log(branch)
                       <div>
                         <div className="row">
                           <div className="col-xl-5 col-lg-5 col-md-6 col-12">
-                            <strong>Mobile :</strong>
+                            <strong>Mobile No. :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">{patientData?.mobileno}</span>
@@ -307,7 +307,7 @@ console.log(branch)
                       <div>
                         <div className="row">
                           <div className="col-xl-5 col-lg-5 col-md-6 col-12">
-                            <strong>Age</strong>
+                            <strong>Age :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">
@@ -333,7 +333,7 @@ console.log(branch)
                       <div>
                         <div className="row">
                           <div className="col-xl-5 col-lg-5 col-md-6 col-12">
-                            <strong >Adhaar No :</strong>
+                            <strong >Aadhaar No. :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">{patientData?.aadhaar_no}</span>
@@ -360,7 +360,7 @@ console.log(branch)
                       <div>
                         <div className="row">
                           <div className="col-xl-5 col-lg-5 col-md-6 col-12">
-                            <strong>weight</strong>
+                            <strong>Weight :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">
@@ -435,7 +435,7 @@ console.log(branch)
                       <div>
                         <div className="row">
                           <div className="col-xl-5 col-lg-5 col-md-6 col-12">
-                            <strong>disease :</strong>
+                            <strong>Disease :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
                             <span className="">

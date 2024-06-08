@@ -4,10 +4,12 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 import moment from "moment";
+import { clearUser } from '../../../redux/user/userSlice';
 
 
 function Card() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [patients, setPatients] = useState([]);
   const [newpatients, setNewPatients] = useState([]);
   const {refreshTable,currentUser} = useSelector((state) => state.user);
@@ -62,6 +64,7 @@ function Card() {
       console.log(error);
       if(error?.response?.status == 401){
         alert("Your token is expired please login again")
+        dispatch(clearUser())
         navigate('/receptionist_login');
       }
     }

@@ -225,10 +225,8 @@ const Appointment = () => {
                       <tr>
                         <td>{moment(item.appointment_dateTime?.split("T")[0]).format('DD/MM/YYYY')} </td>
                         <td>
-                          {item.appointment_dateTime
-                            ?.split("T")[1]
-                            ?.split(".")[0]
-                            ?.slice(0, 5)}
+                          {item.appointment_dateTime ? moment(item.appointment_dateTime
+                              ?.split("T")[1], 'HH:mm:ss.SSSSSS').format('hh:mm A') : ""}
                         </td>
                         <td>{item.assigned_doctor_name}</td>
                         <td>{item.treatment_provided}</td>

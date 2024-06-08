@@ -180,6 +180,7 @@ console.log(appointmentsData);
       cogoToast.success(`Patient Successfully ${newStatus}`)
     } catch (error) {
       setLoading(false);
+      setLoadingEffect(false)
       console.error('Error updating status:', error);
       cogoToast.error("Error updating status")
     }

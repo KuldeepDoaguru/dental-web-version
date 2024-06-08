@@ -7,6 +7,7 @@ import { IoArrowBackSharp } from "react-icons/io5";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
+import moment from "moment";
 
 const PatintDuePaymentPrint = () => {
   const navigate = useNavigate();
@@ -272,7 +273,7 @@ const PatintDuePaymentPrint = () => {
                           <h4>Branch : {branchData[0]?.branch_name}</h4>
 
                           <form className="d-flex ">
-                            <h6>Addresh </h6>
+                            <h6>Address </h6>
                             <h6>: {branchData[0]?.branch_address}</h6>
                           </form>
                         </div>
@@ -329,10 +330,15 @@ const PatintDuePaymentPrint = () => {
                               <div className="d-flex">
                                 <h6> Invoice Date </h6>
                                 <h6 className="ms-1">
-                                  {" "}
+                                  {/* {" "}
                                   : {
                                     billAmount[0]?.bill_date.split("T")[0]
-                                  }{" "}
+                                  }{" "} */}
+                                  {billAmount[0]?.bill_date.split
+                                    ? moment(
+                                        billAmount[0]?.bill_date.split
+                                      ).format("DD/MM/YYYY")
+                                    : ""}
                                 </h6>
                               </div>
                             </div>
@@ -375,7 +381,12 @@ const PatintDuePaymentPrint = () => {
                         <tbody>
                           <tr>
                             <th scope="row">
-                              {billAmount[0]?.bill_date.split("T")[0]}
+                              {/* {billAmount[0]?.bill_date.split("T")[0]} */}
+                              {billAmount[0]?.bill_date
+                                ? moment(billAmount[0]?.bill_date).format(
+                                    "DD/MM/YYYY"
+                                  )
+                                : ""}
                             </th>
 
                             <td className="text-end"></td>

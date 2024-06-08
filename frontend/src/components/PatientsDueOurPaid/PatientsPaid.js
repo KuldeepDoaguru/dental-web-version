@@ -55,9 +55,18 @@ const PatientsPaid = () => {
     getBillPaidList();
   }, []);
 
-  const filteredItems = filterForPaidBills.filter((item) =>
-    item.patient_name.toLowerCase().includes(keyword)
-  );
+  const filteredItems = filterForPaidBills.filter((row) => {
+    const keywordTrimmed = keyword.trim().toLowerCase();
+    const patientName = row?.patient_name?.toLowerCase();
+    const mobileno = row?.patient_mobile;
+    const uhid = row?.uhid?.toLowerCase();
+
+    return (
+      (patientName && patientName.includes(keywordTrimmed)) ||
+      (mobileno && mobileno.includes(keywordTrimmed)) ||
+      (uhid && uhid.includes(keywordTrimmed))
+    );
+  });
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -300,5 +309,9 @@ const Container = styled.div`
 
   .input:focus {
     border-color: #007bff; /* Change border color on focus */
+  }
+
+  .nodata {
+    white-space: nowrap;
   }
 `;

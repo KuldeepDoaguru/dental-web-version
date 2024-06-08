@@ -223,10 +223,18 @@ const TreatmentIncome = () => {
     setData();
   }, [treatAmount]);
 
-  const filteredItems = selectedData.filter((item) =>
-    item.patient_name.toLowerCase().includes(keyword)
-  );
+  const filteredItems = selectedData.filter((row) => {
+    const keywordTrimmed = keyword.trim().toLowerCase();
+    const patientName = row?.patient_name?.toLowerCase();
+    const mobileno = row?.mobileno;
+    const uhid = row?.uhid?.toLowerCase();
 
+    return (
+      (patientName && patientName.includes(keywordTrimmed)) ||
+      (mobileno && mobileno.includes(keywordTrimmed)) ||
+      (uhid && uhid.includes(keywordTrimmed))
+    );
+  });
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
@@ -435,21 +443,21 @@ const TreatmentIncome = () => {
                           ) : (
                             <tbody>
                               {currentItems
-                                ?.filter((val) => {
-                                  const name = val.patient_name.toLowerCase();
-                                  const lowerKeyword = keyword.toLowerCase();
-                                  if (keyword === "") {
-                                    return true;
-                                  } else {
-                                    if (name.startsWith(lowerKeyword)) {
-                                      return true;
-                                    } else {
-                                      if (name.includes(lowerKeyword)) {
-                                        return true;
-                                      }
-                                    }
-                                  }
-                                })
+                                // ?.filter((val) => {
+                                //   const name = val.patient_name.toLowerCase();
+                                //   const lowerKeyword = keyword.toLowerCase();
+                                //   if (keyword === "") {
+                                //     return true;
+                                //   } else {
+                                //     if (name.startsWith(lowerKeyword)) {
+                                //       return true;
+                                //     } else {
+                                //       if (name.includes(lowerKeyword)) {
+                                //         return true;
+                                //       }
+                                //     }
+                                //   }
+                                // })
 
                                 .map((item) => (
                                   <>
@@ -623,5 +631,9 @@ const Container = styled.div`
 
   .input:focus {
     border-color: #007bff; /* Change border color on focus */
+  }
+
+  .nodata {
+    white-space: nowrap;
   }
 `;

@@ -97,6 +97,10 @@ const Cards = () => {
       setTreatData(data);
     } catch (error) {
       console.log(error);
+      if (error?.response?.status == 401) {
+        alert("Your token is expired please login again");
+        navigate("/");
+      }
     }
   };
 
@@ -195,7 +199,18 @@ const Cards = () => {
     getTreatmentData();
     getVoucherAmount();
     getPatientBill();
-  }, []);
+
+    const interval = setInterval(() => {
+      getOpdData();
+      getTreatmentData();
+      getVoucherAmount();
+      getPatientBill();
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [user.branch]);
 
   return (
     <>
@@ -249,7 +264,7 @@ const Cards = () => {
             </div>
           </div>
 
-          <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
+          {/* <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column mb-3">
                 <div className="text-light fs-1">
@@ -263,7 +278,7 @@ const Cards = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
             <div className="card">

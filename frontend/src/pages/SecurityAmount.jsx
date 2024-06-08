@@ -287,19 +287,6 @@ const SecurityAmount = () => {
     }
   };
 
-  // useEffect(() => {
-  //   setFilteredSecurityList(securityList);
-  // }, [securityList]);
-
-  // const handleInputSearch = (event) => {
-  //   const { value } = event.target;
-  //   setKeyword(value.toLowerCase());
-  //   const filteredList = securityList.filter((item) =>
-  //     item.patient_name.toLowerCase().includes(value.toLowerCase())
-  //   );
-  //   setFilteredSecurityList(filteredList);
-  // };
-
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -334,7 +321,7 @@ const SecurityAmount = () => {
                         className="p-1 rounded input"
                         value={keyword}
                         onChange={(e) => {
-                          setKeyword(e.target.value.trim().toLowerCase());
+                          setKeyword(e.target.value.toLowerCase());
                           setCurrentPage(1);
                         }}
                       />
@@ -823,6 +810,10 @@ const Container = styled.div`
 
   .input:focus {
     border-color: #007bff; /* Change border color on focus */
+  }
+
+  .nodata {
+    white-space: nowrap;
   }
 `;
 

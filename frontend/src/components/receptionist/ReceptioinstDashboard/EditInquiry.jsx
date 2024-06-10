@@ -203,7 +203,7 @@ console.log(data)
     <Select
                 value={{ label: selectedDoctor.doctorName, value: selectedDoctor.doctorId }}
                 onChange={handleDoctorChange}
-                options={doctors.map((doctor) => ({
+                options={doctors?.map((doctor) => ({
                   label: `${doctor.employee_name}`,
                   value: `${doctor.employee_ID}`,
                 }))}

@@ -446,7 +446,7 @@ function SecurityAmount() {
     pageNumbers.push(i);
   }
 
-  const renderPageNumbers = pageNumbers.map((number, index) => {
+  const renderPageNumbers = pageNumbers?.map((number, index) => {
     // Display the first two page numbers
     if (index < 2) {
       return (
@@ -619,10 +619,10 @@ function SecurityAmount() {
             </div>
             ) : (
                     <tbody>
-                      {currentRows.map((item) => (
+                      {currentRows?.map((item) => (
                         <>
                           <tr className="table-row">
-                            <td>{moment(item.date.split("T")[0]).format('DD/MM/YYYY')}</td>
+                            <td>{moment(item.date?.split("T")[0]).format('DD/MM/YYYY')}</td>
                             <td>{item.appointment_id}</td>
                             <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
                             <td>{item.patient_name}</td>

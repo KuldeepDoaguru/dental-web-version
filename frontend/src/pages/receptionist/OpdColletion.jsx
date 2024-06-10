@@ -16,7 +16,7 @@ function OpdCollection() {
   const { refreshTable, currentUser } = useSelector((state) => state.user);
   const branch = currentUser.branch_name;
   const token = currentUser?.token;
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Initialize with today's date
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString()?.split('T')[0]); // Initialize with today's date
   const [appointmentsData, setAppointmentData] = useState([]);
 
   const [loadingEffect, setLoadingEffect] = useState(false);
@@ -30,7 +30,7 @@ function OpdCollection() {
     return () => {
       const currentDate = new Date(selectedDate);
       currentDate.setDate(currentDate.getDate() + increment);
-      setSelectedDate(currentDate.toISOString().split('T')[0]);
+      setSelectedDate(currentDate.toISOString()?.split('T')[0]);
     };
   };
 
@@ -103,7 +103,7 @@ function OpdCollection() {
     pageNumbers.push(i);
   }
 
-  const renderPageNumbers = pageNumbers.map((number, index) => {
+  const renderPageNumbers = pageNumbers?.map((number, index) => {
     // Display the first two page numbers
     if (index < 2) {
       return (
@@ -291,7 +291,7 @@ const defaultOptions = {
             </div>
             ) : (
                     <tbody>
-                      {currentRows.map((data, index) => (
+                      {currentRows?.map((data, index) => (
                         <tr key={index}>
                           <td>{data.appoint_id}</td>
                           <td>

@@ -118,9 +118,9 @@ const handleDayClick = (selectedDate) => {
 
   // Generate time slots from 10 am to 8 pm
   const startTime = new Date(selectedDate);
-  startTime.setHours(parseInt(branchDetail[0]?.open_time.split(":")[0]), 0, 0); // Set start time to 10:00 AM
+  startTime.setHours(parseInt(branchDetail[0]?.open_time?.split(":")[0]), 0, 0); // Set start time to 10:00 AM
   const endTime = new Date(selectedDate);
-  endTime.setHours(parseInt(branchDetail[0]?.close_time.split(":")[0]), 0, 0); // Set end time to 8:00 PM
+  endTime.setHours(parseInt(branchDetail[0]?.close_time?.split(":")[0]), 0, 0); // Set end time to 8:00 PM
 
   const slots = [];
   let currentTime = new Date(startTime);
@@ -132,7 +132,7 @@ const handleDayClick = (selectedDate) => {
     // slots.push(dateTimeSlot);
     const timeSlot = currentTime.toISOString();
     slots.push(timeSlot);
-    currentTime.setMinutes(currentTime.getMinutes() + parseInt(branchDetail[0]?.appoint_slot_duration.split(" "))); // Add 15 minutes
+    currentTime.setMinutes(currentTime.getMinutes() + parseInt(branchDetail[0]?.appoint_slot_duration?.split(" "))); // Add 15 minutes
   }
 
   // Update state with the generated time slots
@@ -264,7 +264,7 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
   const formatDate = (date) => {
     const offset = date.getTimezoneOffset(); // Get the time zone offset in minutes
     const adjustedDate = new Date(date.getTime() - (offset * 60 * 1000)); // Adjust the date by subtracting the offset in milliseconds
-    return adjustedDate.toISOString().split('T')[0]; // Return the ISO string in "yyyy-mm-dd" format
+    return adjustedDate.toISOString()?.split('T')[0]; // Return the ISO string in "yyyy-mm-dd" format
   }
 
   return (
@@ -293,7 +293,7 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
      mt-1 mb-1 d-flex justify-content-around'>
       <div className='w-50'><span className='backIcon' onClick={()=>{setIsDisplay(false)}}><IoArrowBackCircle /></span></div>
    <div className='w-50'> <select className="form-select" onChange={(e) => setSelectedDoctor(e.target.value)} >
-      {doctors.map((doctor) => (
+      {doctors?.map((doctor) => (
         <option value={doctor.employee_ID}>{doctor.employee_name}</option>
       ))} 
       {/* <option value="Dr. Ajay">Dr. Ajay</option>

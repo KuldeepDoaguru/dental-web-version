@@ -246,7 +246,7 @@ const Bill = () => {
                   {bills?.map((item) => (
                     <>
                       <tr>
-                        <td>{moment(item.bill_date.split("T")[0]).format('DD/MM/YYYY')}</td>
+                        <td>{moment(item.bill_date?.split("T")[0]).format('DD/MM/YYYY')}</td>
                         <td>{item.bill_id}</td>
                       
                         <td>{item.assigned_doctor_name}</td>
@@ -254,7 +254,7 @@ const Bill = () => {
                         <td>{item.paid_amount}</td>
                         <td>{item.pay_by_sec_amt}</td>
                         <td>{item.payment_mode}</td>
-                        <td>{moment(item.payment_date_time.split("T")[0]).format('DD/MM/YYYY')}</td>
+                        <td>{moment(item.payment_date_time?.split("T")[0]).format('DD/MM/YYYY')}</td>
                         <td>{item.payment_status}</td>
                       </tr>
                     </>

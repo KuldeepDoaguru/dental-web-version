@@ -204,13 +204,13 @@ const BranchInfo = () => {
                             
                           </tr>
                         </thead>
-                        {  branchHolidays.length === 0 ? (
+                        {  branchHolidays?.length === 0 ? (
               <div className="no-data-container">
               <h4>No Data Found</h4>
             </div>
             ) : (
                         <tbody>
-                          {branchHolidays.map((data,index)=>(
+                          {branchHolidays?.map((data,index)=>(
                              <tr key={index}>
                              <td>{data.holiday_id}</td>
                              <td>{data.holiday_name	}</td>

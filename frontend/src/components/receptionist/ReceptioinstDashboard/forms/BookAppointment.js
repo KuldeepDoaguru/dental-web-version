@@ -152,8 +152,8 @@ const handleOpdAmountChange = (e) => {
   //     }
   // }
 
-  for (let hour = parseInt(branchDetail[0]?.open_time.split(":")[0]); hour < parseInt(branchDetail[0]?.close_time.split(":")[0]); hour++) {
-    for (let minute = 0; minute < 60; minute += parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])) {
+  for (let hour = parseInt(branchDetail[0]?.open_time?.split(":")[0]); hour < parseInt(branchDetail[0]?.close_time?.split(":")[0]); hour++) {
+    for (let minute = 0; minute < 60; minute += parseInt(branchDetail[0]?.appoint_slot_duration?.split(" ")[0])) {
         const formattedHour24 = hour.toString().padStart(2, '0');
         const formattedMinute = minute.toString().padStart(2, '0');
 
@@ -188,7 +188,7 @@ const handleOpdAmountChange = (e) => {
     setBookData({
       ...bookData,
       [name]: value,
-      appDateTime: `${value}T${bookData.appDateTime.split('T')[1]}` // Update the appointment_dateTime with the new date and existing time
+      appDateTime: `${value}T${bookData.appDateTime?.split('T')[1]}` // Update the appointment_dateTime with the new date and existing time
     });
     setSelectedDate(value)
   };
@@ -352,8 +352,8 @@ useEffect(() => {
     // If the doctor has leave entries, check if the selected date falls within any of them
     if (doctorLeaveEntries.length > 0) {
       return !doctorLeaveEntries.some(entry => {
-        const leaveDates = entry.leave_dates.split(',');
-        return leaveDates.includes(selectedDateTime.toISOString().split('T')[0]);
+        const leaveDates = entry.leave_dates?.split(',');
+        return leaveDates.includes(selectedDateTime.toISOString()?.split('T')[0]);
       });
     }
 
@@ -605,13 +605,13 @@ const isBranchHoliday = branchHolidays.some(holiday => {
 // Check if the selected doctor is available during the appointment time
 const isDoctorAvailable = (selectedDateTime) => {
   const morningStart = new Date(selectedDateTime);
-  morningStart.setHours(selectedDoctor.morning_shift_start_time.split(":")[0], selectedDoctor.morning_shift_start_time.split(":")[1]);
+  morningStart.setHours(selectedDoctor.morning_shift_start_time?.split(":")[0], selectedDoctor.morning_shift_start_time?.split(":")[1]);
   const morningEnd = new Date(selectedDateTime);
-  morningEnd.setHours(selectedDoctor.morning_shift_end_time.split(":")[0], selectedDoctor.morning_shift_end_time.split(":")[1]);
+  morningEnd.setHours(selectedDoctor.morning_shift_end_time?.split(":")[0], selectedDoctor.morning_shift_end_time?.split(":")[1]);
   const eveningStart = new Date(selectedDateTime);
-  eveningStart.setHours(selectedDoctor.evening_shift_start_time.split(":")[0], selectedDoctor.evening_shift_start_time.split(":")[1]);
+  eveningStart.setHours(selectedDoctor.evening_shift_start_time?.split(":")[0], selectedDoctor.evening_shift_start_time?.split(":")[1]);
   const eveningEnd = new Date(selectedDateTime);
-  eveningEnd.setHours(selectedDoctor.evening_shift_end_time.split(":")[0], selectedDoctor.evening_shift_end_time.split(":")[1]);
+  eveningEnd.setHours(selectedDoctor.evening_shift_end_time?.split(":")[0], selectedDoctor.evening_shift_end_time?.split(":")[1]);
   
   return (
     (selectedDateTime >= morningStart && selectedDateTime <= morningEnd) ||
@@ -878,7 +878,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                   )
                   :
                 ( 
-                filteredPatients.map((patient) => (
+                filteredPatients?.map((patient) => (
                   <li
                     key={patient.uid}
                     className={`list-group-item ${
@@ -951,7 +951,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                     required
                     value={timeSlots.find(
                       (slot) =>
-                        slot.value === bookData.appDateTime.split("T")[1]
+                        slot.value === bookData.appDateTime?.split("T")[1]
                     )}
                     onChange={(selectedOption) =>
                       setBookData({
@@ -991,7 +991,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                           :
                         
                         searchDoctor &&
-                          filteredDoctor.map((doctor) => (
+                          filteredDoctor?.map((doctor) => (
                             <li
                               key={doctor.employee_ID}
                               className={`list-group-item ${

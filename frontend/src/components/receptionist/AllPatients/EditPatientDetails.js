@@ -94,9 +94,9 @@ function EditPatientDetails({ onClose, patientInfo, allPatientData }) {
 
  useEffect(() => {
   // Initialize selected diseases based on props
-  if (patientInfo.disease && patientInfo.disease.length > 0) {
-    const disease = patientInfo.disease.split(",");
-    const selected = disease.map(d => ({
+  if (patientInfo.disease && patientInfo.disease?.length > 0) {
+    const disease = patientInfo.disease?.split(",");
+    const selected = disease?.map(d => ({
       value: d, // Assuming 'd' is the value of disease
       label: d // Assuming 'd' is the label of disease
     }));
@@ -131,7 +131,7 @@ useEffect(()=>{
     
     if (actionMeta.action === 'create-option') {
       // If a new option is created, add it to the list of options
-      const newOption = { value: newValue[newValue.length - 1].value, label: newValue[newValue.length - 1].label };
+      const newOption = { value: newValue[newValue?.length - 1].value, label: newValue[newValue?.length - 1].label };
       disease.push(newOption);
     }
   };
@@ -162,7 +162,7 @@ useEffect(()=>{
    // Updating the data object with the selected diseases
    const updatedData = {
     ...data,
-    disease: selectedDisease.map((option) => option.value).toString()
+    disease: selectedDisease?.map((option) => option.value).toString()
   };
    
   try{

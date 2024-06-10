@@ -96,8 +96,8 @@ function CancleAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   // Generate time slots with 15-minute intervals
   const generateTimeSlots = () => {
     const slots = [];
-    for (let hour = parseInt(branchDetail[0]?.open_time.split(":")[0]); hour < parseInt(branchDetail[0]?.close_time.split(":")[0]); hour++) {
-      for (let minute = 0; minute < 60; minute += parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])) {
+    for (let hour = parseInt(branchDetail[0]?.open_time?.split(":")[0]); hour < parseInt(branchDetail[0]?.close_time?.split(":")[0]); hour++) {
+      for (let minute = 0; minute < 60; minute += parseInt(branchDetail[0]?.appoint_slot_duration?.split(" ")[0])) {
           const formattedHour24 = hour.toString().padStart(2, '0');
           const formattedMinute = minute.toString().padStart(2, '0');
   
@@ -129,7 +129,7 @@ function CancleAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   
   useEffect(() => {
     // Extract the time part from the appointment date time and set it as the selected time
-    const time = appointmentInfo.appointment_dateTime.split('T')[1].substring(0, 5);
+    const time = appointmentInfo.appointment_dateTime?.split('T')[1].substring(0, 5);
     setData(prevState => ({
       ...prevState,
       appointment_dateTime: `${selectedDate}T${time}`
@@ -145,7 +145,7 @@ function CancleAppointment({ onClose, appointmentInfo, allAppointmentData }) {
     setData({
       ...data,
       [name]: value,
-      appointment_dateTime: `${value}T${data.appointment_dateTime.split('T')[1]}` // Update the appointment_dateTime with the new date and existing time
+      appointment_dateTime: `${value}T${data.appointment_dateTime?.split('T')[1]}` // Update the appointment_dateTime with the new date and existing time
     });
     setSelectedDate(value)
   };

@@ -107,7 +107,7 @@ function DoctorSection() {
 
   // Function to convert 24-hour time to AM/PM format
 const convertToAMPM = (time) => {
-  const [hours, minutes] = time.split(':');
+  const [hours, minutes] = time?.split(':');
   let suffix = 'AM';
   let formattedHours = parseInt(hours, 10);
 
@@ -160,7 +160,7 @@ const convertToAMPM = (time) => {
     pageNumbers.push(i);
   }
 
-  const renderPageNumbers = pageNumbers.map((number, index) => {
+  const renderPageNumbers = pageNumbers?.map((number, index) => {
     // Display the first two page numbers
     if (index < 2) {
       return (

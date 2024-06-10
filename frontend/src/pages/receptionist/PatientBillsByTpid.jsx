@@ -307,7 +307,7 @@ const PatientBillsByTpid = () => {
                     <th scope="row">Mobile No.</th>
                     <td>{item.mobileno}</td>
                     <th scope="row">Date</th>
-                    <td>{billDetails[0]?.bill_date.split("T")[0]}</td>
+                    <td>{billDetails[0]?.bill_date?.split("T")[0]}</td>
                   </tr>
                   <tr>
                     <th scope="row">Email</th>

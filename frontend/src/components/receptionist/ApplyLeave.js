@@ -92,7 +92,7 @@ function ApplyLeave() {
     //         selectedDates.every(
     //             (date) => leavesData.some((leave) => leave.leave_dates.includes(date))
     //         )
-      if(selectedDates.length === 0){
+      if(selectedDates?.length === 0){
         cogoToast.error("Please select a date")
         return;
       }
@@ -207,7 +207,7 @@ console.log(formData)
             <div>
               <strong>Selected Dates:</strong>
               <ul>
-                {selectedDates.map((date) => (
+                {selectedDates?.map((date) => (
                   <li key={date}>{ moment(date, 'YYYY-MM-DD').format('DD-MM-YYYY')}</li>
                 ))}
               </ul>

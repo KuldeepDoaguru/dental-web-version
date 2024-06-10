@@ -92,14 +92,14 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   const generateTimeSlots = () => {
     const slots = [];
     for (
-      let hour = parseInt(branchDetail[0]?.open_time.split(":")[0]);
-      hour < parseInt(branchDetail[0]?.close_time.split(":")[0]);
+      let hour = parseInt(branchDetail[0]?.open_time?.split(":")[0]);
+      hour < parseInt(branchDetail[0]?.close_time?.split(":")[0]);
       hour++
     ) {
       for (
         let minute = 0;
         minute < 60;
-        minute += parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])
+        minute += parseInt(branchDetail[0]?.appoint_slot_duration?.split(" ")[0])
       ) {
         const formattedHour24 = hour.toString().padStart(2, "0");
         const formattedMinute = minute.toString().padStart(2, "0");
@@ -136,8 +136,8 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   useEffect(() => {
     // Extract the time part from the appointment date time and set it as the selected time
     const time = appointmentInfo.appointment_dateTime
-      .split("T")[1]
-      .substring(0, 5);
+      ?.split("T")[1]
+      ?.substring(0, 5);
     setData((prevState) => ({
       ...prevState,
       appointment_dateTime: `${selectedDate}T${time}`,
@@ -153,7 +153,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
       ...data,
       [name]: value,
       appointment_dateTime: `${value}T${
-        data.appointment_dateTime.split("T")[1]
+        data.appointment_dateTime?.split("T")[1]
       }`, // Update the appointment_dateTime with the new date and existing time
     });
     setSelectedDate(value);
@@ -466,23 +466,23 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
     const isDoctorAvailable = (selectedDateTime) => {
       const morningStart = new Date(selectedDateTime);
       morningStart.setHours(
-        selectedDoctor.morning_shift_start_time.split(":")[0],
-        selectedDoctor.morning_shift_start_time.split(":")[1]
+        selectedDoctor.morning_shift_start_time?.split(":")[0],
+        selectedDoctor.morning_shift_start_time?.split(":")[1]
       );
       const morningEnd = new Date(selectedDateTime);
       morningEnd.setHours(
-        selectedDoctor.morning_shift_end_time.split(":")[0],
-        selectedDoctor.morning_shift_end_time.split(":")[1]
+        selectedDoctor.morning_shift_end_time?.split(":")[0],
+        selectedDoctor.morning_shift_end_time?.split(":")[1]
       );
       const eveningStart = new Date(selectedDateTime);
       eveningStart.setHours(
-        selectedDoctor.evening_shift_start_time.split(":")[0],
-        selectedDoctor.evening_shift_start_time.split(":")[1]
+        selectedDoctor.evening_shift_start_time?.split(":")[0],
+        selectedDoctor.evening_shift_start_time?.split(":")[1]
       );
       const eveningEnd = new Date(selectedDateTime);
       eveningEnd.setHours(
-        selectedDoctor.evening_shift_end_time.split(":")[0],
-        selectedDoctor.evening_shift_end_time.split(":")[1]
+        selectedDoctor.evening_shift_end_time?.split(":")[0],
+        selectedDoctor.evening_shift_end_time?.split(":")[1]
       );
 
       return (
@@ -637,9 +637,9 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
       // If the doctor has leave entries, check if the selected date falls within any of them
       if (doctorLeaveEntries.length > 0) {
         return !doctorLeaveEntries.some((entry) => {
-          const leaveDates = entry.leave_dates.split(",");
+          const leaveDates = entry.leave_dates?.split(",");
           return leaveDates.includes(
-            selectedDateTime.toISOString().split("T")[0]
+            selectedDateTime.toISOString()?.split("T")[0]
           );
         });
       }
@@ -720,7 +720,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
                       required
                       value={timeSlots.find(
                         (slot) =>
-                          slot.value === data.appointment_dateTime.split("T")[1]
+                          slot.value === data.appointment_dateTime?.split("T")[1]
                       )}
                       onChange={(selectedOption) =>
                         setData({
@@ -748,7 +748,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
                     <div>
                       <ul className="list-group">
                         {searchDoctor &&
-                          filteredDoctor.map((doctor) => (
+                          filteredDoctor?.map((doctor) => (
                             <li
                               key={doctor.employee_ID}
                               className={`list-group-item ${

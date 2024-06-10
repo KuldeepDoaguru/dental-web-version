@@ -110,7 +110,7 @@ const AttendanceLeave = () => {
       month: "long",
     }).format(currentDate);
 
-    const formattedDate = currentDate.toISOString().split("T")[0];
+    const formattedDate = currentDate.toISOString()?.split("T")[0];
     setFormattedDate(formattedDate);
 
     if (fromDate && toDate) {
@@ -139,19 +139,19 @@ const AttendanceLeave = () => {
   console.log(formattedDate.slice(0, 7));
   console.log(attendRepo[0]?.date);
   console.log(`${formattedDate.slice(0, 7)}-${daysInMonth[0]}`);
-  const filter = daysInMonth.map((day) => {
+  const filter = daysInMonth?.map((day) => {
     return attendRepo.find(
       (item) =>
-        item.date.split("T")[0] === `${formattedDate.slice(0, 7)}-${day}`
+        item.date?.split("T")[0] === `${formattedDate.slice(0, 7)}-${day}`
     );
   });
 
   console.log(filter[5]?.login);
-  console.log(attendRepo[0]?.date.split("T")[0] >= fromDate);
+  console.log(attendRepo[0]?.date?.split("T")[0] >= fromDate);
   console.log(toDate);
   const fitlerByDuration = attendRepo?.filter((item) => {
     return (
-      item.date.split("T")[0] >= fromDate && item.date.split("T")[0] <= toDate
+      item.date?.split("T")[0] >= fromDate && item.date?.split("T")[0] <= toDate
     );
   });
 
@@ -420,11 +420,11 @@ const defaultOptions = {
                                 {leavesData?.map((item,index) => {
 
                                     // Split the leave_dates string into an array of date strings
-                            const leaveDatesArray = item?.leave_dates.split(",");
+                            const leaveDatesArray = item?.leave_dates?.split(",");
 
                             // Format each date in the array using the formatDate function
                             const formattedLeaveDates = leaveDatesArray
-                                .map((dateString) => formatDate(dateString))
+                                ?.map((dateString) => formatDate(dateString))
                                 .join(", "); // Join the formatted dates back into a single string
                                     return(
                                         <tr
@@ -435,7 +435,7 @@ const defaultOptions = {
                                         <td>{formattedLeaveDates}</td>
                                         <td>{item?.leave_reason}</td>
                                         <td>{item?.leave_status}</td>
-                                        <td>{item?.created_at ? moment(item?.created_at.split("T")[0]).format('DD/MM/YYYY') : ""} </td>
+                                        <td>{item?.created_at ? moment(item?.created_at?.split("T")[0]).format('DD/MM/YYYY') : ""} </td>
                                        
                                       </tr>
                                     )

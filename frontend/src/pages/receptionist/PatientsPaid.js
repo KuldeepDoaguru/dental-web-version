@@ -114,7 +114,7 @@ for (let i = 1; i <= Math.ceil(filterForPaidBills.length / rowsPerPage); i++) {
   pageNumbers.push(i);
 }
 
-const renderPageNumbers = pageNumbers.map((number, index) => {
+const renderPageNumbers = pageNumbers?.map((number, index) => {
   // Display the first two page numbers
   if (index < 2) {
     return (
@@ -290,7 +290,7 @@ const defaultOptions = {
                                   <>
                                     <tr className="table-row">
                                       <td>{item.bill_id}</td>
-                                      <td>{moment(item.bill_date.split("T")[0]).format('DD/MM/YYYY')}</td>
+                                      <td>{moment(item.bill_date?.split("T")[0]).format('DD/MM/YYYY')}</td>
                                       <td>{item.tp_id}</td>
                                       <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
                                       <td>{item.patient_name}</td>

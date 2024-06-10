@@ -15,7 +15,7 @@ function Card() {
   const {refreshTable,currentUser} = useSelector((state) => state.user);
   const  branch = currentUser.branch_name;
   const [opdData, setOpdData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Initialize with today's date
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString()?.split('T')[0]); // Initialize with today's date
   const [opdAmount,setOpdAmount] = useState(0);
   const [appointmentData,setAppointmentsData] = useState([]);
   const token = currentUser?.token;

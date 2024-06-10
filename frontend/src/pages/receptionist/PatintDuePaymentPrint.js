@@ -336,7 +336,7 @@ function PatintDuePaymentPrint() {
                                 <h6 className="ms-1">
                                   {" "}
                                   : {
-                                    billAmount[0]?.bill_date.split("T")[0]
+                                    billAmount[0]?.bill_date?.split("T")[0]
                                   }{" "}
                                 </h6>
                               </div>

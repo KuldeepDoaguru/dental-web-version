@@ -11,7 +11,7 @@ const Profile = () => {
   const  branch = currentUser?.branch_name;
     // Function to convert 24-hour time to AM/PM format
 const convertToAMPM = (time) => {
-    const [hours, minutes] = time.split(':');
+    const [hours, minutes] = time?.split(':');
     let suffix = 'AM';
     let formattedHours = parseInt(hours, 10);
   

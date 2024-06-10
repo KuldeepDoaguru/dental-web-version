@@ -136,7 +136,7 @@ for (let i = 1; i <= Math.ceil(inquiries.length / rowsPerPage); i++) {
   pageNumbers.push(i);
 }
 
-const renderPageNumbers = pageNumbers.map((number, index) => {
+const renderPageNumbers = pageNumbers?.map((number, index) => {
   // Display the first two page numbers
   if (index < 2) {
     return (
@@ -199,7 +199,7 @@ const handleDoctorChange = (e)=>{
   const { value } = e.target;
 
   // Assuming the value format is "Doctor Name - Doctor ID"
-  const [doctorName, doctorId] = value.split(' - ');
+  const [doctorName, doctorId] = value?.split(' - ');
 
   setSelectedDoctor({
     doctorName,
@@ -520,7 +520,7 @@ const defaultOptions = {
             </div>
             ) : (
                         <tbody>
-                          {currentRows.map((data,index)=>(
+                          {currentRows?.map((data,index)=>(
                              <tr key={index}>
                              <td>{data.id}</td>
                              <td>{data.patient_name	}</td>

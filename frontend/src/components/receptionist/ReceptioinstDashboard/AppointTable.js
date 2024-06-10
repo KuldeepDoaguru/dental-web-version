@@ -26,8 +26,8 @@ const AppointTable = () => {
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState("");
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]); // Initialize with today's date
-  const todayDate = new Date().toISOString().split('T')[0];
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString()?.split('T')[0]); // Initialize with today's date
+  const todayDate = new Date().toISOString()?.split('T')[0];
 
 
 
@@ -155,7 +155,7 @@ console.log(appointmentsData);
     return () => {
       const currentDate = new Date(selectedDate);
       currentDate.setDate(currentDate.getDate() + increment);
-      setSelectedDate(currentDate.toISOString().split('T')[0]);
+      setSelectedDate(currentDate.toISOString()?.split('T')[0]);
     };
   };
   // Add an async function to handle status change
@@ -278,7 +278,7 @@ console.log(appointmentsData);
     pageNumbers.push(i);
   }
 
-  const renderPageNumbers = pageNumbers.map((number, index) => {
+  const renderPageNumbers = pageNumbers?.map((number, index) => {
     // Display the first two page numbers
     if (index < 2) {
       return (
@@ -442,7 +442,7 @@ console.log(appointmentsData);
             </div>
             ) : (
               <tbody>
-                {currentRows.map((patient, index) => (
+                {currentRows?.map((patient, index) => (
                   <tr key={index}>
                     <td>{patient.appoint_id}</td>
                     <td><Link to={`/patient_profile/${patient.uhid}`}>{patient.uhid}</Link></td>
@@ -479,12 +479,12 @@ console.log(appointmentsData);
                       </ul> */}
 
 <ul className="dropdown-menu drop-pointer">
-  {(patient.appointment_status !== "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime.split("T")[0] === todayDate) && (
+  {(patient.appointment_status !== "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime?.split("T")[0] === todayDate) && (
     <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
       <a onClick={!loading ? () => handleStatusChange(patient.appoint_id, patient.uhid, 'Check-In') : null}>Check-In</a>
     </li>
   )}
-  {(patient.appointment_status === "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime.split("T")[0] === todayDate) && (
+  {(patient.appointment_status === "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime?.split("T")[0] === todayDate) && (
     <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
       <a onClick={!loading ? () => handleStatusChange(patient.appoint_id, patient.uhid, 'Appoint') : null}>Change Status to "Appoint"</a>
     </li>

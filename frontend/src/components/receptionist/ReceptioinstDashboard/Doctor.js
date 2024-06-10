@@ -7,7 +7,7 @@ import moment from "moment";
 
 function Doctor() {
   
-  const [date,setDate] = useState(new Date().toISOString().split('T')[0]) ; // Set default date to today's date
+  const [date,setDate] = useState(new Date().toISOString()?.split('T')[0]) ; // Set default date to today's date
   const [searchQuery, setSearchQuery] = useState("");
   const [timeSlots, setTimeSlots] = useState([]);
 
@@ -212,7 +212,7 @@ useEffect(() => {
     // If the doctor has leave entries, check if the selected date falls within any of them
     if (doctorLeaveEntries.length > 0) {
       return !doctorLeaveEntries.some(entry => {
-        const leaveDates = entry.leave_dates.split(',');
+        const leaveDates = entry.leave_dates?.split(',');
         console.log(leaveDates);
         console.log(moment(selectedDateTime).format('YYYY-MM-DD'))
         return leaveDates.includes(moment(selectedDateTime).format('YYYY-MM-DD') );
@@ -254,14 +254,14 @@ const handleGenrateSlots = () => {
       const timeSlot = currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
       const dateTimeSlot = `${selectedDate} ${timeSlot}`; // Concatenate date and time
       morningSlots.push(dateTimeSlot);
-      currentTime.setMinutes(currentTime.getMinutes() + parseInt(branchDetail[0]?.appoint_slot_duration.split(" ")[0])); // Add 15 minutes
+      currentTime.setMinutes(currentTime.getMinutes() + parseInt(branchDetail[0]?.appoint_slot_duration?.split(" ")[0])); // Add 15 minutes
     }
 
     // for genrate evening time slots
     const eveningStartTime = new Date(selectedDate);
     const eveningEndTime = new Date(selectedDate);
-    const [eveningStartHour, eveningStartMinute] = doctor?.evening_shift_start_time?.split(":").map(Number);
-    const [eveningEndHour, eveningEndMinute] = doctor?.evening_shift_end_time?.split(":").map(Number);
+    const [eveningStartHour, eveningStartMinute] = doctor?.evening_shift_start_time?.split(":")?.map(Number);
+    const [eveningEndHour, eveningEndMinute] = doctor?.evening_shift_end_time?.split(":")?.map(Number);
 
     // Set start and end time
     eveningStartTime.setHours(eveningStartHour, eveningStartMinute, 0);
@@ -400,7 +400,7 @@ const availableEveningSlots = doctorTimeSlots?.eveningSlots.filter(slot => {
         <select className="form-select">
         <option value="Morning">Morning</option>
           {/* Display available time slots for the current doctor */}
-          {availableMorningSlots && availableMorningSlots.map((slot, i) => (
+          {availableMorningSlots && availableMorningSlots?.map((slot, i) => (
             <option key={i} value={slot} disabled>{new Date(slot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</option>
           ))}
         </select>
@@ -410,7 +410,7 @@ const availableEveningSlots = doctorTimeSlots?.eveningSlots.filter(slot => {
         <select className="form-select">
           {/* Display available time slots for the current doctor */}
           <option value="Morning">Evening</option>
-          {availableEveningSlots && availableEveningSlots.map((slot, i) => (
+          {availableEveningSlots && availableEveningSlots?.map((slot, i) => (
             <option key={i} value={slot} disabled>{new Date(slot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</option>
           ))}
         </select>

@@ -116,7 +116,7 @@ for (let i = 1; i <= Math.ceil(filterForUnPaidBills.length / rowsPerPage); i++) 
   pageNumbers.push(i);
 }
 
-const renderPageNumbers = pageNumbers.map((number, index) => {
+const renderPageNumbers = pageNumbers?.map((number, index) => {
   // Display the first two page numbers
   if (index < 2) {
     return (
@@ -307,7 +307,7 @@ const defaultOptions = {
                                           (item.paid_amount +
                                             item.pay_by_sec_amt)}
                                       </td>
-                                      <td>{moment(item.bill_date.split("T")[0]).format('DD/MM/YYYY')}</td>
+                                      <td>{moment(item.bill_date?.split("T")[0]).format('DD/MM/YYYY')}</td>
                                       <td>
                                           <Link
                                             to={`/PatintDuePaymentPrint/${item.bill_id}/${item.tp_id}/${item.uhid}`}

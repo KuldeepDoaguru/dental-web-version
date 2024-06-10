@@ -103,7 +103,7 @@ for (let i = 1; i <= Math.ceil(patients.length / rowsPerPage); i++) {
   pageNumbers.push(i);
 }
 
-const renderPageNumbers = pageNumbers.map((number, index) => {
+const renderPageNumbers = pageNumbers?.map((number, index) => {
   // Display the first two page numbers
   if (index < 2) {
     return (
@@ -277,7 +277,7 @@ const defaultOptions = {
             </div>
             ) : (
                         <tbody>
-                          {currentRows.map((data,index)=>(
+                          {currentRows?.map((data,index)=>(
                              <tr key={index}>
                              <td><Link to={`/patient_profile/${data.uhid}`}>{data.uhid}</Link></td>
                              <td>{data.patient_name}</td>

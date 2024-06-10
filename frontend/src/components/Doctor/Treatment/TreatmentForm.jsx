@@ -172,7 +172,7 @@ const TreatmentForm = () => {
 
   console.log(rawNetAmount);
   console.log(netAmount);
-  console.log(formData.paid_amount);
+  console.log(formData);
 
   const secrecAmount = () => {
     if (treatments[0]?.current_sitting > 1) {
@@ -295,12 +295,12 @@ const TreatmentForm = () => {
       securityAmt[0]?.payment_status === "success" &&
       securityAmt[0]?.remaining_amount <= 0
     ) {
-      return netAmount;
+      return rawNetAmount;
     } else if (
       securityAmt[0]?.payment_status === "success" &&
-      securityAmt[0]?.remaining_amount < netAmount
+      securityAmt[0]?.remaining_amount < rawNetAmount
     ) {
-      return netAmount - securityAmt[0]?.remaining_amount;
+      return rawNetAmount - securityAmt[0]?.remaining_amount;
     } else {
       return 0;
     }
@@ -350,6 +350,9 @@ const TreatmentForm = () => {
 
   console.log(pendingAmountValue, secRecValue);
 
+  console.log(lastTreatment?.current_sitting);
+  console.log(lastTreatment?.disc_amt);
+
   const formDetails = {
     branch: branch,
     sitting_number: lastTreatment?.current_sitting,
@@ -363,10 +366,12 @@ const TreatmentForm = () => {
       lastTreatment?.current_sitting <= 1
         ? formData.disc_amt
         : lastTreatment?.disc_amt <= 0
-        ? formData.disc_amt
+        ? formData.disc_amt === ""
+          ? 0
+          : formData.disc_amt
         : lastTreatment?.disc_amt,
     total_amt: lastTreatment?.totalCost * dataArray?.length,
-    net_amount: lastTreatment?.current_sitting <= 1 ? rawNetAmount : netAmount,
+    net_amount: rawNetAmount,
     paid_amount: formData.paid_amount,
     pending_amount:
       lastTreatment?.current_sitting <= 1

@@ -194,13 +194,13 @@ const NewTreatPrescription = () => {
     disease: treatments[0]?.disease,
     treatment: treatment,
     medicine_name:
-      prescriptionData.medicine_name === "other"
+      prescriptionData?.medicine_name === "other"
         ? otherMed
-        : prescriptionData.medicine_name,
-    dosage: prescriptionData.dosage,
-    frequency: prescriptionData.frequency,
-    duration: prescriptionData.duration,
-    note: prescriptionData.note,
+        : prescriptionData?.medicine_name,
+    dosage: prescriptionData?.dosage,
+    frequency: prescriptionData?.frequency,
+    duration: prescriptionData?.duration,
+    note: prescriptionData?.note,
   };
 
   console.log(medicineInput);
@@ -657,7 +657,9 @@ const NewTreatPrescription = () => {
                       <td>{item.total_amt}</td>
                       <td>{item.disc_amt}</td>
                       <td>{item.net_amount}</td>
-                      <td>{item.sec_rec_amt + item.dir_rec_amt}</td>
+                      <td>
+                        {Number(item.sec_rec_amt) + Number(item.dir_rec_amt)}
+                      </td>
                       <td>{item.pending_amount}</td>
                       <td>{item.note}</td>
                     </tr>
@@ -730,7 +732,7 @@ const NewTreatPrescription = () => {
                   </div>
                 </div>
 
-                {prescriptionData.medicine_name === "other" && (
+                {prescriptionData?.medicine_name === "other" && (
                   <>
                     <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                       <label>Other Medicine</label>
@@ -749,14 +751,14 @@ const NewTreatPrescription = () => {
                 <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Dosage</label>
-                    {prescriptionData.medicine_name !== "" && (
+                    {prescriptionData?.medicine_name !== "" && (
                       <input
                         type="text"
                         id="dosage"
                         placeholder="dosage"
                         className="form-control"
                         name="dosage"
-                        value={prescriptionData.dosage}
+                        value={prescriptionData?.dosage}
                         onChange={handleChange}
                       />
                     )}
@@ -766,7 +768,7 @@ const NewTreatPrescription = () => {
                 <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Frequency</label>
-                    {prescriptionData.medicine_name !== "" && (
+                    {prescriptionData?.medicine_name !== "" && (
                       <>
                         <select
                           id="frequency"
@@ -792,7 +794,7 @@ const NewTreatPrescription = () => {
                 <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div data-mdb-input-init className="form-outline">
                     <label>Duration</label>
-                    {prescriptionData.medicine_name !== "" && (
+                    {prescriptionData?.medicine_name !== "" && (
                       <>
                         <select
                           id="duration"
@@ -827,7 +829,7 @@ const NewTreatPrescription = () => {
                       className="form-control"
                       placeholder="write note"
                       name="note"
-                      value={prescriptionData.note}
+                      value={prescriptionData?.note}
                       onChange={handleChange}
                     />
                   </div>

@@ -119,7 +119,7 @@ const Sider = () => {
             </li>
             
             <hr />
-            <li>
+            {/* <li>
               <div className="link-div">
                 <div>
                   <i className="fs-4 bi bi-power" onClick={logout}></i>
@@ -129,7 +129,7 @@ const Sider = () => {
                 </div>
               </div>
             </li>
-            <hr />
+            <hr /> */}
           </ul>
         </div>
       </div>

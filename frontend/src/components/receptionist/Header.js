@@ -3,12 +3,29 @@ import dental_logo from '../../images/dentalhouse.png'
 import { AiFillBell } from "react-icons/ai";
 import { FaUserAlt } from "react-icons/fa";
 import styled from 'styled-components'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch ,useSelector} from "react-redux";
+import { clearUser } from '../../redux/user/userSlice';
 function Header() {
   const {currentUser} = useSelector((state) => state.user);
   const userName = currentUser.employee_name;
   const userId = currentUser.employee_ID;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const logout = () =>{
+    // Display a confirmation popup
+    const isConfirmed = window.confirm('Are you sure you want to Logout?');
+ 
+    if (!isConfirmed) {
+      // If the user cancels the deletion, do nothing
+      return;
+    }
+    navigate("/")
+     dispatch(clearUser())
+     
+   }
+
   return (
     <Wrapper>
 
@@ -42,6 +59,7 @@ function Header() {
                     <li><Link to='/receptionist_profile' className="dropdown-item">View Profile</Link></li>
                     <li><Link to='/attendanceLeave' className="dropdown-item">View Attendance & Leave</Link></li>
                     <li><Link to='/branch-details' className="dropdown-item">View Clinic Details</Link></li>
+                    <li><Link onClick={logout} className="dropdown-item">Logout</Link></li>
                     {/* <li><hr className="dropdown-divider" /></li> */}
                    
 

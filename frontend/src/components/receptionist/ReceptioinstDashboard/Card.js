@@ -63,7 +63,7 @@ function Card() {
     } catch (error) {
       console.log(error);
       if(error?.response?.status == 401){
-        alert("Your token is expired please login again")
+        // alert("Your token is expired please login again")
         dispatch(clearUser())
         navigate('/receptionist_login');
       }

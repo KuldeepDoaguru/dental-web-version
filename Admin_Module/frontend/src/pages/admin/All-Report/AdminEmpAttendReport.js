@@ -188,10 +188,10 @@ const AdminEmpAttendReport = () => {
                 </div>
 
                 <div className="container-fluid mt-3">
+                  <div className="container-fluid">
                   <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
                   </button>
-                  <div className="container-fluid">
                     <div className="row mt-3">
                       {/* <div className="col-1"></div> */}
 
@@ -361,10 +361,12 @@ const Container = styled.div`
       background-color: #1abc9c;
       color: white;
       min-width: 7rem;
+      white-space: nowrap;
     }
     td {
       font-weight: bold;
       min-width: 7rem;
+      white-space: nowrap;
     }
   }
   .table::-webkit-scrollbar {

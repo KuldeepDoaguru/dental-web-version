@@ -36,10 +36,12 @@ const RadiologyTest = () => {
 
     fetchPatientDetails();
   }, []);
+  // Filter the patient details to include only those with a "radiologytest" status
+  const radiologytestPatients = patientDetails?.filter(patient => patient.lab_name === "radiology");
 
-  const filteredPatients = patientDetails.filter((patient) => {
-    const fullName =
-      `${patient.patient_name} ${patient.assigned_doctor_name}`.toLowerCase();
+  // Apply search and date filters to the radiologytest patients
+  const filteredPatients = radiologytestPatients?.filter((patient) => {
+    const fullName = `${patient.patient_name}`.toLowerCase();
     const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
     return (
       fullName.includes(searchQuery.toLowerCase()) &&
@@ -120,6 +122,11 @@ const RadiologyTest = () => {
                   className=""
                   style={{ maxHeight: "700px", overflowY: "auto" }}
                 >
+                  {filteredPatients.length === 0 ? (
+          <div className='mb-2 fs-4 fw-bold text-center'>No radiology test available</div>
+          ) : (
+
+<>
                   <table className="table table-bordered">
                     <thead>
                       <tr>
@@ -179,6 +186,9 @@ const RadiologyTest = () => {
                       ))}
                     </tbody>
                   </table>
+                  </>
+          )
+        }
                 </div>
               </div>
 

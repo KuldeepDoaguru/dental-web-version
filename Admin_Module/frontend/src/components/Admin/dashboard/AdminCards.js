@@ -4,6 +4,7 @@ import { IoPeople } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AdminCards = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -11,7 +12,7 @@ const AdminCards = () => {
   const [appointmentList, setAppointmentList] = useState([]);
   const [availableEmp, setAvailableEmp] = useState([]);
   const [treatValue, setTreatValue] = useState([]);
-
+const navigate = useNavigate()
   const getAppointList = async () => {
     try {
       const { data } = await axios.get(
@@ -23,10 +24,16 @@ const AdminCards = () => {
           },
         }
       );
+    
       console.log(data);
       setAppointmentList(data);
     } catch (error) {
       console.log(error);
+      if (error?.data?.status == 401) {
+        alert("Your token is expired please login again");
+        navigate("/");
+      }
+      
     }
   };
 

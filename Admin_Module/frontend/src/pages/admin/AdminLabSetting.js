@@ -855,13 +855,13 @@ const AdminLabSetting = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-11 ps-0" style={{marginTop:"5rem"}}>
                 {/* <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <BranchSelector />
                   </div>
                 </div> */}
-                <div className="container-fluid mt-3">
+                <div className="container-fluid mt-3 response">
                   <h2 className="text-center">Lab Settings</h2>
                   <div className="mid-box">
                     <div className="row mt-5 background">
@@ -888,7 +888,7 @@ const AdminLabSetting = () => {
                         </div>
                       </div> */}
 
-                      <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 m-md-3">
+                      <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-12 m-md-3" style={{whiteSpace:"nowrap"}}>
                         <div className="">
                           <button
                             className="btn btn-info lab-actbtn"
@@ -1352,4 +1352,20 @@ const Container = styled.div`
     padding: 0.5rem;
     font-weight: bold;
   }
+  .response{
+    @media (min-width: 1024px) and (max-width: 1279px){
+              width: 95%;
+            }
+    @media (min-width: 768px) and (max-width: 1023px){
+      width: 90%;
+      margin-left: 3rem;
+            }
+   }
+
+   th{
+    white-space: nowrap;
+   }
+   td{
+    white-space: nowrap;
+   }
 `;

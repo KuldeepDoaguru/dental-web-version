@@ -108,10 +108,10 @@ const AdminEmpDetailReport = () => {
                   </div>
                 </div>
                 <div className="container-fluid mt-3">
+                  <div className="container-fluid">
                   <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
                   </button>
-                  <div className="container-fluid">
                     <div className="row mt-3">
                       {/* <div className="col-1"></div> */}
 
@@ -259,6 +259,10 @@ const Container = styled.div`
   th {
     background-color: #1abc9c;
     color: white;
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
   }
 
   .smallImg {

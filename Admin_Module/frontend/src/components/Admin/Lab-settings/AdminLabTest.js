@@ -495,7 +495,7 @@ const LabTest = () => {
   }, [keyword]);
 
 
-  const searchFilter = labTestList.filter((lab)=>lab.test_name.toLowerCase().trim().includes(keyword.toLowerCase().trim())
+  const searchFilter = labTestList.filter((lab)=>lab.test_name.toLowerCase().trim().includes(keyword.toLowerCase().trim())||lab.test_code.trim().includes(keyword.toLowerCase().trim())
 );
 
 
@@ -529,7 +529,7 @@ const LabTest = () => {
             <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
               <input
                 type="text"
-                placeholder="search here"
+                placeholder="search by test name or test"
                 className="inputser"
                 value={keyword}
                 onChange={(e) =>
@@ -543,6 +543,11 @@ const LabTest = () => {
             <Lottie options={defaultOptions} height={300} width={400}></Lottie>
           ) : (
             <>
+            {displayedAppointments.length === 0 ? (
+          <div className='mb-2 fs-4 fw-bold text-center'>No lab test available</div>
+          ) : (
+
+<>
         <div class="table-responsive mt-4">
           <div>
          <p className="fw-bold">Total Lab Test - {totalLab +1 }</p>
@@ -715,6 +720,9 @@ const LabTest = () => {
 
           {/* popup for updating notice */}
         </div>
+        </>
+          )
+        }
         </>
           )}
       </Container>

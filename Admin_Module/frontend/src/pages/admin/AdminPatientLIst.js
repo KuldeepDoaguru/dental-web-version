@@ -302,13 +302,13 @@ const AdminPatientLIst = () => {
               <div className="col-lg-1 col-md-1 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-md-11 col-11 ps-0 mx-2" style={{marginTop:"5rem"}}>
+              <div className="col-lg-11 col-md-11 col-11 ps-0 mx-2 " style={{marginTop:"5rem"}}>
                 {/* <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <BranchSelector />
                   </div>
                 </div> */}
-                <div className="container-fluid mt-3">
+                <div className="container-fluid mt-3 response">
                   <h2 className="text-center">Patient Details List</h2>
                   <div className="">
                     <div>
@@ -336,6 +336,11 @@ const AdminPatientLIst = () => {
             <Lottie options={defaultOptions} height={300} width={400}></Lottie>
           ) : (
             <>
+              {displayedAppointments.length === 0 ? (
+          <div className='mb-2 fs-4 fw-bold text-center'>No patient details list available</div>
+          ) : (
+
+<>
                 
                       <div class="table-responsive mt-4">
                         <table class="table table-bordered">
@@ -400,7 +405,9 @@ const AdminPatientLIst = () => {
                           </tbody>
                         </table>
                       </div>
-
+                      </>
+          )
+        }
                       </>
           )}
                       <PaginationContainer>
@@ -433,9 +440,11 @@ const Container = styled.div`
     background-color:  #1abc9c;
     color: white;
     text-align: center;
+    white-space: nowrap;
   }
   td {
     text-align: center;
+    white-space: nowrap;
   }
 
   .thead {
@@ -498,6 +507,15 @@ const Container = styled.div`
   input:focus {
     border-color:  #1abc9c;
   }
+  .response{
+    @media (min-width: 1024px) and (max-width: 1279px){
+              width: 95%;
+            }
+    @media (min-width: 768px) and (max-width: 1023px){
+      width: 90%;
+      margin-left: 3rem;
+            }
+   }
 `;
 
 const PaginationContainer = styled.div`
@@ -536,4 +554,5 @@ const PaginationContainer = styled.div`
   .pagination li a:hover:not(.active) {
     background-color: #ddd;
   }
+ 
 `;

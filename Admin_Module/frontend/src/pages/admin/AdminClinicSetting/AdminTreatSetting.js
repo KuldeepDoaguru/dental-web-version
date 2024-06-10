@@ -718,10 +718,10 @@ const AdminTreatSetting = () => {
                 {/* <BranchSelector /> */}
               </div>
               <div className="container-fluid mt-3">
+                <div className="container-fluid">
                 <button className="btn btn-success" onClick={goBack}>
                   <IoMdArrowRoundBack /> Back
                 </button>
-                <div className="container-fluid">
                   <div className="row mt-3">
                     {/* <div className="col-1"></div> */}
 
@@ -775,6 +775,7 @@ const AdminTreatSetting = () => {
             <Lottie options={defaultOptions} height={300} width={400}></Lottie>
           ) : (
             <>
+            <div className="" style={{overflow:"auto"}}>
                       <table class="table table-bordered rounded shadow tableStyle">
                         <thead className="table-head">
                           <tr>
@@ -894,6 +895,7 @@ const AdminTreatSetting = () => {
                             ))}
                         </tbody>
                       </table>
+                      </div>
                       </>
   )}
                       <PaginationContainer>
@@ -1039,11 +1041,7 @@ const AdminTreatSetting = () => {
 
 export default AdminTreatSetting;
 const Container = styled.div`
-  .inputser {
-    border-radius: 1.5rem;
-    padding: 0.5rem;
-    width: 30%;
-  }
+
 
   input::placeholder {
             color: #aaa;
@@ -1057,15 +1055,26 @@ const Container = styled.div`
         }
 
         input {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
-        }
+    width: 30%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+ 
+            @media (min-width: 1279px) and (max-width: 1600px){
+              width: 45%;
+            }
+            @media (min-width: 1024px) and (max-width: 1279px){
+              width: 60%;
+            }
+            @media (min-width: 768px) and (max-width: 1023px){
+              width: 88%;
+            }
+  }
+
 
         input:focus {
             border-color:  #1abc9c; /* Change border color on focus */
@@ -1112,6 +1121,13 @@ const Container = styled.div`
   .btnback {
     background: #004aad;
     color: white;
+  
+  }
+  th{
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
   }
 `;
 const PaginationContainer = styled.div`

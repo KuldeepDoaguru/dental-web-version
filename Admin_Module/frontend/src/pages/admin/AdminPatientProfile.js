@@ -10,6 +10,7 @@ import { useParams } from "react-router-dom";
 import SiderAdmin from "./SiderAdmin";
 import HeaderAdmin from "./HeaderAdmin";
 import Navbar from "./patientDetails/Navbar";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const AdminPatientProfile = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,9 @@ const AdminPatientProfile = () => {
   console.log(user);
   const [patientData, setPatientData] = useState([]);
   const [ongoingTreat, setOngoingTreat] = useState([]);
-
+  const goBack = () => {
+    window.history.go(-1);
+  };
   const patientProfileData = async () => {
     try {
       const { data } = await axios.get(
@@ -84,6 +87,9 @@ const AdminPatientProfile = () => {
             <div className="d-flex justify-content-between">
               {/* <BranchSelector /> */}
             </div>
+          <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
           </div>
           <div className="row g-2">
             <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">

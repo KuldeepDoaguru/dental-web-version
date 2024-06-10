@@ -392,6 +392,10 @@ const Container = styled.div`
     background-color: #1abc9c;
     color: white;
     position: sticky;
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
   }
   .table-responsive{
     height: 30rem;

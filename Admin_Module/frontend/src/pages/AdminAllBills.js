@@ -35,13 +35,13 @@ const AdminAllBills = () => {
                 </div> */}
                 <div className="container-fluid mt-3">
                   <h3 className="text-center">Bill List</h3>
-                  <div className="container-fluid mt-5 navsect background">
+                  <div className="container-fluid mt-5 navsect background ">
                     <Nav
                       className="d-flex justify-content-between side-cont"
                       activeKey={selectedTab}
                       onSelect={(selectedKey) => setSelectedTab(selectedKey)}
                     >
-                      <div className="d-flex flex-row">
+                      <div className="d-flex flex-row mx-3">
                         <Nav.Item>
                           <Nav.Link eventKey="tab1" className="navlink shadow">
                             Treatment Bills
@@ -125,6 +125,9 @@ const Container = styled.div`
   th {
     background-color:#1abc9c;
     color: white;
+    white-space: nowrap;
+  }
+  td{
     white-space: nowrap;
   }
 

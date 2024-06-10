@@ -37,15 +37,18 @@ const BloodTest = () => {
     fetchPatientDetails();
   }, []);
 
-  const filteredPatients = patientDetails.filter((patient) => {
-    const fullName =
-      `${patient.patient_name} ${patient.assigned_doctor_name}`.toLowerCase();
-    const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
-    return (
-      fullName.includes(searchQuery.toLowerCase()) &&
-      (!dateFilter || formattedDate === dateFilter)
-    );
-  });
+   // Filter the patient details to include only those with a "pathologytest" status
+ const pathologytestPatients = patientDetails?.filter(patient => patient.lab_name === "pathology");
+
+ // Apply search and date filters to the pathologytest patients
+ const filteredPatients = pathologytestPatients?.filter((patient) => {
+   const fullName = `${patient.patient_name}`.toLowerCase();
+   const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
+   return (
+     fullName.includes(searchQuery.toLowerCase()) &&
+     (!dateFilter || formattedDate === dateFilter)
+   );
+ });
 
   const goBack = () => {
     window.history.go(-1);
@@ -121,6 +124,11 @@ const BloodTest = () => {
                   className=""
                   style={{ maxHeight: "700px", overflowY: "auto" }}
                 >
+                  {filteredPatients.length === 0 ? (
+          <div className='mb-2 fs-4 fw-bold text-center'>No pathology test available</div>
+          ) : (
+
+<>
                   <table className="table table-bordered">
                     <thead>
                       <tr>
@@ -177,6 +185,9 @@ const BloodTest = () => {
                       ))}
                     </tbody>
                   </table>
+                  </>
+          )
+        }
                 </div>
               </div>
 

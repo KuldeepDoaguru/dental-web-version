@@ -30,6 +30,13 @@ const HeaderAdmin = () => {
       setNotifyList(data);
     } catch (error) {
       console.log(error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again");
+        navigate("/");
+        dispatch(clearUser());
+      }
+
+      
     }
   };
 
@@ -76,6 +83,13 @@ const HeaderAdmin = () => {
     }
     navigate("/");
     dispatch(clearUser());
+  };
+
+
+  const logoutHandleByToken = () => {
+    alert("Token Expired! You have been logged out");
+    dispatch(clearUser());
+    navigate("/");
   };
 
   // console.log(notifyList);

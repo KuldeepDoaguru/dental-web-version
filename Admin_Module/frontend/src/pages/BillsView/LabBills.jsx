@@ -129,13 +129,13 @@ const LabBills = () => {
                         <th className="table-sno">Test ID</th>
                         <th>Test Date</th>
                         <th className="table-small">Patient UHID</th>
-                        <th className="table-small">Treatment Package ID</th>
+                        {/* <th className="table-small">Treatment Package ID</th> */}
                         <th className="table-small">Patient Name</th>
-                        <th className="table-small">Total Amount</th>
+                        {/* <th className="table-small">Total Amount</th> */}
                         <th>Paid Amount</th>
                         <th>Payment Status</th>
                         <th>Payment Date & Time</th>
-                        <th>Pending Amount</th>
+                        {/* <th>Pending Amount</th> */}
                       </tr>
                     </thead>
                     <tbody>
@@ -154,9 +154,9 @@ const LabBills = () => {
                                 {item.patient_uhid}
                               </Link>
                             </td>
-                            <td className="table-small">{item.tpid}</td>
+                            {/* <td className="table-small">{item.tpid}</td> */}
                             <td className="table-small">{item.patient_name}</td>
-                            <td className="table-small">{item.cost}</td>
+                            {/* <td className="table-small">{item.cost}</td> */}
                             <td className="table-small">{item.payment}</td>
                             <td>{item.payment_status}</td>
                             <td>
@@ -168,9 +168,9 @@ const LabBills = () => {
                                 : "--"}
                             </td>
 
-                            <td>
+                            {/* <td>
                               <td>{item.cost - item.payment}</td>
-                            </td>
+                            </td> */}
                           </tr>
                         </>
                       ))}

@@ -569,7 +569,7 @@ const Lab = () => {
             <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-12">
               <input
                 type="text"
-                placeholder="search here"
+                placeholder="search by lab name"
                 className="inputser"
                 value={keyword}
                 onChange={(e) =>
@@ -584,7 +584,11 @@ const Lab = () => {
             <Lottie options={defaultOptions} height={300} width={400}></Lottie>
           ) : (
             <>
+{displayedAppointments.length === 0 ? (
+          <div className='mb-2 fs-4 fw-bold text-center'>No lab available</div>
+          ) : (
 
+<>
         <div class="table-responsive mt-4">
         <div>
            <p className="fw-bold">Total Lab - {totalLab}</p>
@@ -620,12 +624,12 @@ const Lab = () => {
                       >
                         <TbEdit size={22}/>
                       </button>
-                      <button
+                      {/* <button
                         className="btn btn-danger mx-1"
                         onClick={() => deleteLabData(item.lab_id)}
                       >
                         <AiFillDelete size={22}/>
-                      </button>
+                      </button> */}
                     </td>
                   </tr>
                 </>
@@ -780,7 +784,9 @@ const Lab = () => {
         
         
         </div>
-
+        </>
+          )
+        }
        </>
           )}
       </Container>

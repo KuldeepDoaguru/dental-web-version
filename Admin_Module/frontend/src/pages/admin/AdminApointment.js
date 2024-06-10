@@ -773,6 +773,12 @@ const AdminAppointment = () => {
             <Lottie options={defaultOptions} height={300} width={400}></Lottie>
           ) : (
             <>
+
+{currentItems.length === 0 ? (
+          <div className='mb-2 fs-4 fw-bold text-center'>No appointent detail available</div>
+          ) : (
+
+<>
                         <table className="table table-bordered rounded shadow">
                           <thead className="table-head">
                             <tr>
@@ -837,7 +843,9 @@ const AdminAppointment = () => {
                             ))}
                           </tbody>
                         </table>
-
+                        </>
+          )
+        }
                         </>
           )}
                       </div>
@@ -952,6 +960,10 @@ const Container = styled.div`
    th {
      background-color: #1abc9c;
      color: white;
+     white-space: nowrap;
+   }
+   td{
+    white-space: nowrap;
    }
    input::placeholder {
     color: #aaa;

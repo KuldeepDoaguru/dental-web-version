@@ -502,9 +502,13 @@ const adminLoginUser = async (req, res) => {
           });
         }
 
+        // const token = JWT.sign({ id: user.employee_ID }, process.env.JWT_SECRET, {
+        //   expiresIn: "7d",
+        // });
         const token = JWT.sign({ id: user.employee_ID }, process.env.JWT_SECRET, {
-          expiresIn: "7d",
+          expiresIn: "60s", // Set expiration to 60 seconds
         });
+        
         logger.registrationLogger.log("info", "Login successful");
         res.status(200).json({
           success: "true",

@@ -54,7 +54,7 @@ const App = () => {
   console.log(user);
   return (
     <BrowserRouter>
-    <div>
+    <div style={{overflow:"hidden"}}>
       <Routes> 
         <Route path="/" element={ user.currentUser ? <AdminDashboard /> :<UniversalLogin />} />{" "}
         

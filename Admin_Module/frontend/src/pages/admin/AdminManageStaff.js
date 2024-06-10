@@ -1435,7 +1435,7 @@ const AdminManageStaff = () => {
                     <BranchSelector />
                   </div>
                 </div> */}
-                <div className="container-fluid mt-3">
+                <div className="container-fluid mt-3 response">
                   <h2 className="text-center">Manage Employee</h2>
                   <div className="">
                     <div>
@@ -1464,6 +1464,11 @@ const AdminManageStaff = () => {
             <Lottie options={defaultOptions} height={300} width={400}></Lottie>
           ) : (
             <>
+            {filteredDoctorList.length === 0 ? (
+          <div className='mb-2 fs-4 fw-bold text-center'>No Manage Employee available</div>
+          ) : (
+
+<>
                       <div class="table-responsive mt-4">
                         <table class="table table-bordered">
                           <thead className="table-head">
@@ -1540,7 +1545,9 @@ const AdminManageStaff = () => {
                           </tbody>
                         </table>
                       </div>
-
+                      </>
+          )
+        }
                       </>
           )}
                    
@@ -2024,7 +2031,7 @@ const AdminManageStaff = () => {
                     <label for="exampleFormControlInput1" class="form-label">
                       Employee Role
                     </label>
-                    <div class="form-check">
+                    {/* <div class="form-check">
                       <input
                         class="form-check-input"
                         type="checkbox"
@@ -2036,7 +2043,7 @@ const AdminManageStaff = () => {
                       <label class="form-check-label" for="flexCheckDefault">
                         Admin
                       </label>
-                    </div>
+                    </div> */}
                     <div class="form-check">
                       <input
                         class="form-check-input"
@@ -2193,6 +2200,7 @@ const Container = styled.div`
   }
   td {
     text-align: center;
+    white-space: nowrap;
   }
   .select-style {
     border: none;
@@ -2230,6 +2238,7 @@ const Container = styled.div`
     background-color: #1abc9c;
     color: white;
     position: sticky;
+    white-space: nowrap;
   }
 
   .sticky {
@@ -2251,7 +2260,7 @@ const Container = styled.div`
     color: transparent; /* Hide placeholder on focus */
   }
 
-  input {
+  .input {
     width: 30%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -2276,4 +2285,13 @@ const Container = styled.div`
   .input:focus {
     border-color: #007bff; /* Change border color on focus */
   }
+  .response{
+    @media (min-width: 1024px) and (max-width: 1279px){
+              width: 95%;
+            }
+    @media (min-width: 768px) and (max-width: 1023px){
+      width: 90%;
+      margin-left: 3rem;
+            }
+   }
 `;

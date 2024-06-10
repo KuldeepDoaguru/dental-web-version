@@ -156,7 +156,7 @@ const LabPatientReport = () => {
               </div>
               <div className="col-lg-11 col-11 ps-0" style={{marginTop:"6rem"}}>
                 <IoArrowBackSharp
-                  className="fs-1 text-black d-print-none"
+                  className="fs-1 text-black d-print-none mx-3"
                   onClick={goBack}
                 />
                 <div className="container-fluid mt-3">
@@ -200,6 +200,11 @@ const LabPatientReport = () => {
             <Lottie options={defaultOptions} height={300} width={400}></Lottie>
           ) : (
             <>
+            {filteredPatients.length === 0 ? (
+          <div className='mb-2 fs-4 fw-bold text-center'>No report list available</div>
+          ) : (
+
+<>
                           <div className="res-table">
                             <table className="table table-bordered">
                               <thead>
@@ -262,6 +267,9 @@ const LabPatientReport = () => {
                             </table>
                           </div>
                           </>
+          )
+        }
+                          </>
   )}
                         </div>
 
@@ -301,6 +309,10 @@ const Container = styled.div`
     background-color: #1abc9c;
     color: white;
     position: sticky;
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
   }
 
   .sticky {

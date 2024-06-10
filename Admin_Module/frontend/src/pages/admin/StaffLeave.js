@@ -402,7 +402,7 @@ const searchFilter = leaveData.filter((item) => {
                     <BranchSelector />
                   </div>
                 </div> */}
-                <div className="container mt-3">
+                <div className="container-fluid mt-3 response">
                   <div className="container-fluid">
                     <h3>Employee Leave Management</h3>
                     {/* <label>Employee Name :</label> */}
@@ -417,6 +417,12 @@ const searchFilter = leaveData.filter((item) => {
             <Lottie options={defaultOptions} height={300} width={400}></Lottie>
           ) : (
             <>
+
+{displayedAppointments.length === 0 ? (
+          <div className='mb-2 fs-4 fw-bold text-center'>No employeee leave available</div>
+          ) : (
+
+<>
                     <div class="table-responsive rounded">
                       <table class="table table-bordered rounded shadow mt-2">
                         <thead className="table-head">
@@ -494,6 +500,9 @@ const searchFilter = leaveData.filter((item) => {
                         </tbody>
                       </table>
                     </div>
+                    </>
+          )
+        }
    </>
   )}
 
@@ -532,6 +541,10 @@ const Container = styled.div`
     background-color: #1abc9c;
     color: white;
     position: sticky;
+    white-space: nowrap;
+  }
+  td{
+    white-space: nowrap;
   }
 
   .sticky {
@@ -578,6 +591,17 @@ const Container = styled.div`
         input:focus {
             border-color: #007bff; /* Change border color on focus */
         }
+
+        .response{
+    @media (min-width: 1024px) and (max-width: 1279px){
+              width: 95%;
+            }
+    @media (min-width: 768px) and (max-width: 1023px){
+      width: 90%;
+      margin-left: 3rem;
+            }
+   }
+
 `;
 
 const PaginationContainer = styled.div`

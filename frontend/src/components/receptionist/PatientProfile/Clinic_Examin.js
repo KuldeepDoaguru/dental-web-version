@@ -148,8 +148,9 @@ export default ClinicExamin;
 const Wrapper = styled.div`
   .table {
     @media screen and (max-width: 768px) {
-      width: 22rem;
-      margin-left: -0.1rem;
+      /* width: 22rem;
+      margin-left: -0.1rem; */
+      width: auto;
     }
   }
 

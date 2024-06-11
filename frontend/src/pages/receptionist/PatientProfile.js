@@ -246,10 +246,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>UHID :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">{patientData.uhid}</span>
                           </div>
                         </div>
@@ -258,10 +258,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Gender :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">{patientData?.gender}</span>
                           </div>
                         </div>
@@ -270,10 +270,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Mobile No. :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">{patientData?.mobileno}</span>
                           </div>
                         </div>
@@ -282,10 +282,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Email :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">{patientData?.emailid}</span>
                           </div>
                         </div>
@@ -294,10 +294,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>DOB :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">{patientData?.dob}</span>
                           </div>
                         </div>
@@ -306,10 +306,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Age :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">
                               {patientData?.age}
                             </span>
@@ -320,10 +320,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Address :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">{patientData?.address}</span>
                           </div>
                         </div>
@@ -332,10 +332,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong >Aadhaar No. :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">{patientData?.aadhaar_no}</span>
                           </div>
                         </div>
@@ -345,10 +345,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Blood Group :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">
                               {patientData?.bloodgroup}
                             </span>
@@ -359,10 +359,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Weight :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">
                               {patientData?.weight}
                             </span>
@@ -377,10 +377,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Patient Type :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">
                               {patientData?.patient_type}
                             </span>
@@ -391,10 +391,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-7 col-md-6 col-sm-6 col-12">
                             <strong>Contact Person :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">
                               {patientData?.contact_person}
                             </span>
@@ -405,10 +405,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Contact Person Name :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">
                               {patientData?.contact_person_name}
                             </span>
@@ -419,10 +419,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Allergy :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">
                               {patientData?.allergy
 }
@@ -434,10 +434,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Disease :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">
                               {patientData?.disease}
                             </span>
@@ -449,10 +449,10 @@ console.log(branch)
                     <li>
                       <div>
                         <div className="row">
-                          <div className="col-xl-5 col-lg-5 col-md-6 col-12">
+                          <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
                             <strong>Branch :</strong>
                           </div>
-                          <div className="col-xl-7 col-lg-7 col-md-6 col-12">
+                          <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">
                               {patientData?.branch_name}
                             </span>

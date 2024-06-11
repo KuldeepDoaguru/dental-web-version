@@ -146,8 +146,8 @@ export default Prescription;
 const Wrapper = styled.div`
   .table {
     @media screen and (max-width: 768px) {
-      width: 22rem;
-      margin-left: -0.4rem;
+      width: auto;
+     
     }
   }
 

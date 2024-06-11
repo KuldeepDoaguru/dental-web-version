@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { useDispatch ,useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import axios from "axios";
 import moment from "moment";
@@ -21,13 +21,13 @@ import ApplyLeave from "../../components/receptionist/ApplyLeave";
 import MarkAttendance from "../../components/receptionist/MarkAttendance";
 
 const AttendanceLeave = () => {
-    const navigate = useNavigate();
-    const {refreshTable,currentUser} = useSelector((state) => state.user);
-    const  branch = currentUser.branch_name;
-    const token = currentUser?.token;
+  const navigate = useNavigate();
+  const { refreshTable, currentUser } = useSelector((state) => state.user);
+  const branch = currentUser.branch_name;
+  const token = currentUser?.token;
 
-    const employeeName = currentUser.employee_name;
-    const employeeId = currentUser.employee_ID;
+  const employeeName = currentUser.employee_name;
+  const employeeId = currentUser.employee_ID;
   const [attendRepo, setAttendRepo] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [daysInMonth, setDaysInMonth] = useState([]);
@@ -35,7 +35,7 @@ const AttendanceLeave = () => {
   const [formattedDate, setFormattedDate] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-  const [leavesData,setLeaveData] = useState([]);
+  const [leavesData, setLeaveData] = useState([]);
   const [loadingEffect1, setLoadingEffect1] = useState(false);
   const [loadingEffect2, setLoadingEffect2] = useState(false);
 
@@ -44,53 +44,53 @@ const AttendanceLeave = () => {
 
 
   const getAttendance = async () => {
-     
-    try{
+
+    try {
       setLoadingEffect1(true);
-        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAttendancebyempId/${branch}/${employeeId}`
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAttendancebyempId/${branch}/${employeeId}`
         ,
         {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
+          }
         }
-        }
-        );
-        setAttendance(response?.data?.data)
-        setLoadingEffect1(false);
-      }
-      catch(error){
-        console.log(error)
-        setLoadingEffect1(false);
-      }
+      );
+      setAttendance(response?.data?.data)
+      setLoadingEffect1(false);
+    }
+    catch (error) {
+      console.log(error)
+      setLoadingEffect1(false);
+    }
   }
-  
- useEffect(() => {
-  getAttendance();
-  },[refreshTable])
+
+  useEffect(() => {
+    getAttendance();
+  }, [refreshTable])
 
   const getLeaves = async () => {
     setLoadingEffect2(true);
-    try{
-        const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-leaves/${branch}/${employeeId}` ,
+    try {
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-leaves/${branch}/${employeeId}`,
         {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
-        }
+          }
         });
-        setLeaveData(response?.data?.data)
-        setLoadingEffect2(false);
-      }
-      catch(error){
-        console.log(error)
-        setLoadingEffect2(false);
-      }
+      setLeaveData(response?.data?.data)
+      setLoadingEffect2(false);
+    }
+    catch (error) {
+      console.log(error)
+      setLoadingEffect2(false);
+    }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getLeaves();
-  },[refreshTable])
+  }, [refreshTable])
 
 
 
@@ -160,73 +160,73 @@ const AttendanceLeave = () => {
   const goBack = (event) => {
     event.preventDefault(); // Prevent default action to avoid page refresh
     navigate(-1); // This goes back to the previous page
-};
+  };
 
 
-// Helper function to format a single date string in the desired format
-const formatDate = (dateString) => {
+  // Helper function to format a single date string in the desired format
+  const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = { year: "numeric", month: "long", day: "numeric" };
     return date.toLocaleDateString("en-GB", options);
-};
-const defaultOptions = {
-  loop: true,
-  autoplay: true,
-  animationData: animationData,
-  rendererSettings: {
-    preserveAspectRatio: "xMidYMid slice",
-    
-  },
-};
+  };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+
+    },
+  };
   return (
     <>
       <Container>
-      <div className='header'>
-          <Header/>
-          </div>
-    
-    <div className="row mrgnzero">
-      <div className="col-lg-1 col-md-1 col-1" id="sider">
-        <Sider />
-      </div>
-              <div className="col-lg-11 col-md-11 col-11" id="set">
-                <div className="container-fluid mt-3">
-                  <div className="">
-                    {/* <BranchDetails /> */}
-                  </div>
-                </div>
+        <div className='header'>
+          <Header />
+        </div>
 
-                <div className="container-fluid mt-3">
-                  <div className="row d-flex justify-content-between">
-                    <div className="col-3">
+        <div className="row mrgnzero">
+          <div className="col-lg-1 col-md-1 col-1" id="sider">
+            <Sider />
+          </div>
+          <div className="col-lg-11 col-md-11 col-11" id="set">
+            <div className="container-fluid mt-3">
+              <div className="">
+                {/* <BranchDetails /> */}
+              </div>
+            </div>
+
+            <div className="container-fluid mt-3">
+              <div className="row d-flex justify-content-between">
+                <div className="col-3">
                   <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
                   </button>
-                  </div>
-                  <div className="col-9">
-                  <MarkAttendance/>
-                  </div>
-                
-                 
-                 
-                  </div>
-                 
-                  <div className="container-fluid">
-                    <div className="row mt-3">
-                      <div className="col-12">
-                        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                          <div class="container d-flex justify-content-center">
-                            <h2 className="">Attendance and Leave Details</h2>
-                          </div>
-                          <div className="">
-                          <ApplyLeave />
-                          </div>
-                        </nav>
+                </div>
+                <div className="col-9">
+                  <MarkAttendance />
+                </div>
+
+
+
+              </div>
+
+              <div className="container-fluid">
+                <div className="row mt-3">
+                  <div className="col-12">
+                    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                      <div class="container d-flex justify-content-center">
+                        <h2 className="">Attendance and Leave Details</h2>
                       </div>
-                      <div className="container-fluid">
-                        <div className="container-fluid">
-                          <div className="d-flex justify-content-between mb-2 mt-4">
-                            {/* <form>
+                      <div className="">
+                        <ApplyLeave />
+                      </div>
+                    </nav>
+                  </div>
+                  <div className="container-fluid">
+                    <div className="container-fluid">
+                      <div className="d-flex justify-content-between mb-2 mt-4">
+                        {/* <form>
                               <div className="d-flex justify-content-between">
                                 <div>
                                   <input
@@ -257,10 +257,10 @@ const defaultOptions = {
                                 </button>
                               </div>
                             </form> */}
-                            
-                           
-                          </div>
-                          {/* <div class="table-responsive">
+
+
+                      </div>
+                      {/* <div class="table-responsive">
                             <table class="table table-bordered">
                               <thead className="table-head">
                                 <tr>
@@ -329,22 +329,22 @@ const defaultOptions = {
                               </tbody>
                             </table>
                           </div> */}
-                          
-                           
-                           <div className="mt-5">
-                            <div className="mt-5 text-center">
-                             <h4>Attendance details</h4>
-                            </div>
-                            {loadingEffect1 ? (
-            
-            <Lottie
-                          options={defaultOptions}
-                          height={300}
-                          width={400}
-                          style={{ background: "transparent" }}
-                        ></Lottie>
-          
-          ) : (
+
+
+                      <div className="mt-5" id="table-container">
+                        <div className="mt-5 text-center">
+                          <h4>Attendance details</h4>
+                        </div>
+                        {loadingEffect1 ? (
+
+                          <Lottie
+                            options={defaultOptions}
+                            height={300}
+                            width={400}
+                            style={{ background: "transparent" }}
+                          ></Lottie>
+
+                        ) : (
                           <div className="table-container">
                             <table className="table table-bordered">
                               <thead className="table-head">
@@ -355,51 +355,51 @@ const defaultOptions = {
                                   <th>Logout Time</th>
                                 </tr>
                               </thead>
-                              {  Attendance.length === 0 ? (
-              <div className="no-data-container">
-              <h4>No Data Found</h4>
-            </div>
-            ) : (
-                              <tbody>
-                                {Attendance?.map((item,index) => {
+                              {Attendance.length === 0 ? (
+                                <div className="no-data-container">
+                                  <h4>No Data Found</h4>
+                                </div>
+                              ) : (
+                                <tbody>
+                                  {Attendance?.map((item, index) => {
 
-                        
-                                
-                                    return(
-                                        <tr
+
+
+                                    return (
+                                      <tr
                                         className="table-row"
                                         key={item?.attendance_id}
                                       >
-                                        <td>{index+1}</td>
+                                        <td>{index + 1}</td>
                                         <td>{item?.date ? moment(item?.date).format('DD/MM/YYYY') : ""} </td>
                                         <td>{item?.allday_shift_login_time ? moment(item?.allday_shift_login_time, 'HH:mm:ss.SSSSSS').format('hh:mm A') : ""} </td>
                                         <td> {item?.allday_shift_logout_time ? moment(item?.allday_shift_logout_time, 'HH:mm:ss.SSSSSS').format('hh:mm A') : ""}</td>
-                                       
+
                                       </tr>
                                     )
-                                  
-                        })}
-                              </tbody>
-            )}
+
+                                  })}
+                                </tbody>
+                              )}
                             </table>
                           </div>
-          )}
-                          </div>
-                          
-                          <div className="mt-5">
-                            <div className="mt-5 text-center">
-                             <h4>Leave details</h4>
-                            </div>
-                            {loadingEffect2 ? (
-            
-            <Lottie
-                          options={defaultOptions}
-                          height={300}
-                          width={400}
-                          style={{ background: "transparent" }}
-                        ></Lottie>
-          
-          ) : (
+                        )}
+                      </div>
+
+                      <div className="mt-5" id="table-container">
+                        <div className="mt-5 text-center">
+                          <h4>Leave details</h4>
+                        </div>
+                        {loadingEffect2 ? (
+
+                          <Lottie
+                            options={defaultOptions}
+                            height={300}
+                            width={400}
+                            style={{ background: "transparent" }}
+                          ></Lottie>
+
+                        ) : (
                           <div className="table-container">
                             <table className="table table-bordered">
                               <thead className="table-head">
@@ -411,50 +411,50 @@ const defaultOptions = {
                                   <th>Created At</th>
                                 </tr>
                               </thead>
-                              {  leavesData.length === 0 ? (
-              <div className="no-data-container">
-              <h4>No Data Found</h4>
-            </div>
-            ) : (
-                              <tbody>
-                                {leavesData?.map((item,index) => {
+                              {leavesData.length === 0 ? (
+                                <div className="no-data-container">
+                                  <h4>No Data Found</h4>
+                                </div>
+                              ) : (
+                                <tbody>
+                                  {leavesData?.map((item, index) => {
 
                                     // Split the leave_dates string into an array of date strings
-                            const leaveDatesArray = item?.leave_dates?.split(",");
+                                    const leaveDatesArray = item?.leave_dates?.split(",");
 
-                            // Format each date in the array using the formatDate function
-                            const formattedLeaveDates = leaveDatesArray
-                                ?.map((dateString) => formatDate(dateString))
-                                .join(", "); // Join the formatted dates back into a single string
-                                    return(
-                                        <tr
+                                    // Format each date in the array using the formatDate function
+                                    const formattedLeaveDates = leaveDatesArray
+                                      ?.map((dateString) => formatDate(dateString))
+                                      .join(", "); // Join the formatted dates back into a single string
+                                    return (
+                                      <tr
                                         className="table-row"
                                         key={item?.id}
                                       >
-                                        <td>{index+1}</td>
+                                        <td>{index + 1}</td>
                                         <td>{formattedLeaveDates}</td>
                                         <td>{item?.leave_reason}</td>
                                         <td>{item?.leave_status}</td>
                                         <td>{item?.created_at ? moment(item?.created_at?.split("T")[0]).format('DD/MM/YYYY') : ""} </td>
-                                       
+
                                       </tr>
                                     )
-                                  
-                        })}
-                              </tbody>
-            )}
+
+                                  })}
+                                </tbody>
+                              )}
                             </table>
                           </div>
-          )}
-                          </div>
-                        </div>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-         
+          </div>
+        </div>
+
       </Container>
     </>
   );
@@ -554,5 +554,6 @@ overflow-y: auto;
     
   }
 }
+
 
 `;

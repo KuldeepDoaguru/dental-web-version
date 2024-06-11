@@ -272,8 +272,9 @@ const Wrapper = styled.div`
   }
   #tabb {
     @media screen and (max-width: 768px) {
-      width: 23rem;
-      margin-left: -1rem;
+      /* width: 23rem; */
+      /* margin-left: -1rem; */
+      width: auto;
     }
   }
   .cal {

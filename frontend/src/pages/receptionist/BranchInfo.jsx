@@ -302,7 +302,8 @@ overflow-y: auto;
 #tableres{
   
   @media screen and (max-width: 768px) {
-    width: 21rem;
+    width: auto;
+   margin: auto;
    
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {

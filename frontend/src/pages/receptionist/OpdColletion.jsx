@@ -191,7 +191,7 @@ const defaultOptions = {
           <div className="row">
             <div className="col-lg-12" id="head">
               <nav class="shadow rounded navbar navbar-light bg-light">
-                <h6 className="mx-3 my-0">Search By Patient</h6>
+                <h6 className="mx-3 my-1 my-md-0">Search By Patient</h6>
                 <div class="container-fluid" id="cont">
                   <form class="navbar1 ">
                     <input
@@ -407,8 +407,9 @@ overflow: hidden;
   #cont {
     display: flex;
     @media screen and (max-width: 768px) {
-      flex-direction: column;
+      /* flex-direction: column; */
       gap: 1rem;
+   
     }
   }
   #drop {
@@ -419,8 +420,8 @@ overflow: hidden;
   #head{
   
   @media screen and (max-width: 768px) {
-  width: 85%;
-  margin-left: 1.2rem;
+  width: 98%;
+  /* margin-left: 1.2rem; */
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {
    margin-left: 1rem;
@@ -482,7 +483,8 @@ overflow-y: auto;
 #tableres{
   
   @media screen and (max-width: 768px) {
-    width: 21rem;
+    width: auto;
+   margin: auto;
    
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {

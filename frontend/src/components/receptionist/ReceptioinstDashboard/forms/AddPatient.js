@@ -923,7 +923,7 @@ function AddPatient() {
               <div className="col-sm-6">
                 <div className="form-outline">
                   <label className="form-label mt-2" for="contact_Person_Name">
-                    Cont. Per. Name *
+                    Cont. Per. Name
                   </label>
                   <input
                     type="text"
@@ -931,7 +931,7 @@ function AddPatient() {
                     name="contact_Person_Name"
                     className="form-control"
                     onChange={handleChange}
-                    required
+                    disabled={data.contact_Person == "Self"}
                     pattern="[A-Za-z\s]*"
                     title="Text should contain only letters"
                     placeholder="Enter contact person name"

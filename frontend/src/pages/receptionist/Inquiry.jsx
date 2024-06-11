@@ -340,7 +340,7 @@ const defaultOptions = {
                 <h5 className='text-center'>Add Inquiry</h5>
             <form onSubmit={handleSubmit}>
   <div className='row justify-content-center'>
-    <div className='col-5'>
+    <div className='col-11  col-md-5'>
     <div class="mb-3">
     <label for="patientName" class="form-label">Patient Name</label>
     <input type="text" class="form-control" onChange={handleChange} value={formData.patientName} required name="patientName" id="patientName" aria-describedby="emailHelp"    pattern="[A-Za-z\s]*"
@@ -349,7 +349,7 @@ const defaultOptions = {
   
   </div>
   </div>
-  <div className='col-5'>
+  <div className='col-11  col-md-5'>
   <div class="mb-3">
     <label for="mobile" class="form-label">Mobile</label>
     <input type="text"  onChange={handleChange} value={formData.mobile} required class="form-control" name="mobile" id="mobile" aria-describedby="emailHelp"  placeholder="Enter 10-digit mobile number"
@@ -362,7 +362,7 @@ const defaultOptions = {
     </div>
     </div>              
   <div className='row justify-content-center'>
-    <div className='col-5'>
+    <div className='col-11  col-md-5'>
     <div class="mb-3">
     <label for="email" class="form-label">Email</label>
     <input type="email" class="form-control" value={formData.email} onChange={handleChange} name="email" id="email" 
@@ -370,7 +370,7 @@ const defaultOptions = {
   
   </div>
   </div>
-  <div className='col-5'>
+  <div className='col-11  col-md-5'>
   <div class="mb-3">
   <label className="form-label" htmlFor="gender">Gender</label>
     <select className="form-select" value={formData.gender} id="gender" name="gender"  onChange={handleChange}  >
@@ -385,7 +385,7 @@ const defaultOptions = {
     </div>
     </div>  
   <div className='row justify-content-center'>
-    <div className='col-5'>
+    <div className='col-11  col-md-5'>
     <div class="mb-3">
     <label for="age" class="form-label">Age</label>
     <input type="text" class="form-control" value={formData.age} name="age" id="age"  onChange={handleChange} aria-describedby="emailHelp" placeholder="Enter age in years"
@@ -394,7 +394,7 @@ const defaultOptions = {
   
   </div>
   </div>
-  <div className='col-5'>
+  <div className='col-11  col-md-5'>
   <div class="mb-3">
     <label for="doctorName" class="form-label">Inquiry for Doctor</label>
     <select className="form-select" id="doctorName"  name="doctorName"  onChange={handleDoctorChange}>
@@ -411,14 +411,14 @@ const defaultOptions = {
     </div>
     </div> 
     <div className='row justify-content-center'>
-    <div className='col-5'>
+    <div className='col-11 col-md-5'>
     <div class="mb-3">
     <label for="address" class="form-label">Address</label>
     <input type="text" class="form-control" value={formData.address} onChange={handleChange} name="address" id="address" aria-describedby="emailHelp" placeholder="Enter address"/>
      
   </div>
   </div>
-  <div className='col-5'>
+  <div className='col-11 col-md-5'>
   <div class="mb-3">
     <label for="notes" class="form-label">Notes</label>
     <input type="text" class="form-control" value={formData.notes} name="notes" required onChange={handleChange} id="notes" aria-describedby="emailHelp" placeholder="Enter notes"/>
@@ -439,7 +439,7 @@ const defaultOptions = {
       <div className="row" >
    <div className="col-lg-12" id='head'>
    <nav class="shadow rounded navbar navbar-light bg-light">
-            <h6 className='mx-3 my-0'>Search By Patient</h6>
+            <h6 className='mx-3 my-1 my-md-0'>Search By Patient</h6>
   <div class="container-fluid" id='cont'>
     <form class="navbar1 " >
       <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name Or Mobile" aria-label="Search" onChange={handleSearch}
@@ -627,7 +627,7 @@ overflow: hidden;
 #cont{
   display: flex;
   @media screen and (max-width: 768px) {
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 1rem;
   }
 }
@@ -672,8 +672,8 @@ overflow-y: auto;
 #head{
   
   @media screen and (max-width: 768px) {
-  width: 85%;
-  margin-left: 1.2rem;
+  width: 98%;
+  /* margin-left: 1.2rem; */
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {
    margin-left: 1rem;
@@ -700,7 +700,9 @@ overflow-y: auto;
 #tableres{
   
   @media screen and (max-width: 768px) {
-    width: 21rem;
+    /* width: 21rem; */
+    width: auto;
+    margin: auto;
    
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {

@@ -189,7 +189,7 @@ function SecurityAmount() {
   console.log(filterForSecAmountDef);
 
   const [data, setData] = useState({
-    payment_status: "Success",
+    payment_status: "success",
     payment_Mode: "",
     transaction_Id: "",
     notes: "",
@@ -532,7 +532,7 @@ function SecurityAmount() {
           <div className="row" >
             <div className="col-lg-12" id='head'>
               <nav class="shadow rounded navbar navbar-light bg-light">
-                <h6 className='mx-3 my-0'>Search By Patient</h6>
+                <h6 className='mx-3 my-1 my-md-0'>Search By Patient</h6>
                 <div class="container-fluid" id='cont'>
                   <form class="navbar1 " >
                     <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name Or Moblie" aria-label="Search" onChange={handleSearch}
@@ -560,7 +560,7 @@ function SecurityAmount() {
                       </Form.Control>
                     </Form.Group>
                   </div>
-                  <div><h5>Total Patients - {securityList.length}</h5></div>
+                  <div><h5>Total Patients - {securityList?.length}</h5></div>
 
                   {/* <div class="dropdown" id='drop'>
   
@@ -613,7 +613,7 @@ function SecurityAmount() {
                         <th>Print</th>
                       </tr>
                     </thead>
-                    {  currentRows.length === 0 ? (
+                    {  currentRows?.length === 0 ? (
               <div className="no-data-container">
               <h4>No Data Found</h4>
             </div>
@@ -659,7 +659,7 @@ function SecurityAmount() {
                                   :
                                   <>
                                     <button
-                                      className={`mx-2 btn btn-warning ${item.remaining_amount === 0
+                                      className={`mx-2 btn btn-warning ${item.remaining_amount == 0
                                           ? "disabled"
                                           : ""
                                         } `}
@@ -907,7 +907,7 @@ overflow: hidden;
 #cont{
   display: flex;
   @media screen and (max-width: 768px) {
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 1rem;
   }
 }
@@ -919,8 +919,8 @@ overflow: hidden;
 #head{
   
   @media screen and (max-width: 768px) {
-  width: 85%;
-  margin-left: 1.2rem;
+  width: 98%;
+  /* margin-left: 1.2rem; */
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {
    margin-left: 1rem;
@@ -982,7 +982,8 @@ overflow-y: auto;
 }
 #tableres{
   @media screen and (max-width: 768px) {
-    width: 21rem;
+    width: auto;
+    margin: auto;
    
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {

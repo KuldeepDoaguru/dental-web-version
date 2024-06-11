@@ -107,7 +107,9 @@ overflow: hidden;
   overflow-y: auto;
  
 @media screen and (max-width: 768px) {
-  margin-left: 1.5rem;
+  /* margin-left: 1.5rem; */
+  margin: 2rem;
+  padding-left: 0px; /* Width of sidebar */
 }
 @media screen and (min-width: 768px) and (max-width : 1020px) {
   margin: 2rem;

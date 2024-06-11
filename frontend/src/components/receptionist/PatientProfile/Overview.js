@@ -391,12 +391,12 @@ export default Overview;
 const Container = styled.div`
   #tableresponsive {
     @media screen and (max-width: 768px) {
-      width: 73%;
+      width: 95%;
     }
   }
   #tableresponsive1 {
     @media screen and (max-width: 768px) {
-      width: 70%;
+      width: 95%;
     }
   }
   #myTab {

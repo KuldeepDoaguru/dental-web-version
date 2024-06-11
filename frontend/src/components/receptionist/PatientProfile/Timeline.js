@@ -136,8 +136,8 @@ export default Timeline;
 const Wrapper = styled.div`
   .table {
     @media screen and (max-width: 768px) {
-      width: 20rem;
-      margin-left: -0.2rem;
+      width: auto;
+      
     }
   }
 

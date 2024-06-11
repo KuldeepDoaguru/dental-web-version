@@ -306,8 +306,8 @@ const Wrapper = styled.div`
   }
   #table {
     @media screen and (max-width: 768px) {
-      width: 22rem;
-      margin-left: -1rem;
+      width: auto
+      /* margin-left: -1rem; */
     }
   }
   th{

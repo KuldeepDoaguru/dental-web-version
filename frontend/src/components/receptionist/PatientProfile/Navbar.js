@@ -358,12 +358,12 @@ const Wrapper = styled.div`
 overflow-y: auto;
   #tableresponsive {
     @media screen and (max-width: 768px) {
-      width: 73%;
+      width: 95%;
     }
   }
   #tableresponsive1 {
     @media screen and (max-width: 768px) {
-      width: 70%;
+      width: 95%;
     }
   }
   #myTab {
@@ -372,6 +372,13 @@ overflow-y: auto;
       margin-left: 1.2rem;
     }
   }
+  #myTabContent {
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      
+    }
+  }
+  
 
   /* #app {
     width: 75rem;

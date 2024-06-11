@@ -194,7 +194,7 @@ const Wrapper = styled.div`
     
     background-color: teal;
     @media screen and (max-width: 768px) {
-      width: 3rem;
+      width: 5rem;
       height: 212rem;
     }
     @media screen and (min-width: 768px) and (max-width: 1020px) {

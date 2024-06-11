@@ -256,7 +256,7 @@ const defaultOptions = {
             <div className="col-lg-12">
             <div className="col-lg-12" id='head'>
    <nav class="shadow rounded navbar navbar-light bg-light">
-            <h6 className='mx-3 my-0'>Search By Doctor</h6>
+            <h6 className='mx-3 my-1 my-md-0'>Search By Doctor</h6>
   <div class="container-fluid" id='cont'>
     <form class="navbar1 " >
       <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Doctor Name Or Moblie" aria-label="Search" onChange={handleSearch}
@@ -466,12 +466,12 @@ const defaultOptions = {
 export default DoctorSection
 const Wrapper = styled.div`
 overflow: hidden;
-#row1{
+/* #row1{
   @media screen and (max-width: 768px) {
     width: 22rem;
     margin-left: 0.7rem;
   }
-}
+} */
 #sider{
   padding-top: 60px; /* Height of header */
   min-height: 100vh;
@@ -483,7 +483,8 @@ overflow: hidden;
 }
 #tableres{
   @media screen and (max-width: 768px) {
-    width: 21rem;
+    width: auto;
+    margin: auto;
    
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {
@@ -503,8 +504,8 @@ overflow: hidden;
 #head{
   
   @media screen and (max-width: 768px) {
-  width: 85%;
-  margin-left: 1.2rem;
+  width: 98%;
+  /* margin-left: 1.2rem; */
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {
    margin-left: 1rem;
@@ -530,7 +531,7 @@ flex-grow: 1;
 overflow-y: auto;
 
 @media screen and (max-width: 768px) {
-margin-left: 1.5rem;
+  margin-left: -2rem;
 }
 @media screen and (min-width: 768px) and (max-width : 1020px) {
   margin-left: -2rem;

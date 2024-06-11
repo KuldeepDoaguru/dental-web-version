@@ -122,7 +122,10 @@ useEffect(()=>{
     
     setData({...data, age: years});
   };
-  calculateAge(data.dob);
+  if(data.dob){
+    calculateAge(data.dob);
+  }
+  
 },[data.dob])
 
  const handleChangeDisease = (newValue, actionMeta) => {
@@ -339,7 +342,7 @@ useEffect(()=>{
                             className="form-control"
                             onChange={handleChange}
                             value={data.contact_Person_Name}
-                            required
+                            disabled={data.contact_Person == "Self"}
                             pattern="[A-Za-z\s]*"
                             title="Text should contain only letters"
                             placeholder="Enter contact person name"
@@ -462,7 +465,7 @@ useEffect(()=>{
     </select>
           </div>
          
-        <button type="submit" class="btn btn-primary" disabled={loading}> { loading ? "Loading..." : "Edit"}</button>
+        <button type="submit" class="btn btn-primary" disabled={loading}> { loading ? "Loading..." : "Submit"}</button>
         </form>
         </Modal.Body>
         <Modal.Footer>

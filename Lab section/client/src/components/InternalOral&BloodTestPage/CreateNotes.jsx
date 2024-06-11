@@ -9,7 +9,7 @@ function CreateNotes() {
     const navigate = useNavigate();
     const [selectedNotes, setSelectedNotes] = useState([]);
     const [newNote, setNewNote] = useState("");
-     
+    const [loading , setLoading] = useState(false);
   const currentUser = useSelector(state => state.auth.user);
   
   const token = currentUser?.token;
@@ -30,6 +30,7 @@ function CreateNotes() {
 
 
       const handleCreateNotes = async () => {
+        setLoading(true)
         try {
           
           for (const note of selectedNotes) {
@@ -46,9 +47,11 @@ function CreateNotes() {
            
             console.log("Note stored successfully:", response.data);
           }
+          setLoading(false)
           navigate(`/final-oral-testing/${id}`);
           
         } catch (error) {
+            setLoading(false)
           console.error("Error storing notes:", error);
         }
       };
@@ -91,8 +94,10 @@ function CreateNotes() {
           </ul>
         </div>
       )}
-         <button className="btn btn-success" onClick={handleCreateNotes}>
-        Create Notes
+         <button className="btn btn-success" onClick={handleCreateNotes} disabled={loading} 
+          >
+          {loading ? 'Creating Notes ...' : 'Create Notes'}
+      
       </button>
    <Link to={`/final-oral-testing/${id}`} className="btn btn-primary mx-4">
       <i className="bi bi-arrow-return-left mx-1"></i>  Back 

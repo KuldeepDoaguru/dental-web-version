@@ -6,16 +6,23 @@ const { getBranch, LoginDoctor, getPatientDetail, patrientDetailbyid, patienttes
     MarkAttendanceLogout,
     getTodayAttendance,
     getAttendancebyempId, getBranchHoliday,
-    getBranchDetail} = require("../controller/authControl.js");
+    getBranchDetail,
+    updatepatienttest,
+    getBranch_by_name,
+    getBranchDetailsByBranch,
+    getEmployeeData} = require("../controller/authControl.js");
 
 const router = express.Router();
 const authenticate = require("../Middleware/authMiddleware.js");
+router.get("/getEmployeeDetails", getEmployeeData);
 
 router.get("/get-branches", getBranch);
+router.get("/getBranchDetailsByBranch/:branch",  getBranchDetailsByBranch);
 router.post("/lab-attendant-login", LoginDoctor);
 router.post("/get-patient-test-cost",authenticate, getPatientLabWithLabTest);
 router.post("/patient-test-payment/:testId",authenticate, patientpayment);
 router.put("/update-patent-test-data/:testId",authenticate,updatepatienttestdetail);
+router.put("/update-patent-test/:testId",authenticate,updatepatienttest);
 router.get("/get-patient-details",authenticate,  getPatientLabWithPatientDetails);
 router.get("/get-patient-test-details",authenticate, getPatientTestDetail);
 router.get("/get-patient-details-by-id/:id",authenticate, patrientDetailbyid);

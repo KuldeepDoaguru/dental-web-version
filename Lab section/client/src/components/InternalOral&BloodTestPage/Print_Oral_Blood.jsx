@@ -10,6 +10,8 @@ import { IoArrowBackSharp } from 'react-icons/io5';
 import signature from "../../Pages/BloodTestExternal/signature_maker_after_.webp";
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import PrintHeader from '../MainComponents/PrintHeader';
+import PrintFooter from '../MainComponents/PrintFooter';
 
 function Print_Oral_Blood() {
   // const [patientDetails, setPatientDetails] = useState([]);
@@ -139,26 +141,48 @@ const handleprint = () =>{
 }
 
 
+
+const parsedCollection_Date = moment(patientcollection_date);
+
+// Add one day to the parsed date
+const adjustedCollection_Date = parsedCollection_Date.add(1, 'days');
+
+// Format the adjusted date as a string in the desired format (YYYY-MM-DD)
+const formattedAdjustedCollection_Date = adjustedCollection_Date.format('DD-MM-YYYY');
+ 
+
+const parsedAuthenticate_Date = moment(patientauthenticate_date);
+
+// Add one day to the parsed date
+const adjustedAuthenticate_Date = parsedAuthenticate_Date.add(1, 'days');
+
+// Format the adjusted date as a string in the desired format (YYYY-MM-DD)
+const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-MM-YYYY');
+
+
   return (
    <Wrapper>
-     
-     <div className="d-print-none">
-          <Header />
-        </div>
-           
-                  <div clasNameName="main">
-          <div className="container-fluid">
-          <div className="row flex-nowrap ">
-              <div className="col-xxl-1 col-xl-1 col-lg-1 d-print-none col-sm-1 p-0">
-                <Sider />
-
-                </div>
-              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-12 col-sm-12 p-0" style={{marginTop:"5rem"}}>
-              <IoArrowBackSharp
-            className="fs-1 text-black d-print-none"
+    <IoArrowBackSharp
+            className="fs-1 text-black d-print-none btn-print"
             onClick={goBack}
             style={{ cursor: "pointer" }}
           />
+      <PrintHeader/>
+    
+     {/* <div className="d-print-none">
+          <Header />
+        </div>
+            */}
+                  <div clasNameName="main">
+          <div className="">
+          <div className="row flex-nowrap ">
+              {/* <div className="col-xxl-1 col-xl-1 col-lg-1 d-print-none col-sm-1 p-0">
+                <Sider />
+
+                </div> */}
+              {/* <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-12 col-sm-12 p-0" style={{marginTop:"5rem"}}> */}
+              <div className="">
+             
 
                
                
@@ -224,25 +248,15 @@ const handleprint = () =>{
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                Bill No. :
-                                <input
-                                  type ="text"
-                                  className = "border border-0 ms-3 w-50"
-                                 value={patientbill_no}
-                               
-                                />
+                                Bill No. :  {patientbill_no}        
+                
                               </td>
                               <td
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                UHID :{" "}
-                                <input
-                                  type="text"
-                                  className="border border-0 ms-2"
-                                  value={patientUHID}
-                                 
-                                />
+                                UHID : {patientUHID}
+                         
                               </td>
                             </tr>
                           </tbody>
@@ -255,14 +269,9 @@ const handleprint = () =>{
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                              Treatment Id :
-                                <input
-                                  type="Number"
-                                  className="border border-0 ms-3"
-                                  style={{ width: "40px" }}
-                                  value={patienttid}
+                              Treatment Id :{patienttid}
                     
-                                />{" "}
+                              
                                 
                                 
                               </td>
@@ -272,13 +281,9 @@ const handleprint = () =>{
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                Patient Name :
-                                <input
-                                  type="text"
-                                  className="border border-0 ms-3 w-50"
-                                  value={patientName}
+                                Patient Name : {patientName}
                                  
-                                />
+                          
                               </td>
 
                               
@@ -301,21 +306,14 @@ const handleprint = () =>{
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                Advised By :{" "}
-                                <input
-                                  type="text"
-                                  className="border border-0 ms-2"
-                                  value={patientAssigned_Doctor_Name}
-                                 
-                                />
+                                Advised By : {patientAssigned_Doctor_Name}
+                     
                               </td>
                               <td
                                 className="table-small"
                                 style={{ width: "10%" }}
                               >
-                                Collection Date :{" "}
-                        
-                               {moment(patientcollection_date).format('DD/MM/YYYY')}
+                                Collection Date : {formattedAdjustedCollection_Date}
                               </td>
                             </tr>
                           </tbody>
@@ -326,20 +324,15 @@ const handleprint = () =>{
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                Center Name :{" "}
-                                <input
-                                  type="text"
-                                  className="border border-0 ms-2"
-                                  value={patientbranch_name}
+                                Center Name : {patientbranch_name}
                                 
-                                />
+                           
                               </td>
                               <td
                                 className="table-small"
                                 style={{ width: "10%" }}
                               >
-                                Authenticate Date:{" "}
-                                {moment(patientauthenticate_date).format('DD/MM/YYYY')}
+                                Authenticate Date: {formattedAdjustedAuthenticate_Date}
                              
                               </td>
                             </tr>
@@ -426,11 +419,7 @@ const handleprint = () =>{
                     <div className="d-flex justify-content-between">
                       <div className="col-lg-4 form-group">
                         <div className="text-center">
-                          <img
-                            src={signature}
-                            style={{ width: "100px", height: "50px" }}
-                            alt="Today's Image"
-                          />
+                         
                         </div>
                         <h4 className=" text-center fs-5 fw-bold">
                         {userName.employee_name}
@@ -440,11 +429,7 @@ const handleprint = () =>{
 
                       <div className="col-lg-4 form-group">
                         <div className="text-center">
-                          <img
-                            src={signature}
-                            style={{ width: "100px", height: "50px" }}
-                            alt="Today's Image"
-                          />
+                         
                         </div>
                         <h4 className=" text-center fs-5 fw-bold">
                           {patientAssigned_Doctor_Name}
@@ -456,8 +441,8 @@ const handleprint = () =>{
                 </div>
 
 
-<div className="">
-  <button className='btn btn-success p-3 w-75 mb-2 w-100 mt-5 btn-print' onClick={handleprint}>Print page</button>
+<div className="text-center">
+  <button className='btn btn-success mb-2  mt-5 btn-print' onClick={handleprint}>Print page</button>
 </div>
 
              </div>  
@@ -466,6 +451,9 @@ const handleprint = () =>{
           </div>
         </div>
 
+
+     
+      <PrintFooter/>
    </Wrapper>
   )
 }
@@ -477,6 +465,20 @@ const Wrapper  = styled.div`
   .btn-print {
     @media print {
       display: none;
+    }
+  }
+  .btn-print-block {
+    display: none;
+    @media print {
+      display: block;
+    }
+  }
+  .footerimage{
+    @media print {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
   }
 `

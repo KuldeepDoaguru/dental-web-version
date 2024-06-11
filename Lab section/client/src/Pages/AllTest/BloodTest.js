@@ -214,11 +214,18 @@ const BloodTest = () => {
     fetchPatientDetails();
   }, []);
 
-  const filteredPatients = patientDetails.filter(patient => {
-     const fullName = `${patient.patient_name}`.toLowerCase();
-    const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
-    return fullName.includes(searchQuery.toLowerCase()) && (!dateFilter || formattedDate === dateFilter);
-  });
+ // Filter the patient details to include only those with a "pathologytest" status
+ const pathologytestPatients = patientDetails?.filter(patient => patient.lab_name === "pathology");
+
+ // Apply search and date filters to the pathologytest patients
+ const filteredPatients = pathologytestPatients?.filter((patient) => {
+   const fullName = `${patient.patient_name}`.toLowerCase();
+   const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
+   return (
+     fullName.includes(searchQuery.toLowerCase()) &&
+     (!dateFilter || formattedDate === dateFilter)
+   );
+ });
 
   const goBack = () => {
     window.history.go(-1);
@@ -245,7 +252,7 @@ const BloodTest = () => {
     const blob = new Blob([csvContent], { type: "text/csv" });
     const link = document.createElement("a");
     link.href = window.URL.createObjectURL(blob);
-    link.download = "table_data.csv";
+    link.download = "pathology_test.csv";
     link.click();
     window.URL.revokeObjectURL(link.href);
   };
@@ -269,7 +276,7 @@ const BloodTest = () => {
               </div>
 
               <div className="container-fluid mt-4" >
-                <h2>List of Blood Test</h2>
+                <h2>List of Pathology Test</h2>
                 <div className="mb-3">
                   <div className="row">
                     <div className="col-lg-2">
@@ -308,7 +315,7 @@ const BloodTest = () => {
                         <th>Assigned Doctor Name</th>
                         <th>Lab Name</th>
                         <th>Created Date</th>
-                        <th>Patient Tests</th>
+                        <th>Test Name</th>
                         <th>Tests Status</th>
                       </tr>
                     </thead>

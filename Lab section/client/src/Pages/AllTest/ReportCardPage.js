@@ -68,7 +68,7 @@ const ReportCardPage = () => {
       <div className=" d-flex justify-content-around mt-5">
                   <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
                     <div className="card">
-                      <Link to="/OralTest" style={{ textDecoration: "none" }}>
+                      <Link to="/oral-test" style={{ textDecoration: "none" }}>
                         <div className="card-body d-flex justify-content-center flex-column mb-3">
                           <div className="text-light fs-1">
                             <GiFrontTeeth />
@@ -86,7 +86,7 @@ const ReportCardPage = () => {
 
                   <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
                     <div className="card">
-                      <Link to="/pathologyTest" style={{ textDecoration: "none" }}>
+                      <Link to="/pathology-test" style={{ textDecoration: "none" }}>
                         <div className="card-body d-flex justify-content-center flex-column mb-3">
                           <div className="text-light fs-1">
                             <SiMoneygram />
@@ -105,7 +105,7 @@ const ReportCardPage = () => {
                   <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
                     <div className="card">
                       <Link
-                        to="/RadiologyTest"
+                        to="/radiology-test"
                         style={{ textDecoration: "none" }}
                       >
                         <div className="card-body d-flex justify-content-center flex-column mb-3">
@@ -126,7 +126,7 @@ const ReportCardPage = () => {
                   <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
                     <div className="card">
                       <Link
-                        to="/PendingTest"
+                        to="/pending-test"
                         style={{ textDecoration: "none" }}
                       >
                         <div className="card-body d-flex justify-content-center flex-column mb-3">
@@ -146,7 +146,7 @@ const ReportCardPage = () => {
 
                   <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
                     <div className="card">
-                      <Link to="/Compleated" style={{ textDecoration: "none" }}>
+                      <Link to="/done-test" style={{ textDecoration: "none" }}>
                         <div className="card-body d-flex justify-content-center flex-column mb-3">
                           <div className="text-light fs-1">
                             <GiTakeMyMoney />

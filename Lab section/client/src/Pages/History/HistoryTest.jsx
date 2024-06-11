@@ -44,11 +44,30 @@ const [searchQuery, setSearchQuery] = useState('');
       fetchPatientDetails();
     }, [token]);
 
-const filteredPatients = patientDetails.filter(patient => {
-     const fullName = `${patient.patient_name}`.toLowerCase();
-    const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
-    return fullName.includes(searchQuery.toLowerCase()) && (!dateFilter || formattedDate === dateFilter);
-  });
+ // Filter the patient details to include only those with a "done" status
+ const donePatients = patientDetails?.filter(patient => patient.test_status === "done");
+
+ // Apply search and date filters to the done patients
+ const filteredPatients = donePatients?.filter((patient) => {
+   const fullName = patient.patient_name.toLowerCase().trim();
+   const lowerSearchQuery = searchQuery.toLowerCase().trim();
+   const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
+
+
+
+   return (
+    (fullName.includes(lowerSearchQuery) ||
+    patient.patient_uhid.toLowerCase().trim().includes(lowerSearchQuery) ||
+    patient.mobileno.trim().includes(lowerSearchQuery)) &&
+  (!dateFilter || formattedDate === dateFilter)
+   )
+ });
+
+
+ 
+
+
+
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -102,7 +121,7 @@ const filteredPatients = patientDetails.filter(patient => {
           <div className="col-lg-2">
           <input
             type="text"
-            placeholder="Search by Patient Name"
+            placeholder="Search by Patient Name or UHID"
             value={searchQuery}
                         onChange={(e) => {
                           setSearchQuery(e.target.value);
@@ -143,7 +162,7 @@ const filteredPatients = patientDetails.filter(patient => {
                 <th>Assigned Doctor Name</th>
                 <th>Lab Name</th>
                 <th>Created Date</th>
-                        <th>Tests Name</th>
+                        <th>Test Name</th>
                         <th>Status</th>
                         <th>Action</th>
               </tr>

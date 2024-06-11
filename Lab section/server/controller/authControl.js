@@ -30,6 +30,23 @@ const getBranch = (req, res) => {
     });
   }
 };
+const getBranchDetailsByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery = "SELECT * FROM branches WHERE branch_name = ?";
+    db.query(getQuery, branch, (err, result) => {
+      if (err) {
+        logger.error("Error getting branch details");
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).json(result);
+    });
+  } catch (error) {
+    logger.error("Error getting branch details");
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
 
 const LoginDoctor = (req, res) => {
   try {
@@ -198,6 +215,27 @@ const getPatientLabWithPatientDetails = (req, res) => {
 };
 
 
+const getEmployeeData = (req, res) => {
+  try {
+    const getQuery = `SELECT * FROM employee_register`;
+    db.query(getQuery, (err, result) => {
+      if (err) {
+          logger.registrationLogger.log("error", "error in fetching employee details");
+        res.status(400).send({ message: "error in fetching employee" });
+      }
+      logger.registrationLogger.log("info", "employee data fetched successfully");
+      res.json(result);
+    });
+  } catch (error) {
+      logger.registrationLogger.log("error", "Internal server error");
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
 
 
 const getPatientLabWithLabTest = (req, res) => {
@@ -332,11 +370,11 @@ const updatepatienttestdetail = async (req, res) => {
       result,
       unit,
       cost,
-      // collection_date,
-      // authenticate_date,
+      collection_date,
+      authenticate_date,
       lab_type,
     } = req.body;
-    const sql = `UPDATE  patient_lab_test_details SET test = ? , result = ? , unit = ? , cost = ?,lab_type = ? WHERE testid = ?`;
+    const sql = `UPDATE  patient_lab_test_details SET test = ? , result = ? , unit = ? , cost = ?, collection_date = ? , authenticate_date = ?,lab_type = ? WHERE testid = ?`;
 
     db.query(
       sql,
@@ -345,14 +383,18 @@ const updatepatienttestdetail = async (req, res) => {
         result,
         unit,
         cost,
+        collection_date,
+        authenticate_date,
         lab_type,
         testId,
       ],
       (error, result) => {
         if (error) {
           console.log("Table is not Found ", error);
+          logger.registrationLogger.log("error", "Table is not Found");
           res.status(500).json({ message: "Table is not Found " });
         } else {
+        logger.registrationLogger.log("info", "Successfully Updated Patient test detail");
           res
             .status(200)
             .json({ message: "Successfully Upadated Patient test detail" });
@@ -361,9 +403,43 @@ const updatepatienttestdetail = async (req, res) => {
     );
   } catch (error) {
     console.log("Internal Server Error");
+          logger.registrationLogger.log("error", "Internal Server Error");
+
     res.status(500).json({ message: "Internal Server Error " });
   }
 };
+
+
+const updatepatienttest = async (req, res) => {
+  try {
+    const { testId } = req.params;
+    const { result, unit } = req.body;
+
+    // Check if testId is provided
+    if (!testId) {
+      logger.registrationLogger.log("error", "testId is required");
+      return res.status(400).json({ message: "testId is required" });
+    }
+
+    const sql = `UPDATE patient_lab_test_details SET result = ?, unit = ? WHERE testid = ?`;
+
+    db.query(sql, [result, unit, testId], (error, result) => {
+      if (error) {
+        console.log("Table not found", error);
+        logger.registrationLogger.log("error", "Table not found");
+        res.status(500).json({ message: "Table not found" });
+      } else {
+        logger.registrationLogger.log("info", "Successfully updated patient test");
+        res.status(200).json({ message: "Successfully updated patient test" });
+      }
+    });
+  } catch (error) {
+    console.log("Internal server error", error);
+    logger.registrationLogger.log("error", "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 
 
 
@@ -1287,6 +1363,7 @@ const getBranchHoliday = (req, res) => {
 
 module.exports = {
   getBranch,
+  getBranchDetailsByBranch,
   LoginDoctor,
   // getPatientDetail,
   getPatientLabWithPatientDetails,
@@ -1295,6 +1372,7 @@ module.exports = {
   patienttestdatabyid,
   updateteststatus,
   updatepatienttestdetail,
+  updatepatienttest,
   deletepatienttestdetail,
   patienttestnotes,
   getpatienttestnotesbyid,
@@ -1314,5 +1392,6 @@ module.exports = {
   getTodayAttendance,
   getAttendancebyempId,
   getBranchHoliday,
-  getBranchDetail
+  getBranchDetail,
+  getEmployeeData
 };

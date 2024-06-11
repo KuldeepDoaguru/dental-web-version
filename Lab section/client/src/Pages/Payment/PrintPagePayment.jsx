@@ -9,6 +9,8 @@ import moment from 'moment';
 import signature from "../../Pages/BloodTestExternal/signature_maker_after_.webp";
 import cogoToast  from 'cogo-toast';
 import { useSelector } from "react-redux";
+import PrintHeader from "../../components/MainComponents/PrintHeader";
+import PrintFooter from "../../components/MainComponents/PrintFooter";
 
 
 
@@ -95,21 +97,28 @@ const PrintPagePayment                                                          
   return (
     <>
       <Wrapper>
-        <Header />
-        <div className="main">
-          <div className="container-fluid">
-            <div className="row flex-nowrap ">
-              <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-1 p-0">
-                <Sider />
-              </div>
-              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 p-0" style={{marginTop:"5rem"}}> 
-                <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+       {/* <div className="btn-print">
+      <Header />   </div> */}
+      <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
                   <IoArrowBackSharp
                     className="fs-1 mt-2 text-black d-print-none"
                     onClick={goBack}
                   />{" "}
                 </div>
-
+     <div className="">
+      <PrintHeader/>
+      </div> 
+        <div className="main">
+         
+          <div className="container-fluid">
+            <div className="row flex-nowrap ">
+              {/* <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-1 p-0 btn-print">
+                <Sider />
+              </div> */}
+              {/* <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 p-0" style={{marginTop:"5rem"}}>  */}
+              <div className=""> 
+                
+              
                 <div className="d-flex justify-content-center mt-4">
                   <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 ">
                     <div className="d-flex justify-content-start ms-lg-5 ms-md-1">
@@ -171,7 +180,7 @@ const PrintPagePayment                                                          
                   </div>
 
                   <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                    <div class=" rounded d-flex justify-content-end mt-5 me-lg-5 me-md-1">
+                    <div class=" rounded d-flex justify-content-end mt-2 me-lg-5 me-md-1">
                       <div class="card" style={{ width: "18rem" }}>
                         <div className="ms-4 mt-2">
                         <h1> ₹ {patientcost}</h1>
@@ -185,10 +194,10 @@ const PrintPagePayment                                                          
                 </div>
 
                 <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                  <form className="d-flex justify-content-center mt-4">
+                  <form className="d-flex justify-content-center mt-2">
                     <h2> Payment Description</h2>
                   </form>
-                  <hr className="mt-5" />
+                  <hr className="" />
                 </div>
 
                 <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
@@ -226,13 +235,13 @@ const PrintPagePayment                                                          
                   <div className="row  mt-5">
                   <div className="d-flex justify-content-between">
                       <div className="col-lg-4 form-group">
-                        <div className="text-center">
+                        {/* <div className="text-center">
                           <img
                             src={signature}
                             style={{ width: "100px", height: "50px" }}
                             alt="Today's Image"
                           />
-                        </div>
+                        </div> */}
                         <h4 className=" text-center fs-5 fw-bold">
                         {userName.employee_name}
                         </h4>
@@ -240,13 +249,13 @@ const PrintPagePayment                                                          
                       </div>
 
                       <div className="col-lg-4 form-group">
-                        <div className="text-center">
+                        {/* <div className="text-center">
                           <img
                             src={signature}
                             style={{ width: "100px", height: "50px" }}
                             alt="Today's Image"
                           />
-                        </div>
+                        </div> */}
                         <h4 className=" text-center fs-5 fw-bold">
                           {patientAssigned_Doctor_Name}
                         </h4>
@@ -258,7 +267,6 @@ const PrintPagePayment                                                          
 
               
                     <h4 className="text-center mt-5 ">Thank you </h4>
-              
 
                
         <div className="text-center">
@@ -277,7 +285,9 @@ const PrintPagePayment                                                          
             </div>
           </div>
         </div>
+       
       </Wrapper>
+      <PrintFooter/>
     </>
   );
 };
@@ -299,6 +309,20 @@ const Wrapper = styled.div`
   .btn-print {
     @media print {
       display: none;
+    }
+  }
+  .btn-print-block {
+    display: none;
+    @media print {
+      display: block;
+    }
+  }
+  .footerimage{
+    @media print {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
   }
    

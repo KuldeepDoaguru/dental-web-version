@@ -6,6 +6,8 @@ import axios from 'axios';
 import moment from 'moment';
 import Header from '../components/MainComponents/Header';
 import Sider from '../components/MainComponents/Sider';
+import { useNavigate } from 'react-router-dom';
+import { IoMdArrowRoundBack } from 'react-icons/io';
 
 const BranchInfo = () => {
     const [branchDetail,setBranchDetail] = useState([]);
@@ -13,8 +15,12 @@ const BranchInfo = () => {
 
     const currentUser = useSelector(state => state.auth.user);
     const  branch = currentUser?.branch_name;
-     
+     const navigate = useNavigate()
 
+    const goBack = (event) => {
+   
+      navigate('/'); // This goes back to the previous page
+  };
   
   const token = currentUser?.token;
 
@@ -67,10 +73,15 @@ const BranchInfo = () => {
       <div className="col-lg-1 col-md-1 col-1" id="sider">
         <Sider />
       </div>
-      <div className="col-lg-11 col-md-11 col-11" id="set" style={{marginTop:"5rem"}}>
+      <div className="col-lg-11 col-md-11 col-11" id="set" style={{marginTop:"3rem"}}>
             <div className="container-fluid  shadow p-3 mt-5 bg-body rounded">
                 <div className="row">
-                    <div className="col-lg-12 col-12">
+                <div className="col-lg-3">
+                  <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
+                  </div>
+                    <div className="col-lg-12 col-12 mt-4">
                         <div className="text-start p-2">
                             <h3>Clinic Details</h3>
                             <hr />

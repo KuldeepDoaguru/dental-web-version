@@ -30,6 +30,7 @@ function ApplyLeave() {
     leave_status : "pending"
   
   });
+  const [loading , setLoading] = useState(false)
 
 
   
@@ -91,6 +92,8 @@ function ApplyLeave() {
  
   }
   const handleSubmit = async (e) =>{
+
+
     e.preventDefault();
 
     // const existingLeave = 
@@ -127,6 +130,7 @@ function ApplyLeave() {
     
         }
         try {
+          setLoading(true)
             const response = await axios.post('https://dentalgurulab.doaguru.com/api/lab/apply-leave', updatedFormData,{
               headers: {
                 'Content-Type': 'application/json',
@@ -149,6 +153,7 @@ function ApplyLeave() {
                 cogoToast.error(response?.data?.message);
             }
         } catch (error) {
+          setLoading(false)
             console.log(error)
           cogoToast.error(error?.response?.data?.message);
         }
@@ -213,8 +218,11 @@ console.log(formData)
             </div>
 
             <div>
-              <button type="submit" className="btn btn-success">
-                Apply
+              <button type="submit" className="btn btn-success"
+              disabled = {loading}
+              >
+                {loading ? 'Apply ...' : 'Apply'}
+                
               </button>
             </div>
           </form>

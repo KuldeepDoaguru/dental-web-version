@@ -57,7 +57,7 @@ const Header = () => {
                     </a>
                     <ul className="dropdown-menu second-dropdown" style={{marginLeft:"-8rem"}}>
                     <li><Link to='/lab-attendant-profile' className="dropdown-item">View Profile</Link></li>
-    <li><Link to='/attendanceLeave' className="dropdown-item">View Attendance & Leave</Link></li>
+    {/* <li><Link to='/attendanceLeave' className="dropdown-item">View Attendance & Leave</Link></li> */}
     <li><Link to='/branch-details' className="dropdown-item">View Clinic Details</Link></li>
                     </ul>
  

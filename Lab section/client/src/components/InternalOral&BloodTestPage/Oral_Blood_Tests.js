@@ -31,10 +31,12 @@ function   Oral_Blood_Tests() {
   const [labType , setLabType] = useState('Internal')
   const [labtestpayment , setLabtestpayment] = useState(1500);
   const [labtestpaymentstatus , setLabtestpaymentstatus] = useState('done');
+  const [loading , setLoading] = useState(false);
 
   const location = useLocation();
  const navigate = useNavigate();
- 
+ const [resultError, setResultError] = useState('');
+  const [unitError, setUnitError] = useState('');
  
  const currentUser = useSelector(state => state.auth.user);
   
@@ -88,7 +90,30 @@ function   Oral_Blood_Tests() {
     fetchPatientDetails();
   }, []);
 
-  
+  const handleResultChange = (e) => {
+    const value = e.target.value;
+    const alphaRegex = /^[A-Za-z\s]*$/;
+
+    if (alphaRegex.test(value)) {
+      setResultError('');
+      setPatientresult(value);
+    } else {
+      setResultError('Result should contain only alphabetic characters.');
+    }
+  };
+
+  const handleUnitChange = (e) => {
+    const value = e.target.value;
+    const numericRegex = /^[0-9]*$/;
+
+    if (numericRegex.test(value)) {
+      setUnitError('');
+      setPatientunit(value);
+    } else {
+      setUnitError('Unit should contain only numeric characters.');
+    }
+  };
+
 
 const hundleSumbit = async () => {
   
@@ -129,6 +154,7 @@ const hundleSumbit = async () => {
 
   
   try {
+    setLoading(true)
     // Update the test status
     const responsee = await axios.put(`https://dentalgurulab.doaguru.com/api/lab/update-test-status/${id}`,[],
     {
@@ -168,6 +194,7 @@ const hundleSumbit = async () => {
       console.error('Error uploading patient test data');
     }
   } catch (error) {
+    setLoading(false)
     console.error('Server Error:', error.message);
   }
 };
@@ -274,25 +301,18 @@ const hundleSumbit = async () => {
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                Bill No. :
-                                <input
-                                  type ="text"
-                                  className = "border border-0 ms-3 w-50"
-                                 value={patientbill_no}
+                                Bill No. : {patientbill_no}
                                
-                                />
+                        
                               </td>
                               <td
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                UHID :{" "}
-                                <input
-                                  type="text"
-                                  className="border border-0 ms-2"
-                                  value={patientUHID}
+                                UHID :    {" "}
+                               {patientUHID}
                                  
-                                />
+                       
                               </td>
                             </tr>
                           </tbody>
@@ -324,14 +344,9 @@ const hundleSumbit = async () => {
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                              Treatment Id :
-                                <input
-                                  type="Number"
-                                  className="border border-0 ms-3"
-                                  style={{ width: "40px" }}
-                                  value={patienttid}
+                              Treatment Id :  {patienttid}
                     
-                                />{" "}
+                 
                                 
                                 
                               </td>
@@ -341,13 +356,8 @@ const hundleSumbit = async () => {
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                Patient Name :
-                                <input
-                                  type="text"
-                                  className="border border-0 ms-3 w-50"
-                                  value={patientName}
-                                 
-                                />
+                                Patient Name :   {patientName}
+                             
                               </td>
 
                               
@@ -371,12 +381,9 @@ const hundleSumbit = async () => {
                                 style={{ width: "20%" }}
                               >
                                 Advised By :{" "}
-                                <input
-                                  type="text"
-                                  className="border border-0 ms-2"
-                                  value={patientAssigned_Doctor_Name}
+                               {patientAssigned_Doctor_Name}
                                  
-                                />
+                             
                               </td>
                               <td
                                 className="table-small"
@@ -400,13 +407,9 @@ const hundleSumbit = async () => {
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                Center Name :{" "}
-                                <input
-                                  type="text"
-                                  className="border border-0 ms-2"
-                                  value={patientbranch_name}
-                                
-                                />
+                                Center Name : {" "}
+                               {patientbranch_name}
+                       
                               </td>
                               <td
                                 className="table-small"
@@ -456,7 +459,7 @@ const hundleSumbit = async () => {
 
                   <div className="container-fluid">
                     <div className="row d-print-none">
-                      <div className="d-flex justify-content-between form">
+                      <form className="d-flex justify-content-between form">
                         <div className="col-lg-4 form-group">
                           <label className="fw-bold fs-5">
                             Test (Methodology)
@@ -467,37 +470,47 @@ const hundleSumbit = async () => {
                             className="form-control mt-2 p-3"
                             name="test"
                             type="text"
-
+disabled
                           value={patienttest}
                           onChange={(e)=>setPatienttest(e.target.value)}
                           />
                         
                         </div>
-
                         <div className="col-lg-3 form-group">
-                          <label className="fw-bold fs-5">Result</label>
-                          <input
-                            className="form-control mt-2 p-3"
-                            name="value"
-                            type="text"
-                           value={patientresult}
-                           onChange={(e)=>setPatientresult(e.target.value)}
-                          />
-                        </div>
+                        <label className="fw-bold fs-5">Result</label>
+                        <input
+                          className="form-control mt-2 p-3"
+                          name="value"
+                          type='text'
+                        
+                          placeholder="Enter Result"
+                          required
+                          value={patientresult}
+                          onChange={handleResultChange}
+                        />
+                        {resultError && (
+                          <div style={{ color: 'red' }}>{resultError}</div>
+                        )}
+                      </div>
 
                         {labName === 'oral' && (
-                        <div className="col-lg-4 form-group">
-                          <label className="fw-bold fs-5">Unit</label>
-                          <input
-                            list="unitName"
-                            name="unit"
-                            className="form-control unit mt-2 p-3"
-                            type="text"
-                            value={patientunit}
-                            onChange={(e)=>setPatientunit(e.target.value)}
-                          />
-                         
-                        </div>
+                      
+                           <div className="col-lg-4 form-group">
+                           <label className="fw-bold fs-5">Unit</label>
+                           <input
+                           list="unitName"
+                           name="unit"
+                           className="form-control unit mt-2 p-3"
+                           type="text"
+                           placeholder="Enter Unit"
+                           required
+                           value={patientunit}
+                            onChange={handleUnitChange}
+                         />
+                         {unitError && (
+                           <div style={{ color: 'red' }}>{unitError}</div>
+                         )}
+                       </div>
                     ) }
                         {labName === 'pathology' && (
                         <div className="col-lg-4 form-group">
@@ -522,23 +535,24 @@ const hundleSumbit = async () => {
                             list="costName"
                             name="cost"
                             className="form-control cost mt-2 p-3"
-                            type="text"
+                            type="number"
                             value={patientcost}
-                            onChange={(e)=>setPatientcost(e.target.value)}
+                          disabled
                             required
                           />
                          
                         </div>
                     ) }
-                      </div>
+                      </form>
                     </div>
                     <div className="d-print-none">
                       <Button
                         className="mt-4 mb-5 px-4 py-2"
                         style={{ backgroundColor: "#213555" }}
                       onClick={hundleSumbit}
+                      disabled = {loading}
                       >
-                        Submit
+                       {loading ? 'Sumbit ...' : 'Sumbit'} 
                       </Button>
                     </div>
                   </div>

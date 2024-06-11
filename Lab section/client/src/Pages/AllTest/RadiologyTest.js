@@ -39,12 +39,18 @@ const RadiologyTest = () => {
       fetchPatientDetails();
     }, []);
 
-    const filteredPatients = patientDetails.filter(patient => {
-       const fullName = `${patient.patient_name}`.toLowerCase();
-      const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
-      return fullName.includes(searchQuery.toLowerCase()) && (!dateFilter || formattedDate === dateFilter);
-    });
-    
+  // Filter the patient details to include only those with a "radiologytest" status
+  const radiologytestPatients = patientDetails?.filter(patient => patient.lab_name === "radiology");
+
+  // Apply search and date filters to the radiologytest patients
+  const filteredPatients = radiologytestPatients?.filter((patient) => {
+    const fullName = `${patient.patient_name}`.toLowerCase();
+    const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
+    return (
+      fullName.includes(searchQuery.toLowerCase()) &&
+      (!dateFilter || formattedDate === dateFilter)
+    );
+  });
  
 
   const goBack = () => {
@@ -72,7 +78,7 @@ const RadiologyTest = () => {
     const blob = new Blob([csvContent], { type: "text/csv" });
     const link = document.createElement("a");
     link.href = window.URL.createObjectURL(blob);
-    link.download = "table_data.csv";
+    link.download = "radiology_test.csv";
     link.click();
     window.URL.revokeObjectURL(link.href);
   };
@@ -137,7 +143,7 @@ const RadiologyTest = () => {
                 <th>Assigned Doctor Name</th>
                 <th>Lab Name</th>
                 <th>Created Date</th>
-                <th>Patient Tests </th>
+                <th>Test Name </th>
                 <th>Tests Status </th>
               
               </tr>

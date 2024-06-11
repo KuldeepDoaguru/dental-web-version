@@ -9,6 +9,8 @@ import moment from 'moment';
 import signature from "../../Pages/BloodTestExternal/signature_maker_after_.webp";
 import cogoToast  from 'cogo-toast';
 import { useSelector } from "react-redux";
+import PrintHeader from "../../components/MainComponents/PrintHeader";
+import PrintFooter from "../../components/MainComponents/PrintFooter";
 
 
 
@@ -24,7 +26,7 @@ const PaymentTest = () => {
   const [patientAssigned_Doctor_Name, setPatientAssigned_Doctor_Name] = useState("");
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const [isPaid, setIsPaid] = useState(false);
-
+  const [loading , setLoading] = useState(false);
   const userName = useSelector(state => state.auth.user);
   const goBack = () => {
     window.history.go(-1);
@@ -88,6 +90,34 @@ const PaymentTest = () => {
     fetchPatientTestCost();
   }, [id, patienttest]);
 
+  const fetchPatientTestDetails = async () => {
+    try {
+      const response = await axios.get(
+       `https://dentalgurulab.doaguru.com/api/lab/get-patient-test-details-by-id/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+     
+      setPaymentStatus(response.data[0].payment_status)
+      console.log(paymentStatus);
+    } catch (error) {
+      console.error('Error fetching patient details:', error);
+    }
+  };
+
+
+  useEffect(() => {
+  
+    fetchPatientTestDetails();
+  }, []);
+
+
+
+
   // const handlePayButtonClick = async () => {
   //   try {
   //     const response = await axios.post(`https://dentalgurulab.doaguru.com/api/lab/patient-test-payment/${id}`, {
@@ -106,6 +136,7 @@ const PaymentTest = () => {
 
   const handlePayButtonClick = async () => {
     try {
+      setLoading(true)
       const response = await axios.post(`https://dentalgurulab.doaguru.com/api/lab/patient-test-payment/${id}`, {
         patient_uhid: patientUHID,
         patient_name: patientName,
@@ -119,8 +150,10 @@ const PaymentTest = () => {
       }});
       // If payment is successful
       cogoToast.success('Successfully Paid Amount');
-      setPaymentStatus('paid');
-      setIsPaid(true);
+      // setPaymentStatus('paid');
+      // setIsPaid(true);
+      fetchPatientTestDetails();
+      setLoading(false)
     } catch (error) {
       console.error('Server Error:', error.message);
     }
@@ -131,11 +164,15 @@ const PaymentTest = () => {
   return (
     <>
       <Wrapper>
-        <Header />
+      <div className="btn-print-block ">
+      <PrintHeader/>
+      </div> 
+     <div className="btn-print">
+      <Header /></div>   
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-nowrap ">
-              <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-1 p-0">
+              <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-1 p-0 btn-print">
                 <Sider />
               </div>
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 p-0" style={{marginTop:"5rem"}}> 
@@ -145,8 +182,9 @@ const PaymentTest = () => {
                     onClick={goBack}
                   />{" "}
                 </div>
+                
 
-                <div className="d-flex justify-content-center mt-4 mx-4">
+                <div className="d-flex justify-content-center mt-4 ">
                   <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 ">
                     <div className="d-flex justify-content-start ms-lg-5 ms-md-1">
                       <div>
@@ -177,7 +215,7 @@ const PaymentTest = () => {
                   </div>
                 </div>
 
-                <div className="d-flex justify-content-center mx-4">
+                <div className="d-flex justify-content-center">
                   <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 rounded mt-4">
                     <div className="d-flex justify-content-start ms-lg-5 ms-md-1">
                       <div>
@@ -262,13 +300,13 @@ const PaymentTest = () => {
                   <div className="row  mt-5 mx-3">
                   <div className="d-flex justify-content-between">
                       <div className="col-lg-4 form-group">
-                        <div className="text-center">
+                        {/* <div className="text-center">
                           <img
                             src={signature}
                             style={{ width: "100px", height: "50px" }}
                             alt="Today's Image"
                           />
-                        </div>
+                        </div> */}
                         <h4 className=" text-center fs-5 fw-bold">
                         {userName.employee_name}
                         </h4>
@@ -276,13 +314,13 @@ const PaymentTest = () => {
                       </div>
 
                       <div className="col-lg-4 form-group">
-                        <div className="text-center">
+                        {/* <div className="text-center">
                           <img
                             src={signature}
                             style={{ width: "100px", height: "50px" }}
                             alt="Today's Image"
                           />
-                        </div>
+                        </div> */}
                         <h4 className=" text-center fs-5 fw-bold">
                           {patientAssigned_Doctor_Name}
                         </h4>
@@ -314,12 +352,14 @@ const PaymentTest = () => {
             className="btn text-light text-capitalize px-4 mt-2 mb-2 btn-print"
             style={{ backgroundColor: "#213555" }}
             onClick={handlePayButtonClick}
-            disabled={isPaid} // Disable button if payment is already made
+            disabled={loading} 
           >
-            PAY
+          {loading ? 'Pay ...' : 'Pay'}
+            
+
           </button>
         )}
-        {paymentStatus === 'paid' && (
+        {paymentStatus === 'done' && (
           <>
             <button
               className="btn text-light text-capitalize px-4 mx-2 btn-print mt-2 mb-2"
@@ -345,6 +385,7 @@ const PaymentTest = () => {
             </div>
           </div>
         </div>
+ <PrintFooter/>
       </Wrapper>
     </>
   );
@@ -362,6 +403,12 @@ const Wrapper = styled.div`
   @media print {
     .btn-print {
       display: none;
+    }
+  }
+  .btn-print-block {
+    display: none;
+    @media print {
+      display: block;
     }
   }
 `;

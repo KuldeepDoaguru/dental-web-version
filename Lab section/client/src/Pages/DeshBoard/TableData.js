@@ -470,6 +470,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import { FaSearch } from "react-icons/fa";
 
 function TableData() {
   const [patientDetails, setPatientDetails] = useState([]);
@@ -487,6 +488,7 @@ function TableData() {
   const currentUser = useSelector((state) => state.auth.user);
   const token = currentUser?.token;
   console.log(token);
+
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
@@ -511,7 +513,7 @@ function TableData() {
     // Set up interval to fetch data every X seconds
     const interval = setInterval(() => {
       fetchPatientDetails();
-    }, 3000); // Fetch data every 5 seconds (adjust as needed)
+    }, 3000); // Fetch data every 3 seconds (adjust as needed)
 
     // Clear interval on component unmount
     return () => clearInterval(interval);
@@ -534,21 +536,26 @@ function TableData() {
     setSelectedTest(null);
   };
 
-  const filteredPatients = patientDetails?.filter((patient) => {
-    const fullName = `${patient.patient_name}`.toLowerCase();
+  // Filter the patient details to include only those with a "pending" status
+  const pendingPatients = patientDetails?.filter(patient => patient.test_status === "pending");
+
+  // Apply search and date filters to the pending patients
+  const filteredPatients = pendingPatients?.filter((patient) => {
+    const fullName = patient.patient_name.toLowerCase().trim();
+    const lowerSearchQuery = searchQuery.toLowerCase().trim();
     const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
+
     return (
-      fullName.includes(searchQuery.toLowerCase()) &&
+      (fullName.includes(lowerSearchQuery) ||
+        patient.patient_uhid.toLowerCase().trim().includes(lowerSearchQuery) ||
+        patient.mobileno.trim().includes(lowerSearchQuery)) &&
       (!dateFilter || formattedDate === dateFilter)
     );
   });
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredPatients?.slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+  const currentItems = filteredPatients?.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -558,17 +565,21 @@ function TableData() {
         <h2 style={{ color: "#213555" }}>List of Tests </h2>
         <div className="mb-3">
           <div className="row">
-            <div className="col-lg-2">
+            <div className="col-lg-4">
+              <div className="d-flex">
               <input
                 type="text"
-                placeholder="Search by Patient Name"
+                placeholder="Search by Patient Name or UHID or mobile number "
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
                   setCurrentPage(1); // Reset to the first page on search
-                }}
-                className="form-control  mb-lg-0 mb-md-2"
-              />
+                  }}
+                  className="form-control mb-lg-0 mb-md-2"
+                  />
+                  <div className="mx-2">  <FaSearch/></div>
+                </div>
+           
             </div>
             <div className="col-lg-2">
               <input
@@ -580,39 +591,37 @@ function TableData() {
                 }}
                 className="form-control"
               />
+
             </div>
           </div>
         </div>
-        <div className="" style={{ overflowX: "scroll" }}>
-        {currentItems.length === 0 ? (
-          <div className='mb-2 fs-4 fw-bold text-center'>No tests available</div>
-          ) : (
-
-<>
-       <table className="table table-bordered">
-            <thead>
-              <tr>
-                <th>S.no</th>
-                <th>Patient UHID</th>
-                <th>Patient Name</th>
-                <th>Mobile Number</th>
-                <th>Email Id</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Weight</th>
-                <th>Branch Name</th>
-                <th>Assigned Doctor Name</th>
-                <th>Lab Name</th>
-                <th>Created Date</th>
-                <th>Test Name</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((patient, index) => (
-                <>
-                  {patient.test_status === "pending" && (
+        {currentItems?.length === 0 ? (
+          <div className='mb-5 fs-4 fw-bold text-center'>No tests available</div>
+        ) : (
+          <>
+            <div className="" style={{ overflowX: "scroll" }}>
+              <table className="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>S.no</th>
+                    <th>Patient UHID</th>
+                    <th>Patient Name</th>
+                    <th>Mobile Number</th>
+                    <th>Email Id</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Weight</th>
+                    <th>Branch Name</th>
+                    <th>Assigned Doctor Name</th>
+                    <th>Lab Name</th>
+                    <th>Created Date</th>
+                    <th>Test Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {currentItems.map((patient, index) => (
                     <tr key={index}>
                       <td>{indexOfFirstItem + index + 1}</td>
                       <td>{patient.patient_uhid}</td>
@@ -625,92 +634,67 @@ function TableData() {
                       <td>{patient.branch_name}</td>
                       <td>{patient.assigned_doctor_name}</td>
                       <td>{patient.lab_name}</td>
-                      <td>
-                        {moment(patient.created_date).format("DD/MM/YYYY")}
-                      </td>
+                      <td>{moment(patient.created_date).format("DD/MM/YYYY")}</td>
                       <td>{patient.test}</td>
-                      <td className="text-danger fw-bold">
-                        {patient.test_status}
-                      </td>
+                      <td className="text-danger fw-bold">{patient.test_status}</td>
                       <td>
                         {getTestArray(patient.test).map((test, i) => (
                           <button
                             key={i}
                             className="btn btn-primary mx-2"
-                            onClick={() =>
-                              setSelectedTest({
-                                test,
-                                patientId: patient.testid,
-                              })
-                            }
+                            onClick={() => setSelectedTest({ test, patientId: patient.testid })}
                           >
                             Start Test
                           </button>
                         ))}
                       </td>
                     </tr>
-                  )}
-                </>
-              ))}
-            </tbody>
-          </table>
-
-</>
-          )
-        }
-
-
-   
-        </div>
-        {/* Pagination */}
-        <nav>
-          <ul className="pagination">
-            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-              <button
-                className="page-link"
-                onClick={() => paginate(currentPage - 1)}
-                disabled={currentPage === 1}
-              >
-                Previous
-              </button>
-            </li>
-            {Array.from(
-              { length: Math.ceil(filteredPatients.length / itemsPerPage) },
-              (_, i) => (
-                <li
-                  key={i}
-                  className={`page-item ${
-                    currentPage === i + 1 ? "active" : ""
-                  }`}
-                >
-                  <button className="page-link" onClick={() => paginate(i + 1)}>
-                    {i + 1}
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Pagination */}
+            <nav>
+              <ul className="pagination">
+                <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+                  <button
+                    className="page-link"
+                    onClick={() => paginate(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
                   </button>
                 </li>
-              )
-            )}
-            <li
-              className={`page-item ${
-                currentPage ===
-                Math.ceil(filteredPatients.length / itemsPerPage)
-                  ? "disabled"
-                  : ""
-              }`}
-            >
-              <button
-                className="page-link"
-                onClick={() => paginate(currentPage + 1)}
-                disabled={
-                  currentPage ===
-                  Math.ceil(filteredPatients.length / itemsPerPage)
-                }
-              >
-                Next
-              </button>
-            </li>
-          </ul>
-        </nav>
-
+                {Array.from(
+                  { length: Math.ceil(filteredPatients.length / itemsPerPage) },
+                  (_, i) => (
+                    <li
+                      key={i}
+                      className={`page-item ${currentPage === i + 1 ? "active" : ""}`}
+                    >
+                      <button className="page-link" onClick={() => paginate(i + 1)}>
+                        {i + 1}
+                      </button>
+                    </li>
+                  )
+                )}
+                <li
+                  className={`page-item ${
+                    currentPage === Math.ceil(filteredPatients.length / itemsPerPage) ? "disabled" : ""
+                  }`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => paginate(currentPage + 1)}
+                    disabled={currentPage === Math.ceil(filteredPatients.length / itemsPerPage)}
+                  >
+                    Next
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </>
+        )}
         {selectedTest && (
           <Modal show={true} onHide={handleCloseModal}>
             <Modal.Header closeButton>
@@ -723,9 +707,7 @@ function TableData() {
               </Button>
               <Button
                 variant="success"
-                onClick={() =>
-                  handleStart(selectedTest.patientId, selectedTest.test)
-                }
+                onClick={() => handleStart(selectedTest.patientId, selectedTest.test)}
               >
                 Start
               </Button>

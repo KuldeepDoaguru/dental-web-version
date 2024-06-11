@@ -55,7 +55,7 @@ function App() {
     
        
         <Route path="/dashboard" element={user ? <Deshboard />:<Navigate to="/" />} />
-        <Route path="/attendanceLeave" element={user ? <AttendanceLeave />:<Navigate to="/" />} />
+        <Route path="/attendance-leave" element={user ? <AttendanceLeave />:<Navigate to="/" />} />
         <Route path="/branch-details" element={user ? <BranchInfo />:<Navigate to="/" />} />
         <Route path="/lab-attendant-profile" element={user ? <Profile />:<Navigate to="/" />} />
          
@@ -64,17 +64,17 @@ function App() {
         <Route path="/Sencivity" element={user?<Sencivity />: <Navigate to = "/"/>} />
         <Route path="/CBCTest" element={user?<CBCTest />: <Navigate to = '/'/>} />
         <Route path="/OPGXRay" element={user?<OPGXRay />: <Navigate to = '/'/>} />
-        <Route path="/History" element={user?<HistoryTest />: <Navigate to = '/'/>} />
-        <Route path="/PaymentHistory" element={user?<PaymentHistory />: <Navigate to = '/'/>} />
-        <Route path="/Payment-test/:id" element={user ? <PaymentTest /> : <Navigate to='/'/>} />
-        <Route path="/Payment-Print/:id" element={user ? <PrintPagePayment /> : <Navigate to='/'/>} />
-        <Route path="/AllTest" element={user?<AllTests/> :  <Navigate to='/'/>} />
-        <Route path="/Logout" element={user? <Logout />: <Navigate to='/'/>} />
-        <Route path="/pathologyTest" element={user ? <BloodTest /> : <Navigate to='/'/>} />
-        <Route path="/Compleated" element={user ?<Compleated />  : <Navigate to='/'/>} />
-        <Route path="/OralTest" element={user ?<OralTest /> : <Navigate to='/'/>} />
-        <Route path="/PendingTest" element={user ?<PendingTest /> : <Navigate to='/'/>} />
-        <Route path="/RadiologyTest" element={user ?<RadiologyTest /> : <Navigate to='/'/>} />
+        <Route path="/history" element={user?<HistoryTest />: <Navigate to = '/'/>} />
+        <Route path="/payment-history" element={user?<PaymentHistory />: <Navigate to = '/'/>} />
+        <Route path="/payment-test/:id" element={user ? <PaymentTest /> : <Navigate to='/'/>} />
+        <Route path="/payment-print/:id" element={user ? <PrintPagePayment /> : <Navigate to='/'/>} />
+        <Route path="/all-test" element={user?<AllTests/> :  <Navigate to='/'/>} />
+        <Route path="/logout" element={user? <Logout />: <Navigate to='/'/>} />
+        <Route path="/pathology-test" element={user ? <BloodTest /> : <Navigate to='/'/>} />
+        <Route path="/done-test" element={user ?<Compleated />  : <Navigate to='/'/>} />
+        <Route path="/oral-test" element={user ?<OralTest /> : <Navigate to='/'/>} />
+        <Route path="/pending-test" element={user ?<PendingTest /> : <Navigate to='/'/>} />
+        <Route path="/radiology-test" element={user ?<RadiologyTest /> : <Navigate to='/'/>} />
         <Route path="/Popup" element={user ?<Popup /> : <Navigate to='/'/>} />
         <Route path="/today-test" element={user ?<TodayTest /> : <Navigate to='/'/>} />
         <Route path="/yesterday-test" element={user ?<YesterdayTest /> : <Navigate to='/'/>} />

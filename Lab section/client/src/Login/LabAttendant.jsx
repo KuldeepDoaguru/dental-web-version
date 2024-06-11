@@ -18,6 +18,8 @@ const LabAttendant = () => {
   const [braches, setBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState("");
   const [show, setShow] = useState(false);
+  const [loading, setloading] = useState(false);
+
    
   const currentUser = useSelector(state => state.auth.user);
   
@@ -54,8 +56,11 @@ const LabAttendant = () => {
 
   console.log(selectedBranch);
   const receptionistLogin = async (e) => {
+
+
     e.preventDefault();
     try {
+      setloading(true)
       const response = await axios.post(
         "https://dentalgurulab.doaguru.com/api/lab/lab-attendant-login",
         {
@@ -85,6 +90,7 @@ const LabAttendant = () => {
     } catch (error) {
       console.log("Axios error:", error);
       // cogoToast.error("Axios error:", error)
+      setloading(false)
 
       if (
         error.response &&
@@ -205,8 +211,10 @@ const LabAttendant = () => {
                             <button
                               type="submit"
                               className="btn btn-primary btn-lg"
+                              disabled = {loading}
                             >
-                              Login
+                             
+                              {loading ? "Loding..." : "Login"}
                             </button>
                           </div>
                         </form>

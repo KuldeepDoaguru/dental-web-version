@@ -19,6 +19,7 @@ import Header from "../components/MainComponents/Header";
 import Sider from "../components/MainComponents/Sider";
 import MarkAttendance from "./MarkAttendance";
 import ApplyLeave from "./ApplyLeave";
+import { IoArrowBackSharp } from "react-icons/io5";
 
 const AttendanceLeave = () => {
     const navigate = useNavigate();
@@ -34,6 +35,7 @@ const AttendanceLeave = () => {
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [leavesData,setLeaveData] = useState([]);
+  const [loading , setLoading] = useState(false);
 
 
   const [Attendance, setAttendance] = useState([]);
@@ -163,11 +165,9 @@ const AttendanceLeave = () => {
 
   console.log(fitlerByDuration);
 
-  const goBack = (event) => {
-    event.preventDefault(); // Prevent default action to avoid page refresh
-    navigate(-1); // This goes back to the previous page
-};
-
+  const goBack = () => {
+    window.history.go(-1);
+  };
 
 // Helper function to format a single date string in the desired format
 const formatDate = (dateString) => {
@@ -193,12 +193,12 @@ const formatDate = (dateString) => {
                   </div>
                 </div>
 
-                <div className="container-fluid mt-3">
+                <div className="container-fluid" >
                   <div className="row d-flex justify-content-between">
-                    <div className="col-3">
-                  <button className="btn btn-success" onClick={goBack}>
-                    <IoMdArrowRoundBack /> Back
-                  </button>
+                    <div className="col-lg-3">
+                  <div className="fs-1 text-black d-print-none mx-2" onClick={goBack} style={{ cursor: "pointer" }}>
+                    <IoArrowBackSharp />
+                  </div>
                   </div>
                   <div className="col-9">
                   <MarkAttendance/>

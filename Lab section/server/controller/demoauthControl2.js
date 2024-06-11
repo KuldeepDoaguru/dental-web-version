@@ -469,6 +469,52 @@ const updatepatienttestdetail = async (req, res) => {
   }
 };
 
+const updatepatienttest = async (req, res) => {
+  try {
+    const { testId } = req.params;
+    const {
+      
+      result,
+      unit,
+     
+    } = req.body;
+    const sql = `UPDATE  patient_lab_test_details SET  result = ? , unit = ? , WHERE testid = ?`;
+
+    db.query(
+      sql,
+      [
+       
+        result,
+        unit,
+
+        testId,
+      ],
+      (error, result) => {
+        if (error) {
+          console.log("Table is not Found ", error);
+          logger.registrationLogger.log("error", "Table is not Found");
+          res.status(500).json({ message: "Table is not Found " });
+        } else {
+        logger.registrationLogger.log("info", "Successfully Updated Patient test");
+          res
+            .status(200)
+            .json({ message: "Successfully Upadated Patient test" });
+        }
+      }
+    );
+  } catch (error) {
+    console.log("Internal Server Error");
+          logger.registrationLogger.log("error", "Internal Server Error");
+
+    res.status(500).json({ message: "Internal Server Error " });
+  }
+};
+
+
+
+
+
+
 const deletepatienttestdetail = (req, res) => {
   try {
     const { testId } = req.params;
@@ -1178,6 +1224,7 @@ module.exports = {
   patienttestdatabyid,
   updateteststatus,
   updatepatienttestdetail,
+  updatepatienttest,
   deletepatienttestdetail,
   patienttestnotes,
   getpatienttestnotesbyid,

@@ -59,87 +59,9 @@
 // // `;
 
 
-// import React, { useState, useEffect } from 'react';
-// import { Pie } from 'react-chartjs-2';
-// import axios from 'axios';
-// import styled from 'styled-components';
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js/auto';
 
-// const PieCharts = () => {
-//   const [data, setData] = useState(null);
 
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const response = await axios.get('https://dentalgurulab.doaguru.com/api/lab/get-patient-details');
-//         setData(response.data);
-//       } catch (error) {
-//         console.error('Error fetching patient data:', error);
-//       }
-//     };
 
-//     fetchData();
-//   }, []);
-
-//   // useEffect(() => {
-//   //   const fetchData = async () => {
-//   //     try {
-//   //       const response = await axios.get('https://dentalgurulab.doaguru.com/api/lab/get-patient-details');
-//   //       // Filter the data to include only the lab names 'Oral', 'pathology', and 'Radiology'
-//   //       const filteredData = response.data.filter(dataset => ['oral', 'pathology', 'radiology'].includes(dataset.lab_name));
-//   //       setData(filteredData);
-//   //     } catch (error) {
-//   //       console.error('Error fetching patient data:', error);
-//   //     }
-//   //   };
-  
-//   //   fetchData();
-//   // }, []);
-  
-
-//   return (
-//     <Container>
-//       <div className="class">
-//         <div className="d">
-//           {data && (
-//             <Pie
-//               data={{
-//                 labels: data.map((dataset) => dataset.lab_name),
-//                 datasets: [
-//                   {
-//                     label: '# Patients',
-//                     data: data.map((dataset) => dataset.test_status === 'done' ? 1 : 0),
-//                     backgroundColor: ['#213555', '#8377d1', '#6d5a72'],
-//                     borderColor: ['#213555', '#8377d1', '#6d5a72'],
-//                     borderWidth: 2,
-//                   },
-//                 ],
-//               }}
-//             />
-//           )}
-//         </div>
-//       </div>
-//     </Container>
-//   );
-// };
-
-// export default PieCharts;
-
-// const Container = styled.div`
-//   .class {
-//     width: 100%;
-//     height: 20rem;
-//     display: flex;
-//     justify-content: center;
-//   }
-//   .d {
-//     width: 40%;
- 
-//     @media screen and  (min-width:1024px ) and (max-width: 1200px){
-//       width: 70%;
-//     }
-//   }
-// `;
 
 
 
@@ -147,54 +69,65 @@
 // import { Pie } from 'react-chartjs-2';
 // import axios from 'axios';
 // import styled from 'styled-components';
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js/auto';
+// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 // import { useSelector } from 'react-redux';
 
+// // Register Chart.js components
+// ChartJS.register(ArcElement, Tooltip, Legend);
+
 // const PieCharts = () => {
 //   const [data, setData] = useState(null);
- 
+
 //   const currentUser = useSelector(state => state.auth.user);
-  
 //   const token = currentUser?.token;
 
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       try {
-//         const response = await axios.get('https://dentalgurulab.doaguru.com/api/lab/get-patient-details',
-//         {
+//         const response = await axios.get('https://dentalgurulab.doaguru.com/api/lab/get-patient-details', {
 //           headers: {
 //             'Content-Type': 'application/json',
-//             'Authorization': `Bearer ${token}`
-//         }});
-//         // Filter the data to include only the lab names 'Oral', 'pathology', and 'Radiology'
-//         const filteredData = response.data.result.filter(dataset => ['oral', 'pathology', 'radiology'].includes(dataset.lab_name));
-        
-//         // Count occurrences of each unique lab name
-//         const labCounts = filteredData.reduce((counts, dataset) => {
-//           counts[dataset.lab_name] = (counts[dataset.lab_name] || 0) + 1;
-//           return counts;
-//         }, {});
+//             'Authorization': `Bearer ${token}`,
+//           },
+//         });
 
-//         // Convert labCounts object to an array of objects
-//         const pieChartData = Object.entries(labCounts).map(([lab_name, count]) => ({ lab_name, count }));
-        
-//         setData(pieChartData);
+//         if (response.status === 200) {
+//           // Filter the data to include only the lab names 'oral', 'pathology', and 'radiology' and with status 'pending'
+//           const filteredData = response.data.result.filter(dataset => 
+//             ['oral', 'pathology', 'radiology'].includes(dataset.lab_name.toLowerCase()) && dataset.test_status.toLowerCase() === 'pending'
+//           );
+//           console.log(response.data.result);
+
+//           // Count occurrences of each unique lab name
+//           const labCounts = filteredData.reduce((counts, dataset) => {
+//             const labName = dataset.lab_name.toLowerCase();
+//             counts[labName] = (counts[labName] || 0) + 1;
+//             return counts;
+//           }, {});
+
+//           // Convert labCounts object to an array of objects
+//           const pieChartData = Object.entries(labCounts).map(([lab_name, count]) => ({ lab_name, count }));
+
+//           setData(pieChartData);
+//         } else {
+//           console.error('Failed to fetch data');
+//         }
 //       } catch (error) {
 //         console.error('Error fetching patient data:', error);
 //       }
 //     };
-  
+
 //     fetchData();
-//   }, []);
+//   }, [token]);
 
 //   return (
 //     <Container>
 //       <div className="class">
 //         <div className="d">
-//           {data && (
+//           {data ? (
 //             <Pie
 //               data={{
-//                 labels: data.map((entry) => entry.lab_name),
+//                 labels: data.map((entry) => entry.lab_name.charAt(0).toUpperCase() + entry.lab_name.slice(1)),
 //                 datasets: [
 //                   {
 //                     label: '# Patients',
@@ -206,6 +139,8 @@
 //                 ],
 //               }}
 //             />
+//           ) : (
+//             <p>Loading data...</p>
 //           )}
 //         </div>
 //       </div>
@@ -225,12 +160,11 @@
 //   .d {
 //     width: 40%;
  
-//     @media screen and  (min-width:1024px ) and (max-width: 1200px){
+//     @media screen and (min-width: 1024px) and (max-width: 1200px) {
 //       width: 70%;
 //     }
 //   }
 // `;
-
 
 
 import React, { useState, useEffect } from 'react';
@@ -239,18 +173,22 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { useSelector } from 'react-redux';
-
+import animationData from "../../Pages/animation/loading-effect.json";
+import Lottie from "react-lottie";
 // Register Chart.js components
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+
 const PieCharts = () => {
   const [data, setData] = useState(null);
-
+  const [loading, setLoading] = useState(true);
+  const [loading1, setLoading1] = useState(false);
   const currentUser = useSelector(state => state.auth.user);
   const token = currentUser?.token;
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await axios.get('https://dentalgurulab.doaguru.com/api/lab/get-patient-details', {
           headers: {
@@ -264,7 +202,6 @@ const PieCharts = () => {
           const filteredData = response.data.result.filter(dataset => 
             ['oral', 'pathology', 'radiology'].includes(dataset.lab_name.toLowerCase()) && dataset.test_status.toLowerCase() === 'pending'
           );
-          console.log(response.data.result);
 
           // Count occurrences of each unique lab name
           const labCounts = filteredData.reduce((counts, dataset) => {
@@ -277,38 +214,58 @@ const PieCharts = () => {
           const pieChartData = Object.entries(labCounts).map(([lab_name, count]) => ({ lab_name, count }));
 
           setData(pieChartData);
+          setLoading(false);
         } else {
           console.error('Failed to fetch data');
         }
       } catch (error) {
         console.error('Error fetching patient data:', error);
+        setLoading(false);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchData();
+    if (token) {
+      fetchData();
+    }
   }, [token]);
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   return (
     <Container>
       <div className="class">
         <div className="d">
-          {data ? (
-            <Pie
-              data={{
-                labels: data.map((entry) => entry.lab_name.charAt(0).toUpperCase() + entry.lab_name.slice(1)),
-                datasets: [
-                  {
-                    label: '# Patients',
-                    data: data.map((entry) => entry.count),
-                    backgroundColor: ['#213555', '#8377d1', '#6d5a72'],
-                    borderColor: ['#213555', '#8377d1', '#6d5a72'],
-                    borderWidth: 2,
-                  },
-                ],
-              }}
-            />
+        {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
           ) : (
-            <p>Loading data...</p>
+            <>
+              {data && data.length > 0 ? (
+                <Pie
+                  data={{
+                    labels: data.map((entry) => entry.lab_name.charAt(0).toUpperCase() + entry.lab_name.slice(1)),
+                    datasets: [
+                      {
+                        label: '# Patients',
+                        data: data.map((entry) => entry.count),
+                        backgroundColor: ['#213555', '#8377d1', '#6d5a72'],
+                        borderColor: ['#213555', '#8377d1', '#6d5a72'],
+                        borderWidth: 2,
+                      },
+                    ],
+                  }}
+                />
+              ) : (
+                <p>No Patients Pending Test Data</p>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -327,14 +284,12 @@ const Container = styled.div`
   }
   .d {
     width: 40%;
- 
+
     @media screen and (min-width: 1024px) and (max-width: 1200px) {
       width: 70%;
     }
   }
 `;
-
-
 
 
 

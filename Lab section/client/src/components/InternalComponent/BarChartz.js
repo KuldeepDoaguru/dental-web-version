@@ -181,15 +181,19 @@ import {
 import axios from "axios";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
+import animationData from "../../Pages/animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const DailyTestBarChart = () => {
   const [dailyTestData, setDailyTestData] = useState([]);
+  const [loading, setLoading] = useState(false);
   
   const currentUser = useSelector((state) => state.auth.user);
   const token = currentUser?.token;
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(
           "https://dentalgurulab.doaguru.com/api/lab/get-patient-details",
@@ -207,8 +211,10 @@ const DailyTestBarChart = () => {
         } else {
           console.error("Failed to fetch data");
         }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false);
       }
     };
 
@@ -233,14 +239,28 @@ const DailyTestBarChart = () => {
     return Object.values(dailyData);
   };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <Wrapper>
+      {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
       <BarChart
         width={600}
         height={300}
         data={dailyTestData}
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
       >
+         
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />
         <YAxis />
@@ -249,6 +269,8 @@ const DailyTestBarChart = () => {
         <Bar dataKey="pending" fill="#8884d8" name="Pending Tests" />
         <Bar dataKey="done" fill="#82ca9d" name="Done Tests" />
       </BarChart>
+        </>
+            )}
     </Wrapper>
   );
 };

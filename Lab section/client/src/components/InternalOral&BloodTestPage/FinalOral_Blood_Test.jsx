@@ -41,7 +41,7 @@ function FinalOral_Blood_Test() {
   const [notes, setNotes] = useState([]);
   const navigate = useNavigate();
   const goBack = () => {
-    window.history.go(-1);
+   navigate('/')
   };
   const handleTopPageLink = () => {
     window.scrollTo(0, 0);
@@ -163,14 +163,12 @@ function FinalOral_Blood_Test() {
 
     try {
       const response = await axios.put(
-        `https://dentalgurulab.doaguru.com/api/lab/update-patent-test-data/${id}`,
+        `https://dentalgurulab.doaguru.com/api/lab/update-patent-test/${id}`,
         {
-          patient_test: patienttest,
-          test: patienttest,
+         
           result: patientresult,
           unit: patientunit,
-          cost: patientcost,
-          collection_date: patientcollection_date,authenticate_date:patientauthenticate_date,
+         
         },
         {
           headers: {
@@ -211,7 +209,26 @@ function FinalOral_Blood_Test() {
   };
   const handleEditNotes = () => {
     navigate(`/edit-patient-notes/${id}`);
+    
   };
+
+
+  const parsedCollection_Date = moment(patientcollection_date);
+
+// Add one day to the parsed date
+const adjustedCollection_Date = parsedCollection_Date.add(1, 'days');
+
+// Format the adjusted date as a string in the desired format (YYYY-MM-DD)
+const formattedAdjustedCollection_Date = adjustedCollection_Date.format('DD-MM-YYYY');
+ 
+
+const parsedAuthenticate_Date = moment(patientauthenticate_date);
+
+// Add one day to the parsed date
+const adjustedAuthenticate_Date = parsedAuthenticate_Date.add(1, 'days');
+
+// Format the adjusted date as a string in the desired format (YYYY-MM-DD)
+const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-MM-YYYY');
 
   return (
     <>
@@ -289,20 +306,12 @@ function FinalOral_Blood_Test() {
                     <tbody>
                       <tr className="table-row">
                         <td className="table-small" style={{ width: "20%" }}>
-                          Bill No. :
-                          <input
-                            type="text"
-                            className="border border-0 ms-3 w-50"
-                            value={patientbill_no}
-                          />
+                          Bill No. : {patientbill_no}
+                          
                         </td>
                         <td className="table-small" style={{ width: "20%" }}>
-                          UHID :{" "}
-                          <input
-                            type="text"
-                            className="border border-0 ms-2"
-                            value={patientUHID}
-                          />
+                          UHID : {patientUHID}
+                         
                         </td>
                       </tr>
                     </tbody>
@@ -313,14 +322,7 @@ function FinalOral_Blood_Test() {
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                              Treatment Id :
-                                <input
-                                  type="Number"
-                                  className="border border-0 ms-3"
-                                  style={{ width: "40px" }}
-                                  value={patienttid}
-                    
-                                />{" "}
+                              Treatment Id :  {patienttid}
                                 
                                 
                               </td>
@@ -330,13 +332,8 @@ function FinalOral_Blood_Test() {
                                 className="table-small"
                                 style={{ width: "20%" }}
                               >
-                                Patient Name :
-                                <input
-                                  type="text"
-                                  className="border border-0 ms-3 w-50"
-                                  value={patientName}
-                                 
-                                />
+                                Patient Name : {patientName}
+                               
                               </td>
 
                               
@@ -356,16 +353,12 @@ function FinalOral_Blood_Test() {
                     <tbody>
                       <tr className="table-row">
                         <td className="table-small" style={{ width: "20%" }}>
-                          Advised By :{" "}
-                          <input
-                            type="text"
-                            className="border border-0 ms-2"
-                            value={patientAssigned_Doctor_Name}
-                          />
+                          Advised By : {patientAssigned_Doctor_Name}
+               
                         </td>
                         <td className="table-small" style={{ width: "10%" }}>
                           Collection Date :{" "}
-                          {moment(patientcollection_date).format("DD/MM/YYYY")}
+                          {formattedAdjustedCollection_Date}
                         </td>
                       </tr>
                     </tbody>
@@ -373,18 +366,12 @@ function FinalOral_Blood_Test() {
                     <tbody>
                       <tr className="table-row">
                         <td className="table-small" style={{ width: "20%" }}>
-                          Center Name :{" "}
-                          <input
-                            type="text"
-                            className="border border-0 ms-2"
-                            value={patientbranch_name}
-                          />
+                          Center Name : {patientbranch_name}
+                
                         </td>
                         <td className="table-small" style={{ width: "10%" }}>
                           Authenticate Date:{" "}
-                          {moment(patientauthenticate_date).format(
-                            "DD/MM/YYYY"
-                          )}
+                          {formattedAdjustedAuthenticate_Date}
                         </td>
                       </tr>
                     </tbody>
@@ -490,9 +477,9 @@ function FinalOral_Blood_Test() {
               </div>
             </div>
           </div>
-          <div className="">
+          <div className="text-center">
             <button
-              className="btn btn-success p-3 w-75 mb-2 mt-4 w-100"
+              className="btn btn-success  mb-2 mt-4 "
               onClick={handlePrintPage}
             >
               Print_Page
@@ -553,7 +540,7 @@ function FinalOral_Blood_Test() {
               type="text"
               placeholder="Enter new cost"
               value={patientcost}
-              onChange={(e) => setPatientcost(e.target.value)}
+             
               disabled
             />
         </>

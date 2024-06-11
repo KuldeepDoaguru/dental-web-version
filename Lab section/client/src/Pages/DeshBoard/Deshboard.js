@@ -8,6 +8,7 @@ import PieCharts from "../../components/InternalComponent/PieCharts";
 import BarChartz from "../../components/InternalComponent/BarChartz";
 import Calender from "../../components/InternalComponent/Calender";
 import { useSelector } from "react-redux";
+import PrintHeader from "../../components/MainComponents/PrintHeader";
 
 // import axios from "axios";
 
@@ -77,7 +78,7 @@ const Deshboard = () => {
 
                 <Card />
                
-
+               
                 <div className="">
                   <div className="row mt-4">
                     <div className="col-lg-6">

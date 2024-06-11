@@ -8,6 +8,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import moment from "moment";
 
 function PatintDuePaymentPrint() {
     const navigate = useNavigate();
@@ -102,28 +103,28 @@ function PatintDuePaymentPrint() {
     console.log(formattedDate);
   
     const dueAmt =
-      billAmount[0]?.total_amount -
-      (billAmount[0]?.paid_amount + billAmount[0]?.pay_by_sec_amt);
+     Number(billAmount[0]?.total_amount)  -
+      (Number(billAmount[0]?.paid_amount)  + Number(billAmount[0]?.pay_by_sec_amt) );
   
     let totalPaidAmount = 0;
     if (dueAmt >= 0) {
       if (
-        dueAmt >= (saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0)
+        dueAmt >= (Number(saAmt[0]?.remaining_amount)  ? Number(saAmt[0]?.remaining_amount)  : 0)
       ) {
-        totalPaidAmount = saAmt[0]?.remaining_amount
-          ? saAmt[0]?.remaining_amount
+        totalPaidAmount = Number(saAmt[0]?.remaining_amount)
+          ? Number(saAmt[0]?.remaining_amount)
           : 0;
       } else {
         totalPaidAmount = dueAmt;
       }
     } else if (
-      dueAmt <= (saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0)
+      dueAmt <= (Number(saAmt[0]?.remaining_amount) ? Number(saAmt[0]?.remaining_amount) : 0)
     ) {
       totalPaidAmount = dueAmt;
     }
   
     const remainingSecurityAmount =
-      (saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0) -
+      (Number(saAmt[0]?.remaining_amount) ? Number(saAmt[0]?.remaining_amount) : 0) -
       totalPaidAmount;
   
     // If dueAmt is negative, meaning there is an overpayment, we set totalPaidAmount to 0
@@ -137,11 +138,11 @@ function PatintDuePaymentPrint() {
     console.log("Remaining Security Amount:", remainingSecurityAmount);
   
     const updatedPay_by_sec_amt =
-      billAmount[0]?.pay_by_sec_amt +
-      ((saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0) -
-        remainingSecurityAmount);
+     Number(billAmount[0]?.pay_by_sec_amt)  +
+      ((Number( saAmt[0]?.remaining_amount) ? Number(saAmt[0]?.remaining_amount)  : 0) -
+       remainingSecurityAmount);
   
-    const updatedPaidAmt = billAmount[0]?.paid_amount + finalAmt;
+    const updatedPaidAmt = Number(billAmount[0]?.paid_amount)  + finalAmt;
   
     const updateRemainingSecurity = async () => {
       console.log(remainingSecurityAmount);
@@ -167,9 +168,19 @@ function PatintDuePaymentPrint() {
         console.log(error);
       }
     };
+    const validateForm = () => {
+      if (!data.payment_mode) return false;
+      if (data.payment_mode === "online" && !data.transaction_Id) return false;
+      return true;
+    };
   
     const makePayment = async () => {
+      if (!validateForm()) {
+        cogoToast.error("Please fill all the required fields.");
+        return;
+      }
       try {
+
         setLoading(true);
         const response = await axios.put(
           `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/makeBillPayment/${branch}/${bid}`,
@@ -228,7 +239,7 @@ function PatintDuePaymentPrint() {
       document.body.innerHTML = originalContent;
     };
   
-    console.log(saAmt[0]?.remaining_amount);
+    
 
     const completeTreatment = async () => {
       try {
@@ -335,9 +346,7 @@ function PatintDuePaymentPrint() {
                                 <h6> Invoice Date </h6>
                                 <h6 className="ms-1">
                                   {" "}
-                                  : {
-                                    billAmount[0]?.bill_date?.split("T")[0]
-                                  }{" "}
+                                  :{moment(billAmount[0]?.bill_date?.split("T")[0]).format('DD/MM/YYYY')} {" "}
                                 </h6>
                               </div>
                             </div>
@@ -347,7 +356,8 @@ function PatintDuePaymentPrint() {
                             <div class=" rounded d-flex justify-content-end mt-5 me-5">
                               <div class="card" style={{ width: "18rem" }}>
                                 <div className="ms-4 mt-2">
-                                  <h1> ₹{billAmount[0]?.total_amount}</h1>
+                                  <h1> ₹ { Number(billAmount[0]?.total_amount) ? Number(billAmount[0]?.total_amount)  : 0 }</h1>
+
                                   <h5 className="text-danger">
                                     Total Treatment Amount
                                   </h5>
@@ -424,7 +434,7 @@ function PatintDuePaymentPrint() {
                                 <span class=""></span>Total Due Amount
                               </h6>
                             </td>
-                            <td className="fw-bolder">₹ {dueAmt}</td>
+                            <td className="fw-bolder">₹ {dueAmt ? dueAmt : 0}</td>
                           </tr>
                           <tr>
                             <td colspan="1">
@@ -457,7 +467,7 @@ function PatintDuePaymentPrint() {
                                 <span class=""></span>Final Due Amount
                               </h6>
                             </td>
-                            <td className="fw-bolder">₹ {finalAmt}</td>
+                            <td className="fw-bolder">₹ {finalAmt ? finalAmt : 0}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -559,8 +569,10 @@ function PatintDuePaymentPrint() {
                         className="p-1 w-100 rounded"
                         required
                       >
-                        
-                        <option value="cash" selected>Cash</option>
+                         <option value="" selected>
+                          --Select Payment Method--
+                        </option>
+                        <option value="cash" >Cash</option>
                         <option value="online">Online</option>
                       </select>
                     </div>

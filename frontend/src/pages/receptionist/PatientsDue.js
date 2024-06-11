@@ -47,7 +47,7 @@ PatientsDue() {
 
   console.log(patBill);
   const filterForUnPaidBills = patBill?.filter((item) => {
-    return item.payment_status !== "paid" &&  (item.total_amount - (item.paid_amount + item.pay_by_sec_amt)) !== 0;
+    return item.payment_status !== "paid" &&  (Number(item.total_amount) - (Number(item.paid_amount) + Number(item.pay_by_sec_amt))) !== 0;
   });
 
 
@@ -201,7 +201,7 @@ const defaultOptions = {
       <div className="row" >
    <div className="col-lg-12" id='head'>
    <nav class="shadow rounded navbar navbar-light bg-light">
-            <h6 className='mx-3 my-0'>Search By Patient</h6>
+            <h6 className='mx-3 my-1 my-md-0'>Search By Patient</h6>
   <div class="container-fluid" id='cont'>
     <form class="navbar1 " >
       <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name Or Moblie" aria-label="Search" onChange={handleSearch}
@@ -303,9 +303,9 @@ const defaultOptions = {
                                       <td>{item.paid_amount}</td>
                                       <td>{item.pay_by_sec_amt}</td>
                                       <td>
-                                        {item.total_amount -
-                                          (item.paid_amount +
-                                            item.pay_by_sec_amt)}
+                                        {Number(item.total_amount) -
+                                          (Number(item.paid_amount) +
+                                           Number(item.pay_by_sec_amt) )}
                                       </td>
                                       <td>{moment(item.bill_date?.split("T")[0]).format('DD/MM/YYYY')}</td>
                                       <td>
@@ -396,7 +396,7 @@ overflow: hidden;
 #cont{
   display: flex;
   @media screen and (max-width: 768px) {
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 1rem;
   }
 }
@@ -408,8 +408,8 @@ overflow: hidden;
 #head{
   
   @media screen and (max-width: 768px) {
-  width: 85%;
-  margin-left: 1.2rem;
+  width: 98%;
+  /* margin-left: 1.2rem; */
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {
    margin-left: 1rem;
@@ -471,7 +471,8 @@ overflow-y: auto;
 }
 #tableres{
   @media screen and (max-width: 768px) {
-    width: 21rem;
+    width: auto;
+   margin: auto;
    
   }
   @media screen and (min-width: 768px) and (max-width: 1020px) {

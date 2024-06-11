@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import numToWords from "num-to-words";
+import moment from "moment";
 // import numWords from "num-words";
 
 const PatientBillsByTpid = () => {
@@ -307,7 +308,7 @@ const PatientBillsByTpid = () => {
                     <th scope="row">Mobile No.</th>
                     <td>{item.mobileno}</td>
                     <th scope="row">Date</th>
-                    <td>{billDetails[0]?.bill_date?.split("T")[0]}</td>
+                    <td>{moment(billDetails[0]?.bill_date?.split("T")[0]).format('DD/MM/YYYY')}</td>
                   </tr>
                   <tr>
                     <th scope="row">Email</th>

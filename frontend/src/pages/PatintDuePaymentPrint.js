@@ -108,29 +108,37 @@ const PatintDuePaymentPrint = () => {
   console.log(formattedDate);
 
   const dueAmt =
-    billAmount[0]?.total_amount -
-    (billAmount[0]?.paid_amount + billAmount[0]?.pay_by_sec_amt);
+    Number(billAmount[0]?.total_amount) -
+    (Number(billAmount[0]?.paid_amount) +
+      Number(billAmount[0]?.pay_by_sec_amt));
 
   let totalPaidAmount = 0;
   if (dueAmt >= 0) {
     if (
-      dueAmt >= (saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0)
+      dueAmt >=
+      (Number(saAmt[0]?.remaining_amount)
+        ? Number(saAmt[0]?.remaining_amount)
+        : 0)
     ) {
-      totalPaidAmount = saAmt[0]?.remaining_amount
-        ? saAmt[0]?.remaining_amount
+      totalPaidAmount = Number(saAmt[0]?.remaining_amount)
+        ? Number(saAmt[0]?.remaining_amount)
         : 0;
     } else {
       totalPaidAmount = dueAmt;
     }
   } else if (
-    dueAmt <= (saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0)
+    dueAmt <=
+    (Number(saAmt[0]?.remaining_amount)
+      ? Number(saAmt[0]?.remaining_amount)
+      : 0)
   ) {
     totalPaidAmount = dueAmt;
   }
 
   const remainingSecurityAmount =
-    (saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0) -
-    totalPaidAmount;
+    (Number(saAmt[0]?.remaining_amount)
+      ? Number(saAmt[0]?.remaining_amount)
+      : 0) - totalPaidAmount;
 
   // If dueAmt is negative, meaning there is an overpayment, we set totalPaidAmount to 0
   if (dueAmt < 0) {
@@ -143,8 +151,10 @@ const PatintDuePaymentPrint = () => {
   console.log("Remaining Security Amount:", remainingSecurityAmount);
 
   const updatedPay_by_sec_amt =
-    billAmount[0]?.pay_by_sec_amt +
-    ((saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0) -
+    Number(billAmount[0]?.pay_by_sec_amt) +
+    ((Number(saAmt[0]?.remaining_amount)
+      ? Number(saAmt[0]?.remaining_amount)
+      : 0) -
       remainingSecurityAmount);
 
   const updatedPaidAmt = billAmount[0]?.paid_amount + finalAmt;
@@ -174,6 +184,10 @@ const PatintDuePaymentPrint = () => {
   };
 
   const makePayment = async () => {
+    if (!validateForm()) {
+      cogoToast.error("Please fill all the required fields.");
+      return;
+    }
     try {
       setLoading(true);
       const response = await axios.put(
@@ -217,6 +231,12 @@ const PatintDuePaymentPrint = () => {
       console.log(error);
       setLoading(true);
     }
+  };
+
+  const validateForm = () => {
+    if (!data.payment_mode) return false;
+    if (data.payment_mode === "online" && !data.transaction_Id) return false;
+    return true;
   };
 
   const handlePrint = () => {
@@ -348,7 +368,13 @@ const PatintDuePaymentPrint = () => {
                             <div class=" rounded d-flex justify-content-end mt-5 me-5">
                               <div class="card" style={{ width: "18rem" }}>
                                 <div className="ms-4 mt-2">
-                                  <h1> ₹{billAmount[0]?.total_amount}</h1>
+                                  <h1>
+                                    {" "}
+                                    ₹
+                                    {Number(billAmount[0]?.total_amount)
+                                      ? Number(billAmount[0]?.total_amount)
+                                      : 0}
+                                  </h1>
                                   <h5 className="text-danger ms-4">
                                     Patient Net Due
                                   </h5>
@@ -370,108 +396,101 @@ const PatintDuePaymentPrint = () => {
                 <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
                   <div className="d-flex justify-content-center mt-4">
                     <div className="col-xxl-9 col-xl-9 col-lg-9 col-md-11 col-sm-11">
-                      <table class="table table-bordered shadow">
-                        <thead class="table-primary  rounded">
-                          <tr>
-                            <th scope="col">Date</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Amount</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">
-                              {/* {billAmount[0]?.bill_date.split("T")[0]} */}
-                              {billAmount[0]?.bill_date
-                                ? moment(billAmount[0]?.bill_date).format(
-                                    "DD/MM/YYYY"
-                                  )
-                                : ""}
-                            </th>
+                      <div className="table-responsive">
+                        <table class="table table-bordered shadow">
+                          <thead class="table-primary  rounded">
+                            <tr>
+                              <th scope="col">Payment Details</th>
+                              <th scope="col">Amount</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr></tr>
+                            <tr>
+                              <td colspan="1">
+                                <h6>
+                                  <span class=""></span>
+                                  Total Treatments Amount
+                                </h6>
+                              </td>
 
-                            <td className="text-end"></td>
-                            <td></td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                              <h6>
-                                Add additional notes and payment information{" "}
-                                <span class="space"></span>
-                                Total Treatments Amount
-                              </h6>
-                            </td>
+                              <td className="fw-bolder">
+                                ₹ {billAmount[0]?.total_amount}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="1">
+                                <h6>
+                                  <span class=""></span>Previous Paid By Direct
+                                  Amount
+                                </h6>
+                              </td>
+                              <td className="fw-bolder">
+                                ₹ {billAmount[0]?.paid_amount}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="1">
+                                <h6>
+                                  <span class=""></span>Previous Paid By
+                                  Secuirty Amount
+                                </h6>
+                              </td>
+                              <td className="fw-bolder">
+                                ₹ {billAmount[0]?.pay_by_sec_amt}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="1">
+                                <h6>
+                                  <span class=""></span>Total Due Amount
+                                </h6>
+                              </td>
+                              <td className="fw-bolder">
+                                ₹ {dueAmt ? dueAmt : 0}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="1">
+                                <h6>
+                                  <span class=""></span>
+                                  Remaining Secuirty Amount
+                                </h6>
+                              </td>
 
-                            <td className="fw-bolder">
-                              {billAmount[0]?.total_amount}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                              <h6>
-                                <span class="spaces"></span>Previous Paid By
-                                Direct Amount
-                              </h6>
-                            </td>
-                            <td className="fw-bolder">
-                              ₹ {billAmount[0]?.paid_amount}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                              <h6>
-                                <span class="spaces"></span>Previous Paid By
-                                Secuirty Amount
-                              </h6>
-                            </td>
-                            <td className="fw-bolder">
-                              ₹ {billAmount[0]?.pay_by_sec_amt}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                              <h6>
-                                <span class="spaces"></span>Total Due Amount
-                              </h6>
-                            </td>
-                            <td className="fw-bolder">₹ {dueAmt}</td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                              <h6>
-                                <span class="spaces"></span>
-                                Remaining Secuirty Amount
-                              </h6>
-                            </td>
-
-                            <td className="fw-bolder">
-                              {saAmt[0]?.remaining_amount
-                                ? saAmt[0]?.remaining_amount
-                                : 0}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                              <h6>
-                                <span class="spaces"></span>Refund / Remaning
-                                Amount
-                              </h6>
-                            </td>
-                            <td className="fw-bolder">
-                              {remainingSecurityAmount}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td colspan="2">
-                              <h6>
-                                <span class="spaces"></span>Final Due Amount
-                              </h6>
-                            </td>
-                            <td className="fw-bolder">{finalAmt}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-
-                      {/* <div className="d-flex justify-content-between">
+                              <td className="fw-bolder">
+                                ₹{" "}
+                                {saAmt[0]?.remaining_amount
+                                  ? saAmt[0]?.remaining_amount
+                                  : 0}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="1">
+                                <h6>
+                                  <span class=""></span>Refundable Security
+                                  Amount
+                                </h6>
+                              </td>
+                              <td className="fw-bolder">
+                                ₹ {remainingSecurityAmount}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="1">
+                                <h6>
+                                  <span class=""></span>Final Due Amount
+                                </h6>
+                              </td>
+                              <td className="fw-bolder">
+                                ₹ {finalAmt ? finalAmt : 0}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      {/*                    
+                      <div className="d-flex justify-content-between">
                         <h4 className="">Thank you </h4>
                         <h4 className="">Auth. signature</h4>
                       </div> */}
@@ -567,7 +586,7 @@ const PatintDuePaymentPrint = () => {
                         required
                       >
                         <option value="" selected>
-                          Select Payment Method
+                          --Select Payment Method--
                         </option>
                         <option value="cash">Cash</option>
                         <option value="online">Online</option>
@@ -601,6 +620,7 @@ const PatintDuePaymentPrint = () => {
                         class="form-control"
                         value={data.note}
                         onChange={(e) => handleChange(e)}
+                        required
                       />
                     </div>
                   </form>

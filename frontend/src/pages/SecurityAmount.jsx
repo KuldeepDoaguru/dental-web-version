@@ -82,7 +82,7 @@ const SecurityAmount = () => {
   });
 
   const [data, setData] = useState({
-    payment_status: "Success",
+    payment_status: "success",
     payment_Mode: "",
     transaction_Id: "",
     notes: "",
@@ -317,7 +317,7 @@ const SecurityAmount = () => {
                     <div>
                       <input
                         type="text"
-                        placeholder="Search by Patient Name"
+                        placeholder="Search Patient Name / UHID"
                         className="p-1 rounded input"
                         value={keyword}
                         onChange={(e) => {
@@ -430,7 +430,7 @@ const SecurityAmount = () => {
                                             <>
                                               <button
                                                 className={`mx-2 btn btn-warning ${
-                                                  item.remaining_amount === 0
+                                                  item.remaining_amount == 0
                                                     ? "disabled"
                                                     : ""
                                                 } `}
@@ -782,7 +782,7 @@ const Container = styled.div`
   .input::placeholder {
     color: #aaa;
     opacity: 1; /* Ensure placeholder is visible */
-    font-size: 1.2rem;
+    font-size: 1rem;
     transition: color 0.3s ease;
   }
 

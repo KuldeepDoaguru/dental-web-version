@@ -49,7 +49,7 @@ const LabPatientReport = () => {
       `${patient.patient_name} ${patient.assigned_doctor_name}`.toLowerCase();
     const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
     return (
-      fullName.includes(searchQuery.toLowerCase()) &&
+      fullName.includes(searchQuery.toLowerCase().trim()) &&
       (!dateFilter || formattedDate === dateFilter)
     );
   });
@@ -210,17 +210,17 @@ const LabPatientReport = () => {
                                       <td>{patient.test}</td>
                                       {patient.test_status === "done" && (
                                         <td>
-                                          <button className="btn btn-success themecolor">
+                                          <p className="text-success fs-6 themecolor">
                                             {patient.test_status}
-                                          </button>
+                                          </p>
                                         </td>
                                       )}
 
                                       {patient.test_status === "pending" && (
                                         <td>
-                                          <button className="btn btn-danger">
+                                          <p className="text-danger fs-6">
                                             {patient.test_status}
-                                          </button>
+                                          </p>
                                         </td>
                                       )}
                                     </tr>
@@ -278,8 +278,8 @@ const Container = styled.div`
     color: white;
     z-index: 1;
   }
-  .themecolor {
+  /* .themecolor {
     background-color: #201658 !important;
     border: none;
-  }
+  } */
 `;

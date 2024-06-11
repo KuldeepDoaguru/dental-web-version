@@ -26,6 +26,7 @@ const OpdIncome = () => {
   const [keyword, setKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [selectedPeriod, setSelectedPeriod] = useState("today");
 
   const getOpdAmt = async () => {
     setLoading(true);
@@ -196,17 +197,34 @@ const OpdIncome = () => {
 
   const [selectedData, setSelectedData] = useState(filterForOpdToday);
 
-  const handleChangeSelect = (e) => {
-    const { value } = e.target;
-    if (value === "today") {
+  // const handleChangeSelect = (e) => {
+  //   const { value } = e.target;
+  //   if (value === "today") {
+  //     setSelectedData(filterForOpdToday);
+  //   } else if (value === "yesterday") {
+  //     setSelectedData(filterForOpdYesterday);
+  //   } else if (value === "monthly") {
+  //     setSelectedData(filterForOpdMonthly);
+  //   } else if (value === "yearly") {
+  //     setSelectedData(filterForOpdYearly);
+  //   }
+  // };
+
+  useEffect(() => {
+    if (selectedPeriod === "today") {
       setSelectedData(filterForOpdToday);
-    } else if (value === "yesterday") {
+    } else if (selectedPeriod === "yesterday") {
       setSelectedData(filterForOpdYesterday);
-    } else if (value === "monthly") {
+    } else if (selectedPeriod === "monthly") {
       setSelectedData(filterForOpdMonthly);
-    } else if (value === "yearly") {
+    } else if (selectedPeriod === "yearly") {
       setSelectedData(filterForOpdYearly);
     }
+  }, [selectedPeriod, opdAmount]);
+
+  const handleChangeSelect = (e) => {
+    const { value } = e.target;
+    setSelectedPeriod(value);
   };
 
   const filteredItems = selectedData.filter((row) => {
@@ -356,7 +374,7 @@ const OpdIncome = () => {
                       {/* <label className="fs-5">search by patient name :</label> */}
                       <input
                         type="text"
-                        placeholder="Search by Patient Name"
+                        placeholder="Search Patient Name / UHID"
                         className="p-1 rounded input"
                         value={keyword}
                         // onChange={(e) =>
@@ -379,10 +397,10 @@ const OpdIncome = () => {
                           <select
                             class="form-select"
                             aria-label="Default select example"
-                            // value={designation}
+                            value={selectedPeriod}
                             onChange={handleChangeSelect}
                           >
-                            <option value="">Select-period</option>
+                            {/* <option value="">Select-period</option> */}
                             <option value="today">Today</option>
                             <option value="yesterday">Yesterday</option>
                             <option value="monthly">Monthly</option>
@@ -422,62 +440,45 @@ const OpdIncome = () => {
                           </div>
                         ) : (
                           <tbody>
-                            {currentItems
-                              // ?.filter((val) => {
-                              //   const name = val.patient_name.toLowerCase();
-                              //   const lowerKeyword = keyword.toLowerCase();
-                              //   if (keyword === "") {
-                              //     return true;
-                              //   } else {
-                              //     if (name.startsWith(lowerKeyword)) {
-                              //       return true;
-                              //     } else {
-                              //       if (name.includes(lowerKeyword)) {
-                              //         return true;
-                              //       }
-                              //     }
-                              //   }
-                              // })
-
-                              .map((item) => (
-                                <>
-                                  <tr className="table-row">
-                                    <td>{item.appoint_id}</td>
-                                    <td>
-                                      {item?.appointment_dateTime
-                                        ? moment(
-                                            item?.appointment_dateTime,
-                                            "YYYY-MM-DDTHH:mm"
-                                          ).format("DD/MM/YYYY hh:mm A")
-                                        : ""}
-                                    </td>
-                                    <td>{item.uhid}</td>
-                                    <td>{item.patient_name}</td>
-                                    <td>{item.mobileno}</td>
-                                    <td>{item.assigned_doctor_name}</td>
-                                    <td>{item.assigned_doctor_id}</td>
-                                    <td>{item.opd_amount}</td>
-                                    <td>{item.payment_Mode}</td>
-                                    <td>{item.transaction_Id}</td>
-                                    <td>{item.payment_Status}</td>
-                                    <td>
-                                      <Link
-                                        to={`/OpdBills/${item.appoint_id}`}
-                                        target="_blank"
+                            {currentItems.map((item) => (
+                              <>
+                                <tr className="table-row">
+                                  <td>{item.appoint_id}</td>
+                                  <td>
+                                    {item?.appointment_dateTime
+                                      ? moment(
+                                          item?.appointment_dateTime,
+                                          "YYYY-MM-DDTHH:mm"
+                                        ).format("DD/MM/YYYY hh:mm A")
+                                      : ""}
+                                  </td>
+                                  <td>{item.uhid}</td>
+                                  <td>{item.patient_name}</td>
+                                  <td>{item.mobileno}</td>
+                                  <td>{item.assigned_doctor_name}</td>
+                                  <td>{item.assigned_doctor_id}</td>
+                                  <td>{item.opd_amount}</td>
+                                  <td>{item.payment_Mode}</td>
+                                  <td>{item.transaction_Id}</td>
+                                  <td>{item.payment_Status}</td>
+                                  <td>
+                                    <Link
+                                      to={`/OpdBills/${item.appoint_id}`}
+                                      target="_blank"
+                                    >
+                                      <button
+                                        className="btn"
+                                        style={{
+                                          backgroundColor: "#FFA600",
+                                        }}
                                       >
-                                        <button
-                                          className="btn"
-                                          style={{
-                                            backgroundColor: "#FFA600",
-                                          }}
-                                        >
-                                          View Receipt
-                                        </button>
-                                      </Link>
-                                    </td>
-                                  </tr>
-                                </>
-                              ))}
+                                        View Receipt
+                                      </button>
+                                    </Link>
+                                  </td>
+                                </tr>
+                              </>
+                            ))}
                           </tbody>
                         )}
                       </table>
@@ -572,7 +573,7 @@ const Container = styled.div`
   .input::placeholder {
     color: #aaa;
     opacity: 1; /* Ensure placeholder is visible */
-    font-size: 1.2rem;
+    font-size: 1rem;
     transition: color 0.3s ease;
   }
 
@@ -616,3 +617,19 @@ const Container = styled.div`
     width: 100%; */
   }
 `;
+
+// ?.filter((val) => {
+//   const name = val.patient_name.toLowerCase();
+//   const lowerKeyword = keyword.toLowerCase();
+//   if (keyword === "") {
+//     return true;
+//   } else {
+//     if (name.startsWith(lowerKeyword)) {
+//       return true;
+//     } else {
+//       if (name.includes(lowerKeyword)) {
+//         return true;
+//       }
+//     }
+//   }
+// })

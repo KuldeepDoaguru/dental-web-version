@@ -193,7 +193,7 @@ const ExpenseChart = () => {
           ) : (
             <>
               <BarChart
-                width={400}
+                width={600}
                 height={300}
                 data={data}
                 margin={{

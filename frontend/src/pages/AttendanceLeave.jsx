@@ -173,9 +173,9 @@ const AttendanceLeave = () => {
                 <div className="container-fluid mt-3">
                   <div className="row d-flex justify-content-between">
                     <div className="col-3">
-                      <button className="btn btn-success" onClick={goBack}>
+                      {/* <button className="btn btn-success" onClick={goBack}>
                         <IoMdArrowRoundBack /> Back
-                      </button>
+                      </button> */}
                     </div>
                     <div className="col-9">
                       <MarkAttendance />

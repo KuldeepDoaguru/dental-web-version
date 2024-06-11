@@ -146,7 +146,7 @@ const MonthIncome = () => {
           ) : (
             <>
               <BarChart
-                width={400}
+                width={600}
                 height={300}
                 data={data}
                 margin={{
@@ -157,17 +157,17 @@ const MonthIncome = () => {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
+                {/* <XAxis dataKey="date" /> */}
                 <YAxis yAxisId="left" />
                 <YAxis yAxisId="right" orientation="right" />
                 <Tooltip />
                 <Legend />
                 {/* <Bar
-              dataKey="patients"
-              fill="#dfdfe2"
-              yAxisId="left"
-              name="Patients"
-            /> */}
+                  dataKey="patients"
+                  fill="#201658"
+                  yAxisId="left"
+                  name="Patients"
+                /> */}
                 <Bar
                   dataKey="Amount"
                   fill="#c23616"
@@ -186,7 +186,7 @@ const MonthIncome = () => {
 export default MonthIncome;
 const Container = styled.div`
   #main {
-    background-color: #201658;
+    background-color: #f9e8c9;
     width: 100%;
     border-radius: 5px;
     padding: 2rem;

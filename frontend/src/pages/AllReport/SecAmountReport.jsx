@@ -205,7 +205,7 @@ const SecAmountReport = () => {
                                   className="btn btn-primary mx-2"
                                   onClick={(e) => handleRefresh(e)}
                                 >
-                                  Refresh
+                                  Clear
                                 </button>
                               </div>
                             </form>

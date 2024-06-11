@@ -24,7 +24,7 @@ const TreatmentIncome = () => {
   const [treatAmount, setTreatAmount] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [loading, setLoading] = useState(false);
 
   const getTreatmentAmt = async () => {
@@ -370,7 +370,7 @@ const TreatmentIncome = () => {
                         {/* <label>search by patient name :</label> */}
                         <input
                           type="text"
-                          placeholder="Search by Patient Name"
+                          placeholder="Search Patient Name / UHID"
                           className="p-1 rounded input"
                           value={keyword}
                           // onChange={(e) =>
@@ -603,7 +603,7 @@ const Container = styled.div`
   .input::placeholder {
     color: #aaa;
     opacity: 1; /* Ensure placeholder is visible */
-    font-size: 1.2rem;
+    font-size: 1rem;
     transition: color 0.3s ease;
   }
 
@@ -612,7 +612,7 @@ const Container = styled.div`
   }
 
   .input {
-    width: 38%;
+    width: 40%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;

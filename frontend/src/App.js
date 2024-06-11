@@ -1,18 +1,5 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-// import Login from "./components/receptionist/Login";
-// import Apointment from "./pages/accountant/Apointment";
-// import AllBills from "./pages/accountant/AllBills";
-// import Registration from "./components/receptionist/Registration";
-// import Accountant from "./components/Accountant/Home";
-// import Card from "./components/accountant/Card";
-// import NewPurchase from "./components/Expenses/NewPurchase";
-// import StaffSalary from "./components/Expenses/StaffSalary";
-// import WeeklyIncome from "./components/TotalIncome/WeeklyIncome";
-// import Yearly from "./components/TotalIncome/Yearly";
-// import Monthly from "./components/TotalIncome/Monthly";
-// import IncomeReports from "./pages/AllReport/OpdReportDownload";
-// import ClinicSetting from "./pages/accountant/ClinicSetting";
 import Dashboard from "./pages/accountant/Dashboard";
 import UniversalLogin from "./pages/UniversalLogin";
 import PharmacyMainIncome from "./components/Income/PharmacyMainIncome";
@@ -93,16 +80,6 @@ function App() {
       <Routes>
         {/* Accountant routes start  */}
 
-        {/* <Route path="/receptionist_login" element={<Login />} /> */}
-        {/* <Route path="/receptionist_registration" element={<Registration />} /> */}
-        {/* <Route path="/Accountant" element={<Accountant />} /> */}
-        {/* <Route path="/super-admin-appointment" element={<Apointment />} /> */}
-        {/* <Route path="/bill_section" element={<AllBills />} /> */}
-        {/* <Route path="/NewPurchase" element={<NewPurchase />} /> */}
-        {/* <Route path="/StaffSalary" element={<StaffSalary />} /> */}
-        {/* <Route path="/WeeklyIncome" element={<WeeklyIncome />} />
-      <Route path="/Yearly" element={<Yearly />} /> */}
-        {/* <Route path="/Monthly" element={<Monthly />} /> */}
         <Route
           path="/"
           element={user.employee_name ? <Dashboard /> : <UniversalLogin />}
@@ -113,7 +90,6 @@ function App() {
             user.employee_name === null ? <UniversalLogin /> : <Dashboard />
           }
         />
-        {/* <Route path="/clinic-setting" element={<ClinicSetting />} /> */}
         <Route
           path="/Card"
           element={user.employee_name === null ? <UniversalLogin /> : <Cards />}
@@ -172,16 +148,7 @@ function App() {
             )
           }
         />
-        <Route
-          path="/AccountantsSalary"
-          element={
-            user.employee_name === null ? (
-              <UniversalLogin />
-            ) : (
-              <AccountantsSalary />
-            )
-          }
-        />
+
         <Route
           path="/AccountantSalaryMain"
           element={
@@ -638,7 +605,7 @@ function App() {
             user.employee_name === null ? <UniversalLogin /> : <BranchInfo />
           }
         />
-        {/* <Route path="/view-clinic-details" element={<BranchInfo />} /> */}
+
         <Route path="*" element={<ErrorPage />} />
         {/*Acountend  routes end  */}
       </Routes>
@@ -647,3 +614,64 @@ function App() {
 }
 
 export default App;
+
+// import Login from "./components/receptionist/Login";
+// import Apointment from "./pages/accountant/Apointment";
+// import AllBills from "./pages/accountant/AllBills";
+// import Registration from "./components/receptionist/Registration";
+// import Accountant from "./components/Accountant/Home";
+// import Card from "./components/accountant/Card";
+// import NewPurchase from "./components/Expenses/NewPurchase";
+// import StaffSalary from "./components/Expenses/StaffSalary";
+// import WeeklyIncome from "./components/TotalIncome/WeeklyIncome";
+// import Yearly from "./components/TotalIncome/Yearly";
+// import Monthly from "./components/TotalIncome/Monthly";
+// import IncomeReports from "./pages/AllReport/OpdReportDownload";
+// import ClinicSetting from "./pages/accountant/ClinicSetting";
+
+{
+  /* <Route path="/receptionist_login" element={<Login />} /> */
+}
+{
+  /* <Route path="/receptionist_registration" element={<Registration />} /> */
+}
+{
+  /* <Route path="/Accountant" element={<Accountant />} /> */
+}
+{
+  /* <Route path="/super-admin-appointment" element={<Apointment />} /> */
+}
+{
+  /* <Route path="/bill_section" element={<AllBills />} /> */
+}
+{
+  /* <Route path="/NewPurchase" element={<NewPurchase />} /> */
+}
+{
+  /* <Route path="/StaffSalary" element={<StaffSalary />} /> */
+}
+{
+  /* <Route path="/WeeklyIncome" element={<WeeklyIncome />} />
+      <Route path="/Yearly" element={<Yearly />} /> */
+}
+{
+  /* <Route path="/Monthly" element={<Monthly />} /> */
+}
+{
+  /* <Route path="/clinic-setting" element={<ClinicSetting />} /> */
+}
+{
+  /* <Route path="/view-clinic-details" element={<BranchInfo />} /> */
+}
+{
+  /* <Route
+          path="/AccountantsSalary"
+          element={
+            user.employee_name === null ? (
+              <UniversalLogin />
+            ) : (
+              <AccountantsSalary />
+            )
+          }
+        /> */
+}

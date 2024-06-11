@@ -20,7 +20,7 @@ const PatientsPaid = () => {
   console.log("User State:", user);
   const [paidList, setPaidList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(7);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -122,7 +122,7 @@ const PatientsPaid = () => {
                           <div>
                             <input
                               type="text"
-                              placeholder="Search by Patient Name"
+                              placeholder="Search Patient Name / UHID"
                               className="p-1 rounded input"
                               value={keyword}
                               // onChange={(e) =>
@@ -258,7 +258,7 @@ export default PatientsPaid;
 
 const Container = styled.div`
   .table-responsive {
-    height: 30rem;
+    /* height: 30rem; */
     overflow: auto;
   }
 
@@ -281,7 +281,7 @@ const Container = styled.div`
   .input::placeholder {
     color: #aaa;
     opacity: 1; /* Ensure placeholder is visible */
-    font-size: 1.2rem;
+    font-size: 1rem;
     transition: color 0.3s ease;
   }
 

@@ -150,54 +150,6 @@ const Accountant_Dashboard = () => {
                 >
                   <h5>Todays Bill </h5>
                   <div className="table-responsive" id="table">
-                    {/* {loading ? (
-                      <Lottie
-                        options={defaultOptions}
-                        height={300}
-                        width={400}
-                      ></Lottie>
-                    ) : (
-                      <>
-                        <table className="table table-bordered table-striped">
-                          <thead>
-                            <tr>
-                              <th className="sticky">Bill Id</th>
-                              <th className="sticky">Bill Date</th>
-                              <th className="sticky">Patient UHID</th>
-                              <th className="sticky">Patient Name</th>
-                              <th className="sticky">Patient Mobile</th>
-                              <th className="sticky">Patient Email</th>
-                              <th className="sticky">Assigned Doctor</th>
-                              <th className="sticky">Total Amount</th>
-                              <th className="sticky">Paid Amount</th>
-                              <th className="sticky">Payment Mode</th>
-                              <th className="sticky">Transaction ID</th>
-                              <th className="sticky">Payment Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {filterForBillToday?.map((item) => (
-                              <>
-                                <tr>
-                                  <td>{item.bill_id}</td>
-                                  <td>{item.bill_date?.split("T")[0]}</td>
-                                  <td>{item.uhid}</td>
-                                  <td>{item.patient_name}</td>
-                                  <td>{item.patient_mobile}</td>
-                                  <td>{item.patient_email}</td>
-                                  <td>{item.assigned_doctor_name}</td>
-                                  <td>{item.total_amount}</td>
-                                  <td>{item.paid_amount}</td>
-                                  <td>{item.payment_mode}</td>
-                                  <td>{item.transaction_Id}</td>
-                                  <td>{item.payment_status}</td>
-                                </tr>
-                              </>
-                            ))}
-                          </tbody>
-                        </table>
-                      </>
-                    )} */}
                     {loading ? (
                       <Lottie
                         options={defaultOptions}
@@ -303,7 +255,7 @@ const Accountant_Dashboard = () => {
                               </th>
                             </tr>
                           </thead>
-                          {filterForBillToday?.length === 0 ? (
+                          {filterForAppointmentToday?.length === 0 ? (
                             <div className="nodata">
                               <p> No data found</p>
                             </div>
@@ -436,3 +388,54 @@ const Wrapper = styled.div`
     margin-top: 1rem;
   }
 `;
+
+{
+  /* {loading ? (
+                      <Lottie
+                        options={defaultOptions}
+                        height={300}
+                        width={400}
+                      ></Lottie>
+                    ) : (
+                      <>
+                        <table className="table table-bordered table-striped">
+                          <thead>
+                            <tr>
+                              <th className="sticky">Bill Id</th>
+                              <th className="sticky">Bill Date</th>
+                              <th className="sticky">Patient UHID</th>
+                              <th className="sticky">Patient Name</th>
+                              <th className="sticky">Patient Mobile</th>
+                              <th className="sticky">Patient Email</th>
+                              <th className="sticky">Assigned Doctor</th>
+                              <th className="sticky">Total Amount</th>
+                              <th className="sticky">Paid Amount</th>
+                              <th className="sticky">Payment Mode</th>
+                              <th className="sticky">Transaction ID</th>
+                              <th className="sticky">Payment Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {filterForBillToday?.map((item) => (
+                              <>
+                                <tr>
+                                  <td>{item.bill_id}</td>
+                                  <td>{item.bill_date?.split("T")[0]}</td>
+                                  <td>{item.uhid}</td>
+                                  <td>{item.patient_name}</td>
+                                  <td>{item.patient_mobile}</td>
+                                  <td>{item.patient_email}</td>
+                                  <td>{item.assigned_doctor_name}</td>
+                                  <td>{item.total_amount}</td>
+                                  <td>{item.paid_amount}</td>
+                                  <td>{item.payment_mode}</td>
+                                  <td>{item.transaction_Id}</td>
+                                  <td>{item.payment_status}</td>
+                                </tr>
+                              </>
+                            ))}
+                          </tbody>
+                        </table>
+                      </>
+                    )} */
+}

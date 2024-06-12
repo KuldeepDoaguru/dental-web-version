@@ -948,6 +948,7 @@ function AddPatient() {
                     type="date"
                     id="dob"
                     className="form-control"
+                    max={formatDate(new Date())}
                     name="dob"
                     onChange={(e) => {
                       handleChange(e);
@@ -1080,7 +1081,7 @@ function AddPatient() {
                           value={selectedDate}
                           className="form-control"
                           onChange={handleDateChange}
-                          min={formatDate(new Date())}
+                          // min={formatDate(new Date())}
                           required
                         />
                       </div>

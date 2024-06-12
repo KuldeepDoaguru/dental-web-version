@@ -128,6 +128,14 @@ useEffect(()=>{
   
 },[data.dob])
 
+ // Function to format date in YYYY-MM-DD format
+ const formatDate = (date) => {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
  const handleChangeDisease = (newValue, actionMeta) => {
   
     setSelectedDisease(newValue);
@@ -377,6 +385,7 @@ useEffect(()=>{
                             id="dob"
                             className="form-control"
                             name="dob"
+                            max={formatDate(new Date())}
                             value={data.dob}
                             onChange={(e) => {
                               handleChange(e)

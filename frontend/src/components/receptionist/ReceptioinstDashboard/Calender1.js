@@ -324,7 +324,7 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
             {timeSlotsColumns?.map((column, columnIndex) => (
   <tr key={columnIndex}>
     {column?.map((timeSlot, index) => (
-      <td key={index} className={getCellStyle(timeSlot)} onClick={() => handleTimeSlotClick(timeSlot)}>{new Date(timeSlot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+      <td key={index} className={getCellStyle(timeSlot)} onClick={() => handleTimeSlotClick(timeSlot)} style={getCellStyle(timeSlot) === "bg-success" ? { cursor: "pointer" } : {}} >{new Date(timeSlot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
     ))}
   </tr>
 ))}

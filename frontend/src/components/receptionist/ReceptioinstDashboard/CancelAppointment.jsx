@@ -474,7 +474,7 @@ useEffect(()=>{
             <label for="message-text" class="col-form-label">Status:</label>
             <input type="text" value={data.appointment_status} onChange={handleChange} name='appointment_status'  class="form-control" id="recipient-name"/>
           </div> */}
-        <button type="submit" class="btn btn-primary" disabled={loading}>{loading ? "Loading..." : "Cancel Appointment"} </button>
+        <button type="submit" class="btn btn-primary" disabled={loading}>{loading ? "Loading..." : "Submit"} </button>
         </form>
         </Modal.Body>
         <Modal.Footer>

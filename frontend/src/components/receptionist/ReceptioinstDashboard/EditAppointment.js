@@ -368,6 +368,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   const handleSearchDoctor = (e) => {
     setShowDoctorList(true);
     setSearchDoctor(e.target.value);
+    setSelectedDoctor(null);
   };
 
   const handleDoctorSelect = (doctor) => {
@@ -403,7 +404,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
 
     // Check if the selected doctor is null
     if (!selectedDoctor) {
-      alert("Please select a doctor");
+      alert("Please select a doctor from the list");
       console.log("Please select a doctor");
       return;
     }
@@ -707,7 +708,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
                       className="form-control"
                       // onChange={(e) => setSelectedDate(e.target.value)}
                       onChange={handleDateChange}
-                      min={formatDate(new Date())}
+                      // min={formatDate(new Date())}
                       required
                     />
                   </div>
@@ -806,7 +807,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
             <input type="text" value={data.appointment_status} onChange={handleChange} name='appointment_status'  class="form-control" id="recipient-name"/>
           </div> */}
                 <button type="submit" class="btn btn-primary" disabled={loading}>
-                 {loading ? "Loading..." : "Edit Appointment"}
+                 {loading ? "Loading..." : "Submit"}
                 </button>
               </form>
             </Modal.Body>

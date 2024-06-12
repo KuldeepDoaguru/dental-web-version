@@ -479,12 +479,22 @@ console.log(appointmentsData);
                       </ul> */}
 
 <ul className="dropdown-menu drop-pointer">
-  {(patient.appointment_status !== "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime?.split("T")[0] === todayDate) && (
+  {/* {(patient.appointment_status !== "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime?.split("T")[0] === todayDate) && (
     <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
       <a onClick={!loading ? () => handleStatusChange(patient.appoint_id, patient.uhid, 'Check-In') : null}>Check-In</a>
     </li>
   )}
   {(patient.appointment_status === "Check-In" && patient.appointment_status !== "Cancel" && patient.appointment_dateTime?.split("T")[0] === todayDate) && (
+    <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
+      <a onClick={!loading ? () => handleStatusChange(patient.appoint_id, patient.uhid, 'Appoint') : null}>Change Status to "Appoint"</a>
+    </li>
+  )} */}
+  {(patient.appointment_status !== "Check-In" && patient.appointment_status !== "Cancel") && (
+    <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
+      <a onClick={!loading ? () => handleStatusChange(patient.appoint_id, patient.uhid, 'Check-In') : null}>Check-In</a>
+    </li>
+  )}
+  {(patient.appointment_status === "Check-In" && patient.appointment_status !== "Cancel") && (
     <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
       <a onClick={!loading ? () => handleStatusChange(patient.appoint_id, patient.uhid, 'Appoint') : null}>Change Status to "Appoint"</a>
     </li>

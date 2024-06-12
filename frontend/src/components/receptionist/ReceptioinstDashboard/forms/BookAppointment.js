@@ -936,7 +936,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                     value={selectedDate}
                     className="form-control"
                     onChange={handleDateChange}
-                    min={formatDate(new Date())}
+                    // min={formatDate(new Date())}
                     required
                   />
                 </div>

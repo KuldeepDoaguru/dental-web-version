@@ -40,7 +40,7 @@ const Header = () => {
                 className="nav-link active text-white mt-2 mx-2 fs-5"
                 to="/"
               >
-                Dental Guru
+                DentalGuru
               </Link>
             </li>
             <button

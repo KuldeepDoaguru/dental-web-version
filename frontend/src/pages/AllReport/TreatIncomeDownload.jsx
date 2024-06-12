@@ -50,12 +50,32 @@ const TreatIncomeDownload = () => {
     setViewTreatAmount(treatAmount);
   };
 
-  const handleView = (e) => {
-    e.preventDefault();
+  const validateDateRange = () => {
     if (!fromDate || !toDate) {
       alert("Please select Date");
+      return false;
+    }
+    const start = moment(fromDate);
+    const end = moment(toDate);
+    const diff = end.diff(start, "days");
+    if (diff > 30) {
+      alert("The date range should not exceed 30 days");
+      return false;
+    }
+    return true;
+  };
+
+  const handleView = (e) => {
+    e.preventDefault();
+    // if (!fromDate || !toDate) {
+    //   alert("Please select Date");
+    //   return;
+    // }
+
+    if (!validateDateRange()) {
       return;
     }
+
     const filteredData = treatAmount.filter((item) => {
       const date = moment(item.appointment_dateTime).format("YYYY-MM-DD");
       return moment(date).isBetween(fromDate, toDate, null, "[]");
@@ -65,10 +85,15 @@ const TreatIncomeDownload = () => {
 
   const handleDownload = (e) => {
     e.preventDefault();
-    if (!fromDate || !toDate) {
-      alert("Please select Date");
+    // if (!fromDate || !toDate) {
+    //   alert("Please select Date");
+    //   return;
+    // }
+
+    if (!validateDateRange()) {
       return;
     }
+
     const filteredData = treatAmount.filter((item) => {
       const date = moment(item.appointment_dateTime).format("YYYY-MM-DD");
       return moment(date).isBetween(fromDate, toDate, null, "[]");
@@ -117,9 +142,9 @@ const TreatIncomeDownload = () => {
                   </div>
                 </div>
                 <div className="container-fluid mt-3">
-                  <button className="btn btn-success" onClick={goBack}>
+                  {/* <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
-                  </button>
+                  </button> */}
                   <div className="container-fluid">
                     <div className="row mt-3">
                       {/* <div className="col-1"></div> */}
@@ -134,9 +159,9 @@ const TreatIncomeDownload = () => {
                     </div>
                   </div>
                 </div>
-                <div className="container">
+                <div className="container-fluid">
                   <div class="mt-4">
-                    <div className="d-flex justify-content-between mb-2">
+                    <div className="d-flex justify-content-center mb-2">
                       <form>
                         <div className="d-flex justify-content-between">
                           <div>
@@ -168,16 +193,17 @@ const TreatIncomeDownload = () => {
                           </button>
 
                           <button
+                            className="btn btn-primary mx-2"
+                            onClick={(e) => handleRefresh(e)}
+                          >
+                            Clear
+                          </button>
+
+                          <button
                             className="btn btn-warning mx-2"
                             onClick={(e) => handleDownload(e)}
                           >
                             Download Report
-                          </button>
-                          <button
-                            className="btn btn-primary mx-2"
-                            onClick={(e) => handleRefresh(e)}
-                          >
-                            Refresh
                           </button>
                         </div>
                       </form>

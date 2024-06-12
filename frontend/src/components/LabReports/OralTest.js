@@ -87,7 +87,10 @@ const OralTest = () => {
             <div className="col-1 p-0">
               <Sider />
             </div>
-            <div className="col-11" style={{ marginTop: "5rem" }}>
+            <div
+              className="col-lg-11 col-md-11 col-11 ps-0"
+              style={{ marginTop: "2rem" }}
+            >
               <div className="col-12 p-0">
                 <IoArrowBackSharp
                   className="fs-1 text-black d-print-none"
@@ -96,104 +99,107 @@ const OralTest = () => {
               </div>
 
               <div className="container-fluid mt-4">
-                <h2>List of Oral Test</h2>
-                <div className="mb-3">
-                  <div className="row">
-                    <div className="col-lg-2">
-                      <input
-                        type="text"
-                        placeholder="Search by name or doctor"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="form-control"
-                      />
+                <div className="row ms-md-5">
+                  <div className="col-lg-12 col-md-12">
+                    <h2>List of Oral Test</h2>
+                    <div className="mb-3">
+                      <div className="row">
+                        <div className="col-lg-2">
+                          <input
+                            type="text"
+                            placeholder="Search by name or doctor"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="form-control"
+                          />
+                        </div>
+                        <div className="col-lg-2">
+                          <input
+                            type="date"
+                            value={dateFilter}
+                            onChange={(e) => setDateFilter(e.target.value)}
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className="col-lg-2">
-                      <input
-                        type="date"
-                        value={dateFilter}
-                        onChange={(e) => setDateFilter(e.target.value)}
-                        className="form-control"
-                      />
+                    <div
+                      className=""
+                      style={{ maxHeight: "30rem", overflowY: "auto" }}
+                    >
+                      <table className="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Patient UHID </th>
+                            <th>Patient Name </th>
+                            <th> Age </th>
+                            <th> Gender </th>
+                            <th>Branch Name </th>
+                            <th>Assigned Doctor Name</th>
+                            <th>Lab Name</th>
+                            <th>Created Date</th>
+                            <th>Patient Test </th>
+                            <th>Tests Status </th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          {filteredPatients.map((patient, index) => (
+                            <>
+                              {patient.lab_name === "oral" && (
+                                <tr key={patient.testid}>
+                                  <td>{index + 1}</td>
+                                  <td>{patient.patient_uhid}</td>
+                                  <td>{patient.patient_name}</td>
+                                  <td>{patient.age}</td>
+                                  <td>{patient.gender}</td>
+                                  <td>{patient.branch_name}</td>
+
+                                  <td>{patient.assigned_doctor_name}</td>
+                                  <td>{patient.lab_name}</td>
+                                  <td>
+                                    {moment(patient.created_date).format(
+                                      "DD/MM/YYYY"
+                                    )}
+                                  </td>
+                                  <td>{patient.test}</td>
+                                  {patient.test_status === "done" && (
+                                    <td>
+                                      <p className="text-success fw-bold">
+                                        {patient.test_status}
+                                      </p>
+                                    </td>
+                                  )}
+
+                                  {patient.test_status === "pending" && (
+                                    <td>
+                                      <p className="text-danger fw-bold">
+                                        {patient.test_status}
+                                      </p>
+                                    </td>
+                                  )}
+                                </tr>
+                              )}
+                            </>
+                            // Wrap the entire row inside a conditional statement based on test status
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
-                <div
-                  className=""
-                  style={{ maxHeight: "30rem", overflowY: "auto" }}
-                >
-                  <table className="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Patient UHID </th>
-                        <th>Patient Name </th>
-                        <th> Age </th>
-                        <th> Gender </th>
-                        <th>Branch Name </th>
-                        <th>Assigned Doctor Name</th>
-                        <th>Lab Name</th>
-                        <th>Created Date</th>
-                        <th>Patient Test </th>
-                        <th>Tests Status </th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {filteredPatients.map((patient, index) => (
-                        <>
-                          {patient.lab_name === "oral" && (
-                            <tr key={patient.testid}>
-                              <td>{index + 1}</td>
-                              <td>{patient.patient_uhid}</td>
-                              <td>{patient.patient_name}</td>
-                              <td>{patient.age}</td>
-                              <td>{patient.gender}</td>
-                              <td>{patient.branch_name}</td>
-
-                              <td>{patient.assigned_doctor_name}</td>
-                              <td>{patient.lab_name}</td>
-                              <td>
-                                {moment(patient.created_date).format(
-                                  "DD/MM/YYYY"
-                                )}
-                              </td>
-                              <td>{patient.test}</td>
-                              {patient.test_status === "done" && (
-                                <td>
-                                  <p className="text-success fw-bold">
-                                    {patient.test_status}
-                                  </p>
-                                </td>
-                              )}
-
-                              {patient.test_status === "pending" && (
-                                <td>
-                                  <p className="text-danger fw-bold">
-                                    {patient.test_status}
-                                  </p>
-                                </td>
-                              )}
-                            </tr>
-                          )}
-                        </>
-                        // Wrap the entire row inside a conditional statement based on test status
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div className="d-flex justify-content-center mt-4">
-                <div>
-                  <exportToExcel />
-                  <button
-                    type="button"
-                    class="btn btn1 text-light py-2 px-4"
-                    onClick={exportToExcel}
-                  >
-                    Download
-                  </button>
+                <div className="d-flex justify-content-center mt-4">
+                  <div>
+                    <exportToExcel />
+                    <button
+                      type="button"
+                      class="btn btn1 text-light py-2 px-4"
+                      onClick={exportToExcel}
+                    >
+                      Download
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

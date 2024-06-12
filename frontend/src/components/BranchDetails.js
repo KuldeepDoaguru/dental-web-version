@@ -18,7 +18,7 @@ const BranchDetails = () => {
               <h5>Branch : {user.branch}</h5>
             </div>
             <div className="mt-2">
-              <h3> Welcome to Dental Guru</h3>
+              <h3> Welcome to DentalGuru</h3>
             </div>
             <div className="mt-3">
               <h6>Accountant Dashboard</h6>

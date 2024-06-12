@@ -39,7 +39,9 @@ const ReportCardPage = () => {
           const data = response.data;
           // Filter data for oral, blood, and radiology tests
           const oralTests = data.filter((item) => item.lab_name === "oral");
-          const bloodTests = data.filter((item) => item.lab_name === "blood");
+          const bloodTests = data.filter(
+            (item) => item.lab_name === "pathology"
+          );
           const radiologyTests = data.filter(
             (item) => item.lab_name === "radiology"
           );

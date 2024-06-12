@@ -144,7 +144,7 @@ const BloodTest = () => {
                     <tbody>
                       {filteredPatients.map((patient, index) => (
                         <React.Fragment key={patient.testid}>
-                          {patient.lab_name === "blood" && (
+                          {patient.lab_name === "pathology" && (
                             <tr>
                               <td>{index + 1}</td>
                               <td>{patient.patient_uhid}</td>

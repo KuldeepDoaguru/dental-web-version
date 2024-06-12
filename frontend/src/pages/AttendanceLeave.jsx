@@ -164,7 +164,7 @@ const AttendanceLeave = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <div className="container-fluid mt-3">
+                <div className="container-fluid mt-3 mx-md-4">
                   <div className="">
                     <BranchDetails />
                   </div>
@@ -184,7 +184,7 @@ const AttendanceLeave = () => {
 
                   <div className="container-fluid">
                     <div className="row mt-3">
-                      <div className="col-12">
+                      <div className="col-12 col-lg-11 col-md-11 mx-lg-4 mx-md-5">
                         <nav class="navbar navbar-expand-lg bg-body-tertiary">
                           <div class="container d-flex justify-content-center">
                             <h2 className="">Attendance and Leave Details</h2>
@@ -195,7 +195,7 @@ const AttendanceLeave = () => {
                         </nav>
                       </div>
                       <div className="container-fluid">
-                        <div className="container-fluid">
+                        <div className="container-fluid mx-md-4">
                           <div className="d-flex justify-content-between mb-2 mt-4"></div>
 
                           <div className="mt-5">

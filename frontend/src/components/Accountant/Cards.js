@@ -98,7 +98,7 @@ const Cards = () => {
     } catch (error) {
       console.log(error);
       if (error?.response?.status == 401) {
-        alert("Your token is expired please login again");
+        // alert("Your token is expired please login again");
         navigate("/");
       }
     }
@@ -205,7 +205,7 @@ const Cards = () => {
       getTreatmentData();
       getVoucherAmount();
       getPatientBill();
-    }, 5000);
+    }, 10000);
 
     return () => {
       clearInterval(interval);

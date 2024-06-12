@@ -128,10 +128,10 @@ const LabPatientReport = () => {
                 <Sider />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <IoArrowBackSharp
+                {/* <IoArrowBackSharp
                   className="fs-1 text-black d-print-none"
                   onClick={goBack}
-                />
+                /> */}
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     {/* <BranchSelector /> */}
@@ -142,7 +142,7 @@ const LabPatientReport = () => {
                     <div className="row mt-3">
                       {/* <div className="col-1"></div> */}
 
-                      <div className="col-12">
+                      <div className="col-12 mx-md-4">
                         <nav class="navbar navbar-expand-lg bg-body-tertiary">
                           <div class="container d-flex justify-content-center">
                             <h2 className=""> Lab Reports Dashboard</h2>

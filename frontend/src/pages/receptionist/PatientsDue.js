@@ -47,7 +47,7 @@ PatientsDue() {
 
   console.log(patBill);
   const filterForUnPaidBills = patBill?.filter((item) => {
-    return item.payment_status !== "paid" &&  (Number(item.total_amount) - (Number(item.paid_amount) + Number(item.pay_by_sec_amt))) !== 0;
+    return item.payment_status !== "paid" &&  (Number(item.total_amount) - (Number(item.paid_amount) + Number(item.pay_by_sec_amt))) > 0;
   });
 
 

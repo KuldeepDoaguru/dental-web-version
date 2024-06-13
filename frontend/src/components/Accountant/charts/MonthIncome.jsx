@@ -157,7 +157,7 @@ const MonthIncome = () => {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                {/* <XAxis dataKey="date" /> */}
+                <XAxis dataKey="date" />
                 <YAxis yAxisId="left" />
                 <YAxis yAxisId="right" orientation="right" />
                 <Tooltip />
@@ -193,5 +193,8 @@ const Container = styled.div`
     box-shadow: 0px 2px 18px #bdbaba;
     display: flex;
     justify-content: center;
+    @media (min-width: 1024px) and (max-width: 1280px) {
+      width: 110%;
+    }
   }
 `;

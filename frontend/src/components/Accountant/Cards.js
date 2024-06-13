@@ -112,11 +112,27 @@ const Cards = () => {
 
   // console.log(filterForTreatAppointToday);
 
+  // const totalTreatPrice = () => {
+  //   try {
+  //     let total = 0;
+  //     filterForTreatAppointToday.forEach((item) => {
+  //       total = total + (item.net_amount ? item.net_amount : 0);
+  //     });
+  //     // console.log(total);
+  //     return total;
+  //   } catch (error) {
+  //     console.log(error);
+  //     return 0;
+  //   }
+  // };
+
   const totalTreatPrice = () => {
     try {
       let total = 0;
       filterForTreatAppointToday.forEach((item) => {
-        total = total + (item.net_amount ? item.net_amount : 0);
+        if (item.payment_status === "paid") {
+          total = total + (item.total_amount ? item.total_amount : 0);
+        }
       });
       // console.log(total);
       return total;
@@ -255,7 +271,7 @@ const Cards = () => {
                   <LiaMicroscopeSolid />
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title text-light">Treatment Income</h5>
+                  <h5 className="card-title text-light">Bill Income</h5>
                   <p className="card-text text-light fw-semibold">
                     {totalTreatValue}
                   </p>

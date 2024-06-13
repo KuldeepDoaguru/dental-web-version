@@ -91,7 +91,7 @@ const OralTest = () => {
               className="col-lg-11 col-md-11 col-11 ps-0"
               style={{ marginTop: "2rem" }}
             >
-              <div className="col-12 p-0">
+              <div className="col-12 px-2 px-md-5">
                 <IoArrowBackSharp
                   className="fs-1 text-black d-print-none"
                   onClick={goBack}
@@ -224,5 +224,6 @@ const Wrapper = styled.div`
   th {
     background-color: #201658;
     color: white;
+    white-space: nowrap;
   }
 `;

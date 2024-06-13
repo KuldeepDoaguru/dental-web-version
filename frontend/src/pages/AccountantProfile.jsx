@@ -171,7 +171,7 @@ const AccountantProfile = () => {
               <div className="col-lg-1 col-1 p-0">
                 <Sider />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
+              <div className="col-lg-11 col-md-11 col-11 ps-0" id="set">
                 <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     {/* <BranchSelector /> */}
@@ -183,25 +183,16 @@ const AccountantProfile = () => {
                   </button>
                   {/* <Card /> */}
                 </div>
-                <div className="container shadow p-3 mt-5 bg-body rounded">
+                <div className="container shadow mt-5 bg-body rounded">
                   <div className="row">
-                    <div className="col-lg-12 col-12">
+                    <div className="col-lg-12 col-md-11 col-12">
                       <div className="text-start p-2">
                         <div className="d-flex justify-content-between">
                           <div>
                             {" "}
                             <h3>Employee Profile</h3>
                           </div>
-                          {/* <div>
-                            <button
-                              className="btn btn-warning fw-bold shadow"
-                              onClick={() => openEditEmployeePopup()}
-                            >
-                              Update Details
-                            </button>
-                          </div> */}
                         </div>
-
                         <hr />
                       </div>
                     </div>
@@ -217,19 +208,19 @@ const AccountantProfile = () => {
                     <div className="col-lg-8">
                       <div className="row g-3">
                         <div className="col-lg-4">
-                          <label className="text-info">Employee ID</label>
+                          <label className="text-color">Employee ID</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.employee_ID}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Employee Name</label>
+                          <label className="text-color">Employee Name</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.employee_name}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Email</label>
+                          <label className="text-color">Email</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0 ptext">
                               {empData[0]?.employee_email}
@@ -237,25 +228,25 @@ const AccountantProfile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Gender</label>
+                          <label className="text-color">Gender</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.gender}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Mobile Number</label>
+                          <label className="text-color">Mobile Number</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.employee_mobile}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Address</label>
+                          <label className="text-color">Address</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.address}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Designation</label>
+                          <label className="text-color">Designation</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">
                               {empData[0]?.employee_designation}
@@ -263,25 +254,25 @@ const AccountantProfile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Salary</label>
+                          <label className="text-color">Salary</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.salary}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Status</label>
+                          <label className="text-color">Status</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.employee_status}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Availability</label>
+                          <label className="text-color">Availability</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.availability}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="text-color">
                             Morning Shift Start Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -297,7 +288,7 @@ const AccountantProfile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="text-color">
                             Morning Shift End Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -313,7 +304,7 @@ const AccountantProfile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="text-color">
                             Evening Shift Start Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -329,7 +320,7 @@ const AccountantProfile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="text-color">
                             Evening Shift End Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -345,7 +336,7 @@ const AccountantProfile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="text-color">
                             All Day Shift Start Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -359,7 +350,7 @@ const AccountantProfile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="text-color">
                             All Day Shift End Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -369,7 +360,7 @@ const AccountantProfile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Working Days</label>
+                          <label className="text-color">Working Days</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">
                               {empData[0]?.working_days
@@ -379,7 +370,7 @@ const AccountantProfile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Employee Role</label>
+                          <label className="text-color">Employee Role</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">
                               {empData[0]?.employee_role
@@ -833,8 +824,10 @@ const Container = styled.div`
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
-  .text-info {
-    font-size: 1.5rem;
+  .text-color {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #201658;
   }
 
   p {
@@ -865,5 +858,15 @@ const Container = styled.div`
   .imgData {
     height: 8rem;
     width: auto;
+  }
+
+  #set {
+    @media screen and (min-width: 768px) and (max-width: 1020px) {
+      width: 85%;
+      margin-left: 3.5rem;
+    }
+    @media screen and (min-width: 1021px) and (max-width: 1085px) {
+      margin-left: 1.1rem;
+    }
   }
 `;

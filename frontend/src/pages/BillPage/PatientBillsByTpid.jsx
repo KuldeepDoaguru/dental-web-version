@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import numToWords from "num-to-words";
-// import numWords from "num-words";
+import numWords from "num-words";
 
 const PatientBillsByTpid = () => {
   const { tpid } = useParams();
@@ -172,12 +172,12 @@ const PatientBillsByTpid = () => {
     }
   };
 
-  const totalBillvalueWithoutGst = getTreatData?.reduce(
-    (total, item) => total + item.net_amount,
-    0
-  );
+  // const totalBillvalueWithoutGst = getTreatData?.reduce(
+  //   (total, item) => total + item.net_amount,
+  //   0
+  // );
 
-  console.log(totalBillvalueWithoutGst);
+  // console.log(totalBillvalueWithoutGst);
 
   const getBillDetails = async () => {
     try {
@@ -197,6 +197,19 @@ const PatientBillsByTpid = () => {
     }
   };
 
+  const totalBillvalueWithoutGst = getTreatData?.reduce((total, item) => {
+    if (billDetails[0]?.due_amount === billDetails[0]?.net_amount) {
+      return total + Number(item.paid_amount);
+    } else {
+      return (
+        Number(billDetails[0]?.paid_amount) +
+        Number(billDetails[0]?.pay_by_sec_amt)
+      );
+    }
+  }, 0);
+
+  console.log(totalBillvalueWithoutGst);
+
   useEffect(() => {
     getTreatmentSuggestAppointId();
     getBillDetails();
@@ -204,7 +217,21 @@ const PatientBillsByTpid = () => {
 
   console.log(billDetails);
 
-  const amtWords = numToWords(totalBillvalueWithoutGst);
+  // const amtWords = numToWords(totalBillvalueWithoutGst);
+
+  console.log(billDetails[0]?.total_amount);
+
+  const totalDueAmount = getTreatData?.reduce((total, item) => {
+    return total + Number(item.total_amt);
+  }, 0);
+
+  console.log(billDetails[0]?.total_amount - totalBillvalueWithoutGst);
+
+  const netVal = getTreatData?.filter((item) => {
+    return item.sitting_number === 1;
+  });
+
+  console.log(billDetails[0]?.total_amount, totalBillvalueWithoutGst);
   return (
     <>
       <Wrapper>
@@ -275,7 +302,6 @@ const PatientBillsByTpid = () => {
           </div>
           <hr />
         </div> */}
-
         <div className="container-fluid">
           <div className="row">
             <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -290,12 +316,17 @@ const PatientBillsByTpid = () => {
           </div>
           <hr />
         </div>
-
         {/* patient details */}
+        <div className="text-center">
+          <h3>Invoice</h3>
+        </div>
         <div className="container-fluid">
           <div className="heading-title">
             <h4>Patient Details :</h4>
           </div>
+          <h6 className="fw-bold">
+            Patient Type : {getPatientData[0]?.patient_type}
+          </h6>
           <table className="table table-bordered border">
             <tbody>
               {getPatientData?.map((item, index) => (
@@ -347,12 +378,12 @@ const PatientBillsByTpid = () => {
                 <strong>Doctor Name :</strong> Dr.{" "}
                 {billDetails[0]?.assigned_doctor_name}
               </p>
-              {/* <p>
+              <p>
                 <strong>Mobile :</strong> {user.employee_mobile}
               </p>
               <p>
                 <strong>Email :</strong> {user.email}
-              </p> */}
+              </p>
             </div>
           </div>
         </div>
@@ -405,7 +436,8 @@ const PatientBillsByTpid = () => {
                   <th>Cost</th>
                   <th>Cst * Qty</th>
                   <th>Disc %</th>
-                  <th>Final Cost</th>
+                  <th>Net Amount</th>
+                  <th>Paid Amount</th>
                 </tr>
               </thead>
               {getTreatData?.map((item, index) => (
@@ -423,7 +455,16 @@ const PatientBillsByTpid = () => {
                       <td>{item.cost_amt}</td>
                       <td>{item.total_amt}</td>
                       <td>{item.disc_amt}</td>
-                      <td>{item.net_amount}</td>
+                      <td>
+                        {item.total_amt -
+                          (item.total_amt * item.disc_amt) / 100}
+                      </td>
+                      <td>
+                        {" "}
+                        {item.sitting_payment_status === "Pending"
+                          ? 0
+                          : item.paid_amount}
+                      </td>
                     </tr>
                   </React.Fragment>
                 </tbody>
@@ -431,17 +472,47 @@ const PatientBillsByTpid = () => {
               <tfoot>
                 <tr>
                   <td
-                    colSpan="7"
+                    colSpan="8"
                     style={{ textAlign: "center" }}
-                    className="heading-title"
+                    className="heading-title text-danger fw-bold"
                   >
-                    Total Cost:
+                    Treatment Pending Payment:
                   </td>
-                  <td className="heading-title">
+                  <td className="heading-title text-danger fw-bold">
                     {/* Calculate total cost here */}
                     {/* Assuming getTreatData is an array of objects with 'net_amount' property */}
-                    {getTreatData?.reduce(
-                      (total, item) => total + item.net_amount,
+                    {billDetails[0]?.total_amount - totalBillvalueWithoutGst
+                      ? billDetails[0]?.total_amount - totalBillvalueWithoutGst
+                      : 0}
+                  </td>
+                </tr>
+              </tfoot>
+              <tfoot>
+                <tr>
+                  <td
+                    colSpan="7"
+                    style={{ textAlign: "right" }}
+                    className="heading-title"
+                  >
+                    Treatment Total:
+                  </td>
+                  <td className="heading-title">
+                    {netVal.reduce(
+                      (total, item) =>
+                        total +
+                        (Number(item.total_amt) -
+                          (Number(item.total_amt) * Number(item.disc_amt)) /
+                            100),
+                      0
+                    )}
+                  </td>
+
+                  <td className="heading-title">
+                    {getTreatData.reduce(
+                      (total, item) =>
+                        item.sitting_payment_status === "Pending"
+                          ? total
+                          : total + Number(item.paid_amount),
                       0
                     )}
                   </td>
@@ -459,7 +530,7 @@ const PatientBillsByTpid = () => {
                   <h4>Total Amount In Words :</h4>
                 </div>
                 <div className="text-word">
-                  <p className="m-0 text-uppercase">{`${amtWords} Rupees`}</p>
+                  <p className="m-0">{numWords(totalBillvalueWithoutGst)}</p>
                 </div>
               </div>
               <div className="">
@@ -510,7 +581,7 @@ const PatientBillsByTpid = () => {
                   <tbody>
                     <tr>
                       <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-end total-tr">
-                        Total Amount:
+                        Total Amount Recieved:
                       </td>
                       <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-center total-tr">
                         {totalBillvalueWithoutGst}
@@ -536,16 +607,29 @@ const PatientBillsByTpid = () => {
         </div>
         {/* print button */}
         <div className="container-fluid">
-          <div className="d-flex justify-content-center align-items-center mt-2">
-            <button className="btn btn-info no-print" onClick={handleButton}>
+          <div className="d-flex justify-content-center align-items-center">
+            <button
+              className="btn btn-info no-print mt-2 mb-2"
+              onClick={handleButton}
+            >
               Print
             </button>
+            {billDetails[0]?.payment_status === "paid" ? (
+              ""
+            ) : (
+              <button
+                className="btn btn-success ms-2 no-print mt-2 mb-2"
+                onClick={() => navigate(`/patient-due-payment-print/${tpid}`)}
+              >
+                Go to Payment page
+              </button>
+            )}
+
             <button
-              type="button"
-              className="btn btn-info no-print mx-2"
-              onClick={() => navigate("/PatientsPaid")}
+              className="btn btn-info no-print mx-3 mt-2 mb-2"
+              onClick={() => navigate("/doctor-dashboard")}
             >
-              Go back
+              Appointment Dashboard
             </button>
           </div>
         </div>

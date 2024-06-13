@@ -128,14 +128,15 @@ const Accountant_Dashboard = () => {
 
               <div className="container-fuild px-2">
                 <div className="row g-4 mt-3 ">
-                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 offset-lg-3">
                     <h3 className="text-center">Monthly Earning</h3>
                     <MonthIncome />
                   </div>
-                  <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+
+                  {/* <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">Monthly Expenses</h3>
                     <ExpenseChart />
-                  </div>
+                  </div> */}
 
                   {/* <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <h3 className="text-center">Monthly Purchase</h3>

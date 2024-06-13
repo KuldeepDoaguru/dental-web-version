@@ -235,7 +235,7 @@ const getEmployeeData = (req, res) => {
     });
   }
 };
-
+  
 
 
 const getPatientLabWithLabTest = (req, res) => {
@@ -325,43 +325,83 @@ const patienttestdata = async (req, res) => {
   );
 };
 
-const patientpayment= async (req, res) => {
+// const patientpayment= async (req, res) => {
+//   const { testId } = req.params;
+//   const {
+//     patient_uhid,
+//     patient_name,
+   
+//     payment,
+//     payment_status,
+    
+//   } = req.body;
+
+//   const sql = `INSERT INTO patient_lab_test_details (testid, patient_uhid, patient_name, payment,payment_status) VAlUES (?,?,?,?,?)`;
+//   db.query(
+//     sql,
+//     [
+//       testId,
+//       patient_uhid,
+//       patient_name,
+      
+//       payment,
+//       payment_status,
+      
+//     ],
+//     (err, results) => {
+//       if (err) {
+//         res.status(500).json({ error: "Error of Data" });
+//       } else {
+//         res.status(201).json({
+//           success: true,
+//           message: "patient test data uploaded successfully",
+//         });
+//       }
+//     }
+//   );
+// };
+
+
+const patientpayment = async (req, res) => {
   const { testId } = req.params;
   const {
     patient_uhid,
     patient_name,
-   
     payment,
     payment_status,
-    
   } = req.body;
 
-  const sql = `INSERT INTO patient_lab_test_details (testid, patient_uhid, patient_name, payment,payment_status) VAlUES (?,?,?,?,?)`;
+  const file = req.file;
+  if (!file) {
+    return res.status(400).json({ error: 'No file uploaded.' });
+  }
+
+
+
+  const sql = `INSERT INTO patient_lab_test_details (testid, patient_uhid, patient_name, payment, payment_status) VALUES (?,?,?,?,?)`;
+
   db.query(
     sql,
     [
       testId,
       patient_uhid,
       patient_name,
-      
       payment,
       payment_status,
-      
+    
     ],
     (err, results) => {
       if (err) {
-        res.status(500).json({ error: "Error of Data" });
+        res.status(500).json({ error: 'Error inserting data' });
       } else {
         res.status(201).json({
           success: true,
-          message: "patient test data uploaded successfully",
+          message: 'Patient test data uploaded successfully',
         });
       }
     }
   );
 };
-
-
 const updatepatienttestdetail = async (req, res) => {
   try {
     const { testId } = req.params;
@@ -374,7 +414,14 @@ const updatepatienttestdetail = async (req, res) => {
       authenticate_date,
       lab_type,
     } = req.body;
-    const sql = `UPDATE  patient_lab_test_details SET test = ? , result = ? , unit = ? , cost = ?, collection_date = ? , authenticate_date = ?,lab_type = ? WHERE testid = ?`;
+
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ error: 'No file uploaded.' });
+    }
+    const filePath = "https://dentalgurulab.doaguru.com/uploads/" + file.filename;
+  
+    const sql = `UPDATE  patient_lab_test_details SET test = ? , result = ? , unit = ? , cost = ?, collection_date = ? , authenticate_date = ?,lab_type = ?,file_path = ? WHERE testid = ?`;
 
     db.query(
       sql,
@@ -386,7 +433,9 @@ const updatepatienttestdetail = async (req, res) => {
         collection_date,
         authenticate_date,
         lab_type,
+        filePath,
         testId,
+        
       ],
       (error, result) => {
         if (error) {

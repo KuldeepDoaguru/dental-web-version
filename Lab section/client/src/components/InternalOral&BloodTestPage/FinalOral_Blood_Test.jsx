@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Form } from 'react-bootstrap';
+import styled from "styled-components";
 
 
 function FinalOral_Blood_Test() {
@@ -28,6 +29,7 @@ function FinalOral_Blood_Test() {
   const [patientcollection_date, setPatientcollection_date] = useState("");
   const [patientauthenticate_date, setPatientauthenticate_date] = useState("");
   const [labName, setLabName] = useState("");
+  const [filetest, setFiletest] = useState("");
   const [patienttid , setPatienttid] = useState('')
   const [showModal, setShowModal] = useState(false); 
   const [message, setMessage] = useState("");
@@ -41,7 +43,7 @@ function FinalOral_Blood_Test() {
   const [notes, setNotes] = useState([]);
   const navigate = useNavigate();
   const goBack = () => {
-   navigate('/')
+    window.history.go(-1);
   };
   const handleTopPageLink = () => {
     window.scrollTo(0, 0);
@@ -67,7 +69,8 @@ function FinalOral_Blood_Test() {
         setPatientbranch_name(response.data[0].branch_name);
         setPatientAssigned_Doctor_Name(response.data[0].assigned_doctor_name);
         setLabName(response.data[0].lab_name);
-        setPatienttid(response.data[0].tpid)
+        setPatienttid(response.data[0].tpid);
+       
       } catch (error) {
         console.error("Error fetching patient details:", error);
       }
@@ -93,6 +96,8 @@ function FinalOral_Blood_Test() {
         setPatientcost(response.data[0].cost);
         setPatientcollection_date(response.data[0].collection_date);
         setPatientauthenticate_date(response.data[0].authenticate_date);
+        setFiletest(response.data[0].file_path);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching patient details:", error);
       }
@@ -230,8 +235,21 @@ const adjustedAuthenticate_Date = parsedAuthenticate_Date.add(1, 'days');
 // Format the adjusted date as a string in the desired format (YYYY-MM-DD)
 const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-MM-YYYY');
 
+console.log(filetest);
+const handleViewPDF = () => {
+  if (!filetest) {
+    console.error("PDF file path is empty");
+    return;
+  }
+
+  const newTab = window.open(filetest, "_blank");
+  if (!newTab) {
+    console.error("Failed to open PDF in a new tab. Please check popup blocker settings.");
+  }
+};
+
   return (
-    <>
+    <Wrapper>
       <div className="d-print-none">
         <Header />
       </div>
@@ -243,14 +261,14 @@ const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-
         <div className="col-xxl-1 col-xl-1 col-lg-1 d-print-none col-sm-1 p-0">
           <Sider />
         </div>
-        <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-12 col-sm-12 p-0" style={{marginTop:"5rem"}}>
+        <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-12 col-sm-12 p-0 resp " style={{marginTop:"5rem"}}>
         <IoArrowBackSharp
-            className="fs-1 text-black d-print-none"
+            className="fs-1 text-black d-print-none mx-4"
             onClick={goBack}
             style={{ cursor: "pointer" }}
           />
 
-          <div className="mx-4">
+          <div className="mx-5">
             <div className="row">
               <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div className="row d-flex justify-content-between">
@@ -278,7 +296,7 @@ const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-
                   </div>
 
                   <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-6 mt-4">
-                    <div className="text-center mt-2 footer ">
+                    {/* <div className="text-center mt-2 footer ">
                       <img
                         className="ms-4"
                         src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1707404036/dental%20guru/dentalguru_v1g7k0.png"
@@ -287,7 +305,7 @@ const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-
                         height="85"
                       />
                       <h3 className="ms-2">Dental Guru</h3>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -422,7 +440,7 @@ const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-
                       )}
                       {labName === "radiology" && <td>{patientcost}</td>}
 
-                      <td>
+                      <td  style={{whiteSpace:"nowrap"}}>
                         {/* <Link to={`/update-patient-test-data/${id}`}>
                           <button className="btn btn-secondary m-1">
                             Edit
@@ -430,11 +448,12 @@ const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-
                         </Link> */}
                         <Button onClick={handleShowModal} variant="primary">Edit</Button>
                         <button
-                          className="btn btn-danger mx-sm-0 mx-lg-2 m-1"
+                          className="btn btn-danger  mx-2"
                           onClick={() => handleDelete(patientbill_no)}
                         >
                           Delete
                         </button>
+                        <button  className="btn btn-success  mx-2" onClick={handleViewPDF}>View PDF</button>
                       </td>
                     </tr>
                   </tbody>
@@ -473,6 +492,7 @@ const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-
                   >
                     Delete Notes
                   </button>
+                
                 </div>
               </div>
             </div>
@@ -562,8 +582,17 @@ const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-
       </div>
           </div>
         </div>
-    </>
+    </Wrapper>
   );
 }
 
 export default FinalOral_Blood_Test;
+
+const Wrapper = styled.div`
+  .resp{
+    @media (min-width: 768px) and (max-width: 1020px) {
+      width: 95%;
+    }
+   
+  }
+`

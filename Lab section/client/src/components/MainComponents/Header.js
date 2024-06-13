@@ -13,7 +13,7 @@ const Header = () => {
             <div className="container-fluid">
               <Link to="/">
                 <img
-                  src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1707404036/dental%20guru/dentalguru_v1g7k0.png"
+                  src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1717595664/dental%20guru/test_1_liu3zb.png"
                   alt="Logo"
                   width="75"
                   height="60"
@@ -24,11 +24,11 @@ const Header = () => {
                   className="nav-link active text-white mt-2 mx-2 fs-5"
                   to="/"
                 >
-                  Dental Guru
+                  DentalGuru
                 </Link>
               </li>
               <button
-                className="navbar-toggler"
+                className="navbar-toggler bg-white"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent"
@@ -55,7 +55,7 @@ const Header = () => {
                     >
                       <FaUserAlt className="icon mx-3" />
                     </a>
-                    <ul className="dropdown-menu second-dropdown" style={{marginLeft:"-8rem"}}>
+                    <ul className="dropdown-menu second-dropdown detail" >
                     <li><Link to='/lab-attendant-profile' className="dropdown-item">View Profile</Link></li>
     {/* <li><Link to='/attendanceLeave' className="dropdown-item">View Attendance & Leave</Link></li> */}
     <li><Link to='/branch-details' className="dropdown-item">View Clinic Details</Link></li>
@@ -131,4 +131,12 @@ const Container = styled.div`
       list-style: none !important;
     }
   }
+  .detail{
+    margin-left: -8rem;
+    @media screen and (min-width: 768px) and (max-width: 1020px) {
+      margin-left: 0rem;
+    }
+  }
+
+
 `;

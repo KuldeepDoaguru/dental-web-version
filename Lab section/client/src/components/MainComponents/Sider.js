@@ -19,7 +19,7 @@ const Sider = () => {
   return (
   
     <Wrapper>
-      <div className="px-0 d-print-none" id="sidebar">
+      <div className="px-0 d-print-none" id="sidebar" style={{overflow:"hidden"}}>
         <div className="d-flex flex-column align-items-center pt-2">
           <ul className="nav nav-pills nav-dash" id="menu">
             <li class="nav-item link-div">
@@ -29,7 +29,7 @@ const Sider = () => {
                   <i className="fs-4 bi bi-house-door-fill"></i>
                 </div>
                 <div d-flex justify-content-center>
-                  <h3 class=" d-none d-sm-inline fs-6 text-light">Dashboard</h3>
+                  <h3 class=" d-none d-sm-inline  text-light iconside">Dashboard</h3>
                 </div>
               </Link>
             </li>
@@ -45,7 +45,7 @@ const Sider = () => {
                       <FaHistory className="text-light fs-3" />
                     </div>
                     <div>
-                      <h3 className=" d-none d-sm-inline fs-6 text-light">
+                      <h3 className=" d-none d-sm-inline  text-light iconside">
                         History
                       </h3>
                     </div>
@@ -63,7 +63,7 @@ const Sider = () => {
                       <TbReportAnalytics className="text-light fs-3" />
                     </div>
                     <div>
-                      <h3 className=" d-none d-sm-inline fs-6 text-light">
+                      <h3 className=" d-none d-sm-inline  text-light iconside">
                         All Test
                       </h3>
                     </div>
@@ -82,7 +82,7 @@ const Sider = () => {
                       <RiSecurePaymentLine className="text-light fs-3" />
                     </div>
                     <div>
-                      <h3 className=" d-none d-sm-inline fs-6 text-light">
+                      <h3 className=" d-none d-sm-inline  text-light iconside">
                         Payment History
                       </h3>
                     </div>
@@ -100,7 +100,7 @@ const Sider = () => {
                       <BsFileEarmarkPerson className="text-light fs-3" />
                     </div>
                     <div>
-                      <h3 className=" d-none d-sm-inline fs-6 text-light">
+                      <h3 className=" d-none d-sm-inline  text-light iconside">
                       Attendance
                       </h3>
                     </div>
@@ -118,7 +118,7 @@ const Sider = () => {
                 <div>
                   {/* <button
                     type="submit"
-                    className="btn d-none d-sm-inline text-light fs-6"
+                    className="btn d-none d-sm-inline text-light "
                     style={{
                       backgroundColor: "#2ecc71",
                     }}
@@ -144,16 +144,18 @@ const Wrapper = styled.div`
     height: 100vh;
     background-color: #213555;
     position: fixed;
-    margin-top: 4rem;
+    margin-top: 4.8rem;
 
-    @media screen and (max-width: 768px) {
-      width: 3rem;
-      height: 212rem;
-    }
+  
     @media screen and (min-width: 768px) and (max-width: 1020px) {
-      width: 5rem;
-      height: 151rem;
+      width: 10%;
+     
     }
+    @media (min-width: 1024px) and (max-width: 1280px) {
+      width: 10%;
+    }
+
+   
   }
   .bi {
     color: white;
@@ -165,7 +167,7 @@ const Wrapper = styled.div`
     text-decoration: none;
   }
 
-  .nav-dash {
+  /* .nav-dash {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -181,7 +183,10 @@ const Wrapper = styled.div`
   }
 
   .nav-link {
-    
+    text-align: center;
+    @media screen and (max-width: 820px) {
+      width: auto !important;
+    }
   }
   .active-nav {
     background-color: #003fa4;
@@ -189,4 +194,53 @@ const Wrapper = styled.div`
     box-shadow: 0px 0px 16px #003fa4;
     text-align: center;
   }
+    */
+  .iconside{
+    @media (min-width: 768px) and (max-width: 1020px) {
+      font-size: 8px;
+    }
+    @media (min-width: 1024px) and (max-width: 1280px) {
+      font-size: 12px;
+    }
+    @media (min-width: 1281px) and (max-width: 2000px) {
+      font-size: 14px;
+    
+     }
+  } 
+
+    .nav-dash {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .link-div {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    @media screen and (max-width: 820px) {
+      font-size: smaller;
+    }
+  }
+
+  .nav-link {
+    text-align: center;
+    @media screen and (max-width: 820px) {
+      width: auto !important;
+    }
+  }
+
+  hr {
+    color: white;
+  }
+
+  .active-nav {
+    background-color: #003fa4;
+    padding: 2;
+    box-shadow: 0px 0px 16px #003fa4;
+  }
+  
 `;

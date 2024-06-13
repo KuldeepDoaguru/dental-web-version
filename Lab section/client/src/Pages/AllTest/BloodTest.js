@@ -217,15 +217,27 @@ const BloodTest = () => {
  // Filter the patient details to include only those with a "pathologytest" status
  const pathologytestPatients = patientDetails?.filter(patient => patient.lab_name === "pathology");
 
- // Apply search and date filters to the pathologytest patients
+//  // Apply search and date filters to the pathologytest patients
+//  const filteredPatients = pathologytestPatients?.filter((patient) => {
+//    const fullName = `${patient.patient_name}`.toLowerCase();
+//    const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
+//    return (
+//      fullName.includes(searchQuery.toLowerCase()) &&
+//      (!dateFilter || formattedDate === dateFilter)
+//    );
+//  });
+
  const filteredPatients = pathologytestPatients?.filter((patient) => {
-   const fullName = `${patient.patient_name}`.toLowerCase();
-   const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
-   return (
-     fullName.includes(searchQuery.toLowerCase()) &&
-     (!dateFilter || formattedDate === dateFilter)
-   );
- });
+  const fullName = patient.patient_name.toLowerCase().trim();
+  const lowerSearchQuery = searchQuery.toLowerCase().trim();
+  const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
+
+  return (
+    (fullName.includes(lowerSearchQuery) ||
+      patient.patient_uhid.toLowerCase().trim().includes(lowerSearchQuery) ) &&
+    (!dateFilter || formattedDate === dateFilter)
+  );
+});
 
   const goBack = () => {
     window.history.go(-1);
@@ -267,6 +279,7 @@ const BloodTest = () => {
    <Sider/>
             </div>
             <div className="col-11" style={{marginTop:"5rem"}}>
+<div className="mx-4">
               <div className="col-12 p-0">
               <IoArrowBackSharp
             className="fs-1 text-black d-print-none"
@@ -279,10 +292,10 @@ const BloodTest = () => {
                 <h2>List of Pathology Test</h2>
                 <div className="mb-3">
                   <div className="row">
-                    <div className="col-lg-2">
+                    <div className="col-lg-4">
                       <input
                         type="text"
-                        placeholder="Search by Patient Name"
+                        placeholder="Search by Patient Name or UHID"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="form-control"
@@ -363,6 +376,7 @@ const BloodTest = () => {
                   
                 </div>
               </div>
+</div>
 
               <div className="d-flex justify-content-center mt-4">
                 <div>
@@ -397,5 +411,9 @@ const Wrapper  = styled.div`
   th{
   background-color: #213555;
     color: white;
+    white-space: nowrap;
+}
+td{
+  white-space: nowrap;
 }
 `

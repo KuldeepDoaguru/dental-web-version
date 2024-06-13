@@ -27,7 +27,7 @@ const Deshboard = () => {
     <>
       <Container>
         <Header />
-        <div clasNameName="main">
+        <div clasNameName="main" >
           <div className="container-fluid">
             <div className="row flex-nowrap ">
               <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-1 p-0">
@@ -123,7 +123,7 @@ const Deshboard = () => {
 
 export default Deshboard;
 const Container = styled.div`
-  width: 100%;
+   width: 100%;
 `;
 
 // const Table = styled.div`

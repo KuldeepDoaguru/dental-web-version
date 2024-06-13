@@ -89,7 +89,7 @@ const MarkAttendance = () => {
 
   const handleLogout = async () => {
     // Display a confirmation popup
-    setLoading1(true)
+   
     const isConfirmed = window.confirm(
       "Are you sure you want to mark attendance Logout?"
     );
@@ -101,6 +101,7 @@ const MarkAttendance = () => {
     const logoutTime = moment().format("HH:mm:ss"); // Format current time for logout
     const availability = "no";
     try {
+      setLoading1(true)
      
       const response = await axios.put(
         "https://dentalgurulab.doaguru.com/api/lab/markAttendanceLogout",
@@ -120,8 +121,10 @@ const MarkAttendance = () => {
           },
         }
       );
+      setLoading1(false);
 
       if (response.data.success) {
+        setLoading1(false);
         cogoToast.success("Logout time recorded successfully");
         // dispatch(toggleTableRefresh())
       }
@@ -153,6 +156,8 @@ const MarkAttendance = () => {
            
             </button>
           )}
+
+          
         </div>
         {/* <div className='col-3'>
           

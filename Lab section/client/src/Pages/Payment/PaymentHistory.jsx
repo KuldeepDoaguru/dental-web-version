@@ -215,6 +215,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import { FaSearch } from 'react-icons/fa';
 
 function PaymentHistory() {
   const [patientDetails, setPatientDetails] = useState([]);
@@ -248,11 +249,14 @@ function PaymentHistory() {
     fetchPatientDetails();
   }, [token]);
 
-  const filteredPatients = patientDetails.filter(patient => {
-    const fullName = `${patient.patient_name}`.toLowerCase();
-    const formattedDate = moment(patient.created_date).format('YYYY-MM-DD');
+  const filteredPatients = patientDetails?.filter((patient) => {
+    const fullName = patient.patient_name.toLowerCase().trim();
+    const lowerSearchQuery = searchQuery.toLowerCase().trim();
+    const formattedDate = moment(patient.created_date).format("YYYY-MM-DD");
+
     return (
-      fullName.includes(searchQuery.toLowerCase()) &&
+      (fullName.includes(lowerSearchQuery) ||
+        patient.patient_uhid.toLowerCase().trim().includes(lowerSearchQuery) ) &&
       (!dateFilter || formattedDate === dateFilter)
     );
   });
@@ -290,15 +294,16 @@ function PaymentHistory() {
               <Sider />
             </div>
             <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11" style={{ marginTop: '5rem' }}>
-              <IoArrowBackSharp className="fs-1 text-black d-print-none" onClick={goBack} />
-              <div className="mt-4 mx-3">
+              <IoArrowBackSharp className="fs-1 text-black d-print-none mx-3" onClick={goBack} />
+              <div className="mt-4 mx-4">
                 <h2 style={{ color: '#213555' }}>List of Payment History</h2>
                 <div className="mb-3">
                   <div className="row">
-                    <div className="col-lg-2">
+                    <div className="col-lg-4">
+                      <div className="d-flex">
                       <input
                         type="text"
-                        placeholder="Search by Patient Name"
+                        placeholder="Search by Patient Name or UHID"
                         value={searchQuery}
                         onChange={e => {
                           setSearchQuery(e.target.value);
@@ -306,6 +311,8 @@ function PaymentHistory() {
                         }}
                         className="form-control"
                       />
+                      
+                      </div>
                     </div>
                     <div className="col-lg-2">
                       <input
@@ -402,5 +409,10 @@ const Wrapper = styled.div`
   th {
     background-color: #213555;
     color: white;
+    white-space: nowrap;
   }
+  td{
+    white-space: nowrap;
+  }
+
 `;

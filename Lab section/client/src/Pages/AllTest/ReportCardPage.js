@@ -182,6 +182,7 @@ const Wrapper = styled.div`
   th {
     padding: 10px 0;
     font-size: 18px;
+    
   }
   .maintainceList {
     transform: translateX(20%);
@@ -253,6 +254,7 @@ const Wrapper = styled.div`
   .btn1 {
     background-color: #213555;
   }
+  
 `;
 
 

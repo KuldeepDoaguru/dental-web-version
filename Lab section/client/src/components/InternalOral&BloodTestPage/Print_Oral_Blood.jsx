@@ -214,7 +214,7 @@ const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-
                         </div>
 
                         <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-4 col-sm-6 mt-4">
-                          <div className="text-center mt-2 footer ">
+                          {/* <div className="text-center mt-2 footer ">
                             <img
                               className="ms-4"
                               src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1707404036/dental%20guru/dentalguru_v1g7k0.png"
@@ -223,7 +223,7 @@ const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-
                               height="85"
                             />
                             <h3 className="ms-2">Dental Guru</h3>
-                          </div>
+                          </div> */}
                         </div>
                      
                       </div>

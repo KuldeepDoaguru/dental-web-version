@@ -565,7 +565,7 @@ function TableData() {
         <h2 style={{ color: "#213555" }}>List of Tests </h2>
         <div className="mb-3">
           <div className="row">
-            <div className="col-lg-4">
+            <div className="col-lg-5">
               <div className="d-flex">
               <input
                 type="text"
@@ -575,9 +575,9 @@ function TableData() {
                   setSearchQuery(e.target.value);
                   setCurrentPage(1); // Reset to the first page on search
                   }}
-                  className="form-control mb-lg-0 mb-md-2"
+                  className="form-control mb-lg-0 mb-md-2 searchbar"
                   />
-                  <div className="mx-2">  <FaSearch/></div>
+               
                 </div>
            
             </div>
@@ -589,7 +589,7 @@ function TableData() {
                   setDateFilter(e.target.value);
                   setCurrentPage(1); // Reset to the first page on date filter change
                 }}
-                className="form-control"
+                className="form-control "
               />
 
             </div>
@@ -729,6 +729,14 @@ const Wrapper = styled.div`
   }
   td {
     white-space: nowrap;
+  }
+  .searchbar{
+    @media (min-width: 1024px) and (max-width: 1280px) {
+      width: 100%;
+    }
+    @media (min-width: 1281px) and (max-width: 2000px) {
+      width: 100%;
+    }
   }
 `;
 

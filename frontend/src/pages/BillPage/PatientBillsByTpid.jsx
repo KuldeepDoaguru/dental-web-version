@@ -626,10 +626,10 @@ const PatientBillsByTpid = () => {
             )}
 
             <button
-              className="btn btn-info no-print mx-3 mt-2 mb-2"
-              onClick={() => navigate("/doctor-dashboard")}
+              className="btn btn-primary text-light no-print mx-3 mt-2 mb-2"
+              onClick={() => window.history.go(-1)}
             >
-              Appointment Dashboard
+              Back
             </button>
           </div>
         </div>

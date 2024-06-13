@@ -53,7 +53,7 @@ const PatientsDue = () => {
     return (
       item.payment_status !== "paid" &&
       Number(item.total_amount) -
-        (Number(item.paid_amount) + Number(item.pay_by_sec_amt)) !==
+        (Number(item.paid_amount) + Number(item.pay_by_sec_amt)) >
         0
     );
   });

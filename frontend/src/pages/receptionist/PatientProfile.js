@@ -137,6 +137,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 
 const PatientProfile = () => {
@@ -225,6 +226,9 @@ console.log(branch)
         </div>
         
         <div className="col-lg-11 col-md-11 col-11" id='set'>
+        <button className="btn btn-success no-print" onClick={() => window.history.go(-1)}>
+  <IoMdArrowRoundBack />  Back
+            </button>
           <div className="container-fluid">
           <div className='text-center'>
       <h3>Patient Profile</h3>

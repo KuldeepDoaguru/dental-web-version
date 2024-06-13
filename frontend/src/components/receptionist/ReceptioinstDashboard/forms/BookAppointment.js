@@ -1082,6 +1082,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                     name="transaction_Id"
                     required
                     placeholder="Enter transaction Id"
+                    maxLength={50}
                   />
                 </div>
               </div>

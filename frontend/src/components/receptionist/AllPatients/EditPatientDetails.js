@@ -408,6 +408,7 @@ useEffect(()=>{
                             placeholder="Enter age in years"
                             pattern="[0-9]*"
                             title="Age should contain only numbers"
+                            maxLength={3}
                           />
           </div>
           <div class="mb-3">
@@ -426,6 +427,7 @@ useEffect(()=>{
                             placeholder="Enter weight in kg"
                             pattern="[0-9]*"
                             title="weight should contain only numbers"
+                            maxLength={3}
                           />
           </div>
           <div class="mb-3">

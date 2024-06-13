@@ -973,6 +973,7 @@ function AddPatient() {
                     placeholder="Enter age in years"
                     pattern="[0-9]*"
                     title="Age should contain only numbers"
+                    maxLength={3}
                   />
                 </div>
               </div>
@@ -992,6 +993,7 @@ function AddPatient() {
                     placeholder="Enter weight in kg"
                     pattern="[0-9]*"
                     title="weight should contain only numbers"
+                    maxLength={3}
                   />
                 </div>
               </div>
@@ -1249,6 +1251,7 @@ function AddPatient() {
                                 name="transaction_Id"
                                 required
                                 placeholder="Enter transaction Id"
+                                maxLength={50}
                               />
                             </div>
                           </div>

@@ -194,7 +194,8 @@ console.log(data)
     <label for="age" class="form-label">Age</label>
     <input type="text" class="form-control" value={data.age} name="age" id="age"  onChange={handleChange} aria-describedby="emailHelp" placeholder="Enter age in years"
                     pattern="[0-9]*"
-                    title="Age should contain only numbers"/>
+                    title="Age should contain only numbers"
+                    maxLength={3}/>
   
   </div>
 

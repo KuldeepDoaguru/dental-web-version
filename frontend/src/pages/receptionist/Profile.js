@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Sider from "../../components/receptionist/Sider";
 import Header from "../../components/receptionist/Header";
 import { useDispatch, useSelector } from 'react-redux';
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const Profile = () => {
 
@@ -34,7 +35,10 @@ const convertToAMPM = (time) => {
     <Sider />
   </div>
   <div className="col-lg-11 col-md-11 col-11" id="set">
-        <div className="container-fluid  shadow p-3 mt-5 bg-body rounded">
+  <button className="btn btn-success no-print" onClick={() => window.history.go(-1)}>
+  <IoMdArrowRoundBack />  Back
+            </button>
+        <div className="container-fluid  shadow p-3 mt-3 bg-body rounded">
             <div className="row">
                 <div className="col-lg-12 col-12">
                     <div className="text-start p-2">

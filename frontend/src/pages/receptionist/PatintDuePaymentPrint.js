@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import moment from "moment";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 function PatintDuePaymentPrint() {
     const navigate = useNavigate();
@@ -275,10 +276,12 @@ function PatintDuePaymentPrint() {
    <Sider/>
     </div>
     <div className="col-lg-11 mt-2" id='set'>
-    <IoArrowBackSharp
-                className="fs-1 mt-2 text-black back-button"
-                onClick={goBack}
-              />
+    
+    <button className="btn btn-success no-print" onClick={() => window.history.go(-1)}>
+  <IoMdArrowRoundBack />  Back
+            </button>
+     
+   
               <div className="row mt-5" id="printableContent">
                 <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
                   <div className="d-flex justify-content-center">
@@ -706,8 +709,12 @@ overflow-y: auto;
   margin-left: -2rem;
   
 }
-@media screen and (min-width: 1500px) and (max-width: 2000px) {
+@media screen and (min-width: 1500px) and (max-width: 1700px) {
   margin-left: -1.9rem;
+  
+}
+@media screen and (min-width: 1700px) and (max-width: 2200px) {
+  margin-left: -1rem;
   
 }
 }
@@ -766,6 +773,13 @@ td{
 }
 .back-button{
   cursor: pointer;
+  min-height: 40px;
+  min-width: 40px;
+}
+#back-button{
+  cursor: pointer;
+  min-height: 40px;
+  min-width: 40px;
 }
 
 `

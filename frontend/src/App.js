@@ -104,22 +104,7 @@ function App() {
             )
           }
         />
-        {/* <Route
-          path="/VoucherCreater"
-          element={
-            user.employee_name === null ? (
-              <UniversalLogin />
-            ) : (
-              <VoucherCreater />
-            )
-          }
-        /> */}
-        {/* <Route
-          path="/VoucherList"
-          element={
-            user.employee_name === null ? <UniversalLogin /> : <VoucherList />
-          }
-        /> */}
+
         <Route
           path="/TodayIncome"
           element={
@@ -672,6 +657,26 @@ export default App;
             ) : (
               <AccountantsSalary />
             )
+          }
+        /> */
+}
+{
+  /* <Route
+          path="/VoucherCreater"
+          element={
+            user.employee_name === null ? (
+              <UniversalLogin />
+            ) : (
+              <VoucherCreater />
+            )
+          }
+        /> */
+}
+{
+  /* <Route
+          path="/VoucherList"
+          element={
+            user.employee_name === null ? <UniversalLogin /> : <VoucherList />
           }
         /> */
 }

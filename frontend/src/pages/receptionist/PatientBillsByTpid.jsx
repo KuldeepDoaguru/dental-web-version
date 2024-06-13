@@ -170,10 +170,16 @@ const PatientBillsByTpid = () => {
     }
   };
 
-  const totalBillvalueWithoutGst = getTreatData?.reduce(
-    (total, item) => total + item.net_amount,
-    0
-  );
+  const totalBillvalueWithoutGst = getTreatData?.reduce((total, item) => {
+    if (billDetails[0]?.due_amount === billDetails[0]?.net_amount) {
+      return total + Number(item.paid_amount);
+    } else {
+      return (
+        Number(billDetails[0]?.paid_amount) +
+        Number(billDetails[0]?.pay_by_sec_amt)
+      );
+    }
+  }, 0);
 
   console.log(totalBillvalueWithoutGst);
 
@@ -202,6 +208,10 @@ const PatientBillsByTpid = () => {
   }, []);
 
   console.log(billDetails);
+
+  const netVal = getTreatData?.filter((item) => {
+    return item.sitting_number === 1;
+  });
   return (
     <>
       <Wrapper>
@@ -390,7 +400,9 @@ const PatientBillsByTpid = () => {
                   <th>Cost</th>
                   <th>Cst * Qty</th>
                   <th>Disc %</th>
-                  <th>Final Cost</th>
+                  <th>Net Amount</th>
+                  <th>Paid Amount</th>
+                  {/* <th>Final Cost</th> */}
                 </tr>
               </thead>
               {getTreatData?.map((item, index) => (
@@ -408,25 +420,64 @@ const PatientBillsByTpid = () => {
                       <td>{item.cost_amt}</td>
                       <td>{item.total_amt}</td>
                       <td>{item.disc_amt}</td>
-                      <td>{item.net_amount}</td>
+                      {/* <td>{item.net_amount}</td> */}
+                      <td>
+                        {item.total_amt -
+                          (item.total_amt * item.disc_amt) / 100}
+                      </td>
+                      <td>
+                        {" "}
+                        {item.sitting_payment_status === "Pending"
+                          ? 0
+                          : item.paid_amount}
+                      </td>
                     </tr>
                   </React.Fragment>
                 </tbody>
               ))}
+                 <tfoot>
+                <tr>
+                  <td
+                    colSpan="8"
+                    style={{ textAlign: "center" }}
+                    className="heading-title text-danger fw-bold"
+                  >
+                    Treatment Pending Payment:
+                  </td>
+                  <td className="heading-title text-danger fw-bold">
+                    {/* Calculate total cost here */}
+                    {/* Assuming getTreatData is an array of objects with 'net_amount' property */}
+                    {billDetails[0]?.total_amount - totalBillvalueWithoutGst ? billDetails[0]?.total_amount - totalBillvalueWithoutGst : 0}
+
+                  </td>
+                </tr>
+              </tfoot>
               <tfoot>
                 <tr>
                   <td
                     colSpan="7"
-                    style={{ textAlign: "center" }}
+                    style={{ textAlign: "right" }}
                     className="heading-title"
                   >
-                    Total Cost:
+                    Treatment Total:
                   </td>
                   <td className="heading-title">
-                    {/* Calculate total cost here */}
-                    {/* Assuming getTreatData is an array of objects with 'net_amount' property */}
-                    {getTreatData?.reduce(
-                      (total, item) => total + item.net_amount,
+                    {netVal.reduce(
+                      (total, item) =>
+                        total +
+                        (Number(item.total_amt) -
+                          (Number(item.total_amt) * Number(item.disc_amt)) /
+                            100),
+                      0
+                    )}
+                  </td>
+
+                  <td className="heading-title">
+                    {getTreatData.reduce(
+                      (total, item) =>
+                        item.sitting_payment_status === "Pending"
+                          ? total
+                          : total + Number(item.paid_amount),
                       0
                     )}
                   </td>

@@ -186,12 +186,15 @@ const PatientBillsByTpid = () => {
     }
   };
 
-  console.log(billDetails[0]?.due_amount === billDetails[0]?.net_amount);
+  console.log(billDetails[0]);
   const totalBillvalueWithoutGst = getTreatData?.reduce((total, item) => {
     if (billDetails[0]?.due_amount === billDetails[0]?.net_amount) {
-      return total + item.paid_amount;
+      return total + Number(item.paid_amount);
     } else {
-      return billDetails[0]?.paid_amount + billDetails[0]?.pay_by_sec_amt;
+      return (
+        Number(billDetails[0]?.paid_amount) +
+        Number(billDetails[0]?.pay_by_sec_amt)
+      );
     }
   }, 0);
 
@@ -213,6 +216,8 @@ const PatientBillsByTpid = () => {
   const netVal = getTreatData?.filter((item) => {
     return item.sitting_number === 1;
   });
+
+  console.log(billDetails[0]?.total_amount, totalBillvalueWithoutGst);
   return (
     <>
       <Wrapper>
@@ -440,7 +445,12 @@ const PatientBillsByTpid = () => {
                         {item.total_amt -
                           (item.total_amt * item.disc_amt) / 100}
                       </td>
-                      <td>{item.paid_amount}</td>
+                      <td>
+                        {" "}
+                        {item.sitting_payment_status === "Pending"
+                          ? 0
+                          : item.paid_amount}
+                      </td>
                     </tr>
                   </React.Fragment>
                 </tbody>
@@ -474,15 +484,19 @@ const PatientBillsByTpid = () => {
                     {netVal.reduce(
                       (total, item) =>
                         total +
-                        (item.total_amt -
-                          (item.total_amt * item.disc_amt) / 100),
+                        (Number(item.total_amt) -
+                          (Number(item.total_amt) * Number(item.disc_amt)) /
+                            100),
                       0
                     )}
                   </td>
 
                   <td className="heading-title">
                     {getTreatData.reduce(
-                      (total, item) => total + item.paid_amount,
+                      (total, item) =>
+                        item.sitting_payment_status === "Pending"
+                          ? total
+                          : total + Number(item.paid_amount),
                       0
                     )}
                   </td>
@@ -584,14 +598,17 @@ const PatientBillsByTpid = () => {
             >
               Print
             </button>
-            <button
-              className="btn btn-success ms-2 no-print mt-2 mb-2"
-              onClick={() => navigate(`/patient-due-payment-print/${tpid}`)}
-            >
-              {billDetails[0]?.payment_status === "paid"
-                ? "Visit to complete treatment"
-                : "Go to Payment page"}
-            </button>
+            {billDetails[0]?.payment_status === "paid" ? (
+              ""
+            ) : (
+              <button
+                className="btn btn-success ms-2 no-print mt-2 mb-2"
+                onClick={() => navigate(`/patient-due-payment-print/${tpid}`)}
+              >
+                Go to Payment page
+              </button>
+            )}
+
             <button
               className="btn btn-info no-print mx-3 mt-2 mb-2"
               onClick={() => navigate("/doctor-dashboard")}

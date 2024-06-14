@@ -131,9 +131,12 @@ const PatintDuePaymentPrint = () => {
 
   console.log(formattedDate);
 
+  console.log(billAmount[0]?.paid_amount, billAmount[0]?.pay_by_sec_amt);
+  console.log(billAmount[0]?.total_amount);
+
   const dueAmt =
     billAmount[0]?.total_amount -
-    (billAmount[0]?.paid_amount + billAmount[0]?.pay_by_sec_amt);
+    (billAmount[0]?.paid_amount + Number(billAmount[0]?.pay_by_sec_amt));
 
   let totalPaidAmount = 0;
   if (dueAmt >= 0) {
@@ -162,6 +165,8 @@ const PatintDuePaymentPrint = () => {
   }
 
   const finalAmt = dueAmt - totalPaidAmount;
+  console.log(dueAmt);
+  console.log(finalAmt);
 
   console.log("Total Paid Amount:", totalPaidAmount);
   console.log("Remaining Security Amount:", remainingSecurityAmount);
@@ -250,7 +255,7 @@ const PatintDuePaymentPrint = () => {
           transaction_Id: "",
           note: "",
         });
-        navigate(`/ViewPatientTotalBill/${tpid}`);
+        // navigate(`/ViewPatientTotalBill/${tpid}`);
       } else {
         cogoToast.success("Failed to paid bill");
       }
@@ -287,7 +292,8 @@ const PatintDuePaymentPrint = () => {
       );
       console.log(res);
       cogoToast.success("Treatment Completed");
-      navigate("/doctor-dashboard");
+      // navigate("/doctor-dashboard");
+      navigate(`/ViewPatientTotalBill/${tpid}`);
     } catch (error) {
       console.log(error.response.data.message);
       cogoToast.error(error.response.data.message);
@@ -400,6 +406,7 @@ const PatintDuePaymentPrint = () => {
                     <form className="d-flex justify-content-center mt-4">
                       <h2> Due Payment Description</h2>
                     </form>
+
                     <hr className="mt-5" />
                   </div>
                 </div>
@@ -514,6 +521,7 @@ const PatintDuePaymentPrint = () => {
                   </div>
                 </div>
               </div>
+
               <div>
                 <div className="container d-flex justify-content-center mb-3">
                   {" "}
@@ -525,7 +533,7 @@ const PatintDuePaymentPrint = () => {
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
                       >
-                        Add Payment Details
+                        Update Payment Details
                       </button>
                       {billAmount[0]?.payment_status === null ||
                       billAmount[0]?.payment_status === "pending" ? (
@@ -534,7 +542,7 @@ const PatintDuePaymentPrint = () => {
                           className="btn btn-warning ms-2"
                           disabled
                         >
-                          Mark Treatment Complete & Go to dashboard
+                          Mark Treatment Complete
                         </button>
                       ) : (
                         <button
@@ -542,7 +550,7 @@ const PatintDuePaymentPrint = () => {
                           className="btn btn-warning ms-2"
                           onClick={completeTreatment}
                         >
-                          Mark Treatment Complete & Go to dashboard
+                          Mark Treatment Complete
                         </button>
                       )}
                     </>
@@ -567,6 +575,9 @@ const PatintDuePaymentPrint = () => {
                 </div>
               </div>
             </div>
+            <span className="text-danger fw-bold text-center mb-2">
+              Note : Please Mark Treatment Completed After Payment
+            </span>
           </div>
           <div
             class="modal fade"

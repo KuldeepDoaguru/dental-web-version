@@ -405,13 +405,17 @@ const NewTreatment = () => {
                                   View
                                 </button>
                               ) : (
-                                <Link
-                                  to={`/print-oral-testing/${patient.testid}`}
-                                >
+                                // <Link
+                                //   to={`/print-oral-testing/${patient.testid}`}
+                                // >
+
+                                // </Link>
+
+                                <a href={patient?.file_path} target="_blank">
                                   <button className="btn btn-success m-1">
                                     View
                                   </button>
-                                </Link>
+                                </a>
                               )}
                             </div>
                           </td>

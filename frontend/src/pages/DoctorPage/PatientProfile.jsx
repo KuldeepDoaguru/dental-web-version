@@ -70,16 +70,19 @@ const PatientProfile = () => {
       <HeadBar />
 
       <div className="row mrgnzero">
-        <div className="col-lg-1 col-md-1 col-1" id="sider">
+        <div
+          className="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-11 col-1"
+          id="sider"
+        >
           <Sider />
         </div>
-        <div className="col-lg-11 col-md-11 col-11">
+        <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 col-11 p-0">
           <div className="container-fluid mt-3">
             <div className="d-flex justify-content-between">
               {/* <BranchSelector /> */}
             </div>
           </div>
-          <div className="row g-2">
+          <div className="row g-1 px-0">
             <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
               <h1 className="mt-3">{patientData?.patient_name}</h1>
 
@@ -132,7 +135,12 @@ const PatientProfile = () => {
                             <strong>Email :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-12">
-                            <span className="">{patientData?.emailid}</span>
+                            <span
+                              className=""
+                              style={{ overflowWrap: "anywhere" }}
+                            >
+                              {patientData?.emailid}
+                            </span>
                           </div>
                         </div>
                       </div>

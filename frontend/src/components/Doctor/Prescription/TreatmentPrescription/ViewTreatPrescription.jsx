@@ -361,7 +361,11 @@ const ViewTreatPrescription = () => {
                           <td>{item.total_amt}</td>
                           <td>{item.disc_amt}</td>
                           <td>{item.net_amount}</td>
-                          <td>{item.paid_amount}</td>
+                          <td>
+                            {item.sitting_payment_status === "Pending"
+                              ? 0
+                              : item.paid_amount}
+                          </td>
                           <td>{item.note}</td>
                         </tr>
                       </React.Fragment>

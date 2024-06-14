@@ -13,6 +13,7 @@ const TreatSuggest = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [secBut, setSecBut] = useState(false);
   const [loadingTestBt, setLoadingTestBt] = useState(false);
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
@@ -30,7 +31,8 @@ const TreatSuggest = () => {
   const [showEditPopup, setShowEditPopup] = useState(false);
   const [procedureTreat, setProcedureTreat] = useState([]);
   const [data, setData] = useState([]);
-  const [value, setValue] = useState(0); // State to track current form
+  const [value, setValue] = useState(0);
+  const [treatList, setTreatList] = useState([]);
   const [formData, setFormData] = useState({
     appoint_id: id,
     branch: branch,
@@ -296,6 +298,7 @@ const TreatSuggest = () => {
       console.log(res.data);
       updateAppointmentData();
       timelineForTreatSuggest();
+      setSecBut(true);
       setFormData({
         ...formData,
         disease: "",
@@ -454,6 +457,30 @@ const TreatSuggest = () => {
   };
 
   console.log(uniqueDiseases);
+
+  const getListTreatment = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatList/${branch}/${tpid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(data);
+      setTreatList(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getListTreatment();
+  }, [refreshTable]);
+
+  console.log(treatList.length);
 
   return (
     <>
@@ -828,13 +855,23 @@ const TreatSuggest = () => {
           </div>
 
           <div className="d-flex justify-content-center align-items-center">
-            <button
-              type="button"
-              className="btn btn-info text-light shadow fw-bold"
-              onClick={handleCollect}
-            >
-              Collect Security Money
-            </button>
+            {treatList.length > 0 ? (
+              <button
+                type="button"
+                className="btn btn-info text-light shadow fw-bold"
+                onClick={handleCollect}
+              >
+                Collect Security Money
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-info text-light shadow fw-bold"
+                disabled
+              >
+                Collect Security Money
+              </button>
+            )}
           </div>
         </div>
       </Wrapper>

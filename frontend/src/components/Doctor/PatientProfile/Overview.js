@@ -219,7 +219,7 @@ const Overview = () => {
           },
         }
       );
-      console.log(response.data); // Assuming your API returns the data directly
+      console.log(response.data);
       setBillData(response.data);
     } catch (error) {
       console.error("Error fetching dental patient Bill data:", error);
@@ -268,15 +268,21 @@ const Overview = () => {
     <>
       <Container>
         <div className="row">
-          <div className="col-lg-4" id="tableresponsive1">
+          <div
+            className="col-xxl-4 col-xl-4 col-lg-2 col-md-6 col-sm-12 col-12"
+            id="tableresponsive1"
+          >
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
                 <p className="text-center">Last Appointment</p>
-                <h5>{prevAppoint}</h5>
+                <strong>{prevAppoint}</strong>
               </div>
             </div>
           </div>
-          <div className="col-lg-4" id="tableresponsive1">
+          <div
+            className="col-xxl-4 col-xl-4 col-lg-2 col-md-6 col-sm-12 col-12"
+            id="tableresponsive1"
+          >
             {" "}
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
@@ -285,18 +291,24 @@ const Overview = () => {
               </div>
             </div>
           </div>
-          <div className="col-lg-4" id="tableresponsive1">
+          <div
+            className="col-xxl-4 col-xl-4 col-lg-2 col-md-6 col-sm-12 col-12"
+            id="tableresponsive1"
+          >
             {" "}
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
                 <p className="text-center">Payment Pending</p>
-                <h5 className="text-center">INR {total}</h5>
+                <strong className="text-center">INR {total}</strong>
               </div>
             </div>
           </div>
 
           <div className="row mt-5">
-            <div className="col-lg-8" id="tableresponsive">
+            <div
+              className="col-xxl-7 col-xl-7 col-lg-4 col-md-6 col-sm-12 col-12"
+              id="tableresponsive"
+            >
               <div className="table-responsive">
                 <h5>Appointments</h5>
                 <table className="table table-bordered table-striped">
@@ -461,7 +473,10 @@ const Overview = () => {
                 </table>
               </div>
             </div>
-            <div className="col-lg-4" id="tableresponsive">
+            <div
+              className="col-xxl-4 col-xl-4 col-lg-3 col-md-6 col-sm-12 col-12"
+              id="tableresponsive"
+            >
               <h5>Medical History Note</h5>
               <table className="table table-bordered table-striped">
                 <thead>

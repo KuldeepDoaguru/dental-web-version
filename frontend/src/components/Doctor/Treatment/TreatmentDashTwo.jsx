@@ -1,12 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import HeadBar from "../HeadBar";
 import SideBar from "../SideBar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TreatmentForm from "./TreatmentForm";
 
 const TreatmentDashTwo = () => {
   const { exid, appoint_id, tp_id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handlePopState = (event) => {
+      // Push a new state to ensure the user stays on the current page
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    // Listen for popstate events
+    window.addEventListener("popstate", handlePopState);
+
+    // Push the initial state
+    window.history.pushState(null, "", window.location.href);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   return (
     <>

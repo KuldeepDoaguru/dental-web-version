@@ -173,6 +173,7 @@ const TreatmentForm = () => {
   console.log(rawNetAmount);
   console.log(netAmount);
   console.log(formData);
+  console.log(lastTreatment?.pending_amount);
 
   const secrecAmount = () => {
     if (treatments[0]?.current_sitting > 1) {
@@ -194,12 +195,10 @@ const TreatmentForm = () => {
         }
       } else {
         if (showDirect) {
-          if (
-            securityAmt[0]?.remaining_amount <= lastTreatment?.pending_amount
-          ) {
+          if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
             return securityAmt[0]?.remaining_amount;
           } else {
-            return lastTreatment?.pending_amount;
+            return formData.paid_amount;
           }
         } else if ((formData.paid_amount !== "") & showDirect) {
           if (securityAmt[0]?.remaining_amount <= formData.paid_amount) {
@@ -680,7 +679,7 @@ const TreatmentForm = () => {
   }, [showBookingPopup]);
 
   console.log(showBookingPopup);
-  console.log(loading);
+  console.log(lastTreatment);
 
   return (
     <>
@@ -848,7 +847,7 @@ const TreatmentForm = () => {
                       {lastTreatment?.current_sitting > 1 ? (
                         <>
                           <input
-                            type="text"
+                            type="number"
                             name="disc_amt"
                             required
                             className="shadow-none p-1 bg-light rounded border-0 w-75"
@@ -862,7 +861,7 @@ const TreatmentForm = () => {
                         <>
                           {" "}
                           <input
-                            type="text"
+                            type="number"
                             name="disc_amt"
                             required
                             className="shadow-none p-1 bg-light rounded border-0 w-75"
@@ -887,9 +886,9 @@ const TreatmentForm = () => {
                           Net Amount
                         </label>
                         <p className="text-danger fw-bold">
-                          {lastTreatment?.net_amount > 0
-                            ? lastTreatment?.net_amount
-                            : netAmount}
+                          {lastTreatment?.paid_amount > 0
+                            ? lastTreatment?.pending_amount
+                            : rawNetAmount}
                         </p>
                       </div>
                     </>
@@ -922,7 +921,7 @@ const TreatmentForm = () => {
                       /> */}
                       {showDirect ? (
                         <input
-                          type="text"
+                          type="number"
                           required
                           name="paid_amount"
                           className="shadow-none p-1 bg-light rounded border-0 w-75"
@@ -934,7 +933,7 @@ const TreatmentForm = () => {
                       ) : (
                         <>
                           <input
-                            type="text"
+                            type="number"
                             required
                             name="paid_amount"
                             className="shadow-none p-1 bg-light rounded border-0 w-75"
@@ -974,7 +973,9 @@ const TreatmentForm = () => {
                       <label htmlFor="" class="form-label fw-bold">
                         Remaining Security Amount :{" "}
                         <strong style={{ color: "red" }}>
-                          {securityAmt[0]?.remaining_amount}
+                          {securityAmt[0]?.remaining_amount
+                            ? securityAmt[0]?.remaining_amount
+                            : 0}
                         </strong>
                       </label>
                       <div>
@@ -1067,7 +1068,14 @@ const TreatmentForm = () => {
                         onChange={handleChange}
                         value={formData.sitting_payment_status}
                       >
-                        {!showDirect ? (
+                        {formData.paid_amount === "" ||
+                        formData.paid_amount < 1 ? (
+                          <>
+                            {" "}
+                            <option value="">-select-</option>
+                            <option value="Pending">No</option>
+                          </>
+                        ) : !showDirect ? (
                           <>
                             {" "}
                             <option value="">-select-</option>

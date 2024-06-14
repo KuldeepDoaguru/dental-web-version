@@ -42,6 +42,32 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
     setFormData(updatedFormData);
   };
 
+  const timelineForSecuirty = async () => {
+    // alert("timeline");
+    try {
+      const response = await axios.post(
+        "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
+        {
+          type: "Secuirty Amount Update",
+          description: `${formData.amount} Secuirty Amount Updated`,
+          branch: currentUser ? branch : "",
+          patientId: selectedData.uhid,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // alert("timeline addedd");
+      console.log(response);
+    } catch (error) {
+      // alert("error timeline");
+      console.log(error);
+    }
+  };
+
   const updateSecAmountDetails = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -57,6 +83,7 @@ const SecurityAmtUpdateModal = ({ onClose, selectedData, grandTotal }) => {
         }
       );
       setLoading(false);
+      timelineForSecuirty();
       cogoToast.success("security amount detail updated");
       onClose();
       dispatch(toggleTableRefresh());

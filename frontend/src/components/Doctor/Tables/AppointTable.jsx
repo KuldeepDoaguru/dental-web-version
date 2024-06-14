@@ -175,7 +175,7 @@ const AppointTable = () => {
     appointment_status,
     tpid
   ) => {
-    // console.log(appointment_status, tpid, uhid);
+    // alert(appointId, uhid, appointment_status, treatment_provided, tpid);
     try {
       let requestBody = {
         action,
@@ -196,11 +196,18 @@ const AppointTable = () => {
       if (action === "in treatment") {
         timelineForStartTreat(uhid);
 
-        const filterForPendingTp = treatData?.filter((item) => {
-          return item.tp_id === tpid && item.package_status === "ongoing";
+        // const filterForPendingTp = treatData?.filter((item) => {
+        //   return item.tp_id === tpid && item.package_status === "ongoing";
+        // });
+
+        const filterForPendingTp = appointments?.filter((item) => {
+          return (
+            item.appoint_id === appointId && item.treatment_provided !== "OPD"
+          );
         });
+
+        console.log(filterForPendingTp);
         // alert(filterForPendingTp.length);
-        console.log(filterForPendingTp.length);
 
         const filterForGoingTp = treatData?.filter((item) => {
           return item.tp_id === tpid && item.package_status === "started";
@@ -398,7 +405,8 @@ const AppointTable = () => {
                                               item.appoint_id,
                                               item.patient_uhid,
                                               item.appointment_status,
-                                              item.tp_id
+                                              item.tp_id,
+                                              item.treatment_provided
                                             )
                                           }
                                         >
@@ -524,7 +532,11 @@ const AppointTable = () => {
                                 <td>{item.disease}</td>
                                 <td>{item.patient_type}</td>
                                 <td>{item.notes}</td>
-                                <td>{item.current_sitting + 1}</td>
+                                <td>
+                                  {item.treatment_provided === "OPD"
+                                    ? 0
+                                    : item.current_sitting + 1}
+                                </td>
                                 <td>{item.appointment_status}</td>
                                 <td>
                                   <div className="dropdown">
@@ -748,7 +760,7 @@ const Wrapper = styled.div`
   }
 
   .searchint {
-    width: 100%;
+    width: 50%;
     @media screen and (min-width: 851px) and (max-width: 1024px) {
       width: 50% !important;
     }

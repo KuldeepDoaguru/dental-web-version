@@ -95,6 +95,7 @@ const MarkAttendance = () => {
       return;
     }
     const logoutTime = moment().format("HH:mm:ss"); // Format current time for logout
+    const availability = "no";
     try {
       const response = await axios.put(
         "https://dentalgurudoctor.doaguru.com/api/doctor/markAttendanceLogout",
@@ -105,6 +106,7 @@ const MarkAttendance = () => {
           employee_designation,
           date,
           logoutTime,
+          availability,
         },
         {
           headers: {
@@ -113,7 +115,7 @@ const MarkAttendance = () => {
           },
         }
       );
-
+      alert("logout");
       if (response.data.success) {
         cogoToast.success("Logout time recorded successfully");
         dispatch(toggleTableRefresh());

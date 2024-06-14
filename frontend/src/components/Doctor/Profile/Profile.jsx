@@ -23,68 +23,53 @@ const Profile = () => {
           </div>
           {currentUser && (
             <div className="row">
-              <div className="col-lg-4">
+              <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                 <img
                   src={currentUser.employee_picture}
                   alt="doctor-profile"
                   className="img-fluid rounded"
                 />
               </div>
-              <div className="col-lg-8">
-                <div className="row mb-3">
-                  <div className="col-lg-4">
+              <div className="col-xxl-8 col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+                <div className="row g-3">
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
                     <label className="text-info">UserID</label>
                     <div className="shadow-none p-1 bg-light rounded">
                       <p className="m-0">{currentUser.employee_ID}</p>
                     </div>
                   </div>
-                  <div className="col-lg-4">
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
                     <label className="text-info">User Name</label>
                     <div className="shadow-none p-1 bg-light rounded">
                       <p className="m-0">Dr. {currentUser.employee_name}</p>
                     </div>
                   </div>
-                  <div className="col-lg-4">
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
                     <label className="text-info">Email</label>
                     <div className="shadow-none p-1 bg-light rounded">
                       <p className="m-0">{currentUser.email}</p>
                     </div>
                   </div>
-                </div>
-                <div className="row mb-3">
-                  <div className="col-lg-4">
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
                     <label className="text-info">Mobile No.</label>
                     <div className="shadow-none p-1 bg-light rounded">
                       <p className="m-0">{currentUser.employee_mobile}</p>
                     </div>
                   </div>
-                  {/* <div className="col-lg-4">
-                            <label className="text-info">Sex</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">{currentUser.gender}</p>
-                            </div>
-                        </div> */}
-                  {/* <div className="col-lg-4">
-                        <label className="text-info">Reg.No</label>
-                            <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">123</p>
-                            </div>
-                        </div> */}
-                  <div className="col-lg-4">
+
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
                     <label className="text-info">Designation</label>
                     <div className="shadow-none p-1 bg-light rounded">
                       <p className="m-0">{currentUser.employee_designation}</p>
                     </div>
                   </div>
-                  <div className="col-lg-4">
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
                     <label className="text-info">Address</label>
                     <div className="shadow-none p-1 bg-light rounded">
                       <p className="m-0">{currentUser.address}</p>
                     </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-lg-4">
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
                     <label className="text-info">Working Days</label>
                     <div className="shadow-none p-1 bg-light rounded">
                       <p className="m-0">
@@ -95,7 +80,7 @@ const Profile = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="col-lg-4">
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
                     <label className="text-info">Morning Working Shift</label>
                     <div className="shadow-none p-1 bg-light rounded">
                       <p className="m-0">
@@ -112,7 +97,7 @@ const Profile = () => {
                     </div>
                   </div>
 
-                  <div className="col-lg-4">
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
                     <label className="text-info">Evening Working Shift</label>
                     <div className="shadow-none p-1 bg-light rounded">
                       <p className="m-0">

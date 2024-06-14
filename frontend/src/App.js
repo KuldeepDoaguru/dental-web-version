@@ -46,7 +46,7 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const logoutHandleByToken = () => {
-    alert("Token Expired! You have been logged out");
+    // alert("Token Expired! You have been logged out");
     dispatch(clearUser());
     navigate("/");
   };

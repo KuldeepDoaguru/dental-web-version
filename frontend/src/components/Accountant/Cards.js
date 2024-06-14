@@ -8,6 +8,7 @@ import { TbReportSearch } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { MdPeople } from "react-icons/md";
 
 const Cards = () => {
   const dispatch = useDispatch();
@@ -232,6 +233,26 @@ const Cards = () => {
     <>
       <Container>
         <div className="row d-flex justify-content-around">
+          <div
+            className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0"
+            onClick={() => navigate("/all-patient")}
+            style={{ cursor: "pointer" }}
+          >
+            <div className="card">
+              <div className="card-body d-flex justify-content-center flex-column mb-3">
+                <div className="text-light fs-1">
+                  <MdPeople />
+                </div>
+                <div className="cardtext">
+                  <h5 className="card-title text-light">All Patient Details</h5>
+                  <p className="card-text text-light fw-semibold">
+                    {/* {totalVoucherValue} */}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-xxl-2 col-xl-2 col-lg-2 col-sm-8 col-8 col-md-2 my-3 p-0">
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column mb-3">

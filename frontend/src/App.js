@@ -71,6 +71,8 @@ import RadiologyTest from "./components/LabReports/RadiologyTest";
 import PendingTest from "./components/LabReports/PendingTest";
 import Compleated from "./components/LabReports/Compleated";
 import ErrorPage from "./pages/Error-Page/ErrorPage";
+import AllPatient from "./pages/PatientProfile/AllPatient";
+import PatientProfile from "./pages/PatientProfile/PatientProfile";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -590,6 +592,28 @@ function App() {
             user.employee_name === null ? <UniversalLogin /> : <BranchInfo />
           }
         />
+
+        {/* Patient Profile Routes Start Here */}
+
+        <Route
+          path="/all-patient"
+          element={
+            user.employee_name === null ? <UniversalLogin /> : <AllPatient />
+          }
+        />
+
+        <Route
+          path="/patient_profile/:pid"
+          element={
+            user.employee_name === null ? (
+              <UniversalLogin />
+            ) : (
+              <PatientProfile />
+            )
+          }
+        />
+
+        {/* Patient Profile Routes End Here */}
 
         <Route path="*" element={<ErrorPage />} />
         {/*Acountend  routes end  */}

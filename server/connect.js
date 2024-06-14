@@ -4,9 +4,9 @@ dotenv.config();
 
 const db = mysql.createConnection({
   host: "localhost",
-  user: "dilkeris_guru_dental",
-  password: "guru_dental",
-  database: "dilkeris_guru_dental",
+  user: "root",
+  password: "",
+  database: "dental_web_version",
 });
 
 // Connect to the databases

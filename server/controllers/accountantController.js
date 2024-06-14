@@ -1,4 +1,4 @@
- const express = require("express");
+const express = require("express");
 const dotenv = require("dotenv");
 const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
@@ -11,8 +11,8 @@ dotenv.config();
 
 const PORT = process.env.PORT;
 
-const getValue = (req, res) =>{
-    res.send("<h1>hello world</h1>")
+const getValue = (req, res) => {
+  res.send("<h1>hello world</h1>");
 };
 
 const accountantLoginUser = (req, res) => {
@@ -81,9 +81,13 @@ const accountantLoginUser = (req, res) => {
           });
         }
 
-        const token = JWT.sign({ id: user.employee_ID }, process.env.JWT_SECRET, {
-          expiresIn: "7d",
-        });
+        const token = JWT.sign(
+          { id: user.employee_ID },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "7d",
+          }
+        );
 
         res.status(200).json({
           success: "true",
@@ -108,93 +112,6 @@ const accountantLoginUser = (req, res) => {
       .json({ success: "false", message: "Login failed", error: error });
   }
 };
-
-// const sendOtp = (req, res) => {
-//   const { email } = req.body;
-
-//   // random otp
-//   function generateOTP(length) {
-//     const chars = "0123456789";
-//     let otp = "";
-
-//     for (let i = 0; i < length; i++) {
-//       const randomIndex = Math.floor(Math.random() * chars.length);
-//       otp += chars[randomIndex];
-//     }
-
-//     return otp;
-//   }
-
-//   const OTP = generateOTP(6);
-
-//   try {
-//      const transporter = nodemailer.createTransport({
-//     host: "doaguru.com", 
-//     port: 465,  
-//     secure: true, 
-//     auth: {
-//       user: "info@doaguru.com",
-//       pass: "dgwebmail@132",
-//     },
-//   });
-
-//     const mailOptions = {
-//       from: "info@doaguru.com",
-//       to: email,
-//       subject: "OTP for password reset",
-//       text: `Your OTP to reset password is: ${OTP}`,
-//     };
-
-//     transporter.sendMail(mailOptions, (error, info) => {
-//       if (error) {
-//         console.error(error);
-//         return res
-//           .status(500)
-//           .json("An error occurred while sending the email.");
-//       } else {
-//         console.log("OTP sent:", info.response);
-
-//         const selectQuery = "SELECT * FROM otpcollections WHERE email = ?";
-//         db.query(selectQuery, email, (err, result) => {
-//           if (err) {
-//             res.status(400).json({ success: false, message: err.message });
-//           }
-//           if (result && result.length > 0) {
-//             const updateQuery =
-//               "UPDATE otpcollections SET code = ? WHERE email = ?";
-//             db.query(updateQuery, [OTP, email], (upErr, upResult) => {
-//               if (upErr) {
-//                 res
-//                   .status(400)
-//                   .json({ success: false, message: upErr.message });
-//               }
-//               res.status(200).send(upResult);
-//             });
-//           } else {
-//             // Assuming you have a 'db' object for database operations
-//             db.query(
-//               "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)",
-//               [email, OTP],
-//               (err, result) => {
-//                 if (err) {
-//                   console.error(err);
-//                   return res
-//                     .status(500)
-//                     .send({ message: "Failed to store OTP" });
-//                 }
-
-//                 res.status(200).json({ message: "OTP sent successfully" });
-//               }
-//             );
-//           }
-//         });
-//       }
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json("An error occurred.");
-//   }
-// };
 
 const sendOtp = (req, res) => {
   const { email } = req.body;
@@ -230,21 +147,21 @@ const sendOtp = (req, res) => {
 
         try {
           const transporter = nodemailer.createTransport({
-    host: "doaguru.com", 
-    port: 465,  
-    secure: true, 
-    auth: {
-      user: "info@doaguru.com",
-      pass: "dgwebmail@132",
-    },
-  });
+            host: "doaguru.com",
+            port: 465,
+            secure: true,
+            auth: {
+              user: "info@doaguru.com",
+              pass: "dgwebmail@132",
+            },
+          });
 
-    const mailOptions = {
-      from: "info@doaguru.com",
-      to: email,
-      subject: "OTP for Password Reset",
-      text: `Your OTP for Password Reset is: ${OTP}`,
-    };
+          const mailOptions = {
+            from: "info@doaguru.com",
+            to: email,
+            subject: "OTP for Password Reset",
+            text: `Your OTP for Password Reset is: ${OTP}`,
+          };
 
           transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -407,20 +324,9 @@ const getTreatmentDetailsByBranch = (req, res) => {
 
 const voucherCreate = (req, res) => {
   try {
-    const {
-      branch_name,
-      for_name,
-      for_use,
-      voucher_amount,
-      created_by,
-    } = req.body;
-    if (
-      (!branch_name,
-      !for_name,
-      !for_use,
-      !voucher_amount,
-      !created_by)
-    ) {
+    const { branch_name, for_name, for_use, voucher_amount, created_by } =
+      req.body;
+    if ((!branch_name, !for_name, !for_use, !voucher_amount, !created_by)) {
       return res.status(404).json({
         success: false,
         message: "All fields are required",
@@ -430,13 +336,7 @@ const voucherCreate = (req, res) => {
       "INSERT INTO expense_voucher (branch_name, for_name, for_use, voucher_amount, created_by) VALUES (?,?,?,?,?)";
     db.query(
       insertQuery,
-      [
-        branch_name,
-        for_name,
-        for_use,
-        voucher_amount,
-        created_by,
-      ],
+      [branch_name, for_name, for_use, voucher_amount, created_by],
       (err, result) => {
         if (err) {
           res.status(400).json({ success: false, message: err.message });
@@ -458,7 +358,8 @@ const voucherCreate = (req, res) => {
 const getVoucherListByBranch = (req, res) => {
   try {
     const branch = req.params.branch;
-    const selectQuery = "SELECT * FROM expense_voucher WHERE branch_name = ? ORDER BY voucher_id DESC";
+    const selectQuery =
+      "SELECT * FROM expense_voucher WHERE branch_name = ? ORDER BY voucher_id DESC";
     db.query(selectQuery, branch, (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });
@@ -608,23 +509,6 @@ const addSecurityAmount = (req, res) => {
   }
 };
 
-// const getAppointmentDetailsViaID = (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     const selectQuery =
-//       "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid JOIN patient_bills ON appointments.appoint_id = patient_bills.appoint_id WHERE appointments.appoint_id = ?";
-//     db.query(selectQuery, id, (err, result) => {
-//       if (err) {
-//         res.status(400).json({ success: false, message: err.message });
-//       }
-//       res.status(200).send(result);
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
-
 const getAppointmentDetailsViaIDForOPD = (req, res) => {
   try {
     const id = req.params.id;
@@ -645,7 +529,8 @@ const getAppointmentDetailsViaIDForOPD = (req, res) => {
 const getSecurityAmountDataByBranch = (req, res) => {
   try {
     const branch = req.params.branch;
-    const selectQuery = "SELECT * FROM security_amount WHERE branch_name = ? ORDER BY sa_id DESC";
+    const selectQuery =
+      "SELECT * FROM security_amount WHERE branch_name = ? ORDER BY sa_id DESC";
     db.query(selectQuery, branch, (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });
@@ -802,7 +687,6 @@ const updateRemainingSecurityAmount = (req, res) => {
     const { remaining_amount } = req.body;
     console.log(remaining_amount);
 
-
     const selectQuery =
       "SELECT * FROM security_amount WHERE tp_id = ? AND  uhid = ?";
     db.query(selectQuery, [tpid, uhid], (err, result) => {
@@ -841,8 +725,14 @@ const updateRemainingSecurityAmount = (req, res) => {
 const updatePatientSecurityAmt = (req, res) => {
   try {
     const sid = req.params.sid;
-    const { payment_status, payment_Mode, transaction_Id, notes, received_by, remaining_amount } =
-      req.body;
+    const {
+      payment_status,
+      payment_Mode,
+      transaction_Id,
+      notes,
+      received_by,
+      remaining_amount,
+    } = req.body;
 
     const payment_date = new Date();
 
@@ -906,23 +796,6 @@ const getBranchDetailsByBranch = (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
-
-// const getTreatmentAmountByBranch = (req, res) => {
-//   try {
-//     const branch = req.params.branch;
-//     const selectQuery =
-//       "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid JOIN patient_bills ON appointments.appoint_id = patient_bills.appoint_id WHERE appointments.branch_name = ?";
-//     db.query(selectQuery, branch, (err, result) => {
-//       if (err) {
-//         res.status(400).json({ success: false, message: err.message });
-//       }
-//       res.status(200).send(result);
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ success: false, message: error.message });
-//   }
-// };
 
 const getPatientBillsAndSecurityAmountByBranch = (req, res) => {
   try {
@@ -1040,7 +913,8 @@ const makeBillPayment = (req, res) => {
 const paidBillLIst = (req, res) => {
   try {
     const branch = req.params.branch;
-    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ? ORDER BY bill_id DESC";
+    const selectQuery =
+      "SELECT * FROM patient_bills WHERE branch_name = ? ORDER BY bill_id DESC";
     db.query(selectQuery, branch, (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });
@@ -1186,10 +1060,9 @@ const MarkAttendanceLogin = (req, res) => {
       employee_designation,
       date,
       loginTime,
-      availability
+      availability,
     } = req.body;
 
-    
     const checkQuery = `
       SELECT * FROM employee_attendance 
       WHERE employee_ID = ? AND date = ?`;
@@ -1213,7 +1086,6 @@ const MarkAttendanceLogin = (req, res) => {
         });
       }
 
-     
       const addQuery = `
         INSERT INTO employee_attendance(
           employee_ID,
@@ -1233,7 +1105,7 @@ const MarkAttendanceLogin = (req, res) => {
         employee_designation,
         date,
         loginTime,
-        availability
+        availability,
       ];
 
       db.query(addQuery, addParams, (err, result) => {
@@ -1271,10 +1143,8 @@ const MarkAttendanceLogout = (req, res) => {
       employee_designation,
       date,
       logoutTime,
-      availability
+      availability,
     } = req.body;
-
-    
 
     const checkQuery = `
       SELECT * FROM employee_attendance 
@@ -1305,7 +1175,7 @@ const MarkAttendanceLogout = (req, res) => {
         SET allday_shift_logout_time = ?, availability = ?
         WHERE employee_ID = ? AND date = ?`;
 
-      const updateParams = [logoutTime,availability, employee_ID, date];
+      const updateParams = [logoutTime, availability, employee_ID, date];
 
       db.query(updateQuery, updateParams, (err, result) => {
         if (err) {
@@ -1540,7 +1410,6 @@ const getAppointmentById = (req, res) => {
     });
   }
 };
-
 
 const getTreatmentTotal = (req, res) => {
   try {
@@ -1879,12 +1748,10 @@ const getBranchHoliday = (req, res) => {
         console.error("Error fetching Branch Holidays from MySql:", err);
         res.status(500).json({ error: "Error fetching Branch Holidays" });
       } else {
-        res
-          .status(200)
-          .json({
-            data: results,
-            message: "Branch Holidays fetched successfully",
-          });
+        res.status(200).json({
+          data: results,
+          message: "Branch Holidays fetched successfully",
+        });
       }
     });
   } catch (error) {
@@ -1895,7 +1762,7 @@ const getBranchHoliday = (req, res) => {
       error: error.message,
     });
   }
-}
+};
 
 const getPatientLabTest = (req, res) => {
   try {
@@ -1914,14 +1781,14 @@ const getPatientLabTest = (req, res) => {
 };
 
 const getPatientLabTestByPatientId = (req, res) => {
-    const pid = req.params.pid;
+  const pid = req.params.pid;
   try {
-  const selectQuery =
-  "SELECT * FROM patient_lab_details LEFT JOIN patient_details ON patient_details.uhid = patient_lab_details.patient_uhid WHERE patient_lab_details.patient_uhid = ?";
+    const selectQuery =
+      "SELECT * FROM patient_lab_details LEFT JOIN patient_details ON patient_details.uhid = patient_lab_details.patient_uhid WHERE patient_lab_details.patient_uhid = ?";
     db.query(selectQuery, pid, (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });
-        return; 
+        return;
       }
       res.status(200).send(result);
     });
@@ -1931,11 +1798,11 @@ const getPatientLabTestByPatientId = (req, res) => {
 };
 
 const getPatientLabTestCompleted = (req, res) => {
-  try { 
-   const selectQuery = `
+  try {
+    const selectQuery = `
       SELECT * FROM patient_lab_test_details JOIN patient_lab_details ON patient_lab_details.testid = patient_lab_test_details.testid LEFT JOIN patient_details ON patient_details.uhid = patient_lab_details.patient_uhid
     `;
-      
+
     db.query(selectQuery, (err, result) => {
       if (err) {
         res.status(400).json({ success: false, message: err.message });
@@ -1948,8 +1815,273 @@ const getPatientLabTestCompleted = (req, res) => {
   }
 };
 
+// Patient Profile API's
+
+const getPatients = (req, res) => {
+  const branch = req.params.branch;
+  try {
+    const sql =
+      "SELECT * FROM patient_details WHERE branch_name = ? ORDER BY created_at DESC";
+
+    db.query(sql, [branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching Patients from MySql:", err);
+        res.status(500).json({ error: "Error fetching Patients" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Patients fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Patients from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Patients",
+      error: error.message,
+    });
+  }
+};
+
+const getPatientById = (req, res) => {
+  const patientId = req.params.patientId;
+  const branch = req.params.branch;
+  try {
+    const sql =
+      "SELECT * FROM patient_details WHERE uhid = ? AND branch_name = ?";
+
+    db.query(sql, [patientId, branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching patient from MySql:", err);
+        res.status(500).json({ error: "Error fetching patient" });
+      } else {
+        if (results.length === 0) {
+          res.status(404).json({ message: "Patient not found" });
+        } else {
+          res.status(200).json({
+            success: true,
+            data: results[0],
+            message: "Patient fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching patient from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetching patient",
+      error: error.message,
+    });
+  }
+};
+
+const getTreatmentViaUhid = (req, res) => {
+  const branch = req.params.branch;
+  const uhid = req.params.uhid;
+  try {
+    const sql =
+      "SELECT * FROM treat_suggest WHERE branch_name = ? AND p_uhid = ? ORDER BY ts_id DESC";
+
+    db.query(sql, [branch, uhid], (err, results) => {
+      if (err) {
+        console.error("Error fetching Treatment from MySql:", err);
+        res.status(500).json({ error: "Error fetching Treatment" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Treatment fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Treatment from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Treatment",
+      error: error.message,
+    });
+  }
+};
+
+const getPrescriptionViaUhid = (req, res) => {
+  const branch = req.params.branch;
+  const uhid = req.params.uhid;
+  try {
+    const sql =
+      "SELECT * FROM dental_prescription WHERE branch_name = ? AND patient_uhid = ? ORDER BY id DESC";
+
+    db.query(sql, [branch, uhid], (err, results) => {
+      if (err) {
+        console.error("Error fetching Prescription from MySql:", err);
+        res.status(500).json({ error: "Error fetching Prescription" });
+      } else {
+        res.status(200).json({
+          data: results,
+          message: "Prescription fetched successfully",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Prescription from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Prescription",
+      error: error.message,
+    });
+  }
+};
+
+const getBillViaUhid = (req, res) => {
+  const branch = req.params.branch;
+  const uhid = req.params.uhid;
+  try {
+    const sql =
+      "SELECT * FROM patient_bills WHERE branch_name = ? AND uhid = ? ORDER BY bill_id DESC";
+
+    db.query(sql, [branch, uhid], (err, results) => {
+      if (err) {
+        console.error("Error fetching Bill from MySql:", err);
+        res.status(500).json({ error: "Error fetching Bill" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Bill fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Bill from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Bill",
+      error: error.message,
+    });
+  }
+};
+
+const getExaminationViaUhid = (req, res) => {
+  const branch = req.params.branch;
+  const uhid = req.params.uhid;
+  try {
+    const sql =
+      "SELECT * FROM dental_examination WHERE branch_name = ? AND patient_uhid = ? ORDER BY exm_id DESC";
+
+    db.query(sql, [branch, uhid], (err, results) => {
+      if (err) {
+        console.error("Error fetching Examination from MySql:", err);
+        res.status(500).json({ error: "Error fetching Examination" });
+      } else {
+        res
+          .status(200)
+          .json({ data: results, message: "Examination fetched successfully" });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching Examination from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched Examination",
+      error: error.message,
+    });
+  }
+};
+
+const getAllAppointmentByPatientId = (req, res) => {
+  try {
+    const patientId = req.params.patientId;
+    const branch = req.params.branch;
+    const sql = `
+      SELECT 
+        a.branch_name,
+        a.appoint_id,
+        a.assigned_doctor_name,
+        a.assigned_doctor_id,
+        a.appointment_status,
+        a.appointment_dateTime,
+        a.treatment_provided,
+        a.opd_amount,
+        a.payment_Mode,
+        a.transaction_Id,
+        a.payment_Status,
+        a.appointment_created_by,
+        a.appointment_created_by_emp_id,
+        a.notes,
+        a.created_at,
+        p.uhid,
+        p.patient_name,
+        p.mobileno,
+        p.dob,
+        p.age,
+        p.weight,
+        p.bloodgroup,
+        p.disease,
+        p.allergy,
+        p.patient_type,
+        p.address,
+        p.gender
+      FROM 
+        appointments AS a
+      JOIN 
+        patient_details AS p ON a.patient_uhid = p.uhid 
+      WHERE
+      a.patient_uhid = ? AND
+      a.branch_name = ?
+    `;
+
+    db.query(sql, [patientId, branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching appointment from MySql:", err);
+        res.status(500).json({ error: "Error fetching appointment" });
+      } else {
+        if (results.length === 0) {
+          res.status(404).json({ message: "Appointment not found" });
+        } else {
+          res.status(200).json({
+            data: results,
+            message: "Appointment fetched successfully",
+          });
+        }
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching appointment from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetching appointment",
+      error: error.message,
+    });
+  }
+};
+
+const getPatientTimeline = (req, res) => {
+  const patientId = req.params.patientId;
+  const branch = req.params.branch;
+  try {
+    const sql =
+      "SELECT * FROM patient_timeline WHERE uhid = ? AND branch_name = ? ORDER BY event_id DESC";
+
+    db.query(sql, [patientId, branch], (err, results) => {
+      if (err) {
+        console.error("Error fetching patient_timeline from MySql:", err);
+        res.status(500).json({ error: "Error fetching patient_timeline" });
+      } else {
+        res.status(200).json({
+          data: results,
+          message: "patient_timeline fetched successfully",
+        });
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching patient_timeline from MySql:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error in fetched patient_timeline",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
-    getValue,
+  getValue,
   accountantLoginUser,
   sendOtp,
   verifyOtp,
@@ -1963,7 +2095,7 @@ module.exports = {
   getPurInventoryByBranch,
   appointmentData,
   addSecurityAmount,
-//   getAppointmentDetailsViaID,
+  //   getAppointmentDetailsViaID,
   getSecurityAmountDataByBranch,
   updateSecurityAmount,
   getSecurityAmountDataBySID,
@@ -1971,7 +2103,7 @@ module.exports = {
   updatePatientSecurityAmt,
   getBranchDetailsByBranch,
   getAppointmentDetailsViaIDForOPD,
-//   getTreatmentAmountByBranch,
+  //   getTreatmentAmountByBranch,
   getPatientBillsAndSecurityAmountByBranch,
   makeBillPayment,
   paidBillLIst,
@@ -2003,6 +2135,136 @@ module.exports = {
   getBranchDetail,
   getBranchHoliday,
   getPatientLabTest,
-  getPatientLabTestByPatientId, getPatientLabTestCompleted, 
-//   getBranch
+  getPatientLabTestByPatientId,
+  getPatientLabTestCompleted,
+  //   getBranch
+  getPatients,
+  getPatientById,
+  getTreatmentViaUhid,
+  getPrescriptionViaUhid,
+  getBillViaUhid,
+  getExaminationViaUhid,
+  getAllAppointmentByPatientId,
+  getPatientTimeline,
 };
+
+// const sendOtp = (req, res) => {
+//   const { email } = req.body;
+
+//   // random otp
+//   function generateOTP(length) {
+//     const chars = "0123456789";
+//     let otp = "";
+
+//     for (let i = 0; i < length; i++) {
+//       const randomIndex = Math.floor(Math.random() * chars.length);
+//       otp += chars[randomIndex];
+//     }
+
+//     return otp;
+//   }
+
+//   const OTP = generateOTP(6);
+
+//   try {
+//      const transporter = nodemailer.createTransport({
+//     host: "doaguru.com",
+//     port: 465,
+//     secure: true,
+//     auth: {
+//       user: "info@doaguru.com",
+//       pass: "dgwebmail@132",
+//     },
+//   });
+
+//     const mailOptions = {
+//       from: "info@doaguru.com",
+//       to: email,
+//       subject: "OTP for password reset",
+//       text: `Your OTP to reset password is: ${OTP}`,
+//     };
+
+//     transporter.sendMail(mailOptions, (error, info) => {
+//       if (error) {
+//         console.error(error);
+//         return res
+//           .status(500)
+//           .json("An error occurred while sending the email.");
+//       } else {
+//         console.log("OTP sent:", info.response);
+
+//         const selectQuery = "SELECT * FROM otpcollections WHERE email = ?";
+//         db.query(selectQuery, email, (err, result) => {
+//           if (err) {
+//             res.status(400).json({ success: false, message: err.message });
+//           }
+//           if (result && result.length > 0) {
+//             const updateQuery =
+//               "UPDATE otpcollections SET code = ? WHERE email = ?";
+//             db.query(updateQuery, [OTP, email], (upErr, upResult) => {
+//               if (upErr) {
+//                 res
+//                   .status(400)
+//                   .json({ success: false, message: upErr.message });
+//               }
+//               res.status(200).send(upResult);
+//             });
+//           } else {
+//             // Assuming you have a 'db' object for database operations
+//             db.query(
+//               "INSERT INTO otpcollections (email, code) VALUES (?, ?) ON DUPLICATE KEY UPDATE code = VALUES(code)",
+//               [email, OTP],
+//               (err, result) => {
+//                 if (err) {
+//                   console.error(err);
+//                   return res
+//                     .status(500)
+//                     .send({ message: "Failed to store OTP" });
+//                 }
+
+//                 res.status(200).json({ message: "OTP sent successfully" });
+//               }
+//             );
+//           }
+//         });
+//       }
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json("An error occurred.");
+//   }
+// };
+
+// const getAppointmentDetailsViaID = (req, res) => {
+//   try {
+//     const id = req.params.id;
+//     const selectQuery =
+//       "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid JOIN patient_bills ON appointments.appoint_id = patient_bills.appoint_id WHERE appointments.appoint_id = ?";
+//     db.query(selectQuery, id, (err, result) => {
+//       if (err) {
+//         res.status(400).json({ success: false, message: err.message });
+//       }
+//       res.status(200).send(result);
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ success: false, message: error.message });
+//   }
+// };
+
+// const getTreatmentAmountByBranch = (req, res) => {
+//   try {
+//     const branch = req.params.branch;
+//     const selectQuery =
+//       "SELECT * FROM appointments JOIN patient_details ON appointments.patient_uhid = patient_details.uhid JOIN patient_bills ON appointments.appoint_id = patient_bills.appoint_id WHERE appointments.branch_name = ?";
+//     db.query(selectQuery, branch, (err, result) => {
+//       if (err) {
+//         res.status(400).json({ success: false, message: err.message });
+//       }
+//       res.status(200).send(result);
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ success: false, message: error.message });
+//   }
+// };

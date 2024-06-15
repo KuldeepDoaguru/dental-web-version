@@ -315,6 +315,13 @@ function AllPatient() {
                                     </button>
                                     <ul className="dropdown-menu">
                                       <li>
+                                        <Link className="dropdown-item mx-0"
+                                          to={`/patient_profile/${data.uhid}`}
+                                        >
+                                          View Patient details
+                                        </Link>
+                                      </li>
+                                      <li>
                                         <a
                                           className="dropdown-item mx-0"
                                           onClick={() =>

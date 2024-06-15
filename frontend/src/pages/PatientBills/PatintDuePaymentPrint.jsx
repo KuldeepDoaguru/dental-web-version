@@ -19,6 +19,7 @@ const PatintDuePaymentPrint = () => {
   const [branchData, setBranchData] = useState([]);
   const [billAmount, setBillAmount] = useState([]);
   const [saAmt, setSaAmt] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [getTreatData, setGetTreatData] = useState([]);
   const [data, setData] = useState({
     payment_mode: "",
@@ -159,6 +160,8 @@ const PatintDuePaymentPrint = () => {
     (saAmt[0]?.remaining_amount ? saAmt[0]?.remaining_amount : 0) -
     totalPaidAmount;
 
+  console.log(remainingSecurityAmount);
+
   // If dueAmt is negative, meaning there is an overpayment, we set totalPaidAmount to 0
   if (dueAmt < 0) {
     totalPaidAmount = 0;
@@ -196,12 +199,15 @@ const PatintDuePaymentPrint = () => {
         }
       );
       cogoToast.success("update remaining Successfully amt");
+      secuirtyAmtBytpuhid();
       console.log(remainingSecurityAmount);
       console.log(response.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  console.log(updatedPaidAmt, updatedPay_by_sec_amt);
 
   const upDueValAmount = () => {
     const gettea = updatedPaidAmt + updatedPay_by_sec_amt;
@@ -227,12 +233,13 @@ const PatintDuePaymentPrint = () => {
     receiver_name: user.employee_name,
     receiver_emp_id: user.employee_ID,
     pay_by_sec_amt: updatedPay_by_sec_amt,
-    due_amount: String(callDue),
+    due_amount: finalAmt,
   };
 
   console.log(BillInput);
 
   const makePayment = async () => {
+    setLoading(true);
     try {
       const response = await axios.put(
         `https://dentalgurudoctor.doaguru.com/api/doctor/makeBillPayment/${tpid}/${user.branch_name}`,
@@ -245,8 +252,10 @@ const PatintDuePaymentPrint = () => {
         }
       );
       if (response.data.success) {
+        setLoading(false);
         cogoToast.success("payment successful");
         // completeTreatment();
+        // secuirtyAmtBytpuhid();
         getBillDetails();
         console.log(response.data);
         updateRemainingSecurity();
@@ -255,12 +264,16 @@ const PatintDuePaymentPrint = () => {
           transaction_Id: "",
           note: "",
         });
+        // window.location.reload();
+
         // navigate(`/ViewPatientTotalBill/${tpid}`);
       } else {
         cogoToast.success("Failed to paid bill");
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
+      setLoading(false);
     }
   };
 
@@ -556,14 +569,29 @@ const PatintDuePaymentPrint = () => {
                     </>
                   ) : (
                     <>
-                      <button
-                        type="button"
-                        class="btn btn-primary hide-during-print"
-                        data-bs-toggle="modal"
-                        data-bs-target="#exampleModal"
-                      >
-                        Pay Now
-                      </button>
+                      {finalAmt === 0 ? (
+                        <>
+                          <button
+                            class="btn btn-primary hide-during-print"
+                            onClick={makePayment}
+                            disabled={loading}
+                          >
+                            {loading ? "Pay now..." : "Pay Now"}
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          {" "}
+                          <button
+                            type="button"
+                            class="btn btn-primary hide-during-print"
+                            data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"
+                          >
+                            Pay Now
+                          </button>
+                        </>
+                      )}
                     </>
                   )}
                   {/* <button
@@ -679,13 +707,15 @@ const PatintDuePaymentPrint = () => {
                   >
                     Close
                   </button>
+
                   <button
                     type="button"
                     class="btn btn-success"
                     data-bs-dismiss="modal"
                     onClick={makePayment}
+                    disabled={loading}
                   >
-                    Pay Now
+                    {loading ? "Pay now..." : "Pay Now"}
                   </button>
                 </div>
               </div>

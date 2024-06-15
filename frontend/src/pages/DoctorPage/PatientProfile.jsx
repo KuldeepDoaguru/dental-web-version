@@ -4,11 +4,13 @@ import HeadBar from "../../components/Doctor/HeadBar";
 import Sider from "../../components/Doctor/SideBar";
 import Navbar from "../../components/Doctor/PatientProfile/Navbar";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const PatientProfile = () => {
   const { uhid } = useParams();
+  const navigate = useNavigate();
   console.log(uhid);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -65,6 +67,11 @@ const PatientProfile = () => {
     getPatientDetails();
   }, []);
 
+  const goBack = (event) => {
+    event.preventDefault(); // Prevent default action to avoid page refresh
+    navigate(-1); // This goes back to the previous page
+  };
+
   return (
     <Wrapper>
       <HeadBar />
@@ -84,6 +91,9 @@ const PatientProfile = () => {
           </div>
           <div className="row g-1 px-0">
             <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+              <button className="btn btn-success" onClick={goBack}>
+                <IoMdArrowRoundBack /> Back
+              </button>
               <h1 className="mt-3">{patientData?.patient_name}</h1>
 
               <div className="mt-5">

@@ -50,7 +50,11 @@ const HeadBar = () => {
             >
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <p className="text-white fw-bold">
-                  Hello <strong>Dr. {user.currentUser.employee_name}</strong>
+                  Welcome{" "}
+                  <strong>
+                    Dr. {user.currentUser.employee_name}(
+                    {user.currentUser.employee_ID})
+                  </strong>
                 </p>
                 <li className="nav-item dropdown mx-3" id="userid">
                   <a

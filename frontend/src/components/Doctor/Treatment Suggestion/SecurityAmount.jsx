@@ -580,10 +580,7 @@ const SecurityAmount = () => {
                         <tbody>
                           {securityAmt.map((item, index) => (
                             <tr className="table-row" key={index}>
-                              <td>
-                                {item.date?.split("T")[0]} -{" "}
-                                {item.date?.split("T")[1].split(".")[0]}
-                              </td>
+                              <td>{item?.date}</td>
                               <td>{tpid}</td>
                               <td>{item.appointment_id}</td>
                               <td>{item.uhid}</td>

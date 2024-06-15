@@ -842,7 +842,7 @@ const TreatmentForm = () => {
                   <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
-                        Discount Amount %
+                        Discount %
                       </label>
                       {lastTreatment?.current_sitting > 1 ? (
                         <>

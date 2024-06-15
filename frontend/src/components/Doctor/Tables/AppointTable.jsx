@@ -299,7 +299,7 @@ const AppointTable = () => {
                   <h5>Search Patient :</h5>
                   <input
                     type="text"
-                    placeholder="Search Name or Number"
+                    placeholder="Search Name or Number or UHID"
                     className=" mx-1 p-1 rounded searchint"
                     value={keyword}
                     onChange={handleSearch}
@@ -345,7 +345,10 @@ const AppointTable = () => {
                           val.patient_name
                             ?.toLowerCase()
                             ?.includes(trimmedKeyword) ||
-                          val.mobileno?.includes(trimmedKeyword)
+                          val.mobileno?.includes(trimmedKeyword) ||
+                          val.patient_uhid
+                            ?.toLowerCase()
+                            .includes(trimmedKeyword)
                         ) {
                           return val;
                         }
@@ -493,7 +496,10 @@ const AppointTable = () => {
                                 val.patient_name
                                   ?.toLowerCase()
                                   .includes(trimmedKeyword) ||
-                                val.mobileno?.includes(trimmedKeyword)
+                                val.mobileno?.includes(trimmedKeyword) ||
+                                val.patient_uhid
+                                  ?.toLowerCase()
+                                  .includes(trimmedKeyword)
                               ) {
                                 return val;
                               }
@@ -542,6 +548,7 @@ const AppointTable = () => {
                                   <div className="dropdown">
                                     {item.appointment_status === "Complete" ||
                                     item.appointment_status === "Check Out" ||
+                                    item.appointment_status === "Cancel" ||
                                     item.appointment_status === "Appoint" ? (
                                       <button
                                         className="btn btn-secondary dropdown-toggle"

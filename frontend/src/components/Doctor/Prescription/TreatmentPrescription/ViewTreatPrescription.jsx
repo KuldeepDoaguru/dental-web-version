@@ -421,12 +421,12 @@ const ViewTreatPrescription = () => {
                 >
                   Print
                 </button>
-                <button
+                {/* <button
                   className="btn btn-info no-print mx-3 mb-3 mt-2"
                   onClick={() => navigate("/doctor-dashboard")}
                 >
                   Appointment Dashboard
-                </button>
+                </button> */}
                 <button
                   className="btn btn-info no-print mx-3 mb-3 mt-2"
                   onClick={handleTreatNavigattion}

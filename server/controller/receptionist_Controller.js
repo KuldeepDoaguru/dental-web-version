@@ -2142,18 +2142,18 @@ const getSecurityAmountDataByBranch = (req, res) => {
 
 
 const updateRefundAmount = (req, res) => {
+  const date =  moment().tz("Asia/Kolkata").format("DD-MM-YYYY HH:mm:ss");
   try {
     const sid = req.params.sid;
     const {
       refund_amount,
-      refund_date,
       refund_by,
       payment_status,
       remaining_amount,
     } = req.body;
     console.log(req.body);
     // Checking if all required fields are present in the request body
-    if (!refund_amount || !refund_date || !refund_by || !payment_status) {
+    if (!refund_amount || !refund_by || !payment_status) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
@@ -2174,7 +2174,7 @@ const updateRefundAmount = (req, res) => {
           updateQuery,
           [
             refund_amount,
-            refund_date,
+            date,
             refund_by,
             payment_status,
             remaining_amount,
@@ -2276,7 +2276,8 @@ const updatePatientSecurityAmt = (req, res) => {
     const { payment_status, payment_Mode, transaction_Id, notes, received_by, remaining_amount } =
       req.body;
 
-    const payment_date = new Date();
+    const payment_date = moment().tz("Asia/Kolkata").format("DD-MM-YYYY HH:mm:ss");
+   
 
     console.log(req.body)
 
@@ -2724,13 +2725,13 @@ const updateRemainingSecurityAmount = (req, res) => {
 };
 
 const makeBillPayment = (req, res) => {
+  const payment_date_time = moment().tz("Asia/Kolkata").format("DD-MM-YYYY HH:mm:ss");
   try {
     const bid = req.params.bid;
     const branch = req.params.branch;
     const {
       paid_amount,
       payment_status,
-      payment_date_time,
       payment_mode,
       transaction_Id,
       note,

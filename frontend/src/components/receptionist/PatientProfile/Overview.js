@@ -271,17 +271,20 @@ const getExaminationDetails = async () => {
                     <tr>
                       <th>Date</th>
                       <th>Bill Amount</th>
-                      <th>Paid Amount</th>
+                      <th>Direct Paid Amount</th>
+                      <th>Pay by Security Amount</th>
                       <th>Payment Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {bills?.slice(-3)?.map((item) => (
                       <>
+
                         <tr>
-                          <td>{moment(item.bill_date?.split("T")[0]).format('DD/MM/YYYY')}</td>
+                        <td>{moment(item?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY')}</td>
                           <td>{item.total_amount}</td>
                           <td>{item.paid_amount}</td>
+                          <td>{item.pay_by_sec_amt}</td>
                           <td>{item.payment_status}</td>
                         </tr>
                       </>

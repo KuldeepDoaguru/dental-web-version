@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Lottie from "react-lottie";
 import animationData from "../../images/animation/loading-effect.json";
 
+
 function SecurityAmount() {
 
   const { refreshTable, currentUser } = useSelector((state) => state.user);
@@ -53,7 +54,7 @@ function SecurityAmount() {
   });
 
   const date = new Date();
-  console.log(date);
+
 
   const [refund, setRefund] = useState({
     refund_date: date,
@@ -206,7 +207,7 @@ function SecurityAmount() {
       const response = await axios.put(
         `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/updateRefundAmount/${selected}`,
         {
-          refund_date: date,
+          
           refund_by: currentUser.employee_name,
           payment_status: "Refunded",
           refund_amount: filterForSecAmountDef[0]?.remaining_amount,
@@ -622,7 +623,7 @@ function SecurityAmount() {
                       {currentRows?.map((item) => (
                         <>
                           <tr className="table-row">
-                            <td>{moment(item.date?.split("T")[0]).format('DD/MM/YYYY')}</td>
+                            <td>{moment(item?.date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY')}</td>
                             <td>{item.appointment_id}</td>
                             <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
                             <td>{item.patient_name}</td>
@@ -632,8 +633,8 @@ function SecurityAmount() {
                             <td>{item.remaining_amount}</td>
                             <td>{item.payment_Mode}</td>
                             <td>{item.transaction_Id}</td>
-                            <td>{item.payment_date ? moment(item?.payment_date).format('DD/MM/YYYY') : ""}</td>
-                            <td>{item?.refund_date ? moment(item?.refund_date, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY') : ""}</td>
+                            <td>{item.payment_date ? moment(item?.payment_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : ""}</td>
+                            <td>{item?.refund_date ? moment(item?.refund_date, 'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : ""}</td>
                             <td>
                               <div className="d-flex">
                                 <h6>{item.payment_status}</h6>

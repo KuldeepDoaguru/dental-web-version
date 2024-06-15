@@ -212,6 +212,15 @@ const PatientBillsByTpid = () => {
   const netVal = getTreatData?.filter((item) => {
     return item.sitting_number === 1;
   });
+   
+  const payafterTreat = getTreatData.reduce(
+    (total, item) =>
+      item.sitting_payment_status === "Pending"
+        ? total
+        : total + Number(item.paid_amount),
+    0
+  );
+  
   return (
     <>
       <Wrapper>
@@ -318,7 +327,9 @@ const PatientBillsByTpid = () => {
                     <th scope="row">Mobile No.</th>
                     <td>{item.mobileno}</td>
                     <th scope="row">Date</th>
-                    <td>{moment(billDetails[0]?.bill_date?.split("T")[0]).format('DD/MM/YYYY')}</td>
+                  
+                   
+                    <td>{moment(billDetails[0]?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY')}</td>
                   </tr>
                   <tr>
                     <th scope="row">Email</th>
@@ -543,10 +554,20 @@ const PatientBillsByTpid = () => {
             <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
               <div className="">
                 <table className="table table-bordered mb-0">
+                <tbody>
+                    <tr>
+                      <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-end total-tr">
+                        Amount Received After Treatment:
+                      </td>
+                      <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-center total-tr">
+                        {totalBillvalueWithoutGst - payafterTreat}
+                      </td>
+                    </tr>
+                  </tbody>
                   <tbody>
                     <tr>
                       <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-end total-tr">
-                        Total Amount:
+                        Total Amount Received:
                       </td>
                       <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-center total-tr">
                         {totalBillvalueWithoutGst}

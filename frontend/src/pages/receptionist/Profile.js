@@ -54,19 +54,19 @@ const convertToAMPM = (time) => {
                 <div className="col-lg-8">
                     <div className="row mb-3">
                         <div className="col-lg-4">
-                            <label className="text-info">Employee ID</label>
+                            <label className="text">Employee ID</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.employee_ID}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
-                        <label className="text-info">Employee Name</label>
+                        <label className="text">Employee Name</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.employee_name}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
-                        <label className="text-info">Email</label>
+                        <label className="text">Email</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.employee_email}</p>
                             </div>
@@ -74,20 +74,20 @@ const convertToAMPM = (time) => {
                     </div>
                     <div className="row mb-3">
                         <div className="col-lg-4">
-                            <label className="text-info">Gender</label>
+                            <label className="text">Gender</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.gender}</p>
                             </div>
                         </div>
                        
                         <div className="col-lg-4">
-                        <label className="text-info">Address</label>
+                        <label className="text">Address</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.address}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
-                            <label className="text-info">Designation</label>
+                            <label className="text">Designation</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.employee_designation}</p>
                             </div>
@@ -98,66 +98,66 @@ const convertToAMPM = (time) => {
                         
                        
                         <div className="col-lg-4">
-                        <label className="text-info">Mobile No.</label>
+                        <label className="text">Mobile No.</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.employee_mobile}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
-                        <label className="text-info">Working Days</label>
+                        <label className="text">Working Days</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.working_days}</p>
                             </div>
                         </div>
                         <div className="col-lg-4">
-                        <label className="text-info">Employee Role</label>
+                        <label className="text">Employee Role</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{currentUser?.employee_role}</p>
                             </div>
                         </div>
                         
                     </div>
-                    <div className="row mb-3">
+                    {/* <div className="row mb-3">
                         
                   
                     <div className="col-lg-4">
-                        <label className="text-info">Morning Shift Start Time</label>
+                        <label className="text">Morning Shift Start Time</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{convertToAMPM(currentUser?.morning_shift_start_time)}</p>
                             </div>
                         </div>
                     <div className="col-lg-4">
-                        <label className="text-info">Morning Shift End Time</label>
+                        <label className="text">Morning Shift End Time</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{convertToAMPM(currentUser?.morning_shift_end_time)}</p>
                             </div>
                         </div>
                     <div className="col-lg-4">
-                        <label className="text-info">Evening Shift Start Time</label>
+                        <label className="text">Evening Shift Start Time</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{convertToAMPM(currentUser?.evening_shift_start_time)}</p>
                             </div>
                         </div>
                        
                        
-                    </div>
+                    </div> */}
                     <div className="row mb-3">
                         
                   
-                    <div className="col-lg-4">
-                        <label className="text-info">Evening Shift End Time</label>
+                    {/* <div className="col-lg-4">
+                        <label className="text">Evening Shift End Time</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{convertToAMPM(currentUser?.evening_shift_end_time)}</p>
                             </div>
-                        </div>
+                        </div> */}
                     <div className="col-lg-4">
-                        <label className="text-info">All Day Shift Start Time</label>
+                        <label className="text">All Day Shift Start Time</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{convertToAMPM(currentUser?.allday_shift_start_time)}</p>
                             </div>
                         </div>
                     <div className="col-lg-4">
-                        <label className="text-info">All Day Shift End Time</label>
+                        <label className="text">All Day Shift End Time</label>
                             <div className="shadow-none p-1 bg-light rounded">
                                 <p className="m-0">{convertToAMPM(currentUser?.allday_shift_end_time)}</p>
                             </div>
@@ -230,5 +230,9 @@ overflow-y: auto;
    margin-left: 0rem;
     
   }
+}
+.text{
+    color: teal;
+    font-weight: 500;
 }
 `;

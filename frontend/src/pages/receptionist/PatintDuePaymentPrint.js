@@ -349,7 +349,8 @@ function PatintDuePaymentPrint() {
                                 <h6> Invoice Date </h6>
                                 <h6 className="ms-1">
                                   {" "}
-                                  :{moment(billAmount[0]?.bill_date?.split("T")[0]).format('DD/MM/YYYY')} {" "}
+                                  :{moment(billAmount[0]?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY')} {" "}
+                                  
                                 </h6>
                               </div>
                             </div>

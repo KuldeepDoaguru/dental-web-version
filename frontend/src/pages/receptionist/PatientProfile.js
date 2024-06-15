@@ -138,6 +138,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import moment from "moment";
 
 
 const PatientProfile = () => {
@@ -302,7 +303,7 @@ console.log(branch)
                             <strong>DOB :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
-                            <span className="">{patientData?.dob}</span>
+                            <span className="">{patientData?.dob ? moment(patientData?.dob,'YYYY-MM-DD').format('DD/MM/YYYY') : "" }</span>
                           </div>
                         </div>
                       </div>
@@ -396,7 +397,7 @@ console.log(branch)
                       <div>
                         <div className="row">
                           <div className="col-xl-5 col-lg-7 col-md-6 col-sm-6 col-12">
-                            <strong>Contact Person :</strong>
+                            <strong>Cont. Person :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">
@@ -410,7 +411,7 @@ console.log(branch)
                       <div>
                         <div className="row">
                           <div className="col-xl-5 col-lg-5 col-md-6 col-sm-6 col-12">
-                            <strong>Contact Person Name :</strong>
+                            <strong>Cont. Person Name :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
                             <span className="">

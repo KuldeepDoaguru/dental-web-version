@@ -60,7 +60,9 @@ const Header = () => {
             >
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li className="nav-item mx-2" id="bell">
-                  <h3 className="text-light">Hello {user.employee_name}</h3>
+                  <h5 className="text-light">
+                    Welcome {user.employee_name} ({user.id})
+                  </h5>
                 </li>
                 <li className="nav-item dropdown mx-4" id="userid">
                   <a

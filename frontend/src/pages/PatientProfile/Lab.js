@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
 
 const Lab = () => {
   const { pid } = useParams();
@@ -63,7 +64,12 @@ const Lab = () => {
                       <td>{item.assigned_doctor_name}</td>
                       <td>{item.lab_name}</td>
                       <td>{item.test}</td>
-                      <td>{item.created_date?.split("T")[0]}</td>
+                      <td>
+                        {moment(
+                          item.created_date,
+                          "YYYY-MM-DDTHH:mm:ss"
+                        ).format("DD/MM/YYYY")}
+                      </td>
                       <td>{item.test_status}</td>
                     </tr>
                   </>

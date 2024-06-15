@@ -7,6 +7,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import Header from "../../components/Header";
 import Sider from "../../components/Sider";
 import Navbar from "./Navbar";
+import moment from "moment";
 
 const PatientProfile = () => {
   const dispatch = useDispatch();
@@ -160,7 +161,12 @@ const PatientProfile = () => {
                             <strong>DOB :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
-                            <span className="">{patientData?.dob}</span>
+                            <span className="">
+                              {moment(
+                                patientData?.dob,
+                                "YYYY-MM-DDTHH:mm:ss"
+                              ).format("DD/MM/YYYY")}
+                            </span>
                           </div>
                         </div>
                       </div>

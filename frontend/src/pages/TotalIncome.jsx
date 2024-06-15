@@ -19,7 +19,7 @@ const TotalIncome = () => {
   console.log("User State:", user);
   const [designation, setDesignation] = useState("");
   const [treatAmount, setTreatAmount] = useState([]);
-  const [opdAmount, setOpdAmount] = useState([]);
+  const [opdAmount, setOpdAmount] = useState([]); 
   // const [keyword, setkeyword] = useState("");
 
   const getTreatmentAmt = async () => {

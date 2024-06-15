@@ -70,7 +70,8 @@ const MonthIncome = () => {
   const year = getDate.getFullYear();
   const month = String(getDate.getMonth() + 1).padStart(2, "0");
   const lastDay = new Date(year, month, 0).getDate(); // Last day of the current month
-  const formattedDate = `${year}-${month}`;
+  // const formattedDate = `${year}-${month}`;
+  const formattedDate = `${month}-${year}`;
 
   const filterForPayStatus = appointmentList?.filter((item) => {
     return item.payment_status === "paid";
@@ -88,7 +89,7 @@ const MonthIncome = () => {
 
   const dailyAppointments = filterForPayStatus?.reduce((acc, appointment) => {
     if (appointment.payment_date_time) {
-      const date = appointment.payment_date_time.split("T")[0];
+      const date = appointment.payment_date_time.split(" ")[0];
       acc[date] = acc[date] ? acc[date] + 1 : 1;
     }
     return acc;
@@ -106,7 +107,7 @@ const MonthIncome = () => {
   // });
   filterForPayStatus.forEach((item) => {
     if (item.payment_date_time) {
-      const date = item.payment_date_time.split("T")[0];
+      const date = item.payment_date_time.split(" ")[0];
       totalAmountPerDay[date] =
         (totalAmountPerDay[date] || 0) + parseFloat(item.total_amount);
       console.log(item.total_amount);
@@ -118,7 +119,8 @@ const MonthIncome = () => {
   // Create an array containing data for all days of the month
   const data = Array.from({ length: lastDay }, (_, index) => {
     const day = String(index + 1).padStart(2, "0");
-    const date = `${formattedDate}-${day}`;
+    // const date = `${formattedDate}-${day}`;
+    const date = `${day}-${formattedDate}`;
     return {
       date,
       patients: dailyAppointments[date] || 0,

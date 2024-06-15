@@ -104,7 +104,7 @@ const BloodTest = () => {
               <div className="container-fluid mt-4">
                 <div className="row ms-md-5">
                   <div className="col-lg-12 col-md-12">
-                    <h2>List of Blood Test</h2>
+                    <h2>List of Pathology Test</h2>
                     <div className="mb-3">
                       <div className="row">
                         <div className="col-lg-2">

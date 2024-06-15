@@ -78,19 +78,19 @@ const BranchInfo = () => {
                 <div className="col-lg-12">
                   <div className="row mb-3">
                     <div className="col-lg-4">
-                      <label className="text-info">Clinic Name</label>
+                      <label className="text-class">Clinic Name</label>
                       <div className="shadow-none p-1 bg-light rounded">
                         <p className="m-0">{branchDetail[0]?.hospital_name}</p>
                       </div>
                     </div>
                     <div className="col-lg-4">
-                      <label className="text-info">Clinic Id</label>
+                      <label className="text-class">Clinic Id</label>
                       <div className="shadow-none p-1 bg-light rounded">
                         <p className="m-0">{branchDetail[0]?.hospital_id}</p>
                       </div>
                     </div>
                     <div className="col-lg-4">
-                      <label className="text-info">Branch Name</label>
+                      <label className="text-class">Branch Name</label>
                       <div className="shadow-none p-1 bg-light rounded">
                         <p className="m-0">{branchDetail[0]?.branch_name}</p>
                       </div>
@@ -98,21 +98,21 @@ const BranchInfo = () => {
                   </div>
                   <div className="row mb-3">
                     <div className="col-lg-4">
-                      <label className="text-info">Branch Id</label>
+                      <label className="text-class">Branch Id</label>
                       <div className="shadow-none p-1 bg-light rounded">
                         <p className="m-0">{branchDetail[0]?.branch_id}</p>
                       </div>
                     </div>
 
                     <div className="col-lg-4">
-                      <label className="text-info">Address</label>
+                      <label className="text-class">Address</label>
                       <div className="shadow-none p-1 bg-light rounded">
                         <p className="m-0">{branchDetail[0]?.branch_address}</p>
                       </div>
                     </div>
 
                     <div className="col-lg-4">
-                      <label className="text-info">Contact Number</label>
+                      <label className="text-class">Contact Number</label>
                       <div className="shadow-none p-1 bg-light rounded">
                         <p className="m-0">{branchDetail[0]?.branch_contact}</p>
                       </div>
@@ -121,13 +121,13 @@ const BranchInfo = () => {
 
                   <div className="row mb-3">
                     <div className="col-lg-4">
-                      <label className="text-info">Email</label>
+                      <label className="text-class">Email</label>
                       <div className="shadow-none p-1 bg-light rounded">
                         <p className="m-0">{branchDetail[0]?.branch_email}</p>
                       </div>
                     </div>
                     <div className="col-lg-4">
-                      <label className="text-info">Open Time</label>
+                      <label className="text-class">Open Time</label>
                       <div className="shadow-none p-1 bg-light rounded">
                         <p className="m-0">
                           {branchDetail[0]?.open_time
@@ -140,7 +140,7 @@ const BranchInfo = () => {
                       </div>
                     </div>
                     <div className="col-lg-4">
-                      <label className="text-info">Close Time</label>
+                      <label className="text-class">Close Time</label>
                       <div className="shadow-none p-1 bg-light rounded">
                         <p className="m-0">
                           {branchDetail[0]?.close_time
@@ -155,13 +155,13 @@ const BranchInfo = () => {
                   </div>
                   <div className="row mb-3">
                     <div className="col-lg-4">
-                      <label className="text-info">Week Off</label>
+                      <label className="text-class">Week Off</label>
                       <div className="shadow-none p-1 bg-light rounded">
                         <p className="m-0">{branchDetail[0]?.week_off}</p>
                       </div>
                     </div>
                     <div className="col-lg-4">
-                      <label className="text-info">Slot Duration</label>
+                      <label className="text-class">Slot Duration</label>
                       <div className="shadow-none p-1 bg-light rounded">
                         <p className="m-0">
                           {branchDetail[0]?.appoint_slot_duration}
@@ -300,5 +300,9 @@ const Wrapper = styled.div`
     position: fixed;
     min-width: 100%;
     z-index: 100;
+  }
+  .text-class {
+    color: #201658;
+    font-weight: 600;
   }
 `;

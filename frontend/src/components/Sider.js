@@ -137,7 +137,7 @@ const Sider = () => {
                   <hr />
                 </li>
 
-                <li>
+                {/* <li>
                   <Link
                     to="/treatment-income"
                     className={`nav-link  ${getSidebarClass(
@@ -149,7 +149,7 @@ const Sider = () => {
                     </span>
                   </Link>
                   <hr />
-                </li>
+                </li> */}
 
                 {/* <li>
                   <Link to="/LabMainIncome" className="nav-link ">
@@ -265,7 +265,7 @@ const Sider = () => {
             </li> */}
             <hr />
 
-            <li class="nav-item link-div">
+            {/* <li class="nav-item link-div">
               <Link
                 to="/total-income"
                 class={`nav-link  align-middle ${getSidebarClass(
@@ -280,7 +280,7 @@ const Sider = () => {
                 </h3>
               </Link>
             </li>
-            <hr />
+            <hr /> */}
 
             <li className="">
               <div className={`link-div ${"/settings"}`}>

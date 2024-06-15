@@ -232,6 +232,16 @@ const PatientBillsByTpid = () => {
   });
 
   console.log(billDetails[0]?.total_amount, totalBillvalueWithoutGst);
+
+  const payafterTreat = getTreatData.reduce(
+    (total, item) =>
+      item.sitting_payment_status === "Pending"
+        ? total
+        : total + Number(item.paid_amount),
+    0
+  );
+
+  console.log(payafterTreat);
   return (
     <>
       <Wrapper>
@@ -578,6 +588,16 @@ const PatientBillsByTpid = () => {
             <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-4 col-4">
               <div className="">
                 <table className="table table-bordered mb-0">
+                  <tbody>
+                    <tr>
+                      <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-end total-tr">
+                        Amount Received After Treatment:
+                      </td>
+                      <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-center total-tr">
+                        {totalBillvalueWithoutGst - payafterTreat}
+                      </td>
+                    </tr>
+                  </tbody>
                   <tbody>
                     <tr>
                       <td className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 border p-1 text-end total-tr">

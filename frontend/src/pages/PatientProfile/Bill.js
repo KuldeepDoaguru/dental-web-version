@@ -70,8 +70,8 @@ const Bill = () => {
                     <>
                       <tr>
                         <td>
-                          {moment(item.bill_date?.split("T")[0]).format(
-                            "DD/MM/YYYY"
+                          {moment(item.bill_date, "DD-MM-YYYYTHH:mm:ss").format(
+                            "DD/MM/YYYY hh:mm A"
                           )}
                         </td>
                         <td>{item.bill_id}</td>
@@ -82,9 +82,10 @@ const Bill = () => {
                         <td>{item.pay_by_sec_amt}</td>
                         <td>{item.payment_mode}</td>
                         <td>
-                          {moment(item.payment_date_time?.split("T")[0]).format(
-                            "DD/MM/YYYY"
-                          )}
+                          {moment(
+                            item.payment_date_time,
+                            "DD-MM-YYYYTHH:mm:ss"
+                          ).format("DD/MM/YYYY")}
                         </td>
                         <td>{item.payment_status}</td>
                       </tr>

@@ -9,6 +9,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { MdPeople } from "react-icons/md";
+import { GiReceiveMoney } from "react-icons/gi";
+import { GiTakeMyMoney } from "react-icons/gi";
+import { BiSolidUserDetail } from "react-icons/bi";
+import { FaHospitalUser } from "react-icons/fa6";
 
 const Cards = () => {
   const dispatch = useDispatch();
@@ -49,20 +53,30 @@ const Cards = () => {
   const month = String(getDate.getMonth() + 1).padStart(2, "0");
   const day = String(getDate.getDate()).padStart(2, "0");
 
-  const formattedDate = `${year}-${month}-${day}`;
-  // console.log(formattedDate);
+  const formattedDate = `${day}-${month}-${year}`;
+  console.log(formattedDate);
+
+  const formattedAppointDate = `${year}-${month}-${day}`;
+  console.log(formattedAppointDate);
 
   //filterForPatAppointToday
+  // const filterForOpdAppointToday = opdData?.filter(
+  //   (item) =>
+  //     item.appointment_dateTime.split("T")[0] === formattedDate &&
+  //     item.treatment_provided === "OPD"
+  // );
+
   const filterForOpdAppointToday = opdData?.filter(
     (item) =>
-      item.appointment_dateTime.split("T")[0] === formattedDate &&
-      item.treatment_provided === "OPD"
+      item.created_at.split(" ")[0] === formattedAppointDate &&
+      item.treatment_provided === "OPD" &&
+      item.payment_Status === "paid"
   );
 
-  // console.log(filterForOpdAppointToday);
+  console.log(filterForOpdAppointToday);
 
   const filterForAppointToday = opdData?.filter(
-    (item) => item.appointment_dateTime.split("T")[0] === formattedDate
+    (item) => item.appointment_dateTime.split("T")[0] === formattedAppointDate
   );
 
   // console.log(filterForAppointToday);
@@ -108,7 +122,7 @@ const Cards = () => {
   // console.log(treatData);
   //filterForPatAppointToday
   const filterForTreatAppointToday = treatData?.filter(
-    (item) => item.bill_date.split("T")[0] === formattedDate
+    (item) => item.bill_date.split(" ")[0] === formattedDate
   );
 
   // console.log(filterForTreatAppointToday);
@@ -132,7 +146,7 @@ const Cards = () => {
       let total = 0;
       filterForTreatAppointToday.forEach((item) => {
         if (item.payment_status === "paid") {
-          total = total + (item.total_amount ? item.total_amount : 0);
+          total = total + (item?.total_amount ? item?.total_amount : 0);
         }
       });
       // console.log(total);
@@ -144,7 +158,7 @@ const Cards = () => {
   };
 
   const totalTreatValue = totalTreatPrice();
-  // console.log(totalTreatValue);
+  console.log(totalTreatValue);
 
   const getVoucherAmount = async () => {
     try {
@@ -206,7 +220,7 @@ const Cards = () => {
   };
 
   const filterForPatientBillToday = patientBill?.filter(
-    (item) => item.bill_date?.split("T")[0] === formattedDate
+    (item) => item.bill_date?.split(" ")[0] === formattedDate
   );
 
   // console.log(filterForPatientBillToday);
@@ -241,13 +255,13 @@ const Cards = () => {
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column mb-3">
                 <div className="text-light fs-1">
-                  <MdPeople />
+                  {/* <MdPeople /> */}
+                  <BiSolidUserDetail />
+                  {/* <FaHospitalUser /> */}
                 </div>
                 <div className="cardtext">
                   <h5 className="card-title text-light">All Patient Details</h5>
-                  <p className="card-text text-light fw-semibold">
-                    {/* {totalVoucherValue} */}
-                  </p>
+                  <p className="card-text text-light">View Details</p>
                 </div>
               </div>
             </div>
@@ -289,7 +303,9 @@ const Cards = () => {
             <div className="card">
               <div className="card-body d-flex justify-content-center flex-column mb-3">
                 <div className="text-light fs-1">
-                  <LiaMicroscopeSolid />
+                  {/* <LiaMicroscopeSolid /> */}
+                  <GiReceiveMoney />
+                  {/* <GiTakeMyMoney /> */}
                 </div>
                 <div className="cardtext">
                   <h5 className="card-title text-light">Bill Income</h5>

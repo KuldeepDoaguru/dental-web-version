@@ -98,7 +98,7 @@ const ReportCardPage = () => {
                   <SiMoneygram />
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title text-light">Blood Report</h5>
+                  <h5 className="card-title text-light">Pathology Report</h5>
                   <p className="card-text">{testCounts.blood}</p>
                 </div>
               </div>

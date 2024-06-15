@@ -11,10 +11,11 @@ import BranchDetails from "../../components/BranchDetails";
 import MonthIncome from "../../components/Accountant/charts/MonthIncome";
 import PurchaseChart from "../../components/Accountant/charts/PurchaseChart";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import animationData from "../../pages/loading-effect.json";
 import Lottie from "react-lottie";
+import moment from "moment";
 
 const Accountant_Dashboard = () => {
   const dispatch = useDispatch();
@@ -58,12 +59,15 @@ const Accountant_Dashboard = () => {
   const month = String(getDate.getMonth() + 1).padStart(2, "0");
   const day = String(getDate.getDate()).padStart(2, "0");
 
-  const formattedDate = `${year}-${month}-${day}`;
+  const formattedDate = `${day}-${month}-${year}`;
   console.log(formattedDate);
+
+  const formattedAppointDate = `${year}-${month}-${day}`;
+  console.log(formattedAppointDate);
 
   console.log(billList[0]?.bill_date);
   const filterForBillToday = billList?.filter(
-    (item) => item.bill_date.split("T")[0] === formattedDate
+    (item) => item.bill_date.split(" ")[0] === formattedDate
   );
 
   console.log(filterForBillToday);
@@ -90,7 +94,7 @@ const Accountant_Dashboard = () => {
   };
 
   const filterForAppointmentToday = appointmentList?.filter(
-    (item) => item.appointment_dateTime.split("T")[0] === formattedDate
+    (item) => item.appointment_dateTime.split("T")[0] === formattedAppointDate
   );
 
   console.log(filterForAppointmentToday);
@@ -185,8 +189,19 @@ const Accountant_Dashboard = () => {
                               {filterForBillToday?.map((item) => (
                                 <tr key={item.bill_id}>
                                   <td>{item.bill_id}</td>
-                                  <td>{item.bill_date?.split("T")[0]}</td>
-                                  <td>{item.uhid}</td>
+                                  {/* <td>{item.bill_date?.split("T")[0]}</td> */}
+                                  <td>
+                                    {moment(
+                                      item.bill_date,
+                                      "DD-MM-YYYYTHH:mm:ss"
+                                    ).format("DD/MM/YYYY hh:mm A")}
+                                  </td>
+                                  <td>
+                                    {" "}
+                                    <Link to={`/patient_profile/${item.uhid}`}>
+                                      {item.uhid}
+                                    </Link>
+                                  </td>
                                   <td>{item.patient_name}</td>
                                   <td>{item.patient_mobile}</td>
                                   <td>{item.patient_email}</td>
@@ -237,6 +252,7 @@ const Accountant_Dashboard = () => {
                               <th className="table-small sticky">
                                 Contact Number
                               </th>
+                              <th className="table-small sticky">OPD Amount</th>
                               <th className="table-small sticky">
                                 Assigned Doctor
                               </th>
@@ -247,6 +263,9 @@ const Accountant_Dashboard = () => {
                               <th className="table-small sticky">Updated by</th>
                               <th className="table-small sticky">
                                 Appointment Date & Time
+                              </th>
+                              <th className="table-small sticky">
+                                Payment Status
                               </th>
                               <th className="table-small sticky">
                                 Appointment Status
@@ -269,11 +288,18 @@ const Accountant_Dashboard = () => {
                                       {item.appoint_id}
                                     </td>
                                     <td className="table-small">
-                                      {item.patient_uhid}
+                                      <Link
+                                        to={`/patient_profile/${item.patient_uhid}`}
+                                      >
+                                        {item.patient_uhid}
+                                      </Link>
                                     </td>
                                     <td>{item.patient_name}</td>
                                     <td className="table-small">
                                       {item.mobileno}
+                                    </td>
+                                    <td className="table-small">
+                                      {item.opd_amount}
                                     </td>
                                     <td className="table-small">
                                       {item.assigned_doctor_name}
@@ -285,10 +311,17 @@ const Accountant_Dashboard = () => {
                                     <td className="table-small">
                                       {item.updated_by ? item.updated_by : "-"}
                                     </td>
-                                    <td className="table-small">
+                                    {/* <td className="table-small">
                                       {item.appointment_dateTime?.split("T")[0]}{" "}
                                       {item.appointment_dateTime?.split("T")[1]}
+                                    </td> */}
+                                    <td className="table-small">
+                                      {moment(
+                                        item.appointment_dateTime,
+                                        "YYYY-MM-DDTHH:mm"
+                                      ).format("DD/MM/YYYY hh:mm A")}
                                     </td>
+                                    <td>{item.payment_Status}</td>
                                     <td>{item.appointment_status}</td>
                                     <td>{item.cancel_reason}</td>
                                     {/* <td className="table-small">

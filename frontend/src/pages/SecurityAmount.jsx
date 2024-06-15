@@ -240,7 +240,6 @@ const SecurityAmount = () => {
       const response = await axios.put(
         `https://dentalguruaccountant.doaguru.com/api/v1/accountant/updateRefundAmount/${selected}`,
         {
-          refund_date: date,
           refund_by: user.name,
           payment_status: "Refunded",
           refund_amount: filterForSecAmountDef[0]?.remaining_amount,
@@ -379,8 +378,8 @@ const SecurityAmount = () => {
                                       <tr className="table-row">
                                         <td>
                                           {moment(
-                                            item.date.split("T")[0],
-                                            "YYYY-MM-DD"
+                                            item?.date,
+                                            "DD-MM-YYYYTHH:mm:ss"
                                           ).format("DD/MM/YYYY")}
                                         </td>
                                         <td>{item.appointment_id}</td>
@@ -394,16 +393,17 @@ const SecurityAmount = () => {
                                         <td>{item.transaction_Id}</td>
                                         <td>
                                           {item.payment_date
-                                            ? moment(item?.payment_date).format(
-                                                "DD/MM/YYYY"
-                                              )
+                                            ? moment(
+                                                item?.payment_date,
+                                                "DD-MM-YYYYTHH:mm:ss"
+                                              ).format("DD/MM/YYYY")
                                             : ""}
                                         </td>
                                         <td>
                                           {item?.refund_date
                                             ? moment(
                                                 item?.refund_date,
-                                                "YYYY-MM-DDTHH:mm"
+                                                "DD-MM-YYYYTHH:mm:ss"
                                               ).format("DD/MM/YYYY")
                                             : ""}
                                         </td>

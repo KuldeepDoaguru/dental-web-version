@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleTableRefresh } from '../../../redux/user/userSlice';
 import axios from "axios";
 import moment from "moment";
+import { FaUserDoctor } from "react-icons/fa6";
 
 function Doctor() {
   
@@ -329,7 +330,8 @@ useEffect(() => {
   return (
     <Wrapper>
       <div className="shadow widget-area-2 proclinic-box-shadow rounded bg-white px-1 main">
-        <h3 className="widget-title text-center">Doctor Available for { moment(selectedDate).format('DD/MM/YYYY')}</h3>
+     
+        <h3 className="widget-title text-center fw-bold"> Doctor Available for { moment(selectedDate).format('DD/MM/YYYY')}</h3>
         <div className="d-flex px-2 gap-1">
         <input type="date" 
          class="form-control mr-sm-2 mt-3 mb-2 w-75 m-auto"
@@ -344,7 +346,7 @@ useEffect(() => {
           <table className="table table-bordered table-striped">
             <thead>
               <tr>
-                <th style={{fontSize:"12px"}}>No.</th>
+                {/* <th style={{fontSize:"12px"}}>No.</th> */}
                 <th>Doctor</th>
                 <th>App.</th>
                 <th>Available Slot</th>
@@ -391,7 +393,7 @@ const availableEveningSlots = doctorTimeSlots?.eveningSlots.filter(slot => {
 
     return (
       <tr key={index}>
-        <td>{index + 1}</td>
+        {/* <td>{index + 1}</td> */}
         <td>{doctor.employee_name}</td>
         <td>{doctorAppointments.length}</td> {/* Display number of appointments */}
         <td>
@@ -483,7 +485,7 @@ width: 110%;
   }
 }
 .widget-title{
-  font-size: 20px;
+  font-size: 18px;
   padding-top: 10px;
   @media screen and (min-width: 1020px) and (max-width: 1300px) {
     font-size: 15px;

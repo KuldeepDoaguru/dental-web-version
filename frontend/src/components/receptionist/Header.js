@@ -49,11 +49,11 @@ function Header() {
             
               
               <ul className='d-lg-flex d-sm-column'>
-              <p className='  text-white   fs-6' style={{marginRight:"100px", marginTop: "1rem",marginBottom : "0"}}>Hello {userName} ({userId})</p>
+              <p className='  text-white   fs-6' style={{marginRight:"100px", marginTop: "1rem",marginBottom : "0",fontWeight:"500"}}>Welcome {userName} ({userId})</p>
             
                 <li className="nav-item dropdown" id='userid'>
                   <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <FaUserAlt />
+                    <FaUserAlt className='text-white fs-4'/>
                   </a>
                   <ul className="dropdown-menu">
                     <li><Link to='/receptionist_profile' className="dropdown-item">View Profile</Link></li>

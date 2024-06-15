@@ -17,7 +17,7 @@ function Form() {
           <ul className="nav nav-tabs" id="myTab" role="tablist">
             <li className="nav-item" role="presentation">
               <button
-                className="nav-link active"
+                className="nav-link active fw-bold"
                 id="home-tab1"
                 data-bs-toggle="tab"
                 data-bs-target="#home-tab-pane"
@@ -31,7 +31,7 @@ function Form() {
             </li>
             <li className="nav-item" role="presentation">
               <button
-                className="nav-link"
+                className="nav-link fw-bold"
                 id="profile-tab1"
                 data-bs-toggle="tab"
                 data-bs-target="#profile-tab-pane"

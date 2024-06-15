@@ -270,7 +270,7 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
   return (
    <Wrapper>
     <div >
-    <div><h6 className='text-center'>View summary by date
+    <div><h6 className='text-center fw-bold'>View summary by date
       
       </h6></div>
     <div className={isDisplay?"d-none" : "d-block"}>

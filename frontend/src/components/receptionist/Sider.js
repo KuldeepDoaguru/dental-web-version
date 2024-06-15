@@ -13,6 +13,7 @@ import { FaHistory } from "react-icons/fa";
  import { clearUser } from '../../redux/user/userSlice';
 import { useDispatch } from "react-redux";
  // import { useDispatch } from 'react-redux'
+ import { FaUserDoctor } from "react-icons/fa6";
 
 const Sider = () => {
   const location = useLocation();
@@ -98,7 +99,7 @@ const Sider = () => {
             <li>
               <Link to="/doctor_section" className={`link-div ${getSidebarClass("/doctor_section")}`}>
                 <div>
-                  <i className="fs-4 bi bi-person-fill"></i>
+               <span className="fs-4 bi"><FaUserDoctor /></span> 
                 </div>
                 <div>
                   <h3 className=" d-none d-sm-inline" id="navleft1">Doctor</h3>

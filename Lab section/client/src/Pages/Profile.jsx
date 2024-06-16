@@ -53,19 +53,19 @@
 //                 <div className="col-lg-8">
 //                     <div className="row mb-3">
 //                         <div className="col-lg-4">
-//                             <label className="text-info">UserID</label>
+//                             <label className="textcolour">UserID</label>
 //                             <div className="shadow-none p-1 bg-light rounded">
 //                                 <p className="m-0">{currentUser?.employee_ID}</p>
 //                             </div>
 //                         </div>
 //                         <div className="col-lg-4">
-//                         <label className="text-info">User Name</label>
+//                         <label className="textcolour">User Name</label>
 //                             <div className="shadow-none p-1 bg-light rounded">
 //                                 <p className="m-0">{currentUser?.employee_name}</p>
 //                             </div>
 //                         </div>
 //                         <div className="col-lg-4">
-//                         <label className="text-info">Email</label>
+//                         <label className="textcolour">Email</label>
 //                             <div className="shadow-none p-1 bg-light rounded">
 //                                 <p className="m-0">{currentUser?.email}</p>
 //                             </div>
@@ -73,20 +73,20 @@
 //                     </div>
 //                     <div className="row mb-3">
 //                         <div className="col-lg-4">
-//                             <label className="text-info">Sex</label>
+//                             <label className="textcolour">Sex</label>
 //                             <div className="shadow-none p-1 bg-light rounded">
 //                                 <p className="m-0">{currentUser?.gender}</p>
 //                             </div>
 //                         </div>
                        
 //                         <div className="col-lg-4">
-//                         <label className="text-info">Address</label>
+//                         <label className="textcolour">Address</label>
 //                             <div className="shadow-none p-1 bg-light rounded">
 //                                 <p className="m-0">{currentUser?.address}</p>
 //                             </div>
 //                         </div>
 //                         <div className="col-lg-4">
-//                             <label className="text-info">Designation</label>
+//                             <label className="textcolour">Designation</label>
 //                             <div className="shadow-none p-1 bg-light rounded">
 //                                 <p className="m-0">{currentUser?.employee_designation}</p>
 //                             </div>
@@ -97,19 +97,19 @@
                         
                        
 //                         <div className="col-lg-4">
-//                         <label className="text-info">Mobile No.</label>
+//                         <label className="textcolour">Mobile No.</label>
 //                             <div className="shadow-none p-1 bg-light rounded">
 //                                 <p className="m-0">{currentUser?.employee_mobile}</p>
 //                             </div>
 //                         </div>
 //                         <div className="col-lg-4">
-//                         <label className="text-info">Working Days</label>
+//                         <label className="textcolour">Working Days</label>
 //                             <div className="shadow-none p-1 bg-light rounded">
 //                                 <p className="m-0">{currentUser?.working_days}</p>
 //                             </div>
 //                         </div>
 //                         <div className="col-lg-4">
-//                         <label className="text-info">Working Shift</label>
+//                         <label className="textcolour">Working Shift</label>
 //                             <div className="shadow-none p-1 bg-light rounded">
 //                                 <p className="m-0">12PM - 2PM</p>
 //                             </div>
@@ -368,19 +368,19 @@ const Profile = () => {
                     <div className="col-lg-8">
                       <div className="row g-3">
                         <div className="col-lg-4">
-                          <label className="text-info">Employee ID</label>
+                          <label className="textcolour">Employee ID</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.employee_ID}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Employee Name</label>
+                          <label className="textcolour">Employee Name</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.employee_name}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Email</label>
+                          <label className="textcolour">Email</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p
                               className="m-0"
@@ -391,25 +391,25 @@ const Profile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Gender</label>
+                          <label className="textcolour">Gender</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.gender}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Mobile Number</label>
+                          <label className="textcolour">Mobile Number</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.employee_mobile}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Address</label>
+                          <label className="textcolour">Address</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.address}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Designation</label>
+                          <label className="textcolour">Designation</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">
                               {empData[0]?.employee_designation}
@@ -417,25 +417,25 @@ const Profile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Salary</label>
+                          <label className="textcolour">Salary</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.salary}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Status</label>
+                          <label className="textcolour">Status</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.employee_status}</p>
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Availability</label>
+                          <label className="textcolour">Availability</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">{empData[0]?.availability}</p>
                           </div>
                         </div>
                         {/* <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="textcolour">
                             Morning Shift Start Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -447,7 +447,7 @@ const Profile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="textcolour">
                             Morning Shift End Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -459,7 +459,7 @@ const Profile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="textcolour">
                             Evening Shift Start Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -471,7 +471,7 @@ const Profile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="textcolour">
                             Evening Shift End Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -483,7 +483,7 @@ const Profile = () => {
                           </div>
                         </div> */}
                         <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="textcolour">
                             All Day Shift Start Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -497,7 +497,7 @@ const Profile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">
+                          <label className="textcolour">
                             All Day Shift End Time
                           </label>
                           <div className="shadow-none p-1 bg-light rounded">
@@ -507,7 +507,7 @@ const Profile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Working Days</label>
+                          <label className="textcolour">Working Days</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">
                               {empData[0]?.working_days
@@ -517,7 +517,7 @@ const Profile = () => {
                           </div>
                         </div>
                         <div className="col-lg-4">
-                          <label className="text-info">Employee Role</label>
+                          <label className="textcolour">Employee Role</label>
                           <div className="shadow-none p-1 bg-light rounded">
                             <p className="m-0">
                               {empData[0]?.employee_role
@@ -971,7 +971,7 @@ const Container = styled.div`
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
 
-  .text-info {
+  .textcolour {
     font-size: 1.5rem;
   }
 
@@ -981,7 +981,7 @@ const Container = styled.div`
 
   .select-style {
     border: none;
-    background-color: #22a6b3;
+    background-color: #213555;
     font-weight: bold;
     color: white;
   }
@@ -989,5 +989,8 @@ const Container = styled.div`
   .imgData {
     height: 8rem;
     width: auto;
+  }
+  .textcolour{
+    color:  "#213555";
   }
 `;

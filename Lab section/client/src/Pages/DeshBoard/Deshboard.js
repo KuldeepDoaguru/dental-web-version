@@ -37,7 +37,7 @@ const Deshboard = () => {
                 <div className="row d-flex justify-content-between">
                   <div className=" mt-4 mx-4">
                   <div className="mt-2">
-                      <h3> Welcome to Dental Guru! </h3>
+                      <h3> Welcome to DentalGuru</h3>
                     </div>
                     <div>
                             <h5>Lab Attendant Dashboard</h5>

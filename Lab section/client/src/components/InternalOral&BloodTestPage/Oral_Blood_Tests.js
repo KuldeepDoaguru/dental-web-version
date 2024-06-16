@@ -111,8 +111,14 @@ function Oral_Blood_Tests() {
   };
 
   const handleFileChange = (e) => {
-    setPdfFile(e.target.files[0]);
-    setPdfFileError(''); // Clear the error message when a file is selected
+    const file = e.target.files[0];
+    if (file && file.type !== 'application/pdf') {
+      setPdfFile(null);
+      setPdfFileError('Please upload a valid PDF file.');
+    } else {
+      setPdfFile(file);
+      setPdfFileError('');
+    }
   };
 
   const hundleSumbit = async () => {

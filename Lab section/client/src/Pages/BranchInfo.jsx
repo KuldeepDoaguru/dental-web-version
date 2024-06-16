@@ -93,19 +93,19 @@ const BranchInfo = () => {
                     <div className="col-lg-12">
                         <div className="row mb-3">
                             <div className="col-lg-4">
-                                <label className="text-info">Clinic Name</label>
+                                <label className="textcolour">Clinic Name</label>
                                 <div className="shadow-none p-1 bg-light rounded">
                                     <p className="m-0">{branchDetail[0]?.hospital_name}</p>
                                 </div>
                             </div>
                             <div className="col-lg-4">
-                                <label className="text-info">Clinic Id</label>
+                                <label className="textcolour">Clinic Id</label>
                                 <div className="shadow-none p-1 bg-light rounded">
                                     <p className="m-0">{branchDetail[0]?.hospital_id}</p>
                                 </div>
                             </div>
                             <div className="col-lg-4">
-                                <label className="text-info">Branch Name</label>
+                                <label className="textcolour">Branch Name</label>
                                 <div className="shadow-none p-1 bg-light rounded">
                                     <p className="m-0">{branchDetail[0]?.branch_name}</p>
                                 </div>
@@ -115,21 +115,21 @@ const BranchInfo = () => {
                         </div>
                         <div className="row mb-3">
                                <div className="col-lg-4">
-                            <label className="text-info">Branch Id</label>
+                            <label className="textcolour">Branch Id</label>
                                 <div className="shadow-none p-1 bg-light rounded">
                                     <p className="m-0">{branchDetail[0]?.branch_id}</p>
                                 </div>
                             </div>
                            
                             <div className="col-lg-4">
-                            <label className="text-info">Address</label>
+                            <label className="textcolour">Address</label>
                                 <div className="shadow-none p-1 bg-light rounded">
                                     <p className="m-0">{branchDetail[0]?.branch_address}</p>
                                 </div>
                             </div>
                        
                             <div className="col-lg-4">
-                                <label className="text-info">Contact Number</label>
+                                <label className="textcolour">Contact Number</label>
                                 <div className="shadow-none p-1 bg-light rounded">
                                     <p className="m-0">{branchDetail[0]?.branch_contact}</p>
                                 </div>
@@ -143,19 +143,19 @@ const BranchInfo = () => {
                             
                            
                             <div className="col-lg-4">
-                            <label className="text-info">Email</label>
+                            <label className="textcolour">Email</label>
                                 <div className="shadow-none p-1 bg-light rounded">
                                     <p className="m-0">{branchDetail[0]?.branch_email}</p>
                                 </div>
                             </div>
                             <div className="col-lg-4">
-                            <label className="text-info">Open Time</label>
+                            <label className="textcolour">Open Time</label>
                                 <div className="shadow-none p-1 bg-light rounded">
                                     <p className="m-0">{branchDetail[0]?.open_time ? moment(branchDetail[0]?.open_time, 'HH:mm:ss.SSSSSS').format('hh:mm A') : ""} </p>
                                 </div>
                             </div>
                             <div className="col-lg-4">
-                            <label className="text-info">Close Time</label>
+                            <label className="textcolour">Close Time</label>
                                 <div className="shadow-none p-1 bg-light rounded">
                                     <p className="m-0">{branchDetail[0]?.close_time ? moment(branchDetail[0]?.close_time, 'HH:mm:ss.SSSSSS').format('hh:mm A') : ""}</p>
                                 </div>
@@ -165,13 +165,13 @@ const BranchInfo = () => {
                             
                            
                             <div className="col-lg-4">
-                            <label className="text-info">Week Off</label>
+                            <label className="textcolour">Week Off</label>
                                 <div className="shadow-none p-1 bg-light rounded">
                                     <p className="m-0">{branchDetail[0]?.week_off}</p>
                                 </div>
                             </div>
                             <div className="col-lg-4">
-                            <label className="text-info">Slot Duration</label>
+                            <label className="textcolour">Slot Duration</label>
                                 <div className="shadow-none p-1 bg-light rounded">
                                     <p className="m-0">{branchDetail[0]?.appoint_slot_duration}</p>
                                 </div>
@@ -271,5 +271,8 @@ th{
   position: fixed;
   min-width: 100%;
   z-index: 100;
+}
+.textcolour{
+  color: #213555;
 }
 `;

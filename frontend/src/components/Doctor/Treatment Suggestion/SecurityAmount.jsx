@@ -666,4 +666,8 @@ const Container = styled.div`
   .btnbox {
     margin-top: 2rem;
   }
+  th,
+  td {
+    text-wrap: nowrap;
+  }
 `;

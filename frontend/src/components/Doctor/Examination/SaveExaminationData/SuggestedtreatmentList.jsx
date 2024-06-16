@@ -107,10 +107,10 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
             >
               <thead className="">
                 <tr>
-                  <th>disease</th>
-                  <th>Treatment</th>
-                  <th>Treatment Cost</th>
-                  <th>Total Req. Sitting</th>
+                  <th className="word-wrap">disease</th>
+                  <th className="word-wrap">Treatment</th>
+                  <th className="word-wrap">Treatment Cost</th>
+                  <th className="word-wrap">Total Req. Sitting</th>
                   <th className="text-center">Action</th>
                 </tr>
               </thead>
@@ -192,4 +192,9 @@ const SuggestedtreatmentList = ({ tpid, getPatientData }) => {
 };
 
 export default SuggestedtreatmentList;
-const Container = styled.div``;
+const Container = styled.div`
+  th,
+  td {
+    text-wrap: nowrap;
+  }
+`;

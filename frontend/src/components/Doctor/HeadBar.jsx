@@ -98,6 +98,8 @@ export default HeadBar;
 const Wrapper = styled.div`
   nav {
     width: 100%;
+    /* position: fixed; */
+    /* margin-bottom: 40%; */
     @media (min-width: 820px) and (max-width: 1024px) {
       width: 100%;
     }

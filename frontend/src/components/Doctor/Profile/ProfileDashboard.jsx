@@ -24,9 +24,7 @@ const ProfileDashboard = () => {
                   </div>
                 </div>
               </div>
-              <div className="row d-flex justify-content-around ms-4">
-
-              </div>
+              <div className="row d-flex justify-content-around ms-4"></div>
               <div className="row">
                 <Profile />
               </div>
@@ -35,8 +33,8 @@ const ProfileDashboard = () => {
         </div>
       </div>
     </Wrapper>
-  )
-}
+  );
+};
 
 export default ProfileDashboard;
 const Wrapper = styled.div`
@@ -52,13 +50,14 @@ const Wrapper = styled.div`
     width: 100%;
     height: 54rem;
     background-color: #004aad;
-}
-.head3{
-  font-family: 'Poppins', sans-serif;
-  font-size: 2.5rem;
- }
- .para{
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-size: 1.5rem;
- }
+  }
+  .head3 {
+    font-family: "Poppins", sans-serif;
+    font-size: 2.5rem;
+  }
+  .para {
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+      "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-size: 1.5rem;
+  }
 `;

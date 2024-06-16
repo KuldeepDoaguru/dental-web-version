@@ -259,14 +259,14 @@ const AppointTable = () => {
       <div className="container-fluid pt-4">
         <div className="widget-area-2 proclinic-box-shadow" id="tableres">
           <div className="mb-3 widget-header appointMain">
-            <div className="row">
-              <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+            <div className="row g-2">
+              <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
                 {" "}
                 <h5 className="widget-title m-0 pt-2" id="title">
                   Current Appointment : Total - {filteredData.length}
                 </h5>
               </div>
-              <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+              <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
                 {" "}
                 <div className="d-flex justify-content-center align-items-center">
                   <div className="pt-2">
@@ -294,13 +294,13 @@ const AppointTable = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-                <div className="d-flex justify-content-end align-items-center">
+              <div className="col-xxl-4 col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div className="d-flex justify-content-start align-items-center">
                   <h5>Search Patient :</h5>
                   <input
                     type="text"
-                    placeholder="Search Name or Number or UHID"
-                    className=" mx-1 p-1 rounded searchint"
+                    placeholder="Search Name, Number or UHID"
+                    className="mx-1 p-1 rounded searchint"
                     value={keyword}
                     onChange={handleSearch}
                   />
@@ -707,7 +707,7 @@ const Wrapper = styled.div`
     }
     @media screen and (min-width: 750px) and (max-width: 850px) {
       h5 {
-        font-size: 10px;
+        font-size: 20px;
         margin: 0 0 0 10px;
       }
       .arrow {
@@ -720,7 +720,7 @@ const Wrapper = styled.div`
     }
     @media screen and (min-width: 851px) and (max-width: 1024px) {
       h5 {
-        font-size: 15px;
+        font-size: 20px;
         margin: 0 0 0 10px;
       }
       .arrow {
@@ -768,8 +768,8 @@ const Wrapper = styled.div`
 
   .searchint {
     width: 50%;
-    @media screen and (min-width: 851px) and (max-width: 1024px) {
-      width: 50% !important;
+    @media screen and (min-width: 820px) and (max-width: 1100px) {
+      width: 75% !important;
     }
   }
 `;

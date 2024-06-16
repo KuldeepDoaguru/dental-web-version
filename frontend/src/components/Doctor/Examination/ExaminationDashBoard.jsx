@@ -2,9 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import HeadBar from "../HeadBar";
 import SideBar from "../SideBar";
-import {useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ExaminationDashTwo from "./ExaminationDashTwo";
-
 
 const ExaminationDashBoard = () => {
   const { id } = useParams();
@@ -21,7 +20,7 @@ const ExaminationDashBoard = () => {
                 <SideBar />
               </div>
               <div className="col-lg-11 col-11 ps-0">
-                <ExaminationDashTwo /> 
+                <ExaminationDashTwo />
               </div>
             </div>
           </div>
@@ -33,5 +32,5 @@ const ExaminationDashBoard = () => {
 
 export default ExaminationDashBoard;
 const Wrapper = styled.div`
-background-color: #f0f8ff;
+  background-color: #f0f8ff;
 `;

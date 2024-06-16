@@ -125,6 +125,7 @@ const Wrapper = styled.div`
   #sidebar {
     width: 100%;
     height: 82rem;
+    /* margin-top: 55%; */
     background-color: #0dcaf0;
     @media screen and (max-width: 768px) {
       width: 100%;

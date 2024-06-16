@@ -24,7 +24,7 @@ const SiderAdmin = () => {
     <>
       <Container>
         <div className="px-sm-2 px-0" id="sidebar">
-          <div className="d-flex flex-column align-items-center  px-3 pt-2">
+          <div className="d-flex flex-column align-items-center  px-3 pt-4">
             <ul
               className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center "
               id="menu"
@@ -40,7 +40,7 @@ const SiderAdmin = () => {
                   <div>
                     <h3
                       className=" d-none d-sm-inline icon-view icon-view"
-                      id="navleft1"
+                      id="navleft2"
                     >
                       Dashboard
                     </h3>
@@ -82,7 +82,7 @@ const SiderAdmin = () => {
                   <div>
                     <h3
                       className=" d-none d-sm-inline icon-view"
-                      id="navleft"
+                      id="navleft2"
                     >
                       Bills
                     </h3>
@@ -120,7 +120,7 @@ const SiderAdmin = () => {
                   <div>
                     <h3
                       className=" d-none d-sm-inline icon-view icon-view"
-                      id="navleft"
+                      id="navleft2"
                     >
                       Patient
                     </h3>
@@ -140,7 +140,7 @@ const SiderAdmin = () => {
                   <div>
                     <h3
                       className=" d-none d-sm-inline icon-view"
-                      id="navleft"
+                      id="navleft2"
                     >
                       Manage Staff
                     </h3>
@@ -161,7 +161,7 @@ const SiderAdmin = () => {
                   <div>
                     <h3
                       className=" d-none d-sm-inline icon-view"
-                      id="navleft"
+                      id="navleft2"
                     >
                       Lab
                     </h3>
@@ -192,16 +192,16 @@ const SiderAdmin = () => {
               {/* </li> */} 
               {/* <hr /> */}
 
-              <li>
+              {/* <li>
                 <Link
                   to="/leave-management"
                   className={`link-div ${getSidebarClass("/leave-management")}`}
                 >
                   <div>
                     {/* <i className="fs-4 bi bi-camera-video"></i> */}
-                    <FcLeave className="fs-4 bi bi-camera-video" />
+                    {/* <FcLeave className="fs-4 bi bi-camera-video" /> */}
                     {/* <IoIosPeople  /> */}
-                  </div>
+                  {/* </div>
                   <div>
                     <h3
                       className=" d-none d-sm-inline icon-view"
@@ -211,8 +211,8 @@ const SiderAdmin = () => {
                     </h3>
                   </div>
                 </Link>
-              </li>
-              <hr />
+              </li> */}
+
               <li>
                 <Link
                   to="/admin-reports-dashboard"
@@ -227,7 +227,7 @@ const SiderAdmin = () => {
                   <div>
                     <h3
                       className=" d-none d-sm-inline icon-view"
-                      id="navleft"
+                      id="navleft2"
                     >
                       Report
                     </h3>
@@ -270,7 +270,7 @@ const Container = styled.div`
       font-size: 12px;
     }
     @media (min-width: 1281px) and (max-width: 2000px) {
-      font-size: 16px;
+      font-size: 12px;
     }
   }
   #navleft {
@@ -310,7 +310,7 @@ const Container = styled.div`
     color: red;
   }
 
-  .link-div {
+  /* .link-div {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -324,8 +324,43 @@ const Container = styled.div`
     background-color: #9af5c996;
     padding: 1rem;
     box-shadow: 0px 0px 16px #9af5c996;
+  } */
+    .nav-dash {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
 
+  .link-div {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    @media screen and (max-width: 820px) {
+      font-size: smaller;
+    }
+  }
 
+  .nav-link {
+    text-align: center;
+    @media screen and (max-width: 820px) {
+      width: auto !important;
+    }
+  }
+
+  hr {
+    color: white;
+  }
+
+  .active-nav {
+    background-color: #9af5c996;
+    padding: 6px;
+    box-shadow: 0px 0px 16px #9af5c996;
+  }
+  a {
+    text-decoration: none;
+  }
 
 `;

@@ -651,9 +651,6 @@
 //   }
 // `;
 
-
-
-
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -672,9 +669,9 @@ import Lottie from "react-lottie";
 const CalenderSetting = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
-  
+
   const branch = user.branch_name;
-  
+
   const location = useLocation();
   const [showAddBlockDays, setShowAddBlockDays] = useState(false);
   const [showEditBlockDays, setShowEditBlockDays] = useState(false);
@@ -788,6 +785,7 @@ const CalenderSetting = () => {
   const closeUpdatePopup = () => {
     setShowAddBlockDays(false);
     setShowEditBlockDays(false);
+    getHolidayList();
     setHolidays({
       branch_name: branch,
       holiday_name: "",
@@ -1027,7 +1025,10 @@ const CalenderSetting = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-11 ps-0" style={{marginTop:"5rem"}}>
+              <div
+                className="col-lg-11 col-11 ps-0"
+                style={{ marginTop: "5rem" }}
+              >
                 {/* <div className="container-fluid mt-3">
                   <div className="d-flex justify-content-between">
                     <BranchSelector />
@@ -1193,67 +1194,75 @@ const CalenderSetting = () => {
                       </div>
                     </div>
                     {loading ? (
-            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
-          ) : (
-            <>
-                    <div class="table-responsive rounded">
-                      <table class="table table-bordered rounded shadow">
-                        <thead className="table-head">
-                          <tr>
-                            <th className="table-sno sticky">Holiday Name</th>
-                            <th className="table-small sticky">Date</th>
-                            <th className="sticky">Start Time</th>
-                            <th className="sticky">End Time</th>
-                            <th className="table-small sticky">Notes</th>
-                            <th className="table-small sticky">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {holidayList?.map((item) => (
-                            <>
-                              <tr className="table-row">
-                                <td>{item.holiday_name}</td>
-                                <td className="table-sno">
-                                  {/* {item.holiday_date.split("T")[0]} */}
-                                  {ConvertToIST(item.holiday_date)}
-                                </td>
-                                <td className="table-small">
-                                  {item.holiday_start_time?.split(".")[0]}
-                                </td>
-                                <td className="table-small">
-                                  {item.holiday_end_time?.split(".")[0]}
-                                </td>
-                                <td className="table-small">{item.notes}</td>
-
-                                <td>
-                                  <button
-                                    className="btn btn-warning"
-                                    onClick={() =>
-                                      openEditBlockDaysPopup(
-                                        item.holiday_id,
-                                        item
-                                      )
-                                    }
-                                  >
-                                    Edit
-                                  </button>
-                                  <button
-                                    className="btn btn-danger mx-1"
-                                    onClick={() =>
-                                      deleteHoliday(item.holiday_id)
-                                    }
-                                  >
-                                    Delete
-                                  </button>
-                                </td>
+                      <Lottie
+                        options={defaultOptions}
+                        height={300}
+                        width={400}
+                      ></Lottie>
+                    ) : (
+                      <>
+                        <div class="table-responsive rounded">
+                          <table class="table table-bordered rounded shadow">
+                            <thead className="table-head">
+                              <tr>
+                                <th className="table-sno sticky">
+                                  Holiday Name
+                                </th>
+                                <th className="table-small sticky">Date</th>
+                                <th className="sticky">Start Time</th>
+                                <th className="sticky">End Time</th>
+                                <th className="table-small sticky">Notes</th>
+                                <th className="table-small sticky">Actions</th>
                               </tr>
-                            </>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                    </>
-          )}
+                            </thead>
+                            <tbody>
+                              {holidayList?.map((item) => (
+                                <>
+                                  <tr className="table-row">
+                                    <td>{item.holiday_name}</td>
+                                    <td className="table-sno">
+                                      {/* {item.holiday_date.split("T")[0]} */}
+                                      {ConvertToIST(item.holiday_date)}
+                                    </td>
+                                    <td className="table-small">
+                                      {item.holiday_start_time?.split(".")[0]}
+                                    </td>
+                                    <td className="table-small">
+                                      {item.holiday_end_time?.split(".")[0]}
+                                    </td>
+                                    <td className="table-small">
+                                      {item.notes}
+                                    </td>
+
+                                    <td>
+                                      <button
+                                        className="btn btn-warning"
+                                        onClick={() =>
+                                          openEditBlockDaysPopup(
+                                            item.holiday_id,
+                                            item
+                                          )
+                                        }
+                                      >
+                                        Edit
+                                      </button>
+                                      <button
+                                        className="btn btn-danger mx-1"
+                                        onClick={() =>
+                                          deleteHoliday(item.holiday_id)
+                                        }
+                                      >
+                                        Delete
+                                      </button>
+                                    </td>
+                                  </tr>
+                                </>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1267,60 +1276,83 @@ const CalenderSetting = () => {
           >
             <div className="popup">
               <h4 className="text-center">Add Block Day</h4>
+              <hr />
               <form className="d-flex flex-column" onSubmit={addHolidays}>
-                <input
-                  type="text"
-                  placeholder="holiday name"
-                  className="rounded p-2"
-                  name="holiday_name"
-                  value={holidays.holiday_name}
-                  onChange={handleHoliday}
-                />
-                <br />
-                <input
-                  type="date"
-                  placeholder="select date"
-                  className="rounded p-2"
-                  name="holiday_date"
-                  value={holidays.holiday_date}
-                  onChange={handleHoliday}
-                />
-                <br />
-                <input
-                  type="time"
-                  placeholder="Add start time"
-                  className="rounded p-2"
-                  name="holiday_start_time"
-                  value={holidays.holiday_start_time}
-                  onChange={handleHoliday}
-                />
-                <br />
-                <input
-                  type="time"
-                  placeholder="Add end time"
-                  className="rounded p-2"
-                  name="holiday_end_time"
-                  value={holidays.holiday_end_time}
-                  onChange={handleHoliday}
-                />
-                <br />
-                <input
-                  type="text"
-                  placeholder="Add Notes"
-                  className="rounded p-2"
-                  name="notes"
-                  value={holidays.notes}
-                  onChange={handleHoliday}
-                />
-                <br />
+                <div className="row g-2">
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <label htmlFor="" className="form-label">
+                      Holiday Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="holiday name"
+                      className="form-control rounded p-2"
+                      name="holiday_name"
+                      value={holidays.holiday_name}
+                      onChange={handleHoliday}
+                    />
+                  </div>
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <label htmlFor="" className="form-label">
+                      Holiday Date
+                    </label>
+                    <input
+                      type="date"
+                      placeholder="select date"
+                      className="form-control rounded p-2"
+                      name="holiday_date"
+                      value={holidays.holiday_date}
+                      onChange={handleHoliday}
+                    />
+                  </div>
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <label htmlFor="" className="form-label">
+                      Holiday Start Time
+                    </label>
+                    <input
+                      type="time"
+                      placeholder="Add start time"
+                      className="form-control rounded p-2"
+                      name="holiday_start_time"
+                      value={holidays.holiday_start_time}
+                      onChange={handleHoliday}
+                    />
+                  </div>
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <label htmlFor="" className="form-label">
+                      Holiday End Time
+                    </label>
+                    <input
+                      type="time"
+                      placeholder="Add end time"
+                      className="form-control rounded p-2"
+                      name="holiday_end_time"
+                      value={holidays.holiday_end_time}
+                      onChange={handleHoliday}
+                    />
+                  </div>
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <label htmlFor="" className="form-label">
+                      Notes
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Add Notes"
+                      className="form-control rounded p-2"
+                      name="notes"
+                      value={holidays.notes}
+                      onChange={handleHoliday}
+                    />
+                  </div>
+                </div>
 
-                <div className="d-flex justify-content-evenly">
+                <div className="d-flex justify-content-start">
                   <button type="submit" className="btn btn-success mt-2">
                     Save
                   </button>
                   <button
                     type="button"
-                    className="btn btn-danger mt-2"
+                    className="btn btn-danger mt-2 mx-2"
                     onClick={closeUpdatePopup}
                   >
                     Cancel
@@ -1340,61 +1372,84 @@ const CalenderSetting = () => {
             className={`popup-container${showEditBlockDays ? " active" : ""}`}
           >
             <div className="popup">
-              <h4 className="text-center">Edit Drugs Details</h4>
+              <h4 className="text-center">Edit Block Day Details</h4>
+              <hr />
               <form className="d-flex flex-column" onSubmit={updateHolidetails}>
-                <input
-                  type="text"
-                  placeholder="holiday name"
-                  className="rounded p-2"
-                  name="holiday_name"
-                  value={upHolidays.holiday_name}
-                  onChange={handleHolidayUpdate}
-                />
-                <br />
-                <input
-                  type="date"
-                  placeholder="select date"
-                  className="rounded p-2"
-                  name="holiday_date"
-                  value={upHolidays.holiday_date}
-                  onChange={handleHolidayUpdate}
-                />
-                <br />
-                <input
-                  type="time"
-                  placeholder="Add start time"
-                  className="rounded p-2"
-                  name="holiday_start_time"
-                  value={upHolidays.holiday_start_time}
-                  onChange={handleHolidayUpdate}
-                />
-                <br />
-                <input
-                  type="time"
-                  placeholder="Add end time"
-                  className="rounded p-2"
-                  name="holiday_end_time"
-                  value={upHolidays.holiday_end_time}
-                  onChange={handleHolidayUpdate}
-                />
-                <br />
-                <input
-                  type="text"
-                  placeholder="Add Notes"
-                  className="rounded p-2"
-                  name="notes"
-                  value={upHolidays.notes}
-                  onChange={handleHolidayUpdate}
-                />
-                <br />
+                <div className="row g-2">
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <label htmlFor="" className="form-label">
+                      Holiday Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="holiday name"
+                      className="form-control rounded p-2"
+                      name="holiday_name"
+                      value={upHolidays.holiday_name}
+                      onChange={handleHolidayUpdate}
+                    />
+                  </div>
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <label htmlFor="" className="form-label">
+                      Holiday Date
+                    </label>
+                    <input
+                      type="date"
+                      placeholder="select date"
+                      className="form-control rounded p-2"
+                      name="holiday_date"
+                      value={upHolidays.holiday_date}
+                      onChange={handleHolidayUpdate}
+                    />
+                  </div>
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <label htmlFor="" className="form-label">
+                      Holiday Start Time
+                    </label>
+                    <input
+                      type="time"
+                      placeholder="Add start time"
+                      className="form-control rounded p-2"
+                      name="holiday_start_time"
+                      value={upHolidays.holiday_start_time}
+                      onChange={handleHolidayUpdate}
+                    />
+                  </div>
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <label htmlFor="" className="form-label">
+                      Holiday End Time
+                    </label>
+                    <input
+                      type="time"
+                      placeholder="Add end time"
+                      className="form-control rounded p-2"
+                      name="holiday_end_time"
+                      value={upHolidays.holiday_end_time}
+                      onChange={handleHolidayUpdate}
+                    />
+                  </div>
+                  <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <label htmlFor="" className="form-label">
+                      Notes
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Add Notes"
+                      className="form-control rounded p-2"
+                      name="notes"
+                      value={upHolidays.notes}
+                      onChange={handleHolidayUpdate}
+                    />
+                  </div>
+                </div>
 
-                <div className="d-flex justify-content-evenly">
+                <div className="d-flex justify-content-start">
                   <button type="submit" className="btn btn-success mt-2">
                     Save
                   </button>
                   <button
                     type="button"
-                    className="btn btn-danger mt-2"
+                    className="btn btn-danger mt-2 mx-2"
                     onClick={closeUpdatePopup}
                   >
                     Cancel
@@ -1415,7 +1470,7 @@ const CalenderSetting = () => {
 export default CalenderSetting;
 const Container = styled.div`
   .banner-mid {
-    background-color:  #1abc9c;
+    background-color: #1abc9c;
     padding: 1rem;
     display: flex;
     justify-content: space-between;
@@ -1463,7 +1518,7 @@ const Container = styled.div`
   }
 
   th {
-    background-color:  #1abc9c;;
+    background-color: #1abc9c;
     color: white;
     white-space: nowrap;
   }
@@ -1473,7 +1528,7 @@ const Container = styled.div`
     color: white;
     z-index: 1;
   }
-  .table-responsive{
+  .table-responsive {
     height: 20rem;
   }
 `;

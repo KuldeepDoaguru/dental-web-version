@@ -203,7 +203,7 @@ const formatDate = (dateString) => {
                     <IoArrowBackSharp />
                   </div>
                   </div>
-                  <div className="col-9">
+                  <div className="col-lg-9 text-end">
                   <MarkAttendance/>
                   </div>
                 
@@ -215,10 +215,10 @@ const formatDate = (dateString) => {
                     <div className="row mt-3">
                       <div className="col-12">
                         <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                          <div class="container d-flex justify-content-center">
+                          <div class="container d-flex justify-content-center main">
                             <h2 className="">Attendance and Leave Details</h2>
                           </div>
-                          <div className="">
+                          <div className="btnn">
                           <ApplyLeave/>
                           </div>
                         </nav>
@@ -481,6 +481,18 @@ const Container = styled.div`
   position: fixed;
   min-width: 100%;
   z-index: 100;
+}
+.main{
+  @media (min-width: 768px) and (max-width: 1020px) {
+    margin-left: -3rem;
+    }
+    
+}
+.btnn{
+  @media (min-width: 768px) and (max-width: 1020px) {
+    margin-left: -9rem;
+    }
+    
 }
 
 `;

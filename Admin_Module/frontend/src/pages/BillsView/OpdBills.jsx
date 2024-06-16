@@ -107,7 +107,7 @@ const OpdBills = () => {
     <>
       <Container>
         <div className="">
-          <div>
+          <div className="d-flex justify-content-between align-items-end">
             <input
               type="text"
               placeholder="Search Patient Name or UHID  "
@@ -115,6 +115,7 @@ const OpdBills = () => {
               value={keyword}
               onChange={(e) => setkeyword(e.target.value.toLowerCase())}
             />
+           <p className="fw-bold">Total OPD Bills : {appointmentList.length}</p>
           </div>
         </div>
 

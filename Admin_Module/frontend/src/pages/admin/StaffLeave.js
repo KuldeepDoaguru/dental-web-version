@@ -408,7 +408,7 @@ const searchFilter = leaveData.filter((item) => {
                     {/* <label>Employee Name :</label> */}
                     <input
                       type="text"
-                      placeholder="search employee name or uhid"
+                      placeholder="search employee name or emp_id"
                       className=""
                       value={keyword}
                       onChange={(e) => setkeyword(e.target.value.toLowerCase())}

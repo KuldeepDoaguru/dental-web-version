@@ -151,7 +151,7 @@ const TreatBills = () => {
     getBillDetailsByBid();
   }, [selectedItem]);
 
-  console.log(listBills[0]?.payment_date_time);
+  console.log(listBills.length);
   console.log(selectedItem);
   console.log(placehold);
 
@@ -177,6 +177,8 @@ const TreatBills = () => {
   // const searchFilter = listBills.filter((lab) =>
   //   lab.patient_name.toLowerCase().trim().includes(keyword.toLowerCase().trim())
   // );
+
+  
   const searchFilter = listBills.filter((bill) => {
     const lowerKeyword = keyword.toLowerCase().trim();
     return (
@@ -213,7 +215,7 @@ const TreatBills = () => {
     <>
       <Container>
         <div className="">
-          <div>
+          <div className="d-flex justify-content-between align-items-end">
             {/* <label>Patient Name :</label> */}
             <input
               type="text"
@@ -222,7 +224,9 @@ const TreatBills = () => {
               value={keyword}
               onChange={(e) => setkeyword(e.target.value.toLowerCase())}
             />
+              <p className="fw-bold">Total Treatment Bills : {listBills.length}</p>
           </div>
+        
           <div>
             {/* <button
                         className="btn btn-success"
@@ -240,7 +244,7 @@ const TreatBills = () => {
               <>
   
 
-                <div class="table-responsive rounded mt-4">
+                {/* <div class="table-responsive rounded mt-4">
                   <table class="table table-bordered rounded shadow">
                     <thead className="table-head">
                       <tr>
@@ -255,7 +259,7 @@ const TreatBills = () => {
                         <th>Paid Amount</th>
                         <th>Payment Status</th>
                         <th>Payment Date</th>
-                        <th>Pending Amount</th>
+                        <th> Amount</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -290,7 +294,67 @@ const TreatBills = () => {
                       ))}
                     </tbody>
                   </table>
-                </div>
+                </div> */}
+   <div class="table-responsive rounded mt-4">
+        <table class="table table-bordered rounded shadow mx-3">
+                    <thead className="table-head">
+                      <tr>
+                        <th className="table-sno">Bill ID</th>
+                        <th>Bill Date</th>
+                        <th className="table-small">Patient UHID</th>
+                        <th className="table-small">Treatment Package ID</th>
+                        <th className="table-small">Patient Name</th>
+                        <th className="table-small">Patient Mobile</th>
+                        <th className="table-small">Patient Email</th>
+                        <th className="table-small">Total Amount</th>
+                        <th>Paid Amount</th>
+                        <th>Paid by Security Amount</th>
+                        <th>Payment Status</th>
+                        <th>Payment Date</th>
+                        <th>Pending Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {displayedAppointments?.map((item) => (
+                        <>
+                          <tr className="table-row">
+                            <td className="table-sno">{item.bill_id}</td>
+                            <td className="table-small">
+                              {item.bill_date?.split("T")[0]}
+                            </td>
+                            <td className="table-small">
+                              <Link
+                                to={`/patient-profile/${item.uhid}`}
+                                style={{ textDecoration: "none" }}
+                              >
+                                {item.uhid}
+                              </Link>
+                            </td>
+                            <td className="table-small">{item.tp_id}</td>
+                            <td className="table-small">{item.patient_name}</td>
+                            <td>{item.patient_mobile}</td>
+                            <td>{item.patient_email}</td>
+                            <td className="table-small">{item.total_amount}</td>
+                            <td className="table-small">{item.paid_amount}</td>
+                            <td>{item.pay_by_sec_amt}</td>
+                            <td>{item.payment_status}</td>
+                            <td>{item?.payment_date_time}</td>
+                            <td>
+                              <td>
+                                {item.paid_amount + item.pay_by_sec_amt >=
+                                item.total_amount
+                                  ? 0
+                                  : item.total_amount -
+                                    (item.paid_amount + item.pay_by_sec_amt)}
+                              </td>
+                            </td>
+                          </tr>
+                        </>
+                      ))}
+                    </tbody>
+                  </table>
+                  </div>
+
                 <PaginationContainer>
                   <ReactPaginate
                     previousLabel={"previous"}

@@ -974,19 +974,16 @@ const getAvailableEmp = (req, res) => {
 //   }
 // };
 const getPatientDetailsByBranch = (req, res) => {
-  try {
-    const branch = req.params.branch;
-    const getQuery = `SELECT * FROM patient_details WHERE branch_name = ?`;
-    db.query(getQuery, branch, (err, result) => {
-      if (err) {
-        res.status(400).send(err);
-      }
-      res.status(200).send(result);
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: "Internal server error" });
-  }
+  const branch = req.params.branch;
+  const getQuery = `SELECT * FROM patient_details WHERE branch_name = ?`;
+
+  db.query(getQuery, branch, (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(400).send({ success: false, message: err.message });
+    }
+    res.status(200).send({ success: true, data: result });
+  });
 };
 const getBillsByBranch = (req, res) => {
   try {
@@ -1820,6 +1817,22 @@ const getLabData = (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
+
+const getRefundAmountData = (req, res)=>{
+  try {
+    const selectQuery = "SELECT * FROM security_amount WHERE refund_amount IS NOT NULL";
+    db.query(selectQuery, (err, result)=>{
+      if(err){
+        res.status(400).json({success:false, message:err.message})
+      }
+      res.status(200).send(result)
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({success:false, message:"Internal server error"})
+  }
+}
 
 
 module.exports = {

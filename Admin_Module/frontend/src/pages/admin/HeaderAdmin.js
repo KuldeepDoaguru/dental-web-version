@@ -164,6 +164,11 @@ const HeaderAdmin = () => {
                       Attendance
                       </Link>
                     </li>
+                    <hr className="dropdown-divider" />
+                    <li>
+                      <Link className="dropdown-item" to="/leave-management">
+                      Leave Detail                      </Link>
+                    </li>
                     <li>
                       <hr className="dropdown-divider" />
                     </li>
@@ -345,6 +350,7 @@ const Wrapper = styled.div`
     min-width: 100%;
     z-index: 100;
     /* margin-bottom: 4rem; */
+  
   }
 
   ul {

@@ -186,7 +186,7 @@ const LabPatientReport = () => {
                               <div className="">
                                 <input
                                   type="text"
-                                  placeholder="Search by patient name and uhid "
+                                  placeholder="Search by patient name and UHID "
                                   value={searchQuery}
                                   onChange={(e) =>
                                     setSearchQuery(e.target.value)

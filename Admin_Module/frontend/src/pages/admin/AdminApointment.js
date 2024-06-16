@@ -532,10 +532,6 @@
 //   }
 // `;
 
-
-
-
-
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import HeaderAdmin from "./HeaderAdmin";
@@ -546,6 +542,7 @@ import axios from "axios";
 import cogoToast from "cogo-toast";
 import animationData from "../animation/loading-effect.json";
 import Lottie from "react-lottie";
+import moment from "moment";
 
 const AdminAppointment = () => {
   const navigate = useNavigate();
@@ -566,7 +563,7 @@ const AdminAppointment = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const itemsPerPage = 10;
 
   const handleInputChange = (event) => {
@@ -689,7 +686,6 @@ const AdminAppointment = () => {
     );
   };
 
- 
   // const filterBySearchQuery = (data) => {
   //   if (searchQuery === "") {
   //     return data;
@@ -704,10 +700,11 @@ const AdminAppointment = () => {
     if (trimmedSearchQuery === "") {
       return data;
     }
-    return data.filter((item) =>
-      item.patient_name.toLowerCase().includes(trimmedSearchQuery) ||
-      item.patient_uhid.toLowerCase().includes(trimmedSearchQuery) ||
-      item.mobileno.includes(trimmedSearchQuery)
+    return data.filter(
+      (item) =>
+        item.patient_name.toLowerCase().includes(trimmedSearchQuery) ||
+        item.patient_uhid.toLowerCase().includes(trimmedSearchQuery) ||
+        item.mobileno.includes(trimmedSearchQuery)
     );
   };
 
@@ -734,7 +731,6 @@ const AdminAppointment = () => {
     },
   };
 
-  
   return (
     <>
       <Container>
@@ -752,102 +748,124 @@ const AdminAppointment = () => {
                 <div className="row d-flex justify-content-between">
                   <div className="col-12 col-md-12 mt-4">
                     <div className="d-flex justify-content-between"></div>
-  
+
                     <h2 className="text-center"> Appointment Details </h2>
                     <div className="container-fluid mt-3">
-                    <div className="d-flex justify-content-between">
-                      <input
-                        type="text"
-                        placeholder="Search by Patient Name or UHID or mobile number"
-                        value={searchQuery}
-                        onChange={(e) => {
-                          setSearchQuery(e.target.value);
-                          setCurrentPage(1); // Reset to the first page on search
-                        }}
-                        
-                        className="search-input"
-                      />
-                    </div>
+                      <div className="d-flex justify-content-between align-items-end">
+                        <input
+                          type="text"
+                          placeholder="Search by Patient Name or UHID or mobile number"
+                          value={searchQuery}
+                          onChange={(e) => {
+                            setSearchQuery(e.target.value);
+                            setCurrentPage(1); // Reset to the first page on search
+                          }}
+                          className="search-input"
+                        />
+                        <p className="fw-bold">Total Appointments : {filteredData.length}</p>
+                      </div>
                       <div className="table-responsive rounded">
-                      {loading ? (
-            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
-          ) : (
-            <>
-
-{currentItems.length === 0 ? (
-          <div className='mb-2 fs-4 fw-bold text-center'>No appointent detail available</div>
-          ) : (
-
-<>
-                        <table className="table table-bordered rounded shadow">
-                          <thead className="table-head">
-                            <tr>
-                              <th className="table-sno">Appointment ID</th>
-                              <th>Patient UHID</th>
-                              <th className="table-small">
-                                Treatment Package ID
-                              </th>
-                              <th className="table-small">Patient Name</th>
-                              <th className="table-small">Contact Number</th>
-                              <th className="table-small">Assigned Doctor</th>
-                              <th className="table-small">Appointed by</th>
-                              <th className="table-small">Updated by</th>
-                              <th className="table-small">
-                                Appointment Date & Time
-                              </th>
-                              <th className="table-small">
-                                Appointment Status
-                              </th>
-                              <th>Cancel Reason</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {currentItems.map((item) => (
-                              <tr className="table-row" key={item.appoint_id}>
-                                <td className="table-sno">
-                                  {item.appoint_id}
-                                </td>
-                                <td className="table-small">
-                                  <Link
-                                    to={`/patient-profile/${item.patient_uhid}`}
-                                    style={{ textDecoration: "none" }}
-                                  >
-                                    {item.patient_uhid}
-                                  </Link>
-                                </td>
-                                <td>{item.tp_id}</td>
-                                <td>{item.patient_name}</td>
-                                <td className="table-small">
-                                  {item.mobileno}
-                                </td>
-                                <td className="table-small">
-                                  {item.assigned_doctor_name}
-                                </td>
-                                <td className="table-small">
-                                  {item.appointment_created_by}
-                                </td>
-                                <td className="table-small">
-                                  {item.updated_by ? item.updated_by : "-"}
-                                </td>
-                                <td className="table-small">
-                                  {item.appointment_dateTime
-                                    ? item.appointment_dateTime.split("T")[0]
-                                    : ""}{" "}
-                                  {item.appointment_dateTime
-                                    ? item.appointment_dateTime.split("T")[1]
-                                    : ""}
-                                </td>
-                                <td>{item.appointment_status}</td>
-                                <td>{item.cancel_reason}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                        </>
-          )
-        }
-                        </>
-          )}
+                        {loading ? (
+                          <Lottie
+                            options={defaultOptions}
+                            height={300}
+                            width={400}
+                          ></Lottie>
+                        ) : (
+                          <>
+                            {currentItems.length === 0 ? (
+                              <div className="mb-2 fs-4 fw-bold text-center">
+                                No appointent detail available
+                              </div>
+                            ) : (
+                              <>
+                                <table className="table table-bordered rounded shadow">
+                                  <thead className="table-head">
+                                    <tr>
+                                      <th className="table-sno">
+                                        Appointment ID
+                                      </th>
+                                      <th>Patient UHID</th>
+                                      <th className="table-small">
+                                        Treatment Package ID
+                                      </th>
+                                      <th className="table-small">
+                                        Patient Name
+                                      </th>
+                                      <th className="table-small">
+                                        Contact Number
+                                      </th>
+                                      <th className="table-small">
+                                        Assigned Doctor
+                                      </th>
+                                      <th className="table-small">
+                                        Appointed by
+                                      </th>
+                                      <th className="table-small">
+                                        Updated by
+                                      </th>
+                                      <th className="table-small">
+                                        Appointment Date & Time
+                                      </th>
+                                      <th className="table-small">
+                                        Appointment Status
+                                      </th>
+                                      <th>Cancel Reason</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {currentItems.map((item) => (
+                                      <tr
+                                        className="table-row"
+                                        key={item.appoint_id}
+                                      >
+                                        <td className="table-sno">
+                                          {item.appoint_id}
+                                        </td>
+                                        <td className="table-small">
+                                          <Link
+                                            to={`/patient-profile/${item.patient_uhid}`}
+                                            style={{ textDecoration: "none" }}
+                                          >
+                                            {item.patient_uhid}
+                                          </Link>
+                                        </td>
+                                        <td className="table-small">
+                                          {item.tp_id}
+                                        </td>
+                                        <td>{item.patient_name}</td>
+                                        <td className="table-small">
+                                          {item.mobileno}
+                                        </td>
+                                        <td className="table-small">
+                                          {item.assigned_doctor_name}
+                                        </td>
+                                        <td className="table-small">
+                                          {item.appointment_created_by}
+                                        </td>
+                                        <td className="table-small">
+                                          {item.appointment_updated_by}
+                                        </td>
+                                        <td className="table-small">
+                                          {/* {item.appointment_dateTime?.split("T")[0]}{" "}
+                                 {item.appointment_dateTime?.split("T")[1]} */}
+                                          {item?.appointment_dateTime
+                                            ? moment(
+                                                item?.appointment_dateTime,
+                                                "YYYY-MM-DDTHH:mm"
+                                              ).format("hh:mm A")
+                                            : ""}
+                                        </td>
+                                        <td>{item.appointment_status}</td>
+                                        <td>{item.cancel_reason}</td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </>
+                            )}
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -889,8 +907,7 @@ const AdminAppointment = () => {
               )}
               <li
                 className={`page-item ${
-                  currentPage ===
-                  Math.ceil(filteredData.length / itemsPerPage)
+                  currentPage === Math.ceil(filteredData.length / itemsPerPage)
                     ? "disabled"
                     : ""
                 }`}
@@ -912,7 +929,6 @@ const AdminAppointment = () => {
       </Container>
     </>
   );
-  
 };
 
 const Container = styled.div`
@@ -956,16 +972,16 @@ const Container = styled.div`
     border-radius: 5px;
     border: 1px solid #ddd;
   }  */
-  
-   th {
-     background-color: #1abc9c;
-     color: white;
-     white-space: nowrap;
-   }
-   td{
+
+  th {
+    background-color: #1abc9c;
+    color: white;
     white-space: nowrap;
-   }
-   input::placeholder {
+  }
+  td {
+    white-space: nowrap;
+  }
+  input::placeholder {
     color: #aaa;
     opacity: 1; /* Ensure placeholder is visible */
     font-size: 1.2rem;
@@ -985,16 +1001,16 @@ const Container = styled.div`
     border-radius: 20px;
     box-sizing: border-box;
     transition: border-color 0.3s ease;
- 
-            @media (min-width: 1279px) and (max-width: 1600px){
-              width: 45%;
-            }
-            @media (min-width: 1024px) and (max-width: 1279px){
-              width: 60%;
-            }
-            @media (min-width: 768px) and (max-width: 1023px){
-              width: 100%;
-            }
+
+    @media (min-width: 1279px) and (max-width: 1600px) {
+      width: 45%;
+    }
+    @media (min-width: 1024px) and (max-width: 1279px) {
+      width: 60%;
+    }
+    @media (min-width: 768px) and (max-width: 1023px) {
+      width: 100%;
+    }
   }
 
   input:focus {
@@ -1003,4 +1019,3 @@ const Container = styled.div`
 `;
 
 export default AdminAppointment;
-

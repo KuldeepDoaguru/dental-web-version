@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FcAlarmClock } from "react-icons/fc";
@@ -13,9 +10,8 @@ import moment from "moment";
 const AdminClinicAct = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
- 
 
-  const branch = user.branch_name
+  const branch = user.branch_name;
   console.log(`User Name: ${branch}`);
   const [showCalender, setShowCalender] = useState(false);
   const [appointmentList, setAppointmentList] = useState([]);
@@ -235,12 +231,12 @@ const AdminClinicAct = () => {
   const filterBilling = treatValue?.filter((item) => {
     if (currentDate) {
       return (
-        item.bill_date?.split("T")[0] === currentDate &&
+        item.bill_date?.split(" ")[0] === currentDate &&
         item.payment_status === "paid"
       );
     }
     return (
-      item.bill_date?.split("T")[0] === todayDate?.split("T")[0] &&
+      item.bill_date?.split(" ")[0] === todayDate?.split("T")[0] &&
       item.payment_status === "paid"
     );
   });
@@ -381,7 +377,7 @@ const AdminClinicAct = () => {
             id="pills-tabContent"
           >
             <div
-              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade show active"
+              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade show active maxHeight"
               id="pills-java"
               role="tabpanel"
               aria-labelledby="pills-java-tab"
@@ -423,7 +419,7 @@ const AdminClinicAct = () => {
             </div>
 
             <div
-              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade"
+              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade maxHeight"
               id="pills-treatment"
               role="tabpanel"
               aria-labelledby="pills-treatment-tab"
@@ -442,43 +438,11 @@ const AdminClinicAct = () => {
                           </h5>
                         </div>
                         <div>
-                          {item.appointment_created_at.split("T")[0] ===
-                          formattedDate ? (
-                            <>
-                              <p className="fw-bold">
-                                {formattedTime >=
-                                item.appointment_created_at
-                                  .split("T")[1]
-                                  ?.split(":")[0]
-                                  ? formattedTime -
-                                    item.appointment_created_at
-                                      .split("T")[1]
-                                      ?.split(":")[0]
-                                  : "0"}{" "}
-                                Hours ago
-                              </p>
-                            </>
-                          ) : (
-                            <>
-                              <p>{item.appointment_created_at.split("T")[0]}</p>
-                            </>
-                          )}
-                          {/* {item.created_at.split("T")[0] ===
-                          formattedDate ? (
-                            <p className="fw-bold">
-                              {formattedTime >=
-                              item.created_at
-                                .split("T")[1]
-                                ?.split(":")[0]
-                                ? getFormattedTimeDifference(
-                                    item.created_at
-                                  )
-                                : "0"}{" "}
-                              Hours ago
-                            </p>
-                          ) : (
-                            <p>{ConvertToIST(item.created_at)}</p>
-                          )} */}
+                          <h6 className="fw-bold">
+                            {moment(item.appointment_created_at).format(
+                              "YYYY-MM-DD hh:mm A"
+                            )}
+                          </h6>
                         </div>
                       </div>
                     </li>
@@ -489,7 +453,7 @@ const AdminClinicAct = () => {
             </div>
 
             <div
-              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade"
+              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade maxHeight"
               id="pills-billing"
               role="tabpanel"
               aria-labelledby="pills-billing-tab"
@@ -502,7 +466,7 @@ const AdminClinicAct = () => {
                         <div>
                           <h5>
                             <FaDotCircle className="mx-1" /> Patient{" "}
-                            {item.patient_name} has paid {item.paid_amount}/-
+                            {item.patient_name} has paid {item.paid_amount === "0" ? item.total_amount : item.paid_amount}/-
                             for the Treatment.
                           </h5>
                         </div>
@@ -533,7 +497,7 @@ const AdminClinicAct = () => {
             </div>
 
             <div
-              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade"
+              className="container-fluid pe-5 ps-5 mb-3 py-4 pb-4 tab-pane fade maxHeight"
               id="pills-Patient"
               role="tabpanel"
               aria-labelledby="pills-Patient-tab"
@@ -571,7 +535,13 @@ const AdminClinicAct = () => {
                             </>
                           ) : (
                             <>
-                              <p>{item.created_at?.split(" ")[0]}</p>
+                              {/* <p>{item.created_at?.split(" ")[0]}</p> */}
+                              {item?.created_at
+                                ? moment(
+                                    item?.created_at,
+                                    "YYYY-MM-DDTHH:mm"
+                                  ).format("hh:mm A")
+                                : ""}
                             </>
                           )}
                         </div>
@@ -591,23 +561,27 @@ const AdminClinicAct = () => {
 
 export default AdminClinicAct;
 const Container = styled.div`
-   .nav-link {
-     color: #1abc9c;
-     background: #e0e0e0;
-   }
+  .nav-link {
+    color: #1abc9c;
+    background: #e0e0e0;
+  }
 
-   .nav-pills .nav-link.active {
-     background-color: #1abc9c;
-   }
+  .nav-pills .nav-link.active {
+    background-color: #1abc9c;
+  }
 
-   ul {
-     li {
-       list-style-type: none;
-     }
-   }
+  ul {
+    li {
+      list-style-type: none;
+    }
+  }
 
-   .tab-content {
-     height: 100%;
-     overflow: auto;
-   }
- `;
+  .tab-content {
+    height: 100%;
+    overflow: auto;
+  }
+
+  .maxHeight {
+    height: 30rem;
+  }
+`;

@@ -67,6 +67,9 @@ const navigate = useNavigate()
   const formattedDate = `${year}-${month}-${day}`;
   console.log(formattedDate);
 
+
+   const formattedForBill = `${day}-${month}-${year}`
+
   //filterForPatAppointToday
   const filterForPatAppointToday = appointmentList?.filter(
     (item) => item.appointment_dateTime?.split("T")[0] === formattedDate
@@ -82,11 +85,11 @@ const navigate = useNavigate()
   console.log(filterForPatTreatToday);
 
   //filter for today's earning
-  console.log(appointmentList[0]?.appointment_dateTime?.split("T")[0]);
+  console.log(appointmentList);
   const filterForEarningToday = appointmentList?.filter(
     (item) =>
-      item.payment_Status === "paid" &&
-      item.appointment_dateTime?.split("T")[0] === formattedDate
+      item.payment_Status === "paid" && item.treatment_provided === "OPD" &&
+      item.created_at?.split(" ")[0] === formattedDate
   );
 
   console.log(filterForEarningToday);
@@ -106,6 +109,7 @@ const navigate = useNavigate()
   };
 
   const totalValue = totalPrice();
+  console.log(totalValue);
 
   const getTreatmentValues = async () => {
     try {
@@ -128,8 +132,8 @@ const navigate = useNavigate()
   console.log(treatValue);
   const filterForEarningTreatToday = treatValue?.filter(
     (item) =>
-      item.payment_status === "paid" &&
-      item.bill_date?.split("T")[0] === formattedDate
+      item.payment_status === "paid" && 
+      item.bill_date?.split(" ")[0] === formattedForBill
   );
 
   console.log(filterForEarningTreatToday);
@@ -141,7 +145,7 @@ const navigate = useNavigate()
         total =
           total +
           parseFloat(item.paid_amount) +
-          parseFloat(item.pay_by_sec_amt);
+        Number(item.pay_by_sec_amt);
       });
       console.log(total);
       return total;

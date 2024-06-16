@@ -47,364 +47,412 @@ import BloodTest from "./components/LabReports/BloodTest";
 import RadiologyTest from "./components/LabReports/RadiologyTest";
 import PendingTest from "./components/LabReports/PendingTest";
 import Compleated from "./components/LabReports/Compleated";
-import AdminAllBills from './pages/AdminAllBills';
+import AdminAllBills from "./pages/AdminAllBills";
+import RefundedAmountReport from "./pages/superAdmin/AllReport/RefundedAmountReport";
 
 const App = () => {
   const user = useSelector((state) => state.user);
   console.log(user);
   return (
     <BrowserRouter>
-    <div style={{overflow:"hidden"}}>
-      <Routes> 
-        <Route path="/" element={ user.currentUser ? <AdminDashboard /> :<UniversalLogin />} />{" "}
-        
-        <Route
-          path="/admin-dashboard"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <AdminDashboard />
-          }
-          
-        />
-        <Route
-          path="/admin-clinic-setting"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <ClinicSetAdmin />
-          }
-        />
-        <Route
-          path="/admin-profile"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <AdminProfile />
-          }
-        />
-        <Route
-          path="/admin-notification"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminNotification />
-            )
-          }
-        />
-        <Route
-          path="/admin-appointment"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <AdminApointment />
-          }
-        />
-        {/* <Route
+      <div style={{ overflow: "hidden" }}>
+        <Routes>
+          <Route
+            path="/"
+            element={user.currentUser ? <AdminDashboard /> : <UniversalLogin />}
+          />{" "}
+          <Route
+            path="/admin-dashboard"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminDashboard />
+              )
+            }
+          />
+          <Route
+            path="/admin-clinic-setting"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <ClinicSetAdmin />
+              )
+            }
+          />
+          <Route
+            path="/admin-profile"
+            element={
+              user.currentUser === null ? <UniversalLogin /> : <AdminProfile />
+            }
+          />
+          <Route
+            path="/admin-notification"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminNotification />
+              )
+            }
+          />
+          <Route
+            path="/admin-appointment"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminApointment />
+              )
+            }
+          />
+          {/* <Route
           path="/admin-bill_section"
           element={
             user.currentUser === null ? <UniversalLogin /> : <AdminBillList />
           }
         /> */}
-        <Route
-          path="/admin-bill_section"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <AdminAllBills />
-          }
-        />
-        <Route
-          path="/admin-inventory"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <AdminInventory />
-          }
-        />
-        <Route
-          path="/admin-add-invetory"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminAddInventory />
-            )
-          }
-        />
-        <Route
-          path="/admin-edit-invetory/:pid"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminEditInventory />
-            )
-          }
-        />
-        <Route
-          path="/admin-doctor_section"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <AdminDocSection />
-          }
-        />
-        <Route
-          path="/admin-doctor-profile"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <AdminDocProfile />
-          }
-        />
-        <Route
-          path="/manage-staff"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminManageStaff />
-            )
-          }
-        />
-        <Route
-          path="/employee-profile/:eid"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminEmployeeProfile />
-            )
-          }
-        />
-        <Route
-          path="/admin-lab-setting"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <AdminLabSetting />
-          }
-        />
-        <Route
-          path="/admin-reports-dashboard"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <AdminReportDash />
-          }
-        />
-        <Route
-          path="/admin-finance-reports"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminFinancialReport />
-            )
-          }
-        />
-        <Route
-          path="/admin-appointment-report"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminAppointmentReport />
-            )
-          }
-        />
-        <Route
-          path="/admin-Billing-report"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminBillingReport />
-            )
-          }
-        />
-        <Route
-          path="/admin-inventory-report"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminInventoryReport />
-            )
-          }
-        />
-        <Route
-          path="/admin-employee-attendance-report"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminEmpAttendReport />
-            )
-          }
-        />
-        <Route
-          path="/admin-employee-details-report"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminEmpDetailReport />
-            )
-          }
-        />
-        <Route
-          path="/admin-lab-details-report"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminLabDetailsRepo />
-            )
-          }
-        />
-        <Route
-          path="/admin-lab-test-report"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminLabTestRepo />
-            )
-          }
-        />
-        <Route
-          path="/admin-lab-task-report"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminLabTaskRepo />
-            )
-          }
-        />
-        <Route
-          path="/admin-calender-setting"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminCalenderSetting />
-            )
-          }
-        />
-        <Route
-          path="/admin-drug-setting"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminDrugSetting />
-            )
-          }
-        />
-        <Route
-          path="/admin-communication-setting"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminCommunicationSetting />
-            )
-          }
-        />
-        <Route
-          path="/admin-prescription-templates"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminPrescriptTemp />
-            )
-          }
-        />
-        <Route
-          path="/admin-treatment-setting"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminTreatSetting />
-            )
-          }
-        />
-        <Route
-          path="/admin-complaint-page"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminComplaintPage />
-            )
-          }
-        />
-        <Route path="/password-reset" element={<PasswordReset />} />
-        <Route
-          path="/patient-list"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminPatientLIst />
-            )
-          }
-        />
-        <Route
-          path="/patient-profile/:pid"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <AdminPatientProfile />
-            )
-          }
-        />
-        <Route
-          path="/attendance-dashboard"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <AttendanceLeave />
-          }
-        />
-        <Route
-          path="/leave-management"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <StaffLeave />
-          }
-        />
-        <Route
-          path="/lab-patient-report"
-          element={
-            user.currentUser === null ? (
-              <UniversalLogin />
-            ) : (
-              <LabPatientReport />
-            )
-          }
-        />
-        <Route
-          path="/OralTest"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <OralTest />
-          }
-        />
-        <Route
-          path="/BloodTest"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <BloodTest />
-          }
-        />
-        <Route
-          path="/RadiologyTest"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <RadiologyTest />
-          }
-        />
-        <Route
-          path="/PendingTest"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <PendingTest />
-          }
-        />
-        <Route
-          path="/Compleated"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <Compleated />
-          }
-        />
-        <Route
-          path="*"
-          element={
-            user.currentUser === null ? <UniversalLogin /> : <ErrorPage />
-          }
-        />
-      </Routes>
+          <Route
+            path="/admin-bill_section"
+            element={
+              user.currentUser === null ? <UniversalLogin /> : <AdminAllBills />
+            }
+          />
+          <Route
+            path="/admin-inventory"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminInventory />
+              )
+            }
+          />
+          <Route
+            path="/admin-add-invetory"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminAddInventory />
+              )
+            }
+          />
+          <Route
+            path="/admin-edit-invetory/:pid"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminEditInventory />
+              )
+            }
+          />
+          <Route
+            path="/admin-doctor_section"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminDocSection />
+              )
+            }
+          />
+          <Route
+            path="/admin-doctor-profile"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminDocProfile />
+              )
+            }
+          />
+          <Route
+            path="/manage-staff"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminManageStaff />
+              )
+            }
+          />
+          <Route
+            path="/employee-profile/:eid"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminEmployeeProfile />
+              )
+            }
+          />
+          <Route
+            path="/admin-lab-setting"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminLabSetting />
+              )
+            }
+          />
+          <Route
+            path="/admin-reports-dashboard"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminReportDash />
+              )
+            }
+          />
+          <Route
+            path="/admin-finance-reports"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminFinancialReport />
+              )
+            }
+          />
+          <Route
+            path="/admin-appointment-report"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminAppointmentReport />
+              )
+            }
+          />
+          <Route
+            path="/admin-refunded-amount-report"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <RefundedAmountReport />
+              )
+            }
+          />
+          <Route
+            path="/admin-Billing-report"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminBillingReport />
+              )
+            }
+          />
+          <Route
+            path="/admin-inventory-report"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminInventoryReport />
+              )
+            }
+          />
+          <Route
+            path="/admin-employee-attendance-report"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminEmpAttendReport />
+              )
+            }
+          />
+          <Route
+            path="/admin-employee-details-report"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminEmpDetailReport />
+              )
+            }
+          />
+          <Route
+            path="/admin-lab-details-report"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminLabDetailsRepo />
+              )
+            }
+          />
+          <Route
+            path="/admin-lab-test-report"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminLabTestRepo />
+              )
+            }
+          />
+          <Route
+            path="/admin-lab-task-report"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminLabTaskRepo />
+              )
+            }
+          />
+          <Route
+            path="/admin-calender-setting"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminCalenderSetting />
+              )
+            }
+          />
+          <Route
+            path="/admin-drug-setting"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminDrugSetting />
+              )
+            }
+          />
+          <Route
+            path="/admin-communication-setting"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminCommunicationSetting />
+              )
+            }
+          />
+          <Route
+            path="/admin-prescription-templates"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminPrescriptTemp />
+              )
+            }
+          />
+          <Route
+            path="/admin-treatment-setting"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminTreatSetting />
+              )
+            }
+          />
+          <Route
+            path="/admin-complaint-page"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminComplaintPage />
+              )
+            }
+          />
+          <Route path="/password-reset" element={<PasswordReset />} />
+          <Route
+            path="/patient-list"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminPatientLIst />
+              )
+            }
+          />
+          <Route
+            path="/patient-profile/:pid"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AdminPatientProfile />
+              )
+            }
+          />
+          <Route
+            path="/attendance-dashboard"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <AttendanceLeave />
+              )
+            }
+          />
+          <Route
+            path="/leave-management"
+            element={
+              user.currentUser === null ? <UniversalLogin /> : <StaffLeave />
+            }
+          />
+          <Route
+            path="/lab-patient-report"
+            element={
+              user.currentUser === null ? (
+                <UniversalLogin />
+              ) : (
+                <LabPatientReport />
+              )
+            }
+          />
+          <Route
+            path="/OralTest"
+            element={
+              user.currentUser === null ? <UniversalLogin /> : <OralTest />
+            }
+          />
+          <Route
+            path="/BloodTest"
+            element={
+              user.currentUser === null ? <UniversalLogin /> : <BloodTest />
+            }
+          />
+          <Route
+            path="/RadiologyTest"
+            element={
+              user.currentUser === null ? <UniversalLogin /> : <RadiologyTest />
+            }
+          />
+          <Route
+            path="/PendingTest"
+            element={
+              user.currentUser === null ? <UniversalLogin /> : <PendingTest />
+            }
+          />
+          <Route
+            path="/Compleated"
+            element={
+              user.currentUser === null ? <UniversalLogin /> : <Compleated />
+            }
+          />
+          <Route
+            path="*"
+            element={
+              user.currentUser === null ? <UniversalLogin /> : <ErrorPage />
+            }
+          />
+        </Routes>
       </div>
     </BrowserRouter>
   );

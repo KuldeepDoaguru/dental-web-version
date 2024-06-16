@@ -126,17 +126,17 @@ const AdminReportDash = () => {
                                 </div>
                               </Link>
                             </div>
-                            {/* <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
-                              <Link to="/admin-lab-task-report">
+                            <div class="col-xl-3 col-lg-3 col-md-5 col-sm-12">
+                              <Link to="/admin-refunded-amount-report">
                                 <div className="card">
                                   <div class="card-body">
                                     <h4 className=" d-flex justify-content-center text-light align-items-center">
-                                      Lab Task Report
+                                      Refunded Amount Report
                                     </h4>
                                   </div>
                                 </div>
                               </Link>
-                            </div> */}
+                            </div>
                           </div>
                         </div>
                       </div>

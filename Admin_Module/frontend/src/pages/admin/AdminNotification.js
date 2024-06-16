@@ -8,12 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import HeaderAdmin from "./HeaderAdmin";
 import SiderAdmin from "./SiderAdmin";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 const AdminNotification = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
- 
+  const goBack = () => {
+    navigate('/');
+  };
   const branch = user.branch_name;
  
   const [notifyList, setNotifyList] = useState([]);
@@ -72,8 +75,11 @@ const AdminNotification = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div className="col-lg-11 col-11 ps-0" style={{marginTop:"4rem"}}>
-                <div className="container-fluid mt-3">
+              <div className="col-lg-11 col-11 ps-0" style={{marginTop:"6rem"}}>
+              <button className="btn btn-success" onClick={goBack}>
+                    <IoMdArrowRoundBack /> Back
+                  </button>
+                <div className="container-fluid mt-2">
                   <div className="d-flex justify-content-between">
                     {/* <BranchSelector /> */}
                     <div>

@@ -60,31 +60,33 @@ const EarnTMAdmin = () => {
     getAppointList();
   }, [user.branch_name]);
 
+  console.log(appointmentList);
+
   const getDate = new Date();
   const year = getDate.getFullYear();
   const month = String(getDate.getMonth() + 1).padStart(2, "0");
   const lastDay = new Date(year, month, 0).getDate(); // Last day of the current month
-  const formattedDate = `${year}-${month}`;
+  const formattedDate = `${month}-${year}`;
 
   const filterForPayStatus = appointmentList?.filter((item) => {
     return item.payment_status === "paid";
   });
 
-  // console.log(filterForPayStatus);
+  console.log(filterForPayStatus);
 
   // Group appointments by date and count appointments for each day
   const dailyAppointments = filterForPayStatus?.reduce((acc, appointment) => {
-    const date = appointment.payment_date_time?.split("T")[0];
+    const date = appointment.payment_date_time?.split(" ")[0];
     acc[date] = acc[date] ? acc[date] + 1 : 1;
     return acc;
   }, {});
 
-  // console.log(dailyAppointments);
+  console.log(dailyAppointments);
 
   let totalAmountPerDay = {}; // Object to store total amount for each day
 
   filterForPayStatus.forEach((item) => {
-    const date = item.payment_date_time?.split("T")[0];
+    const date = item.payment_date_time?.split(" ")[0];
     totalAmountPerDay[date] =
       (totalAmountPerDay[date] || 0) +
       parseFloat(item.paid_amount) +
@@ -96,7 +98,7 @@ const EarnTMAdmin = () => {
   // Create an array containing data for all days of the month
   const data = Array.from({ length: lastDay }, (_, index) => {
     const day = String(index + 1).padStart(2, "0");
-    const date = `${formattedDate}-${day}`;
+    const date = `${day}-${formattedDate}`;
     return {
       date,
       patients: dailyAppointments[date] || 0,
@@ -113,7 +115,7 @@ const EarnTMAdmin = () => {
   };
 
 
-  // console.log(data);
+  console.log(data);
 
   return (
     <>

@@ -741,7 +741,7 @@ const AdminTreatSetting = () => {
                             className="inputser"
                             value={keyword}
                             onChange={(e) =>
-                              setkeyword(e.target.value.toLowerCase().trim())
+                              setkeyword(e.target.value.toLowerCase())
                             }
                           />
                           <button className="mx-2 btn  btnback" style={{backgroundColor:"#1abc9c"}}>

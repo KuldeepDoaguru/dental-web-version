@@ -96,36 +96,36 @@ const AdminDashboard = () => {
               <div className="container-fluid pb-3">
                 <div className="row g-5 mt-3">
                   <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                    <h3 className="text-center">Treatment this month</h3>
+                    <h3 className="text-center">Treatment This Month</h3>
                     <TreatmentTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">
-                      Patient visits this month(OPD)
+                      Patient Visits This Month (OPD)
                     </h3>
                     <PatientVisTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                     <h3 className="text-center">
-                      Total apointments this month
+                      Total Appointments This Month
                     </h3>
                     <TotalApsTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                    <h3 className="text-center">New Patient this Month</h3>
+                    <h3 className="text-center">New Patient This Month</h3>
 
                     <NewPatientTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                    <h3 className="text-center">Earning report this month</h3>
+                    <h3 className="text-center">Earning Report This Month</h3>
                     <EarnTMAdmin />
                   </div>
                   <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                    <h3 className="text-center">Lab report this month</h3>
+                    <h3 className="text-center">Lab Report This Month</h3>
                     <AdminLabChart />
                   </div>
                   {/* <div className="col-xxl-4 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                    <h3 className="text-center">Expense report this month</h3>
+                    <h3 className="text-center">Expense report This Month</h3>
                     <ExpenseTMAdmin />
                   </div> */}
                 </div>

@@ -115,7 +115,7 @@ const MarkAttendance = () => {
           },
         }
       );
-      alert("logout");
+
       if (response.data.success) {
         cogoToast.success("Logout time recorded successfully");
         dispatch(toggleTableRefresh());

@@ -326,6 +326,7 @@ const ExaminationPatientTest = ({ tpid }) => {
   const [isFormFilled, setIsFormFilled] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [getPatientData, setGetPatientData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
@@ -996,7 +997,7 @@ const ExaminationPatientTest = ({ tpid }) => {
   console.log(formData);
   const handleSave = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await axios.post(
         "https://dentalgurudoctor.doaguru.com/api/doctor/dentalPediatric",
@@ -1009,6 +1010,7 @@ const ExaminationPatientTest = ({ tpid }) => {
         }
       );
       console.log(response.data);
+      setLoading(false);
       cogoToast.success("data saved");
       updateAppointmentData();
       dispatch(toggleTableRefresh());
@@ -1032,6 +1034,7 @@ const ExaminationPatientTest = ({ tpid }) => {
       // window.location.reload();
     } catch (error) {
       console.error("Error:", error);
+      setLoading(false);
       cogoToast.error(error.response.data.message);
     }
   };
@@ -1799,9 +1802,9 @@ const ExaminationPatientTest = ({ tpid }) => {
                     <button
                       type="submit"
                       className="btn btn-info text-light mx-3"
-                      // onClick={handleAddNew}
+                      disabled={loading}
                     >
-                      Save
+                      {loading ? "Save..." : "Save"}
                     </button>
                   </div>
                 </form>

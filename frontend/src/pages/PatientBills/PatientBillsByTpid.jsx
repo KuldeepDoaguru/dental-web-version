@@ -229,6 +229,23 @@ const PatientBillsByTpid = () => {
 
   console.log(payafterTreat);
 
+  useEffect(() => {
+    const handlePopState = (event) => {
+      // Push a new state to ensure the user stays on the current page
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    // Listen for popstate events
+    window.addEventListener("popstate", handlePopState);
+
+    // Push the initial state
+    window.history.pushState(null, "", window.location.href);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
   return (
     <>
       <Wrapper>
@@ -629,13 +646,18 @@ const PatientBillsByTpid = () => {
                 Go to Payment page
               </button>
             )}
-
-            <button
-              className="btn btn-info no-print mx-3 mt-2 mb-2"
-              onClick={() => navigate("/doctor-dashboard")}
-            >
-              Appointment Dashboard
-            </button>
+            {billDetails[0]?.payment_status !== "paid" ? (
+              ""
+            ) : (
+              <>
+                <button
+                  className="btn btn-info no-print mx-3 mt-2 mb-2"
+                  onClick={() => navigate("/doctor-dashboard")}
+                >
+                  Appointment Dashboard
+                </button>
+              </>
+            )}
           </div>
         </div>
       </Wrapper>

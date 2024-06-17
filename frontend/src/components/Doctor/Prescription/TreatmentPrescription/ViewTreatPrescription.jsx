@@ -114,7 +114,7 @@ const ViewTreatPrescription = () => {
   const getTreatDetail = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDetailsViaSitting/${branch}/${tpid}/${sitting}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatmentDetailsViaSitting/${branch}/${tpid}/${sitting}/${treatment}`,
         {
           headers: {
             "Content-Type": "application/json",

@@ -11,9 +11,10 @@ import cogoToast from "cogo-toast";
 const TreatmentForm = () => {
   const { tsid } = useParams();
   const { appoint_id } = useParams();
-  const { tp_id, treatment } = useParams();
+  const { tp_id, treatment, selectedData } = useParams();
   const [loading, setLoading] = useState(false);
   console.log(tsid, appoint_id, tp_id, treatment);
+  console.log(selectedData);
   const navigate = useNavigate();
   const [getPatientData, setGetPatientData] = useState([]);
   const dispatch = useDispatch();
@@ -70,7 +71,7 @@ const TreatmentForm = () => {
     }
   };
 
-  console.log(sitCheck);
+  console.log(sitCheck.length);
 
   const getTreatmentList = async () => {
     try {
@@ -94,7 +95,7 @@ const TreatmentForm = () => {
     getTreatmentList();
   }, [sitCheck.length]);
 
-  console.log(treatments[0]?.current_sitting);
+  console.log(treatments);
   const lastIndex = treatments.length - 1;
   const lastTreatment = treatments[lastIndex];
   console.log(lastTreatment);
@@ -753,7 +754,7 @@ const TreatmentForm = () => {
             <form onSubmit={handleTreatSubmit}>
               <div className="container">
                 <div className="row g-2">
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         disease
@@ -766,7 +767,7 @@ const TreatmentForm = () => {
                       />
                     </div>
                   </div>
-                  <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12">
+                  <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
                         Treatment

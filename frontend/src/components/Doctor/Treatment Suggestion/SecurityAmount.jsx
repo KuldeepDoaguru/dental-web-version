@@ -207,27 +207,28 @@ const SecurityAmount = () => {
     }
   };
 
+  const formsCorrect = {
+    tp_id: tpid,
+    branch_name: formData.branch_name,
+    appointment_id: id,
+    uhid: formData.uhid,
+    patient_name: formData.patient_name,
+    patient_number: formData.patient_number,
+    treatment: formData.treatment,
+    assigned_doctor: formData.assigned_doctor,
+    amount: formData.amount,
+    remaining_amount:
+      formData.payment_status === "success" ? formData.amount : 0,
+    payment_status: formData.payment_status,
+    payment_Mode: formData.payment_Mode,
+    transaction_Id: formData.transaction_Id,
+    received_by: formData.received_by,
+  };
+
+  console.log(formsCorrect);
+
   const insertCorrectData = async () => {
     try {
-      const formsCorrect = {
-        tp_id: tpid,
-        branch_name: formData.branch_name,
-        appointment_id: id,
-        uhid: formData.uhid,
-        patient_name: formData.patient_name,
-        patient_number: formData.patient_number,
-        treatment: formData.treatment,
-        assigned_doctor: formData.assigned_doctor,
-        amount: formData.amount,
-        remaining_amount:
-          formData.payment_status === "success" ? formData.amount : 0,
-        payment_status: formData.payment_status,
-        payment_Mode: formData.payment_Mode,
-        transaction_Id: formData.transaction_Id,
-        payment_date: formData.payment_date,
-        received_by: formData.received_by,
-      };
-
       const resp = await axios.post(
         `https://dentalgurudoctor.doaguru.com/api/doctor/addSecurityAmount`,
         formsCorrect,

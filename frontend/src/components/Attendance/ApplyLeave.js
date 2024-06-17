@@ -15,6 +15,7 @@ const ApplyLeave = () => {
   const { refreshTable } = useSelector((state) => state.user);
   const user = useSelector((state) => state.user.currentUser);
   const token = user.token;
+  const [loading, setLoading] = useState(false);
   console.log(user);
   const dispatch = useDispatch();
   const branch = user.branch_name;
@@ -85,6 +86,7 @@ const ApplyLeave = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (selectedDates.length === 0) {
       cogoToast.error("Please select a date");
       return;
@@ -104,6 +106,7 @@ const ApplyLeave = () => {
         leave_dates: selectedDates.toString(),
       };
       try {
+        setLoading(true);
         const response = await axios.post(
           "https://dentalgurudoctor.doaguru.com/api/doctor/apply-leave",
           updatedFormData,
@@ -122,12 +125,15 @@ const ApplyLeave = () => {
             leave_reason: "",
           }));
           getLeaves();
+          setLoading(false);
           dispatch(toggleTableRefresh());
           handleClose();
         } else {
+          setLoading(false);
           cogoToast.error(response?.data?.message);
         }
       } catch (error) {
+        setLoading(false);
         console.log(error);
         cogoToast.error(error?.response?.data?.message);
       }
@@ -194,8 +200,12 @@ const ApplyLeave = () => {
             </div>
 
             <div>
-              <button type="submit" className="btn btn-success">
-                Apply
+              <button
+                type="submit"
+                className="btn btn-success"
+                disabled={loading}
+              >
+                {loading ? "Apply..." : "Apply"}{" "}
               </button>
             </div>
           </form>

@@ -329,7 +329,7 @@ const PatientBillsByTpid = () => {
                     <th scope="row">Date</th>
                   
                    
-                    <td>{moment(billDetails[0]?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY')}</td>
+                    <td>{billDetails[0]?.bill_date ?  moment(billDetails[0]?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : ""}</td>
                   </tr>
                   <tr>
                     <th scope="row">Email</th>

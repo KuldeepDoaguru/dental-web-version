@@ -281,7 +281,7 @@ const getExaminationDetails = async () => {
                       <>
 
                         <tr>
-                        <td>{moment(item?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY')}</td>
+                        <td>{item?.bill_date ? moment(item?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : ""}</td>
                           <td>{item.total_amount}</td>
                           <td>{item.paid_amount}</td>
                           <td>{item.pay_by_sec_amt}</td>
@@ -309,7 +309,7 @@ const getExaminationDetails = async () => {
                     {examinations?.slice(-3)?.map((item) => (
                       <>
                         <tr>
-                          <td>{moment(item?.date?.split("T")[0]).format('DD/MM/YYYY')}</td>
+                          <td>{item?.date ? moment(item?.date?.split("T")[0]).format('DD/MM/YYYY') : ""}</td>
                           <td>{item.disease}</td>
                           <td>{item.chief_complain}</td>
 
@@ -338,7 +338,7 @@ const getExaminationDetails = async () => {
                     {prescriptions?.slice(-6)?.map((item) => (
                       <>
                         <tr>
-                          <td>{moment(item.date?.split("T")[0]).format('DD/MM/YYYY')}</td>
+                          <td>{item.date ? moment(item.date?.split("T")[0]).format('DD/MM/YYYY')  : ""}</td>
                           <td>{item.treatment}</td>
                           <td>{item.medicine_name}</td>
                           <td>{item.duration}</td>

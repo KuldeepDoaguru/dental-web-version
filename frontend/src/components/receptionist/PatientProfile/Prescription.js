@@ -123,7 +123,7 @@ const Prescription = () => {
                 {prescriptions?.map((item) => (
                   <>
                     <tr>
-                    <td>{moment(item.date?.split("T")[0]).format('DD/MM/YYYY')}</td>
+                    <td>{item.date ?  moment(item.date?.split("T")[0]).format('DD/MM/YYYY') : ""}</td>
                           <td>{item.treatment}</td>
                           <td>{item.medicine_name}</td>
                           <td>{item.dosage}</td>

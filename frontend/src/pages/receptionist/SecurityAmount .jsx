@@ -535,11 +535,11 @@ function SecurityAmount() {
               <nav class="shadow rounded navbar navbar-light bg-light">
                 <h6 className='mx-3 my-1 my-md-0'>Search By Patient</h6>
                 <div class="container-fluid" id='cont'>
-                  <form class="navbar1 " >
+                  <div class="navbar1 " >
                     <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name Or Moblie" aria-label="Search" onChange={handleSearch}
                       value={searchTerm} />
                     {/* <button class="btn btn-outline-success" type="submit">Search</button> */}
-                  </form>
+                  </div>
                   <div>
                     <Form.Group
                       controlId="rowsPerPageSelect"
@@ -623,7 +623,7 @@ function SecurityAmount() {
                       {currentRows?.map((item) => (
                         <>
                           <tr className="table-row">
-                            <td>{moment(item?.date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY')}</td>
+                            <td>{item?.date ? moment(item?.date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : ""}</td>
                             <td>{item.appointment_id}</td>
                             <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
                             <td>{item.patient_name}</td>

@@ -190,7 +190,7 @@ function AllPatient() {
               >
                 <h6 className="mx-3 my-1 my-md-0">Search By Patient</h6>
                 <div class="container-fluid" id="cont">
-                  <form class="navbar1 ">
+                  <div class="navbar1 ">
                     <input
                       className="form-control me-2 rounded-5"
                       type="search"
@@ -200,7 +200,7 @@ function AllPatient() {
                       value={searchTerm}
                     />
                     {/* <button class="btn btn-outline-success" type="submit">Search</button> */}
-                  </form>
+                  </div>
                   <div>
                     <Form.Group
                       controlId="rowsPerPageSelect"

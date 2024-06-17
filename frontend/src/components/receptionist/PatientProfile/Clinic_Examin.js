@@ -125,7 +125,7 @@ const ClinicExamin = () => {
                 {examinations?.map((item) => (
                   <>
                     <tr>
-                    <td>{moment(item?.date?.split("T")[0]).format('DD/MM/YYYY')}</td>
+                    <td>{item?.date ? moment(item?.date?.split("T")[0]).format('DD/MM/YYYY') : ""}</td>
                     <td>{item.diagnosis_category}</td>
                           <td>{item.disease}</td>
                           <td>{item.chief_complain}</td>

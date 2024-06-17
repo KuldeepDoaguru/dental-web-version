@@ -82,10 +82,12 @@ const Bill = () => {
                         <td>{item.pay_by_sec_amt}</td>
                         <td>{item.payment_mode}</td>
                         <td>
-                          {moment(
-                            item.payment_date_time,
-                            "DD-MM-YYYYTHH:mm:ss"
-                          ).format("DD/MM/YYYY")}
+                          {item.payment_date_time
+                            ? moment(
+                                item.payment_date_time,
+                                "DD-MM-YYYYTHH:mm:ss"
+                              ).format("DD/MM/YYYY")
+                            : ""}
                         </td>
                         <td>{item.payment_status}</td>
                       </tr>

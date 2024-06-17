@@ -169,7 +169,12 @@ const handleSelectBranch = (e)=>{
 console.log(selectedBranch)
   const receptionistLogin = async (e) => {
     e.preventDefault();
+    if(!selectedBranch){
+      cogoToast.error("Please Select Branch");
+      return
+    }
     setLoading(true)
+    
     try {
       const response = await axios.post(
         "https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/receptionist-login",
@@ -305,6 +310,7 @@ console.log(selectedBranch)
                             id=""
                             className="p-2 rounded shadow select-style"
                             onChange={handleSelectBranch}
+                            required
                             
                           >
                              <option value="">Select Branch</option>

@@ -110,6 +110,7 @@ const PasswordReset = () => {
                           onChange={(e) => setEmail(e.target.value)}
                           className="form-control"
                           placeholder="email"
+                          required
                         />
                       </div>
                     </div>
@@ -156,6 +157,7 @@ const PasswordReset = () => {
                           onChange={(e) => setOtp(e.target.value)}
                           className="form-control"
                           placeholder="otp"
+                          required
                         />
                       </div>
                     </div>
@@ -184,6 +186,7 @@ const PasswordReset = () => {
                           onChange={(e) => setNewPassword(e.target.value)}
                           className="form-control"
                           placeholder="password"
+                          required
                         />
                       </div>
                     </div>

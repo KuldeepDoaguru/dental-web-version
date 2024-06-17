@@ -1834,7 +1834,7 @@ const addInquiry = (req, res) => {
       doctorName,
     } = req.body;
 
-    const created_at = new Date();
+    const created_at =  moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
     const addInquiryQuery = `
     INSERT INTO inquiries (

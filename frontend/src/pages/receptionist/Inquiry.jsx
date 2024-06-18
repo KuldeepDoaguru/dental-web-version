@@ -401,7 +401,7 @@ const defaultOptions = {
     <select className="form-select" id="doctorName"  name="doctorName"  onChange={handleDoctorChange}>
     <option value="">Select Doctor</option>
       {doctors?.map((doctor) => (
-            <option value={`${doctor.employee_name} - ${doctor.employee_ID}`}>{doctor.employee_name}</option>
+            <option value={`${doctor.employee_name} - ${doctor.employee_ID}`}>{"Dr. "}{doctor.employee_name}</option>
       ))}
       
       
@@ -532,7 +532,7 @@ const defaultOptions = {
                              <td>
                              {data.address}
                              </td>
-                             <td>{data.doctorName}</td>
+                             <td>{"Dr. "}{data.doctorName}</td>
                              <td>{data.notes}</td>
                              <td>{moment(data?.created_at).format('DD/MM/YYYY') }</td>
                              <td><div className="dropdown">

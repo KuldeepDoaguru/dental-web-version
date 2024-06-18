@@ -193,7 +193,7 @@ function Card() {
           <div className="card shadow" id="card1">
             <div className="card-body">
               <h6 className="card-title appointment" style={{ color: "black " }}>
-                Today's Appointment
+                Today's Appointments
               </h6>
               <p className="card-text">
                 <ul className="sec" id="section1">

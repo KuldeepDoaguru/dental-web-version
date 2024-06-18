@@ -165,7 +165,7 @@ const PrintOpdBill = () => {
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {data?.assigned_doctor_name}
+                      {"Dr. "}{data?.assigned_doctor_name}
                     </td>
                   </tr>
 

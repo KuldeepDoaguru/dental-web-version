@@ -336,7 +336,7 @@ const defaultOptions = {
                       {currentRows?.map((data, index) => (
                         <tr key={index}>
                           <td>{data.employee_ID}</td>
-                          <td> {data.employee_name}</td>
+                          <td>{"Dr. "} {data.employee_name}</td>
                           <td>{data.employee_mobile}</td>
                           <td>{data.employee_email}</td>
 

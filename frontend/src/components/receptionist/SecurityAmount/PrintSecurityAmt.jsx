@@ -126,7 +126,7 @@ const PrintSecurityAmt = () => {
                     </th>
                     <td className="text-capitalize">
                       {": "}
-                      {data[0]?.assigned_doctor}
+                      {"Dr. "}{data[0]?.assigned_doctor}
                     </td>
                     <th scope="col" className="text-start">
                       Payment Date

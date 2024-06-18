@@ -294,7 +294,7 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
       <div className='w-50'><span className='backIcon' onClick={()=>{setIsDisplay(false)}}><IoArrowBackCircle /></span></div>
    <div className='w-50'> <select className="form-select" onChange={(e) => setSelectedDoctor(e.target.value)} >
       {doctors?.map((doctor) => (
-        <option value={doctor.employee_ID}>{doctor.employee_name}</option>
+        <option value={doctor.employee_ID}>{"Dr. "}{doctor.employee_name}</option>
       ))} 
       {/* <option value="Dr. Ajay">Dr. Ajay</option>
       <option value="Dr. Vijay">Dr. Vijay</option>

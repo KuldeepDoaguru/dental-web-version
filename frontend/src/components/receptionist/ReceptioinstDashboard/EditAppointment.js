@@ -761,7 +761,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
                               }`} // Add 'active' class if the patient is selected
                               onClick={() => handleDoctorSelect(doctor)} // Call handlePatientSelect function when the patient is clicked
                             >
-                              {doctor.employee_name} {"-"} Id:{" "}
+                             {"Dr. "} {doctor.employee_name} {"-"} Id:{" "}
                               {doctor.employee_ID}
                               {/* Display other patient details as needed */}
                             </li>

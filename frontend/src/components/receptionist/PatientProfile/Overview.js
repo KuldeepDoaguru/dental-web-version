@@ -10,106 +10,96 @@ const Overview = () => {
   const { pid } = useParams();
   const user = useSelector((state) => state.user);
 
-  const  branch = user.currentUser.branch_name;
+  const branch = user.currentUser.branch_name;
   const token = user.currentUser?.token;
 
   const [patAppointDetails, setPatAppointDetails] = useState([]);
-  
 
-  
   const [nextAppoint, setNextAppoint] = useState(null);
-const [prevAppoint, setPrevAppoint] = useState(null);
-const [sortedAppointments,setSortedAppointments] = useState([]);
-const [treatments, setTreatments] = useState([]);
-const [bills, setBills] = useState([]);
-const [examinations, setExaminations] = useState([]);
-const [prescriptions, setPrescriptions] = useState([]);
+  const [prevAppoint, setPrevAppoint] = useState(null);
+  const [sortedAppointments, setSortedAppointments] = useState([]);
+  const [treatments, setTreatments] = useState([]);
+  const [bills, setBills] = useState([]);
+  const [examinations, setExaminations] = useState([]);
+  const [prescriptions, setPrescriptions] = useState([]);
 
+  console.log(treatments);
 
-console.log(treatments);
-
-const getTreatmentsDetails = async () => {
-  try {
-    const { data } = await axios.get(
-      `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTreatmentViaUhid/${branch}/${pid}`
-      ,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      }
-      }
-    );
-    setTreatments(data?.data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-const getPrescriptionDetails = async () => {
-  try {
-    const { data } = await axios.get(
-      `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPrescriptionViaUhid/${branch}/${pid}`
-      ,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      }
-      }
-    );
-    setPrescriptions(data?.data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-const getBillDetails = async () => {
-  try {
-    const { data } = await axios.get(
-      `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getBillsViaUhid/${branch}/${pid}`
-      ,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      }
-      }
-    );
-    setBills(data?.data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-const getExaminationDetails = async () => {
-  try {
-    const { data } = await axios.get(
-      `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`
-      ,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      }
-      }
-    );
-    setExaminations(data?.data);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-
+  const getTreatmentsDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getTreatmentViaUhid/${branch}/${pid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setTreatments(data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getPrescriptionDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getPrescriptionViaUhid/${branch}/${pid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setPrescriptions(data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getBillDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getBillsViaUhid/${branch}/${pid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setBills(data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getExaminationDetails = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setExaminations(data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getAppointDetailsPat = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAllAppointmentByPatientId/${branch}/${pid}`
-        ,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-      }
-      }
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getAllAppointmentByPatientId/${branch}/${pid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
       setPatAppointDetails(data?.data);
@@ -118,21 +108,15 @@ const getExaminationDetails = async () => {
     }
   };
 
-
-
   console.log(pid);
   useEffect(() => {
-    
     getAppointDetailsPat();
-    getTreatmentsDetails()
-    getBillDetails()
+    getTreatmentsDetails();
+    getBillDetails();
     getExaminationDetails();
-    getPrescriptionDetails()
+    getPrescriptionDetails();
   }, []);
 
- 
-
-  
   const filterForPendingAmount = bills?.filter((item) => {
     return item.payment_status === "Pending";
   });
@@ -140,23 +124,25 @@ const getExaminationDetails = async () => {
     return accumulator + item.total_amount;
   }, 0);
 
- 
-
   const todayDate = new Date();
 
- console.log(total);
+  console.log(total);
 
   useEffect(() => {
     // Sort appointments by date
     const sortedAppointments = patAppointDetails.sort((a, b) => {
-      return new Date(a.appointment_dateTime) - new Date(b.appointment_dateTime);
+      return (
+        new Date(a.appointment_dateTime) - new Date(b.appointment_dateTime)
+      );
     });
-    setSortedAppointments(sortedAppointments)
+    setSortedAppointments(sortedAppointments);
     // Find last and next appointment
     let prevAppointment = null;
     let nextAppointment = null;
     for (let i = 0; i < sortedAppointments?.length; i++) {
-      const appointmentDate = new Date(sortedAppointments[i].appointment_dateTime);
+      const appointmentDate = new Date(
+        sortedAppointments[i].appointment_dateTime
+      );
       if (appointmentDate < todayDate) {
         prevAppointment = sortedAppointments[i];
       } else if (appointmentDate >= todayDate && !nextAppointment) {
@@ -164,13 +150,23 @@ const getExaminationDetails = async () => {
         break;
       }
     }
-     
+
     console.log(sortedAppointments);
     console.log("Next Appointment:", nextAppointment);
-  
-    const nextAppointDate = nextAppointment ?  moment(nextAppointment?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A')  : null;
-    const prevAppointDate = prevAppointment ? moment(prevAppointment?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A') : null;
-  
+
+    const nextAppointDate = nextAppointment
+      ? moment(
+          nextAppointment?.appointment_dateTime,
+          "YYYY-MM-DDTHH:mm"
+        ).format("DD/MM/YYYY hh:mm A")
+      : null;
+    const prevAppointDate = prevAppointment
+      ? moment(
+          prevAppointment?.appointment_dateTime,
+          "YYYY-MM-DDTHH:mm"
+        ).format("DD/MM/YYYY hh:mm A")
+      : null;
+
     // Set state variables for next and previous appointments
     setNextAppoint(nextAppointDate);
     setPrevAppoint(prevAppointDate);
@@ -183,9 +179,8 @@ const getExaminationDetails = async () => {
           <div className="col-lg-4" id="tableresponsive1">
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
-              <p className="text-center">Last Appointment</p>
+                <p className="text-center">Last Appointment</p>
                 <h5>{prevAppoint}</h5>
-                
               </div>
             </div>
           </div>
@@ -193,9 +188,8 @@ const getExaminationDetails = async () => {
             {" "}
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
-              <p className="text-center">Next Appointment</p>
+                <p className="text-center">Next Appointment</p>
                 <h5>{nextAppoint}</h5>
-               
               </div>
             </div>
           </div>
@@ -203,9 +197,8 @@ const getExaminationDetails = async () => {
             {" "}
             <div className="d-flex justify-content-center align-item-center mt-2 h-100 w-100 shadow rounded">
               <div className="mt-3">
-              <p className="text-center">Payment Pending</p>
-                <h5  className="text-center">INR {total}</h5>
-                
+                <p className="text-center">Payment Pending</p>
+                <h5 className="text-center">INR {total}</h5>
               </div>
             </div>
           </div>
@@ -227,8 +220,13 @@ const getExaminationDetails = async () => {
                     {sortedAppointments?.slice(-3)?.map((item) => (
                       <>
                         <tr>
-                          <td>{moment(item?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('DD/MM/YYYY hh:mm A')}</td>
-                          <td>{item.assigned_doctor_name}</td>
+                          <td>
+                            {moment(
+                              item?.appointment_dateTime,
+                              "YYYY-MM-DDTHH:mm"
+                            ).format("DD/MM/YYYY hh:mm A")}
+                          </td>
+                          <td>{"Dr. "}{item.assigned_doctor_name}</td>
                           <td>{item.treatment_provided}</td>
                           <td>{item.appointment_status}</td>
                         </tr>
@@ -279,9 +277,15 @@ const getExaminationDetails = async () => {
                   <tbody>
                     {bills?.slice(-3)?.map((item) => (
                       <>
-
                         <tr>
-                        <td>{item?.bill_date ? moment(item?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : ""}</td>
+                          <td>
+                            {item?.bill_date
+                              ? moment(
+                                  item?.bill_date,
+                                  "DD-MM-YYYYTHH:mm:ss"
+                                ).format("DD/MM/YYYY")
+                              : ""}
+                          </td>
                           <td>{item.total_amount}</td>
                           <td>{item.paid_amount}</td>
                           <td>{item.pay_by_sec_amt}</td>
@@ -309,7 +313,13 @@ const getExaminationDetails = async () => {
                     {examinations?.slice(-3)?.map((item) => (
                       <>
                         <tr>
-                          <td>{item?.date ? moment(item?.date?.split("T")[0]).format('DD/MM/YYYY') : ""}</td>
+                          <td>
+                            {item?.date
+                              ? moment(item?.date?.split("T")[0]).format(
+                                  "DD/MM/YYYY"
+                                )
+                              : ""}
+                          </td>
                           <td>{item.disease}</td>
                           <td>{item.chief_complain}</td>
 
@@ -338,7 +348,14 @@ const getExaminationDetails = async () => {
                     {prescriptions?.slice(-6)?.map((item) => (
                       <>
                         <tr>
-                          <td>{item.date ? moment(item.date?.split("T")[0]).format('DD/MM/YYYY')  : ""}</td>
+                          <td>
+                            {item?.date
+                              ? moment(
+                                  item?.date,
+                                  "DD-MM-YYYYTHH:mm:ss"
+                                ).format("DD/MM/YYYY")
+                              : ""}
+                          </td>
                           <td>{item.treatment}</td>
                           <td>{item.medicine_name}</td>
                           <td>{item.duration}</td>
@@ -374,10 +391,11 @@ const getExaminationDetails = async () => {
                 <tbody>
                   {sortedAppointments?.slice(-3)?.map((item) => (
                     <>
-                     {item.notes && 
-                      <tr>
-                        <td>{item.notes}</td>
-                      </tr>}
+                      {item.notes && (
+                        <tr>
+                          <td>{item.notes}</td>
+                        </tr>
+                      )}
                     </>
                   ))}
                 </tbody>
@@ -414,5 +432,4 @@ const Container = styled.div`
       width: 100%;
     }
   }
- 
 `;

@@ -249,7 +249,7 @@ const Bill = () => {
                       <td>{item?.bill_date ?  moment(item?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : ""}</td>
                         <td>{item.bill_id}</td>
                       
-                        <td>{item.assigned_doctor_name}</td>
+                        <td>{"Dr. "}{item.assigned_doctor_name}</td>
                         <td>{item.total_amount}</td>
                         <td>{item.paid_amount}</td>
                         <td>{item.pay_by_sec_amt}</td>

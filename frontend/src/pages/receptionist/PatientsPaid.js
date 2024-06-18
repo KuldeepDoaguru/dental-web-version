@@ -295,7 +295,7 @@ const defaultOptions = {
                                       <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
                                       <td>{item.patient_name}</td>
                                       <td>{item.patient_mobile}</td>
-                                      <td>{item.assigned_doctor_name}</td>
+                                      <td>{"Dr. "}{item.assigned_doctor_name}</td>
                                       <td>{item.total_amount}</td>
                                       <td>{item.paid_amount}</td>
                                       <td>{item.pay_by_sec_amt}</td>

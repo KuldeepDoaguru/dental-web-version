@@ -62,7 +62,7 @@ const Lab = () => {
                     <tr>
                       <td>{item.testid}</td>
                       <td>{item.tpid}</td>
-                      <td>{item.assigned_doctor_name}</td>
+                      <td>{"Dr. "}{item.assigned_doctor_name}</td>
                       <td>{item.lab_name}</td>
                       <td>{item.test}</td>
                       <td>{item.created_date?.split("T")[0]}</td>

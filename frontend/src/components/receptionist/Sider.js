@@ -102,7 +102,7 @@ const Sider = () => {
                <span className="fs-4 bi"><FaUserDoctor /></span> 
                 </div>
                 <div>
-                  <h3 className=" d-none d-sm-inline" id="navleft1">Doctor</h3>
+                  <h3 className=" d-none d-sm-inline" id="navleft1">Doctors</h3>
                 </div>
               </Link>
             </li>

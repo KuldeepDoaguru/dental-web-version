@@ -628,7 +628,7 @@ function SecurityAmount() {
                             <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
                             <td>{item.patient_name}</td>
                             <td>{item.patient_number}</td>
-                            <td>{item.assigned_doctor}</td>
+                            <td>{"Dr. "}{item.assigned_doctor}</td>
                             <td>{item.amount}</td>
                             <td>{item.remaining_amount}</td>
                             <td>{item.payment_Mode}</td>

@@ -455,7 +455,7 @@ console.log(appointmentsData);
                     <td>{patient?.appointment_dateTime ? moment(patient?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('hh:mm A') : ""}</td>
                     <td>{patient.treatment_provided
                     }</td>
-                    <td>{patient.assigned_doctor_name
+                    <td> {"Dr. "}{patient.assigned_doctor_name
                     }</td>
                     <td>{patient.bloodgroup}</td>
                     <td>{patient.age}</td>

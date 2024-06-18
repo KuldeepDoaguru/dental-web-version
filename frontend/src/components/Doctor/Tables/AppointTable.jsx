@@ -102,7 +102,7 @@ const AppointTable = () => {
       const response = await axios.post(
         "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
-          type: "Examiantion",
+          type: "Examination",
           description: "Start Examintion",
           branch: branch,
           patientId: uhid,
@@ -125,7 +125,7 @@ const AppointTable = () => {
       const response = await axios.post(
         "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
-          type: "Examiantion",
+          type: "Examination",
           description: "Cancel Treatment",
           branch: branch,
           patientId: uhid,

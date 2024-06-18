@@ -418,7 +418,7 @@ const Overview = () => {
                         {clinicExam?.slice(0, 3).map((item) => (
                           <>
                             <tr>
-                              <td>{item.date.split("T")[0]}</td>
+                              <td>{item.date?.split("T")[0]}</td>
                               <td>{item.disease}</td>
                               <td>{item.chief_complain}</td>
                               <td>{item.selected_teeth}</td>

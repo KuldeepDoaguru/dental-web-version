@@ -546,7 +546,7 @@ const PatintDuePaymentPrint = () => {
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
                       >
-                        Update Payment Details
+                        Add/Update Payment Details
                       </button>
                       {billAmount[0]?.payment_status === null ||
                       billAmount[0]?.payment_status === "pending" ? (

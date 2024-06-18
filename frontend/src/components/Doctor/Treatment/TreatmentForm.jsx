@@ -131,6 +131,20 @@ const TreatmentForm = () => {
     }));
   };
 
+  const showError = () => {
+    if (lastTreatment?.pending_amount < formData.paid_amount) {
+      alert("Amount cannot be greater than net amount");
+      setFormData((prevData) => ({
+        ...prevData,
+        paid_amount: "",
+      }));
+    }
+  };
+
+  useEffect(() => {
+    showError();
+  }, [formData.paid_amount]);
+
   console.log(formData);
 
   // Assuming calculateNetAmount function exists
@@ -175,6 +189,7 @@ const TreatmentForm = () => {
   console.log(netAmount);
   console.log(formData);
   console.log(lastTreatment?.pending_amount);
+  console.log(lastTreatment?.paid_amount > 0);
 
   const secrecAmount = () => {
     if (treatments[0]?.current_sitting > 1) {
@@ -371,7 +386,10 @@ const TreatmentForm = () => {
           : formData.disc_amt
         : lastTreatment?.disc_amt,
     total_amt: lastTreatment?.totalCost * dataArray?.length,
-    net_amount: rawNetAmount,
+    net_amount:
+      lastTreatment?.paid_amount > 0
+        ? lastTreatment?.pending_amount
+        : rawNetAmount,
     paid_amount: formData.paid_amount,
     pending_amount:
       lastTreatment?.current_sitting <= 1
@@ -535,7 +553,8 @@ const TreatmentForm = () => {
     getSecurityAmt();
   }, []);
 
-  console.log(securityAmt[0]?.remaining_amount);
+  console.log(securityAmt[0]?.remaining_amount > 0 && formData.paid_amount > 0);
+
   const securityRemAmt = () => {
     if (
       securityAmt[0]?.payment_status === "success" &&
@@ -980,9 +999,8 @@ const TreatmentForm = () => {
                         </strong>
                       </label>
                       <div>
-                        {(securityAmt[0]?.remaining_amount > 0 &&
-                          formData.paid_amount > 0) ||
-                        lastTreatment?.disc_amt > 0 ? (
+                        {securityAmt[0]?.remaining_amount > 0 &&
+                        formData.paid_amount > 0 ? (
                           !showDirect ? (
                             <button
                               type="button"
@@ -1091,7 +1109,6 @@ const TreatmentForm = () => {
                                 {" "}
                                 <option value="">-select-</option>
                                 <option value="Received">Yes</option>
-                                <option value="Pending">No</option>
                               </>
                             ) : (
                               <>

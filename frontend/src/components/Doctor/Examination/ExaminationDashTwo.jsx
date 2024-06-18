@@ -15,6 +15,7 @@ const ExaminationDashTwo = () => {
   const user = useSelector((state) => state.user);
   const branch = user.currentUser.branch_name;
   const token = user.currentUser.token;
+  const [getPatient, setGetPatient] = useState([]);
   console.log(branch);
   console.log(user.currentUser.branch_name);
   const [dcat, setDcat] = useState("");
@@ -31,12 +32,36 @@ const ExaminationDashTwo = () => {
 
   console.log(treatData);
 
+  const getPatientById = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalgurudoctor.doaguru.com/api/doctor/get-Patient-by-id/${branch}/${uhid}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setGetPatient(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPatientById();
+  }, []);
+
+  console.log(getPatient.age >= 19);
+
   const timelineForExamination = async (cat) => {
     try {
       const response = await axios.post(
         "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
-          type: "Examiantion",
+          type: "Examination",
           description: `Selected Category ${cat}`,
           branch: branch,
           patientId: uhid,
@@ -130,18 +155,23 @@ const ExaminationDashTwo = () => {
                 className="d-flex flex-column justify-content-end align-items-end"
                 style={{ marginTop: "5rem" }}
               >
-                <div
-                  className="dental shadow p-5 m-3 bg-body rounded mx-3"
-                  onClick={() => uniFunc("Dental-X")}
-                >
-                  Dental-X Chart <TbHandClick />
-                </div>
-                <div
-                  className="dental shadow p-5 mt-5 bg-body rounded mx-3"
-                  onClick={() => uniFunc("Pediatric")}
-                >
-                  Pediatric Chart <TbHandClick />
-                </div>
+                {getPatient.age >= 19 ? (
+                  <div
+                    className="dental shadow p-5 m-3 bg-body rounded mx-3"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => uniFunc("Dental-X")}
+                  >
+                    Dental-X Chart <TbHandClick />
+                  </div>
+                ) : (
+                  <div
+                    className="dental shadow p-5 mt-5 bg-body rounded mx-3 cursor-pointer"
+                    onClick={() => uniFunc("Pediatric")}
+                    style={{ cursor: "pointer" }}
+                  >
+                    Pediatric Chart <TbHandClick />
+                  </div>
+                )}
               </div>
             </div>
             <div className="co-lg-6 col-6 dental-des">

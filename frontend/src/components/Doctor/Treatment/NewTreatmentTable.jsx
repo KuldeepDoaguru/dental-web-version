@@ -110,7 +110,7 @@ const NewTreatmentTable = () => {
     try {
       let total = 0;
       treatmentData?.forEach((item) => {
-        const dirRecAmt = item.dir_rec_amt || 0;
+        const dirRecAmt = Number(item.dir_rec_amt) || 0;
         total += dirRecAmt;
       });
       console.log(`Final total: ${total}`);
@@ -286,7 +286,9 @@ const NewTreatmentTable = () => {
                   <td>
                     {" "}
                     {item.sitting_payment_status === "Pending"
-                      ? 0
+                      ? item.sec_rec_amt > 0
+                        ? item.sec_rec_amt
+                        : 0
                       : item.paid_amount}
                   </td>
                   <td>{item.note}</td>

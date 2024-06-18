@@ -469,10 +469,7 @@ const PatientBillsByTpid = () => {
                       <td>{item.cost_amt}</td>
                       <td>{item.total_amt}</td>
                       <td>{item.disc_amt}</td>
-                      <td>
-                        {item.total_amt -
-                          (item.total_amt * item.disc_amt) / 100}
-                      </td>
+                      <td>{item.net_amount}</td>
                       <td>
                         {" "}
                         {item.sitting_payment_status === "Pending"

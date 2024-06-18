@@ -934,7 +934,7 @@ const ExaminationPatientTest = ({ tpid }) => {
       const response = await axios.post(
         "https://dentalgurudoctor.doaguru.com/api/doctor/insertTimelineEvent",
         {
-          type: "Examiantion",
+          type: "Examination",
           description: "Add Teeth DentalX",
           branch: branch,
           patientId: getPatientData.length > 0 ? getPatientData[0].uhid : "",

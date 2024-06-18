@@ -200,6 +200,8 @@ const TreatSuggest = () => {
     }
   };
 
+  console.log(getPatientData);
+
   const getLabAllData = async () => {
     try {
       const res = await axios.get(
@@ -317,6 +319,10 @@ const TreatSuggest = () => {
 
   const handleNavigate = () => {
     navigate(`/TreatmentDashBoard/${id}`);
+  };
+
+  const handleChangePage = () => {
+    navigate(`/TreatmentDashBoard/${tpid}/${id}`);
   };
 
   const handleCollect = () => {
@@ -856,21 +862,37 @@ const TreatSuggest = () => {
 
           <div className="d-flex justify-content-center align-items-center">
             {treatList.length > 0 ? (
-              <button
-                type="button"
-                className="btn btn-info text-light shadow fw-bold"
-                onClick={handleCollect}
-              >
-                Collect Security Money
-              </button>
+              <>
+                <button
+                  type="button"
+                  className="btn btn-info text-light shadow fw-bold"
+                  onClick={handleCollect}
+                >
+                  Collect Security Money
+                </button>
+                <button
+                  className="btn btn-info text-light mx-2 shadow fw-bold"
+                  onClick={handleChangePage}
+                >
+                  Start Treatment
+                </button>
+              </>
             ) : (
-              <button
-                type="button"
-                className="btn btn-info text-light shadow fw-bold"
-                disabled
-              >
-                Collect Security Money
-              </button>
+              <>
+                <button
+                  type="button"
+                  className="btn btn-info text-light shadow fw-bold"
+                  disabled
+                >
+                  Collect Security Money
+                </button>
+                <button
+                  className="btn btn-info text-light mx-2 shadow fw-bold"
+                  disabled
+                >
+                  Start Treatment
+                </button>
+              </>
             )}
           </div>
         </div>

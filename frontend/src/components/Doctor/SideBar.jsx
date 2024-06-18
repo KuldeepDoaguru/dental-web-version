@@ -84,7 +84,11 @@ const Sider = () => {
             </li>
             <hr />
             <li>
-              <div className="link-div" onClick={handleLogout}>
+              <div
+                className="link-div"
+                onClick={handleLogout}
+                style={{ cursor: "pointer" }}
+              >
                 <div>
                   {/* <i className="fs-4 bi bi-power"></i> */}
                   <ImSwitch className="icon" />

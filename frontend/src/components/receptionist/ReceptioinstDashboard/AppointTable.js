@@ -397,7 +397,7 @@ console.log(appointmentsData);
 
               <input
                 type="search"
-                placeholder="Search Patient"
+                placeholder="Enter Patient Name or Mobile or Id"
                 onChange={handleSearch}
                 value={searchTerm}
                 className='mb-2 rounded-5 p-2 form-control'
@@ -634,6 +634,12 @@ const Wrapper = styled.div`
 
 .no-data-container h4 {
   margin: 0 20px;
+}
+#form1{
+  width: 350px;
+  @media screen and (max-width: 1200px) {
+     width: 100%;
+    }
 }
   
 `;

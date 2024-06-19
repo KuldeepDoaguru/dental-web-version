@@ -214,7 +214,7 @@ const AttendanceLeave = () => {
               <div className="container-fluid">
                 <div className="row mt-3">
                   <div className="col-12">
-                    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                    <nav class="navbar navbar-expand-lg bg-body-tertiary d-flex justify-content-center">
                       <div class="container d-flex justify-content-center">
                         <h2 className="">Attendance and Leave Details</h2>
                       </div>
@@ -480,12 +480,13 @@ const Container = styled.div`
     th {
       background-color: teal;
       color: white;
-      min-width: 7rem;
       
+      white-space: nowrap;
     }
     td {
       font-weight: bold;
-      min-width: 7rem;
+      
+      white-space: nowrap;
     }
   }
   .table::-webkit-scrollbar {

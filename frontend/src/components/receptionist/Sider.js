@@ -72,11 +72,14 @@ const Sider = () => {
             <li>
               <div onClick={toggleAmountDropdown} className="link-div">
                 <div>
-                  <i className="fs-4 bi bi-currency-rupee"></i>
+                  <i className="fs-4 bi bi-currency-rupee"></i> <span className="dropdown-toggle text-white"></span>
                 </div>
                 <div>
-                  <h3 className="text-center" id="navleft1">Amount Section</h3>
+                  <h3 className="text-center" id="navleft1">Amount Section  </h3>
+                 
                 </div>
+                
+               
               </div>
               {showAmountDropdown  && (
                 <ul className="drop">

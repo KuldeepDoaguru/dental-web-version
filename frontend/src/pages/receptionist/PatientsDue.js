@@ -204,7 +204,7 @@ const defaultOptions = {
             <h6 className='mx-3 my-1 my-md-0'>Search By Patient</h6>
   <div class="container-fluid" id='cont'>
     <div class="navbar1 " >
-      <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name Or Moblie" aria-label="Search" onChange={handleSearch}
+      <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name or Mobile or Id" aria-label="Search" onChange={handleSearch}
         value={searchTerm}/>
       {/* <button class="btn btn-outline-success" type="submit">Search</button> */}
     </div>

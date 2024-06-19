@@ -21,7 +21,7 @@
 //                 <th>Investigation</th>
 //                 <th>Added By</th>
 //                 <th>Action</th>
-               
+
 //               </tr>
 //             </thead>
 //             <tbody>
@@ -35,14 +35,8 @@
 //                 <td>Dr.Anurag Varma</td>
 //                 <td>Edit/Delete/View</td>
 
-                
-
 //               </tr>
-          
-              
-             
 
-           
 //             </tbody>
 //           </table>
 //         </div>
@@ -58,7 +52,7 @@
 //     @media screen and (max-width: 768px) {
 //       width: 22rem;
 //       margin-left: -0.1rem;
-  
+
 //     }
 //   }
 // `
@@ -75,21 +69,20 @@ const ClinicExamin = () => {
   const { pid } = useParams();
   const user = useSelector((state) => state.user);
 
-  const  branch = user.currentUser.branch_name;
+  const branch = user.currentUser.branch_name;
   const token = user.currentUser?.token;
-  
+
   const [examinations, setExaminations] = useState([]);
 
   const getExaminationDetails = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`
-        ,
+        `https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/getExaminationViaUhid/${branch}/${pid}`,
         {
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       setExaminations(data?.data);
@@ -112,26 +105,32 @@ const ClinicExamin = () => {
             <table className="table table-bordered table-striped">
               <thead>
                 <tr>
-                <th>Date</th>
-                <th>Diagnosis Category</th>
-                      <th>Disease</th>
-                      <th>Chief Complaint</th>
-                      <th>Tooth</th>
-                      <th>On Examination</th>
-                      <th>Advice</th>
+                  <th>Date</th>
+                  <th>Diagnosis Category</th>
+                  <th>Disease</th>
+                  <th>Chief Complaint</th>
+                  <th>Tooth</th>
+                  <th>On Examination</th>
+                  <th>Advice</th>
                 </tr>
               </thead>
               <tbody>
                 {examinations?.map((item) => (
                   <>
                     <tr>
-                    <td>{item?.date ? moment(item?.date?.split("T")[0]).format('DD/MM/YYYY') : ""}</td>
-                    <td>{item.diagnosis_category}</td>
-                          <td>{item.disease}</td>
-                          <td>{item.chief_complain}</td>
-                         <td>{item.selected_teeth}</td>
-                        <td>{item.on_examination}</td>
-                          <td>{item.advice}</td>
+                      <td>
+                        {item?.date
+                          ? moment(item?.date, "DD-MM-YYYYTHH:mm:ss").format(
+                              "DD/MM/YYYY"
+                            )
+                          : ""}
+                      </td>
+                      <td>{item.diagnosis_category}</td>
+                      <td>{item.disease}</td>
+                      <td>{item.chief_complain}</td>
+                      <td>{item.selected_teeth}</td>
+                      <td>{item.on_examination}</td>
+                      <td>{item.advice}</td>
                     </tr>
                   </>
                 ))}

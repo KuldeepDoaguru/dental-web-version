@@ -197,7 +197,7 @@ const defaultOptions = {
                     <input
                       className="form-control me-2 rounded-5"
                       type="search"
-                      placeholder="Enter Patient Name Or Moblie"
+                      placeholder="Enter Patient Name or Mobile or Id"
                       aria-label="Search"
                       onChange={handleSearch}
                       value={searchTerm}

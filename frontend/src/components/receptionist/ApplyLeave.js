@@ -237,4 +237,7 @@ const Wrapper = styled.div`
   #button {
     margin: 2rem;
   }
+  #b1{
+    white-space: nowrap;
+  }
 `;

@@ -226,7 +226,10 @@ const Overview = () => {
                               "YYYY-MM-DDTHH:mm"
                             ).format("DD/MM/YYYY hh:mm A")}
                           </td>
-                          <td>{"Dr. "}{item.assigned_doctor_name}</td>
+                          <td>
+                            {"Dr. "}
+                            {item.assigned_doctor_name}
+                          </td>
                           <td>{item.treatment_provided}</td>
                           <td>{item.appointment_status}</td>
                         </tr>
@@ -315,9 +318,10 @@ const Overview = () => {
                         <tr>
                           <td>
                             {item?.date
-                              ? moment(item?.date?.split("T")[0]).format(
-                                  "DD/MM/YYYY"
-                                )
+                              ? moment(
+                                  item?.date,
+                                  "DD-MM-YYYYTHH:mm:ss"
+                                ).format("DD/MM/YYYY")
                               : ""}
                           </td>
                           <td>{item.disease}</td>

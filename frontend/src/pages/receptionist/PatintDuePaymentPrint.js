@@ -216,7 +216,7 @@ function PatintDuePaymentPrint() {
             transaction_Id: "",
             note: "",
           });
-          navigate(`/patient-bill/${bid}/${tpid}`);
+          // navigate(`/patient-bill/${bid}/${tpid}`);
         } else {
           setLoading(false);
           cogoToast.success("Failed to paid bill");
@@ -259,9 +259,10 @@ function PatintDuePaymentPrint() {
         );
         console.log(res);
         cogoToast.success("Treatment Completed");
+          navigate(`/patient-bill/${bid}/${tpid}`);
       } catch (error) {
-        console.log(error.response.data.message);
-        cogoToast.error(error.response.data.message);
+        console.log(error?.response?.data?.message);
+        cogoToast.error(error?.response?.data?.message);
       }
     };
   
@@ -498,13 +499,13 @@ function PatintDuePaymentPrint() {
                       >
                         Pay Now
                       </button>
-                      <button
+                      {/* <button
                         type="button"
                         className="btn btn-warning ms-2"
                         onClick={completeTreatment}
                       >
                         Mark Treatment Complete
-                      </button>
+                      </button> */}
                     </>
                   ) : (
                     <>

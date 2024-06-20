@@ -598,7 +598,7 @@ const isBranchHoliday = branchHolidays.some(holiday => {
 })
 
  if(isBranchHoliday){
-   cogoToast.info(`Selected date is branch holiday please selected other date`)
+   cogoToast.info(`Selected date is branch holiday please select other date`)
    return
  }
 

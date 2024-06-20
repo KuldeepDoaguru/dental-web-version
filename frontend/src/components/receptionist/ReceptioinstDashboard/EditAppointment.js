@@ -459,7 +459,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
     });
 
     if (isBranchHoliday) {
-      alert(`Selected date is branch holiday please selected other date`);
+      alert(`Selected date is branch holiday please select other date`);
       return;
     }
 

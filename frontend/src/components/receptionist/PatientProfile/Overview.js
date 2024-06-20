@@ -300,7 +300,7 @@ const Overview = () => {
                 </table>
               </div>
               <div className="table-responsive">
-                <h5>Clinical Examin</h5>
+                <h5>Clinical Examine</h5>
                 <table className="table table-bordered table-striped">
                   <thead>
                     <tr>

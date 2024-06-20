@@ -226,6 +226,17 @@ const PatientBillsByTpid = () => {
       <Wrapper>
         {/* branch details */}
         <div className="container-fluid">
+          <div className="d-flex justify-content-between align-items-center my-2 px-3 gap-2">
+           
+            <button className="btn btn-primary no-print btn-lg" onClick={() => window.history.go(-1)}>
+              Back
+            </button>
+            <button className="btn btn-info no-print btn-lg" onClick={handleButton}>
+              Print
+            </button>
+          </div>
+        </div>
+        <div className="container-fluid">
           <div className="row">
             <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div className="clinic-logo">
@@ -592,7 +603,7 @@ const PatientBillsByTpid = () => {
           </div>
         </div>
         {/* print button */}
-        <div className="container-fluid">
+        {/* <div className="container-fluid">
           <div className="d-flex justify-content-center align-items-center my-2 gap-2">
             <button className="btn btn-info no-print" onClick={handleButton}>
               Print
@@ -601,7 +612,7 @@ const PatientBillsByTpid = () => {
               Back
             </button>
           </div>
-        </div>
+        </div> */}
       </Wrapper>
     </>
   );

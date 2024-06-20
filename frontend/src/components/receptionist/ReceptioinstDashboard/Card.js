@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import axios from "axios";
 import moment from "moment";
 import { clearUser } from '../../../redux/user/userSlice';
+import cogoToast from "cogo-toast";
 
 
 function Card() {
@@ -64,6 +65,7 @@ function Card() {
       console.log(error);
       if(error?.response?.status == 401){
         // alert("Your token is expired please login again")
+         cogoToast.info("Your token is expired please login again")
         dispatch(clearUser())
         navigate('/receptionist_login');
       }

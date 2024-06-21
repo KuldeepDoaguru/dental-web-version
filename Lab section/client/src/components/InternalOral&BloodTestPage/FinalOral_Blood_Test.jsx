@@ -500,7 +500,7 @@ const handleViewPDF = () => {
           <div className="text-center">
             <button
               className="btn btn-success  mb-2 mt-4 "
-              onClick={handlePrintPage}
+              onClick={handleViewPDF}
             >
               Print_Page
             </button>

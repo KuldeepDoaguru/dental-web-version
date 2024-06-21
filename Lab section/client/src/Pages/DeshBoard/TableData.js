@@ -537,7 +537,7 @@ function TableData() {
   };
 
   // Filter the patient details to include only those with a "pending" status
-  const pendingPatients = patientDetails?.filter(patient => patient.test_status === "pending");
+  const pendingPatients = patientDetails?.filter(patient => patient.test_status === "pending" && patient.branch_name == 'Madan Mahal');
 
   // Apply search and date filters to the pending patients
   const filteredPatients = pendingPatients?.filter((patient) => {

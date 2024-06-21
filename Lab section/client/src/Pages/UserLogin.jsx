@@ -7,7 +7,8 @@ function UserLogin() {
 
   return (
     <div className="UserLogin">
-      <h5 className='text-white'>Welcome, {userName.employee_name}</h5>
+      <h5 className='text-white'>Welcome {userName.employee_name} ({userName.employee_ID})</h5>
+   
       {/* Other UserLogin content */}
     </div>
   );

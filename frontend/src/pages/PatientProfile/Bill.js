@@ -76,11 +76,11 @@ const Bill = () => {
                         </td>
                         <td>{item.bill_id}</td>
 
-                        <td>{item.assigned_doctor_name}</td>
+                        <td className="text-capitalize">{`Dr. ${item.assigned_doctor_name}`}</td>
                         <td>{item.total_amount}</td>
                         <td>{item.paid_amount}</td>
                         <td>{item.pay_by_sec_amt}</td>
-                        <td>{item.payment_mode}</td>
+                        <td className="text-capitalize">{item.payment_mode}</td>
                         <td>
                           {item.payment_date_time
                             ? moment(
@@ -89,7 +89,9 @@ const Bill = () => {
                               ).format("DD/MM/YYYY")
                             : ""}
                         </td>
-                        <td>{item.payment_status}</td>
+                        <td className="text-capitalize">
+                          {item.payment_status}
+                        </td>
                       </tr>
                     </>
                   ))}

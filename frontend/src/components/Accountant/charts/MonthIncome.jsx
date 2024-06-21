@@ -14,6 +14,7 @@ import {
 import styled from "styled-components";
 import animationData from "../../../pages/loading-effect.json";
 import Lottie from "react-lottie";
+import moment from "moment";
 
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
@@ -77,7 +78,7 @@ const MonthIncome = () => {
     return item.payment_status === "paid";
   });
 
-  // console.log(filterForPayStatus);
+  console.log(filterForPayStatus);
 
   // Group appointments by date and count appointments for each day
 
@@ -108,9 +109,12 @@ const MonthIncome = () => {
   filterForPayStatus.forEach((item) => {
     if (item.payment_date_time) {
       const date = item.payment_date_time.split(" ")[0];
+      // const date = moment(item.payment_date_time, "DD-MM-YYYYTHH:mm:ss").format(
+      //   "DD/MM/YYYY"
+      // );
       totalAmountPerDay[date] =
-        (totalAmountPerDay[date] || 0) + parseFloat(item.total_amount);
-      console.log(item.total_amount);
+        (totalAmountPerDay[date] || 0) + parseFloat(item.paid_amount);
+      // console.log(item.paid_amount);
     }
   });
 
@@ -121,6 +125,7 @@ const MonthIncome = () => {
     const day = String(index + 1).padStart(2, "0");
     // const date = `${formattedDate}-${day}`;
     const date = `${day}-${formattedDate}`;
+    // console.log(date);
     return {
       date,
       patients: dailyAppointments[date] || 0,

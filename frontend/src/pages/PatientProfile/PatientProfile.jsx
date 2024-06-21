@@ -98,7 +98,9 @@ const PatientProfile = () => {
           </div>
           <div className="row">
             <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-              <h2 className="mt-3">{patientData?.patient_name}</h2>
+              <h2 className="mt-3 text-capitalize">
+                {patientData?.patient_name}
+              </h2>
 
               <div className="">
                 <div className="p-2 bg-light w-100 rounded">

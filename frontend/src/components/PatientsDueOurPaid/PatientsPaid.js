@@ -149,7 +149,7 @@ const PatientsPaid = () => {
                                       <th className="sticky">Bill ID</th>
                                       <th className="sticky">Bill Date</th>
                                       <th className="sticky">TPID</th>
-                                      <th className="sticky">Patient UHID</th>
+                                      <th className="sticky"> UHID</th>
                                       <th className="sticky">Patient Name</th>
                                       <th className="sticky">Patient No</th>
                                       <th className="sticky">Doctor Name</th>
@@ -183,9 +183,11 @@ const PatientsPaid = () => {
                                             </td>
                                             <td>{item.tp_id}</td>
                                             <td>{item.uhid}</td>
-                                            <td>{item.patient_name}</td>
+                                            <td className="text-capitalize">
+                                              {item.patient_name}
+                                            </td>
                                             <td>{item.patient_mobile}</td>
-                                            <td>{item.assigned_doctor_name}</td>
+                                            <td className="text-capitalize">{`Dr. ${item.assigned_doctor_name}`}</td>
                                             <td>{item.total_amount}</td>
                                             <td>{item.paid_amount}</td>
                                             <td>{item.pay_by_sec_amt}</td>
@@ -197,7 +199,9 @@ const PatientsPaid = () => {
                                                 "YYYY-MM-DD"
                                               ).format("DD/MM/YYYY")}
                                             </td>
-                                            <td>{item.payment_status}</td>
+                                            <td className="text-capitalize">
+                                              {item.payment_status}
+                                            </td>
                                             <td>
                                               <Link
                                                 // to={`/PatintPaidPaymentPrint/${item.bill_id}`}

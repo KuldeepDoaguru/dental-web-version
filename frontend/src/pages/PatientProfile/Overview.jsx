@@ -225,7 +225,7 @@ const Overview = () => {
                               "YYYY-MM-DDTHH:mm"
                             ).format("DD/MM/YYYY hh:mm A")}
                           </td>
-                          <td>{item.assigned_doctor_name}</td>
+                          <td className="text-capitalize">{`Dr. ${item.assigned_doctor_name}`}</td>
                           <td>{item.treatment_provided}</td>
                           <td>{item.appointment_status}</td>
                         </tr>
@@ -294,7 +294,7 @@ const Overview = () => {
                 </table>
               </div>
               <div className="table-responsive">
-                <h5>Clinical Examin</h5>
+                <h5>Clinical Examine</h5>
                 <table className="table table-bordered table-striped">
                   <thead>
                     <tr>
@@ -311,7 +311,7 @@ const Overview = () => {
                       <>
                         <tr>
                           <td>
-                            {moment(item?.date?.split("T")[0]).format(
+                            {moment(item.date, "DD-MM-YYYYTHH:mm:ss").format(
                               "DD/MM/YYYY"
                             )}
                           </td>
@@ -344,7 +344,7 @@ const Overview = () => {
                       <>
                         <tr>
                           <td>
-                            {moment(item.date?.split("T")[0]).format(
+                            {moment(item.date, "DD-MM-YYYYTHH:mm:ss").format(
                               "DD/MM/YYYY"
                             )}
                           </td>

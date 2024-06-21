@@ -429,13 +429,13 @@ const PrintOpdBill = () => {
                     </td>
                   </tr>
                   <tr>
-                    {/* <th scope="col" className="text-start">
+                    <th scope="col" className="text-start">
                       Address
                     </th>
                     <td className="text-capitalize">
                       {": "}
                       {data?.address}
-                    </td> */}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -470,7 +470,10 @@ const PrintOpdBill = () => {
                     >
                       OPD
                     </td>
-                    <td className="text-end pe-4">{data.opd_amount}</td>
+                    <td className="text-end pe-4">
+                      {data.opd_amount}
+                      {".00"}
+                    </td>
                   </tr>
 
                   <tr>

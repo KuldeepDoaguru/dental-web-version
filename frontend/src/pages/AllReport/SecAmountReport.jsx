@@ -12,10 +12,10 @@ import * as XLSX from "xlsx";
 const SecAmountReport = () => {
   const user = useSelector((state) => state.user);
   const token = user.token;
-  console.log(token);
-  console.log(
-    `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
-  );
+  // console.log(token);
+  // console.log(
+  //   `User Name: ${user.name}, User ID: ${user.id}, branch: ${user.branch}`
+  // );
   console.log("User State:", user);
   const [securityList, setSecurityList] = useState([]);
   const [fromDate, setFromDate] = useState("");
@@ -76,13 +76,28 @@ const SecAmountReport = () => {
     setViewSecurityList(securityList);
   };
 
+  // const validateDateRange = () => {
+  //   if (!fromDate || !toDate) {
+  //     alert("Please select Date");
+  //     return false;
+  //   }
+  //   const start = moment(fromDate);
+  //   const end = moment(toDate);
+  //   const diff = end.diff(start, "days");
+  //   if (diff > 30) {
+  //     alert("The date range should not exceed 30 days");
+  //     return false;
+  //   }
+  //   return true;
+  // };
+
   const validateDateRange = () => {
     if (!fromDate || !toDate) {
       alert("Please select Date");
       return false;
     }
-    const start = moment(fromDate);
-    const end = moment(toDate);
+    const start = moment(fromDate, "YYYY-MM-DD");
+    const end = moment(toDate, "YYYY-MM-DD");
     const diff = end.diff(start, "days");
     if (diff > 30) {
       alert("The date range should not exceed 30 days");
@@ -93,21 +108,41 @@ const SecAmountReport = () => {
 
   const handleView = (e) => {
     e.preventDefault();
-    // if (!fromDate || !toDate) {
-    //   alert("Please select Date");
-    //   return;
-    // }
-
     if (!validateDateRange()) {
       return;
     }
+    const start = moment(fromDate, "YYYY-MM-DD");
+    const end = moment(toDate, "YYYY-MM-DD").add(1, "day");
+
+    console.log(
+      "Date Range: ",
+      start.format("DD-MM-YYYY"),
+      "-",
+      end.format("DD-MM-YYYY")
+    );
 
     const filteredData = securityList.filter((item) => {
-      const date = moment(item.date).format("YYYY-MM-DD");
-      return moment(date).isBetween(fromDate, toDate, null, "[]");
+      const itemDate = moment(item.date, "DD-MM-YYYY HH:mm:ss");
+      return itemDate.isBetween(start, end, null, "[]");
     });
+
+    console.log("Filtered Data: ", filteredData);
     setViewSecurityList(filteredData);
   };
+
+  // const handleView = (e) => {
+  //   e.preventDefault();
+
+  //   if (!validateDateRange()) {
+  //     return;
+  //   }
+
+  //   const filteredData = securityList.filter((item) => {
+  //     const date = moment(item.date).format("DD-MM-YYYY");
+  //     return moment(date).isBetween(fromDate, toDate, null, "[]");
+  //   });
+  //   setViewSecurityList(filteredData);
+  // };
 
   const handleDownload = (e) => {
     e.preventDefault();
@@ -120,10 +155,23 @@ const SecAmountReport = () => {
       return;
     }
 
+    // const filteredData = securityList.filter((item) => {
+    //   const date = moment(item.date).format("DD-MM-YYYY");
+    //   return moment(date).isBetween(fromDate, toDate, null, "[]");
+    // });
+
+    const start = moment(fromDate, "YYYY-MM-DD");
+    const end = moment(toDate, "YYYY-MM-DD").add(1, "day"); // Include end date
+
     const filteredData = securityList.filter((item) => {
-      const date = moment(item.date).format("YYYY-MM-DD");
-      return moment(date).isBetween(fromDate, toDate, null, "[]");
+      const date = moment(item.date, "DD-MM-YYYY HH:mm:ss");
+      return date.isBetween(start, end, null, "[]");
     });
+
+    // const filteredData = securityList.filter((item) => {
+    //   const date = moment(item.date, "DD-MM-YYYY HH:mm:ss");
+    //   return date.isBetween(fromDate, toDate, null, "[]");
+    // });
 
     const formattedData = filteredData.map((item) => ({
       "Security Amount ID": item.sa_id,

@@ -384,12 +384,16 @@ const SecurityAmount = () => {
                                         </td>
                                         <td>{item.appointment_id}</td>
                                         <td>{item.uhid}</td>
-                                        <td>{item.patient_name}</td>
+                                        <td className="text-capitalize">
+                                          {item.patient_name}
+                                        </td>
                                         <td>{item.patient_number}</td>
-                                        <td>{item.assigned_doctor}</td>
+                                        <td className="text-capitalize">{`Dr. ${item.assigned_doctor}`}</td>
                                         <td>{item.amount}</td>
                                         <td>{item.remaining_amount}</td>
-                                        <td>{item.payment_Mode}</td>
+                                        <td className="text-capitalize">
+                                          {item.payment_Mode}
+                                        </td>
                                         <td>{item.transaction_Id}</td>
                                         <td>
                                           {item.payment_date
@@ -409,7 +413,9 @@ const SecurityAmount = () => {
                                         </td>
                                         <td>
                                           <div className="d-flex">
-                                            <h6>{item.payment_status}</h6>
+                                            <h6 className="text-capitalize">
+                                              {item.payment_status}
+                                            </h6>
                                           </div>
                                         </td>
                                         <td>{item.refund_amount}</td>

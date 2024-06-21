@@ -13,6 +13,7 @@ import { GiReceiveMoney } from "react-icons/gi";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { BiSolidUserDetail } from "react-icons/bi";
 import { FaHospitalUser } from "react-icons/fa6";
+import { clearUser } from "../../redux/slices/UserSlicer";
 
 const Cards = () => {
   const dispatch = useDispatch();
@@ -43,6 +44,11 @@ const Cards = () => {
       setOpdData(data);
     } catch (error) {
       console.log(error);
+      if (error?.response?.status == 401) {
+        // alert("Your token is expired please login again");
+        dispatch(clearUser);
+        navigate("/");
+      }
     }
   };
 
@@ -122,7 +128,7 @@ const Cards = () => {
   // console.log(treatData);
   //filterForPatAppointToday
   const filterForTreatAppointToday = treatData?.filter(
-    (item) => item.bill_date.split(" ")[0] === formattedDate
+    (item) => item.payment_date_time?.split(" ")[0] === formattedDate
   );
 
   // console.log(filterForTreatAppointToday);
@@ -141,15 +147,31 @@ const Cards = () => {
   //   }
   // };
 
+  // Bill Income Total
+
   const totalTreatPrice = () => {
     try {
+      const getDate = new Date();
+      const year = getDate.getFullYear();
+      const month = String(getDate.getMonth() + 1).padStart(2, "0");
+      const day = String(getDate.getDate()).padStart(2, "0");
+
+      const formattedDate = `${day}-${month}-${year}`;
+
+      // Filter for treatments/appointments today
+      const filterForTreatAppointToday = treatData?.filter(
+        (item) => item.payment_date_time?.split(" ")[0] === formattedDate
+      );
+
       let total = 0;
-      filterForTreatAppointToday.forEach((item) => {
+
+      filterForTreatAppointToday?.forEach((item) => {
         if (item.payment_status === "paid") {
-          total = total + (item?.total_amount ? item?.total_amount : 0);
+          total += item.paid_amount ? parseFloat(item.paid_amount) : 0; // Ensure to parse as float or integer based on your data type
         }
       });
-      // console.log(total);
+
+      console.log(total);
       return total;
     } catch (error) {
       console.log(error);
@@ -159,6 +181,25 @@ const Cards = () => {
 
   const totalTreatValue = totalTreatPrice();
   console.log(totalTreatValue);
+
+  // const totalTreatPrice = () => {
+  //   try {
+  //     let total = 0;
+  //     filterForTreatAppointToday.forEach((item) => {
+  //       if (item.payment_status === "paid") {
+  //         total = total + (item.paid_amount ? item.paid_amount : 0);
+  //       }
+  //     });
+  //     // console.log(total);
+  //     return total;
+  //   } catch (error) {
+  //     console.log(error);
+  //     return 0;
+  //   }
+  // };
+
+  // const totalTreatValue = totalTreatPrice();
+  // console.log(totalTreatValue);
 
   const getVoucherAmount = async () => {
     try {

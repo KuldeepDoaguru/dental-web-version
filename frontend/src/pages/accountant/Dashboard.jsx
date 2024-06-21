@@ -22,6 +22,7 @@ const Accountant_Dashboard = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
+  const [showLottie, setShowLottie] = useState(true);
   const token = user.token;
   console.log(token);
   console.log(
@@ -102,7 +103,22 @@ const Accountant_Dashboard = () => {
   useEffect(() => {
     getTodaysBill();
     getAppointList();
+
+    const interval = setInterval(() => {
+      getTodaysBill();
+      getAppointList();
+    }, 10000);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      setShowLottie(false);
+    }
+  }, [loading]);
 
   const defaultOptions = {
     loop: true,
@@ -155,7 +171,7 @@ const Accountant_Dashboard = () => {
                 >
                   <h5>Todays Bill </h5>
                   <div className="table-responsive" id="table">
-                    {loading ? (
+                    {loading && showLottie ? (
                       <Lottie
                         options={defaultOptions}
                         height={300}
@@ -175,6 +191,7 @@ const Accountant_Dashboard = () => {
                               <th className="sticky">Assigned Doctor</th>
                               <th className="sticky">Total Amount</th>
                               <th className="sticky">Paid Amount</th>
+                              <th className="sticky">Security Amount</th>
                               <th className="sticky">Payment Mode</th>
                               <th className="sticky">Transaction ID</th>
                               <th className="sticky">Payment Status</th>
@@ -202,15 +219,22 @@ const Accountant_Dashboard = () => {
                                       {item.uhid}
                                     </Link>
                                   </td>
-                                  <td>{item.patient_name}</td>
+                                  <td className="text-capitalize">
+                                    {item.patient_name}
+                                  </td>
                                   <td>{item.patient_mobile}</td>
                                   <td>{item.patient_email}</td>
-                                  <td>{item.assigned_doctor_name}</td>
+                                  <td className="text-capitalize">{`Dr. ${item.assigned_doctor_name}`}</td>
                                   <td>{item.total_amount}</td>
                                   <td>{item.paid_amount}</td>
-                                  <td>{item.payment_mode}</td>
+                                  <td>{item.pay_by_sec_amt}</td>
+                                  <td className="text-capitalize">
+                                    {item.payment_mode}
+                                  </td>
                                   <td>{item.transaction_Id}</td>
-                                  <td>{item.payment_status}</td>
+                                  <td className="text-capitalize">
+                                    {item.payment_status}
+                                  </td>
                                 </tr>
                               ))}
                             </tbody>
@@ -228,7 +252,7 @@ const Accountant_Dashboard = () => {
                 >
                   <h5>Todays Appointment</h5>
                   <div className="table-responsive" id="table">
-                    {loading ? (
+                    {loading && showLottie ? (
                       <Lottie
                         options={defaultOptions}
                         height={300}
@@ -242,9 +266,7 @@ const Accountant_Dashboard = () => {
                               <th className="table-sno sticky">
                                 Appointment ID
                               </th>
-                              <th className="table-small sticky">
-                                Patient UHID
-                              </th>
+                              <th className="table-small sticky">UHID</th>
 
                               <th className="table-small sticky">
                                 Patient Name
@@ -294,18 +316,20 @@ const Accountant_Dashboard = () => {
                                         {item.patient_uhid}
                                       </Link>
                                     </td>
-                                    <td>{item.patient_name}</td>
+                                    <td className="text-capitalize">
+                                      {item.patient_name}
+                                    </td>
                                     <td className="table-small">
                                       {item.mobileno}
                                     </td>
                                     <td className="table-small">
                                       {item.opd_amount}
                                     </td>
-                                    <td className="table-small">
-                                      {item.assigned_doctor_name}
+                                    <td className="text-capitalize">
+                                      {`Dr. ${item.assigned_doctor_name}`}
                                     </td>
 
-                                    <td className="table-small">
+                                    <td className="text-capitalize">
                                       {item.appointment_created_by}
                                     </td>
                                     <td className="table-small">

@@ -61,8 +61,8 @@ const Lab = () => {
                     <tr>
                       <td>{item.testid}</td>
                       <td>{item.tpid}</td>
-                      <td>{item.assigned_doctor_name}</td>
-                      <td>{item.lab_name}</td>
+                      <td className="text-capitalize">{`Dr. ${item.assigned_doctor_name}`}</td>
+                      <td className="text-capitalize">{item.lab_name}</td>
                       <td>{item.test}</td>
                       <td>
                         {moment(
@@ -70,7 +70,7 @@ const Lab = () => {
                           "YYYY-MM-DDTHH:mm:ss"
                         ).format("DD/MM/YYYY")}
                       </td>
-                      <td>{item.test_status}</td>
+                      <td className="text-capitalize">{item.test_status}</td>
                     </tr>
                   </>
                 ))}

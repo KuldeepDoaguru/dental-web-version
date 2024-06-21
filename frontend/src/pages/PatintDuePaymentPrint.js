@@ -350,15 +350,14 @@ const PatintDuePaymentPrint = () => {
                               <div className="d-flex">
                                 <h6> Invoice Date </h6>
                                 <h6 className="ms-1">
-                                  {/* {" "}
-                                  : {
-                                    billAmount[0]?.bill_date.split("T")[0]
-                                  }{" "} */}
-                                  {billAmount[0]?.bill_date.split
+                                  {" "}
+                                  :
+                                  {billAmount[0]?.bill_date
                                     ? moment(
-                                        billAmount[0]?.bill_date.split
+                                        billAmount[0]?.bill_date,
+                                        "DD-MM-YYYYTHH:mm:ss"
                                       ).format("DD/MM/YYYY")
-                                    : ""}
+                                    : ""}{" "}
                                 </h6>
                               </div>
                             </div>
@@ -375,8 +374,9 @@ const PatintDuePaymentPrint = () => {
                                       ? Number(billAmount[0]?.total_amount)
                                       : 0}
                                   </h1>
-                                  <h5 className="text-danger ms-4">
-                                    Patient Net Due
+                                  <h5 className="text-danger ms-3">
+                                    {/* Patient Net Due */}
+                                    Total Treatment Amount
                                   </h5>
                                 </div>
                               </div>
@@ -510,13 +510,13 @@ const PatintDuePaymentPrint = () => {
                       >
                         Pay Now
                       </button>
-                      <button
+                      {/* <button
                         type="button"
                         className="btn btn-warning ms-2"
                         onClick={completeTreatment}
                       >
                         Mark Treatment Complete
-                      </button>
+                      </button> */}
                     </>
                   ) : (
                     <>

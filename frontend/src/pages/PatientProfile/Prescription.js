@@ -61,7 +61,13 @@ const Prescription = () => {
                   <>
                     <tr>
                       <td>
-                        {moment(item.date?.split("T")[0]).format("DD/MM/YYYY")}
+                        {/* {moment(item.date?.split(" ")[0]).format("DD/MM/YYYY")} */}
+
+                        {item.date
+                          ? moment(item.date, "DD-MM-YYYYTHH:mm:ss").format(
+                              "DD/MM/YYYY"
+                            )
+                          : ""}
                       </td>
                       <td>{item.treatment}</td>
                       <td>{item.medicine_name}</td>

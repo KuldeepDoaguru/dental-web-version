@@ -14,6 +14,7 @@ const userSlice = createSlice({
       state.name = "";
       state.id = null;
       state.branch = null;
+      state.token = null;
     },
     toggleTableRefresh: (state) => {
       state.refreshTable = !state.refreshTable;

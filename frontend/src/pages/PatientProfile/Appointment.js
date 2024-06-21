@@ -79,10 +79,12 @@ const Appointment = () => {
                               ).format("hh:mm A")
                             : ""}
                         </td>
-                        <td>{item.assigned_doctor_name}</td>
+                        <td className="text-capitalize">{`Dr. ${item.assigned_doctor_name}`}</td>
                         <td>{item.treatment_provided}</td>
 
-                        <td>{item.appointment_status}</td>
+                        <td className="text-capitalize">
+                          {item.appointment_status}
+                        </td>
                       </tr>
                     </>
                   ))}

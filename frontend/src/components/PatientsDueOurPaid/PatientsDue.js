@@ -160,7 +160,7 @@ const PatientsDue = () => {
                                   <thead className="table-head">
                                     <tr>
                                       <th className="table-sno sticky">TPID</th>
-                                      <th className="sticky">Patient UHID</th>
+                                      <th className="sticky">UHID</th>
                                       <th className=" sticky">Patients Name</th>
                                       <th className=" sticky">
                                         Patients Mobile
@@ -194,10 +194,12 @@ const PatientsDue = () => {
                                               {item.tp_id}
                                             </td>
                                             <td>{item.uhid}</td>
-                                            <td>{item.patient_name}</td>
+                                            <td className="text-capitalize">
+                                              {item.patient_name}
+                                            </td>
                                             <td>{item.patient_mobile}</td>
                                             <td>{item.patient_email}</td>
-                                            <td>{item.assigned_doctor_name}</td>
+                                            <td className="text-capitalize">{`Dr. ${item.assigned_doctor_name}`}</td>
                                             <td>{item.total_amount}</td>
                                             <td>{item.paid_amount}</td>
                                             <td>{item.pay_by_sec_amt}</td>
@@ -207,10 +209,16 @@ const PatientsDue = () => {
                                                   Number(item.pay_by_sec_amt))}
                                             </td>
                                             <td>
-                                              {moment(
-                                                item.bill_date?.split("T")[0],
+                                              {/* {moment(
+                                                item.bill_date?.split("T")[0], 
                                                 "YYYY-MM-DD"
-                                              ).format("DD/MM/YYYY")}
+                                              ).format("DD/MM/YYYY")} */}
+                                              {item.bill_date
+                                                ? moment(
+                                                    item.bill_date,
+                                                    "DD-MM-YYYYTHH:mm:ss"
+                                                  ).format("DD/MM/YYYY")
+                                                : ""}
                                             </td>
                                             <td>
                                               {item.total_amount >

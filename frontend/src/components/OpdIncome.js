@@ -420,9 +420,9 @@ const OpdIncome = () => {
                       <table class="table table-bordered rounded shadow">
                         <thead className="table-head">
                           <tr>
-                            <th className="sticky">Appointment ID</th>
-                            <th className="sticky">Appointment Date</th>
-                            <th className="sticky">Patient UHID</th>
+                            <th className="sticky">Appoint ID</th>
+                            <th className="sticky">Appoint Date</th>
+                            <th className="sticky">UHID</th>
                             <th className="sticky">Patient Name</th>
                             <th className="sticky">Contact</th>
                             <th className="sticky">Doctor Name</th>
@@ -453,14 +453,20 @@ const OpdIncome = () => {
                                       : ""}
                                   </td>
                                   <td>{item.uhid}</td>
-                                  <td>{item.patient_name}</td>
+                                  <td className="text-capitalize">
+                                    {item.patient_name}
+                                  </td>
                                   <td>{item.mobileno}</td>
-                                  <td>{item.assigned_doctor_name}</td>
+                                  <td className="text-capitalize">{`Dr. ${item.assigned_doctor_name}`}</td>
                                   <td>{item.assigned_doctor_id}</td>
                                   <td>{item.opd_amount}</td>
-                                  <td>{item.payment_Mode}</td>
+                                  <td className="text-capitalize">
+                                    {item.payment_Mode}
+                                  </td>
                                   <td>{item.transaction_Id}</td>
-                                  <td>{item.payment_Status}</td>
+                                  <td className="text-capitalize">
+                                    {item.payment_Status}
+                                  </td>
                                   <td>
                                     <Link
                                       to={`/OpdBills/${item.appoint_id}`}

@@ -60,7 +60,12 @@ const ClinicExamin = () => {
                   <>
                     <tr>
                       <td>
-                        {moment(item?.date?.split("T")[0]).format("DD/MM/YYYY")}
+                        {/* {moment(item?.date?.split("T")[0]).format("DD/MM/YYYY")} */}
+                        {item.date
+                          ? moment(item.date, "DD-MM-YYYYTHH:mm:ss").format(
+                              "DD/MM/YYYY"
+                            )
+                          : ""}
                       </td>
                       <td>{item.diagnosis_category}</td>
                       <td>{item.disease}</td>

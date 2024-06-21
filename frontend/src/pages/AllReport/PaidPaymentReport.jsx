@@ -64,8 +64,8 @@ const PaidPaymentReport = () => {
       alert("Please select Date");
       return false;
     }
-    const start = moment(fromDate);
-    const end = moment(toDate);
+    const start = moment(fromDate, "YYYY-MM-DD");
+    const end = moment(toDate, "YYYY-MM-DD");
     const diff = end.diff(start, "days");
     if (diff > 30) {
       alert("The date range should not exceed 30 days");
@@ -85,10 +85,19 @@ const PaidPaymentReport = () => {
       return;
     }
 
+    const start = moment(fromDate, "YYYY-MM-DD");
+    const end = moment(toDate, "YYYY-MM-DD").add(1, "day");
+
+    // const filteredData = filterForPaidBills.filter((item) => {
+    //   const date = moment(item.bill_date).format("YYYY-MM-DD");
+    //   return moment(date).isBetween(fromDate, toDate, null, "[]");
+    // });
+
     const filteredData = filterForPaidBills.filter((item) => {
-      const date = moment(item.bill_date).format("YYYY-MM-DD");
-      return moment(date).isBetween(fromDate, toDate, null, "[]");
+      const itemDate = moment(item.bill_date, "DD-MM-YYYY HH:mm:ss");
+      return itemDate.isBetween(start, end, null, "[]");
     });
+
     setViewPatBill(filteredData);
   };
 
@@ -103,10 +112,18 @@ const PaidPaymentReport = () => {
       return;
     }
 
+    const start = moment(fromDate, "YYYY-MM-DD");
+    const end = moment(toDate, "YYYY-MM-DD").add(1, "day"); // Include end date
+
     const filteredData = filterForPaidBills.filter((item) => {
-      const date = moment(item.bill_date).format("YYYY-MM-DD");
-      return moment(date).isBetween(fromDate, toDate, null, "[]");
+      const date = moment(item.bill_date, "DD-MM-YYYY HH:mm:ss");
+      return date.isBetween(start, end, null, "[]");
     });
+
+    // const filteredData = filterForPaidBills.filter((item) => {
+    //   const date = moment(item.bill_date).format("YYYY-MM-DD");
+    //   return moment(date).isBetween(fromDate, toDate, null, "[]");
+    // });
 
     const formattedData = filteredData.map((item) => ({
       ID: item.bill_id,

@@ -240,7 +240,7 @@ console.log(branch)
           </div>
           <div className="row">
             <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-              <h2 className="mt-3">{patientData?.patient_name}</h2>
+              <h2 className="mt-3 text-capitalize">{patientData?.patient_name}</h2>
 
               <div className="">
                 <div className="p-2 bg-light w-100 rounded">
@@ -400,7 +400,7 @@ console.log(branch)
                             <strong>Cont. Person :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
-                            <span className="">
+                            <span className="text-capitalize">
                               {patientData?.contact_person}
                             </span>
                           </div>
@@ -414,7 +414,7 @@ console.log(branch)
                             <strong>Cont. Person Name :</strong>
                           </div>
                           <div className="col-xl-7 col-lg-7 col-md-6 col-sm-6 col-12">
-                            <span className="">
+                            <span className="text-capitalize">
                               {patientData?.contact_person_name}
                             </span>
                           </div>

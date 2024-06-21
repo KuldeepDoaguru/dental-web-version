@@ -1121,7 +1121,7 @@ function AddPatient() {
                           type="search"
                           id="doctor"
                           name="doctor"
-                          className="form-control"
+                          className="form-control text-capitalize"
                           value={searchDoctor}
                           onChange={handleSearchDoctor}
                           required
@@ -1142,7 +1142,7 @@ function AddPatient() {
                                 filteredDoctor?.map((doctor) => (
                                   <li
                                     key={doctor.employee_ID}
-                                    className={`list-group-item ${
+                                    className={`list-group-item text-capitalize${
                                       selectedDoctor &&
                                       selectedDoctor.employee_ID ===
                                         doctor.employee_ID

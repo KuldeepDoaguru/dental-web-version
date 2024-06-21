@@ -347,9 +347,9 @@ useEffect(() => {
             <thead>
               <tr>
                 {/* <th style={{fontSize:"12px"}}>No.</th> */}
-                <th>Doctor</th>
-                <th>App.</th>
-                <th>Available Slot</th>
+                <th>Doctor Name</th>
+                <th>Apps.</th>
+                <th>Available Slots</th>
               </tr>
             </thead>
             <tbody>
@@ -394,7 +394,7 @@ const availableEveningSlots = doctorTimeSlots?.eveningSlots.filter(slot => {
     return (
       <tr key={index}>
         {/* <td>{index + 1}</td> */}
-        <td>{"Dr. "} {doctor.employee_name}</td>
+        <td className="text-capitalize">{"Dr. "} {doctor.employee_name}</td>
         <td>{doctorAppointments.length}</td> {/* Display number of appointments */}
         <td>
          

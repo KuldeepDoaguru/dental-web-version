@@ -367,7 +367,7 @@ console.log(selectedBranch)
                                 placeholder="Password"
                                 required
                               />
-                              <div className="eye-icon">
+                              {/* <div className="eye-icon">
                                   {show ? (
                                     <IoEye onClick={() => setShow(false)} />
                                   ) : (
@@ -375,7 +375,7 @@ console.log(selectedBranch)
                                       onClick={() => setShow(true)}
                                     />
                                   )}
-                                </div>
+                                </div> */}
                                 </div>
                             </div>
                           </div>

@@ -629,21 +629,36 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
   useEffect(() => {
     const selectedDateTime = new Date(selectedDate);
 
-    const filteredDoctors = doctors.filter((doctor) => {
+    const filteredDoctors = doctors?.filter((doctor) => {
       // Find all leave entries for the current doctor
-      const doctorLeaveEntries = doctorWithLeave.filter(
+      const doctorLeaveEntries = doctorWithLeave?.filter(
         (doc) => doc.employee_ID === doctor.employee_ID
       );
 
       // If the doctor has leave entries, check if the selected date falls within any of them
-      if (doctorLeaveEntries.length > 0) {
-        return !doctorLeaveEntries.some((entry) => {
-          const leaveDates = entry.leave_dates?.split(",");
-          return leaveDates.includes(
-            selectedDateTime.toISOString()?.split("T")[0]
-          );
-        });
-      }
+      // if (doctorLeaveEntries?.length > 0) {
+      //   return !doctorLeaveEntries?.some((entry) => {
+      //     const leaveDates = entry?.leave_dates?.split(",");
+      //     return leaveDates?.includes(
+      //       selectedDateTime?.toISOString()?.split("T")[0]
+      //     );
+      //   });
+      // }
+
+      // Check if selectedDateTime is a valid date
+if (selectedDateTime && !isNaN(selectedDateTime)) {
+  // If the doctor has leave entries, check if the selected date falls within any of them
+  if (doctorLeaveEntries?.length > 0) {
+    return !doctorLeaveEntries.some((entry) => {
+      const leaveDates = entry?.leave_dates?.split(",");
+      return leaveDates?.includes(selectedDateTime.toISOString().split("T")[0]);
+    });
+  }
+} else {
+  // Handle the invalid date scenario (e.g., return false or throw an error)
+  console.error('Invalid selected date');
+  return false; // or any other appropriate action
+}
 
       // If the doctor has no leave entries, include them in the filtered array
       return true;
@@ -688,7 +703,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
                     type="text"
                     value={data.patient_name}
                     readOnly
-                    class="form-control"
+                    class="form-control text-capitalize"
                     id="recipient-name"
                   />
                 </div>
@@ -740,7 +755,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
                     onChange={handleSearchDoctor}
                     required
                     name="assigned_doctor_name"
-                    class="form-control"
+                    class="form-control text-capitalize"
                     id="recipient-name"
                     autocomplete="off"
                     placeholder="Search doctor"
@@ -752,7 +767,7 @@ function EditAppointment({ onClose, appointmentInfo, allAppointmentData }) {
                           filteredDoctor?.map((doctor) => (
                             <li
                               key={doctor.employee_ID}
-                              className={`list-group-item ${
+                              className={`list-group-item text-capitalize ${
                                 selectedDoctor &&
                                 selectedDoctor.employee_ID ===
                                   doctor.employee_ID

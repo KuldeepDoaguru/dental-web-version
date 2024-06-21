@@ -397,7 +397,7 @@ console.log(appointmentsData);
 
               <input
                 type="search"
-                placeholder="Enter Patient Name or Mobile or Id"
+                placeholder="Enter Patient Name or Mobile or UHID"
                 onChange={handleSearch}
                 value={searchTerm}
                 className='mb-2 rounded-5 p-2 form-control'
@@ -420,8 +420,8 @@ console.log(appointmentsData);
             <table className="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>A.Id</th>
-                  <th>P.Id</th>
+                  <th>App. Id</th>
+                  <th>UHID</th>
                   <th>Patient Name</th>
                   <th>Mobile</th>
                   <th>Timing</th>
@@ -450,12 +450,12 @@ console.log(appointmentsData);
                   <tr key={index}>
                     <td>{patient.appoint_id}</td>
                     <td><Link to={`/patient_profile/${patient.uhid}`}>{patient.uhid}</Link></td>
-                    <td>{patient.patient_name}</td>
+                    <td className="text-capitalize">{patient.patient_name}</td>
                     <td>{patient.mobileno}</td>
                     <td>{patient?.appointment_dateTime ? moment(patient?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('hh:mm A') : ""}</td>
                     <td>{patient.treatment_provided
                     }</td>
-                    <td> {"Dr. "}{patient.assigned_doctor_name
+                    <td className="text-capitalize"> {"Dr. "}{patient.assigned_doctor_name
                     }</td>
                     <td>{patient.bloodgroup}</td>
                     <td>{patient.age}</td>
@@ -464,7 +464,7 @@ console.log(appointmentsData);
                       patient_type
                     }</td>
                     <td>{patient.notes}</td>
-                    <td>{patient.appointment_status
+                    <td className="text-capitalize">{patient.appointment_status
                     }</td>
 
                     <td><div className="dropdown">

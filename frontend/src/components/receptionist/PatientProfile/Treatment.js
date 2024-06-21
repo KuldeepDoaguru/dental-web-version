@@ -231,8 +231,8 @@ const Treatment = () => {
                         <td>{item.treatment_name}</td>
                         <td>{item.total_sitting}</td>
                         <td>{item.current_sitting}</td>
-                        <td>{item.current_sitting_status}</td>
-                        <td>{item.treatment_status}</td>
+                        <td className="text-capitalize">{item.current_sitting_status}</td>
+                        <td className="text-capitalize">{item.treatment_status}</td>
                       </tr>
                     </>
                   ))}

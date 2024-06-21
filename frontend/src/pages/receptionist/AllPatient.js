@@ -194,7 +194,7 @@ function AllPatient() {
                     <input
                       className="form-control me-2 rounded-5"
                       type="search"
-                      placeholder="Enter Patient Name or Mobile or Id"
+                      placeholder="Enter Patient Name or Mobile or UHID"
                       aria-label="Search"
                       onChange={handleSearch}
                       value={searchTerm}
@@ -265,7 +265,7 @@ function AllPatient() {
                       <table className="table table-bordered table-striped">
                         <thead>
                           <tr>
-                            <th>Id</th>
+                            <th>UHID</th>
                             <th>Patient Name</th>
                             <th>Phone Number</th>
                             <th>Email</th>
@@ -290,7 +290,7 @@ function AllPatient() {
                                     {data.uhid}
                                   </Link>
                                 </td>
-                                <td>{data.patient_name}</td>
+                                <td className="text-capitalize">{data.patient_name}</td>
                                 <td>{data.mobileno}</td>
                                 <td>{data.emailid}</td>
 

@@ -197,7 +197,7 @@ const defaultOptions = {
                     <input
                       className="form-control me-2 rounded-5"
                       type="search"
-                      placeholder="Enter Patient Name or Mobile or Id"
+                      placeholder="Enter Patient Name or Mobile or UHID"
                       aria-label="Search"
                       onChange={handleSearch}
                       value={searchTerm}
@@ -299,7 +299,7 @@ const defaultOptions = {
                               {data.uhid}
                             </Link>
                           </td>
-                          <td>{data.patient_name}</td>
+                          <td className="text-capitalize">{data.patient_name}</td>
                           <td>{data.mobileno}</td>
                           <td>
                             {moment(
@@ -308,13 +308,13 @@ const defaultOptions = {
                             ).format("DD/MM/YYYY hh:mm A")}
                           </td>
 
-                          <td>{data.assigned_doctor_name}</td>
+                          <td className="text-capitalize">{data.assigned_doctor_name}</td>
                           <td>{data.treatment_provided}</td>
-                          <td>{data.appointment_status}</td>
+                          <td className="text-capitalize">{data.appointment_status}</td>
                           <td>{data.opd_amount}</td>
-                          <td>{data.payment_Mode}</td>
+                          <td className="text-capitalize">{data.payment_Mode}</td>
                           <td>{data.transaction_Id}</td>
-                          <td>{data.payment_Status}</td>
+                          <td className="text-capitalize">{data.payment_Status}</td>
                           <td>
                             {moment(data?.created_at).format("DD/MM/YYYY")}
                           </td>

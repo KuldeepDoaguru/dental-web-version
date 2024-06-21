@@ -336,11 +336,11 @@ const defaultOptions = {
                       {currentRows?.map((data, index) => (
                         <tr key={index}>
                           <td>{data.employee_ID}</td>
-                          <td>{"Dr. "} {data.employee_name}</td>
+                          <td className="text-capitalize">{"Dr. "} {data.employee_name}</td>
                           <td>{data.employee_mobile}</td>
                           <td>{data.employee_email}</td>
 
-                          <td>{data.gender}</td>
+                          <td>{data?.gender}</td>
                           <td>{data.address}</td>
                           <td>
                             Morning :{" "}

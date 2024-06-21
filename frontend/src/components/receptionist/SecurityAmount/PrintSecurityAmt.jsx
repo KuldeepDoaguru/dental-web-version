@@ -95,13 +95,7 @@ const PrintSecurityAmt = () => {
                       {data[0]?.uhid}
                     </td>
 
-                    <th scope="col" className="text-start">
-                      Branch Name
-                    </th>
-                    <td className="text-capitalize">
-                      {": "}
-                      {data[0]?.branch_name}
-                    </td>
+                    
                   </tr>
                   <tr>
                     <th scope="col" className="text-start">
@@ -129,6 +123,17 @@ const PrintSecurityAmt = () => {
                       {"Dr. "}{data[0]?.assigned_doctor}
                     </td>
                     <th scope="col" className="text-start">
+                      Branch Name
+                    </th>
+                    <td className="text-capitalize">
+                      {": "}
+                      {data[0]?.branch_name}
+                    </td>
+                    
+                  </tr>
+                  <tr>
+                    
+                  <th scope="col" className="text-start">
                       Payment Date
                     </th>
                     <td className="text-capitalize">
@@ -144,14 +149,14 @@ const PrintSecurityAmt = () => {
                       {": "}
                       {data[0]?.payment_Mode}
                     </td>
-                  </tr>
+                    </tr>
                   <tr>
-                    {data.payment_Mode == "online" && (
+                    {data[0]?.payment_Mode == "online" && (
                       <>
                         <th scope="col" className="text-start">
                           Transaction Id
                         </th>
-                        <td className="text-capitalize">
+                        <td className="text-capitalize" >
                           {": "}
                           {data[0]?.transaction_Id}
                         </td>{" "}

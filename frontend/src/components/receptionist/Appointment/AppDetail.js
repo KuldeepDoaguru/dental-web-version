@@ -36,7 +36,7 @@ function AppDetails({ onClose, slotInfo }) {
               </div>
               <div class="mb-3">
                 <label for="recipient-name" class="col-form-label">
-                  Patient Id:
+                  Patient UHID:
                 </label>
                 <input
                   type="text"
@@ -47,7 +47,7 @@ function AppDetails({ onClose, slotInfo }) {
                 />
               </div>
               <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">
+                <label for="recipient-name" class="col-form-label text-capitalize">
                   Patient Name:
                 </label>
                 <input
@@ -64,7 +64,7 @@ function AppDetails({ onClose, slotInfo }) {
                 </label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control text-capitalize"
                   id="recipient-name"
                   readOnly
                   value={slotInfo.appointment_status}
@@ -114,7 +114,7 @@ function AppDetails({ onClose, slotInfo }) {
                 </label>
                 <input
                   type="text"
-                  class="form-control"
+                  class="form-control text-capitalize"
                   id="recipient-name"
                   value={slotInfo.assigned_doctor_name}
                   readOnly

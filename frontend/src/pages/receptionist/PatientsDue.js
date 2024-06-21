@@ -204,7 +204,7 @@ const defaultOptions = {
             <h6 className='mx-3 my-1 my-md-0'>Search By Patient</h6>
   <div class="container-fluid" id='cont'>
     <div class="navbar1 " >
-      <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name or Mobile or Id" aria-label="Search" onChange={handleSearch}
+      <input className="form-control me-2 rounded-5" type="search" placeholder="Enter Patient Name or Mobile or UHID" aria-label="Search" onChange={handleSearch}
         value={searchTerm}/>
       {/* <button class="btn btn-outline-success" type="submit">Search</button> */}
     </div>
@@ -295,10 +295,10 @@ const defaultOptions = {
                                         {item.tp_id}
                                       </td>
                                       <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
-                                      <td>{item.patient_name}</td>
+                                      <td className="text-capitalize">{item.patient_name}</td>
                                       <td>{item.patient_mobile}</td>
                                       <td>{item.patient_email}</td>
-                                      <td>{"Dr. "}{item.assigned_doctor_name}</td>
+                                      <td className="text-capitalize">{"Dr. "}{item.assigned_doctor_name}</td>
                                       <td>{item.total_amount}</td>
                                       <td>{item.paid_amount}</td>
                                       <td>{item.pay_by_sec_amt}</td>

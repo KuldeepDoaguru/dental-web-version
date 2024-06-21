@@ -863,7 +863,7 @@ const isDoctorAvailable = (selectedDateTime) => {
             <input
               class="form-control mr-sm-2 mt-3 mb-2 m-auto"
               type="search"
-              placeholder="Search Patient Name or Mobile or ID"
+              placeholder="Search Patient Name or Mobile or UHID"
               aria-label="Search"
               value={searchQuery}
               onChange={handleSearch}
@@ -872,7 +872,7 @@ const isDoctorAvailable = (selectedDateTime) => {
               <ul className="list-group">
                 {
                  searchQuery && filteredPatients.length === 0 ? (
-                  <li className="list-group-item text-center">
+                  <li className="list-group-item text-center text-capitalize">
                   <h6>No Data Found</h6>
                 </li>
                   )
@@ -881,7 +881,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                 filteredPatients?.map((patient) => (
                   <li
                     key={patient.uid}
-                    className={`list-group-item ${
+                    className={`list-group-item text-capitalize ${
                       selectedPatient && selectedPatient.uhid === patient.uhid
                         ? "active"
                         : ""
@@ -906,7 +906,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                   <input
                     type="text"
                     id="name1"
-                    className="form-control"
+                    className="form-control text-capitalize"
                     value={selectedPatient ? selectedPatient.patient_name : ""}
                     onChange={()=>cogoToast.error("Please search patient form search bar and select")}
                     required
@@ -972,7 +972,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                   <input
                     type="search"
                     id="doctor1"
-                    className="form-control"
+                    className="form-control text-capitalize"
                     value={searchDoctor}
                     onChange={handleSearchDoctor}
                     required
@@ -994,7 +994,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                           filteredDoctor?.map((doctor) => (
                             <li
                               key={doctor.employee_ID}
-                              className={`list-group-item ${
+                              className={`list-group-item text-capitalize ${
                                 selectedDoctor &&
                                 selectedDoctor.employee_ID ===
                                   doctor.employee_ID

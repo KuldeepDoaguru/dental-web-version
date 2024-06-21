@@ -401,7 +401,7 @@ useEffect(()=>{
           </div>
           <div class="mb-3">
             <label for="recipient-name" class="col-form-label">Patient Name:</label>
-            <input type="text" value={data.patient_name} readOnly class="form-control" id="recipient-name"/>
+            <input type="text" value={data.patient_name} readOnly class="form-control text-capitalize" id="recipient-name"/>
           </div>
           {/* <div class="mb-3">
             <label for="message-text" class="col-form-label">Date & Time:</label>
@@ -441,10 +441,10 @@ useEffect(()=>{
           </div> */}
           <div class="mb-3">
             <label for="message-text" class="col-form-label">Doctor:</label>
-            <input type="text" value={searchDoctor}
+            <input type="text" class="form-control text-capitalize" value={searchDoctor}
             
                     
-                  readOnly  required  name='assigned_doctor_name' class="form-control" id="recipient-name"/>
+                  readOnly  required  name='assigned_doctor_name'  id="recipient-name"/>
                    
           </div>
           <div class="mb-3">

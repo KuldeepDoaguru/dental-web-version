@@ -211,7 +211,7 @@ const Overview = () => {
                   <thead>
                     <tr>
                       <th>Date & Time</th>
-                      <th>Doctor Name</th>
+                      <th >Doctor Name</th>
                       <th>Treatment</th>
                       <th>Status</th>
                     </tr>
@@ -226,12 +226,12 @@ const Overview = () => {
                               "YYYY-MM-DDTHH:mm"
                             ).format("DD/MM/YYYY hh:mm A")}
                           </td>
-                          <td>
+                          <td className="text-capitalize">
                             {"Dr. "}
                             {item.assigned_doctor_name}
                           </td>
                           <td>{item.treatment_provided}</td>
-                          <td>{item.appointment_status}</td>
+                          <td className="text-capitalize">{item.appointment_status}</td>
                         </tr>
                       </>
                     ))}
@@ -259,7 +259,7 @@ const Overview = () => {
                         <td>{item.desease}</td>
                         <td>{item.treatment_name}</td>
                         <td>{item.total_sitting}</td>
-                        <td>{item.treatment_status}</td>
+                        <td className="text-capitalize">{item.treatment_status}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -292,7 +292,7 @@ const Overview = () => {
                           <td>{item.total_amount}</td>
                           <td>{item.paid_amount}</td>
                           <td>{item.pay_by_sec_amt}</td>
-                          <td>{item.payment_status}</td>
+                          <td className="text-capitalize">{item.payment_status}</td>
                         </tr>
                       </>
                     ))}

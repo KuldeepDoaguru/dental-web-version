@@ -524,7 +524,7 @@ const defaultOptions = {
                           {currentRows?.map((data,index)=>(
                              <tr key={index}>
                              <td>{data.id}</td>
-                             <td>{data.patient_name	}</td>
+                             <td className="text-capitalize">{data.patient_name	}</td>
                              <td>{data.mobile}</td>
                              <td>{data.email}</td>
  
@@ -532,7 +532,7 @@ const defaultOptions = {
                              <td>
                              {data.address}
                              </td>
-                             <td>{"Dr. "}{data.doctorName}</td>
+                             <td className="text-capitalize">{"Dr. "}{data.doctorName}</td>
                              <td>{data.notes}</td>
                              <td>{moment(data?.created_at).format('DD/MM/YYYY') }</td>
                              <td><div className="dropdown">

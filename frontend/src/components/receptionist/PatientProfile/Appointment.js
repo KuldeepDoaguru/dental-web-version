@@ -211,12 +211,13 @@ const Appointment = () => {
               <table className="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Date</th>
+                    <th>Appointment Date</th>
                     <th>Appointment Time</th>
                     <th>Doctor</th>
                     <th>Treatment</th>
                     
                     <th>Status</th>
+                    <th>Created At</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -232,6 +233,12 @@ const Appointment = () => {
                         <td>{item.treatment_provided}</td>
                        
                         <td className="text-capitalize">{item.appointment_status}</td>
+                        <td>
+                            {moment(
+                              item?.created_at,
+                              "YYYY-MM-DDTHH:mm"
+                            ).format("DD/MM/YYYY hh:mm A")}
+                          </td>
                       </tr>
                     </>
                   ))}

@@ -307,7 +307,7 @@ const defaultOptions = {
                                           (Number(item.paid_amount) +
                                            Number(item.pay_by_sec_amt) )}
                                       </td>
-                                      <td>{item?.bill_date ?  moment(item?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : "" }</td>
+                                      <td>{item?.bill_date ?  moment(item?.bill_date,'DD-MM-YYYYTHH:mm:ss').format("DD/MM/YYYY hh:mm A") : "" }</td>
                                       <td>
                                           <Link
                                             to={`/PatintDuePaymentPrint/${item.bill_id}/${item.tp_id}/${item.uhid}`}

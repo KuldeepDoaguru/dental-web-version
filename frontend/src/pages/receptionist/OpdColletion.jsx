@@ -281,6 +281,7 @@ const defaultOptions = {
                         <th>Payment Mode</th>
                         <th>Transaction Id</th>
                         <th>Payment Status</th>
+                        <th>Refund Date</th>
                         <th>Created At</th>
                         <th>Print</th>
                       </tr>
@@ -315,8 +316,16 @@ const defaultOptions = {
                           <td className="text-capitalize">{data.payment_Mode}</td>
                           <td>{data.transaction_Id}</td>
                           <td className="text-capitalize">{data.payment_Status}</td>
+                          <td className="text-capitalize">{data?.refund_date_time ? moment(
+                              data?.refund_date_time,
+                              "DD-MM-YYYYTHH:mm"
+                            ).format("DD/MM/YYYY hh:mm A") : "" }</td>
+                         
                           <td>
-                            {moment(data?.created_at).format("DD/MM/YYYY")}
+                            {moment(
+                              data?.created_at,
+                              "YYYY-MM-DDTHH:mm"
+                            ).format("DD/MM/YYYY hh:mm A")}
                           </td>
                           <td>
                           <Link

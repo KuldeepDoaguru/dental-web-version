@@ -1031,10 +1031,11 @@ const updateAppointmentStatusCancelOpd = (req, res) => {
     } = req.body;
 
     const updated_at = new Date();
+    const refund_date_time =  moment().tz("Asia/Kolkata").format("DD-MM-YYYY HH:mm:ss");
     console.log(doctor_email)
     const updateAppointmentQuery = `
           UPDATE appointments
-          SET payment_Status = ?, notes = ?, appointment_status = ?, updated_at = ?,appointment_updated_by = ?,cancel_reason = ?, appointment_updated_by_emp_id = ?
+          SET payment_Status = ?, notes = ?, appointment_status = ?, updated_at = ?,appointment_updated_by = ?,cancel_reason = ?, refund_date_time = ? , appointment_updated_by_emp_id = ?
           WHERE appoint_id = ?
       `;
 
@@ -1045,6 +1046,7 @@ const updateAppointmentStatusCancelOpd = (req, res) => {
       updated_at,
       appointment_updated_by,
       cancelReason,
+      refund_date_time,
       appointment_updated_by_emp_id,
       appoint_id,
     ];
@@ -1149,6 +1151,7 @@ const getAppointments = (req, res) => {
             a.appointment_created_by,
             a.appointment_created_by_emp_id,
             a.created_at,
+            a.refund_date_time,
             a.notes,
             p.uhid,
             p.patient_name,

@@ -226,7 +226,7 @@ console.log(data)
        
         
         
-        <button type="submit" class="btn btn-primary" disabled={loading}>{loading ? "Loading..." : "Edit Appointment"} </button>
+        <button type="submit" class="btn btn-primary" disabled={loading}>{loading ? "Loading..." : "Submit"} </button>
         </form>
         </Modal.Body>
         <Modal.Footer>

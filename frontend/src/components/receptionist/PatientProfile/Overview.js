@@ -286,7 +286,7 @@ const Overview = () => {
                               ? moment(
                                   item?.bill_date,
                                   "DD-MM-YYYYTHH:mm:ss"
-                                ).format("DD/MM/YYYY")
+                                ).format("DD/MM/YYYY hh:mm A")
                               : ""}
                           </td>
                           <td>{item.total_amount}</td>
@@ -321,7 +321,7 @@ const Overview = () => {
                               ? moment(
                                   item?.date,
                                   "DD-MM-YYYYTHH:mm:ss"
-                                ).format("DD/MM/YYYY")
+                                ).format("DD/MM/YYYY hh:mm A")
                               : ""}
                           </td>
                           <td>{item.disease}</td>
@@ -357,7 +357,7 @@ const Overview = () => {
                               ? moment(
                                   item?.date,
                                   "DD-MM-YYYYTHH:mm:ss"
-                                ).format("DD/MM/YYYY")
+                                ).format("DD/MM/YYYY hh:mm A")
                               : ""}
                           </td>
                           <td>{item.treatment}</td>

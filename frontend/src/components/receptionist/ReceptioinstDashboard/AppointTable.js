@@ -177,8 +177,10 @@ console.log(appointmentsData);
       
       getAppointments();
       dispatch(toggleTableRefresh());
+     
       timelineDataForCheckIn(patient_uhid);
       cogoToast.success(`Patient Successfully ${newStatus}`)
+      
     } catch (error) {
       setLoading(false);
       setLoadingEffect(false)
@@ -468,9 +470,9 @@ console.log(appointmentsData);
                     }</td>
 
                     <td><div className="dropdown">
-                      {!(patient.appointment_status == "in treatment" || patient.appointment_status == "Complete" || patient.appointment_status == "Cancel") ? <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      {!(patient.appointment_status == "in treatment" || patient.appointment_status == "Complete" || patient.appointment_status == "Cancel") ? <button className="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Action
-                      </button> : <button className="btn btn-secondary dropdown-toggle" type="button" disabled data-bs-toggle="dropdown" aria-expanded="false">
+                      </button> : <button className="btn btn-primary dropdown-toggle" type="button" disabled data-bs-toggle="dropdown" aria-expanded="false">
                         Action
                       </button>}
 
@@ -482,15 +484,17 @@ console.log(appointmentsData);
                         {patient.appointment_status == "Check-In" || patient.appointment_status !== "Cancel" && <li><a className="dropdown-item mx-0" onClick={() => handleCancelAppointment(patient)}>Cancel Appointment</a></li>}
                       </ul> */}
 
-<ul className="dropdown-menu drop-pointer">
+<ul className="dropdown-menu">
   {(patient.appointment_status !== "Check-In" && patient.appointment_status !== "Cancel" && appointmentDate <= todayDate) && (
-    <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
+   <li className='text-center'> <button className={`btn btn-info mx-2 my-1 ${loading ? 'disabled' : ''}`}>
       <a onClick={!loading ? () => handleStatusChange(patient.appoint_id, patient.uhid, 'Check-In') : null}>Check-In</a>
+    </button>
     </li>
   )}
   {(patient.appointment_status === "Check-In" && patient.appointment_status !== "Cancel" && appointmentDate <= todayDate) && (
-    <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
+   <li className='text-center'> <button className={`btn btn-warning mx-2 my-1 ${loading ? 'disabled' : ''}`}>
       <a onClick={!loading ? () => handleStatusChange(patient.appoint_id, patient.uhid, 'Appoint') : null}>Change Status to "Appoint"</a>
+    </button>
     </li>
   )}
   {/* {(patient.appointment_status !== "Check-In" && patient.appointment_status !== "Cancel") && (
@@ -504,13 +508,15 @@ console.log(appointmentsData);
     </li>
   )} */}
   {(patient.appointment_status === "Appoint" && patient.appointment_status !== "Cancel") && (
-    <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
+   <li className='text-center'><button className={`btn btn-success  mx-2 my-1 ${loading ? 'disabled' : ''}`}>
       <a onClick={!loading ? () => handleEditAppointment(patient) : null}>Edit Appointment</a>
-    </li>
+    </button>
+    </li> 
   )}
   {(patient.appointment_status === "Check-In" || patient.appointment_status !== "Cancel") && (
-    <li className={`dropdown-item mx-0 ${loading ? 'disabled' : ''}`}>
+   <li className='text-center'> <button className={`btn btn-danger mx-2 my-1 ${loading ? 'disabled' : ''}`}>
       <a onClick={!loading ? () => handleCancelAppointment(patient) : null}>Cancel Appointment</a>
+    </button>
     </li>
   )}
 </ul>

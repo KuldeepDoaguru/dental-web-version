@@ -246,7 +246,7 @@ const Bill = () => {
                   {bills?.map((item) => (
                     <>
                       <tr>
-                      <td>{item?.bill_date ?  moment(item?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : ""}</td>
+                      <td>{item?.bill_date ?  moment(item?.bill_date,'DD-MM-YYYYTHH:mm:ss').format("DD/MM/YYYY hh:mm A") : ""}</td>
                         <td>{item.bill_id}</td>
                       
                         <td className="text-capitalize">{"Dr. "}{item.assigned_doctor_name}</td>
@@ -254,7 +254,7 @@ const Bill = () => {
                         <td>{item.paid_amount}</td>
                         <td>{item.pay_by_sec_amt}</td>
                         <td className="text-capitalize">{item.payment_mode}</td>
-                        <td>{item?.payment_date_time ? moment(item?.payment_date_time,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : ""}</td>
+                        <td>{item?.payment_date_time ? moment(item?.payment_date_time,'DD-MM-YYYYTHH:mm:ss').format("DD/MM/YYYY hh:mm A") : ""}</td>
                         <td className="text-capitalize">{item.payment_status}</td>
                       </tr>
                     </>

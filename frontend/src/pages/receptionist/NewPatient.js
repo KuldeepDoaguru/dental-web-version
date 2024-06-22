@@ -294,7 +294,7 @@ function NewPatient() {
                               <td>{data.patient_type}</td>
                               <td>{data.address}</td>
                               <td>
-                                {moment(data?.created_at).format("DD/MM/YYYY")}
+                                {moment(data?.created_at).format("DD/MM/YYYY hh:mm A")}
                               </td>
                               <td>
                                 <div className="dropdown">

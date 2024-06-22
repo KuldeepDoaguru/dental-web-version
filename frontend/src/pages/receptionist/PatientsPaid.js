@@ -290,7 +290,7 @@ const defaultOptions = {
                                   <>
                                     <tr className="table-row">
                                       <td>{item.bill_id}</td>
-                                      <td>{ item?.bill_date ? moment(item?.bill_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : "" }</td>
+                                      <td>{ item?.bill_date ? moment(item?.bill_date,'DD-MM-YYYYTHH:mm:ss').format("DD/MM/YYYY hh:mm A") : "" }</td>
                                       <td>{item.tp_id}</td>
                                       <td><Link to={`/patient_profile/${item.uhid}`}>{item.uhid}</Link></td>
                                       <td className="text-capitalize">{item.patient_name}</td>
@@ -299,7 +299,7 @@ const defaultOptions = {
                                       <td>{item.total_amount}</td>
                                       <td>{item.paid_amount}</td>
                                       <td>{item.pay_by_sec_amt}</td>
-                                      <td>{item?.payment_date_time ? moment(item?.payment_date_time,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : "" }</td>
+                                      <td>{item?.payment_date_time ? moment(item?.payment_date_time,'DD-MM-YYYYTHH:mm:ss').format("DD/MM/YYYY hh:mm A") : "" }</td>
                                       <td>
                                         <Link
                                           // to={`/PatintPaidPaymentPrint/${item.bill_id}`}

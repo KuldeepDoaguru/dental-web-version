@@ -118,9 +118,7 @@ const Prescription = () => {
                     <tr>
                       <td>
                         {item?.date
-                          ? moment(item?.date, "DD-MM-YYYYTHH:mm:ss").format(
-                              "DD/MM/YYYY"
-                            )
+                          ? moment(item?.date, "DD-MM-YYYYTHH:mm:ss").format("DD/MM/YYYY hh:mm A")
                           : ""}
                       </td>
                       <td>{item?.treatment}</td>

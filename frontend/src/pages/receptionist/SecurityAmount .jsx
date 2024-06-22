@@ -633,8 +633,8 @@ function SecurityAmount() {
                             <td>{item.remaining_amount}</td>
                             <td className="text-capitalize">{item.payment_Mode}</td>
                             <td>{item.transaction_Id}</td>
-                            <td>{item.payment_date ? moment(item?.payment_date,'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : ""}</td>
-                            <td>{item?.refund_date ? moment(item?.refund_date, 'DD-MM-YYYYTHH:mm:ss').format('DD/MM/YYYY') : ""}</td>
+                            <td>{item.payment_date ? moment(item?.payment_date,'DD-MM-YYYYTHH:mm:ss').format("DD/MM/YYYY hh:mm A") : ""}</td>
+                            <td>{item?.refund_date ? moment(item?.refund_date, 'DD-MM-YYYYTHH:mm:ss').format("DD/MM/YYYY hh:mm A") : ""}</td>
                             <td>
                               <div className="d-flex">
                                 <h6 className="text-capitalize">{item.payment_status}</h6>

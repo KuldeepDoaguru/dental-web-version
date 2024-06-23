@@ -73,7 +73,7 @@ const OpdIncome = () => {
   const filterForOpdToday = opdAmount.filter((item) => {
     return (
       item.treatment_provided === "OPD" &&
-      item.payment_Status === "paid" &&
+      // item.payment_Status === "paid" &&
       item.appointment_dateTime?.split("T")[0] === formattedDate
     );
   });
@@ -431,6 +431,8 @@ const OpdIncome = () => {
                             <th className="sticky">Payment Mode</th>
                             <th className="sticky">Transaction ID</th>
                             <th className="sticky">Payment Status</th>
+                            <th className="sticky">Refund Date</th>
+                            <th className="sticky">Created At</th>
                             <th className="sticky">Action</th>
                           </tr>
                         </thead>
@@ -466,6 +468,22 @@ const OpdIncome = () => {
                                   <td>{item.transaction_Id}</td>
                                   <td className="text-capitalize">
                                     {item.payment_Status}
+                                  </td>
+                                  <td className="text-capitalize">
+                                    {item.refund_date_time
+                                      ? moment(
+                                          item.refund_date_time,
+                                          "DD-MM-YYYYTHH:mm"
+                                        ).format("DD/MM/YYYY hh:mm A")
+                                      : ""}
+                                  </td>
+                                  <td className="text-capitalize">
+                                    {item.created_at
+                                      ? moment(
+                                          item.created_at,
+                                          "YYYY-MM-DDTHH:mm"
+                                        ).format("DD/MM/YYYY hh:mm A")
+                                      : ""}
                                   </td>
                                   <td>
                                     <Link

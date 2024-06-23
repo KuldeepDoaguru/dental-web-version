@@ -345,9 +345,15 @@ const Accountant_Dashboard = () => {
                                         "YYYY-MM-DDTHH:mm"
                                       ).format("DD/MM/YYYY hh:mm A")}
                                     </td>
-                                    <td>{item.payment_Status}</td>
-                                    <td>{item.appointment_status}</td>
-                                    <td>{item.cancel_reason}</td>
+                                    <td lassName="text-capitalize">
+                                      {item.payment_Status}
+                                    </td>
+                                    <td lassName="text-capitalize">
+                                      {item.appointment_status}
+                                    </td>
+                                    <td lassName="text-capitalize">
+                                      {item.cancel_reason}
+                                    </td>
                                     {/* <td className="table-small">
                                     <button
                                       className="btn btn-warning"

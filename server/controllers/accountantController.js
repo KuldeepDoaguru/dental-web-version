@@ -459,6 +459,46 @@ const appointmentData = (req, res) => {
   }
 };
 
+const appointmentDataopd = (req, res) => {
+  const branchName = req.params.branch;
+
+  try {
+    const getQuerys = `
+      SELECT 
+        appointments.appoint_id,
+        appointments.appointment_dateTime,
+        appointments.patient_uhid,
+        appointments.treatment_provided,
+        appointments.assigned_doctor_name,
+        appointments.assigned_doctor_id,
+        appointments.opd_amount,
+        appointments.payment_Mode,
+        appointments.transaction_Id,
+        appointments.payment_Status,
+        appointments.refund_date_time,
+        appointments.created_at,
+        patient_details.patient_name,
+        patient_details.mobileno
+      FROM appointments 
+      JOIN patient_details ON appointments.patient_uhid = patient_details.uhid 
+      WHERE appointments.branch_name = ?`;
+
+    db.query(getQuerys, branchName, (err, result) => {
+      if (err) {
+        console.error("Error retrieving appointment:", err);
+        return res
+          .status(500)
+          .json({ success: false, message: "Error getting appointment" });
+      }
+
+      res.status(200).json({ success: true, data: result });
+    });
+  } catch (error) {
+    console.error("Error in try-catch block:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 const addSecurityAmount = (req, res) => {
   try {
     const {
@@ -2147,6 +2187,7 @@ module.exports = {
   getExaminationViaUhid,
   getAllAppointmentByPatientId,
   getPatientTimeline,
+  appointmentDataopd,
 };
 
 // const sendOtp = (req, res) => {

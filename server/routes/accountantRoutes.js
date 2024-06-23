@@ -65,6 +65,7 @@ const {
   getExaminationViaUhid,
   getAllAppointmentByPatientId,
   getPatientTimeline,
+  appointmentDataopd,
 } = require("../controllers/accountantController");
 // const {
 //   getEmployeeListByBranchByID,
@@ -113,6 +114,7 @@ router.get(
   getPurInventoryByBranch
 );
 router.get("/getAppointmentData/:branch", authenticate, appointmentData);
+router.get("/appointmentDataopd/:branch", authenticate, appointmentDataopd);
 router.post("/addSecurityAmount", authenticate, addSecurityAmount);
 // router.get("/getAppointmentDetailsViaID/:id", getAppointmentDetailsViaID);
 router.get(

@@ -32,7 +32,7 @@ const OpdIncome = () => {
     setLoading(true);
     try {
       const { data } = await axios.get(
-        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getAppointmentData/${user.branch}`,
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/appointmentDataopd/${user.branch}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const OpdIncome = () => {
         }
       );
       setLoading(false);
-      setOpdAmount(data);
+      setOpdAmount(data.data);
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -54,7 +54,7 @@ const OpdIncome = () => {
     getOpdAmt();
   }, []);
 
-  const filterForOpdList = opdAmount.filter((item) => {
+  const filterForOpdList = opdAmount?.filter((item) => {
     return item.treatment_provided === "OPD";
   });
 

@@ -25,12 +25,17 @@ function OpdCollection() {
 
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDateAppData, setSelectedDateAppData] = useState([]);
 
   const handleDateChange = (increment) => {
     return () => {
-      const currentDate = new Date(selectedDate);
-      currentDate.setDate(currentDate.getDate() + increment);
-      setSelectedDate(currentDate.toISOString()?.split('T')[0]);
+      if(selectedDate){
+        const currentDate = new Date(selectedDate);
+        currentDate.setDate(currentDate?.getDate() + increment);
+        setSelectedDate(currentDate?.toISOString()?.split('T')[0]);
+      }
+      
+      
     };
   };
 
@@ -47,7 +52,7 @@ function OpdCollection() {
         }
       );
      
-      const filteredPatients = response?.data?.data?.filter(patient =>  patient?.created_at?.includes(selectedDate) && patient.treatment_provided === "OPD");
+      const filteredPatients = response?.data?.data?.filter(patient =>   patient.treatment_provided === "OPD");
       setAppointmentData(filteredPatients);
       setLoadingEffect(false);
     } catch (error) {
@@ -56,11 +61,25 @@ function OpdCollection() {
     }
   };
 
- 
+  useEffect(() => {
+  
+
+    const filteredResults = appointmentsData.filter((row) =>
+
+      row.created_at.includes(selectedDate)
+    );
+    setSelectedDateAppData(filteredResults)
+    handleSearch({ target: { value: searchTerm } });
+  }, [appointmentsData, selectedDate])
 
   useEffect(() => {
-    getAppointments();
+    
+    handleSearch({ target: { value: searchTerm } });
   }, [refreshTable,selectedDate]);
+  useEffect(() => {
+    
+    getAppointments();
+  }, []);
 
   // Searching function
   const handleSearch = (event) => {
@@ -70,9 +89,8 @@ function OpdCollection() {
 
     const filteredResults = appointmentsData.filter(
       (row) =>
-        row.patient_name.toLowerCase().includes(searchTerm.trim()) ||
-        row.mobileno.includes(searchTerm.trim()) ||
-        row.uhid.toLowerCase().includes(searchTerm.trim())
+        (row.patient_name.toLowerCase().includes(searchTerm.trim()) || row.mobileno.includes(searchTerm.trim()) || row.uhid.toLowerCase().includes(searchTerm.trim()))
+      && row.created_at.includes(selectedDate)
     );
 
     setFilteredData(filteredResults);
@@ -88,9 +106,9 @@ function OpdCollection() {
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
   const currentRows = searchTerm
     ? filteredData.slice(indexOfFirstRow, indexOfLastRow)
-    : appointmentsData.slice(indexOfFirstRow, indexOfLastRow);
+    : selectedDateAppData.slice(indexOfFirstRow, indexOfLastRow);
 
-  const totalPages = Math.ceil(appointmentsData.length / rowsPerPage);
+  const totalPages = Math.ceil(selectedDateAppData.length / rowsPerPage);
 
   const paginate = (pageNumber) => {
     if (pageNumber > 0 && pageNumber <= totalPages) {
@@ -99,7 +117,7 @@ function OpdCollection() {
   };
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(appointmentsData.length / rowsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(selectedDateAppData.length / rowsPerPage); i++) {
     pageNumbers.push(i);
   }
 
@@ -231,7 +249,7 @@ const defaultOptions = {
                   </div>
                   <div>
 
-                    <h5>Total Patients - {appointmentsData.length}</h5>
+                    <h5>Total Patients - {selectedDateAppData.length}</h5>
                   </div>
 
                   {/* <div class="dropdown" id='drop'>
@@ -362,12 +380,12 @@ const defaultOptions = {
                             {" "}
                             Showing Page {currentPage} of {totalPages} from{" "}
                             {filteredData?.length} entries (filtered from{" "}
-                            {appointmentsData?.length} total entries){" "}
+                            {selectedDateAppData?.length} total entries){" "}
                           </>
                         ) : (
                           <>
                             Showing Page {currentPage} of {totalPages} from{" "}
-                            {appointmentsData?.length} entries
+                            {selectedDateAppData?.length} entries
                           </>
                         )}
                       </h4>
@@ -385,7 +403,7 @@ const defaultOptions = {
 
                         <Button
                           onClick={() => paginate(currentPage + 1)}
-                          disabled={indexOfLastRow >= appointmentsData.length}
+                          disabled={indexOfLastRow >= selectedDateAppData.length}
                           variant="success"
                         >
                           Next

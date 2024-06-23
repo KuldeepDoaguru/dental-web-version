@@ -113,6 +113,7 @@ console.log(appointmentsData);
       row.appointment_dateTime.includes(selectedDate)
     );
     setSelectedDateAppData(filteredResults)
+    handleSearch({ target: { value: searchTerm } });
   }, [appointmentsData, selectedDate])
 
   const getAppointments = async () => {
@@ -127,6 +128,7 @@ console.log(appointmentsData);
       });
       setAppointmentData(response?.data?.data)
       setLoadingEffect(false)
+      
     }
     catch (error) {
       console.log(error)
@@ -138,6 +140,7 @@ console.log(appointmentsData);
 
   useEffect(() => {
     getAppointments();
+     
   }, [refreshTable])
 
 
@@ -154,9 +157,12 @@ console.log(appointmentsData);
 
   const handleDateChange = (increment) => {
     return () => {
-      const currentDate = new Date(selectedDate);
-      currentDate.setDate(currentDate.getDate() + increment);
-      setSelectedDate(currentDate.toISOString()?.split('T')[0]);
+      if(selectedDate){
+        const currentDate = new Date(selectedDate);
+        currentDate.setDate(currentDate.getDate() + increment);
+        setSelectedDate(currentDate.toISOString()?.split('T')[0]);
+      }
+      
     };
   };
   // Add an async function to handle status change
@@ -174,7 +180,6 @@ console.log(appointmentsData);
       });
       // Optionally, you can re-fetch appointments after successful update
       setLoading(false);
-      
       getAppointments();
       dispatch(toggleTableRefresh());
      

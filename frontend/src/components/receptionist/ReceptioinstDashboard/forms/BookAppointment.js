@@ -493,7 +493,7 @@ const handleDoctorSelect = (doctor) => {
 
 
   console.log(filteredDoctor)
-  console.log(selectedDoctor)
+  console.log(bookData.appDateTime)
 
 
   const handleBookChange = (e)=>{
@@ -941,7 +941,7 @@ const isDoctorAvailable = (selectedDateTime) => {
                   />
                 </div>
               </div>
-              <div className="col-sm-6 ">
+              {/* <div className="col-sm-6 ">
                 <div className="form-outline">
                   <label className="form-label mt-2" for="form6Example2">
                     Appointment Time *
@@ -960,6 +960,29 @@ const isDoctorAvailable = (selectedDateTime) => {
                       })
                     }
                   />
+                </div>
+              </div> */}
+              <div className="col-sm-6 ">
+                <div className="form-outline">
+                  <label className="form-label mt-2" for="form6Example2">
+                    Appointment Time *
+                  </label>
+                  <select
+                    
+                    required
+                    className="form-select"
+                    onChange={(e) =>
+                      setBookData({
+                        ...bookData,
+                        appDateTime: `${selectedDate}T${e.target.value}`,
+                      })
+                    }
+                  >
+                    <option value="">Select slot</option>
+                    {timeSlots.map((time)=>(
+                      <option value={time.value}>{time.label}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
 

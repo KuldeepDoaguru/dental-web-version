@@ -747,6 +747,7 @@ if (selectedDateTime && !isNaN(selectedDateTime)) {
                     />
                   </div>
                 </div>
+                
                 <div class="mb-3">
                   <label class="col-form-label">Doctor:</label>
                   <input

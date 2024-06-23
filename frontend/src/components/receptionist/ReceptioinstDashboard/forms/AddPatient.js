@@ -1088,7 +1088,7 @@ function AddPatient() {
                         />
                       </div>
                     </div>
-                    <div className="col-sm-6 ">
+                    {/* <div className="col-sm-6 ">
                       <div className="form-outline">
                         <label className="form-label" for="form6Example2">
                           Appointment Time *
@@ -1108,7 +1108,30 @@ function AddPatient() {
                           }
                         />
                       </div>
-                    </div>
+                    </div> */}
+                      <div className="col-sm-6 ">
+                <div className="form-outline">
+                  <label className="form-label" for="form6Example2">
+                    Appointment Time *
+                  </label>
+                  <select
+                    
+                    required
+                    className="form-select"
+                    onChange={(e) =>
+                      setData({
+                        ...data,
+                        appDateTime: `${selectedDate}T${e.target.value}`,
+                      })
+                    }
+                  >
+                    <option value="">Select slot</option>
+                    {timeSlots.map((time)=>(
+                      <option value={time.value}>{time.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
                     
                  
                     <div className="col-sm-6">

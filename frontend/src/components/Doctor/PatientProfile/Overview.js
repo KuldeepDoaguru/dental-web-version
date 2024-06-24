@@ -389,7 +389,7 @@ const Overview = () => {
                     {billData?.slice(0, 3).map((item) => (
                       <>
                         <tr>
-                          <td>{item.bill_date.split("T")[0]}</td>
+                          <td>{item.bill_date?.split(" ")[0]}</td>
                           <td>{item.total_amount}</td>
                           <td>{item.paid_amount}</td>
                           <td>{item.payment_status}</td>
@@ -418,7 +418,7 @@ const Overview = () => {
                         {clinicExam?.slice(0, 3).map((item) => (
                           <>
                             <tr>
-                              <td>{item.date?.split("T")[0]}</td>
+                              <td>{item.date?.split(" ")[0]}</td>
                               <td>{item.disease}</td>
                               <td>{item.chief_complain}</td>
                               <td>{item.selected_teeth}</td>
@@ -455,7 +455,7 @@ const Overview = () => {
                         {prescpData?.slice(0, 3).map((item) => (
                           <>
                             <tr>
-                              <td>{item.date?.split("T")[0]}</td>
+                              <td>{item.date?.split(" ")[0]}</td>
                               <td>{item.treatment}</td>
                               <td>{item.medicine_name}</td>
                               <td>{item.duration}</td>

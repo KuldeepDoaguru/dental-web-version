@@ -768,6 +768,7 @@ const TreatSuggest = () => {
                             onChange={handleLabChange}
                             value={labData.lab_name}
                             className="form-select text-start"
+                            required
                           >
                             <option value="">---Select Test Name ---</option>
                             {labList?.map((item) => (
@@ -787,6 +788,7 @@ const TreatSuggest = () => {
                             <select
                               name="test"
                               onChange={handleLabChange}
+                              required
                               value={labData.test}
                               className="form-select text-start"
                             >

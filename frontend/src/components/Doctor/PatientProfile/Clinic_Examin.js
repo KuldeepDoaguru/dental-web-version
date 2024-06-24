@@ -126,7 +126,7 @@ const ClinicExamin = () => {
                   <>
                     <tr>
                       {/* <td>{item.examin_date?.split("T")[0]}</td> */}
-                      <td>{item.date?.split("T")[0]}</td>
+                      <td>{item.date?.split(" ")[0]}</td>
                       <td>{item.diagnosis_category}</td>
                       <td>{item.disease}</td>
 

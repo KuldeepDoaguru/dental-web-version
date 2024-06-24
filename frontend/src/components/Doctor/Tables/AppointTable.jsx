@@ -65,6 +65,8 @@ const AppointTable = () => {
     return item.appointment_dateTime?.split("T")[0] === selectedDate;
   });
 
+  console.log(filteredData);
+
   useEffect(() => {
     fetchAppointments();
     // Refresh every 5 seconds
@@ -202,7 +204,9 @@ const AppointTable = () => {
 
         const filterForPendingTp = appointments?.filter((item) => {
           return (
-            item.appoint_id === appointId && item.treatment_provided !== "OPD"
+            item.appoint_id === appointId &&
+            item.tp_id === tpid &&
+            item.package_status !== null
           );
         });
 
@@ -369,12 +373,12 @@ const AppointTable = () => {
                             )}
                           </td>
                           <td>
-                            {item.treatment_names === null
+                            {item.treatment_status === "completed"
                               ? item.treatment_provided
                               : item.treatment_names}
                           </td>
                           <td>{item.bloodgroup}</td>
-                          <td>{item.dob}</td>
+                          <td>{moment(item.dob).format("DD-MM-YYYY")}</td>
                           <td>{item.age}</td>
                           <td>{item.weight}</td>
                           <td>{item.allergy}</td>
@@ -523,15 +527,17 @@ const AppointTable = () => {
                                 </td>
                                 <td>
                                   <small>
-                                    {item.treatment_provided !== "OPD"
-                                      ? item.treatment_names === null
-                                        ? item.treatment_provided
-                                        : item.treatment_names
-                                      : item.treatment_provided}
+                                    {item.treatment_status === "completed" ||
+                                    item.treatment_status === null
+                                      ? item.treatment_provided
+                                      : item.treatment_names}
                                   </small>
                                 </td>
                                 <td>{item.bloodgroup}</td>
-                                <td>{item.dob}</td>
+                                <td>
+                                  {item.dob &&
+                                    moment(item?.dob).format("DD-MM-YYYY")}
+                                </td>
                                 <td>{item.age}</td>
                                 <td>{item.weight}</td>
                                 <td>{item.allergy}</td>

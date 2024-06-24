@@ -192,7 +192,7 @@ const ViewTreatPrescription = () => {
   };
 
   const handleTreatNavigattion = () => {
-    cogoToast.success(appoint_id);
+    // cogoToast.success(appoint_id);
     navigate(`/TreatmentDashBoard/${tpid}/${appoint_id}`);
   };
 

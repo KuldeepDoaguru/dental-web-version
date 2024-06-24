@@ -33,6 +33,7 @@ import axios from "axios";
 import { clearUser, toggleTableRefresh } from "./redux/user/userSlice";
 import animationData from "./animation/animation-four.json";
 import Lottie from "lottie-react";
+import PrescriptionDetails from "./pages/DoctorPage/PrescriptionDetails";
 
 function App() {
   const navigate = useNavigate();
@@ -537,7 +538,7 @@ function App() {
             )
           }
         />
-        <Route
+        {/* <Route
           path="/CreatePrescrip"
           element={
             user === null ? (
@@ -558,7 +559,7 @@ function App() {
               <CreatePrescrip />
             )
           }
-        />
+        /> */}
         <Route
           path="/profileDashboard"
           element={
@@ -691,6 +692,29 @@ function App() {
               <AttendanceLeave />
             ) : (
               <Print_Oral_Blood />
+            )
+          }
+        />
+
+        <Route
+          path="/prescription-details"
+          element={
+            user === null ? (
+              <DoctorLogin />
+            ) : loading ? (
+              <>
+                {" "}
+                <Lottie
+                  options={defaultOptions}
+                  height={300}
+                  width={400}
+                  style={{ background: "transparent" }}
+                ></Lottie>
+              </>
+            ) : todayAttendance.length === 0 ? (
+              <AttendanceLeave />
+            ) : (
+              <PrescriptionDetails />
             )
           }
         />

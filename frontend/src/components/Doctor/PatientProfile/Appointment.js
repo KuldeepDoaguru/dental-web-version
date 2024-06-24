@@ -63,7 +63,11 @@ const Appointment = () => {
                   {patAppointDetails?.map((item) => (
                     <>
                       <tr>
-                        <td>{item.appointment_dateTime?.split("T")[0]}</td>
+                        <td>
+                          {moment(
+                            item.appointment_dateTime?.split("T")[0]
+                          ).format("DD-MM-YYYY")}
+                        </td>
                         <td>
                           {moment(item.appointment_dateTime).format("hh:mm A")}
                         </td>

@@ -17,7 +17,7 @@ const HeadBar = () => {
           <div className="container-fluid">
             <Link to="/">
               <img
-                src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1707404036/dental%20guru/dentalguru_v1g7k0.png"
+                src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1717595664/dental%20guru/test_1_liu3zb.png"
                 alt="Logo"
                 width="75"
                 height="60"
@@ -29,7 +29,7 @@ const HeadBar = () => {
                 className="nav-link active text-white mt-2 mx-2 fs-5"
                 to="/"
               >
-                Dental Guru
+                DentalGuru
               </Link>
             </li>
 

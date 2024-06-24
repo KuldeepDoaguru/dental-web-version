@@ -990,6 +990,23 @@ const getPatBills = (req, res) => {
   }
 };
 
+const prescriptionList = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const docId = req.params.docId;
+    const selectQuery =
+      "SELECT * FROM dental_treatment JOIN appointments ON appointments.appoint_id = dental_treatment.appointment_id WHERE dental_treatment.branch_name = ? AND appointments.assigned_doctor_id = ?";
+    db.query(selectQuery, [branch, docId], (err, result) => {
+      if (err) {
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 module.exports = {
   getTreatmentList,
   insertTreatmentData,

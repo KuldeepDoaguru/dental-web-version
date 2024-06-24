@@ -306,7 +306,7 @@ const NewTreatPrescription = () => {
   const getTreatPrescriptionByAppointId = async () => {
     try {
       const { data } = await axios.get(
-        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${appoint_id}/${tpid}/${treatment}`,
+        `https://dentalgurudoctor.doaguru.com/api/doctor/getTreatPrescriptionByAppointId/${tpid}/${treatment}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -696,6 +696,7 @@ const NewTreatPrescription = () => {
                       value={treatment}
                       readOnly
                       className="rounded"
+                      required
                     />
                   </div>
                 </div>
@@ -704,6 +705,7 @@ const NewTreatPrescription = () => {
                     <label>disease</label>
                     <input
                       type="text"
+                      required
                       value={treatments[0]?.disease}
                       readOnly
                       className="rounded"
@@ -719,6 +721,7 @@ const NewTreatPrescription = () => {
                       name="medicine_name"
                       aria-label="Default select example"
                       onChange={handleChange}
+                      required
                       value={prescriptionData.medicine_name}
                     >
                       <option value="">-select medicine-</option>
@@ -740,6 +743,7 @@ const NewTreatPrescription = () => {
                         type="text"
                         placeholder="other medicine"
                         className="form-control"
+                        required
                         name="otherMed"
                         value={otherMed}
                         onChange={(e) => setOtherMed(e.target.value)}
@@ -757,6 +761,7 @@ const NewTreatPrescription = () => {
                         id="dosage"
                         placeholder="dosage"
                         className="form-control"
+                        required
                         name="dosage"
                         value={prescriptionData?.dosage}
                         onChange={handleChange}
@@ -774,6 +779,7 @@ const NewTreatPrescription = () => {
                           id="frequency"
                           className="form-control"
                           name="frequency"
+                          required
                           value={prescriptionData?.frequency}
                           onChange={handleChange}
                         >
@@ -800,6 +806,7 @@ const NewTreatPrescription = () => {
                           id="duration"
                           className="form-control"
                           name="duration"
+                          required
                           value={prescriptionData.duration}
                           onChange={handleChange}
                         >

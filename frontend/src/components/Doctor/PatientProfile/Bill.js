@@ -68,14 +68,14 @@ const Bill = () => {
                   {billData?.map((item) => (
                     <>
                       <tr>
-                        <td>{item?.bill_date?.split("T")[0]}</td>
+                        <td>{item?.bill_date?.split(" ")[0]}</td>
                         <td>{item.bill_id}</td>
                         {/* <td>{item.assigned_doctor_name}</td> */}
                         <td>{item.total_amount}</td>
                         <td>{item.paid_amount}</td>
                         <td>{item.pay_by_sec_amt}</td>
                         <td>{item.payment_mode}</td>
-                        <td>{item.payment_date_time?.split("T")[0]}</td>
+                        <td>{item.payment_date_time?.split(" ")[0]}</td>
                         <td>{item.payment_status}</td>
                         <td>
                           <Link to={`/ViewPatientTotalBill/${item.tp_id}`}>

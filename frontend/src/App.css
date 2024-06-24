@@ -6,8 +6,9 @@
   height: 40vmin;
   pointer-events: none;
 }
-body{
+body {
   background-color: #e6ecf1;
+  overflow-x: hidden;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -39,5 +40,3 @@ body{
     transform: rotate(360deg);
   }
 }
-
-

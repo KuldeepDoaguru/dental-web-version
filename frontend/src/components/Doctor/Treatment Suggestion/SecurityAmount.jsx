@@ -134,7 +134,9 @@ const SecurityAmount = () => {
     }
   };
 
-  console.log(treatList);
+  console.log(treatList[0]?.selected_teeth);
+  const arrayTeeth = treatList[0]?.selected_teeth?.split(",");
+  console.log(arrayTeeth);
 
   const grandTotal = totalTreatSuggest();
 

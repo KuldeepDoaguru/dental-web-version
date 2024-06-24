@@ -131,6 +131,20 @@ const TreatmentForm = () => {
     }));
   };
 
+  const discountError = () => {
+    if (formData.disc_amt > 50) {
+      alert("Discount % can not be greater than 50%");
+      setFormData((prevData) => ({
+        ...prevData,
+        disc_amt: "",
+      }));
+    }
+  };
+
+  useEffect(() => {
+    discountError();
+  }, [formData.disc_amt]);
+
   const showError = () => {
     if (lastTreatment?.pending_amount < formData.paid_amount) {
       alert("Amount cannot be greater than net amount");
@@ -394,8 +408,6 @@ const TreatmentForm = () => {
     pending_amount:
       lastTreatment?.current_sitting <= 1
         ? rawNetAmount - formData.paid_amount
-        : secRecValue < pendingAmountValue
-        ? pendingAmountValue - secRecValue
         : pendingAmountValue,
     dir_rec_amt:
       secRecValue <= payableAmountafterSecAmount
@@ -862,7 +874,8 @@ const TreatmentForm = () => {
                   <div className="col-xxl-2 col-xl-2 col-lg-2 col-md-4 col-sm-12 col-12">
                     <div class="mb-3">
                       <label htmlFor="" class="form-label fw-bold">
-                        Discount %
+                        Discount %{" "}
+                        <span className="text-danger">(max:50%)</span>
                       </label>
                       {lastTreatment?.current_sitting > 1 ? (
                         <>
@@ -1099,7 +1112,7 @@ const TreatmentForm = () => {
                             {" "}
                             <option value="">-select-</option>
                             <option value="Received">Yes</option>
-                            <option value="Pending">No</option>
+                            {/* <option value="Pending">No</option> */}
                           </>
                         ) : (
                           <>
@@ -1108,7 +1121,7 @@ const TreatmentForm = () => {
                               <>
                                 {" "}
                                 <option value="">-select-</option>
-                                <option value="Received">Yes</option>
+                                <option value="Received">Recieved</option>
                               </>
                             ) : (
                               <>

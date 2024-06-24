@@ -186,7 +186,7 @@ const PatientBillsByTpid = () => {
     }
   };
 
-  console.log(billDetails[0]);
+  console.log(billDetails);
   const totalBillvalueWithoutGst = getTreatData?.reduce((total, item) => {
     if (billDetails[0]?.due_amount === billDetails[0]?.net_amount) {
       return total + Number(item.paid_amount);
@@ -643,7 +643,8 @@ const PatientBillsByTpid = () => {
                 Go to Payment page
               </button>
             )}
-            {billDetails[0]?.payment_status !== "paid" ? (
+            {billDetails[0]?.due_amount !== "0" ||
+            billDetails[0]?.payment_status !== "paid" ? (
               ""
             ) : (
               <>
@@ -655,6 +656,12 @@ const PatientBillsByTpid = () => {
                 </button>
               </>
             )}
+            {/* <button
+              className="btn btn-info no-print mx-3 mt-2 mb-2"
+              onClick={() => navigate("/doctor-dashboard")}
+            >
+              Appointment Dashboard
+            </button> */}
           </div>
         </div>
       </Wrapper>

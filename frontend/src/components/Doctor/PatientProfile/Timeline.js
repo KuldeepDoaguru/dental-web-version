@@ -59,7 +59,9 @@ const Timeline = () => {
                   <>
                     <tr>
                       <td>{item.event_date}</td>
-                      <td>{item.event_time}</td>
+                      <td>
+                        {moment(item.event_time, "HH:mm:ss").format("hh:mm A")}
+                      </td>
                       <td>{item.event_type}</td>
                       <td>{item.event_description}</td>
                     </tr>

@@ -65,7 +65,7 @@ const Prescription = () => {
                 {presData?.map((item) => (
                   <>
                     <tr>
-                      <td>{item.date?.split("T")[0]}</td>
+                      <td>{item.date?.split(" ")[0]}</td>
                       <td>{item.treatment}</td>
                       <td>{item.medicine_name}</td>
                       <td>{item.dosage}</td>

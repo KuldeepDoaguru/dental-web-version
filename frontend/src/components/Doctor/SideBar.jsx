@@ -14,6 +14,7 @@ import { CiMedicalClipboard } from "react-icons/ci";
 import { clearUser } from "../../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { BsFileEarmarkPerson } from "react-icons/bs";
+import { FaPrescriptionBottleMedical } from "react-icons/fa6";
 
 const Sider = () => {
   const location = useLocation();
@@ -78,6 +79,28 @@ const Sider = () => {
                     id="navleft1"
                   >
                     Attendance
+                  </h3>
+                </div>
+              </Link>
+            </li>
+            <hr />
+            <li>
+              <Link
+                to="/prescription-details"
+                className={`link-div ${getSidebarClass(
+                  "/prescription-details"
+                )}`}
+              >
+                <div>
+                  {/* <i className="fs-4 bi bi-house-door-fill"></i> */}
+                  <FaPrescriptionBottleMedical className="fs-2 text-white" />
+                </div>
+                <div>
+                  <h3
+                    className="d-none d-sm-inline fs-6 icon-text"
+                    id="navleft1"
+                  >
+                    Prescription
                   </h3>
                 </div>
               </Link>

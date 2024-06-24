@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -60,7 +61,11 @@ const Lab = () => {
                       <td>{item.assigned_doctor_name}</td>
                       <td>{item.lab_name}</td>
                       <td>{item.test}</td>
-                      <td>{item.created_date?.split("T")[0]}</td>
+                      <td>
+                        {moment(item.created_date?.split("T")[0]).format(
+                          "DD/MM/YYYY"
+                        )}
+                      </td>
                       <td>{item.test_status}</td>
                     </tr>
                   </>

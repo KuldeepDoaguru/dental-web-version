@@ -155,23 +155,20 @@ const ExaminationDashTwo = () => {
                 className="d-flex flex-column justify-content-end align-items-end"
                 style={{ marginTop: "5rem" }}
               >
-                {getPatient.age >= 19 ? (
-                  <div
-                    className="dental shadow p-5 m-3 bg-body rounded mx-3"
-                    style={{ cursor: "pointer" }}
-                    onClick={() => uniFunc("Dental-X")}
-                  >
-                    Dental-X Chart <TbHandClick />
-                  </div>
-                ) : (
-                  <div
-                    className="dental shadow p-5 mt-5 bg-body rounded mx-3 cursor-pointer"
-                    onClick={() => uniFunc("Pediatric")}
-                    style={{ cursor: "pointer" }}
-                  >
-                    Pediatric Chart <TbHandClick />
-                  </div>
-                )}
+                <div
+                  className="dental shadow p-5 m-3 bg-body rounded mx-3"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => uniFunc("Dental-X")}
+                >
+                  Dental-X Chart <TbHandClick />
+                </div>
+                <div
+                  className="dental shadow p-5 mt-5 bg-body rounded mx-3 cursor-pointer"
+                  onClick={() => uniFunc("Pediatric")}
+                  style={{ cursor: "pointer" }}
+                >
+                  Pediatric Chart <TbHandClick />
+                </div>
               </div>
             </div>
             <div className="co-lg-6 col-6 dental-des">

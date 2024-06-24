@@ -494,6 +494,7 @@ const BookSittingAppointment = ({
                     readOnly
                     class="form-control"
                     id="recipient-name"
+                    required
                     value={data.patient_uhid}
                   />
                 </div>
@@ -542,6 +543,7 @@ const BookSittingAppointment = ({
                     name="assigned_doctor_name"
                     class="form-control"
                     id="recipient-name"
+                    required
                     value={data.assigned_doctor_name}
                   />
                 </div>
@@ -554,6 +556,7 @@ const BookSittingAppointment = ({
                     name="assigned_doctor_name"
                     class="form-control"
                     id="recipient-name"
+                    required
                     value={data.treatment_provided}
                   />
                 </div>

@@ -546,7 +546,7 @@ const PatintDuePaymentPrint = () => {
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
                       >
-                        Add/Update Payment Details
+                        Update Payment Details
                       </button>
                       {billAmount[0]?.payment_status === null ||
                       billAmount[0]?.payment_status === "pending" ? (
@@ -707,16 +707,44 @@ const PatintDuePaymentPrint = () => {
                   >
                     Close
                   </button>
-
-                  <button
+                  {dueAmt <= 0 ? (
+                    <>
+                      <button
+                        type="button"
+                        class="btn btn-success"
+                        data-bs-dismiss="modal"
+                        onClick={makePayment}
+                        disabled={loading}
+                      >
+                        {loading
+                          ? "Update Payment Details..."
+                          : "Update Payment Details"}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        class="btn btn-success"
+                        data-bs-dismiss="modal"
+                        onClick={makePayment}
+                        disabled={loading}
+                      >
+                        {loading
+                          ? "Pay/update payment..."
+                          : "Pay/update payment"}
+                      </button>
+                    </>
+                  )}
+                  {/* <button
                     type="button"
                     class="btn btn-success"
                     data-bs-dismiss="modal"
                     onClick={makePayment}
                     disabled={loading}
                   >
-                    {loading ? "Pay now..." : "Pay Now"}
-                  </button>
+                    {loading ? "Pay/update payment..." : "Pay/update payment"}
+                  </button> */}
                 </div>
               </div>
             </div>

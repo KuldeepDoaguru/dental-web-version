@@ -301,7 +301,7 @@ const defaultOptions = {
                         <th>Payment Status</th>
                         <th>Refund Date</th>
                         <th>Created At</th>
-                        <th>Print</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     {  currentRows.length === 0 ? (
@@ -350,7 +350,7 @@ const defaultOptions = {
                                 to={`/print_Opd_Reciept/${data.appoint_id}`}
                               >
                                 {data.payment_Status == "paid" && <button className="btn btn-success">
-                                  Print
+                                  View Reciept
                                 </button>}
 
                               </Link>

@@ -311,7 +311,7 @@ const defaultOptions = {
                                               backgroundColor: "#FFA600",
                                             }}
                                           >
-                                            Print
+                                            View Invoice
                                           </button>
                                         </Link>
                                       </td>

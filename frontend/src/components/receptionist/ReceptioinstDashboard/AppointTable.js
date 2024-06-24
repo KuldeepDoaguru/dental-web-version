@@ -40,6 +40,24 @@ const AppointTable = () => {
   const [loadingEffect, setLoadingEffect] = useState(true);
 
   const [selectedDateAppData, setSelectedDateAppData] = useState([]);
+  const [doctors,setDoctors] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState(null); // State to store the selected Doctor
+
+  const getDoctors = async ()=>{
+    try{
+      const response = await axios.get(`https://dentalgurureceptionist.doaguru.com/api/v1/receptionist/get-doctors/${branch}` ,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      }
+      });
+      setDoctors(response?.data?.data)
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
 
   const timelineData = async (id) => {
 
@@ -103,18 +121,27 @@ console.log(appointmentsData);
 
 
 
+  // useEffect(() => {
+  //   const sortedAppointments = appointmentsData.sort((a, b) => {
+  //     return a.appointment_dateTime.localeCompare(b.appointment_dateTime);
+  //   });
+
+  //   const filteredResults = sortedAppointments.filter((row) =>
+
+  //     row.appointment_dateTime.includes(selectedDate)
+  //   );
+  //   setSelectedDateAppData(filteredResults)
+  //   handleSearch({ target: { value: searchTerm } });
+  // }, [appointmentsData, selectedDate])
   useEffect(() => {
-    const sortedAppointments = appointmentsData.sort((a, b) => {
-      return a.appointment_dateTime.localeCompare(b.appointment_dateTime);
-    });
-
+    const sortedAppointments = appointmentsData.sort((a, b) => a.appointment_dateTime.localeCompare(b.appointment_dateTime));
     const filteredResults = sortedAppointments.filter((row) =>
-
-      row.appointment_dateTime.includes(selectedDate)
+      row.appointment_dateTime.includes(selectedDate) &&
+      (!selectedDoctor || row.assigned_doctor_id === selectedDoctor)
     );
     setSelectedDateAppData(filteredResults)
     handleSearch({ target: { value: searchTerm } });
-  }, [appointmentsData, selectedDate])
+  }, [appointmentsData, selectedDate, selectedDoctor]);
 
   const getAppointments = async () => {
     
@@ -142,6 +169,10 @@ console.log(appointmentsData);
     getAppointments();
      
   }, [refreshTable])
+  useEffect(() => {
+    getDoctors();
+     
+  }, [])
 
 
 
@@ -247,6 +278,19 @@ console.log(appointmentsData);
 
 
   // Searching function
+  // const handleSearch = (event) => {
+  //   const searchTerm = event.target.value.toLowerCase();
+  //   setSearchTerm(searchTerm);
+  //   setCurrentPage(1); // Reset to the first page when searching
+
+  //   const filteredResults = appointmentsData.filter((row) =>
+  //     (row.patient_name.toLowerCase().includes(searchTerm.trim()) || row.mobileno.includes(searchTerm.trim()) || row.uhid.toLowerCase().includes(searchTerm.trim()) || row.appointment_status.toLowerCase().includes(searchTerm.trim()) )
+  //     && row.appointment_dateTime.includes(selectedDate)
+  //   );
+
+  //   setFilteredData(filteredResults);
+  // };
+
   const handleSearch = (event) => {
     const searchTerm = event.target.value.toLowerCase();
     setSearchTerm(searchTerm);
@@ -254,7 +298,8 @@ console.log(appointmentsData);
 
     const filteredResults = appointmentsData.filter((row) =>
       (row.patient_name.toLowerCase().includes(searchTerm.trim()) || row.mobileno.includes(searchTerm.trim()) || row.uhid.toLowerCase().includes(searchTerm.trim()) || row.appointment_status.toLowerCase().includes(searchTerm.trim()) )
-      && row.appointment_dateTime.includes(selectedDate)
+      && row.appointment_dateTime.includes(selectedDate) &&
+      (!selectedDoctor || row.assigned_doctor_id === selectedDoctor)
     );
 
     setFilteredData(filteredResults);
@@ -373,8 +418,19 @@ console.log(appointmentsData);
               <FaArrowCircleRight style={{ fontSize: '35px', padding: "3px", cursor: "pointer" }} onClick={handleDateChange(1)} />
             </div>
 
-            <div >
-
+            <div className='mt-sm-2 mt-lg-0'>
+            <select className="form-select text-capitalize" onChange={(e) => setSelectedDoctor(e.target.value)} id='form2'>
+                  <option value="">All Doctors</option>
+      {doctors?.map((doctor) => (
+       
+        <option value={doctor.employee_ID} className="text-capitalize">{"Dr. "}{doctor.employee_name}</option>
+      ))} 
+      {/* <option value="Dr. Ajay">Dr. Ajay</option>
+      <option value="Dr. Vijay">Dr. Vijay</option>
+      <option value="Dr. Mohit">Dr. Mohit</option> */}
+      
+     
+    </select>
             </div>
             <Form.Group
               controlId="rowsPerPageSelect"
@@ -650,6 +706,16 @@ const Wrapper = styled.div`
   width: 350px;
   @media screen and (max-width: 1200px) {
      width: 100%;
+    }
+  @media screen and (min-width: 1100px) and (max-width : 1300px) {
+     width: auto;
+    }
+ 
+}
+#form2{
+  @media screen and (max-width: 1200px) {
+     
+     
     }
 }
   

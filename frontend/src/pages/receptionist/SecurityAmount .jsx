@@ -611,7 +611,7 @@ function SecurityAmount() {
                         <th>Payment Status</th>
                         <th>Refund Amount</th>
                         <th>Action</th>
-                        <th>Print</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     {  currentRows?.length === 0 ? (
@@ -681,7 +681,7 @@ function SecurityAmount() {
                                 to={`/print_security_amount/${item.sa_id}`}
                               >
                                 {item.payment_status !== "Pending" && <button className="btn btn-success">
-                                  Print
+                                  View Reciept
                                 </button>}
 
                               </Link>

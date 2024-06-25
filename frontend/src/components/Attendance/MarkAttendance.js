@@ -131,13 +131,27 @@ const MarkAttendance = () => {
       <div className="row d-flex justify-content-end">
         <div className="col-6 d-flex justify-content-end gap-2">
           {todayAttendance?.length == 0 && (
-            <button className="btn btn-success" onClick={handleLogin}>
+            <button
+              className="btn btn-success shadow"
+              style={{
+                backgroundColor: "#0dcaf0",
+                border: "#0dcaf0",
+              }}
+              onClick={handleLogin}
+            >
               Attendance Login
             </button>
           )}
 
           {todayAttendance?.length > 0 && (
-            <button className="btn btn-success" onClick={handleLogout}>
+            <button
+              className="btn btn-success shadow"
+              style={{
+                backgroundColor: "#0dcaf0",
+                border: "#0dcaf0",
+              }}
+              onClick={handleLogout}
+            >
               Attendance Logout
             </button>
           )}

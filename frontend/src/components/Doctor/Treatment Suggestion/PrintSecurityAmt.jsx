@@ -296,14 +296,22 @@ const PrintSecurityAmt = () => {
       <div className="d-flex justify-content-center my-3 gap-2">
         <button
           type="button"
-          className="btn btn-primary btn-lg"
+          className="btn btn-primary btn-lg text-white shadow"
+          style={{
+            backgroundColor: "#0dcaf0",
+            border: "#0dcaf0",
+          }}
           onClick={handlePrint}
         >
           Print
         </button>
         <button
           type="button"
-          className="btn btn-primary btn-lg"
+          className="btn btn-primary btn-lg text-white shadow"
+          style={{
+            backgroundColor: "#0dcaf0",
+            border: "#0dcaf0",
+          }}
           onClick={() => window.history.back()}
         >
           Go to Back

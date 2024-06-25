@@ -24,7 +24,7 @@ const DoctorDashboard = () => {
               <div className="row d-flex justify-content-between mx-3">
                 {/* <div className="col-12 col-md-4 "> */}
                 <div className="col-12 col-lg-12 text-center mt-3">
-                  <h3> Welcome To Dental Guru</h3>
+                  <h3 style={{ color: "#268ca1" }}> Welcome To DentalGuru</h3>
                   <p> Doctor Dashboard</p>
                   <p>Branch : {branch}</p>
                 </div>

@@ -274,6 +274,7 @@ const NewTreatment = () => {
             >
               <thead>
                 <tr>
+                  <th>Date</th>
                   <th>Treatment</th>
                   <th>disease</th>
                   <th>Teeth</th>
@@ -302,6 +303,7 @@ const NewTreatment = () => {
                   .map((item) => (
                     <>
                       <tr>
+                        <td>{item.date?.split(" ")[0]}</td>
                         <td>{item.treatment_name}</td>
                         <td>{item.disease}</td>
                         <td>{item.selected_teeth}</td>
@@ -312,6 +314,13 @@ const NewTreatment = () => {
                         <td>
                           {item.treatment_status === "completed" ? (
                             <button className="btn btn-success" disabled>
+                              <FaHandHoldingMedical size={25} />
+                            </button>
+                          ) : item.treatment_status === "ongoing" ? (
+                            <button
+                              className="btn btn-warning"
+                              onClick={() => handleShowTreatProcess(item)}
+                            >
                               <FaHandHoldingMedical size={25} />
                             </button>
                           ) : filterBills.length === 0 ? (
@@ -392,14 +401,23 @@ const NewTreatment = () => {
                             {moment(patient.created_date).format("DD/MM/YYYY")}
                           </td>
                           <td>{patient.test}</td>
-                          <td className="text-success fw-bold">
+                          <td
+                            className="fw-bold text-capitalize"
+                            style={{
+                              color: "#0dcaf0",
+                            }}
+                          >
                             {patient.test_status}
                           </td>
                           <td>
                             <div className="">
                               {patient.test_status === "pending" ? (
                                 <button
-                                  className="btn btn-success m-1"
+                                  className="btn btn-success m-1 text-white shadow"
+                                  style={{
+                                    backgroundColor: "#0dcaf0",
+                                    border: "#0dcaf0",
+                                  }}
                                   disabled
                                 >
                                   View
@@ -412,7 +430,13 @@ const NewTreatment = () => {
                                 // </Link>
 
                                 <a href={patient?.file_path} target="_blank">
-                                  <button className="btn btn-success m-1">
+                                  <button
+                                    className="btn btn-success m-1"
+                                    style={{
+                                      backgroundColor: "#0dcaf0",
+                                      border: "#0dcaf0",
+                                    }}
+                                  >
                                     View
                                   </button>
                                 </a>
@@ -462,6 +486,7 @@ const Wrapper = styled.div`
   th {
     background: #0dcaf0;
     white-space: nowrap;
+    color: white;
   }
   .main {
     @media screen and (min-width: 768px) and (max-width: 1024px) {

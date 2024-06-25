@@ -542,7 +542,11 @@ const PatintDuePaymentPrint = () => {
                     <>
                       <button
                         type="button"
-                        class="btn btn-primary hide-during-print"
+                        class="btn btn-primary hide-during-print text-white shadow"
+                        style={{
+                          backgroundColor: "#0dcaf0",
+                          border: "#0dcaf0",
+                        }}
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModal"
                       >
@@ -552,7 +556,7 @@ const PatintDuePaymentPrint = () => {
                       billAmount[0]?.payment_status === "pending" ? (
                         <button
                           type="button"
-                          className="btn btn-warning ms-2"
+                          className="btn btn-warning ms-2 shadow"
                           disabled
                         >
                           Mark Treatment Complete
@@ -711,7 +715,11 @@ const PatintDuePaymentPrint = () => {
                     <>
                       <button
                         type="button"
-                        class="btn btn-success"
+                        class="btn btn-success text-white shadow"
+                        style={{
+                          backgroundColor: "#0dcaf0",
+                          border: "#0dcaf0",
+                        }}
                         data-bs-dismiss="modal"
                         onClick={makePayment}
                         disabled={loading}
@@ -725,7 +733,11 @@ const PatintDuePaymentPrint = () => {
                     <>
                       <button
                         type="button"
-                        class="btn btn-success"
+                        class="btn btn-success text-white shadow"
+                        style={{
+                          backgroundColor: "#0dcaf0",
+                          border: "#0dcaf0",
+                        }}
                         data-bs-dismiss="modal"
                         onClick={makePayment}
                         disabled={loading}

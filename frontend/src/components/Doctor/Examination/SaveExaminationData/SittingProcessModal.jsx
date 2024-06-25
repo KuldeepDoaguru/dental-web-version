@@ -192,7 +192,11 @@ const SittingProcessModal = ({ onClose, selectedData, uhid, appoint_id }) => {
 
                     <button
                       type="submit"
-                      class="btn btn-primary"
+                      class="btn btn-primary text-white shadow"
+                      style={{
+                        backgroundColor: "#0dcaf0",
+                        border: "#0dcaf0",
+                      }}
                       disabled={loading}
                     >
                       {loading ? "Submit..." : "Submit"}{" "}

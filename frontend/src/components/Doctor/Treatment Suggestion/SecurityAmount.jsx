@@ -547,6 +547,10 @@ const SecurityAmount = () => {
                             <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
                               <button
                                 className="btn btn-primary text-light btnbox fw-bold shadow p-1 w-100 rounded"
+                                style={{
+                                  backgroundColor: "#0dcaf0",
+                                  border: "#0dcaf0",
+                                }}
                                 type="submit"
                                 disabled={loading}
                               >
@@ -603,7 +607,11 @@ const SecurityAmount = () => {
                                     {" "}
                                     <button
                                       type="button"
-                                      className="btn btn-primary"
+                                      className="btn btn-primary text-white shadow"
+                                      style={{
+                                        backgroundColor: "#0dcaf0",
+                                        border: "#0dcaf0",
+                                      }}
                                     >
                                       Print
                                     </button>{" "}
@@ -611,7 +619,11 @@ const SecurityAmount = () => {
                                 ) : (
                                   <button
                                     type="button"
-                                    className="btn btn-primary"
+                                    className="btn btn-primary text-white shadow"
+                                    style={{
+                                      backgroundColor: "#0dcaf0",
+                                      border: "#0dcaf0",
+                                    }}
                                     disabled
                                   >
                                     Print
@@ -620,7 +632,11 @@ const SecurityAmount = () => {
                               </td>
                               <td>
                                 <button
-                                  className="btn btn-info"
+                                  className="btn btn-info text-white shadow"
+                                  style={{
+                                    backgroundColor: "#0dcaf0",
+                                    border: "#0dcaf0",
+                                  }}
                                   onClick={() => openSecurityAmountEdit(item)}
                                 >
                                   Update

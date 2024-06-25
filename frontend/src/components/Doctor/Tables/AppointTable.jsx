@@ -267,17 +267,17 @@ const AppointTable = () => {
               <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
                 {" "}
                 <h5 className="widget-title m-0 pt-2" id="title">
-                  Current Appointment : Total - {filteredData.length}
+                  Current Appointment : {filteredData.length}
                 </h5>
               </div>
               <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12">
                 {" "}
                 <div className="d-flex justify-content-center align-items-center">
-                  <div className="pt-2">
+                  <div className="">
                     <FaArrowCircleLeft
                       // style={{ fontSize: "35px", cursor: "pointer" }}
                       className="arrow"
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: "pointer", color: "#0dcaf0" }}
                       onClick={() => handleDateChange(-1)}
                     />
                   </div>
@@ -292,7 +292,7 @@ const AppointTable = () => {
                     <FaArrowCircleRight
                       // style={{ fontSize: "35px", cursor: "pointer" }}
                       className="arrow"
-                      style={{ cursor: "pointer" }}
+                      style={{ cursor: "pointer", color: "#0dcaf0" }}
                       onClick={() => handleDateChange(1)}
                     />
                   </div>
@@ -301,13 +301,20 @@ const AppointTable = () => {
               <div className="col-xxl-4 col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12">
                 <div className="d-flex justify-content-start align-items-center">
                   <h5>Search Patient :</h5>
-                  <input
-                    type="text"
-                    placeholder="Search Name, Number or UHID"
-                    className="mx-1 p-1 rounded searchint"
-                    value={keyword}
-                    onChange={handleSearch}
-                  />
+                  <div className="input-container">
+                    {!keyword && (
+                      <div className="placeholder-marquee">
+                        <marquee>Search by Name, Number or UHID</marquee>
+                      </div>
+                    )}
+                    <input
+                      type="text"
+                      placeholder=""
+                      className="mx-1 p-1 rounded searchint"
+                      value={keyword}
+                      onChange={handleSearch}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -361,7 +368,14 @@ const AppointTable = () => {
                         <tr key={index}>
                           <td>{item.appoint_id}</td>
                           <td>
-                            <Link to={`/Patient-profile/${item.patient_uhid}`}>
+                            <Link
+                              className="fw-bold"
+                              style={{
+                                color: "#0dcaf0",
+                                textDecoration: "none",
+                              }}
+                              to={`/Patient-profile/${item.patient_uhid}`}
+                            >
                               {item.patient_uhid}
                             </Link>
                           </td>
@@ -513,6 +527,11 @@ const AppointTable = () => {
                                 <td>{item.appoint_id}</td>
                                 <td>
                                   <Link
+                                    className="fw-bold"
+                                    style={{
+                                      color: "#0dcaf0",
+                                      textDecoration: "none",
+                                    }}
                                     to={`/Patient-profile/${item.patient_uhid}`}
                                   >
                                     {item.patient_uhid}
@@ -773,9 +792,30 @@ const Wrapper = styled.div`
   }
 
   .searchint {
-    width: 50%;
+    width: 100%;
     @media screen and (min-width: 820px) and (max-width: 1100px) {
-      width: 75% !important;
+      width: 100% !important;
     }
+  }
+
+  .input-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .placeholder-marquee {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+  }
+
+  input {
+    padding-left: 10px; /* Adjust to match the padding of the marquee container */
   }
 `;

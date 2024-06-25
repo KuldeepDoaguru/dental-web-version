@@ -50,6 +50,7 @@ const Lab = () => {
                   <th>Test Name</th>
                   <th>Test Date</th>
                   <th>Test Status</th>
+                  <th>View Report</th>
                 </tr>
               </thead>
               <tbody>
@@ -67,6 +68,19 @@ const Lab = () => {
                         )}
                       </td>
                       <td>{item.test_status}</td>
+                      <td>
+                        <a href={item.file_path} target="_blank">
+                          <button
+                            className="btn btn-success shadow"
+                            style={{
+                              backgroundColor: "#0dcaf0",
+                              border: "#0dcaf0",
+                            }}
+                          >
+                            View
+                          </button>
+                        </a>
+                      </td>
                     </tr>
                   </>
                 ))}
@@ -83,8 +97,8 @@ export default Lab;
 const Wrapper = styled.div`
   .table {
     @media screen and (max-width: 768px) {
-      width: 20rem;
-      margin-left: -0.2rem;
+      /* width: 20rem;
+      margin-left: -0.2rem; */
     }
   }
 `;

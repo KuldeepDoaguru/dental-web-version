@@ -79,7 +79,13 @@ const Bill = () => {
                         <td>{item.payment_status}</td>
                         <td>
                           <Link to={`/ViewPatientTotalBill/${item.tp_id}`}>
-                            <button className="btn btn-warning">
+                            <button
+                              className="btn btn-warning shadow text-white"
+                              style={{
+                                backgroundColor: "#0dcaf0",
+                                border: "#0dcaf0",
+                              }}
+                            >
                               View Bill
                             </button>
                           </Link>
@@ -142,6 +148,19 @@ const Wrapper = styled.div`
     width: 100%;
     @media screen and (max-width: 900px) {
       width: 100%;
+    }
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+  }
+
+  .table-responsive {
+    width: 80%;
+    overflow-x: auto;
+    @media screen and (max-width: 1000px) {
+      width: 55%;
     }
   }
 `;

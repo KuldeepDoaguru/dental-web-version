@@ -126,7 +126,7 @@ const Wrapper = styled.div`
 
   #tabb {
     @media screen and (max-width: 768px) {
-      width: 25rem;
+      /* width: 25rem; */
       margin-left: -1.5rem;
     }
   }

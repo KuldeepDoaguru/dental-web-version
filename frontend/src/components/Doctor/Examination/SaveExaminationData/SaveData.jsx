@@ -197,7 +197,11 @@ const SaveData = ({ id, tpid }) => {
                       </td> */}
                       <td>
                         <button
-                          className="btn btn-danger mx-1 justify-content-end"
+                          className="btn btn-danger mx-1 justify-content-end shadow"
+                          style={{
+                            backgroundColor: "#0dcaf0",
+                            border: "#0dcaf0",
+                          }}
                           onClick={() => handleDelete(item.exm_id)}
                         >
                           <MdDelete size={20} />

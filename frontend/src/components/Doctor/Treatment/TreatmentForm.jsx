@@ -1194,7 +1194,11 @@ const TreatmentForm = () => {
                           <>
                             <button
                               type="submit"
-                              className="btn btn-info btn text-dark mt-2"
+                              className="btn btn-info btn text-dark mt-2 text-white shadow"
+                              style={{
+                                backgroundColor: "#0dcaf0",
+                                border: "#0dcaf0",
+                              }}
                               disabled={loading}
                               // onClick={handleEditAppointment}
                             >
@@ -1207,7 +1211,11 @@ const TreatmentForm = () => {
                           <>
                             <button
                               type="submit"
-                              className="btn btn-info text-dark mt-2 ms-2"
+                              className="btn btn-info text-dark mt-2 ms-2 text-white shadow"
+                              style={{
+                                backgroundColor: "#0dcaf0",
+                                border: "#0dcaf0",
+                              }}
                               disabled={loading}
                             >
                               {loading ? "Treatment Done..." : "Treatment Done"}
@@ -1223,7 +1231,11 @@ const TreatmentForm = () => {
                         {bookingStats === "yes" ? (
                           <button
                             type="submit"
-                            className="btn btn-info btn text-dark mt-2"
+                            className="btn btn-info btn text-dark mt-2 text-white shadow"
+                            style={{
+                              backgroundColor: "#0dcaf0",
+                              border: "#0dcaf0",
+                            }}
                             disabled={loading}
                             // onClick={handleEditAppointment}
                           >
@@ -1234,7 +1246,11 @@ const TreatmentForm = () => {
                         ) : (
                           <button
                             type="submit"
-                            className="btn btn-info text-dark mt-2 ms-2"
+                            className="btn btn-info text-dark mt-2 ms-2 text-white shadow"
+                            style={{
+                              backgroundColor: "#0dcaf0",
+                              border: "#0dcaf0",
+                            }}
                             disabled={loading}
                           >
                             {loading ? "Sitting Done..." : "Sitting Done"}

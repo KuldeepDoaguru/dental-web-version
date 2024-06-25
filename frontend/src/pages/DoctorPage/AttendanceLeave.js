@@ -174,7 +174,14 @@ const AttendanceLeave = () => {
                 <div className="container-fluid mt-3">
                   <div className="row d-flex justify-content-between">
                     <div className="col-3">
-                      <button className="btn btn-success" onClick={goBack}>
+                      <button
+                        className="btn btn-success shadow"
+                        style={{
+                          backgroundColor: "#0dcaf0",
+                          border: "#0dcaf0",
+                        }}
+                        onClick={goBack}
+                      >
                         <IoMdArrowRoundBack /> Back
                       </button>
                     </div>
@@ -200,98 +207,114 @@ const AttendanceLeave = () => {
                       <div className="container-fluid">
                         <div className="container-fluid">
                           <div className="d-flex justify-content-between mb-2 mt-4"></div>
+                          <div>
+                            <div className="row">
+                              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div className="mt-5">
+                                  <div className="mt-5 text-center">
+                                    <h4>Attendance details</h4>
+                                  </div>
+                                  <div className="table-container all-attent">
+                                    <table className="table table-bordered">
+                                      <thead className="table-head">
+                                        <tr>
+                                          <th className="sticky">Sr. no.</th>
+                                          <th className="sticky">Date</th>
+                                          <th className="sticky">Login Time</th>
+                                          <th className="sticky">
+                                            Logout Time
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {Attendance?.map((item, index) => {
+                                          return (
+                                            <tr
+                                              className="table-row"
+                                              key={item?.attendance_id}
+                                            >
+                                              <td>{index + 1}</td>
+                                              <td>
+                                                {item?.date
+                                                  ? moment(item?.date).format(
+                                                      "DD/MM/YYYY"
+                                                    )
+                                                  : ""}{" "}
+                                              </td>
+                                              <td>
+                                                {item?.allday_shift_login_time
+                                                  ? moment(
+                                                      item?.allday_shift_login_time,
+                                                      "HH:mm:ss.SSSSSS"
+                                                    ).format("hh:mm A")
+                                                  : ""}{" "}
+                                              </td>
+                                              <td>
+                                                {" "}
+                                                {item?.allday_shift_logout_time
+                                                  ? moment(
+                                                      item?.allday_shift_logout_time,
+                                                      "HH:mm:ss.SSSSSS"
+                                                    ).format("hh:mm A")
+                                                  : ""}
+                                              </td>
+                                            </tr>
+                                          );
+                                        })}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                                <div className="mt-5">
+                                  <div className="mt-5 text-center">
+                                    <h4>Leave details</h4>
+                                  </div>
+                                  <div className="table-container all-appoint">
+                                    <table className="table table-bordered">
+                                      <thead className="table-head">
+                                        <tr>
+                                          <th className="sticky">Sr. no.</th>
+                                          <th className="sticky">Leave Date</th>
+                                          <th className="sticky">
+                                            Leave Reason
+                                          </th>
+                                          <th className="sticky">
+                                            Leave Status
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {leavesData?.map((item, index) => {
+                                          // Split the leave_dates string into an array of date strings
+                                          const leaveDatesArray =
+                                            item?.leave_dates.split(",");
 
-                          <div className="mt-5">
-                            <div className="mt-5 text-center">
-                              <h4>Attendance details</h4>
-                            </div>
-                            <div className="table-container all-attent">
-                              <table className="table table-bordered">
-                                <thead className="table-head">
-                                  <tr>
-                                    <th className="sticky">Sr. no.</th>
-                                    <th className="sticky">Date</th>
-                                    <th className="sticky">Login Time</th>
-                                    <th className="sticky">Logout Time</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {Attendance?.map((item, index) => {
-                                    return (
-                                      <tr
-                                        className="table-row"
-                                        key={item?.attendance_id}
-                                      >
-                                        <td>{index + 1}</td>
-                                        <td>
-                                          {item?.date
-                                            ? moment(item?.date).format(
-                                                "DD/MM/YYYY"
+                                          // Format each date in the array using the formatDate function
+                                          const formattedLeaveDates =
+                                            leaveDatesArray
+                                              .map((dateString) =>
+                                                formatDate(dateString)
                                               )
-                                            : ""}{" "}
-                                        </td>
-                                        <td>
-                                          {item?.allday_shift_login_time
-                                            ? moment(
-                                                item?.allday_shift_login_time,
-                                                "HH:mm:ss.SSSSSS"
-                                              ).format("hh:mm A")
-                                            : ""}{" "}
-                                        </td>
-                                        <td>
-                                          {" "}
-                                          {item?.allday_shift_logout_time
-                                            ? moment(
-                                                item?.allday_shift_logout_time,
-                                                "HH:mm:ss.SSSSSS"
-                                              ).format("hh:mm A")
-                                            : ""}
-                                        </td>
-                                      </tr>
-                                    );
-                                  })}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-
-                          <div className="mt-5">
-                            <div className="mt-5 text-center">
-                              <h4>Leave details</h4>
-                            </div>
-                            <div className="table-container all-appoint">
-                              <table className="table table-bordered">
-                                <thead className="table-head">
-                                  <tr>
-                                    <th className="sticky">Sr. no.</th>
-                                    <th className="sticky">Leave Date</th>
-                                    <th className="sticky">Leave Reason</th>
-                                    <th className="sticky">Leave Status</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {leavesData?.map((item, index) => {
-                                    // Split the leave_dates string into an array of date strings
-                                    const leaveDatesArray =
-                                      item?.leave_dates.split(",");
-
-                                    // Format each date in the array using the formatDate function
-                                    const formattedLeaveDates = leaveDatesArray
-                                      .map((dateString) =>
-                                        formatDate(dateString)
-                                      )
-                                      .join(", "); // Join the formatted dates back into a single string
-                                    return (
-                                      <tr className="table-row" key={item.id}>
-                                        <td>{index + 1}</td>
-                                        <td>{formattedLeaveDates}</td>
-                                        <td>{item.leave_reason}</td>
-                                        <td>{item.leave_status}</td>
-                                      </tr>
-                                    );
-                                  })}
-                                </tbody>
-                              </table>
+                                              .join(", "); // Join the formatted dates back into a single string
+                                          return (
+                                            <tr
+                                              className="table-row"
+                                              key={item.id}
+                                            >
+                                              <td>{index + 1}</td>
+                                              <td>{formattedLeaveDates}</td>
+                                              <td>{item.leave_reason}</td>
+                                              <td>{item.leave_status}</td>
+                                            </tr>
+                                          );
+                                        })}
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -301,126 +324,6 @@ const AttendanceLeave = () => {
                 </div>
               </div>
             </div>
-            {/* <div className="container-fluid">
-                    <div className="row mt-3">
-                      <div className="col-12">
-                        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                          <div class="container d-flex justify-content-center">
-                            <h2 className="">Attendance and Leave Details</h2>
-                          </div>
-                        </nav>
-                      </div>
-                      <div className="container-fluid">
-                        <div className="container-fluid">
-                          <div className="d-flex justify-content-between mb-2 mt-4">
-                            <form>
-                              <div className="d-flex justify-content-between">
-                                <div>
-                                  <input
-                                    type="date"
-                                    name=""
-                                    id=""
-                                    className="p-2 rounded"
-                                    onChange={(e) =>
-                                      setFromDate(e.target.value)
-                                    }
-                                  />
-                                </div>
-                                <div className="mx-2">To</div>
-                                <div>
-                                  <input
-                                    type="date"
-                                    name=""
-                                    id=""
-                                    className="p-2 rounded"
-                                    onChange={(e) => setToDate(e.target.value)}
-                                  />
-                                </div>
-                                <button
-                                  className="btn btn-warning mx-2"
-                                  type="submit"
-                                >
-                                  Download Report
-                                </button>
-                              </div>
-                            </form>
-                            <div>
-                              <ApplyLeave />
-                            </div>
-                          </div>
-                          <div class="table-responsive">
-                            <table class="table table-bordered"> 
-                              <thead className="table-head">
-                                <tr>
-                                  <th>EMP ID</th>
-                                  <th>Employee Name</th>
-                                  <th>Dessignation</th>
-
-                                  {daysInMonth.map((day) => (
-                                    <>
-                                      <th key={day}>
-                                        {day} {monthName}
-                                      </th>
-                                    </>
-                                  ))}
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {attendRepo.map((attendItem) => (
-                                  <tr
-                                    className="table-row"
-                                    key={attendItem.employee_ID}
-                                  >
-                                    <td>{attendItem.employee_ID}</td>
-                                    <td>{attendItem.emp_name}</td>
-                                    <td>{attendItem.employee_designation}</td>
-                                    {daysInMonth.map((day) => {
-                                      const attendanceForDay = attendRepo.find(
-                                        (repoItem) =>
-                                          repoItem.date.split("T")[0] ===
-                                            `${formattedDate.slice(
-                                              0,
-                                              7
-                                            )}-${day}` &&
-                                          repoItem.employee_ID ===
-                                            attendItem.employee_ID
-                                      );
-
-                                      return (
-                                        <td key={day}>
-                                          {attendanceForDay ? (
-                                            <span
-                                              className={
-                                                attendanceForDay.status ===
-                                                "approved"
-                                                  ? "attend-approve"
-                                                  : "attend-reject"
-                                              }
-                                            >
-                                              Login - $
-                                              {attendanceForDay.login
-                                                .split(".")[0]
-                                                .slice(0, 5)}{" "}
-                                              & Logout - $
-                                              {attendanceForDay.logout
-                                                .split(".")[0]
-                                                .slice(0, 5)}
-                                            </span>
-                                          ) : (
-                                            "-"
-                                          )}
-                                        </td>
-                                      );
-                                    })}
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div> */}
           </div>
         </div>
       </Container>
@@ -466,7 +369,7 @@ const Container = styled.div`
   }
 
   .all-appoint {
-    height: 30rem;
+    height: 20rem;
     overflow: auto;
   }
 

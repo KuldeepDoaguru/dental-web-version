@@ -8,6 +8,8 @@ import animationData from "../../animation/loading-effect.json";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
+import { Link } from "react-router-dom";
+import { FaPrescriptionBottleMedical } from "react-icons/fa6";
 
 const PrescriptionDetails = () => {
   const [loading, setLoading] = useState(false);
@@ -86,6 +88,33 @@ const PrescriptionDetails = () => {
   const goBack = () => {
     window.history.go(-1);
   };
+
+  const exportToExcel = (e) => {
+    e.preventDefault();
+    const csvRows = [];
+    const table = document.querySelector(".table");
+
+    if (!table) {
+      console.error("Table element not found");
+      return;
+    }
+
+    table.querySelectorAll("tr").forEach((row) => {
+      const rowData = [];
+      row.querySelectorAll("td, th").forEach((cell) => {
+        rowData.push(cell.innerText);
+      });
+      csvRows.push(rowData.join(","));
+    });
+
+    const csvContent = csvRows.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = "Prescription-report.csv";
+    link.click();
+    window.URL.revokeObjectURL(link.href);
+  };
   return (
     <>
       <Container>
@@ -97,7 +126,14 @@ const PrescriptionDetails = () => {
               <div className="col-lg-11 col-11 ps-0">
                 <div className="container-fluid mt-3">
                   <div className="container-fluid">
-                    <button className="btn btn-success" onClick={goBack}>
+                    <button
+                      className="btn btn-success shadow"
+                      style={{
+                        backgroundColor: "#0dcaf0",
+                        border: "#0dcaf0",
+                      }}
+                      onClick={goBack}
+                    >
                       <IoMdArrowRoundBack /> Back
                     </button>
                     <div className="row mt-3">
@@ -113,7 +149,7 @@ const PrescriptionDetails = () => {
                       <div className="container">
                         <div class="mt-4">
                           <div className="">
-                            <form>
+                            <form onSubmit={exportToExcel}>
                               <div className="row">
                                 <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                                   <div className="d-flex justify-content-start align-items-center">
@@ -122,7 +158,6 @@ const PrescriptionDetails = () => {
                                         type="date"
                                         name=""
                                         id=""
-                                        required
                                         className="p-2 rounded"
                                         onChange={(e) =>
                                           setFromDate(e.target.value)
@@ -135,7 +170,6 @@ const PrescriptionDetails = () => {
                                         type="date"
                                         name=""
                                         id=""
-                                        required
                                         className="p-2 rounded"
                                         onChange={(e) =>
                                           setToDate(e.target.value)
@@ -145,7 +179,11 @@ const PrescriptionDetails = () => {
                                     <div className="d-flex flex-column">
                                       {presData.length === 0 ? (
                                         <button
-                                          className="btn btn-warning mx-2"
+                                          className="btn btn-warning mx-2 shadow text-white"
+                                          style={{
+                                            backgroundColor: "#0dcaf0",
+                                            border: "#0dcaf0",
+                                          }}
                                           type="submit"
                                           disabled
                                         >
@@ -153,7 +191,11 @@ const PrescriptionDetails = () => {
                                         </button>
                                       ) : (
                                         <button
-                                          className="btn btn-warning mx-2"
+                                          className="btn btn-warning mx-2 shadow text-white"
+                                          style={{
+                                            backgroundColor: "#0dcaf0",
+                                            border: "#0dcaf0",
+                                          }}
                                           type="submit"
                                           disabled={error}
                                         >
@@ -262,7 +304,15 @@ const PrescriptionDetails = () => {
                                                 {item.appoint_id}
                                               </td>
                                               <td className="table-small">
-                                                {item.patient_uhid}
+                                                <Link
+                                                  style={{
+                                                    color: "#0dcaf0",
+                                                    textDecoration: "none",
+                                                  }}
+                                                  to={`/Patient-profile/${item.patient_uhid}`}
+                                                >
+                                                  {item.patient_uhid}
+                                                </Link>
                                               </td>
                                               <td>{item.patient_name}</td>
                                               <td className="table-small">
@@ -287,9 +337,22 @@ const PrescriptionDetails = () => {
                                               <td>{item.dental_treatment}</td>
                                               <td>{item.sitting_number}</td>
                                               <td>
-                                                <button className="btn btn-success">
-                                                  View Prescription
-                                                </button>
+                                                <Link
+                                                  to={`/ViewTreatPrescriptionlist/${item.tp_id}/${item.appoint_id}/${item.sitting_number}/${item.dental_treatment}`}
+                                                >
+                                                  {" "}
+                                                  <button
+                                                    className="btn btn-success shadow"
+                                                    style={{
+                                                      backgroundColor:
+                                                        "#0dcaf0",
+                                                      border: "#0dcaf0",
+                                                    }}
+                                                  >
+                                                    <FaPrescriptionBottleMedical />{" "}
+                                                    View Prescription{" "}
+                                                  </button>
+                                                </Link>
                                               </td>
                                             </tr>
                                           </>
@@ -330,6 +393,11 @@ const Container = styled.div`
   th {
     background-color: #0dcaf0;
     color: white;
+    white-space: nowrap;
+  }
+
+  td {
+    white-space: nowrap;
   }
   .sticky {
     position: sticky;

@@ -848,7 +848,11 @@ const TreatSuggest = () => {
                         <td>{item.test}</td>
                         <td>
                           <button
-                            className="btn btn-outline-danger"
+                            className="btn btn-outline-danger text-white shadow"
+                            style={{
+                              backgroundColor: "#0dcaf0",
+                              border: "#0dcaf0",
+                            }}
                             onClick={() => deleteSuggestedLabData(item.testid)}
                           >
                             Delete

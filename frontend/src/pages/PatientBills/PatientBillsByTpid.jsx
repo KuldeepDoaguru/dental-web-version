@@ -317,6 +317,19 @@ const PatientBillsByTpid = () => {
           <hr />
         </div> */}
         <div className="container-fluid">
+          <div className="d-flex justify-content-end">
+            <button
+              className="btn btn-info no-print mt-2 mb-2 text-white shadow"
+              style={{
+                backgroundColor: "#0dcaf0",
+                border: "#0dcaf0",
+              }}
+              onClick={handleButton}
+            >
+              Print
+            </button>
+          </div>
+
           <div className="row">
             <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div className="clinic-logo">
@@ -443,7 +456,7 @@ const PatientBillsByTpid = () => {
             <table className="table table-bordered border">
               <thead>
                 <tr>
-                  <th>Sitting Number</th>
+                  <th>S. No.</th>
                   <th>Treatment</th>
                   <th>Teeth</th>
                   <th>Qty</th>
@@ -627,17 +640,21 @@ const PatientBillsByTpid = () => {
         {/* print button */}
         <div className="container-fluid">
           <div className="d-flex justify-content-center align-items-center">
-            <button
+            {/* <button
               className="btn btn-info no-print mt-2 mb-2"
               onClick={handleButton}
             >
               Print
-            </button>
+            </button> */}
             {billDetails[0]?.payment_status === "paid" ? (
               ""
             ) : (
               <button
-                className="btn btn-success ms-2 no-print mt-2 mb-2"
+                className="btn btn-success ms-2 no-print mt-2 mb-2 text-white shadow"
+                style={{
+                  backgroundColor: "#0dcaf0",
+                  border: "#0dcaf0",
+                }}
                 onClick={() => navigate(`/patient-due-payment-print/${tpid}`)}
               >
                 Go to Payment page
@@ -649,7 +666,11 @@ const PatientBillsByTpid = () => {
             ) : (
               <>
                 <button
-                  className="btn btn-info no-print mx-3 mt-2 mb-2"
+                  className="btn btn-info no-print mx-3 mt-2 mb-2 text-white shadow"
+                  style={{
+                    backgroundColor: "#0dcaf0",
+                    border: "#0dcaf0",
+                  }}
                   onClick={() => navigate("/doctor-dashboard")}
                 >
                   Appointment Dashboard
@@ -779,4 +800,8 @@ const Wrapper = styled.div`
   .text-termslong {
     height: 2rem;
   }
+  /* th,
+  td {
+    white-space: nowrap;
+  } */
 `;

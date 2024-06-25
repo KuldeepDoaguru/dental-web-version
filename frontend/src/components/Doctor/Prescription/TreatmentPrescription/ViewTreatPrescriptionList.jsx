@@ -7,7 +7,7 @@ import { setUser } from "../../../../redux/user/userSlice";
 import cogoToast from "cogo-toast";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-const ViewTreatPrescription = () => {
+const ViewTreatPrescriptionList = () => {
   const { appoint_id, tpid, sitting, treatment } = useParams();
   console.log(appoint_id);
   const navigate = useNavigate();
@@ -130,7 +130,7 @@ const ViewTreatPrescription = () => {
     }
   };
 
-  console.log(getTreatData[0]?.date);
+  console.log(getTreatData);
   useEffect(() => {
     getTreatDetail();
   }, []);
@@ -197,8 +197,6 @@ const ViewTreatPrescription = () => {
     navigate(`/TreatmentDashBoard/${tpid}/${appoint_id}`);
   };
 
-  console.log(getExaminData);
-
   const goBack = () => {
     window.history.go(-1);
   };
@@ -229,6 +227,7 @@ const ViewTreatPrescription = () => {
               Print
             </button>
           </div>
+
           <div className="row">
             <div className="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
               <div className="clinic-logo">
@@ -452,27 +451,17 @@ const ViewTreatPrescription = () => {
               </div>
               <div className="text-center">
                 {/* <button
-                  className="btn btn-success no-print mx-3 mb-3 mt-2 no-print"
-                  onClick={handleButton}
-                >
-                  Print
-                </button> */}
-                {/* <button
                   className="btn btn-info no-print mx-3 mb-3 mt-2"
                   onClick={() => navigate("/doctor-dashboard")}
                 >
                   Appointment Dashboard
                 </button> */}
-                <button
-                  className="btn btn-info no-print mx-3 mb-3 mt-2 text-white shadow"
-                  style={{
-                    backgroundColor: "#0dcaf0",
-                    border: "#0dcaf0",
-                  }}
+                {/* <button
+                  className="btn btn-info no-print mx-3 mb-3 mt-2"
                   onClick={handleTreatNavigattion}
                 >
                   Treatment Dashboard
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
@@ -482,7 +471,7 @@ const ViewTreatPrescription = () => {
   );
 };
 
-export default ViewTreatPrescription;
+export default ViewTreatPrescriptionList;
 const Wrapper = styled.div`
   overflow: hidden;
   background-color: white;

@@ -260,6 +260,7 @@ const NewTreatmentTable = () => {
           <table class="table table-bordered table-striped border">
             <thead>
               <tr>
+                <th>Date</th>
                 <th>Sitting Number</th>
                 <th>Treatment</th>
                 <th>Teeth No.</th>
@@ -275,6 +276,7 @@ const NewTreatmentTable = () => {
             <tbody>
               {treatmentData?.map((item, index) => (
                 <tr key={index}>
+                  <td>{item.date?.split(" ")[0]}</td>
                   <td>{item.sitting_number}</td>
                   <td>{item.dental_treatment}</td>
                   <td>{item.no_teeth}</td>

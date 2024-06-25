@@ -573,7 +573,14 @@ const BookSittingAppointment = ({
                     value={data.notes}
                   />
                 </div>
-                <button type="submit" class="btn btn-primary">
+                <button
+                  type="submit"
+                  class="btn btn-primary text-white shadow"
+                  style={{
+                    backgroundColor: "#0dcaf0",
+                    border: "#0dcaf0",
+                  }}
+                >
                   Submit
                 </button>
               </form>

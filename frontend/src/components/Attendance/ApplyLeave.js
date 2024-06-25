@@ -149,7 +149,16 @@ const ApplyLeave = () => {
 
   return (
     <Wrapper className="container">
-      <Button variant="info" onClick={handleShow} id="b1">
+      <Button
+        variant="info"
+        className="shadow text-white"
+        style={{
+          backgroundColor: "#0dcaf0",
+          border: "#0dcaf0",
+        }}
+        onClick={handleShow}
+        id="b1"
+      >
         Apply Leave
       </Button>
 

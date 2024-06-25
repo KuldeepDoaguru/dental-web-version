@@ -48,10 +48,10 @@ const Timeline = () => {
             <table className="table table-bordered table-striped">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Event Time</th>
-                  <th>Event Type</th>
-                  <th>Event Detail</th>
+                  <th className="sticky">Date</th>
+                  <th className="sticky">Event Time</th>
+                  <th className="sticky">Event Type</th>
+                  <th className="sticky">Event Detail</th>
                 </tr>
               </thead>
               <tbody>
@@ -79,9 +79,10 @@ const Timeline = () => {
 export default Timeline;
 const Wrapper = styled.div`
   .table {
+    max-height: 30rem;
     @media screen and (max-width: 768px) {
-      width: 20rem;
-      margin-left: -0.2rem;
+      /* width: 20rem;
+      margin-left: -0.2rem; */
     }
   }
 
@@ -90,5 +91,27 @@ const Wrapper = styled.div`
     @media screen and (max-width: 900px) {
       width: 100%;
     }
+  }
+
+  .table-responsive {
+    height: 30rem;
+  }
+
+  th {
+    background-color: #000;
+    color: white;
+    position: sticky;
+    white-space: nowrap;
+  }
+  td {
+    white-space: nowrap;
+  }
+
+  .sticky {
+    position: sticky;
+    top: 0;
+    background-color: #000;
+    color: white;
+    z-index: 1;
   }
 `;

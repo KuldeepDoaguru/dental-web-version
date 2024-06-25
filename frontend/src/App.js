@@ -34,6 +34,7 @@ import { clearUser, toggleTableRefresh } from "./redux/user/userSlice";
 import animationData from "./animation/animation-four.json";
 import Lottie from "lottie-react";
 import PrescriptionDetails from "./pages/DoctorPage/PrescriptionDetails";
+import ViewTreatPrescriptionList from "./components/Doctor/Prescription/TreatmentPrescription/ViewTreatPrescriptionList";
 
 function App() {
   const navigate = useNavigate();
@@ -512,6 +513,29 @@ function App() {
               <AttendanceLeave />
             ) : (
               <ViewTreatPrescription />
+            )
+          }
+        />
+
+        <Route
+          path="/ViewTreatPrescriptionlist/:tpid/:appoint_id/:sitting/:treatment"
+          element={
+            user === null ? (
+              <DoctorLogin />
+            ) : loading ? (
+              <>
+                {" "}
+                <Lottie
+                  options={defaultOptions}
+                  height={300}
+                  width={400}
+                  style={{ background: "transparent" }}
+                ></Lottie>
+              </>
+            ) : todayAttendance.length === 0 ? (
+              <AttendanceLeave />
+            ) : (
+              <ViewTreatPrescriptionList />
             )
           }
         />

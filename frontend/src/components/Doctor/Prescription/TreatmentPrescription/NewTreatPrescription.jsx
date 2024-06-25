@@ -565,6 +565,7 @@ const NewTreatPrescription = () => {
             >
               <thead>
                 <tr>
+                  <th>Date</th>
                   <th>Seleted Teeth</th>
                   <th>disease</th>
                   <th>Chief Complain</th>
@@ -576,6 +577,7 @@ const NewTreatPrescription = () => {
                 {getExaminData?.map((item) => (
                   <>
                     <tr>
+                      <td>{item.date?.split(" ")[0]}</td>
                       <td>{item.selected_teeth}</td>
                       <td>{item.disease}</td>
                       <td>{item.chief_complain}</td>
@@ -632,6 +634,7 @@ const NewTreatPrescription = () => {
             >
               <thead>
                 <tr>
+                  <th>Date</th>
                   <th>Sitting Number</th>
                   <th>Dental Treatment</th>
                   <th>Teeth</th>
@@ -649,6 +652,7 @@ const NewTreatPrescription = () => {
                 {getTreatSug?.map((item) => (
                   <>
                     <tr>
+                      <td>{item.date?.split(" ")[0]}</td>
                       <td>{item.sitting_number}</td>
                       <td>{item.dental_treatment}</td>
                       <td>{item.no_teeth}</td>
@@ -844,7 +848,11 @@ const NewTreatPrescription = () => {
                 <div className="col-xxl-2 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-6">
                   <div className="d-flex justify-content-center align-items-center h-100">
                     <button
-                      className="btn btn-secondary fs-5 mt-4"
+                      className="btn btn-secondary fs-5 mt-4 text-white shadow"
+                      style={{
+                        backgroundColor: "#0dcaf0",
+                        border: "#0dcaf0",
+                      }}
                       type="submit"
                       disabled={loading}
                     >
@@ -867,6 +875,7 @@ const NewTreatPrescription = () => {
             <table class="table">
               <thead className="table-success rounded">
                 <tr>
+                  <th>Date</th>
                   <th scope="col">Medicine Name</th>
                   <th scope="col">Dosage</th>
                   <th scope="col">Frequency</th>
@@ -878,6 +887,7 @@ const NewTreatPrescription = () => {
               <tbody>
                 {getTreatMedicine?.map((item, index) => (
                   <tr key={index}>
+                    <td>{item.date?.split(" ")[0]}</td>
                     <td>{item.medicine_name}</td>
                     <td>{item.dosage}</td>
                     <td>{item.frequency}</td>
@@ -885,7 +895,11 @@ const NewTreatPrescription = () => {
                     <td>{item.note}</td>
                     <td>
                       <button
-                        className="btn btn-danger"
+                        className="btn btn-danger text-white shadow"
+                        style={{
+                          backgroundColor: "#0dcaf0",
+                          border: "#0dcaf0",
+                        }}
                         onClick={() => handledelete(item.id)}
                       >
                         <FaPrescriptionBottleMedical size={22} />
@@ -926,5 +940,10 @@ const Wrapper = styled.div`
   }
   th {
     background-color: #0dcaf0;
+    white-space: nowrap;
+    color: white;
+  }
+  td {
+    white-space: nowrap;
   }
 `;

@@ -399,7 +399,7 @@ const availableEveningSlots = doctorTimeSlots?.eveningSlots.filter(slot => {
         <td>
          
          <div className="d-flex">
-        <select className="form-select">
+        <select className="form-select" style={{ cursor: "pointer"}}>
         <option value="Morning">Morning</option>
           {/* Display available time slots for the current doctor */}
           {availableMorningSlots && availableMorningSlots?.map((slot, i) => (
@@ -409,7 +409,7 @@ const availableEveningSlots = doctorTimeSlots?.eveningSlots.filter(slot => {
           
         
         
-        <select className="form-select">
+        <select className="form-select" style={{cursor: "pointer"}}>
           {/* Display available time slots for the current doctor */}
           <option value="Morning">Evening</option>
           {availableEveningSlots && availableEveningSlots?.map((slot, i) => (

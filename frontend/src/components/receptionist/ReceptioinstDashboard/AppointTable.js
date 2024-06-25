@@ -119,8 +119,10 @@ console.log(appointmentsData);
     return () => clearInterval(intervalId);
   }, [dispatch]);
 
+   
 
-
+ // previous code 1
+ 
   // useEffect(() => {
   //   const sortedAppointments = appointmentsData.sort((a, b) => {
   //     return a.appointment_dateTime.localeCompare(b.appointment_dateTime);
@@ -133,6 +135,19 @@ console.log(appointmentsData);
   //   setSelectedDateAppData(filteredResults)
   //   handleSearch({ target: { value: searchTerm } });
   // }, [appointmentsData, selectedDate])
+
+
+ // previous code 2
+
+  // useEffect(() => {
+  //   const sortedAppointments = appointmentsData.sort((a, b) => a.appointment_dateTime.localeCompare(b.appointment_dateTime));
+  //   const filteredResults = sortedAppointments.filter((row) =>
+  //     row.appointment_dateTime.includes(selectedDate) &&
+  //     (!selectedDoctor || row.assigned_doctor_id === selectedDoctor)
+  //   );
+  //   setSelectedDateAppData(filteredResults)
+  //   handleSearch({ target: { value: searchTerm } });
+  // }, [appointmentsData, selectedDate, selectedDoctor]);
   useEffect(() => {
     const sortedAppointments = appointmentsData.sort((a, b) => a.appointment_dateTime.localeCompare(b.appointment_dateTime));
     const filteredResults = sortedAppointments.filter((row) =>
@@ -140,8 +155,28 @@ console.log(appointmentsData);
       (!selectedDoctor || row.assigned_doctor_id === selectedDoctor)
     );
     setSelectedDateAppData(filteredResults)
+    
     handleSearch({ target: { value: searchTerm } });
-  }, [appointmentsData, selectedDate, selectedDoctor]);
+  }, [ selectedDate, selectedDoctor]);
+  useEffect(() => {
+    const sortedAppointments = appointmentsData.sort((a, b) => a.appointment_dateTime.localeCompare(b.appointment_dateTime));
+    const filteredResults = sortedAppointments.filter((row) =>
+      row.appointment_dateTime.includes(selectedDate) &&
+      (!selectedDoctor || row.assigned_doctor_id === selectedDoctor)
+    );
+    setSelectedDateAppData(filteredResults)
+
+    const filteredResult = appointmentsData.filter((row) =>
+      (row.patient_name.toLowerCase().includes(searchTerm.trim()) || row.mobileno.includes(searchTerm.trim()) || row.uhid.toLowerCase().includes(searchTerm.trim()) || row.appointment_status.toLowerCase().includes(searchTerm.trim()) )
+      && row.appointment_dateTime.includes(selectedDate) &&
+      (!selectedDoctor || row.assigned_doctor_id === selectedDoctor)
+    );
+
+    setFilteredData(filteredResult);
+
+    
+    
+  }, [ appointmentsData]);
 
   const getAppointments = async () => {
     
@@ -155,6 +190,7 @@ console.log(appointmentsData);
       });
       setAppointmentData(response?.data?.data)
       setLoadingEffect(false)
+      // paginate(currentPage)
       
     }
     catch (error) {
@@ -213,7 +249,6 @@ console.log(appointmentsData);
       setLoading(false);
       getAppointments();
       dispatch(toggleTableRefresh());
-     
       timelineDataForCheckIn(patient_uhid);
       cogoToast.success(`Patient Successfully ${newStatus}`)
       
@@ -294,7 +329,8 @@ console.log(appointmentsData);
   const handleSearch = (event) => {
     const searchTerm = event.target.value.toLowerCase();
     setSearchTerm(searchTerm);
-    setCurrentPage(1); // Reset to the first page when searching
+    setCurrentPage(1);
+    
 
     const filteredResults = appointmentsData.filter((row) =>
       (row.patient_name.toLowerCase().includes(searchTerm.trim()) || row.mobileno.includes(searchTerm.trim()) || row.uhid.toLowerCase().includes(searchTerm.trim()) || row.appointment_status.toLowerCase().includes(searchTerm.trim()) )
@@ -419,7 +455,7 @@ console.log(appointmentsData);
             </div>
 
             <div className='mt-sm-2 mt-lg-0'>
-            <select className="form-select text-capitalize" onChange={(e) => setSelectedDoctor(e.target.value)} id='form2'>
+            <select className="form-select text-capitalize" onChange={(e) => setSelectedDoctor(e.target.value)} id='form2' style={{ cursor: "pointer"}}>
                   <option value="">All Doctors</option>
       {doctors?.map((doctor) => (
        
@@ -443,7 +479,7 @@ console.log(appointmentsData);
                 as="select"
                 value={rowsPerPage}
                 className="m-2"
-                style={{ width: "auto" }}
+                style={{ width: "auto" ,cursor: "pointer"}}
                 onChange={handleRowsPerPageChange}
               >
 
@@ -515,7 +551,10 @@ console.log(appointmentsData);
                     <td><Link to={`/patient_profile/${patient.uhid}`}>{patient.uhid}</Link></td>
                     <td className="text-capitalize">{patient.patient_name}</td>
                     <td>{patient.mobileno}</td>
-                    <td>{patient?.appointment_dateTime ? moment(patient?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('hh:mm A') : ""}</td>
+                    <td>{selectedDate ? moment(patient?.appointment_dateTime, 'YYYY-MM-DDTHH:mm').format('hh:mm A') : moment(
+                            patient?.appointment_dateTime,
+                            "YYYY-MM-DDTHH:mm"
+                          ).format("DD/MM/YYYY hh:mm A")}</td>
                     <td>{patient.treatment_provided
                     }</td>
                     <td className="text-capitalize"> {"Dr. "}{patient.assigned_doctor_name

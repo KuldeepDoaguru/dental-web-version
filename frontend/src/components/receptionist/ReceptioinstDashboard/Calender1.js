@@ -292,7 +292,7 @@ const timeSlotsColumns = divideIntoColumns(timeSlots, columns);
     <div className=' mx-auto
      mt-1 mb-1 d-flex justify-content-around'>
       <div className='w-50'><span className='backIcon' onClick={()=>{setIsDisplay(false)}}><IoArrowBackCircle /></span></div>
-   <div className='w-50' > <select className="form-select text-capitalize" onChange={(e) => setSelectedDoctor(e.target.value)} >
+   <div className='w-50' > <select className="form-select text-capitalize" onChange={(e) => setSelectedDoctor(e.target.value)} style={{ cursor: "pointer"}}>
       {doctors?.map((doctor) => (
         <option value={doctor.employee_ID} className="text-capitalize">{"Dr. "}{doctor.employee_name}</option>
       ))} 

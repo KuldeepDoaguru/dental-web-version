@@ -112,7 +112,8 @@ const convertToAMPM = (time) => {
                         <div className="col-lg-4">
                         <label className="text">Employee Role</label>
                             <div className="shadow-none p-1 bg-light rounded">
-                                <p className="m-0">{currentUser?.employee_role}</p>
+                                <p className="m-0 text-wrap">{currentUser?.employee_role}</p>
+
                             </div>
                         </div>
                         

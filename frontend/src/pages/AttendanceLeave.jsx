@@ -156,17 +156,24 @@ const AttendanceLeave = () => {
   return (
     <>
       <Container>
-        <Header />
+        <div className="header">
+          <Header />
+        </div>
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-nowrap ">
-              <div className="col-lg-1 col-1 p-0">
+              <div className="col-lg-1 col-1 p-0" id="hd">
                 <Sider />
               </div>
-              <div className="col-lg-11 col-11 ps-0">
-                <div className="container-fluid mt-3 mx-md-4">
-                  <div className="">
-                    <BranchDetails />
+              <div
+                className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10"
+                id="set"
+              >
+                <div className="container-fluidr">
+                  <div className="row flex-nowrap ">
+                    <div>
+                      <BranchDetails />
+                    </div>
                   </div>
                 </div>
 
@@ -184,18 +191,19 @@ const AttendanceLeave = () => {
 
                   <div className="container-fluid">
                     <div className="row mt-3">
-                      <div className="col-12 col-lg-11 col-md-11 mx-lg-4 mx-md-5">
-                        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                      <div className="col-12 col-lg-11 col-md-11 mx-lg-4">
+                        <nav class="navbar navbar-expand-lg bg-body-tertiary navhead">
                           <div class="container d-flex justify-content-center">
                             <h2 className="">Attendance and Leave Details</h2>
                           </div>
-                          <div className="">
+                          <div className="navheadCon">
                             <ApplyLeave />
                           </div>
                         </nav>
                       </div>
-                      <div className="container-fluid">
-                        <div className="container-fluid mx-md-4">
+                      <div className="container">
+                        {/* <div className="container-fluid mx-md-4"> */}
+                        <div className="main">
                           <div className="d-flex justify-content-between mb-2 mt-4"></div>
 
                           <div className="mt-5">
@@ -353,5 +361,83 @@ const Container = styled.div`
 
   .attend-approve {
     color: green;
+  }
+
+  /* .navhead {
+    margin-left: 7.5rem;
+    @media screen and (max-width: 768px) {
+      margin-left: 10rem;
+    }
+    @media screen and (min-width: 769px) and (max-width: 1024px) {
+      margin-left: 14rem;
+    }
+  }
+  .navheadCon {
+    @media screen and (max-width: 768px) {
+      margin-left: 10rem;
+    }
+    @media screen and (min-width: 769px) and (max-width: 1024px) {
+      margin-left: 14rem;
+    }
+  } */
+  .branch {
+    @media screen and (max-width: 768px) {
+      margin-left: 5rem;
+    }
+    @media screen and (min-width: 769px) and (max-width: 1024px) {
+      margin-left: 5rem;
+    }
+    @media screen and (min-width: 1025px) and (max-width: 1280px) {
+      margin-left: 5rem;
+    }
+    @media screen and (min-width: 1281px) and (max-width: 1500px) {
+      margin-left: 3rem;
+    }
+  }
+
+  #set {
+    margin-left: -4.5rem;
+    padding-left: 150px; /* Width of sidebar */
+    padding-top: 90px; /* Height of header */
+    flex-grow: 1;
+    overflow-y: auto;
+
+    @media screen and (max-width: 768px) {
+      margin-left: -2rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1020px) {
+      margin-left: -1rem;
+    }
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+      margin-left: -1.1rem;
+    }
+    @media screen and (min-width: 1500px) and (max-width: 1700px) {
+      margin-left: 0.1rem;
+    }
+    @media screen and (min-width: 1700px) and (max-width: 2000px) {
+      margin-left: 0.1rem;
+    }
+
+    @media screen and (min-width: 2000px) and (max-width: 2500px) {
+      margin-left: 0rem;
+    }
+  }
+
+  #hd {
+    padding-top: 60px; /* Height of header */
+    min-height: 100vh;
+    position: fixed;
+
+    @media screen and (max-width: 768px) {
+      height: 68rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1020px) {
+      height: 58rem;
+    }
+  }
+  .header {
+    position: fixed;
+    min-width: 100%;
+    z-index: 100;
   }
 `;

@@ -298,15 +298,23 @@ const SecurityAmount = () => {
   return (
     <>
       <Container>
-        <Header />
+        <div className="header">
+          <Header />
+        </div>
         <div className="main">
           <div className="container-fluid">
             <div className="row flex-nowrap ">
-              <div className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 p-0">
+              <div
+                className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 p-0"
+                id="hd"
+              >
                 <Sider />
               </div>
 
-              <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10">
+              <div
+                className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10"
+                id="set"
+              >
                 <BranchDetails />
                 <div className="container">
                   <h2 className="text-center mt-5">Security Amount Details</h2>
@@ -821,220 +829,50 @@ const Container = styled.div`
   .nodata {
     white-space: nowrap;
   }
+
+  #set {
+    margin-left: -4.5rem;
+    padding-left: 150px; /* Width of sidebar */
+    padding-top: 90px; /* Height of header */
+    flex-grow: 1;
+    overflow-y: auto;
+
+    @media screen and (max-width: 768px) {
+      margin-left: -2rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1020px) {
+      margin-left: -1rem;
+    }
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+      margin-left: -1.5rem;
+    }
+    @media screen and (min-width: 1500px) and (max-width: 1700px) {
+      margin-left: 0.1rem;
+    }
+    @media screen and (min-width: 1700px) and (max-width: 2000px) {
+      margin-left: 0.1rem;
+    }
+
+    @media screen and (min-width: 2000px) and (max-width: 2500px) {
+      margin-left: 0rem;
+    }
+  }
+
+  #hd {
+    padding-top: 60px; /* Height of header */
+    min-height: 100vh;
+    position: fixed;
+
+    @media screen and (max-width: 768px) {
+      height: 68rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1020px) {
+      height: 58rem;
+    }
+  }
+  .header {
+    position: fixed;
+    min-width: 100%;
+    z-index: 100;
+  }
 `;
-
-// const getTotaloutstanding = async (id) => {
-//   console.log(id);
-//   try {
-//     const { data } = await axios.get(
-//       `https://dentalguruaccountant.doaguru.com/api/v1/accountant/getSecurityAmountDataBySID/${id}`
-//     );
-//     console.log(data);
-//     setOutStanding(data);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// console.log(outStanding);
-// const filterForOut = outStanding?.filter((item) => {
-//   return item.payment_status !== "success";
-// });
-
-// console.log(filterForOut);
-
-// const totalPrice = () => {
-//   try {
-//     let total = 0;
-//     filterForOut.forEach((item) => {
-//       total = total + parseFloat(item.total_amount);
-//     });
-//     console.log(total);
-//     return total;
-//   } catch (error) {
-//     console.log(error);
-//     return 0;
-//   }
-// };
-
-// const totalValue = totalPrice();
-// console.log(totalValue);
-
-// const makeRefData = () => {
-//   if (outStanding.length === 0) {
-//     return filterForSecAmountDef[0]?.amount;
-//   } else {
-//     return outStanding[0]?.amount - totalValue;
-//   }
-// };
-
-// const amtRefund = makeRefData();
-// console.log(amtRefund);
-// useEffect(() => {
-//   setRefAmount(amtRefund);
-// }, [amtRefund]);
-
-//  {/* <form action="" className="" onSubmit={insertSecurityAmount}>
-//                     <div className="container-fluid">
-//                       <div className="row">
-//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-//                           <div class="input-group mb-3">
-//                             <label
-//                               for="exampleFormControlInput1"
-//                               class="form-label"
-//                             >
-//                               Date
-//                             </label>
-//                             <input
-//                               type="date"
-//                               class="p-1 w-100 rounded"
-//                               placeholder="appointment ID"
-//                               name="date"
-//                               required
-//                               value={addSecurityAmount.date}
-//                               onChange={handleInput}
-//                             />
-//                           </div>
-//                         </div>
-//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-//                           <div class="input-group mb-3">
-//                             <label
-//                               for="exampleFormControlInput1"
-//                               class="form-label"
-//                             >
-//                               Appointment ID
-//                             </label>
-//                             <input
-//                               type="text"
-//                               class="p-1 w-100 rounded"
-//                               placeholder="appointment ID"
-//                               name="appointment_id"
-//                               value={addSecurityAmount.appointment_id}
-//                               onChange={handleInput}
-//                             />
-//                           </div>
-//                         </div>
-//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-//                           <div class="input-group mb-3">
-//                             <label
-//                               for="exampleFormControlInput1"
-//                               class="form-label rounded"
-//                             >
-//                               UHID
-//                             </label>
-//                             <input
-//                               type="text"
-//                               class="p-1 w-100 rounded"
-//                               placeholder="UHID"
-//                               name="uhid"
-//                               value={addSecurityAmount.uhid}
-//                               onChange={handleInput}
-//                             />
-//                           </div>
-//                         </div>
-//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-//                           <div class="input-group mb-3">
-//                             <label
-//                               for="exampleFormControlInput1"
-//                               class="form-label"
-//                             >
-//                               Patient Name
-//                             </label>
-//                             <input
-//                               type="text"
-//                               class="p-1 w-100 rounded"
-//                               placeholder="Patient Name"
-//                               name="patient_name"
-//                               value={addSecurityAmount.patient_name}
-//                               onChange={handleInput}
-//                             />
-//                           </div>
-//                         </div>
-//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-//                           <div class="input-group mb-3">
-//                             <label
-//                               for="exampleFormControlInput1"
-//                               class="form-label"
-//                             >
-//                               Patient Mobile
-//                             </label>
-//                             <input
-//                               type="text"
-//                               class="p-1 w-100 rounded"
-//                               placeholder="Patient Number"
-//                               name="patient_number"
-//                               value={addSecurityAmount.patient_number}
-//                               onChange={handleInput}
-//                             />
-//                           </div>
-//                         </div>
-//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-//                           <div class="input-group mb-3">
-//                             <label
-//                               for="exampleFormControlInput1"
-//                               class="form-label"
-//                             >
-//                               Assigned Doctor
-//                             </label>
-//                             <input
-//                               type="text"
-//                               class="p-1 w-100 rounded"
-//                               placeholder="Patient Name"
-//                               name="assigned_doctor"
-//                               value={addSecurityAmount.assigned_doctor}
-//                               onChange={handleInput}
-//                             />
-//                           </div>
-//                         </div>
-
-//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-//                           <div class="input-group mb-3">
-//                             <label
-//                               for="exampleFormControlInput1"
-//                               class="form-label"
-//                             >
-//                               Security Amount
-//                             </label>
-//                             <input
-//                               type="number"
-//                               class="p-1 w-100 rounded"
-//                               placeholder="Security Amount"
-//                               name="amount"
-//                               value={addSecurityAmount.amount}
-//                               onChange={handleInput}
-//                             />
-//                           </div>
-//                         </div>
-//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-//                           <div class="input-group mb-3">
-//                             <label
-//                               for="exampleFormControlInput1"
-//                               class="form-label"
-//                             >
-//                               Payment Status
-//                             </label>
-
-//                             <select
-//                               name="payment_status"
-//                               onChange={handleInput}
-//                               id=""
-//                               class="p-1 w-100 rounded"
-//                             >
-//                               <option value="">select-status</option>
-//                               <option value="pending">Pending</option>
-//                               <option value="success">Success</option>
-//                             </select>
-//                           </div>
-//                         </div>
-//                         <div className="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-12 col-12 ps-0">
-//                           <button
-//                             className="btn btn-info btnbox fw-bold shadow p-1 w-100 rounded"
-//                             type="submit"
-//                           >
-//                             Submit
-//                           </button>
-//                         </div>
-//                       </div>
-//                     </div>
-//                   </form>
-//                   <hr /> */}

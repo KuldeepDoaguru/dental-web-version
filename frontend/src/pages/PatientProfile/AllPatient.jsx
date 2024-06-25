@@ -91,11 +91,17 @@ function AllPatient() {
       </div>
 
       <div className="row flex-nowrap ">
-        <div className="col-lg-1 col-1" id="hd">
+        <div
+          className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 p-0"
+          id="hd"
+        >
           <Sider />
         </div>
 
-        <div className="col-lg-11 mt-2" id="set">
+        <div
+          className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10"
+          id="set"
+        >
           <div className="text-center">
             <h3>All Patients</h3>
           </div>
@@ -292,6 +298,11 @@ const Wrapper = styled.div`
       height: 58rem;
     }
   }
+  .header {
+    position: fixed;
+    min-width: 100%;
+    z-index: 100;
+  }
   #tableres {
     @media screen and (max-width: 768px) {
       width: auto;
@@ -321,11 +332,6 @@ const Wrapper = styled.div`
     background-color: transparent;
   }
 
-  .header {
-    position: fixed;
-    min-width: 100%;
-    z-index: 100;
-  }
   .table-responsive {
     position: relative;
     min-height: 10rem;

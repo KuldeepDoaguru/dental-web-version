@@ -73,6 +73,9 @@ import Compleated from "./components/LabReports/Compleated";
 import ErrorPage from "./pages/Error-Page/ErrorPage";
 import AllPatient from "./pages/PatientProfile/AllPatient";
 import PatientProfile from "./pages/PatientProfile/PatientProfile";
+import DashBoardDemo from "./pages/accountant/DashBoardDemo";
+import OpdRefund from "./pages/AllReport/OpdRefund";
+import SecuirtyRefund from "./pages/AllReport/SecuirtyRefund";
 
 function App() {
   const user = useSelector((state) => state.user);
@@ -587,6 +590,24 @@ function App() {
         />
 
         <Route
+          path="/opd-refund"
+          element={
+            user.employee_name === null ? <UniversalLogin /> : <OpdRefund />
+          }
+        />
+
+        <Route
+          path="/secuirty-refund"
+          element={
+            user.employee_name === null ? (
+              <UniversalLogin />
+            ) : (
+              <SecuirtyRefund />
+            )
+          }
+        />
+
+        <Route
           path="/view-clinic-details"
           element={
             user.employee_name === null ? <UniversalLogin /> : <BranchInfo />
@@ -614,6 +635,15 @@ function App() {
         />
 
         {/* Patient Profile Routes End Here */}
+
+        {/* Dashboard Demo*/}
+        <Route
+          path="/demo-dash"
+          element={
+            user.employee_name === null ? <UniversalLogin /> : <DashBoardDemo />
+          }
+        />
+        {/* Dashboard Demo*/}
 
         <Route path="*" element={<ErrorPage />} />
         {/*Acountend  routes end  */}

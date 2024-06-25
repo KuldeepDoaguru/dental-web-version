@@ -61,10 +61,16 @@ const BranchInfo = () => {
         </div>
 
         <div className="row mrgnzero">
-          <div className="col-lg-1 col-md-1 col-1" id="sider">
+          <div
+            className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 p-0"
+            id="hd"
+          >
             <Sider />
           </div>
-          <div className="col-lg-11 col-md-11 col-11 mx-1" id="set">
+          <div
+            className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10"
+            id="set"
+          >
             <div className="container-fluid  shadow p-3 mt-5 bg-body rounded">
               <div className="row">
                 <div className="col-lg-12 col-12">
@@ -234,15 +240,46 @@ const BranchInfo = () => {
 export default BranchInfo;
 
 const Wrapper = styled.div`
+  overflow: hidden;
   img {
   }
-  .mrgnzero {
+  /* .mrgnzero {
     margin-right: 0rem;
+  } */
+  #set {
+    margin-left: -4rem;
+    padding-left: 140px; /* Width of sidebar */
+    padding-right: 26px;
+    padding-top: 90px; /* Height of header */
+    flex-grow: 1;
+    overflow-y: auto;
+
+    @media screen and (max-width: 768px) {
+      margin-left: -2rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1020px) {
+      margin-left: -1rem;
+    }
+    @media screen and (min-width: 1020px) and (max-width: 1500px) {
+      margin-left: -1.5rem;
+    }
+    @media screen and (min-width: 1500px) and (max-width: 1700px) {
+      margin-left: 0rem;
+    }
+    @media screen and (min-width: 1700px) and (max-width: 2000px) {
+      margin-left: 0.1rem;
+    }
+
+    @media screen and (min-width: 2000px) and (max-width: 2500px) {
+      margin-left: 0rem;
+    }
   }
-  #sider {
+
+  #hd {
     padding-top: 60px; /* Height of header */
     min-height: 100vh;
     position: fixed;
+
     @media screen and (max-width: 768px) {
       height: 68rem;
     }
@@ -255,30 +292,7 @@ const Wrapper = styled.div`
     min-width: 100%;
     z-index: 100;
   }
-  #set {
-    margin-left: -4.5rem;
-    padding-left: 150px; /* Width of sidebar */
-    padding-top: 90px; /* Height of header */
-    flex-grow: 1;
-    overflow-y: auto;
 
-    @media screen and (max-width: 768px) {
-      margin-left: -2rem;
-    }
-    @media screen and (min-width: 768px) and (max-width: 1020px) {
-      margin-left: -2rem;
-    }
-    @media screen and (min-width: 1020px) and (max-width: 1500px) {
-      margin-left: -2rem;
-    }
-    @media screen and (min-width: 1500px) and (max-width: 1800px) {
-      margin-left: -1.9rem;
-    }
-
-    @media screen and (min-width: 1800px) and (max-width: 2500px) {
-      margin-left: 0rem;
-    }
-  }
   #tableres {
     @media screen and (max-width: 768px) {
       width: 21rem;

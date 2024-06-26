@@ -454,7 +454,7 @@ const OpdIncome = () => {
                                         ).format("DD/MM/YYYY hh:mm A")
                                       : ""}
                                   </td>
-                                  <td>{item.uhid}</td>
+                                  <td>{item.patient_uhid}</td>
                                   <td className="text-capitalize">
                                     {item.patient_name}
                                   </td>
@@ -509,7 +509,7 @@ const OpdIncome = () => {
                     </>
                   )}
                 </div>
-                <div className="d-flex justify-content-center mt-3">
+                <div className="d-flex justify-content-center mt-3 mb-3">
                   <button
                     className="btn btn-primary mx-2"
                     onClick={prevPage}

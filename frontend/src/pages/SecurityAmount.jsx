@@ -391,7 +391,13 @@ const SecurityAmount = () => {
                                           ).format("DD/MM/YYYY")}
                                         </td>
                                         <td>{item.appointment_id}</td>
-                                        <td>{item.uhid}</td>
+                                        <td>
+                                          <Link
+                                            to={`/patient_profile/${item.uhid}`}
+                                          >
+                                            {item.uhid}
+                                          </Link>
+                                        </td>
                                         <td className="text-capitalize">
                                           {item.patient_name}
                                         </td>
@@ -477,7 +483,7 @@ const SecurityAmount = () => {
                                             to={`/security-amount-reciept/${item.sa_id}`}
                                           >
                                             <button className="btn btn-success">
-                                              Print
+                                              View Receipt
                                             </button>
                                           </Link>
                                         </td>
@@ -490,7 +496,7 @@ const SecurityAmount = () => {
                         </>
                       )}
                     </div>
-                    <div className="d-flex justify-content-center mt-3">
+                    <div className="d-flex justify-content-center mt-3 mb-3">
                       <button
                         className="btn btn-primary mx-2"
                         onClick={prevPage}

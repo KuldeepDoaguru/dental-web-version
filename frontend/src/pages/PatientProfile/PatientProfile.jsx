@@ -77,11 +77,17 @@ const PatientProfile = () => {
       </div>
 
       <div className="row mrgnzero">
-        <div className="col-lg-1 col-md-1 col-1" id="sider">
+        <div
+          className="col-xxl-1 col-xl-1 col-lg-1 col-md-2 col-sm-2 p-0"
+          id="hd"
+        >
           <Sider />
         </div>
 
-        <div className="col-lg-11 col-md-11 col-11" id="set">
+        <div
+          className="col-xxl-11 col-xl-11 col-lg-11 col-md-10 col-sm-10"
+          id="set"
+        >
           <button
             className="btn btn-success no-print"
             onClick={() => window.history.go(-1)}
@@ -373,18 +379,12 @@ const Wrapper = styled.div`
   .mrgtop {
     margin-top: 4rem;
   }
-  .header {
-    position: fixed;
-    min-width: 100%;
-    z-index: 100;
-  }
   #set {
     margin-left: -4.5rem;
     padding-left: 150px; /* Width of sidebar */
     padding-top: 90px; /* Height of header */
     flex-grow: 1;
-    overflow: hidden;
-    /* overflow-y: auto; */
+    overflow-y: auto;
 
     @media screen and (max-width: 768px) {
       margin-left: -2rem;
@@ -395,15 +395,33 @@ const Wrapper = styled.div`
     @media screen and (min-width: 1020px) and (max-width: 1500px) {
       margin-left: -1.5rem;
     }
-    @media screen and (min-width: 1500px) and (max-width: 1750px) {
+    @media screen and (min-width: 1500px) and (max-width: 1700px) {
       margin-left: 0.1rem;
     }
-    @media screen and (min-width: 1750px) and (max-width: 2000px) {
-      margin-left: 0.1rem;
+    @media screen and (min-width: 1700px) and (max-width: 2000px) {
+      margin-left: 2.1rem;
     }
 
     @media screen and (min-width: 2000px) and (max-width: 2500px) {
-      margin-left: 0rem;
+      margin-left: 2.7rem;
     }
+  }
+
+  #hd {
+    padding-top: 60px; /* Height of header */
+    min-height: 100vh;
+    position: fixed;
+
+    @media screen and (max-width: 768px) {
+      height: 68rem;
+    }
+    @media screen and (min-width: 768px) and (max-width: 1020px) {
+      height: 58rem;
+    }
+  }
+  .header {
+    position: fixed;
+    min-width: 100%;
+    z-index: 100;
   }
 `;

@@ -86,7 +86,7 @@ const Bill = () => {
                             ? moment(
                                 item.payment_date_time,
                                 "DD-MM-YYYYTHH:mm:ss"
-                              ).format("DD/MM/YYYY")
+                              ).format("DD/MM/YYYY hh:mm A")
                             : ""}
                         </td>
                         <td className="text-capitalize">

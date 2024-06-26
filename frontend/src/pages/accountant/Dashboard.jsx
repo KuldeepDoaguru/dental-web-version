@@ -182,7 +182,7 @@ const Accountant_Dashboard = () => {
                       activeTab === "bill" ? "active" : ""
                     }`}
                   >
-                    Bill
+                    Bills
                   </button>
                   <button
                     onClick={() => setActiveTab("appointment")}
@@ -190,7 +190,7 @@ const Accountant_Dashboard = () => {
                       activeTab === "appointment" ? "active" : ""
                     }`}
                   >
-                    Appointment
+                    Appointments
                   </button>
                 </div>
                 {activeTab === "bill" && (
@@ -334,6 +334,9 @@ const Accountant_Dashboard = () => {
                                       Appointment Date & Time
                                     </th>
                                     <th className="table-small sticky">
+                                      Appointment Created At
+                                    </th>
+                                    <th className="table-small sticky">
                                       Payment Status
                                     </th>
                                     <th className="table-small sticky">
@@ -391,6 +394,12 @@ const Accountant_Dashboard = () => {
                                           <td className="table-small">
                                             {moment(
                                               item.appointment_dateTime,
+                                              "YYYY-MM-DDTHH:mm"
+                                            ).format("DD/MM/YYYY hh:mm A")}
+                                          </td>
+                                          <td className="table-small">
+                                            {moment(
+                                              item.created_at,
                                               "YYYY-MM-DDTHH:mm"
                                             ).format("DD/MM/YYYY hh:mm A")}
                                           </td>
@@ -551,7 +560,7 @@ const Wrapper = styled.div`
     }
 
     @media screen and (min-width: 2000px) and (max-width: 2500px) {
-      margin-left: 0rem;
+      margin-left: 3.5rem;
     }
   }
 

@@ -253,7 +253,13 @@ const PatientsPaid = () => {
                                                 : ""}
                                             </td>
                                             <td>{item.tp_id}</td>
-                                            <td>{item.uhid}</td>
+                                            <td>
+                                              <Link
+                                                to={`/patient_profile/${item.uhid}`}
+                                              >
+                                                {item.uhid}
+                                              </Link>
+                                            </td>
                                             <td className="text-capitalize">
                                               {item.patient_name}
                                             </td>
@@ -285,13 +291,8 @@ const PatientsPaid = () => {
                                                 // to={`/PatintPaidPaymentPrint/${item.bill_id}`}
                                                 to={`/patient-bill/${item.bill_id}/${item.tp_id}`}
                                               >
-                                                <button
-                                                  className="btn"
-                                                  style={{
-                                                    backgroundColor: "#FFA600",
-                                                  }}
-                                                >
-                                                  Print
+                                                <button className="btn btn-warning">
+                                                  View Invoice
                                                 </button>
                                               </Link>
                                             </td>
@@ -304,7 +305,7 @@ const PatientsPaid = () => {
                               </>
                             )}
                           </div>
-                          <div className="d-flex justify-content-center mt-3">
+                          <div className="d-flex justify-content-center mt-3 mb-3">
                             <button
                               className="btn btn-primary mx-2"
                               onClick={prevPage}

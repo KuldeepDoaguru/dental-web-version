@@ -315,7 +315,7 @@ const Cards = () => {
                   <PiStethoscopeBold />
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title text-light">OPD Income</h5>
+                  <h6 className="card-title text-light">Today OPD Income</h6>
                   <p className="card-text text-light fw-semibold">
                     {totalOpdValue}
                   </p>
@@ -331,7 +331,12 @@ const Cards = () => {
                   <MdOutlineLocalPharmacy />
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title text-light">Total Appointments</h5>
+                  <h6
+                    className="card-title text-light"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Today Total Appointments
+                  </h6>
                   <p className="card-text text-light fw-semibold">
                     {filterForAppointToday.length}
                   </p>
@@ -349,7 +354,7 @@ const Cards = () => {
                   {/* <GiTakeMyMoney /> */}
                 </div>
                 <div className="cardtext">
-                  <h5 className="card-title text-light">Bill Income</h5>
+                  <h6 className="card-title text-light">Today Bill Income</h6>
                   <p className="card-text text-light fw-semibold">
                     {totalTreatValue}
                   </p>
@@ -382,7 +387,12 @@ const Cards = () => {
                 </div>
 
                 <div className="cardtext">
-                  <h5 className="card-title text-light">Total Bills</h5>
+                  <h6
+                    className="card-title text-light"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    Today Total Bills
+                  </h6>
                   <p className="card-text text-light fw-semibold">
                     {filterForPatientBillToday.length}
                   </p>

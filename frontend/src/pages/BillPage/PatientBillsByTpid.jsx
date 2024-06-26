@@ -367,7 +367,7 @@ const PatientBillsByTpid = () => {
 
                   <tr>
                     <th scope="row">Name</th>
-                    <td>{item.patient_name}</td>
+                    <td className="text-capitalize">{item.patient_name}</td>
                     <th scope="row">Age</th>
                     <td>{item.age}</td>
                   </tr>
@@ -401,16 +401,16 @@ const PatientBillsByTpid = () => {
           </div>
           <div className="d-flex justify-content-between">
             <div className="text-start docDetails">
-              <p>
+              <p className="text-capitalize">
                 <strong>Doctor Name :</strong> Dr.{" "}
                 {billDetails[0]?.assigned_doctor_name}
               </p>
-              <p>
+              {/* <p>
                 <strong>Mobile :</strong> {user.employee_mobile}
               </p>
               <p>
                 <strong>Email :</strong> {user.email}
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
@@ -456,7 +456,7 @@ const PatientBillsByTpid = () => {
             <table className="table table-bordered border">
               <thead>
                 <tr>
-                  <th>Sitting Number</th>
+                  <th>S.No</th>
                   <th>Treatment</th>
                   <th>Teeth</th>
                   <th>Qty</th>

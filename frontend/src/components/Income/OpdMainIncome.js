@@ -59,7 +59,7 @@ const Container = styled.div`
     }
 
     @media screen and (min-width: 2000px) and (max-width: 2500px) {
-      margin-left: 0rem;
+      margin-left: 2rem;
     }
   }
 

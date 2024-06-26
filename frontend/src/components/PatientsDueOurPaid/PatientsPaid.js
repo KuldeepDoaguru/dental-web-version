@@ -24,6 +24,9 @@ const PatientsPaid = () => {
   const [keyword, setKeyword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [doctors, setDoctors] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState("");
+
   const getBillPaidList = async () => {
     setLoading(true);
     try {
@@ -60,11 +63,18 @@ const PatientsPaid = () => {
     const patientName = row?.patient_name?.toLowerCase();
     const mobileno = row?.patient_mobile;
     const uhid = row?.uhid?.toLowerCase();
+    const doctorName = row?.assigned_doctor_name?.toLowerCase();
 
     return (
-      (patientName && patientName.includes(keywordTrimmed)) ||
-      (mobileno && mobileno.includes(keywordTrimmed)) ||
-      (uhid && uhid.includes(keywordTrimmed))
+      // (patientName && patientName.includes(keywordTrimmed)) ||
+      // (mobileno && mobileno.includes(keywordTrimmed)) ||
+      // (uhid && uhid.includes(keywordTrimmed))) &&
+      // (selectedDoctor === "" ||doctorName.includes(selectedDoctor.toLowerCase())
+      ((patientName && patientName.includes(keywordTrimmed)) ||
+        (mobileno && mobileno.includes(keywordTrimmed)) ||
+        (uhid && uhid.includes(keywordTrimmed))) &&
+      (selectedDoctor === "" ||
+        doctorName.includes(selectedDoctor.toLowerCase()))
     );
   });
 
@@ -101,6 +111,29 @@ const PatientsPaid = () => {
     },
   };
 
+  const getDoctorsList = async () => {
+    try {
+      const { data } = await axios.get(
+        `https://dentalguruaccountant.doaguru.com/api/v1/accountant/get-doctors/${user.branch}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setDoctors(data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getDoctorsList();
+  }, []);
+
+  console.log(doctors);
+
   return (
     <>
       <Container>
@@ -127,20 +160,44 @@ const PatientsPaid = () => {
                       <div className="container mt-3">
                         <h2 className="text-center">Patients Paid Data</h2>
                         <div className="container mt-5">
-                          <div>
-                            <input
-                              type="text"
-                              placeholder="Search Patient Name / UHID"
-                              className="p-1 rounded input"
-                              value={keyword}
-                              // onChange={(e) =>
-                              //   setKeyword(e.target.value.toLowerCase())
-                              // }
-                              onChange={(e) => {
-                                setKeyword(e.target.value.toLowerCase());
-                                setCurrentPage(1);
-                              }}
-                            />
+                          <div className="row">
+                            <div className="d-flex justify-content-between">
+                              <div className="col-6">
+                                <input
+                                  type="text"
+                                  placeholder="Search Patient Name / UHID / Mobile No."
+                                  className="p-1 rounded input"
+                                  value={keyword}
+                                  // onChange={(e) =>
+                                  //   setKeyword(e.target.value.toLowerCase())
+                                  // }
+                                  onChange={(e) => {
+                                    setKeyword(e.target.value.toLowerCase());
+                                    setCurrentPage(1);
+                                  }}
+                                />
+                              </div>
+                              <div className="col-6 d-flex justify-content-end">
+                                <select
+                                  className="p-1 rounded input"
+                                  value={selectedDoctor}
+                                  onChange={(e) => {
+                                    setSelectedDoctor(e.target.value);
+                                    setCurrentPage(1);
+                                  }}
+                                >
+                                  <option value="">All Doctors</option>
+                                  {doctors.map((doctor) => (
+                                    <option
+                                      key={doctor.sr_id}
+                                      value={doctor.employee_name}
+                                    >
+                                      {doctor.employee_name}
+                                    </option>
+                                  ))}
+                                </select>
+                              </div>
+                            </div>
                           </div>
                           <div class="table-responsive rounded mt-4">
                             {loading ? (
@@ -315,7 +372,7 @@ const Container = styled.div`
   }
 
   .input {
-    width: 25%;
+    width: 50%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;

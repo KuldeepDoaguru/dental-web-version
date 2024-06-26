@@ -2121,6 +2121,39 @@ const getPatientTimeline = (req, res) => {
   }
 };
 
+const getDoctorDataByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery =
+      'SELECT * FROM employee_register WHERE branch_name = ? AND employee_role LIKE "%doctor%" AND employee_status = "Approved"';
+    db.query(getQuery, [branch], (err, result) => {
+      if (err) {
+        logger.error("Error fetching doctor data from MySql:");
+        res
+          .status(400)
+          .send({ status: false, message: "error in fetching doctor" });
+      } else {
+        // Iterate over the result array and delete the password property from each object
+        result.forEach((employee) => {
+          delete employee.employee_password;
+        });
+        res.json({
+          data: result,
+          status: true,
+          message: "successful fetching doctor",
+        });
+      }
+    });
+  } catch (error) {
+    logger.error("Error fetching doctor data from MySql:");
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
 module.exports = {
   getValue,
   accountantLoginUser,
@@ -2188,6 +2221,7 @@ module.exports = {
   getAllAppointmentByPatientId,
   getPatientTimeline,
   appointmentDataopd,
+  getDoctorDataByBranch,
 };
 
 // const sendOtp = (req, res) => {

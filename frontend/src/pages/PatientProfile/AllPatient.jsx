@@ -278,11 +278,11 @@ const Wrapper = styled.div`
       margin-left: 0.1rem;
     }
     @media screen and (min-width: 1700px) and (max-width: 2000px) {
-      margin-left: 0.1rem;
+      margin-left: 1.5rem;
     }
 
     @media screen and (min-width: 2000px) and (max-width: 2500px) {
-      margin-left: 0rem;
+      margin-left: 2.5rem;
     }
   }
 

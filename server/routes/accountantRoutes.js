@@ -66,6 +66,7 @@ const {
   getAllAppointmentByPatientId,
   getPatientTimeline,
   appointmentDataopd,
+  getDoctorDataByBranch,
 } = require("../controllers/accountantController");
 // const {
 //   getEmployeeListByBranchByID,
@@ -273,5 +274,7 @@ router.get(
   getAllAppointmentByPatientId
 );
 router.get("/getPatientTimeline/:branch/:patientId", getPatientTimeline);
+
+router.get("/get-doctors/:branch", getDoctorDataByBranch);
 
 module.exports = router;

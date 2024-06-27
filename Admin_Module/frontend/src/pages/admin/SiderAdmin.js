@@ -24,7 +24,7 @@ const SiderAdmin = () => {
     <>
       <Container>
         <div className="px-sm-2 px-0" id="sidebar">
-          <div className="d-flex flex-column align-items-center  px-3 pt-4">
+          <div className="d-flex flex-column align-items-center  px-3 pt-2">
             <ul
               className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center "
               id="menu"
@@ -263,6 +263,7 @@ const Container = styled.div`
     font-size: 12px;
     margin-left: 0rem;
     color: #000;
+    white-space: nowrap;
     @media (max-width: 900px) {
       display: none !important;
     }

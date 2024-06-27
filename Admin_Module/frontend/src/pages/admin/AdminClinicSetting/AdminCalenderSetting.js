@@ -1,34 +1,41 @@
+
+
 // import React, { useEffect, useState } from "react";
 // import { Link, useLocation } from "react-router-dom";
 // import styled from "styled-components";
-// // import Sider from "../../../components/Sider";
-// // import Header from "../../../components/Header";
+
 // import { FaSearch } from "react-icons/fa";
 // import { IoMdArrowRoundBack } from "react-icons/io";
-// // import BranchSelector from "../../../components/BranchSelector";
+
 // import axios from "axios";
 // import cogoToast from "cogo-toast";
 // import { useDispatch, useSelector } from "react-redux";
 // import HeaderAdmin from "../HeaderAdmin";
 // import SiderAdmin from "../SiderAdmin";
+// import animationData from "../../animation/loading-effect.json";
+// import Lottie from "react-lottie";
 
-// const AdminCalenderSetting = () => {
+// const CalenderSetting = () => {
 //   const dispatch = useDispatch();
 //   const user = useSelector((state) => state.user.currentUser);
-//   console.log(user);
+
+//   const branch = user.branch_name;
+
 //   const location = useLocation();
 //   const [showAddBlockDays, setShowAddBlockDays] = useState(false);
 //   const [showEditBlockDays, setShowEditBlockDays] = useState(false);
 //   const [brData, setBrData] = useState([]);
+//   const [loading, setLoading] = useState(false);
 //   const [holidayList, setHolidayList] = useState([]);
 //   const [selected, setSelected] = useState();
 //   const [upData, setUpData] = useState({
 //     open_time: "",
 //     close_time: "",
 //     appoint_slot_duration: "",
+//     week_off: "",
 //   });
 //   const [holidays, setHolidays] = useState({
-//     branch_name: user.branch_name,
+//     branch_name: branch,
 //     holiday_name: "",
 //     holiday_date: "",
 //     holiday_start_time: "",
@@ -58,7 +65,39 @@
 //         ...upData,
 //         [name]: value,
 //       });
+//     } else {
+//       setUpData({
+//         ...upData,
+//         [name]: value,
+//       });
 //     }
+//   };
+
+//   console.log(brData);
+
+//   const ConvertToIST = (utcDateString) => {
+//     // Convert the date string to a Date object
+//     const utcDate = new Date(utcDateString);
+
+//     // Convert the UTC date to IST by adding 5 hours and 30 minutes
+//     const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
+//     const istDate = new Date(utcDate.getTime() + istOffset);
+
+//     // Format the IST date
+//     const options = {
+//       timeZone: "Asia/Kolkata",
+//       year: "numeric",
+//       month: "2-digit",
+//       day: "2-digit",
+//       // hour: '2-digit',
+//       // minute: '2-digit',
+//       // second: '2-digit',
+//     };
+//     const istDateString = new Intl.DateTimeFormat("en-IN", options).format(
+//       istDate
+//     );
+
+//     return istDateString;
 //   };
 
 //   const handleHoliday = (event) => {
@@ -85,9 +124,9 @@
 //     setShowAddBlockDays(true);
 //   };
 
-//   const openEditBlockDaysPopup = (id) => {
+//   const openEditBlockDaysPopup = (id, item) => {
 //     console.log(id);
-//     setSelected(id);
+//     setSelected(item);
 //     console.log("open pop up");
 //     setShowEditBlockDays(true);
 //   };
@@ -95,6 +134,15 @@
 //   const closeUpdatePopup = () => {
 //     setShowAddBlockDays(false);
 //     setShowEditBlockDays(false);
+//     getHolidayList();
+//     setHolidays({
+//       branch_name: branch,
+//       holiday_name: "",
+//       holiday_date: "",
+//       holiday_start_time: "",
+//       holiday_end_time: "",
+//       notes: "",
+//     });
 //   };
 
 //   const goBack = () => {
@@ -104,10 +152,10 @@
 //   const getBranchDetails = async () => {
 //     try {
 //       const { data } = await axios.get(
-//         `https://dentalguruadmin.doaguru.com/api/v1/admin/getBranchDetailsByBranch/${user.branch_name}`,
+//         `https://dentalguruadmin.doaguru.com/api/v1/admin/getBranchDetailsByBranch/${branch}`,
 //         {
 //           headers: {
-//             "Content-Type": "multipart/form-data",
+//             "Content-Type": "application/json",
 //             Authorization: `Bearer ${user.token}`,
 //           },
 //         }
@@ -122,11 +170,11 @@
 //     e.preventDefault();
 //     try {
 //       const response = await axios.put(
-//         `https://dentalguruadmin.doaguru.com/api/v1/admin/updateBranchCalenderSetting/${user.branch_name}`,
+//         `https://dentalguruadmin.doaguru.com/api/v1/admin/updateBranchCalenderSetting/${branch}`,
 //         upData,
 //         {
 //           headers: {
-//             "Content-Type": "multipart/form-data",
+//             "Content-Type": "application/json",
 //             Authorization: `Bearer ${user.token}`,
 //           },
 //         }
@@ -143,22 +191,70 @@
 //     getBranchDetails();
 //   }, []);
 
-//   console.log(brData);
+//   // Convert UTC date to IST date
+//   const convertToIST = (utcDateString) => {
+//     const utcDate = new Date(utcDateString);
+//     const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
+//     const istDate = new Date(utcDate.getTime() + istOffset);
+
+//     // Format the date to YYYY-MM-DD for input field
+//     const year = istDate.getUTCFullYear();
+//     const month = `0${istDate.getUTCMonth() + 1}`.slice(-2); // months are zero-based
+//     const day = `0${istDate.getUTCDate() + 1}`.slice(-2);
+
+//     return `${year}-${month}-${day}`;
+//   };
+
+//   // const convertToIST = (utcDateString) => {
+//   //   const utcDate = new Date(utcDateString);
+//   //   const istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC + 5:30
+//   //   const istDate = new Date(utcDate.getTime() + istOffset);
+//   //   return istDate;
+//   // };
+
+//   console.log(selected);
+
+//   useEffect(() => {
+//     if (selected) {
+//       console.log("UTC Date:", selected.holiday_date);
+//       // Format the date and time fields correctly
+//       // const istDate = convertToIST(selected.holiday_date);
+//       // const formattedDate = istDate.toISOString().split("T")[0];
+//       const formattedDate = convertToIST(selected.holiday_date);
+//       // const formattedDate =  new Date(selected.holiday_date).toISOString().split("T")[0];
+//       const formattedStartTime = selected.holiday_start_time.slice(0, 5);
+//       const formattedEndTime = selected.holiday_end_time.slice(0, 5);
+//       console.log("Formatted Date:", formattedDate);
+//       setUpHolidays({
+//         ...upHolidays,
+//         holiday_name: selected.holiday_name || "",
+//         holiday_date: formattedDate || "",
+//         holiday_start_time: formattedStartTime || "",
+//         holiday_end_time: formattedEndTime || "",
+//         notes: selected.notes || "",
+//       });
+//     }
+//   }, [selected]);
+
+//   console.log(selected);
 //   console.log(upData);
 
 //   const getHolidayList = async () => {
+//     setLoading(true);
 //     try {
 //       const { data } = await axios.get(
-//         `https://dentalguruadmin.doaguru.com/api/v1/admin/getHolidays/${user.branch_name}`,
+//         `https://dentalguruadmin.doaguru.com/api/v1/admin/getHolidays/${branch}`,
 //         {
 //           headers: {
-//             "Content-Type": "multipart/form-data",
+//             "Content-Type": "application/json",
 //             Authorization: `Bearer ${user.token}`,
 //           },
 //         }
 //       );
+//       setLoading(false);
 //       setHolidayList(data);
 //     } catch (error) {
+//       setLoading(false);
 //       console.log(error);
 //     }
 //   };
@@ -171,13 +267,21 @@
 //         holidays,
 //         {
 //           headers: {
-//             "Content-Type": "multipart/form-data",
+//             "Content-Type": "application/json",
 //             Authorization: `Bearer ${user.token}`,
 //           },
 //         }
 //       );
 //       // console.log(response);
 //       cogoToast.success("Holiday Added Successfully");
+//       setHolidays({
+//         branch_name: branch,
+//         holiday_name: "",
+//         holiday_date: "",
+//         holiday_start_time: "",
+//         holiday_end_time: "",
+//         notes: "",
+//       });
 //       closeUpdatePopup();
 //       getHolidayList();
 //     } catch (error) {
@@ -195,7 +299,7 @@
 //         upHolidays,
 //         {
 //           headers: {
-//             "Content-Type": "multipart/form-data",
+//             "Content-Type": "application/json",
 //             Authorization: `Bearer ${user.token}`,
 //           },
 //         }
@@ -211,21 +315,24 @@
 //   console.log(selected);
 
 //   const deleteHoliday = async (id) => {
+//     const isConfirmed = window.confirm(
+//       "Are you sure you want to delete this data?"
+//     );
+//     if (!isConfirmed) {
+//       return; // Exit if the user cancels the action
+//     }
 //     try {
-//       const isConfirmed = window.confirm("Are you sure you want to delete?");
-//       if (isConfirmed) {
 //       const response = await axios.delete(
 //         `https://dentalguruadmin.doaguru.com/api/v1/admin/deleteHolidays/${id}`,
 //         {
 //           headers: {
-//             "Content-Type": "multipart/form-data",
+//             "Content-Type": "application/json",
 //             Authorization: `Bearer ${user.token}`,
 //           },
 //         }
 //       );
 //       cogoToast.success("Holiday Deleted Successfully");
 //       getHolidayList();
-//     }
 //     } catch (error) {
 //       console.log(error);
 //     }
@@ -233,7 +340,29 @@
 
 //   useEffect(() => {
 //     getHolidayList();
-//   }, [user.branch_name]);
+//   }, [branch]);
+
+//   useEffect(() => {}, []);
+
+//   console.log(holidayList);
+//   const weekdays = [
+//     "monday",
+//     "tuesday",
+//     "wednesday",
+//     "thursday",
+//     "friday",
+//     "saturday",
+//     "sunday",
+//   ];
+
+//   const defaultOptions = {
+//     loop: true,
+//     autoplay: true,
+//     animationData: animationData,
+//     rendererSettings: {
+//       preserveAspectRatio: "xMidYMid slice",
+//     },
+//   };
 
 //   return (
 //     <>
@@ -245,19 +374,22 @@
 //               <div className="col-lg-1 col-1 p-0">
 //                 <SiderAdmin />
 //               </div>
-//               <div className="col-lg-11 col-11 ps-0" style={{marginTop:"4rem"}}>
-//                 <div className="container-fluid mt-3">
+//               <div
+//                 className="col-lg-11 col-11 ps-0"
+//                 style={{ marginTop: "5rem" }}
+//               >
+//                 {/* <div className="container-fluid mt-3">
 //                   <div className="d-flex justify-content-between">
-//                     {/* <BranchSelector /> */}
+//                     <BranchSelector />
 //                     <div>
-//                       {/* <Link to="/superadmin-add-branch">
+//                       <Link to="/superadmin-add-branch">
 //                           <button className="btn btn-success">
 //                             Add Branch
 //                           </button>
-//                         </Link> */}
+//                         </Link>
 //                     </div>
 //                   </div>
-//                 </div>
+//                 </div> */}
 //                 <div className="container-fluid mt-3">
 //                   <button className="btn btn-success" onClick={goBack}>
 //                     <IoMdArrowRoundBack /> Back
@@ -292,6 +424,9 @@
 //                     <h6 className="text-center mt-2 fw-bold text-success">
 //                       Current Appointment Slot :{" "}
 //                       <span>{brData[0]?.appoint_slot_duration}</span>
+//                     </h6>
+//                     <h6 className="text-center mt-2 fw-bold text-success">
+//                       Current Week-off Day : <span>{brData[0]?.week_off}</span>
 //                     </h6>
 //                   </div>
 //                   <form onSubmit={updateBranchDetails}>
@@ -370,6 +505,22 @@
 //                         </div>
 //                       </div>
 //                     </div>
+//                     <div className="container d-flex justify-content-center align-item-center mb-2">
+//                       <h6 className="fw-bold mx-2">Set week-off Day :</h6>
+//                       <select
+//                         name="week_off"
+//                         id=""
+//                         onChange={handleChange}
+//                         className="p-1 rounded"
+//                       >
+//                         <option value="">--select--</option>
+//                         {weekdays.map((item) => (
+//                           <>
+//                             <option value={item}>{item}</option>
+//                           </>
+//                         ))}
+//                       </select>
+//                     </div>
 //                     <div className="d-flex justify-content-center">
 //                       <button className="btn btn-success mx-2">Change</button>
 //                     </div>
@@ -391,58 +542,76 @@
 //                         </button>
 //                       </div>
 //                     </div>
-//                     <div class="table-responsive rounded">
-//                       <table class="table table-bordered rounded shadow">
-//                         <thead className="table-head">
-//                           <tr>
-//                             <th className="table-sno">Holiday Name</th>
-//                             <th className="table-small">Date</th>
-//                             <th>Start Time</th>
-//                             <th>End Time</th>
-//                             <th className="table-small">Notes</th>
-//                             <th className="table-small">Actions</th>
-//                           </tr>
-//                         </thead>
-//                         <tbody>
-//                           {holidayList?.map((item) => (
-//                             <>
-//                               <tr className="table-row">
-//                                 <td>{item.holiday_name}</td>
-//                                 <td className="table-sno">
-//                                   {item.holiday_date?.split("T")[0]}
-//                                 </td>
-//                                 <td className="table-small">
-//                                   {item.holiday_start_time}
-//                                 </td>
-//                                 <td className="table-small">
-//                                   {item.holiday_end_time}
-//                                 </td>
-//                                 <td className="table-small">{item.notes}</td>
-
-//                                 <td>
-//                                   <button
-//                                     className="btn btn-warning"
-//                                     onClick={() =>
-//                                       openEditBlockDaysPopup(item.holiday_id)
-//                                     }
-//                                   >
-//                                     Edit
-//                                   </button>
-//                                   <button
-//                                     className="btn btn-danger mx-1"
-//                                     onClick={() =>
-//                                       deleteHoliday(item.holiday_id)
-//                                     }
-//                                   >
-//                                     Delete
-//                                   </button>
-//                                 </td>
+//                     {loading ? (
+//                       <Lottie
+//                         options={defaultOptions}
+//                         height={300}
+//                         width={400}
+//                       ></Lottie>
+//                     ) : (
+//                       <>
+//                         <div class="table-responsive rounded">
+//                           <table class="table table-bordered rounded shadow">
+//                             <thead className="table-head">
+//                               <tr>
+//                                 <th className="table-sno sticky">
+//                                   Holiday Name
+//                                 </th>
+//                                 <th className="table-small sticky">Date</th>
+//                                 <th className="sticky">Start Time</th>
+//                                 <th className="sticky">End Time</th>
+//                                 <th className="table-small sticky">Notes</th>
+//                                 <th className="table-small sticky">Actions</th>
 //                               </tr>
-//                             </>
-//                           ))}
-//                         </tbody>
-//                       </table>
-//                     </div>
+//                             </thead>
+//                             <tbody>
+//                               {holidayList?.map((item) => (
+//                                 <>
+//                                   <tr className="table-row">
+//                                     <td>{item.holiday_name}</td>
+//                                     <td className="table-sno">
+//                                       {/* {item.holiday_date.split("T")[0]} */}
+//                                       {ConvertToIST(item.holiday_date)}
+//                                     </td>
+//                                     <td className="table-small">
+//                                       {item.holiday_start_time?.split(".")[0]}
+//                                     </td>
+//                                     <td className="table-small">
+//                                       {item.holiday_end_time?.split(".")[0]}
+//                                     </td>
+//                                     <td className="table-small">
+//                                       {item.notes}
+//                                     </td>
+
+//                                     <td>
+//                                       <button
+//                                         className="btn btn-warning"
+//                                         onClick={() =>
+//                                           openEditBlockDaysPopup(
+//                                             item.holiday_id,
+//                                             item
+//                                           )
+//                                         }
+//                                       >
+//                                         Edit
+//                                       </button>
+//                                       <button
+//                                         className="btn btn-danger mx-1"
+//                                         onClick={() =>
+//                                           deleteHoliday(item.holiday_id)
+//                                         }
+//                                       >
+//                                         Delete
+//                                       </button>
+//                                     </td>
+//                                   </tr>
+//                                 </>
+//                               ))}
+//                             </tbody>
+//                           </table>
+//                         </div>
+//                       </>
+//                     )}
 //                   </div>
 //                 </div>
 //               </div>
@@ -455,61 +624,84 @@
 //             className={`popup-container${showAddBlockDays ? " active" : ""}`}
 //           >
 //             <div className="popup">
-//               <h4 className="text-center">Add Drugs</h4>
+//               <h4 className="text-center">Add Block Day</h4>
+//               <hr />
 //               <form className="d-flex flex-column" onSubmit={addHolidays}>
-//                 <input
-//                   type="text"
-//                   placeholder="holiday name"
-//                   className="rounded p-2"
-//                   name="holiday_name"
-//                   value={holidays.holiday_name}
-//                   onChange={handleHoliday}
-//                 />
-//                 <br />
-//                 <input
-//                   type="date"
-//                   placeholder="select date"
-//                   className="rounded p-2"
-//                   name="holiday_date"
-//                   value={holidays.holiday_date}
-//                   onChange={handleHoliday}
-//                 />
-//                 <br />
-//                 <input
-//                   type="time"
-//                   placeholder="Add start time"
-//                   className="rounded p-2"
-//                   name="holiday_start_time"
-//                   value={holidays.holiday_start_time}
-//                   onChange={handleHoliday}
-//                 />
-//                 <br />
-//                 <input
-//                   type="time"
-//                   placeholder="Add end time"
-//                   className="rounded p-2"
-//                   name="holiday_end_time"
-//                   value={holidays.holiday_end_time}
-//                   onChange={handleHoliday}
-//                 />
-//                 <br />
-//                 <input
-//                   type="text"
-//                   placeholder="Add Notes"
-//                   className="rounded p-2"
-//                   name="notes"
-//                   value={holidays.notes}
-//                   onChange={handleHoliday}
-//                 />
-//                 <br />
+//                 <div className="row g-2">
+//                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+//                     <label htmlFor="" className="form-label">
+//                       Holiday Name
+//                     </label>
+//                     <input
+//                       type="text"
+//                       placeholder="holiday name"
+//                       className="form-control rounded p-2"
+//                       name="holiday_name"
+//                       value={holidays.holiday_name}
+//                       onChange={handleHoliday}
+//                     />
+//                   </div>
+//                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+//                     <label htmlFor="" className="form-label">
+//                       Holiday Date
+//                     </label>
+//                     <input
+//                       type="date"
+//                       placeholder="select date"
+//                       className="form-control rounded p-2"
+//                       name="holiday_date"
+//                       value={holidays.holiday_date}
+//                       onChange={handleHoliday}
+//                     />
+//                   </div>
+//                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+//                     <label htmlFor="" className="form-label">
+//                       Holiday Start Time
+//                     </label>
+//                     <input
+//                       type="time"
+//                       placeholder="Add start time"
+//                       className="form-control rounded p-2"
+//                       name="holiday_start_time"
+//                       value={holidays.holiday_start_time}
+//                       onChange={handleHoliday}
+//                     />
+//                   </div>
+//                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+//                     <label htmlFor="" className="form-label">
+//                       Holiday End Time
+//                     </label>
+//                     <input
+//                       type="time"
+//                       placeholder="Add end time"
+//                       className="form-control rounded p-2"
+//                       name="holiday_end_time"
+//                       value={holidays.holiday_end_time}
+//                       onChange={handleHoliday}
+//                     />
+//                   </div>
+//                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+//                     <label htmlFor="" className="form-label">
+//                       Notes
+//                     </label>
+//                     <input
+//                       type="text"
+//                       placeholder="Add Notes"
+//                       className="form-control rounded p-2"
+//                       name="notes"
+//                       value={holidays.notes}
+//                       onChange={handleHoliday}
+//                     />
+//                   </div>
+//                 </div>
 
-//                 <div className="d-flex justify-content-evenly">
+//                 <div className="d-flex justify-content-start">
 //                   <button type="submit" className="btn btn-success mt-2">
 //                     Save
 //                   </button>
 //                   <button
 //                     type="button"
-//                     className="btn btn-danger mt-2"
+//                     className="btn btn-danger mt-2 mx-2"
 //                     onClick={closeUpdatePopup}
 //                   >
 //                     Cancel
@@ -529,61 +721,84 @@
 //             className={`popup-container${showEditBlockDays ? " active" : ""}`}
 //           >
 //             <div className="popup">
-//               <h4 className="text-center">Edit Drugs Details</h4>
+//               <h4 className="text-center">Edit Block Day Details</h4>
+//               <hr />
 //               <form className="d-flex flex-column" onSubmit={updateHolidetails}>
-//                 <input
-//                   type="text"
-//                   placeholder="holiday name"
-//                   className="rounded p-2"
-//                   name="holiday_name"
-//                   value={upHolidays.holiday_name}
-//                   onChange={handleHolidayUpdate}
-//                 />
-//                 <br />
-//                 <input
-//                   type="date"
-//                   placeholder="select date"
-//                   className="rounded p-2"
-//                   name="holiday_date"
-//                   value={upHolidays.holiday_date}
-//                   onChange={handleHolidayUpdate}
-//                 />
-//                 <br />
-//                 <input
-//                   type="time"
-//                   placeholder="Add start time"
-//                   className="rounded p-2"
-//                   name="holiday_start_time"
-//                   value={upHolidays.holiday_start_time}
-//                   onChange={handleHolidayUpdate}
-//                 />
-//                 <br />
-//                 <input
-//                   type="time"
-//                   placeholder="Add end time"
-//                   className="rounded p-2"
-//                   name="holiday_end_time"
-//                   value={upHolidays.holiday_end_time}
-//                   onChange={handleHolidayUpdate}
-//                 />
-//                 <br />
-//                 <input
-//                   type="text"
-//                   placeholder="Add Notes"
-//                   className="rounded p-2"
-//                   name="notes"
-//                   value={upHolidays.notes}
-//                   onChange={handleHolidayUpdate}
-//                 />
-//                 <br />
+//                 <div className="row g-2">
+//                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+//                     <label htmlFor="" className="form-label">
+//                       Holiday Name
+//                     </label>
+//                     <input
+//                       type="text"
+//                       placeholder="holiday name"
+//                       className="form-control rounded p-2"
+//                       name="holiday_name"
+//                       value={upHolidays.holiday_name}
+//                       onChange={handleHolidayUpdate}
+//                     />
+//                   </div>
+//                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+//                     <label htmlFor="" className="form-label">
+//                       Holiday Date
+//                     </label>
+//                     <input
+//                       type="date"
+//                       placeholder="select date"
+//                       className="form-control rounded p-2"
+//                       name="holiday_date"
+//                       value={upHolidays.holiday_date}
+//                       onChange={handleHolidayUpdate}
+//                     />
+//                   </div>
+//                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+//                     <label htmlFor="" className="form-label">
+//                       Holiday Start Time
+//                     </label>
+//                     <input
+//                       type="time"
+//                       placeholder="Add start time"
+//                       className="form-control rounded p-2"
+//                       name="holiday_start_time"
+//                       value={upHolidays.holiday_start_time}
+//                       onChange={handleHolidayUpdate}
+//                     />
+//                   </div>
+//                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+//                     <label htmlFor="" className="form-label">
+//                       Holiday End Time
+//                     </label>
+//                     <input
+//                       type="time"
+//                       placeholder="Add end time"
+//                       className="form-control rounded p-2"
+//                       name="holiday_end_time"
+//                       value={upHolidays.holiday_end_time}
+//                       onChange={handleHolidayUpdate}
+//                     />
+//                   </div>
+//                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
+//                     <label htmlFor="" className="form-label">
+//                       Notes
+//                     </label>
+//                     <input
+//                       type="text"
+//                       placeholder="Add Notes"
+//                       className="form-control rounded p-2"
+//                       name="notes"
+//                       value={upHolidays.notes}
+//                       onChange={handleHolidayUpdate}
+//                     />
+//                   </div>
+//                 </div>
 
-//                 <div className="d-flex justify-content-evenly">
+//                 <div className="d-flex justify-content-start">
 //                   <button type="submit" className="btn btn-success mt-2">
 //                     Save
 //                   </button>
 //                   <button
 //                     type="button"
-//                     className="btn btn-danger mt-2"
+//                     className="btn btn-danger mt-2 mx-2"
 //                     onClick={closeUpdatePopup}
 //                   >
 //                     Cancel
@@ -601,7 +816,7 @@
 //   );
 // };
 
-// export default AdminCalenderSetting;
+// export default CalenderSetting;
 // const Container = styled.div`
 //   .banner-mid {
 //     background-color: #1abc9c;
@@ -636,6 +851,7 @@
 //     background-color: rgba(0, 0, 0, 0.5);
 //     align-items: center;
 //     justify-content: center;
+//     z-index: 2;
 //   }
 
 //   .popup-container.active {
@@ -649,7 +865,26 @@
 //     border-radius: 8px;
 //     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 //   }
+
+//   th {
+//     background-color: #1abc9c;
+//     color: white;
+//     white-space: nowrap;
+//   }
+//   .sticky {
+//     position: sticky;
+//     top: 0;
+//     color: white;
+//     z-index: 1;
+//   }
+//   .table-responsive {
+//     height: 20rem;
+//   }
+//   td{
+//     white-space: nowrap;
+//   }
 // `;
+
 
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -665,13 +900,14 @@ import HeaderAdmin from "../HeaderAdmin";
 import SiderAdmin from "../SiderAdmin";
 import animationData from "../../animation/loading-effect.json";
 import Lottie from "react-lottie";
+import moment from "moment";
 
 const CalenderSetting = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.currentUser);
-
+ 
   const branch = user.branch_name;
-
+  console.log(`User Name: ${branch}`);
   const location = useLocation();
   const [showAddBlockDays, setShowAddBlockDays] = useState(false);
   const [showEditBlockDays, setShowEditBlockDays] = useState(false);
@@ -712,10 +948,16 @@ const CalenderSetting = () => {
       });
     } else if (type === "time") {
       // For time inputs
-      setUpData({
+      const updatedData = {
         ...upData,
         [name]: value,
-      });
+      };
+
+      if (name === "close_time" && value <= upData.open_time) {
+        alert("Close time must be greater than open time.");
+      } else {
+        setUpData(updatedData);
+      }
     } else {
       setUpData({
         ...upData,
@@ -753,18 +995,34 @@ const CalenderSetting = () => {
 
   const handleHoliday = (event) => {
     const { name, value } = event.target;
-    setHolidays({
-      ...holidays,
-      [name]: value,
-    });
+    if (name === "holiday_end_time" && value <= holidays.holiday_start_time) {
+      alert("Holiday end time can not be less than holiday start time");
+      setHolidays({
+        ...holidays,
+        holiday_end_time: "",
+      });
+    } else {
+      setHolidays({
+        ...holidays,
+        [name]: value,
+      });
+    }
   };
 
   const handleHolidayUpdate = (event) => {
     const { name, value } = event.target;
-    setUpHolidays({
-      ...upHolidays,
-      [name]: value,
-    });
+    if (name === "holiday_end_time" && value <= upHolidays.holiday_start_time) {
+      alert("Holiday end time can not be less than holiday start time");
+      setUpHolidays({
+        ...holidays,
+        holiday_end_time: "",
+      });
+    } else {
+      setUpHolidays({
+        ...upHolidays,
+        [name]: value,
+      });
+    }
   };
 
   console.log(holidays);
@@ -778,6 +1036,13 @@ const CalenderSetting = () => {
   const openEditBlockDaysPopup = (id, item) => {
     console.log(id);
     setSelected(item);
+    setUpHolidays({
+      holiday_name: item.holiday_name,
+      holiday_date: item.holiday_date,
+      holiday_start_time: item.holiday_start_time,
+      holiday_end_time: item.holiday_end_time,
+      notes: item.notes,
+    });
     console.log("open pop up");
     setShowEditBlockDays(true);
   };
@@ -785,7 +1050,6 @@ const CalenderSetting = () => {
   const closeUpdatePopup = () => {
     setShowAddBlockDays(false);
     setShowEditBlockDays(false);
-    getHolidayList();
     setHolidays({
       branch_name: branch,
       holiday_name: "",
@@ -891,8 +1155,8 @@ const CalenderSetting = () => {
   console.log(upData);
 
   const getHolidayList = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       const { data } = await axios.get(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getHolidays/${branch}`,
         {
@@ -906,6 +1170,7 @@ const CalenderSetting = () => {
       setHolidayList(data);
     } catch (error) {
       setLoading(false);
+
       console.log(error);
     }
   };
@@ -997,16 +1262,16 @@ const CalenderSetting = () => {
 
   console.log(holidayList);
   const weekdays = [
-    "monday",
-    "tuesday",
-    "wednesday",
-    "thursday",
-    "friday",
-    "saturday",
-    "sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
   ];
 
-  const defaultOptions = {
+    const defaultOptions = {
     loop: true,
     autoplay: true,
     animationData: animationData,
@@ -1025,22 +1290,19 @@ const CalenderSetting = () => {
               <div className="col-lg-1 col-1 p-0">
                 <SiderAdmin />
               </div>
-              <div
-                className="col-lg-11 col-11 ps-0"
-                style={{ marginTop: "5rem" }}
-              >
-                {/* <div className="container-fluid mt-3">
-                  <div className="d-flex justify-content-between">
+              <div className="col-lg-11 col-11 ps-0" style={{marginTop:"5rem"}}>
+                <div className="container-fluid mt-3">
+                  {/* <div className="d-flex justify-content-between">
                     <BranchSelector />
                     <div>
-                      <Link to="/superadmin-add-branch">
-                          <button className="btn btn-success">
-                            Add Branch
-                          </button>
-                        </Link>
+                      // <Link to="/superadmin-add-branch">
+                      //     <button className="btn btn-success">
+                      //       Add Branch
+                      //     </button>
+                      //   </Link>
                     </div>
-                  </div>
-                </div> */}
+                  </div> */}
+                </div>
                 <div className="container-fluid mt-3">
                   <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
@@ -1057,19 +1319,18 @@ const CalenderSetting = () => {
                       Current Timing :{" "}
                       <span>
                         Opening Time -{" "}
-                        {brData[0]?.open_time
-                          .split("T")[0]
-                          .split(".")[0]
-                          .slice(0, 5)}
+                        {moment(brData[0]?.open_time, "HH:mm:ss.SSSSSS").format(
+                          "hh:mm A"
+                        )}
                       </span>{" "}
                       To{" "}
                       <span>
                         {" "}
                         Closing Time -{" "}
-                        {brData[0]?.close_time
-                          .split("T")[0]
-                          .split(".")[0]
-                          .slice(0, 5)}
+                        {moment(
+                          brData[0]?.close_time,
+                          "HH:mm:ss.SSSSSS"
+                        ).format("hh:mm A")}
                       </span>
                     </h6>
                     <h6 className="text-center mt-2 fw-bold text-success">
@@ -1201,68 +1462,64 @@ const CalenderSetting = () => {
                       ></Lottie>
                     ) : (
                       <>
-                        <div class="table-responsive rounded">
-                          <table class="table table-bordered rounded shadow">
-                            <thead className="table-head">
-                              <tr>
-                                <th className="table-sno sticky">
-                                  Holiday Name
-                                </th>
-                                <th className="table-small sticky">Date</th>
-                                <th className="sticky">Start Time</th>
-                                <th className="sticky">End Time</th>
-                                <th className="table-small sticky">Notes</th>
-                                <th className="table-small sticky">Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {holidayList?.map((item) => (
-                                <>
-                                  <tr className="table-row">
-                                    <td>{item.holiday_name}</td>
-                                    <td className="table-sno">
-                                      {/* {item.holiday_date.split("T")[0]} */}
-                                      {ConvertToIST(item.holiday_date)}
-                                    </td>
-                                    <td className="table-small">
-                                      {item.holiday_start_time?.split(".")[0]}
-                                    </td>
-                                    <td className="table-small">
-                                      {item.holiday_end_time?.split(".")[0]}
-                                    </td>
-                                    <td className="table-small">
-                                      {item.notes}
-                                    </td>
+                    <div class="table-responsive rounded">
+                      <table class="table table-bordered rounded shadow">
+                        <thead className="table-head">
+                          <tr>
+                            <th className="table-sno sticky">Holiday Name</th>
+                            <th className="table-small sticky">Date</th>
+                            <th className="sticky">Start Time</th>
+                            <th className="sticky">End Time</th>
+                            <th className="table-small sticky">Notes</th>
+                            <th className="table-small sticky">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {holidayList?.map((item) => (
+                            <>
+                              <tr className="table-row">
+                                <td>{item.holiday_name}</td>
+                                <td className="table-sno">
+                                  {/* {item.holiday_date.split("T")[0]} */}
+                                  {ConvertToIST(item.holiday_date)}
+                                </td>
+                                <td className="table-small">
+                                  {item.holiday_start_time?.split(".")[0]}
+                                </td>
+                                <td className="table-small">
+                                  {item.holiday_end_time?.split(".")[0]}
+                                </td>
+                                <td className="table-small">{item.notes}</td>
 
-                                    <td>
-                                      <button
-                                        className="btn btn-warning"
-                                        onClick={() =>
-                                          openEditBlockDaysPopup(
-                                            item.holiday_id,
-                                            item
-                                          )
-                                        }
-                                      >
-                                        Edit
-                                      </button>
-                                      <button
-                                        className="btn btn-danger mx-1"
-                                        onClick={() =>
-                                          deleteHoliday(item.holiday_id)
-                                        }
-                                      >
-                                        Delete
-                                      </button>
-                                    </td>
-                                  </tr>
-                                </>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </>
-                    )}
+                                <td>
+                                  <button
+                                    className="btn btn-warning"
+                                    onClick={() =>
+                                      openEditBlockDaysPopup(
+                                        item.holiday_id,
+                                        item
+                                      )
+                                    }
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    className="btn btn-danger mx-1"
+                                    onClick={() =>
+                                      deleteHoliday(item.holiday_id)
+                                    }
+                                  >
+                                    Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            </>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                    </>
+                      )}
                   </div>
                 </div>
               </div>
@@ -1276,7 +1533,6 @@ const CalenderSetting = () => {
           >
             <div className="popup">
               <h4 className="text-center">Add Block Day</h4>
-              <hr />
               <form className="d-flex flex-column" onSubmit={addHolidays}>
                 <div className="row g-2">
                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
@@ -1372,8 +1628,7 @@ const CalenderSetting = () => {
             className={`popup-container${showEditBlockDays ? " active" : ""}`}
           >
             <div className="popup">
-              <h4 className="text-center">Edit Block Day Details</h4>
-              <hr />
+              <h4 className="text-center">Edit Drugs Details</h4>
               <form className="d-flex flex-column" onSubmit={updateHolidetails}>
                 <div className="row g-2">
                   <div className="col-xxl-4 col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12">
@@ -1466,7 +1721,6 @@ const CalenderSetting = () => {
     </>
   );
 };
-
 export default CalenderSetting;
 const Container = styled.div`
   .banner-mid {
@@ -1530,5 +1784,8 @@ const Container = styled.div`
   }
   .table-responsive {
     height: 20rem;
+  }
+  td{
+    white-space: nowrap;
   }
 `;

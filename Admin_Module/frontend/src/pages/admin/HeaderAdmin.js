@@ -118,7 +118,7 @@ const HeaderAdmin = () => {
                 className="nav-link active text-white mt-2  fs-5"
                 to="/"
               >
-                Dental Guru
+                DentalGuru
               </Link>
             </li>
             <button
@@ -136,7 +136,10 @@ const HeaderAdmin = () => {
               className="collapse navbar-collapse"
               id="navbarSupportedContent"
             >
+
               <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+              <p className='  text-white   fs-6 mt-1' >Welcome {user.employee_name} ({user.employee_ID})</p>
+            
                 <li className="nav-item mx-3">
                   <Link to="/admin-clinic-setting">
                     <IoSettings className="icon" />

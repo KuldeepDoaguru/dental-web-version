@@ -99,7 +99,7 @@ const Navbar = () => {
             aria-controls="profile-tab-pane4"
             aria-selected="false"
           >
-            Clinical Examin
+            Clinical Examine
           </button>
         </li>
         <li className="nav-item" role="presentation">

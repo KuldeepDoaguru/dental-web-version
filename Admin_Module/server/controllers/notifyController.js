@@ -605,7 +605,7 @@ const addSuperAdminNotify = (req, res) => {
 const getTreatSuggest = (req, res) => {
   try {
     const branch = req.params.branch;
-    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ?";
+    const selectQuery = "SELECT * FROM patient_bills WHERE branch_name = ? ORDER BY bill_id DESC";
     db.query(selectQuery, branch, (err, result) => {
       if (err) {
           logger.registrationLogger.log("error", "invalid branch");

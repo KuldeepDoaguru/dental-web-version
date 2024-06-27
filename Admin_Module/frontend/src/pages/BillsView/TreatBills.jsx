@@ -337,7 +337,7 @@ const TreatBills = () => {
                             <td className="table-small">{item.total_amount}</td>
                             <td className="table-small">{item.paid_amount}</td>
                             <td>{item.pay_by_sec_amt}</td>
-                            <td>{item.payment_status}</td>
+                            <td>{item.payment_status ? item.payment_status : 'pending'}</td>
                             <td>{item?.payment_date_time}</td>
                             <td>
                               <td>

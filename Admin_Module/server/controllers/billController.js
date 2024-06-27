@@ -393,7 +393,7 @@ const examinDetailsByPatId = (req, res) => {
 const getPaymentDetailsByPatId = (req, res) => {
   try {
     const pid = req.params.pid;
-    const selectQuery = "SELECT * FROM payment_details WHERE uhid = ?";
+    const selectQuery = "SELECT * FROM patient_timeline WHERE uhid = ? ORDER BY event_id DESC";
     db.query(selectQuery, pid, (err, result) => {
       if (err) {
           logger.registrationLogger.log("error", "invalid uhid");

@@ -62,7 +62,7 @@ const Treatment = () => {
                     <th>Treatment</th>
                     <th>Total Sitting</th>
                     <th>Current Sitting</th>
-                    <th>Current Sitting Status</th>
+                  
                     <th>Treatment Status</th>
                     {/* <th>Payment Status</th> */}
                   </tr>
@@ -76,7 +76,7 @@ const Treatment = () => {
                         <td>{item.treatment_name}</td>
                         <td>{item.total_sitting}</td>
                         <td>{item.current_sitting}</td>
-                        <td>{item.current_sitting_status}</td>
+                     
                         <td>{item.treatment_status}</td>
                       </tr>
                     </>

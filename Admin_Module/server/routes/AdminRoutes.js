@@ -33,6 +33,8 @@ const {
     approveLeave,
   getLeaveList,
   getLabData,
+  getRefundOpdAmountData,
+  getRefundAmountData,
  
 } = require("../controllers/AdminController");
 const {
@@ -263,6 +265,8 @@ router.get("/get-leaves/:branch/:employee_Id", getLeaves);
 
 router.get("/getLeaveList", getLeaveList);
 router.put("/approveLeave/:lid", approveLeave);
+router.get("/getRefundOpdAmountData/:branch", authenticate, getRefundOpdAmountData);
+router.get("/getRefundAmountData/:branch", authenticate, getRefundAmountData);
 
 
 

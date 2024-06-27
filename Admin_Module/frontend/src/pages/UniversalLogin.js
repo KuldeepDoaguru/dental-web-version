@@ -163,7 +163,7 @@ const UniversalLogin = () => {
                                   placeholder="password"
                                   required
                                 />
-                                <div className="eye-icon">
+                                {/* <div className="eye-icon">
                                   {show ? (
                                     <IoEye onClick={() => setShow(false)} />
                                   ) : (
@@ -171,7 +171,7 @@ const UniversalLogin = () => {
                                       onClick={() => setShow(true)}
                                     />
                                   )}
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                           </div>

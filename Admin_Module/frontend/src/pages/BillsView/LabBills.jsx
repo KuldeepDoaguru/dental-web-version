@@ -161,11 +161,11 @@ const LabBills = () => {
                             <td className="table-small">{item.payment}</td>
                             <td>{item.payment_status}</td>
                             <td>
-                              {item?.collection_date
+                            {item?.created_date
                                 ? moment(
-                                    item?.collection_date,
+                                    item?.created_date,
                                     "YYYY-MM-DDTHH:mm"
-                                  ).format("DD/MM/YYYY hh:mm A")
+                                  ).format("DD/MM/YYYY")
                                 : "--"}
                             </td>
 
@@ -245,3 +245,4 @@ const PaginationContainer = styled.div`
     background-color: #ddd;
   }
 `;
+

@@ -15,6 +15,7 @@ const Timeline = () => {
     try {
       const { data } = await axios.get(
         `https://dentalguruadmin.doaguru.com/api/v1/admin/getPatientTimeline/${pid}`,
+        
         {
           headers: {
             "Content-Type": "multipart/form-data",

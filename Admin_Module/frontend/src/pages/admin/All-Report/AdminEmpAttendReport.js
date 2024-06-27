@@ -693,9 +693,14 @@ const EmpAttendanceRepo = () => {
                                 <table class="table table-bordered">
                                   <thead className="table-head">
                                     <tr>
-                                      <th className="sticky">EMP ID</th>
-                                      <th className="sticky">Employee Name</th>
-                                      <th className="sticky">Dessignation</th>
+                                    <th className="sticky-col">EMP ID</th>
+                                      <th className="sticky-col">
+                                        Employee Name
+                                      </th>
+                                      <th className="sticky-col">
+                                        Dessignation
+                                      </th>
+
 
                                       {daysInMonth
                                         ?.filter((item) => {
@@ -724,9 +729,13 @@ const EmpAttendanceRepo = () => {
                                         className="table-row"
                                         key={attendItem.employee_ID}
                                       >
-                                        <td>{attendItem.employee_ID}</td>
-                                        <td>{attendItem.emp_name}</td>
-                                        <td>
+                                          <td className="sticky-col">
+                                          {attendItem.employee_ID}
+                                        </td>
+                                        <td className="sticky-col">
+                                          {attendItem.emp_name}
+                                        </td>
+                                        <td className="sticky-col">
                                           {attendItem.employee_designation}
                                         </td>
                                         {daysInMonth
@@ -847,5 +856,26 @@ const Container = styled.div`
     top: 0;
     color: white;
     z-index: 1;
+  }
+
+
+  .sticky-col {
+    position: -webkit-sticky; /* for Safari */
+    position: sticky;
+    left: 0;
+    background-color: white;
+    z-index: 1;
+  }
+
+  .sticky-col:nth-child(2) {
+    left: 100px; /* Adjust based on your first column width */
+  }
+
+  .sticky-col:nth-child(3) {
+    left: 240px; /* Adjust based on your first and second column widths */
+  }
+
+  .table-head .sticky-col {
+    z-index: 2;
   }
 `;

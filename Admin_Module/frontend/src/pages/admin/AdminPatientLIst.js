@@ -126,7 +126,7 @@ const AdminPatientLIst = () => {
                           setkeyword(e.target.value.toLowerCase())
                         }
                       />
-                      <p className="fw-bold">Total Patient : {patList.length}</p>
+                      <p className="fw-bold mx-2" style={{whiteSpace:"nowrap"}}>Total Patient : {patList.length}</p>
                     </div>
                     <div>
                       {/* <button

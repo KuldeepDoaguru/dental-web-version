@@ -201,7 +201,13 @@ const PatientsDue = () => {
                                             <td className="table-sno">
                                               {item.tp_id}
                                             </td>
-                                            <td>{item.uhid}</td>
+                                            <td>
+                                              <Link
+                                                to={`/patient_profile/${item.uhid}`}
+                                              >
+                                                {item.uhid}
+                                              </Link>
+                                            </td>
                                             <td className="text-capitalize">
                                               {item.patient_name}
                                             </td>

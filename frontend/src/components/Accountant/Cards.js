@@ -46,7 +46,7 @@ const Cards = () => {
       console.log(error);
       if (error?.response?.status == 401) {
         // alert("Your token is expired please login again");
-        dispatch(clearUser);
+        dispatch(clearUser());
         navigate("/");
       }
     }

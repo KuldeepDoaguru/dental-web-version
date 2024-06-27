@@ -454,7 +454,13 @@ const OpdIncome = () => {
                                         ).format("DD/MM/YYYY hh:mm A")
                                       : ""}
                                   </td>
-                                  <td>{item.patient_uhid}</td>
+                                  <td>
+                                    <Link
+                                      to={`/patient_profile/${item.patient_uhid}`}
+                                    >
+                                      {item.patient_uhid}
+                                    </Link>
+                                  </td>
                                   <td className="text-capitalize">
                                     {item.patient_name}
                                   </td>

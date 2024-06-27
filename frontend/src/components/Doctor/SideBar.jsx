@@ -184,7 +184,8 @@ const Wrapper = styled.div`
   .active-nav {
     background-color: #8ae6ff;
     padding: 1rem;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    box-shadow: rgb(138 230 255) 0px 0px 42px;
+    border-radius: 17px;
   }
   .icon {
     color: white;

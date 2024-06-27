@@ -78,7 +78,10 @@ const Bill = () => {
                         <td>{item.payment_date_time?.split(" ")[0]}</td>
                         <td>{item.payment_status}</td>
                         <td>
-                          <Link to={`/ViewPatientTotalBill/${item.tp_id}`}>
+                          <a
+                            href={`/ViewPatientTotalBill/${item.tp_id}`}
+                            target="_blank"
+                          >
                             <button
                               className="btn btn-warning shadow text-white"
                               style={{
@@ -88,7 +91,7 @@ const Bill = () => {
                             >
                               View Bill
                             </button>
-                          </Link>
+                          </a>
                         </td>
                       </tr>
                     </>

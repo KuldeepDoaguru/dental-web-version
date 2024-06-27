@@ -69,17 +69,21 @@ const Lab = () => {
                       </td>
                       <td>{item.test_status}</td>
                       <td>
-                        <a href={item.file_path} target="_blank">
-                          <button
-                            className="btn btn-success shadow"
-                            style={{
-                              backgroundColor: "#0dcaf0",
-                              border: "#0dcaf0",
-                            }}
-                          >
-                            View
-                          </button>
-                        </a>
+                        {item?.file_paths?.split(",").map((val, index) => (
+                          <>
+                            <a href={val} target="_blank">
+                              <button
+                                className="btn btn-success shadow m-2"
+                                style={{
+                                  backgroundColor: "#0dcaf0",
+                                  border: "#0dcaf0",
+                                }}
+                              >
+                                File {index + 1}
+                              </button>
+                            </a>
+                          </>
+                        ))}
                       </td>
                     </tr>
                   </>

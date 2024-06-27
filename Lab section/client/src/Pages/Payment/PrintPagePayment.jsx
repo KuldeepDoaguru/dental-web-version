@@ -22,7 +22,7 @@ const PrintPagePayment                                                          
     const [patientcreateddate , setPatientcreateddate] = useState('')
     const [labName , setLabName] = useState('')
     const [patientcost, setPatientcost] = useState(0);
-    const [patientAssigned_Doctor_Name, setPatientAssigned_Doctor_Name] =useState(""); 
+    const [patientAssigned_Doctor_Name, setPatientAssigned_Doctor_Name] = useState(""); 
     const userName = useSelector(state => state.auth.user);
     
   const goBack = () => {
@@ -126,8 +126,8 @@ const PrintPagePayment                                                          
                         <h5>Branch : Madan Mahal</h5>
 
                         <form className="d-flex ">
-                          <p>Address </p>
-                          <p>: 128,Near Gwarighat Jabalpur M.P.</p>
+                          <p>Address : 128,Near Gwarighat Jabalpur M.P.</p>
+                          
                         </form>
                       </div>
                     </div>
@@ -142,8 +142,8 @@ const PrintPagePayment                                                          
                         </form>
 
                         <form className="d-flex ">
-                          <h5>Contact Number : </h5>
-                          <h5>+91-7000000058 </h5>
+                          <h5>Contact Number : +91-7000000058 </h5>
+                     
                         </form>
                       </div>
                     </div>
@@ -158,12 +158,12 @@ const PrintPagePayment                                                          
 
                         <div className="d-flex ">
                           <h6>Patient Name </h6>
-                          <h6 className="ms-1">:- {patientName} </h6>
+                          <h6 className="ms-1">: {patientName} </h6>
                         </div>
 
                         <div className="d-flex">
                           <h6>Patient UHID </h6>
-                          <h6 className="ms-1"> :- {patientUHID} </h6>
+                          <h6 className="ms-1"> : {patientUHID} </h6>
                         </div>
 
                         <div className="d-flex ">
@@ -173,7 +173,7 @@ const PrintPagePayment                                                          
 
                         <div className="d-flex">
                           <h6> Invoice Date </h6>
-                          <h6 className="ms-1">:- {moment(patientcreateddate).format("DD/MM/YYYY")} </h6>
+                          <h6 className="ms-1">: {moment(patientcreateddate).format("DD/MM/YYYY")} </h6>
                         </div>
                       </div>
                     </div>

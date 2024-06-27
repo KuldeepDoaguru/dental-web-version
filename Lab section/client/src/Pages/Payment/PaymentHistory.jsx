@@ -216,6 +216,8 @@ import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { FaSearch } from 'react-icons/fa';
+import animationData from "../../Pages/animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 function PaymentHistory() {
   const [patientDetails, setPatientDetails] = useState([]);
@@ -223,6 +225,7 @@ function PaymentHistory() {
   const [dateFilter, setDateFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const currentUser = useSelector(state => state.auth.user);
@@ -231,6 +234,7 @@ function PaymentHistory() {
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
+        setLoading(true)
         const response = await axios.get(
           'https://dentalgurulab.doaguru.com/api/lab/get-patient-test-details',
           {
@@ -240,8 +244,10 @@ function PaymentHistory() {
             },
           }
         );
+        setLoading(false)
         setPatientDetails(response.data);
       } catch (error) {
+        setLoading(false)
         console.error('Error fetching patient details:', error);
       }
     };
@@ -284,6 +290,15 @@ function PaymentHistory() {
     }
   };
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
   return (
     <Wrapper>
       <Header />
@@ -294,7 +309,7 @@ function PaymentHistory() {
               <Sider />
             </div>
             <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11" style={{ marginTop: '5rem' }}>
-              <IoArrowBackSharp className="fs-1 text-black d-print-none mx-3" onClick={goBack} />
+              {/* <IoArrowBackSharp className="fs-1 text-black d-print-none mx-3" onClick={goBack} /> */}
               <div className="mt-4 mx-4">
                 <h2 style={{ color: '#213555' }}>List of Payment History</h2>
                 <div className="mb-3">
@@ -328,6 +343,10 @@ function PaymentHistory() {
                   </div>
                 </div>
                 <div className="" style={{ maxHeight: '700px', overflowY: 'auto' }}>
+                {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
                   {currentItems.length === 0 ? (
                 <div className='mb-2 fs-4 fw-bold text-center'>No payment history available</div>
                   ) : (
@@ -370,6 +389,9 @@ function PaymentHistory() {
                       </tbody>
                     </table>
                   )}
+
+</>
+            )}
                 </div>
                 {/* Pagination */}
                 <nav>

@@ -1,4 +1,4 @@
-import "./App.css";
+
 import { Navigate, Route, Routes } from "react-router-dom";
 import Deshboard from "./Pages/DeshBoard/Deshboard";
 import CBCTest from "./Pages/BloodTestExternal/CBCTest";
@@ -41,7 +41,7 @@ import BranchInfo from "./Pages/BranchInfo";
 import Profile from "./Pages/Profile";
 import BloodTest from "./Pages/AllTest/BloodTest";
 import AllTests from "./Pages/AllTest/AllTests";
-
+import './font.css';
 function App() {
 
   const user = useSelector(state => state.auth.user);

@@ -11,6 +11,8 @@ import moment  from 'moment';
 import { Button } from 'react-bootstrap';
 import { useSelector } from "react-redux";
 import { FaSearch } from "react-icons/fa";
+import animationData from "../../Pages/animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 const equipmentList = [
   {
@@ -62,7 +64,7 @@ const AllTests = ({ data }) => {
   const [patientDetails, setPatientDetails] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
     const [dateFilter, setDateFilter] = useState('');
-    
+    const [loading, setLoading] = useState(false);
  
     const currentUser = useSelector(state => state.auth.user);
   
@@ -72,6 +74,7 @@ const AllTests = ({ data }) => {
     useEffect(() => {
       const fetchPatientDetails = async () => {
         try {
+          setLoading(true)
           const response = await axios.get(
             `https://dentalgurulab.doaguru.com/api/lab/get-patient-details`
             ,{
@@ -80,8 +83,10 @@ const AllTests = ({ data }) => {
                 'Authorization': `Bearer ${token}`
             }
             });
+            setLoading(false)
           setPatientDetails(response.data.result);
         } catch (error) {
+          setLoading(false)
           console.error("Error fetching patient details:", error);
         }
       };
@@ -175,7 +180,14 @@ const AllTests = ({ data }) => {
     });
     setSorted(newArr);
   };
-
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
   
 
   return (
@@ -190,11 +202,11 @@ const AllTests = ({ data }) => {
               </div>
               <div className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11 p-0 mx-3" style={{marginTop:"5rem"}}>
              <div className="mx-4">
-              <IoArrowBackSharp
+              {/* <IoArrowBackSharp
             className="fs-1 text-black d-print-none"
             onClick={goBack}
             style={{ cursor: "pointer" }}
-          />
+          /> */}
        <ReportCardPage/>
 
                 
@@ -315,7 +327,10 @@ const AllTests = ({ data }) => {
         
         </div>
         <div className="" style={{ maxHeight: "700px", overflow: "auto" }}>
-
+        {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
         {filteredPatients.length === 0 ? (
         <div className='mb-2 fs-4 fw-bold text-center'>No tests available</div>
         ) : (
@@ -387,6 +402,9 @@ const AllTests = ({ data }) => {
           </>
 
         )}
+
+</>
+            )} 
        
         </div>
       </div>

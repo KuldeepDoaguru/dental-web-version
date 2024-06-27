@@ -268,6 +268,12 @@ const Card = () => {
     };
 
     getTestCounts();
+    const interval = setInterval(() => {
+      getTestCounts();
+    }, 3000); // Fetch data every 3 seconds (adjust as needed)
+
+    // Clear interval on component unmount
+    return () => clearInterval(interval);
   }, [token]);
 
   // Helper functions to check date conditions

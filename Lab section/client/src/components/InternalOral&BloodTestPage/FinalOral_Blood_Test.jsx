@@ -34,6 +34,8 @@ function FinalOral_Blood_Test() {
   const [showModal, setShowModal] = useState(false); 
   const [message, setMessage] = useState("");
   const currentUser = useSelector(state => state.auth.user);
+  const [filetests, setFiletests] = useState([]); // Changed to an array
+
   
   const token = currentUser?.token;
   const branch = currentUser.branch_name
@@ -43,7 +45,7 @@ function FinalOral_Blood_Test() {
   const [notes, setNotes] = useState([]);
   const navigate = useNavigate();
   const goBack = () => {
-    window.history.go(-1);
+    navigate('/history')
   };
   const handleTopPageLink = () => {
     window.scrollTo(0, 0);
@@ -78,7 +80,52 @@ function FinalOral_Blood_Test() {
 
     fetchPatientDetails();
   }, []);
+  const fetchPatientLabReports = async () => {
+    try {
+      const response = await axios.get(
+        `https://dentalgurulab.doaguru.com/api/lab/get-patient-lab-reports/${id}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+      setFiletests(response.data); // Assuming each report has a file_path
 
+    } catch (error) {
+      console.error("Error fetching patient lab reports:", error);
+    }
+  };
+  
+  useEffect(() => {
+    fetchPatientLabReports();
+  }, [id]);
+  
+  const handleDeleteLabReport = async (id) => {
+    const isConfirmed = window.confirm("Are you sure you want to delete this lab report?");
+    if (isConfirmed) {
+      try {
+        const response = await axios.delete(
+          `https://dentalgurulab.doaguru.com/api/lab/delete-patient-lab-report/${id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          }
+        );
+        if (response.status === 200) {
+          console.log("Lab report deleted successfully");
+          // Update the UI or refresh the data
+          fetchPatientLabReports();
+        }
+      } catch (error) {
+        console.error("Error deleting lab report:", error);
+      }
+    }
+  };
+  
 
     const fetchPatientTestDetails = async () => {
       try {
@@ -96,7 +143,7 @@ function FinalOral_Blood_Test() {
         setPatientcost(response.data[0].cost);
         setPatientcollection_date(response.data[0].collection_date);
         setPatientauthenticate_date(response.data[0].authenticate_date);
-        setFiletest(response.data[0].file_path);
+        // setFiletest(response.data[0].file_path);
         console.log(response.data);
       } catch (error) {
         console.error("Error fetching patient details:", error);
@@ -219,32 +266,22 @@ function FinalOral_Blood_Test() {
 
 
   const parsedCollection_Date = moment(patientcollection_date);
-
-// Add one day to the parsed date
-const adjustedCollection_Date = parsedCollection_Date.add(1, 'days');
-
-// Format the adjusted date as a string in the desired format (YYYY-MM-DD)
-const formattedAdjustedCollection_Date = adjustedCollection_Date.format('DD-MM-YYYY');
- 
-
-const parsedAuthenticate_Date = moment(patientauthenticate_date);
-
-// Add one day to the parsed date
-const adjustedAuthenticate_Date = parsedAuthenticate_Date.add(1, 'days');
-
-// Format the adjusted date as a string in the desired format (YYYY-MM-DD)
-const formattedAdjustedAuthenticate_Date = adjustedAuthenticate_Date.format('DD-MM-YYYY');
-
+  const formattedAdjustedCollection_Date = parsedCollection_Date.format('DD-MM-YYYY');
+  
+  const parsedAuthenticate_Date = moment(patientauthenticate_date);
+  const formattedAdjustedAuthenticate_Date = parsedAuthenticate_Date.format('DD-MM-YYYY');
+  
 console.log(filetest);
-const handleViewPDF = () => {
-  if (!filetest) {
-    console.error("PDF file path is empty");
+
+const handleViewPDF = (filePath) => {
+  if (!filePath) {
+    alert("PDF file path is empty");
     return;
   }
 
-  const newTab = window.open(filetest, "_blank");
+  const newTab = window.open(filePath, "_blank");
   if (!newTab) {
-    console.error("Failed to open PDF in a new tab. Please check popup blocker settings.");
+    alert("Failed to open PDF or other file in a new tab. Please check popup blocker settings.");
   }
 };
 
@@ -421,6 +458,7 @@ const handleViewPDF = () => {
 
                     {labName === "radiology" && <th className="p-3">Cost</th>}
                     <th className="p-3 d-print-none">Action</th>
+                    <th className="p-3 d-print-none">Files</th>
                   </thead>
                   <tbody>
                     <tr>
@@ -453,12 +491,36 @@ const handleViewPDF = () => {
                         >
                           Delete
                         </button>
-                        <button  className="btn btn-success  mx-2" onClick={handleViewPDF}>View PDF</button>
+                    
+                      </td>
+                      <td>
+                      
+        {filetests.map((filetest, index) => (
+          <div key={index}>
+            <Button
+              variant="primary"
+              onClick={() => handleViewPDF(filetest.file_path)}
+              className="mx-2 mt-2"
+            >
+              View/Download Test File {index + 1}
+            </Button>
+            <Button
+              variant="danger"
+              onClick={() => handleDeleteLabReport(filetest.id)} // Assuming each filetest object has an id
+              className="mx-2 mt-2"
+            >
+              Delete 
+            </Button>
+
+          </div>
+        ))}
                       </td>
                     </tr>
                   </tbody>
 
-                  <tbody></tbody>
+                  <tbody>
+                    
+                  </tbody>
                 </table>
                 <div className="note mt-3">
                   <h5 className=" fw-bold">Notes:-</h5>
@@ -472,7 +534,7 @@ const handleViewPDF = () => {
                     ))}
                   </ul>
                 </div>
-                <div className="">
+                <div className="mb-3">
                   <button
                     className="btn btn-primary mx-1  "
                     onClick={handleAddNotes}
@@ -480,7 +542,7 @@ const handleViewPDF = () => {
                     Add Notes
                   </button>
                   <button
-                    className="btn btn-primary mx-1  "
+                    className="btn btn-primary mx-1"
                     onClick={handleEditNotes}
                   >
                     Edit Notes
@@ -497,14 +559,14 @@ const handleViewPDF = () => {
               </div>
             </div>
           </div>
-          <div className="text-center">
+          {/* <div className="text-center">
             <button
               className="btn btn-success  mb-2 mt-4 "
               onClick={handleViewPDF}
             >
               Print_Page
             </button>
-          </div>
+          </div> */}
           </div>
 
         
@@ -594,5 +656,8 @@ const Wrapper = styled.div`
       width: 95%;
     }
    
+  }
+  .cl{
+    background-color: #213555;
   }
 `

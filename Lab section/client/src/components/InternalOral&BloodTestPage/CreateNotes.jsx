@@ -84,7 +84,7 @@ function CreateNotes() {
               <li key={index}>
                 {note}{" "}
                 <button
-                  className="btn btn-danger btn-sm"
+                  className="btn btn-danger btn-sm mx-2 mt-2"
                   onClick={() => handleRemoveNote(index)}
                 >
                   Remove

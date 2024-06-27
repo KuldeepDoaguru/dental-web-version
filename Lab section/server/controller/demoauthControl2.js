@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const  logger  = require('./logger.js');
-
+const moment = require('moment-timezone');
 
 const getBranch = (req, res) => {
   try {
@@ -32,6 +32,27 @@ const getBranch = (req, res) => {
     });
   }
 };
+
+
+const getBranchDetailsByBranch = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const getQuery = "SELECT * FROM branches WHERE branch_name = ?";
+    db.query(getQuery, branch, (err, result) => {
+      if (err) {
+        logger.error("Error getting branch details");
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).json(result);
+    });
+  } catch (error) {
+    logger.error("Error getting branch details");
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+
 
 const LoginDoctor = (req, res) => {
   try {
@@ -109,7 +130,7 @@ const LoginDoctor = (req, res) => {
         }
 
         const token = JWT.sign({ id:user.employee_ID }, process.env.JWT_SECRET, {
-          expiresIn: "7d",
+          expiresIn: "12h",
         });
         
           logger.registrationLogger.log("info", "Login successful");
@@ -237,44 +258,47 @@ const getPatientLabWithLabTest = (req, res) => {
   });
 };
 
-const patientpayment= async (req, res) => {
+const patientpayment = async (req, res) => {
   const { testId } = req.params;
   const {
     patient_uhid,
     patient_name,
-   
     payment,
     payment_status,
-    
   } = req.body;
 
-  const sql = `INSERT INTO patient_lab_test_details (testid, patient_uhid, patient_name, payment,payment_status) VAlUES (?,?,?,?,?)`;
+  const file = req.file;
+  if (!file) {
+    return res.status(400).json({ error: 'No file uploaded.' });
+  }
+  const created_date =  moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
+
+
+  const sql = `INSERT INTO patient_lab_test_details (testid, patient_uhid, patient_name, payment, payment_status,created_date) VALUES (?,?,?,?,?,?)`;
+
   db.query(
     sql,
     [
       testId,
       patient_uhid,
       patient_name,
-      
       payment,
       payment_status,
-      
+      created_date
+    
     ],
     (err, results) => {
       if (err) {
-      logger.registrationLogger.log("error", "Error of Data");
-        res.status(500).json({ error: "Error of Data" });
+        res.status(500).json({ error: 'Error inserting data' });
       } else {
-        logger.registrationLogger.log("info", "patient test data uploaded successfully");
         res.status(201).json({
           success: true,
-          message: "patient test data uploaded successfully",
+          message: 'Patient test data uploaded successfully',
         });
       }
     }
   );
 };
-
 const patrientDetailbyid = (req, res) => {
   try {
     const { id } = req.params;
@@ -434,7 +458,14 @@ const updatepatienttestdetail = async (req, res) => {
       authenticate_date,
       lab_type,
     } = req.body;
-    const sql = `UPDATE  patient_lab_test_details SET test = ? , result = ? , unit = ? , cost = ?, collection_date = ? , authenticate_date = ?,lab_type = ? WHERE testid = ?`;
+
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ error: 'No file uploaded.' });
+    }
+       const filePath = "https://dentalgurulab.doaguru.com/uploads/" + file.filename;
+  
+    const sql = `UPDATE  patient_lab_test_details SET test = ? , result = ? , unit = ? , cost = ?, collection_date = ? , authenticate_date = ?,lab_type = ?,file_path = ? WHERE testid = ?`;
 
     db.query(
       sql,
@@ -446,7 +477,9 @@ const updatepatienttestdetail = async (req, res) => {
         collection_date,
         authenticate_date,
         lab_type,
+        filePath,
         testId,
+        
       ],
       (error, result) => {
         if (error) {
@@ -472,43 +505,33 @@ const updatepatienttestdetail = async (req, res) => {
 const updatepatienttest = async (req, res) => {
   try {
     const { testId } = req.params;
-    const {
-      
-      result,
-      unit,
-     
-    } = req.body;
-    const sql = `UPDATE  patient_lab_test_details SET  result = ? , unit = ? , WHERE testid = ?`;
+    const { result, unit } = req.body;
 
-    db.query(
-      sql,
-      [
-       
-        result,
-        unit,
+    // Check if testId is provided
+    if (!testId) {
+      logger.registrationLogger.log("error", "testId is required");
+      return res.status(400).json({ message: "testId is required" });
+    }
 
-        testId,
-      ],
-      (error, result) => {
-        if (error) {
-          console.log("Table is not Found ", error);
-          logger.registrationLogger.log("error", "Table is not Found");
-          res.status(500).json({ message: "Table is not Found " });
-        } else {
-        logger.registrationLogger.log("info", "Successfully Updated Patient test");
-          res
-            .status(200)
-            .json({ message: "Successfully Upadated Patient test" });
-        }
+    const sql = `UPDATE patient_lab_test_details SET result = ?, unit = ? WHERE testid = ?`;
+
+    db.query(sql, [result, unit, testId], (error, result) => {
+      if (error) {
+        console.log("Table not found", error);
+        logger.registrationLogger.log("error", "Table not found");
+        res.status(500).json({ message: "Table not found" });
+      } else {
+        logger.registrationLogger.log("info", "Successfully updated patient test");
+        res.status(200).json({ message: "Successfully updated patient test" });
       }
-    );
+    });
   } catch (error) {
-    console.log("Internal Server Error");
-          logger.registrationLogger.log("error", "Internal Server Error");
-
-    res.status(500).json({ message: "Internal Server Error " });
+    console.log("Internal server error", error);
+    logger.registrationLogger.log("error", "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 
 
@@ -1211,13 +1234,34 @@ const getBranchHoliday = (req, res) => {
 };
 
 
-
+const getEmployeeDataByBranchAndId = (req, res) => {
+  try {
+    const branch = req.params.branch;
+    const empId = req.params.empId;
+    const getQuery = `SELECT * FROM employee_register WHERE branch_name = ? AND employee_ID = ?`;
+    db.query(getQuery, [branch, empId], (err, result) => {
+      if (err) {
+          logger.registrationLogger.log("error", "invalid branch or employee ID");
+        res.status(400).send({ message: "error in fetching employee" });
+      }
+      logger.registrationLogger.log("info", "employee data fetched successfully");
+      res.json(result);
+    });
+  } catch (error) {
+      logger.registrationLogger.log("error", "Internal server error");
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
 
 module.exports = {
    
   getBranch,
   LoginDoctor,
-  getPatientDetail,
+  getBranchDetailsByBranch,
   patrientDetailbyid,
   patienttestdata,
    getPatientLabWithPatientDetails,
@@ -1243,5 +1287,5 @@ module.exports = {
   getTodayAttendance,
   getAttendancebyempId,
   getBranchHoliday,
-  getBranchDetail
+  getBranchDetail,getEmployeeDataByBranchAndId
 };

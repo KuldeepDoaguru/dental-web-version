@@ -74,8 +74,8 @@ const BranchInfo = () => {
         <Sider />
       </div>
       <div className="col-lg-11 col-md-11 col-11" id="set" style={{marginTop:"3rem"}}>
-            <div className="container-fluid  shadow p-3 mt-5 bg-body rounded">
-                <div className="row">
+            <div className="container-fluid  shadow p-3 mt-5 bg-body rounded" style={{width:"98%"}}>
+                <div className="row mx-3">
                 <div className="col-lg-3">
                   <button className="btn btn-success" onClick={goBack}>
                     <IoMdArrowRoundBack /> Back
@@ -88,7 +88,7 @@ const BranchInfo = () => {
                         </div>
                     </div>
                 </div>
-                <div className="row">
+                <div className="row mx-3">
                    
                     <div className="col-lg-12">
                         <div className="row mb-3">
@@ -184,7 +184,7 @@ const BranchInfo = () => {
                 </div>
             </div>
             <div className="col-lg-12">
-   <div className="widget-area-2 proclinic-box-shadow  mt-5" id='tableres'>
+   <div className="widget-area-2 proclinic-box-shadow  mt-5 mx-3" id='tableres'>
                     
                     
                     <div className="table-responsive" style={{ overflowX: "auto" }}>

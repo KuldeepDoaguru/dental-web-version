@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const  logger  = require('./logger.js');
-
+const moment = require('moment-timezone');
 const getBranch = (req, res) => {
   try {
     const sql = "SELECT * FROM branches";
@@ -94,7 +94,7 @@ const LoginDoctor = (req, res) => {
           });
         }
 
-        if (!user.employee_role.includes("lab-attendant")) {
+        if (!user.employee_role.includes("lab attendant")) {
           return res.status(401).json({
             success: "false",
             message: "Please login with Lab email",
@@ -292,10 +292,12 @@ const patienttestdata = async (req, res) => {
     payment,
     payment_status,
     lab_type,
+  
   } = req.body;
+  const created_date =  moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
   const sql = `INSERT INTO patient_lab_test_details (testid, patient_uhid, patient_name, test, result, unit,cost,collection_date,authenticate_date, payment,
-    payment_status,lab_type) VAlUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
+    payment_status,lab_type,created_date) VAlUES (?,?,?,?,?,?,?,?,?,?,?,?)`;
   db.query(
     sql,
     [
@@ -311,6 +313,9 @@ const patienttestdata = async (req, res) => {
       payment,
       payment_status,
       lab_type,
+      created_date
+   
+
     ],
     (err, results) => {
       if (err) {
@@ -371,14 +376,11 @@ const patientpayment = async (req, res) => {
     payment_status,
   } = req.body;
 
-  const file = req.file;
-  if (!file) {
-    return res.status(400).json({ error: 'No file uploaded.' });
-  }
+  
+  const created_date =  moment().tz("Asia/Kolkata").format("YYYY-MM-DD HH:mm:ss");
 
 
-
-  const sql = `INSERT INTO patient_lab_test_details (testid, patient_uhid, patient_name, payment, payment_status) VALUES (?,?,?,?,?)`;
+  const sql = `INSERT INTO patient_lab_test_details (testid, patient_uhid, patient_name, payment, payment_status,created_date) VALUES (?,?,?,?,?,?)`;
 
   db.query(
     sql,
@@ -388,6 +390,7 @@ const patientpayment = async (req, res) => {
       patient_name,
       payment,
       payment_status,
+      created_date
     
     ],
     (err, results) => {
@@ -402,6 +405,61 @@ const patientpayment = async (req, res) => {
     }
   );
 };
+// const updatepatienttestdetail = async (req, res) => {
+//   try {
+//     const { testId } = req.params;
+//     const {
+//       test,
+//       result,
+//       unit,
+//       cost,
+//       collection_date,
+//       authenticate_date,
+//       lab_type,
+//     } = req.body;
+
+//     const file = req.file;
+//     if (!file) {
+//       return res.status(400).json({ error: 'No file uploaded.' });
+//     }
+//     const filePath = "https://dentalgurulab.doaguru.com/uploads/" + file.filename;
+  
+//     const sql = `UPDATE  patient_lab_test_details SET test = ? , result = ? , unit = ? , cost = ?, collection_date = ? , authenticate_date = ?,lab_type = ?,file_path = ? WHERE testid = ?`;
+
+//     db.query(
+//       sql,
+//       [
+//         test,
+//         result,
+//         unit,
+//         cost,
+//         collection_date,
+//         authenticate_date,
+//         lab_type,
+//         filePath,
+//         testId,
+        
+//       ],
+//       (error, result) => {
+//         if (error) {
+//           console.log("Table is not Found ", error);
+//           logger.registrationLogger.log("error", "Table is not Found");
+//           res.status(500).json({ message: "Table is not Found " });
+//         } else {
+//         logger.registrationLogger.log("info", "Successfully Updated Patient test detail");
+//           res
+//             .status(200)
+//             .json({ message: "Successfully Upadated Patient test detail" });
+//         }
+//       }
+//     );
+//   } catch (error) {
+//     console.log("Internal Server Error");
+//           logger.registrationLogger.log("error", "Internal Server Error");
+
+//     res.status(500).json({ message: "Internal Server Error " });
+//   }
+// };
 const updatepatienttestdetail = async (req, res) => {
   try {
     const { testId } = req.params;
@@ -415,16 +473,20 @@ const updatepatienttestdetail = async (req, res) => {
       lab_type,
     } = req.body;
 
-    const file = req.file;
-    if (!file) {
-      return res.status(400).json({ error: 'No file uploaded.' });
+    const files = req.files;
+    if (!files || files.length === 0) {
+      return res.status(400).json({ error: 'No files uploaded.' });
     }
-    const filePath = "https://dentalgurulab.doaguru.com/uploads/" + file.filename;
-  
-    const sql = `UPDATE  patient_lab_test_details SET test = ? , result = ? , unit = ? , cost = ?, collection_date = ? , authenticate_date = ?,lab_type = ?,file_path = ? WHERE testid = ?`;
 
-    db.query(
-      sql,
+    // const filePaths = files.map(file => "https://dentalgurulab.doaguru.com/uploads/" + file.filename);
+    const filePaths = files.map(file => "https://dentalgurulab.doaguru.com/uploads/" + file.filename);
+    
+
+    // Update patient lab test details
+    const sqlUpdateTest = `UPDATE patient_lab_test_details SET test = ?, result = ?, unit = ?, cost = ?, collection_date = ?, authenticate_date = ?, lab_type = ? WHERE testid = ?`;
+
+    await db.query(
+      sqlUpdateTest,
       [
         test,
         result,
@@ -433,32 +495,24 @@ const updatepatienttestdetail = async (req, res) => {
         collection_date,
         authenticate_date,
         lab_type,
-        filePath,
         testId,
-        
-      ],
-      (error, result) => {
-        if (error) {
-          console.log("Table is not Found ", error);
-          logger.registrationLogger.log("error", "Table is not Found");
-          res.status(500).json({ message: "Table is not Found " });
-        } else {
-        logger.registrationLogger.log("info", "Successfully Updated Patient test detail");
-          res
-            .status(200)
-            .json({ message: "Successfully Upadated Patient test detail" });
-        }
-      }
+      ]
     );
-  } catch (error) {
-    console.log("Internal Server Error");
-          logger.registrationLogger.log("error", "Internal Server Error");
 
-    res.status(500).json({ message: "Internal Server Error " });
+    // Insert file paths into patient_lab_test_reports
+    const sqlInsertFiles = `INSERT INTO patient_lab_test_reports (testid, file_path) VALUES ?`;
+    const values = filePaths.map(filePath => [testId, filePath]);
+
+    await db.query(sqlInsertFiles, [values]);
+
+    logger.registrationLogger.log("info", "Successfully updated patient test detail and uploaded files");
+    res.status(200).json({ message: "Successfully updated patient test detail and uploaded files" });
+  } catch (error) {
+    console.error("Internal Server Error", error);
+    logger.registrationLogger.log("error", "Internal Server Error");
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-
 const updatepatienttest = async (req, res) => {
   try {
     const { testId } = req.params;
@@ -489,6 +543,25 @@ const updatepatienttest = async (req, res) => {
   }
 };
 
+
+
+const getpatientreports = (req, res) => {
+  try {
+    const { testId } = req.params;
+    const getQuery = "SELECT * FROM patient_lab_test_reports WHERE testid = ?";
+    db.query(getQuery, testId, (err, result) => {
+      if (err) {
+        logger.error("Error getting testId details");
+        res.status(400).json({ success: false, message: err.message });
+      }
+      res.status(200).json(result);
+    });
+  } catch (error) {
+    logger.error("Error getting testId details");
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
 
 
 
@@ -598,48 +671,121 @@ const updateteststatus = async (req, res) => {
 //   }
 // };
 
-const deletepatienttestdetail = (req, res) => {
+// const deletepatienttestdetail = (req, res) => {
+//   try {
+//     const { testId } = req.params;
+
+//     const sql3 = `DELETE FROM  patient_lab_test_reports WHERE testid = ?`;
+
+//     db.query(sql3, [testId], (error, result) => {
+//       if (error) {
+//         console.log("Error deleting patient lab reports:", error);
+//         return res
+//           .status(500)
+//           .json({ message: "Failed to delete patient lab report" });
+//       }
+//       return res
+//         .status(200)
+//         .json({ message: "Successfully deleted patient detail reports data" });
+//     });
+
+
+//     const sql2 = `DELETE FROM patient_lab_test_details WHERE testid = ?`;
+
+//     db.query(sql2, [testId], (error, result) => {
+//       if (error) {
+//         console.log("Error deleting patient test lab detail:", error);
+//         return res
+//           .status(500)
+//           .json({ message: "Failed to delete patient test lab detail" });
+//       }
+//     });
+
+//     const sql = "DELETE FROM patient_test_notes WHERE testid = ?";
+
+//     db.query(sql, [testId], (err, result) => {
+//       if (err) {
+//         console.error("Error Deleting note:", err);
+//         res.status(500).json({ error: "Internal Server Error" });
+//       }
+//     });
+    
+//     const sql1 = `DELETE FROM patient_lab_details WHERE testid = ?`;
+
+//     db.query(sql1, [testId], (error, result) => {
+//       if (error) {
+//         console.log("Error deleting patient lab detail:", error);
+//         return res
+//           .status(500)
+//           .json({ message: "Failed to delete patient lab detail" });
+//       }
+//       return res
+//         .status(200)
+//         .json({ message: "Successfully deleted patient detail data" });
+//     });
+
+//   } catch (error) {
+//     console.log("Internal Server Error", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
+const deletepatienttestdetail = async (req, res) => {
+  const { testId } = req.params;
+
+  const sql3 = `DELETE FROM patient_lab_test_reports WHERE testid = ?`;
+  const sql2 = `DELETE FROM patient_lab_test_details WHERE testid = ?`;
+  const sql = "DELETE FROM patient_test_notes WHERE testid = ?";
+  const sql1 = `DELETE FROM patient_lab_details WHERE testid = ?`;
+
+  // Function to execute a query and return a promise
+  const executeQuery = (sql, params) => {
+    return new Promise((resolve, reject) => {
+      db.query(sql, params, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  };
+
   try {
-    const { testId } = req.params;
+    // Execute all queries sequentially
+    await executeQuery(sql3, [testId]);
+    await executeQuery(sql2, [testId]);
+    await executeQuery(sql, [testId]);
+    await executeQuery(sql1, [testId]);
 
-    const sql2 = `DELETE FROM patient_lab_test_details WHERE testid = ?`;
-
-    db.query(sql2, [testId], (error, result) => {
-      if (error) {
-        console.log("Error deleting patient test lab detail:", error);
-        return res
-          .status(500)
-          .json({ message: "Failed to delete patient test lab detail" });
-      }
-    });
-
-    const sql = "DELETE FROM patient_test_notes WHERE testid = ?";
-
-    db.query(sql, [testId], (err, result) => {
-      if (err) {
-        console.error("Error Deleting note:", err);
-        res.status(500).json({ error: "Internal Server Error" });
-      }
-    });
-
-    const sql1 = `DELETE FROM patient_lab_details WHERE testid = ?`;
-
-    db.query(sql1, [testId], (error, result) => {
-      if (error) {
-        console.log("Error deleting patient lab detail:", error);
-        return res
-          .status(500)
-          .json({ message: "Failed to delete patient lab detail" });
-      }
-      return res
-        .status(200)
-        .json({ message: "Successfully deleted patient detail data" });
-    });
+    // If all queries succeed
+    res.status(200).json({ message: "Successfully deleted all patient test details" });
   } catch (error) {
-    console.log("Internal Server Error", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.error("Error during deletion process:", error);
+    res.status(500).json({ message: "Failed to delete patient test details" });
   }
 };
+const deletePatientLabReport = (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteQuery = "DELETE FROM patient_lab_test_reports WHERE id = ?";
+    
+    db.query(deleteQuery, id, (err, result) => {
+      if (err) {
+        logger.error("Error deleting lab report");
+        res.status(400).json({ success: false, message: err.message });
+      } else if (result.affectedRows === 0) {
+        res.status(404).json({ success: false, message: "Lab report not found" });
+      } else {
+        res.status(200).json({ success: true, message: "Lab report deleted successfully" });
+      }
+    });
+  } catch (error) {
+    logger.error("Error deleting lab report");
+    console.log(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
 
 const patienttestnotes = (req, res) => {
   const { noteTexts, testId } = req.body;
@@ -1442,5 +1588,5 @@ module.exports = {
   getAttendancebyempId,
   getBranchHoliday,
   getBranchDetail,
-  getEmployeeData
+  getEmployeeData,getpatientreports,deletePatientLabReport
 };

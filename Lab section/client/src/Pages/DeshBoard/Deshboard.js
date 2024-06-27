@@ -83,7 +83,7 @@ const Deshboard = () => {
                   <div className="row mt-4">
                     <div className="col-lg-6">
                       <div className="ms-3 ">
-                        <h3 className="ms-5" style={{color:"#213555"}}>Pending And Completed overview</h3>
+                        <h3 className="ms-5" style={{color:"#213555"}}>Pending And Completed Overview</h3>
                         <div className="mt-3">
                           <BarChartz />
                         </div>

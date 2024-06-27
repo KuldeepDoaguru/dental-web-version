@@ -186,7 +186,7 @@ const formatDate = (dateString) => {
       <div className="col-lg-1 col-md-1 col-1" id="sider">
         <Sider />
       </div>
-              <div className="col-lg-11 col-md-11 col-11" id="set" style={{marginTop:"5rem"}}>
+              <div className="col-lg-11 col-md-11 col-11" id="set" style={{marginTop:"6rem"}}>
                 <div className="container-fluid mt-3">
                   <div className="">
                     {/* <BranchDetails /> */}
@@ -196,9 +196,9 @@ const formatDate = (dateString) => {
                 <div className="container-fluid" >
                   <div className="row d-flex justify-content-between">
                     <div className="col-lg-3">
-                  <div className="fs-1 text-black d-print-none mx-2" onClick={goBack} style={{ cursor: "pointer" }}>
+                  {/* <div className="fs-1 text-black d-print-none mx-2" onClick={goBack} style={{ cursor: "pointer" }}>
                     <IoArrowBackSharp />
-                  </div>
+                  </div> */}
                   </div>
                   <div className="col-lg-9 text-end">
                   <MarkAttendance/>

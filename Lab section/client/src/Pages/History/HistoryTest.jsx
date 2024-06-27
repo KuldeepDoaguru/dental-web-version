@@ -9,6 +9,8 @@ import styled from "styled-components";
 import { Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { FaSearch } from "react-icons/fa";
+import animationData from "../../Pages/animation/loading-effect.json";
+import Lottie from "react-lottie";
 
 function HistoryTest() {
   const [patientDetails, setPatientDetails] = useState([]);
@@ -16,13 +18,14 @@ function HistoryTest() {
   const [dateFilter, setDateFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-
+  const [loading, setLoading] = useState(false);
   const currentUser = useSelector((state) => state.auth.user);
 
   const token = currentUser?.token;
 
   const fetchPatientDetails = async () => {
     try {
+      setLoading(true)
       const response = await axios.get(
         `https://dentalgurulab.doaguru.com/api/lab/get-patient-details`,
         {
@@ -32,9 +35,11 @@ function HistoryTest() {
           },
         }
       );
+      setLoading(false)
       setPatientDetails(response.data.result);
       console.log(patientDetails);
     } catch (error) {
+      setLoading(false)
       console.error("Error fetching patient details:", error);
     }
   };
@@ -99,6 +104,14 @@ function HistoryTest() {
       }
     }
   };
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   return (
     <Wrapper>
@@ -113,11 +126,11 @@ function HistoryTest() {
               className="col-xxl-11 col-xl-11 col-lg-11 col-md-11 col-sm-11"
               style={{ marginTop: "5rem" }}
             >
-              <IoArrowBackSharp
+              {/* <IoArrowBackSharp
                 className="fs-1 text-black d-print-none mx-2"
                 onClick={goBack}
                 style={{ cursor: "pointer" }}
-              />
+              /> */}
               <div className="mt-4 mx-3">
                 <h2 style={{ color: "#213555" }}>List of Tests</h2>
                 <div className="mb-3">
@@ -154,6 +167,10 @@ function HistoryTest() {
                   className=""
                   style={{ maxHeight: "700px", overflowY: "auto" }}
                 >
+ {loading ? (
+            <Lottie options={defaultOptions} height={300} width={400}></Lottie>
+          ) : (
+            <>
                   {filteredPatients.length === 0 ? (
                     <div className="mb-2 fs-4 fw-bold text-center">
                       No tests available
@@ -286,6 +303,9 @@ function HistoryTest() {
                 </nav>
                 </>
                   )}
+ </>
+            )}
+
                   </div>
               </div>
             </div>
